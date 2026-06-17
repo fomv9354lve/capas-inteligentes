@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
@@ -13,7 +14,7 @@ RO_CRATE_CONTEXT = "https://w3id.org/ro/crate/1.1/context"
 RO_CRATE_CONFORMS_TO = "https://w3id.org/ro/crate/1.1"
 WORKFLOW_RUN_CRATE_PROFILE = "https://w3id.org/workflowhub/workflow-ro-crate/1.0"
 CAPAS_PROFILE = "https://example.org/capas-inteligentes/ro-crate/physical-evidence/0.1"
-CAPAS_WORKFLOW_ID = "workflow:capas-costurero-run"
+CAPAS_WORKFLOW_ID = "workflow/capas-costurero-run.py"
 CAPAS_SOFTWARE_ID = "software:capas-costurero"
 WORKLOAD_ID = "entity:workload"
 
@@ -74,6 +75,7 @@ def run_trace_to_ro_crate_metadata(
                 {"@id": WORKFLOW_RUN_CRATE_PROFILE},
                 {"@id": CAPAS_PROFILE},
             ],
+            "datePublished": end_time,
             "capas:traceHash": trace.hash(),
             "capas:workloadHash": trace.workload_hash,
             "capas:workflowRunCrateAlignment": "shape-compatible-with-workflow-run-ro-crate-v0",
@@ -108,7 +110,7 @@ def run_trace_to_ro_crate_metadata(
         },
         {
             "@id": CAPAS_WORKFLOW_ID,
-            "@type": ["SoftwareSourceCode", "ComputationalWorkflow"],
+            "@type": ["File", "SoftwareSourceCode", "ComputationalWorkflow"],
             "name": "CAPAS costurero workflow",
             "description": (
                 "Workflow plan that ingests a scientific workload, records runtime context, "
@@ -245,12 +247,16 @@ def run_trace_to_ro_crate_metadata(
 
 def write_ro_crate_for_trace(trace: RunTrace, out_dir: Path, *, trace_payload: dict[str, Any]) -> Path:
     out_dir.mkdir(parents=True, exist_ok=True)
+    workflow_dir = out_dir / "workflow"
+    workflow_dir.mkdir(exist_ok=True)
     trace_path = out_dir / "runtrace.json"
     prov_path = out_dir / "runtrace.prov.json"
+    workflow_path = out_dir / CAPAS_WORKFLOW_ID
     crate_path = out_dir / "ro-crate-metadata.json"
 
     trace_path.write_text(json.dumps(trace_payload, indent=2, sort_keys=True), encoding="utf-8")
     prov_path.write_text(json.dumps(run_trace_to_prov_json(trace), indent=2, sort_keys=True), encoding="utf-8")
+    workflow_path.write_text(_workflow_descriptor_source(), encoding="utf-8")
     crate = run_trace_to_ro_crate_metadata(
         trace,
         trace_file="runtrace.json",
@@ -306,8 +312,31 @@ def _action_status(trace: RunTrace) -> str:
 def _event_time_bounds(trace: RunTrace) -> tuple[str | None, str | None]:
     if not trace.events:
         return None, None
-    timestamps = [event.timestamp for event in trace.events]
+    timestamps = [_iso_from_timestamp(event.timestamp) for event in trace.events]
     return timestamps[0], timestamps[-1]
+
+
+def _iso_from_timestamp(timestamp: float) -> str:
+    return datetime.fromtimestamp(timestamp, tz=UTC).isoformat().replace("+00:00", "Z")
+
+
+def _workflow_descriptor_source() -> str:
+    return '''"""CAPAS costurero workflow descriptor.
+
+This file is included so the RO-Crate has a concrete workflow file entity.
+The executable implementation lives in router.pipeline.run_with_trace.
+"""
+
+
+def capas_costurero_workflow(workload):
+    """Conceptual workflow stages recorded in the sealed RunTrace."""
+    ingest(workload)
+    record_runtime_context()
+    estimate_cost_model()
+    route_workload()
+    execute_or_skip_backend()
+    attach_physical_evidence()
+'''
 
 
 def _file_sha256_if_exists(path: str, base_dir: Path | None = None) -> str | None:

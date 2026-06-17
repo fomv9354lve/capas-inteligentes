@@ -71,6 +71,18 @@ it would be dishonest:
 - backend failure: `not_applicable_failed`
 - router rejection: `not_applicable_rejected`
 
+## External RO-Crate Validation
+
+```bash
+python3 -m pip install -r requirements-validation.txt
+python3 benchmarks/validate_ro_crates_external.py
+```
+
+This uses the ResearchObject `rocrateValidator` package and writes
+`benchmarks/ro_crates/official_validation_report.json`. Current crates validate
+as RO-Crates with one warning: the CAPAS workflow descriptor is a Python file,
+and that validator only recognizes a fixed list of workflow file extensions.
+
 ## Positioning
 
 See:

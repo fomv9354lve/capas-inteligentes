@@ -29,7 +29,7 @@
       "@id": "./",
       "@type": "Dataset",
       "capas:evidenceStatus": "present",
-      "capas:traceHash": "dc602679204aa72f6aab528d5047f941a0bcff4fa7e27204f9ab06687c95ba62",
+      "capas:traceHash": "9e5bd6ad9fa1aca522d85547856d06472a09b4157a3f5bf852c4e0ce024a7bae",
       "capas:workflowRunCrateAlignment": "shape-compatible-with-workflow-run-ro-crate-v0",
       "capas:workloadHash": "13d394d09e9f7fb099c6da4b3688b9901d7a6824af9e0247e4d87f96775f56a4",
       "conformsTo": [
@@ -43,13 +43,14 @@
           "@id": "https://example.org/capas-inteligentes/ro-crate/physical-evidence/0.1"
         }
       ],
+      "datePublished": "2026-06-17T19:44:59.882988Z",
       "description": "RO-Crate package containing a sealed RunTrace, optional PROV export, routing decision, runtime context, and CAPAS physical evidence metadata.",
       "hasPart": [
         {
           "@id": "runtrace.json"
         },
         {
-          "@id": "workflow:capas-costurero-run"
+          "@id": "workflow/capas-costurero-run.py"
         },
         {
           "@id": "software:capas-costurero"
@@ -58,16 +59,16 @@
           "@id": "entity:workload"
         },
         {
-          "@id": "trace:dc602679204aa72f:routing-decision"
+          "@id": "trace:9e5bd6ad9fa1aca5:routing-decision"
         },
         {
-          "@id": "trace:dc602679204aa72f:result"
+          "@id": "trace:9e5bd6ad9fa1aca5:result"
         },
         {
           "@id": "runtrace.prov.json"
         },
         {
-          "@id": "trace:dc602679204aa72f:physical-evidence"
+          "@id": "trace:9e5bd6ad9fa1aca5:physical-evidence"
         }
       ],
       "name": "CAPAS traced scientific computation crate"
@@ -79,14 +80,14 @@
         "DigitalDocument"
       ],
       "about": {
-        "@id": "trace:dc602679204aa72f"
+        "@id": "trace:9e5bd6ad9fa1aca5"
       },
       "encodingFormat": "application/json",
       "name": "Sealed CAPAS RunTrace",
-      "sha256": "547816dc834fca52ccd298b1910d8cecfb48cc6b886379ea3a239fae8239e7b6"
+      "sha256": "cf53bac887a3571911b11a2cc759d6da83e8813f0e78c05f74c128ec58c779c4"
     },
     {
-      "@id": "trace:dc602679204aa72f",
+      "@id": "trace:9e5bd6ad9fa1aca5",
       "@type": "CreateAction",
       "actionStatus": "CompletedActionStatus",
       "agent": {
@@ -97,26 +98,27 @@
       "capas:evidenceStatus": "present",
       "capas:hashAlgorithm": "sha256(stable_json)",
       "capas:routingDecision": {
-        "@id": "trace:dc602679204aa72f:routing-decision"
+        "@id": "trace:9e5bd6ad9fa1aca5:routing-decision"
       },
-      "capas:traceHash": "dc602679204aa72f6aab528d5047f941a0bcff4fa7e27204f9ab06687c95ba62",
+      "capas:traceHash": "9e5bd6ad9fa1aca522d85547856d06472a09b4157a3f5bf852c4e0ce024a7bae",
       "capas:traceSchemaVersion": "capas-runtrace-v2",
-      "endTime": 1781725162.6600718,
+      "endTime": "2026-06-17T19:44:59.882988Z",
       "instrument": {
-        "@id": "workflow:capas-costurero-run"
+        "@id": "workflow/capas-costurero-run.py"
       },
       "name": "CAPAS costurero traced run",
       "object": {
         "@id": "entity:workload"
       },
       "result": {
-        "@id": "trace:dc602679204aa72f:result"
+        "@id": "trace:9e5bd6ad9fa1aca5:result"
       },
-      "startTime": 1781725162.659874
+      "startTime": "2026-06-17T19:44:59.882462Z"
     },
     {
-      "@id": "workflow:capas-costurero-run",
+      "@id": "workflow/capas-costurero-run.py",
       "@type": [
+        "File",
         "SoftwareSourceCode",
         "ComputationalWorkflow"
       ],
@@ -171,7 +173,7 @@
       "name": "Workload summary"
     },
     {
-      "@id": "trace:dc602679204aa72f:routing-decision",
+      "@id": "trace:9e5bd6ad9fa1aca5:routing-decision",
       "@type": "Thing",
       "capas:reason": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
       "capas:route": "external_engine",
@@ -185,13 +187,13 @@
       ],
       "encodingFormat": "application/json",
       "name": "W3C PROV-shaped export",
-      "sha256": "4fdaf4cd11a07bd36340212b7f728b968a1db0209407e5451ac8ba92a531827d"
+      "sha256": "5f2d592fab0e1e1c68dba5f5849e6bea98f2345fc2d19cd7820fc040cb8b4f45"
     },
     {
-      "@id": "trace:dc602679204aa72f:result",
+      "@id": "trace:9e5bd6ad9fa1aca5:result",
       "@type": "Dataset",
       "capas:physicalEvidence": {
-        "@id": "trace:dc602679204aa72f:physical-evidence"
+        "@id": "trace:9e5bd6ad9fa1aca5:physical-evidence"
       },
       "capas:resultHash": "a64dbd99c33c6a5f51536097149768f8fdd71abdd927da08aabf19ebb83007b1",
       "capas:summary": {
@@ -211,10 +213,10 @@
       "name": "Result summary"
     },
     {
-      "@id": "trace:dc602679204aa72f:physical-evidence",
+      "@id": "trace:9e5bd6ad9fa1aca5:physical-evidence",
       "@type": "capas:PhysicalEvidence",
       "about": {
-        "@id": "trace:dc602679204aa72f:result"
+        "@id": "trace:9e5bd6ad9fa1aca5:result"
       },
       "capas:absError": 0.0,
       "capas:benchmarkFamily": "Schrodinger",
@@ -230,7 +232,7 @@
       "name": "Physical evidence attached to result"
     },
     {
-      "@id": "trace:dc602679204aa72f:event:0:ingest",
+      "@id": "trace:9e5bd6ad9fa1aca5:event:0:ingest",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -250,10 +252,10 @@
       },
       "description": "workload accepted",
       "name": "ingest",
-      "startTime": 1781725162.659874
+      "startTime": 1781725499.882462
     },
     {
-      "@id": "trace:dc602679204aa72f:event:1:runtime_context",
+      "@id": "trace:9e5bd6ad9fa1aca5:event:1:runtime_context",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -278,10 +280,10 @@
       },
       "description": "runtime and hardware context recorded",
       "name": "runtime_context",
-      "startTime": 1781725162.6598809
+      "startTime": 1781725499.8824818
     },
     {
-      "@id": "trace:dc602679204aa72f:event:2:engine_provenance",
+      "@id": "trace:9e5bd6ad9fa1aca5:event:2:engine_provenance",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -298,10 +300,10 @@
       },
       "description": "external engine provenance recorded",
       "name": "engine_provenance",
-      "startTime": 1781725162.659915
+      "startTime": 1781725499.882572
     },
     {
-      "@id": "trace:dc602679204aa72f:event:3:cost_model",
+      "@id": "trace:9e5bd6ad9fa1aca5:event:3:cost_model",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -313,10 +315,10 @@
       },
       "description": "dense statevector cost estimated",
       "name": "cost_model",
-      "startTime": 1781725162.659917
+      "startTime": 1781725499.882578
     },
     {
-      "@id": "trace:dc602679204aa72f:event:4:route",
+      "@id": "trace:9e5bd6ad9fa1aca5:event:4:route",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -326,10 +328,10 @@
       },
       "description": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
       "name": "route",
-      "startTime": 1781725162.659919
+      "startTime": 1781725499.8825831
     },
     {
-      "@id": "trace:dc602679204aa72f:event:5:execute",
+      "@id": "trace:9e5bd6ad9fa1aca5:event:5:execute",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -342,7 +344,7 @@
         "reference_truth": "closed_form_infinite_square_well",
         "repr": "{'engine_id': 'physics_magnitude_quantum_engine.particle_in_box_energy', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_go",
         "route": "external_engine",
-        "runtime_ms": 0.12916600098833442,
+        "runtime_ms": 0.3435419930610806,
         "type": "dict",
         "units": "energy",
         "value": 4.934802200544679,
@@ -350,10 +352,10 @@
       },
       "description": "backend executed",
       "name": "execute",
-      "startTime": 1781725162.6600661
+      "startTime": 1781725499.882974
     },
     {
-      "@id": "trace:dc602679204aa72f:event:6:physical_evidence",
+      "@id": "trace:9e5bd6ad9fa1aca5:event:6:physical_evidence",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -368,7 +370,7 @@
       },
       "description": "physical evidence reported by backend",
       "name": "physical_evidence",
-      "startTime": 1781725162.6600718
+      "startTime": 1781725499.882988
     }
   ]
 }

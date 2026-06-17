@@ -52,12 +52,20 @@ independent the witness was.
 
 ## Current Status
 
-Current status is shape-compatible export, not official profile registration.
+Current status is shape-compatible export plus external RO-Crate validation, not
+official CAPAS profile registration.
 
 The local validator checks that representative traces contain the expected
 Workflow Run RO-Crate structure and the CAPAS evidence extension. It does not
 claim that CAPAS has passed an external Workflow Run RO-Crate validator or that
 the CAPAS profile is registered in the RO-Crate profile registry.
+
+The external ResearchObject `rocrateValidator` package validates the generated
+crates as RO-Crates. The current result is `valid_with_warning` because the
+validator's workflow extension list does not recognize `.py` workflow
+descriptors. CAPAS keeps the descriptor as Python because it points at the real
+implementation shape instead of pretending to be a CWL, Galaxy, or KNIME
+workflow.
 
 ## Remaining Work
 
