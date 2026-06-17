@@ -1,0 +1,80 @@
+{
+  "counts": {
+    "algorithmic_certificate_exact_svd_same_runtime": 2,
+    "algorithmic_error_certificate_same_runtime": 1,
+    "analytic_no_solver": 10,
+    "different_algorithm_same_runtime": 1,
+    "different_library_same_runtime": 1,
+    "none": 3
+  },
+  "coverage_ready": true,
+  "failures": [],
+  "levels": {
+    "algorithmic_certificate_exact_svd_same_runtime": {
+      "description": "Formal same-runtime mathematical certificate, not an independent witness.",
+      "strength": 3
+    },
+    "algorithmic_error_certificate_same_runtime": {
+      "description": "Same-runtime algorithmic error estimate or non-formal certificate.",
+      "strength": 2
+    },
+    "analytic_no_solver": {
+      "description": "Closed-form reference; no computational witness required.",
+      "strength": 5
+    },
+    "different_algorithm_same_runtime": {
+      "description": "Different algorithmic calculation in the same runtime/library family.",
+      "strength": 3
+    },
+    "different_library_same_runtime": {
+      "description": "Independent library witness in the same Python/runtime process.",
+      "strength": 4
+    },
+    "none": {
+      "description": "No witness or certificate attached.",
+      "strength": 0
+    }
+  },
+  "missing_coverage": [],
+  "required_coverage": [
+    "algorithmic_certificate_exact_svd_same_runtime",
+    "algorithmic_error_certificate_same_runtime",
+    "analytic_no_solver",
+    "different_algorithm_same_runtime",
+    "different_library_same_runtime",
+    "none"
+  ],
+  "schema": "capas-witness-independence-v1",
+  "trace_ids_by_level": {
+    "algorithmic_certificate_exact_svd_same_runtime": [
+      "trace_016",
+      "trace_017"
+    ],
+    "algorithmic_error_certificate_same_runtime": [
+      "trace_015"
+    ],
+    "analytic_no_solver": [
+      "trace_001",
+      "trace_002",
+      "trace_003",
+      "trace_004",
+      "trace_005",
+      "trace_006",
+      "trace_007",
+      "trace_008",
+      "trace_009",
+      "trace_010"
+    ],
+    "different_algorithm_same_runtime": [
+      "trace_011"
+    ],
+    "different_library_same_runtime": [
+      "trace_018"
+    ],
+    "none": [
+      "trace_012",
+      "trace_013",
+      "trace_014"
+    ]
+  }
+}

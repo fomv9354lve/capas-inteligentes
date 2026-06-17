@@ -142,6 +142,7 @@ def run_trace_to_prov_json(trace: RunTrace, *, bundle_id: str | None = None) -> 
                 "capas:benchmarkFamily": event.metrics.get("benchmark_family"),
                 "capas:referenceTruth": event.metrics.get("reference_truth"),
                 "capas:verificationIndependence": event.metrics.get("verification_independence"),
+                "capas:witnessStack": event.metrics.get("witness_stack"),
                 "capas:certificationStatus": event.metrics.get("certification_status"),
                 "capas:formalBoundStatus": event.metrics.get("formal_bound_status"),
                 "capas:sourceLabel": event.metrics.get("source_label"),

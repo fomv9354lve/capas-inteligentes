@@ -202,6 +202,45 @@ def bell_entropy_cross_sim() -> dict:
     }
 
 
+def bell_entropy_scipy_cross_library() -> dict:
+    """Bell entropy checked against a different library stack.
+
+    The primary value comes from physics_magnitude_lab.quantum_engine. The
+    witness computes the reduced density matrix explicitly and diagonalizes it
+    with scipy.linalg.eigh. This is stronger than the NumPy-only cross-sim case,
+    but it is still same-runtime evidence, not a separate hardware/runtime
+    witness.
+    """
+    import scipy.linalg
+
+    bell = qe.bell_state()
+    value = float(qe.entanglement_entropy(bell, dims=[2, 2], keep=[0]))
+    density = np.outer(bell, np.conjugate(bell)).reshape(2, 2, 2, 2)
+    reduced = np.trace(density, axis1=1, axis2=3)
+    evals = scipy.linalg.eigh(reduced, eigvals_only=True)
+    witness = float(-sum(float(x) * np.log(float(x)) for x in evals if x > 0))
+    return {
+        "observable": "Bell pair entanglement entropy SciPy cross-library witness",
+        "value": value,
+        "expected": witness,
+        "abs_error": abs(value - witness),
+        "units": "nats",
+        "physical_evidence_level": "cross_sim",
+        "physical_evidence_detail": (
+            "quantum_engine entropy checked against explicit reduced density matrix diagonalized "
+            "with scipy.linalg.eigh. Same Python runtime, different library witness."
+        ),
+        "benchmark_family": "Entanglement",
+        "reference_truth": "scipy_linalg_reduced_density_eigenspectrum",
+        "verification_independence": "different_library_same_runtime",
+        "witness_stack": {
+            "primary": "physics_magnitude_lab.quantum_engine.entanglement_entropy",
+            "witness": "scipy.linalg.eigh on explicit reduced density matrix",
+            "runtime_relation": "same_python_runtime",
+        },
+    }
+
+
 def unverified_variational_energy() -> dict:
     rng = np.random.default_rng(1234)
     value = float(rng.normal(loc=-1.0, scale=0.05))

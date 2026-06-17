@@ -1,0 +1,209 @@
+{
+  "coverage_case": "cross_library_success",
+  "result": {
+    "engine_id": "physics_magnitude_quantum_engine.bell_entropy_scipy_cross_library",
+    "function_name": "bell_entropy_scipy_cross_library",
+    "kwargs": {},
+    "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
+    "module_sha256": "12ee3b992f250f2b3c6ebffad4d657e65b9860b303aa815d8bb8aabebec2c8c3",
+    "result": {
+      "abs_error": 0.0,
+      "benchmark_family": "Entanglement",
+      "expected": 0.6931471805599454,
+      "observable": "Bell pair entanglement entropy SciPy cross-library witness",
+      "physical_evidence_detail": "quantum_engine entropy checked against explicit reduced density matrix diagonalized with scipy.linalg.eigh. Same Python runtime, different library witness.",
+      "physical_evidence_level": "cross_sim",
+      "reference_truth": "scipy_linalg_reduced_density_eigenspectrum",
+      "units": "nats",
+      "value": 0.6931471805599454,
+      "verification_independence": "different_library_same_runtime",
+      "witness_stack": {
+        "primary": "physics_magnitude_lab.quantum_engine.entanglement_entropy",
+        "runtime_relation": "same_python_runtime",
+        "witness": "scipy.linalg.eigh on explicit reduced density matrix"
+      }
+    }
+  },
+  "trace": {
+    "decision_reason": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+    "decision_route": "external_engine",
+    "error": null,
+    "events": [
+      {
+        "message": "workload accepted",
+        "metrics": {
+          "budget": {
+            "flops_ceiling": 100000000.0,
+            "memory_budget_bytes": 536870912,
+            "safety_factor": 0.5
+          },
+          "engine": {
+            "engine_id": "physics_magnitude_quantum_engine.bell_entropy_scipy_cross_library",
+            "function_name": "bell_entropy_scipy_cross_library",
+            "kwargs_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+            "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
+          },
+          "kind": "dense",
+          "n_qubits": 2
+        },
+        "stage": "ingest",
+        "status": "ok",
+        "timestamp": 1781726655.048566
+      },
+      {
+        "message": "runtime and hardware context recorded",
+        "metrics": {
+          "cotengra_available": true,
+          "cotengra_version": "0.8.1",
+          "machine": "arm64",
+          "mlx_probe": "skipped_in_default_trace; use apple_silicon_thermal_routing.py for Metal/MLX device probes",
+          "numpy_available": true,
+          "numpy_version": "2.4.6",
+          "platform": "macOS-26.5.1-arm64-arm-64bit",
+          "processor": "arm",
+          "python_executable": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/physics_quantum/physics-magnitude-lab/.pixi/envs/default/bin/python",
+          "python_version": "3.12.13",
+          "qiskit_aer_available": true,
+          "qiskit_aer_version": "0.17.2",
+          "quimb_available": true,
+          "quimb_version": "1.14.0",
+          "scipy_available": true,
+          "scipy_version": "1.17.1",
+          "stim_available": true,
+          "stim_version": "1.16.0"
+        },
+        "stage": "runtime_context",
+        "status": "ok",
+        "timestamp": 1781726655.048585
+      },
+      {
+        "message": "external engine provenance recorded",
+        "metrics": {
+          "engine_id": "physics_magnitude_quantum_engine.bell_entropy_scipy_cross_library",
+          "function_name": "bell_entropy_scipy_cross_library",
+          "kwargs": {},
+          "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
+          "module_sha256": "12ee3b992f250f2b3c6ebffad4d657e65b9860b303aa815d8bb8aabebec2c8c3"
+        },
+        "stage": "engine_provenance",
+        "status": "ok",
+        "timestamp": 1781726655.048683
+      },
+      {
+        "message": "dense statevector cost estimated",
+        "metrics": {
+          "memory_viable": true,
+          "n_qubits": 2,
+          "route": "dense",
+          "statevector_bytes": 64,
+          "usable_memory_bytes": 268435456.0
+        },
+        "stage": "cost_model",
+        "status": "ok",
+        "timestamp": 1781726655.0486882
+      },
+      {
+        "message": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+        "metrics": {
+          "engine_id": "physics_magnitude_quantum_engine.bell_entropy_scipy_cross_library",
+          "function_name": "bell_entropy_scipy_cross_library",
+          "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
+        },
+        "stage": "route",
+        "status": "ok",
+        "timestamp": 1781726655.0486941
+      },
+      {
+        "message": "backend executed",
+        "metrics": {
+          "abs_error": 0.0,
+          "benchmark_family": "Entanglement",
+          "expected": 0.6931471805599454,
+          "observable": "Bell pair entanglement entropy SciPy cross-library witness",
+          "physical_evidence_detail": "quantum_engine entropy checked against explicit reduced density matrix diagonalized with scipy.linalg.eigh. Same Python runtime, different library witness.",
+          "physical_evidence_level": "cross_sim",
+          "reference_truth": "scipy_linalg_reduced_density_eigenspectrum",
+          "repr": "{'engine_id': 'physics_magnitude_quantum_engine.bell_entropy_scipy_cross_library', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_ma",
+          "route": "external_engine",
+          "runtime_ms": 2.8904999780934304,
+          "type": "dict",
+          "units": "nats",
+          "value": 0.6931471805599454,
+          "verification_independence": "different_library_same_runtime",
+          "witness_stack": {
+            "primary": "physics_magnitude_lab.quantum_engine.entanglement_entropy",
+            "runtime_relation": "same_python_runtime",
+            "witness": "scipy.linalg.eigh on explicit reduced density matrix"
+          }
+        },
+        "stage": "execute",
+        "status": "ok",
+        "timestamp": 1781726655.051639
+      },
+      {
+        "message": "physical evidence reported by backend",
+        "metrics": {
+          "abs_error": 0.0,
+          "benchmark_family": "Entanglement",
+          "evidence_hash": "c040442ceb6a2de2e01dccb9fa5523c393053f5d1f410e7e9cd6a3f05f232c5b",
+          "expected": 0.6931471805599454,
+          "observable": "Bell pair entanglement entropy SciPy cross-library witness",
+          "physical_evidence_detail": "quantum_engine entropy checked against explicit reduced density matrix diagonalized with scipy.linalg.eigh. Same Python runtime, different library witness.",
+          "physical_evidence_level": "cross_sim",
+          "reference_truth": "scipy_linalg_reduced_density_eigenspectrum",
+          "units": "nats",
+          "value": 0.6931471805599454,
+          "verification_independence": "different_library_same_runtime",
+          "witness_stack": {
+            "primary": "physics_magnitude_lab.quantum_engine.entanglement_entropy",
+            "runtime_relation": "same_python_runtime",
+            "witness": "scipy.linalg.eigh on explicit reduced density matrix"
+          }
+        },
+        "stage": "physical_evidence",
+        "status": "ok",
+        "timestamp": 1781726655.051659
+      }
+    ],
+    "hash_algorithm": "sha256(stable_json)",
+    "result_hash": "24ebc0654aee1caf76576ad8ac3e358309766d278b77906e82eb633e8f090872",
+    "result_summary": {
+      "abs_error": 0.0,
+      "benchmark_family": "Entanglement",
+      "expected": 0.6931471805599454,
+      "observable": "Bell pair entanglement entropy SciPy cross-library witness",
+      "physical_evidence_detail": "quantum_engine entropy checked against explicit reduced density matrix diagonalized with scipy.linalg.eigh. Same Python runtime, different library witness.",
+      "physical_evidence_level": "cross_sim",
+      "reference_truth": "scipy_linalg_reduced_density_eigenspectrum",
+      "repr": "{'engine_id': 'physics_magnitude_quantum_engine.bell_entropy_scipy_cross_library', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_ma",
+      "type": "dict",
+      "units": "nats",
+      "value": 0.6931471805599454,
+      "verification_independence": "different_library_same_runtime",
+      "witness_stack": {
+        "primary": "physics_magnitude_lab.quantum_engine.entanglement_entropy",
+        "runtime_relation": "same_python_runtime",
+        "witness": "scipy.linalg.eigh on explicit reduced density matrix"
+      }
+    },
+    "trace_schema_version": "capas-runtrace-v2",
+    "workload_hash": "a095868945cf13df732cadca379e0d20fc4508032f63357ad02dc2934f0c4457",
+    "workload_summary": {
+      "budget": {
+        "flops_ceiling": 100000000.0,
+        "memory_budget_bytes": 536870912,
+        "safety_factor": 0.5
+      },
+      "engine": {
+        "engine_id": "physics_magnitude_quantum_engine.bell_entropy_scipy_cross_library",
+        "function_name": "bell_entropy_scipy_cross_library",
+        "kwargs_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
+      },
+      "kind": "dense",
+      "n_qubits": 2
+    }
+  },
+  "trace_hash": "2e9ab343bf86c1061843369590bd994bc1acc3355220dd35859a866e251fbc46",
+  "trace_id": "trace_018"
+}

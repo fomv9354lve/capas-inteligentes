@@ -37,11 +37,11 @@ See git log. This dashboard is updated in the same commit as state changes.
 Recent commits:
 
 ```text
+HEAD Add witness independence axis
+d23efaa Add multi-step formal truncation bound trace
 b0ed7d2 Add non-degradable project dashboard
 1f9184a Add formal Schmidt truncation evidence trace
 733278e Validate RO-Crates with external ResearchObject checker
-3cdd27c Align RO-Crate export with workflow run shape
-240d9c1 Classify quimb fidelity as estimated evidence
 ```
 
 Current validation status:
@@ -50,8 +50,9 @@ Current validation status:
 coverage_ready: True
 fine_tune_ready: False
 local RO-Crate validation: passed
-external ResearchObject RO-Crate validation: valid_with_warning for 17/17 crates
+external ResearchObject RO-Crate validation: valid_with_warning for 18/18 crates
 external warning: .py is not a recognised workflow extension
+witness independence validation: passed
 ```
 
 The external warning is known and currently accepted: CAPAS emits a Python
@@ -64,6 +65,7 @@ ResearchObject validator recognizes a fixed workflow-extension list.
 |---|---:|---|---|
 | `analytic_success` | 10 | covered | closed-form truth |
 | `cross_sim_success` | 1 | covered | independent algorithmic witness |
+| `cross_library_success` | 1 | covered | different-library same-runtime witness |
 | `formal_bound_success` | 1 | covered | formal single-cut Schmidt truncation certificate |
 | `formal_bound_composition_success` | 1 | covered | formal multi-step state truncation bound |
 | `estimated_bound_candidate` | 1 | covered | useful estimator, not formal |
@@ -75,7 +77,7 @@ Current evidence levels:
 
 ```text
 analytic: 10
-cross_sim: 1
+cross_sim: 2
 formal_bound: 2
 estimated_bound: 1
 none: 3
@@ -198,26 +200,39 @@ Done when:
 
 ### D3. Witness Independence Axis
 
-Status: not started.
+Status: in progress.
 
 Seed fact:
 
 - CAPAS already records `verification_independence`
-- current levels include `analytic_no_solver`, `different_algorithm_same_runtime`,
-  `algorithmic_certificate_exact_svd_same_runtime`, and `none`
+- current levels include `analytic_no_solver`, `different_library_same_runtime`,
+  `different_algorithm_same_runtime`,
+  `algorithmic_certificate_exact_svd_same_runtime`,
+  `algorithmic_error_certificate_same_runtime`, and `none`
 
-Debt:
+What exists:
 
-- no formal taxonomy yet
-- no matrix distinguishing same solver, same method, same BLAS, same runtime,
-  different runtime, different method, analytic witness
+- `docs/WITNESS_INDEPENDENCE_AXIS.md`
+- `benchmarks/validate_witness_independence.py`
+- `trace_018` as a SciPy cross-library same-runtime witness
+- six current levels covered:
+  - `analytic_no_solver`: 10
+  - `different_library_same_runtime`: 1
+  - `different_algorithm_same_runtime`: 1
+  - `algorithmic_certificate_exact_svd_same_runtime`: 2
+  - `algorithmic_error_certificate_same_runtime`: 1
+  - `none`: 3
 
 Next step:
 
-- create `docs/WITNESS_INDEPENDENCE_AXIS.md`
-- define 5-7 levels
-- add one trace demonstrating weak independence and one demonstrating stronger
-  cross-runtime or cross-method independence
+- add a future cross-BLAS or cross-runtime witness trace
+- keep same-runtime formal certificates separate from independent witnesses
+
+Validation:
+
+```bash
+python3 benchmarks/validate_witness_independence.py
+```
 
 Done when:
 

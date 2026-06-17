@@ -1,0 +1,394 @@
+{
+  "@context": [
+    "https://w3id.org/ro/crate/1.1/context",
+    {
+      "capas": "https://example.org/capas-inteligentes#",
+      "sha256": "https://schema.org/sha256"
+    }
+  ],
+  "@graph": [
+    {
+      "@id": "ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "about": {
+        "@id": "./"
+      },
+      "conformsTo": [
+        {
+          "@id": "https://w3id.org/ro/crate/1.1"
+        },
+        {
+          "@id": "https://w3id.org/workflowhub/workflow-ro-crate/1.0"
+        },
+        {
+          "@id": "https://example.org/capas-inteligentes/ro-crate/physical-evidence/0.1"
+        }
+      ]
+    },
+    {
+      "@id": "./",
+      "@type": "Dataset",
+      "capas:evidenceStatus": "present",
+      "capas:traceHash": "2e9ab343bf86c1061843369590bd994bc1acc3355220dd35859a866e251fbc46",
+      "capas:workflowRunCrateAlignment": "shape-compatible-with-workflow-run-ro-crate-v0",
+      "capas:workloadHash": "a095868945cf13df732cadca379e0d20fc4508032f63357ad02dc2934f0c4457",
+      "conformsTo": [
+        {
+          "@id": "https://w3id.org/ro/crate/1.1"
+        },
+        {
+          "@id": "https://w3id.org/workflowhub/workflow-ro-crate/1.0"
+        },
+        {
+          "@id": "https://example.org/capas-inteligentes/ro-crate/physical-evidence/0.1"
+        }
+      ],
+      "datePublished": "2026-06-17T20:04:15.051659Z",
+      "description": "RO-Crate package containing a sealed RunTrace, optional PROV export, routing decision, runtime context, and CAPAS physical evidence metadata.",
+      "hasPart": [
+        {
+          "@id": "runtrace.json"
+        },
+        {
+          "@id": "workflow/capas-costurero-run.py"
+        },
+        {
+          "@id": "software:capas-costurero"
+        },
+        {
+          "@id": "entity:workload"
+        },
+        {
+          "@id": "trace:2e9ab343bf86c106:routing-decision"
+        },
+        {
+          "@id": "trace:2e9ab343bf86c106:result"
+        },
+        {
+          "@id": "runtrace.prov.json"
+        },
+        {
+          "@id": "trace:2e9ab343bf86c106:physical-evidence"
+        }
+      ],
+      "name": "CAPAS traced scientific computation crate"
+    },
+    {
+      "@id": "runtrace.json",
+      "@type": [
+        "File",
+        "DigitalDocument"
+      ],
+      "about": {
+        "@id": "trace:2e9ab343bf86c106"
+      },
+      "encodingFormat": "application/json",
+      "name": "Sealed CAPAS RunTrace",
+      "sha256": "a65622c9d6a4eb45c946563cb10120d9122891fa2a12478bb0a0497569c59a78"
+    },
+    {
+      "@id": "trace:2e9ab343bf86c106",
+      "@type": "CreateAction",
+      "actionStatus": "CompletedActionStatus",
+      "agent": {
+        "@id": "software:capas-costurero"
+      },
+      "capas:decisionReason": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+      "capas:decisionRoute": "external_engine",
+      "capas:evidenceStatus": "present",
+      "capas:hashAlgorithm": "sha256(stable_json)",
+      "capas:routingDecision": {
+        "@id": "trace:2e9ab343bf86c106:routing-decision"
+      },
+      "capas:traceHash": "2e9ab343bf86c1061843369590bd994bc1acc3355220dd35859a866e251fbc46",
+      "capas:traceSchemaVersion": "capas-runtrace-v2",
+      "endTime": "2026-06-17T20:04:15.051659Z",
+      "instrument": {
+        "@id": "workflow/capas-costurero-run.py"
+      },
+      "name": "CAPAS costurero traced run",
+      "object": {
+        "@id": "entity:workload"
+      },
+      "result": {
+        "@id": "trace:2e9ab343bf86c106:result"
+      },
+      "startTime": "2026-06-17T20:04:15.048566Z"
+    },
+    {
+      "@id": "workflow/capas-costurero-run.py",
+      "@type": [
+        "File",
+        "SoftwareSourceCode",
+        "ComputationalWorkflow"
+      ],
+      "capas:traceSchemaVersion": "capas-runtrace-v2",
+      "description": "Workflow plan that ingests a scientific workload, records runtime context, estimates routing cost, executes or skips the selected engine, and attaches CAPAS physical-evidence metadata.",
+      "input": {
+        "@id": "parameter:workload"
+      },
+      "name": "CAPAS costurero workflow",
+      "output": {
+        "@id": "parameter:result"
+      },
+      "programmingLanguage": "Python"
+    },
+    {
+      "@id": "parameter:workload",
+      "@type": "FormalParameter",
+      "additionalType": "https://bioschemas.org/FormalParameter",
+      "name": "Scientific workload"
+    },
+    {
+      "@id": "parameter:result",
+      "@type": "FormalParameter",
+      "additionalType": "https://bioschemas.org/FormalParameter",
+      "name": "Result summary or skipped/failure state"
+    },
+    {
+      "@id": "software:capas-costurero",
+      "@type": "SoftwareApplication",
+      "applicationCategory": "Scientific provenance and evidence tracing",
+      "name": "CAPAS INTELIGENTES costurero"
+    },
+    {
+      "@id": "entity:workload",
+      "@type": "Dataset",
+      "capas:summary": {
+        "budget": {
+          "flops_ceiling": 100000000.0,
+          "memory_budget_bytes": 536870912,
+          "safety_factor": 0.5
+        },
+        "engine": {
+          "engine_id": "physics_magnitude_quantum_engine.bell_entropy_scipy_cross_library",
+          "function_name": "bell_entropy_scipy_cross_library",
+          "kwargs_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
+        },
+        "kind": "dense",
+        "n_qubits": 2
+      },
+      "capas:workloadHash": "a095868945cf13df732cadca379e0d20fc4508032f63357ad02dc2934f0c4457",
+      "name": "Workload summary"
+    },
+    {
+      "@id": "trace:2e9ab343bf86c106:routing-decision",
+      "@type": "Thing",
+      "capas:reason": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+      "capas:route": "external_engine",
+      "name": "Routing decision"
+    },
+    {
+      "@id": "runtrace.prov.json",
+      "@type": [
+        "File",
+        "DigitalDocument"
+      ],
+      "encodingFormat": "application/json",
+      "name": "W3C PROV-shaped export",
+      "sha256": "ac69004c69db1d26b40e2abcc5cabfa040c1694b4fd5bd5cb871acc19709e0f0"
+    },
+    {
+      "@id": "trace:2e9ab343bf86c106:result",
+      "@type": "Dataset",
+      "capas:physicalEvidence": {
+        "@id": "trace:2e9ab343bf86c106:physical-evidence"
+      },
+      "capas:resultHash": "24ebc0654aee1caf76576ad8ac3e358309766d278b77906e82eb633e8f090872",
+      "capas:summary": {
+        "abs_error": 0.0,
+        "benchmark_family": "Entanglement",
+        "expected": 0.6931471805599454,
+        "observable": "Bell pair entanglement entropy SciPy cross-library witness",
+        "physical_evidence_detail": "quantum_engine entropy checked against explicit reduced density matrix diagonalized with scipy.linalg.eigh. Same Python runtime, different library witness.",
+        "physical_evidence_level": "cross_sim",
+        "reference_truth": "scipy_linalg_reduced_density_eigenspectrum",
+        "repr": "{'engine_id': 'physics_magnitude_quantum_engine.bell_entropy_scipy_cross_library', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_ma",
+        "type": "dict",
+        "units": "nats",
+        "value": 0.6931471805599454,
+        "verification_independence": "different_library_same_runtime",
+        "witness_stack": {
+          "primary": "physics_magnitude_lab.quantum_engine.entanglement_entropy",
+          "runtime_relation": "same_python_runtime",
+          "witness": "scipy.linalg.eigh on explicit reduced density matrix"
+        }
+      },
+      "name": "Result summary"
+    },
+    {
+      "@id": "trace:2e9ab343bf86c106:physical-evidence",
+      "@type": "capas:PhysicalEvidence",
+      "about": {
+        "@id": "trace:2e9ab343bf86c106:result"
+      },
+      "capas:absError": 0.0,
+      "capas:benchmarkFamily": "Entanglement",
+      "capas:detail": "quantum_engine entropy checked against explicit reduced density matrix diagonalized with scipy.linalg.eigh. Same Python runtime, different library witness.",
+      "capas:evidenceHash": "34a5af600b9ed832d502a0ac134d60c050e0aa70eadffaaeab094e2786f3a071",
+      "capas:expected": 0.6931471805599454,
+      "capas:observable": "Bell pair entanglement entropy SciPy cross-library witness",
+      "capas:physicalEvidenceLevel": "cross_sim",
+      "capas:referenceTruth": "scipy_linalg_reduced_density_eigenspectrum",
+      "capas:units": "nats",
+      "capas:value": 0.6931471805599454,
+      "capas:verificationIndependence": "different_library_same_runtime",
+      "capas:witnessStack": {
+        "primary": "physics_magnitude_lab.quantum_engine.entanglement_entropy",
+        "runtime_relation": "same_python_runtime",
+        "witness": "scipy.linalg.eigh on explicit reduced density matrix"
+      },
+      "name": "Physical evidence attached to result"
+    },
+    {
+      "@id": "trace:2e9ab343bf86c106:event:0:ingest",
+      "@type": "Action",
+      "actionStatus": "ok",
+      "capas:metrics": {
+        "budget": {
+          "flops_ceiling": 100000000.0,
+          "memory_budget_bytes": 536870912,
+          "safety_factor": 0.5
+        },
+        "engine": {
+          "engine_id": "physics_magnitude_quantum_engine.bell_entropy_scipy_cross_library",
+          "function_name": "bell_entropy_scipy_cross_library",
+          "kwargs_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
+        },
+        "kind": "dense",
+        "n_qubits": 2
+      },
+      "description": "workload accepted",
+      "name": "ingest",
+      "startTime": 1781726655.048566
+    },
+    {
+      "@id": "trace:2e9ab343bf86c106:event:1:runtime_context",
+      "@type": "Action",
+      "actionStatus": "ok",
+      "capas:metrics": {
+        "cotengra_available": true,
+        "cotengra_version": "0.8.1",
+        "machine": "arm64",
+        "mlx_probe": "skipped_in_default_trace; use apple_silicon_thermal_routing.py for Metal/MLX device probes",
+        "numpy_available": true,
+        "numpy_version": "2.4.6",
+        "platform": "macOS-26.5.1-arm64-arm-64bit",
+        "processor": "arm",
+        "python_executable": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/physics_quantum/physics-magnitude-lab/.pixi/envs/default/bin/python",
+        "python_version": "3.12.13",
+        "qiskit_aer_available": true,
+        "qiskit_aer_version": "0.17.2",
+        "quimb_available": true,
+        "quimb_version": "1.14.0",
+        "scipy_available": true,
+        "scipy_version": "1.17.1",
+        "stim_available": true,
+        "stim_version": "1.16.0"
+      },
+      "description": "runtime and hardware context recorded",
+      "name": "runtime_context",
+      "startTime": 1781726655.048585
+    },
+    {
+      "@id": "trace:2e9ab343bf86c106:event:2:engine_provenance",
+      "@type": "Action",
+      "actionStatus": "ok",
+      "capas:metrics": {
+        "engine_id": "physics_magnitude_quantum_engine.bell_entropy_scipy_cross_library",
+        "function_name": "bell_entropy_scipy_cross_library",
+        "kwargs": {},
+        "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
+        "module_sha256": "12ee3b992f250f2b3c6ebffad4d657e65b9860b303aa815d8bb8aabebec2c8c3"
+      },
+      "description": "external engine provenance recorded",
+      "name": "engine_provenance",
+      "startTime": 1781726655.048683
+    },
+    {
+      "@id": "trace:2e9ab343bf86c106:event:3:cost_model",
+      "@type": "Action",
+      "actionStatus": "ok",
+      "capas:metrics": {
+        "memory_viable": true,
+        "n_qubits": 2,
+        "route": "dense",
+        "statevector_bytes": 64,
+        "usable_memory_bytes": 268435456.0
+      },
+      "description": "dense statevector cost estimated",
+      "name": "cost_model",
+      "startTime": 1781726655.0486882
+    },
+    {
+      "@id": "trace:2e9ab343bf86c106:event:4:route",
+      "@type": "Action",
+      "actionStatus": "ok",
+      "capas:metrics": {
+        "engine_id": "physics_magnitude_quantum_engine.bell_entropy_scipy_cross_library",
+        "function_name": "bell_entropy_scipy_cross_library",
+        "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
+      },
+      "description": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+      "name": "route",
+      "startTime": 1781726655.0486941
+    },
+    {
+      "@id": "trace:2e9ab343bf86c106:event:5:execute",
+      "@type": "Action",
+      "actionStatus": "ok",
+      "capas:metrics": {
+        "abs_error": 0.0,
+        "benchmark_family": "Entanglement",
+        "expected": 0.6931471805599454,
+        "observable": "Bell pair entanglement entropy SciPy cross-library witness",
+        "physical_evidence_detail": "quantum_engine entropy checked against explicit reduced density matrix diagonalized with scipy.linalg.eigh. Same Python runtime, different library witness.",
+        "physical_evidence_level": "cross_sim",
+        "reference_truth": "scipy_linalg_reduced_density_eigenspectrum",
+        "repr": "{'engine_id': 'physics_magnitude_quantum_engine.bell_entropy_scipy_cross_library', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_ma",
+        "route": "external_engine",
+        "runtime_ms": 2.8904999780934304,
+        "type": "dict",
+        "units": "nats",
+        "value": 0.6931471805599454,
+        "verification_independence": "different_library_same_runtime",
+        "witness_stack": {
+          "primary": "physics_magnitude_lab.quantum_engine.entanglement_entropy",
+          "runtime_relation": "same_python_runtime",
+          "witness": "scipy.linalg.eigh on explicit reduced density matrix"
+        }
+      },
+      "description": "backend executed",
+      "name": "execute",
+      "startTime": 1781726655.051639
+    },
+    {
+      "@id": "trace:2e9ab343bf86c106:event:6:physical_evidence",
+      "@type": "Action",
+      "actionStatus": "ok",
+      "capas:metrics": {
+        "abs_error": 0.0,
+        "benchmark_family": "Entanglement",
+        "evidence_hash": "c040442ceb6a2de2e01dccb9fa5523c393053f5d1f410e7e9cd6a3f05f232c5b",
+        "expected": 0.6931471805599454,
+        "observable": "Bell pair entanglement entropy SciPy cross-library witness",
+        "physical_evidence_detail": "quantum_engine entropy checked against explicit reduced density matrix diagonalized with scipy.linalg.eigh. Same Python runtime, different library witness.",
+        "physical_evidence_level": "cross_sim",
+        "reference_truth": "scipy_linalg_reduced_density_eigenspectrum",
+        "units": "nats",
+        "value": 0.6931471805599454,
+        "verification_independence": "different_library_same_runtime",
+        "witness_stack": {
+          "primary": "physics_magnitude_lab.quantum_engine.entanglement_entropy",
+          "runtime_relation": "same_python_runtime",
+          "witness": "scipy.linalg.eigh on explicit reduced density matrix"
+        }
+      },
+      "description": "physical evidence reported by backend",
+      "name": "physical_evidence",
+      "startTime": 1781726655.051659
+    }
+  ]
+}

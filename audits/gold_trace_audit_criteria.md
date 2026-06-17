@@ -13,6 +13,7 @@ It does not answer whether the engine is physically correct or whether the surro
 - `inference_correct`: `yes/no/unknown`. Is the natural-language conclusion drawn from the output valid?
 - `physical_evidence_level`: `analytic/cross_sim/formal_bound/invariant/self_derivation/none/unknown`. What kind of evidence supports the engine/model physics for this case?
 - `physical_evidence_detail`: short citation, check name, equation, independent implementation, or reviewer note.
+- `verification_independence`: one of the levels in `docs/WITNESS_INDEPENDENCE_AXIS.md`. How independent is the witness or certificate from the producing computation?
 - `risk_level`: `low/medium/high`. How damaging would this trace be if learned incorrectly?
 - `decision`: `accept/rewrite/reject/hold`.
 
@@ -41,6 +42,7 @@ Blind inference rule:
 Physical evidence levels:
 - `analytic`: checked against an analytic solution or exact known limiting case.
 - `cross_sim`: checked against an independent implementation/simulator.
+- `formal_bound`: checked by a mathematical error bound with explicit scope. This can be strong correctness evidence without being an independent witness.
 - `invariant`: checked by conservation laws, dimensional analysis, symmetry, monotonicity, or other invariant tests. Useful but weaker than `analytic` or `cross_sim`.
 - `self_derivation`: derived/reviewed by the same project author without independent external check.
 - `none`: no physical validation beyond the engine producing a number.
@@ -49,7 +51,15 @@ Physical evidence levels:
 Acceptable physical evidence for `accept`:
 - `analytic`,
 - `cross_sim`,
+- `formal_bound` when the claim is inside `bound_scope`,
 - or `invariant` only if the trace is low/medium risk and the invariant directly constrains the claimed result.
+
+Witness independence rules:
+- `analytic_no_solver` is strongest because no computational witness is involved.
+- `different_library_same_runtime` is stronger than `different_algorithm_same_runtime`, but both remain same-runtime evidence.
+- `algorithmic_certificate_exact_svd_same_runtime` is a formal certificate, not an independent witness.
+- `algorithmic_error_certificate_same_runtime` is an estimate/candidate unless separately promoted by source audit.
+- `none` is never acceptable for training gold, though it is required for honest coverage.
 
 Not enough for `accept`:
 - `self_derivation`,

@@ -69,6 +69,7 @@ def summarize_result(result: Any) -> dict[str, Any]:
                 "benchmark_family",
                 "reference_truth",
                 "verification_independence",
+                "witness_stack",
                 "certification_status",
                 "formal_bound_status",
                 "source_label",

@@ -72,6 +72,7 @@ def main() -> int:
     required_coverage = {
         "analytic_success",
         "cross_sim_success",
+        "cross_library_success",
         "no_evidence_success",
         "backend_failed",
         "rejected_by_router",

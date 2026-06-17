@@ -28,6 +28,7 @@ TRACE_SPECS = [
     ("trace_009", "harmonic_oscillator_energy", {"n": 0, "omega": 1.0, "hbar": 1.0}, "analytic_success"),
     ("trace_010", "pauli_z_ground_energy", {"field": 1.25}, "analytic_success"),
     ("trace_011", "bell_entropy_cross_sim", {}, "cross_sim_success"),
+    ("trace_018", "bell_entropy_scipy_cross_library", {}, "cross_library_success"),
     ("trace_012", "unverified_variational_energy", {}, "no_evidence_success"),
     ("trace_013", "deliberately_failing_engine", {}, "backend_failed"),
     ("trace_015", "quimb_mps_estimated_bound", {"n": 60, "depth": 6, "max_bond": 8, "seed": 1}, "estimated_bound_candidate"),
@@ -178,7 +179,7 @@ def main() -> None:
     })
 
     extra_fields = ["benchmark_family", "reference_truth", "verification_independence", "coverage_case"]
-    # Preserve the 17-row template shape, filling the first rows.
+    # Preserve existing audit judgments, and append new generated trace rows.
     with AUDIT_CSV.open(newline="", encoding="utf-8") as f:
         existing = list(csv.DictReader(f))
         fieldnames = [name for name in (existing[0].keys() if existing else audit_rows[0].keys()) if name]
@@ -191,6 +192,11 @@ def main() -> None:
         clean = {k: row.get(k, "") for k in fieldnames}
         if clean["trace_id"] in by_id:
             clean.update(by_id[clean["trace_id"]])
+        merged.append(clean)
+    seen = {row["trace_id"] for row in merged}
+    for trace_id in sorted(set(by_id) - seen):
+        clean = {k: "" for k in fieldnames}
+        clean.update(by_id[trace_id])
         merged.append(clean)
     with AUDIT_CSV.open("w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)

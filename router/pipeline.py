@@ -151,6 +151,7 @@ def _physical_evidence_from_summary(summary: dict[str, Any]) -> dict[str, Any]:
         "benchmark_family",
         "reference_truth",
         "verification_independence",
+        "witness_stack",
         "certification_status",
         "formal_bound_status",
         "source_label",

@@ -23,6 +23,7 @@ CAPAS adds domain evidence fields over standard provenance:
 
 - `physical_evidence_level`
 - `verification_independence`
+- `witness_stack`
 - `reference_truth`
 - `evidenceStatus`
 - `abs_error`
@@ -51,7 +52,8 @@ The command runs:
 2. PROV export
 3. RO-Crate export
 4. RO-Crate validation
-5. audit summary
+5. witness independence validation
+6. audit summary
 
 `coverage_ready=True` is expected. `fine_tune_ready=False` is also expected until
 blind inference review is completed.
@@ -91,6 +93,7 @@ See:
 - `docs/SOTA_POSITIONING.md`
 - `docs/WORKFLOW_RUN_RO_CRATE_ALIGNMENT.md`
 - `docs/FORMAL_BOUND_AXIS.md`
+- `docs/WITNESS_INDEPENDENCE_AXIS.md`
 - `docs/SCIAGENTGYM_AUDIT.md`
 - `docs/QMB100_AUDIT.md`
 - `docs/VVUQ_QUANTUM_AUDIT.md`
