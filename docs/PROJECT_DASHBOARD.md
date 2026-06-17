@@ -37,11 +37,11 @@ See git log. This dashboard is updated in the same commit as state changes.
 Recent commits:
 
 ```text
-HEAD Add reference-definition corrected chemistry trace
+HEAD Add electronic/vibrational chemistry protocol
+a7447b0 Add reference-definition corrected chemistry trace
 e80a598 Add larger-basis chemistry stress trace
 1de6e14 Add improved-basis chemistry evidence trace
 2178525 Add experimental chemistry evidence trace
-32d8681 Add degenerate optimization bridge trace
 ```
 
 Current validation status:
@@ -50,7 +50,7 @@ Current validation status:
 coverage_ready: True
 fine_tune_ready: False
 local RO-Crate validation: passed
-external ResearchObject RO-Crate validation: valid_with_warning for 24/24 crates
+external ResearchObject RO-Crate validation: valid_with_warning for 25/25 crates
 external warning: .py is not a recognised workflow extension
 witness independence validation: passed
 ```
@@ -71,7 +71,8 @@ ResearchObject validator recognizes a fixed workflow-extension list.
 | `quantum_chemistry_experimental_reference` | 1 | covered | H2/STO-3G FCI compared with measured dissociation energy |
 | `quantum_chemistry_experimental_reference_improved_basis` | 1 | covered | H2/cc-pVDZ FCI compared with measured dissociation energy |
 | `quantum_chemistry_experimental_reference_larger_basis` | 1 | covered | H2/cc-pVTZ FCI compared with measured dissociation energy |
-| `quantum_chemistry_reference_definition_corrected` | 1 | covered | H2/cc-pVTZ compared with D0 plus approximate ZPE |
+| `quantum_chemistry_reference_definition_corrected` | 1 | covered | H2/cc-pVTZ compared with D0 plus same-model harmonic ZPE |
+| `quantum_chemistry_polyatomic_electronic_vibrational` | 1 | covered | H2O/STO-3G electronic/vibrational split against atomization reference |
 | `formal_bound_success` | 1 | covered | formal single-cut Schmidt truncation certificate |
 | `formal_bound_composition_success` | 1 | covered | formal multi-step state truncation bound |
 | `estimated_bound_candidate` | 1 | covered | useful estimator, not formal |
@@ -84,7 +85,7 @@ Current evidence levels:
 ```text
 analytic: 12
 cross_sim: 2
-experimental: 4
+experimental: 5
 formal_bound: 2
 estimated_bound: 1
 none: 3
@@ -153,12 +154,23 @@ none: 3
    - basis orbitals: `28`
    - model binding energy: `0.1727160715914744` Hartree
    - raw measured D0 reference: `0.1640261683512219` Hartree
-   - approximate ZPE correction: `0.009554823765670298` Hartree
-   - corrected De-like reference: `0.1735809921168922` Hartree
+   - same-model harmonic ZPE correction: `0.010222574189245201` Hartree
+   - corrected De-like reference: `0.17424874254046713` Hartree
    - raw D0/reference-definition error: `0.008689903240252483`
-   - corrected error: `0.0008649205254178116`
+   - corrected error: `0.0015326709489927315`
    - within chemical accuracy after definition correction: `True`
    - lesson: `trace_023` was not a solver failure; it mixed electronic De-like energy with experimental D0
+16. Polyatomic electronic/vibrational chemistry case:
+   - H2O/STO-3G demo geometry
+   - PySCF FCI total energy: `-75.01264711899171` Hartree
+   - electronic atomization energy: `0.2753331866212392` Hartree
+   - harmonic frequencies: `[2044.5504790587445, 4486.6568066119635, 4788.270182239422] cm^-1`
+   - same-model harmonic ZPE: `0.025787667114932907` Hartree
+   - ZPE-corrected atomization energy: `0.24954551950630627` Hartree
+   - tabulated atomization reference: `0.35154847714349774` Hartree
+   - corrected error: `0.10200295763719147`
+   - within chemical accuracy: `False`
+   - lesson: CAPAS can seal a polyatomic electronic/vibrational split even when the model remains poor
 
 ## Non-Degradation Rules
 
@@ -184,6 +196,7 @@ These are hard guardrails.
     - validation command
 11. Do not compare electronic `D_e`-like quantities against experimental `D0`
     without recording `reference_definition_match` and any correction.
+12. Do not treat same-model harmonic ZPE as anharmonic spectroscopy.
 
 ## Debt Register
 
@@ -195,7 +208,7 @@ Current state:
 
 ```text
 fine_tune_ready: False
-hold: 21
+hold: 22
 reject: 3
 blank: 0
 ```
@@ -374,10 +387,12 @@ What exists:
 - `trace_022`
 - `trace_023`
 - `trace_024`
+- `trace_025`
 - `coverage_case=quantum_chemistry_experimental_reference`
 - `coverage_case=quantum_chemistry_experimental_reference_improved_basis`
 - `coverage_case=quantum_chemistry_experimental_reference_larger_basis`
 - `coverage_case=quantum_chemistry_reference_definition_corrected`
+- `coverage_case=quantum_chemistry_polyatomic_electronic_vibrational`
 - `physical_evidence_level=experimental`
 - `verification_independence=same_runtime_exact_fci_with_external_experimental_reference`
 - `bound_scope=single_molecule_minimal_basis_equilibrium_geometry`
@@ -389,25 +404,30 @@ What exists:
 - cc-pVTZ model error: `0.008689903240272911`
 - cc-pVTZ within chemical accuracy: `False`
 - cc-pVTZ raw D0/reference-definition error: `0.008689903240252483`
-- cc-pVTZ approximate ZPE correction: `0.009554823765670298`
-- cc-pVTZ corrected De-like reference error: `0.0008649205254178116`
+- cc-pVTZ same-model harmonic ZPE correction: `0.010222574189245201`
+- cc-pVTZ corrected De-like reference error: `0.0015326709489927315`
 - cc-pVTZ after reference-definition correction within chemical accuracy: `True`
+- H2O electronic atomization error before ZPE correction: `0.07621529052225856`
+- H2O same-model harmonic ZPE: `0.025787667114932907`
+- H2O corrected atomization error after ZPE correction: `0.10200295763719147`
+- H2O within chemical accuracy: `False`
 
 Scope:
 
-- H2 only
+- H2 and H2O only
 - STO-3G, cc-pVDZ, and cc-pVTZ finite bases
 - R(H-H) = 0.7414 Angstrom
 - PySCF FCI exact model solve
 - measured D0 reference from Holsch et al. 2019
-- approximate H2 ZPE correction from literature-scale value, not a full
-  spectroscopy audit
+- same-model harmonic ZPE corrections, not full anharmonic spectroscopy
+- H2O experimental atomization reference assembled from tabulated O-H
+  dissociation values, weaker provenance than the precision H2 D0 trace
 
 Next step:
 
 - keep solver error, basis/model error, and reference-definition error separate
-- replace the approximate ZPE correction with an audited spectroscopic De
-  reference if this axis needs publication-grade chemistry
+- add a higher-quality polyatomic model or an external benchmark reference if
+  this axis needs publication-grade chemistry
 
 ### D7. Workflow Run RO-Crate Alignment
 

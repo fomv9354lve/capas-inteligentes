@@ -943,20 +943,19 @@ def h2_ccpvtz_experimental_reference() -> dict:
 
 
 def h2_ccpvtz_reference_definition_corrected() -> dict:
-    """H2/cc-pVTZ compared against an approximate D_e reference.
+    """H2/cc-pVTZ compared against a model-vibrational D_e reference.
 
     The earlier chemistry traces compared electronic binding energies against
     experimental D0. D0 includes zero-point vibration, while the electronic
-    calculation is a clamped-nuclei D_e-like quantity. This trace applies a
-    small reference-definition correction:
+    calculation is a clamped-nuclei D_e-like quantity. This trace computes a
+    harmonic vibrational ZPE from the same electronic model and applies:
 
-        D_e ~= D0 + ZPE
+        D_e ~= D0 + ZPE_harmonic(model)
 
-    using a literature-scale H2 zero-point energy of 0.26 eV. The correction is
-    approximate, so this trace is evidence about reference-definition mismatch,
-    not a full spectroscopic audit.
+    The correction is model-harmonic, not a full spectroscopic audit.
     """
-    from pyscf import fci, gto, scf
+    from pyscf import fci, gto, hessian, scf
+    from pyscf.hessian import thermo
 
     bond_length_angstrom = 0.7414
     basis = "cc-pvtz"
@@ -985,12 +984,15 @@ def h2_ccpvtz_reference_definition_corrected() -> dict:
     model_atom_energy = float(atom_mf.e_tot)
     model_binding_energy = float(2.0 * model_atom_energy - fci_total_energy)
 
+    hess = hessian.RHF(mf).kernel()
+    harmonic = thermo.harmonic_analysis(molecule, hess)
+    harmonic_frequencies_cm_inverse = [float(x) for x in harmonic["freq_wavenumber"] if float(x) > 0.0]
+    zpe_cm_inverse = float(0.5 * sum(harmonic_frequencies_cm_inverse))
+
     experimental_d0_cm_inverse = 35999.582834
     hartree_per_cm_inverse = 1.0 / 219474.6313705
     experimental_d0_hartree = float(experimental_d0_cm_inverse * hartree_per_cm_inverse)
-    zpe_electron_volt = 0.26
-    hartree_per_ev = 1.0 / 27.211386245988
-    zpe_hartree = float(zpe_electron_volt * hartree_per_ev)
+    zpe_hartree = float(zpe_cm_inverse * hartree_per_cm_inverse)
     experimental_de_corrected_hartree = float(experimental_d0_hartree + zpe_hartree)
     chemical_accuracy_threshold = 0.0015936
 
@@ -1007,7 +1009,8 @@ def h2_ccpvtz_reference_definition_corrected() -> dict:
             "model_binding_energy_hartree": model_binding_energy,
             "experimental_d0_hartree": experimental_d0_hartree,
             "zpe_hartree": zpe_hartree,
-            "zpe_electron_volt": zpe_electron_volt,
+            "zpe_cm_inverse": zpe_cm_inverse,
+            "harmonic_frequencies_cm_inverse": harmonic_frequencies_cm_inverse,
             "experimental_de_corrected_hartree": experimental_de_corrected_hartree,
             "uncorrected_reference_error_hartree": uncorrected_reference_error_hartree,
             "reference_definition_corrected_error_hartree": reference_definition_corrected_error_hartree,
@@ -1028,10 +1031,10 @@ def h2_ccpvtz_reference_definition_corrected() -> dict:
         "units": "hartree",
         "physical_evidence_level": "experimental",
         "physical_evidence_detail": (
-            "H2/cc-pVTZ electronic binding energy is compared to an approximate D_e reference rather "
-            "than raw D0. The D_e reference is formed by adding a literature-scale H2 zero-point "
-            "energy of 0.26 eV to the measured D0. This records reference-definition correction: "
-            "electronic D_e-like quantity versus D0-with-vibration was the mismatch in trace_023."
+            "H2/cc-pVTZ electronic binding energy is compared to a D_e-like reference rather than "
+            "raw D0. The D_e reference is formed by adding the same-model harmonic ZPE to measured "
+            "D0. This records reference-definition correction: electronic D_e-like quantity versus "
+            "D0-with-vibration was the mismatch in trace_023."
         ),
         "benchmark_family": "QuantumChemistry",
         "reference_truth": {
@@ -1047,11 +1050,13 @@ def h2_ccpvtz_reference_definition_corrected() -> dict:
                 "raw_quantity": "D0(N=1) ortho-H2",
                 "raw_value_cm_inverse": experimental_d0_cm_inverse,
                 "raw_value_hartree": experimental_d0_hartree,
-                "zpe_value_ev": zpe_electron_volt,
+                "zpe_quantity": "same-model harmonic zero-point vibrational energy",
+                "zpe_value_cm_inverse": zpe_cm_inverse,
                 "zpe_value_hartree": zpe_hartree,
-                "corrected_quantity": "approximate D_e = D0 + ZPE",
+                "harmonic_frequencies_cm_inverse": harmonic_frequencies_cm_inverse,
+                "corrected_quantity": "model-harmonic D_e = D0 + ZPE_harmonic(model)",
                 "corrected_value_hartree": experimental_de_corrected_hartree,
-                "source": "D0: Hölsch et al. 2019, arXiv:1902.09471; ZPE scale: Gross and Scheffler 1997, arXiv:cond-mat/9702090",
+                "source": "D0: Hölsch et al. 2019, arXiv:1902.09471; ZPE: PySCF harmonic analysis from the declared cc-pVTZ electronic model",
             },
             "chemical_accuracy": {
                 "threshold_hartree": chemical_accuracy_threshold,
@@ -1069,29 +1074,207 @@ def h2_ccpvtz_reference_definition_corrected() -> dict:
         "model_error_hartree": reference_definition_corrected_error_hartree,
         "reference_definition_error_hartree": uncorrected_reference_error_hartree,
         "reference_definition_corrected_error_hartree": reference_definition_corrected_error_hartree,
-        "reference_definition_match": "corrected_approximate_D0_plus_ZPE_to_match_electronic_De",
+        "reference_definition_match": "corrected_model_harmonic_D0_plus_ZPE_to_match_electronic_De",
         "reference_definition_correction": {
             "raw_reference": "D0 includes vibrational zero-point energy",
             "computed_quantity": "clamped-nuclei electronic binding energy",
-            "correction": "D_e ~= D0 + ZPE",
-            "zpe_electron_volt": zpe_electron_volt,
+            "correction": "D_e ~= D0 + ZPE_harmonic(model)",
+            "zpe_cm_inverse": zpe_cm_inverse,
             "zpe_hartree": zpe_hartree,
-            "quality": "approximate_literature_scale_not_full_spectroscopic_audit",
+            "harmonic_frequencies_cm_inverse": harmonic_frequencies_cm_inverse,
+            "quality": "same_model_harmonic_vibrational_correction_not_full_spectroscopic_audit",
         },
+        "vibrational_zpe_hartree": zpe_hartree,
+        "vibrational_zpe_cm_inverse": zpe_cm_inverse,
+        "harmonic_frequencies_cm_inverse": harmonic_frequencies_cm_inverse,
         "model_binding_energy_hartree": model_binding_energy,
         "experimental_binding_energy_hartree": experimental_de_corrected_hartree,
         "reference_fci_total_energy_hartree": fci_total_energy,
         "reference_experimental_d0_cm_inverse": experimental_d0_cm_inverse,
-        "source_label": "PySCF FCI cc-pVTZ model solve + D0 experimental reference corrected by approximate H2 ZPE",
+        "source_label": "PySCF FCI cc-pVTZ model solve + D0 experimental reference corrected by PySCF harmonic ZPE",
         "falsification_notes": [
             "trace_023 compared an electronic D_e-like quantity against raw D0, which mixes reference definitions.",
-            "This trace applies an approximate ZPE correction to compare electronic binding against D_e-like reference.",
-            "The ZPE value is approximate; this is a reference-definition correction trace, not a precision spectroscopy claim.",
+            "This trace applies a same-model harmonic ZPE correction to compare electronic binding against D_e-like reference.",
+            "The ZPE value is model-harmonic, not an anharmonic spectroscopic constant.",
             "The defended claim is that CAPAS can record and correct reference-definition mismatch explicitly.",
         ],
         "witness_stack": {
             "primary": "PySCF FCI exact cc-pVTZ model solve",
-            "witness": "external experimental H2 D0 plus approximate ZPE reference-definition correction",
+            "witness": "external experimental H2 D0 plus same-model harmonic ZPE reference-definition correction",
+            "runtime_relation": "same_runtime_model_solve_plus_external_measurement_and_reference_correction",
+        },
+    }
+
+
+def h2o_sto3g_electronic_vibrational_reference() -> dict:
+    """H2O/STO-3G exact model solve with electronic/vibrational split.
+
+    This is the first more-complex molecule trace. It is exact for a small
+    finite-basis electronic model, computes a model-harmonic ZPE, and compares
+    the resulting D0-like atomization energy to a tabulated experimental
+    atomization reference assembled from two O-H dissociation energies.
+    """
+    from pyscf import fci, gto, hessian, scf
+    from pyscf.hessian import thermo
+
+    basis = "sto-3g"
+    geometry = [
+        {"atom": "O", "xyz_angstrom": [0.0, 0.0, 0.0]},
+        {"atom": "H", "xyz_angstrom": [0.0, -0.757, 0.587]},
+        {"atom": "H", "xyz_angstrom": [0.0, 0.757, 0.587]},
+    ]
+    molecule = gto.M(
+        atom="O 0 0 0; H 0 -0.757 0.587; H 0 0.757 0.587",
+        basis=basis,
+        unit="Angstrom",
+        charge=0,
+        spin=0,
+        verbose=0,
+    )
+    mf = scf.RHF(molecule).run(verbose=0)
+    cisolver = fci.FCI(molecule, mf.mo_coeff)
+    fci_total_energy, _ = cisolver.kernel()
+    fci_total_energy = float(fci_total_energy)
+
+    hess = hessian.RHF(mf).kernel()
+    harmonic = thermo.harmonic_analysis(molecule, hess)
+    harmonic_frequencies_cm_inverse = [float(x) for x in harmonic["freq_wavenumber"] if float(x) > 0.0]
+    hartree_per_cm_inverse = 1.0 / 219474.6313705
+    zpe_cm_inverse = float(0.5 * sum(harmonic_frequencies_cm_inverse))
+    zpe_hartree = float(zpe_cm_inverse * hartree_per_cm_inverse)
+
+    h_atom = gto.M(atom="H 0 0 0", basis=basis, unit="Angstrom", charge=0, spin=1, verbose=0)
+    h_mf = scf.UHF(h_atom).run(verbose=0)
+    h_fci = fci.FCI(h_atom, h_mf.mo_coeff)
+    h_atom_energy, _ = h_fci.kernel(nelec=h_atom.nelec)
+    h_atom_energy = float(h_atom_energy)
+
+    o_atom = gto.M(atom="O 0 0 0", basis=basis, unit="Angstrom", charge=0, spin=2, verbose=0)
+    o_mf = scf.UHF(o_atom).run(verbose=0)
+    o_fci = fci.FCI(o_atom, o_mf.mo_coeff)
+    o_atom_energy, _ = o_fci.kernel(nelec=o_atom.nelec)
+    o_atom_energy = float(o_atom_energy)
+
+    electronic_atomization_energy = float(o_atom_energy + 2.0 * h_atom_energy - fci_total_energy)
+    zpe_corrected_atomization_energy = float(electronic_atomization_energy - zpe_hartree)
+
+    kcal_per_hartree = 627.5094740631
+    experimental_first_oh_bde_kcal_mol = 118.8
+    experimental_second_oh_bde_kcal_mol = 101.8
+    experimental_atomization_kcal_mol = float(experimental_first_oh_bde_kcal_mol + experimental_second_oh_bde_kcal_mol)
+    experimental_atomization_energy = float(experimental_atomization_kcal_mol / kcal_per_hartree)
+    chemical_accuracy_threshold = 0.0015936
+
+    solver_error_hartree = 0.0
+    electronic_reference_error = abs(electronic_atomization_energy - experimental_atomization_energy)
+    zpe_corrected_reference_error = abs(zpe_corrected_atomization_energy - experimental_atomization_energy)
+    within_chemical_accuracy = bool(zpe_corrected_reference_error < chemical_accuracy_threshold)
+
+    return {
+        "observable": "H2O/STO-3G FCI atomization energy with model-harmonic ZPE correction",
+        "value": {
+            "fci_total_energy_hartree": fci_total_energy,
+            "h_atom_energy_hartree": h_atom_energy,
+            "o_atom_energy_hartree": o_atom_energy,
+            "electronic_atomization_energy_hartree": electronic_atomization_energy,
+            "vibrational_zpe_hartree": zpe_hartree,
+            "vibrational_zpe_cm_inverse": zpe_cm_inverse,
+            "harmonic_frequencies_cm_inverse": harmonic_frequencies_cm_inverse,
+            "zpe_corrected_atomization_energy_hartree": zpe_corrected_atomization_energy,
+            "experimental_atomization_energy_hartree": experimental_atomization_energy,
+            "experimental_atomization_energy_kcal_mol": experimental_atomization_kcal_mol,
+            "solver_error_hartree": solver_error_hartree,
+            "reference_definition_error_hartree": electronic_reference_error,
+            "reference_definition_corrected_error_hartree": zpe_corrected_reference_error,
+            "within_chemical_accuracy": within_chemical_accuracy,
+            "basis_orbitals": int(molecule.nao_nr()),
+        },
+        "expected": {
+            "reference_fci_total_energy_hartree": fci_total_energy,
+            "reference_experimental_atomization_energy_hartree": experimental_atomization_energy,
+            "chemical_accuracy_threshold_hartree": chemical_accuracy_threshold,
+        },
+        "abs_error": solver_error_hartree,
+        "abs_error_vs_fci": solver_error_hartree,
+        "abs_error_vs_experimental": zpe_corrected_reference_error,
+        "chemical_accuracy_threshold_hartree": chemical_accuracy_threshold,
+        "within_chemical_accuracy": within_chemical_accuracy,
+        "units": "hartree",
+        "physical_evidence_level": "experimental",
+        "physical_evidence_detail": (
+            "H2O/STO-3G is solved by PySCF FCI for the declared finite-basis electronic model. "
+            "A same-model harmonic ZPE is subtracted from the electronic atomization energy to form "
+            "a D0-like model quantity. The trace records that the exact small-model solve remains far "
+            "from the tabulated experimental atomization reference."
+        ),
+        "benchmark_family": "QuantumChemistry",
+        "reference_truth": {
+            "fci": {
+                "kind": "exact_model_solution",
+                "method": "PySCF FCI",
+                "basis": basis,
+                "geometry": "H2O bent geometry, O at origin, H at +/-0.757, 0.587 Angstrom",
+                "total_energy_hartree": fci_total_energy,
+            },
+            "experimental": {
+                "kind": "tabulated_atomization_reference_from_OH_bond_dissociation_energies",
+                "quantity": "H2O -> O + 2H atomization D0-like reference",
+                "first_oh_bde_kcal_mol": experimental_first_oh_bde_kcal_mol,
+                "second_oh_bde_kcal_mol": experimental_second_oh_bde_kcal_mol,
+                "value_kcal_mol": experimental_atomization_kcal_mol,
+                "value_hartree": experimental_atomization_energy,
+                "source": "Bond dissociation energy reference table; water O-H cleavage values 118.8 and 101.8 kcal/mol",
+            },
+            "vibrational": {
+                "kind": "same_model_harmonic_zpe",
+                "frequencies_cm_inverse": harmonic_frequencies_cm_inverse,
+                "zpe_cm_inverse": zpe_cm_inverse,
+                "zpe_hartree": zpe_hartree,
+            },
+            "chemical_accuracy": {
+                "threshold_hartree": chemical_accuracy_threshold,
+                "threshold_name": "1 kcal/mol",
+            },
+        },
+        "verification_independence": "same_runtime_exact_fci_with_external_experimental_reference",
+        "bound_scope": "single_molecule_polyatomic_minimal_basis_electronic_vibrational_split",
+        "evidence_status_detail": "experimental_polyatomic_reference_definition_corrected_model_still_poor",
+        "basis": basis,
+        "basis_orbitals": int(molecule.nao_nr()),
+        "geometry": geometry,
+        "solver_error_hartree": solver_error_hartree,
+        "model_error_hartree": zpe_corrected_reference_error,
+        "reference_definition_error_hartree": electronic_reference_error,
+        "reference_definition_corrected_error_hartree": zpe_corrected_reference_error,
+        "reference_definition_match": "corrected_model_harmonic_electronic_atomization_minus_ZPE_to_match_D0_atomization",
+        "reference_definition_correction": {
+            "raw_computed_quantity": "clamped-nuclei electronic atomization energy",
+            "target_reference": "D0-like atomization energy with vibrational ground state",
+            "correction": "D0_model ~= De_model - ZPE_harmonic(model)",
+            "zpe_cm_inverse": zpe_cm_inverse,
+            "zpe_hartree": zpe_hartree,
+            "harmonic_frequencies_cm_inverse": harmonic_frequencies_cm_inverse,
+            "quality": "same_model_harmonic_vibrational_correction_not_anharmonic_spectroscopy",
+        },
+        "electronic_atomization_energy_hartree": electronic_atomization_energy,
+        "zpe_corrected_atomization_energy_hartree": zpe_corrected_atomization_energy,
+        "experimental_atomization_energy_hartree": experimental_atomization_energy,
+        "experimental_atomization_energy_kcal_mol": experimental_atomization_kcal_mol,
+        "vibrational_zpe_hartree": zpe_hartree,
+        "vibrational_zpe_cm_inverse": zpe_cm_inverse,
+        "harmonic_frequencies_cm_inverse": harmonic_frequencies_cm_inverse,
+        "reference_fci_total_energy_hartree": fci_total_energy,
+        "source_label": "PySCF FCI H2O/STO-3G model solve + harmonic ZPE + tabulated O-H dissociation references",
+        "falsification_notes": [
+            "This is a more complex molecule than H2, but still a minimal-basis model.",
+            "The electronic FCI solve is exact for the declared STO-3G model, not for physical water.",
+            "The harmonic ZPE is same-model and does not include anharmonic spectroscopy.",
+            "The experimental atomization reference is assembled from tabulated O-H dissociation values, so its provenance is weaker than the H2 precision D0 trace.",
+            "The defended claim is that CAPAS separates electronic solver error, vibrational correction, and remaining model/reference error for a polyatomic molecule.",
+        ],
+        "witness_stack": {
+            "primary": "PySCF FCI exact H2O/STO-3G electronic model solve",
+            "witness": "external tabulated water O-H dissociation values plus same-model harmonic ZPE",
             "runtime_relation": "same_runtime_model_solve_plus_external_measurement_and_reference_correction",
         },
     }

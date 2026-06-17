@@ -79,6 +79,7 @@ def main() -> int:
         "quantum_chemistry_experimental_reference_improved_basis",
         "quantum_chemistry_experimental_reference_larger_basis",
         "quantum_chemistry_reference_definition_corrected",
+        "quantum_chemistry_polyatomic_electronic_vibrational",
         "no_evidence_success",
         "backend_failed",
         "rejected_by_router",

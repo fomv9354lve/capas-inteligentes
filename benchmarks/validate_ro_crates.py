@@ -19,6 +19,7 @@ EXPECTED = {
     "trace_022": ("quantum_chemistry_experimental_reference_improved_basis", "present", True, "CompletedActionStatus"),
     "trace_023": ("quantum_chemistry_experimental_reference_larger_basis", "present", True, "CompletedActionStatus"),
     "trace_024": ("quantum_chemistry_reference_definition_corrected", "present", True, "CompletedActionStatus"),
+    "trace_025": ("quantum_chemistry_polyatomic_electronic_vibrational", "present", True, "CompletedActionStatus"),
     "trace_012": ("no_evidence_success", "none_declared", True, "CompletedActionStatus"),
     "trace_013": ("backend_failed", "not_applicable_failed", False, "FailedActionStatus"),
     "trace_014": ("rejected_by_router", "not_applicable_rejected", False, "CompletedActionStatus"),

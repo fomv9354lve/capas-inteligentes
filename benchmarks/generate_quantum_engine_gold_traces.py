@@ -35,6 +35,7 @@ TRACE_SPECS = [
     ("trace_022", "h2_ccpvdz_experimental_reference", {}, "quantum_chemistry_experimental_reference_improved_basis"),
     ("trace_023", "h2_ccpvtz_experimental_reference", {}, "quantum_chemistry_experimental_reference_larger_basis"),
     ("trace_024", "h2_ccpvtz_reference_definition_corrected", {}, "quantum_chemistry_reference_definition_corrected"),
+    ("trace_025", "h2o_sto3g_electronic_vibrational_reference", {}, "quantum_chemistry_polyatomic_electronic_vibrational"),
     ("trace_012", "unverified_variational_energy", {}, "no_evidence_success"),
     ("trace_013", "deliberately_failing_engine", {}, "backend_failed"),
     ("trace_015", "quimb_mps_estimated_bound", {"n": 60, "depth": 6, "max_bond": 8, "seed": 1}, "estimated_bound_candidate"),
