@@ -84,11 +84,10 @@ This validator checks:
 - `capas:PhysicalEvidence` presence or absence according to the evidence state
 
 The external ResearchObject `rocrateValidator` package validates the generated
-crates as RO-Crates. The current result is `valid_with_warning` because the
-validator's workflow extension list does not recognize `.py` workflow
-descriptors. CAPAS keeps the descriptor as Python because it points at the real
-implementation shape instead of pretending to be a CWL, Galaxy, or KNIME
-workflow.
+crates as RO-Crates without warnings. CAPAS emits a small `.cwl` descriptor for
+the Workflow Run RO-Crate workflow entity and records Python as the workflow
+implementation language. The descriptor is a packaging-level workflow
+description; the executable implementation remains `router.pipeline.run_with_trace`.
 
 ## Remaining Work
 

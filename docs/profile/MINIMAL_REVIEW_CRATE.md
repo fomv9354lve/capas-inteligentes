@@ -21,8 +21,7 @@ python3 benchmarks/validate_ro_crates_external.py
 
 Current known limitation:
 
-- external ResearchObject RO-Crate validation reports `valid_with_warning`
-  because `.py` is not in its recognized workflow-extension list.
+- no external CAPAS profile registration or community review yet.
 
 What this crate is not:
 

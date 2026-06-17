@@ -35,6 +35,7 @@ PROCESS_RUN = "https://w3id.org/ro/wfrun/process/0.5"
 WORKFLOW_RUN = "https://w3id.org/ro/wfrun/workflow/0.5"
 WORKFLOW_RO_CRATE = "https://w3id.org/workflowhub/workflow-ro-crate/1.0"
 CAPAS_PROFILE = "https://example.org/capas-inteligentes/ro-crate/physical-evidence/0.1"
+CAPAS_WORKFLOW_ID = "workflow/capas-costurero-run.cwl"
 
 
 def load_crate(trace_id: str) -> dict:
@@ -108,14 +109,14 @@ def main() -> int:
             assert root.get("capas:evidenceStatus") == status, f"wrong evidenceStatus {root.get('capas:evidenceStatus')}"
             assert has_physical_evidence(crate) is evidence_expected, "wrong PhysicalEvidence presence"
             root_parts = ids(root.get("hasPart", []))
-            assert "workflow/capas-costurero-run.py" in root_parts, "workflow not listed as crate part"
+            assert CAPAS_WORKFLOW_ID in root_parts, "workflow not listed as crate part"
             assert "software:capas-costurero" in root_parts, "software not listed as crate part"
             assert "entity:workload" in root_parts, "workload not listed as crate part"
             assert workflow.get("input", {}).get("@id") == "parameter:workload", "workflow missing input parameter"
             assert workflow.get("output", {}).get("@id") == "parameter:result", "workflow missing output parameter"
             assert action.get("actionStatus") == action_status, f"wrong actionStatus {action.get('actionStatus')}"
             assert action.get("agent", {}).get("@id") == "software:capas-costurero", "run missing agent"
-            assert action.get("instrument", {}).get("@id") == "workflow/capas-costurero-run.py", "run missing workflow instrument"
+            assert action.get("instrument", {}).get("@id") == CAPAS_WORKFLOW_ID, "run missing workflow instrument"
             assert action.get("object", {}).get("@id") == "entity:workload", "run missing workload object"
             assert action.get("capas:evidenceStatus") == status, "run action missing evidenceStatus"
             report_path = CRATES / "ro_crate_export_report.json"

@@ -101,8 +101,9 @@ python3 benchmarks/validate_ro_crates_external.py
 
 This uses the ResearchObject `rocrateValidator` package and writes
 `benchmarks/ro_crates/official_validation_report.json`. Current crates validate
-as RO-Crates with one warning: the CAPAS workflow descriptor is a Python file,
-and that validator only recognizes a fixed list of workflow file extensions.
+as RO-Crates without warnings. CAPAS emits a recognized `.cwl` workflow
+descriptor for packaging and records Python as the implementation language for
+the costurero.
 
 ## Positioning
 

@@ -17,7 +17,7 @@ PROCESS_RUN_CRATE_PROFILE = "https://w3id.org/ro/wfrun/process/0.5"
 WORKFLOW_RUN_CRATE_PROFILE = "https://w3id.org/ro/wfrun/workflow/0.5"
 WORKFLOW_RO_CRATE_PROFILE = "https://w3id.org/workflowhub/workflow-ro-crate/1.0"
 CAPAS_PROFILE = "https://example.org/capas-inteligentes/ro-crate/physical-evidence/0.1"
-CAPAS_WORKFLOW_ID = "workflow/capas-costurero-run.py"
+CAPAS_WORKFLOW_ID = "workflow/capas-costurero-run.cwl"
 CAPAS_SOFTWARE_ID = "software:capas-costurero"
 WORKLOAD_ID = "entity:workload"
 
@@ -350,6 +350,10 @@ def write_ro_crate_for_trace(trace: RunTrace, out_dir: Path, *, trace_payload: d
     workflow_path = out_dir / CAPAS_WORKFLOW_ID
     crate_path = out_dir / "ro-crate-metadata.json"
 
+    for stale_workflow in workflow_dir.glob("capas-costurero-run.*"):
+        if stale_workflow != workflow_path:
+            stale_workflow.unlink()
+
     trace_path.write_text(json.dumps(trace_payload, indent=2, sort_keys=True), encoding="utf-8")
     prov_path.write_text(json.dumps(run_trace_to_prov_json(trace), indent=2, sort_keys=True), encoding="utf-8")
     workflow_path.write_text(_workflow_descriptor_source(), encoding="utf-8")
@@ -482,21 +486,27 @@ def _iso_from_timestamp(timestamp: float) -> str:
 
 
 def _workflow_descriptor_source() -> str:
-    return '''"""CAPAS costurero workflow descriptor.
-
-This file is included so the RO-Crate has a concrete workflow file entity.
-The executable implementation lives in router.pipeline.run_with_trace.
-"""
-
-
-def capas_costurero_workflow(workload):
-    """Conceptual workflow stages recorded in the sealed RunTrace."""
-    ingest(workload)
-    record_runtime_context()
-    estimate_cost_model()
-    route_workload()
-    execute_or_skip_backend()
-    attach_physical_evidence()
+    return '''cwlVersion: v1.2
+class: CommandLineTool
+label: CAPAS costurero workflow descriptor
+doc: |
+  Conceptual Workflow Run RO-Crate descriptor for the CAPAS costurero.
+  The executable implementation lives in router.pipeline.run_with_trace.
+  This descriptor exists so the crate has a recognized workflow entity while
+  preserving Python as the implementation language in RO-Crate metadata.
+baseCommand: capas-costurero-run
+inputs:
+  workload:
+    type: File
+    doc: Structured scientific workload routed by the CAPAS costurero.
+outputs:
+  result:
+    type: File
+    outputBinding:
+      glob: runtrace.json
+    doc: Structured RunTrace result, skipped state, or failure state.
+requirements:
+  InlineJavascriptRequirement: {}
 '''
 
 

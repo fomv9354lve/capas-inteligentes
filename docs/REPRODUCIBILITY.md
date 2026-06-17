@@ -72,11 +72,7 @@ Expected result:
 external RO-Crate validation passed
 ```
 
-The known warning is accepted for now:
-
-```text
-.py is not a recognised workflow extension
-```
+The external validator currently reports no warnings for generated crates.
 
 ## Current Debt
 

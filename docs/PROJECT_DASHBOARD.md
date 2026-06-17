@@ -52,15 +52,16 @@ fine_tune_ready: False
 local RO-Crate validation: passed
 local CAPAS physical-evidence profile validation: passed for 27/27 crates
 local Workflow Run Crate shape check: passed through CAPAS profile validator
-external ResearchObject RO-Crate validation: valid_with_warning for 27/27 crates
-external warning: .py is not a recognised workflow extension
+external ResearchObject RO-Crate validation: valid for 27/27 crates
+external warning: none
 witness independence validation: passed
 reproducibility environment check: passed in local physics-magnitude-lab pixi env
 ```
 
-The external warning is known and currently accepted: CAPAS emits a Python
-workflow descriptor because the costurero is implemented in Python. The
-ResearchObject validator recognizes a fixed workflow-extension list.
+CAPAS emits a recognized `.cwl` Workflow Run RO-Crate descriptor while recording
+Python as the implementation language for the costurero workflow. This avoids
+validator warnings without claiming that the implementation is a native CWL
+engine.
 
 ## Evidence Coverage
 
@@ -230,8 +231,8 @@ These are hard guardrails.
    rule are explicit and tested.
 9. Do not claim official CAPAS profile registration until a profile URI is
    actually registered externally.
-10. Do not treat external RO-Crate `valid_with_warning` as warning-free
-   validation.
+10. Do not reintroduce unrecognized workflow descriptor extensions in generated
+   RO-Crates.
 11. Any new evidence level must include:
     - scope
     - witness independence
@@ -524,13 +525,13 @@ Next step:
 
 ### D7. Workflow Run RO-Crate Alignment
 
-Status: locally shape-validated, externally RO-Crate-valid with warning,
+Status: locally shape-validated, externally RO-Crate-valid without warnings,
 not externally profile-registered.
 
 What exists:
 
 - root `Dataset`
-- `ComputationalWorkflow`
+- `ComputationalWorkflow` with a recognized `.cwl` descriptor
 - `CreateAction`
 - `mainEntity` from root dataset to workflow
 - `mentions` from root dataset to run action
@@ -564,7 +565,7 @@ Next step:
 Done when:
 
 - current local status can distinguish:
-  - RO-Crate valid: yes, externally `valid_with_warning`
+  - RO-Crate valid: yes, externally `valid`
   - Workflow Run Crate shape-compatible: yes, local CAPAS profile validator
   - CAPAS physical-evidence-profile valid: yes, local CAPAS profile validator
   - CAPAS profile registered: no
