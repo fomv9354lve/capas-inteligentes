@@ -31,17 +31,17 @@ Defensible claim:
 Repository head:
 
 ```text
-1f9184a Add formal Schmidt truncation evidence trace
+See git log. This dashboard is updated in the same commit as state changes.
 ```
 
 Recent commits:
 
 ```text
+b0ed7d2 Add non-degradable project dashboard
 1f9184a Add formal Schmidt truncation evidence trace
 733278e Validate RO-Crates with external ResearchObject checker
 3cdd27c Align RO-Crate export with workflow run shape
 240d9c1 Classify quimb fidelity as estimated evidence
-180bf19 Initial CAPAS evidence profile prototype
 ```
 
 Current validation status:
@@ -50,7 +50,7 @@ Current validation status:
 coverage_ready: True
 fine_tune_ready: False
 local RO-Crate validation: passed
-external ResearchObject RO-Crate validation: valid_with_warning for 16/16 crates
+external ResearchObject RO-Crate validation: valid_with_warning for 17/17 crates
 external warning: .py is not a recognised workflow extension
 ```
 
@@ -65,6 +65,7 @@ ResearchObject validator recognizes a fixed workflow-extension list.
 | `analytic_success` | 10 | covered | closed-form truth |
 | `cross_sim_success` | 1 | covered | independent algorithmic witness |
 | `formal_bound_success` | 1 | covered | formal single-cut Schmidt truncation certificate |
+| `formal_bound_composition_success` | 1 | covered | formal multi-step state truncation bound |
 | `estimated_bound_candidate` | 1 | covered | useful estimator, not formal |
 | `no_evidence_success` | 1 | covered | successful result with no witness |
 | `backend_failed` | 1 | covered | backend failure sealed honestly |
@@ -75,10 +76,9 @@ Current evidence levels:
 ```text
 analytic: 10
 cross_sim: 1
-formal_bound: 1
+formal_bound: 2
 estimated_bound: 1
 none: 3
-blank: 1
 ```
 
 ## What Works
@@ -101,6 +101,10 @@ blank: 1
    - single-cut Schmidt truncation
    - discarded weight equals squared state error
    - not claimed as global DMRG certificate
+9. Multi-step formal-bound composition seed case:
+   - sequential non-renormalized Schmidt truncations
+   - triangle-composed state-error bound
+   - not claimed as DMRG/observable certificate
 
 ## Non-Degradation Rules
 
@@ -129,22 +133,22 @@ These are hard guardrails.
 
 ### D1. Fine-Tune Readiness
 
-Status: open.
+Status: in progress.
 
 Current state:
 
 ```text
 fine_tune_ready: False
-hold: 13
+hold: 14
 reject: 3
-blank: 1
+blank: 0
 ```
 
 Debt:
 
 - blind inference review is not done
 - accepted rows are not selected
-- 17-row audit still has one blank slot
+- audit has no blank trace slots
 
 Done when:
 
@@ -160,19 +164,25 @@ python3 audits/summarize_gold_trace_audit.py
 
 ### D2. Formal Bound Beyond Single-Cut SVD
 
-Status: open.
+Status: partially complete.
 
 What exists:
 
 - `trace_016`
 - `physical_evidence_level=formal_bound`
 - `bound_scope=single_bipartition_state_truncation`
+- `trace_017`
+- `bound_scope=multi_step_state_truncation`
+- `actual_error_squared=0.5946588973100263`
+- `composed_state_error_bound=1.472341209732678`
+- `bound_slack=0.8776823124226517`
 
 Debt:
 
 - no global DMRG state certificate
 - no observable-error transfer bound
-- no truncation accumulation rule across sweeps
+- controlled multi-step truncation composition exists outside DMRG
+- no truncation accumulation rule across DMRG sweeps
 
 Next step:
 

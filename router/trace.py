@@ -74,6 +74,8 @@ def summarize_result(result: Any) -> dict[str, Any]:
                 "source_label",
                 "discarded_weight",
                 "actual_error_squared",
+                "composed_state_error_bound",
+                "bound_slack",
                 "bound_type",
                 "bound_scope",
                 "n",

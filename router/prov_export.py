@@ -147,6 +147,8 @@ def run_trace_to_prov_json(trace: RunTrace, *, bundle_id: str | None = None) -> 
                 "capas:sourceLabel": event.metrics.get("source_label"),
                 "capas:discardedWeight": event.metrics.get("discarded_weight"),
                 "capas:actualErrorSquared": event.metrics.get("actual_error_squared"),
+                "capas:composedStateErrorBound": event.metrics.get("composed_state_error_bound"),
+                "capas:boundSlack": event.metrics.get("bound_slack"),
                 "capas:boundType": event.metrics.get("bound_type"),
                 "capas:boundScope": event.metrics.get("bound_scope"),
                 "capas:evidenceHash": event.metrics.get("evidence_hash"),

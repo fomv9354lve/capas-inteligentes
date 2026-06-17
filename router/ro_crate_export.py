@@ -208,6 +208,8 @@ def run_trace_to_ro_crate_metadata(
                 "capas:sourceLabel": evidence.get("source_label"),
                 "capas:discardedWeight": evidence.get("discarded_weight"),
                 "capas:actualErrorSquared": evidence.get("actual_error_squared"),
+                "capas:composedStateErrorBound": evidence.get("composed_state_error_bound"),
+                "capas:boundSlack": evidence.get("bound_slack"),
                 "capas:boundType": evidence.get("bound_type"),
                 "capas:boundScope": evidence.get("bound_scope"),
                 "capas:evidenceHash": stable_hash(evidence),
@@ -291,6 +293,8 @@ def _physical_evidence_from_trace(trace: RunTrace) -> dict[str, Any]:
             "source_label",
             "discarded_weight",
             "actual_error_squared",
+            "composed_state_error_bound",
+            "bound_slack",
             "bound_type",
             "bound_scope",
         ):

@@ -29,6 +29,29 @@ bound_scope = single_bipartition_state_truncation
 
 This is a real formal certificate, but it is deliberately narrow.
 
+`trace_017` records a multi-step state truncation certificate for a controlled
+sequence of non-renormalized Schmidt/SVD truncations.
+
+Each local discarded weight `w_i` is the squared 2-norm of the local truncation
+error. The final full-state error is bounded by the triangle inequality:
+
+```text
+||psi_0 - psi_m|| <= sum_i sqrt(w_i)
+||psi_0 - psi_m||^2 <= (sum_i sqrt(w_i))^2
+```
+
+CAPAS records this as:
+
+```text
+physical_evidence_level = formal_bound
+certification_status = formal_multi_step_state_norm_bound
+formal_bound_status = established_for_nonrenormalized_sequential_schmidt_truncations_not_observables
+bound_scope = multi_step_state_truncation
+```
+
+This widens the formal scope from one cut to a controlled full-state
+truncation sequence. It still does not certify a DMRG sweep or an observable.
+
 ## What Is Not Implemented Yet
 
 This is **not** a global DMRG certificate.

@@ -15,6 +15,7 @@ without lying.
 | `rejected_by_router` | `benchmarks/gold_traces/trace_014.json` | `benchmarks/ro_crates/trace_014/ro-crate-metadata.json` | `not_applicable_rejected` | Non-execution due memory/resource guard captured as provenance |
 | `estimated_bound_candidate` | `benchmarks/gold_traces/trace_015.json` | `benchmarks/ro_crates/trace_015/ro-crate-metadata.json` | `present` | Tensor-network truncation estimate, explicitly not a formal certificate |
 | `formal_bound_success` | `benchmarks/gold_traces/trace_016.json` | `benchmarks/ro_crates/trace_016/ro-crate-metadata.json` | `present` | Single-cut Schmidt truncation certificate, exact for squared state-norm error |
+| `formal_bound_composition_success` | `benchmarks/gold_traces/trace_017.json` | `benchmarks/ro_crates/trace_017/ro-crate-metadata.json` | `present` | Multi-step Schmidt truncation composition bound for full-state norm error |
 
 ## Current Summary
 
@@ -27,6 +28,7 @@ The local audit currently reports:
 - `rejected_by_router`: 1
 - `estimated_bound_candidate`: 1
 - `formal_bound_success`: 1
+- `formal_bound_composition_success`: 1
 
 This means `coverage_ready=True`.
 
@@ -49,5 +51,6 @@ trace_013: ok (backend_failed, not_applicable_failed)
 trace_014: ok (rejected_by_router, not_applicable_rejected)
 trace_015: ok (estimated_bound_candidate, present)
 trace_016: ok (formal_bound_success, present)
+trace_017: ok (formal_bound_composition_success, present)
 validate_ro_crates passed
 ```

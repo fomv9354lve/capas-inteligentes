@@ -77,6 +77,7 @@ def main() -> int:
         "rejected_by_router",
         "estimated_bound_candidate",
         "formal_bound_success",
+        "formal_bound_composition_success",
     }
     present_coverage = set(coverage) - {"blank"}
     missing_coverage = sorted(required_coverage - present_coverage)

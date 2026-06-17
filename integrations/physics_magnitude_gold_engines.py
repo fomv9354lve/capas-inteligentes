@@ -315,3 +315,94 @@ def schmidt_truncation_formal_bound(n_qubits: int = 4, keep_rank: int = 2, seed:
         "n": n_qubits,
         "max_bond": keep_rank,
     }
+
+
+def multi_step_schmidt_composition_bound(
+    n_qubits: int = 6,
+    keep_rank: int = 2,
+    seed: int = 11,
+) -> dict:
+    """Formal state-error bound for several sequential Schmidt truncations.
+
+    Each step is a non-renormalized optimal SVD truncation across one cut. For
+    step errors e_i with squared norm w_i, triangle inequality gives:
+
+        ||psi_0 - psi_m|| <= sum_i sqrt(w_i)
+
+    so the final squared state error is bounded by (sum_i sqrt(w_i))^2.
+    """
+    if n_qubits < 4:
+        raise ValueError("n_qubits must be at least 4")
+    if keep_rank < 1:
+        raise ValueError("keep_rank must be positive")
+
+    rng = np.random.default_rng(seed)
+    psi0 = rng.normal(size=2**n_qubits) + 1j * rng.normal(size=2**n_qubits)
+    psi0 = psi0 / np.linalg.norm(psi0)
+    psi = psi0.copy()
+
+    cuts = [n_qubits // 2, n_qubits // 2 - 1, n_qubits // 2 + 1]
+    cuts = [cut for cut in cuts if 0 < cut < n_qubits]
+    local_weights: list[float] = []
+    local_errors_squared: list[float] = []
+    kept_ranks: list[int] = []
+
+    for cut in cuts:
+        before = psi
+        matrix = before.reshape(2**cut, 2 ** (n_qubits - cut))
+        u, s, vh = np.linalg.svd(matrix, full_matrices=False)
+        rank = min(keep_rank, len(s))
+        truncated = (u[:, :rank] @ np.diag(s[:rank]) @ vh[:rank, :]).reshape(-1)
+        discarded_weight = float(np.sum(s[rank:] ** 2))
+        local_error_squared = float(np.linalg.norm(before - truncated) ** 2)
+        local_weights.append(discarded_weight)
+        local_errors_squared.append(local_error_squared)
+        kept_ranks.append(rank)
+        psi = truncated
+
+    composed_state_error_bound = float(sum(np.sqrt(w) for w in local_weights) ** 2)
+    actual_error_squared = float(np.linalg.norm(psi0 - psi) ** 2)
+    bound_slack = float(composed_state_error_bound - actual_error_squared)
+
+    if bound_slack < -1e-12:
+        raise AssertionError(
+            "composed Schmidt truncation bound failed: "
+            f"actual={actual_error_squared}, bound={composed_state_error_bound}"
+        )
+
+    return {
+        "observable": "Multi-step Schmidt truncation squared state-error bound",
+        "value": {
+            "actual_error_squared": actual_error_squared,
+            "composed_state_error_bound": composed_state_error_bound,
+            "bound_slack": bound_slack,
+            "local_discarded_weights": local_weights,
+            "local_error_squared": local_errors_squared,
+            "cuts": cuts,
+            "kept_ranks": kept_ranks,
+        },
+        "expected": f"actual_error_squared <= {composed_state_error_bound}",
+        "abs_error": max(0.0, -bound_slack),
+        "units": "squared_state_norm",
+        "physical_evidence_level": "formal_bound",
+        "physical_evidence_detail": (
+            "Sequential non-renormalized Schmidt/SVD truncations compose into a formal state-norm bound "
+            "by triangle inequality: final ||psi0-psim||^2 <= (sum_i sqrt(discarded_weight_i))^2. "
+            "This certifies the full-state error for this controlled sequence, not an observable error "
+            "and not yet a general DMRG sweep certificate."
+        ),
+        "benchmark_family": "TensorNetwork",
+        "reference_truth": "schmidt_eckart_young_plus_triangle_inequality",
+        "verification_independence": "algorithmic_certificate_exact_svd_same_runtime",
+        "certification_status": "formal_multi_step_state_norm_bound",
+        "formal_bound_status": "established_for_nonrenormalized_sequential_schmidt_truncations_not_observables",
+        "bound_type": "triangle_composed_discarded_schmidt_weight_state_error_bound",
+        "bound_scope": "multi_step_state_truncation",
+        "discarded_weight": float(sum(local_weights)),
+        "actual_error_squared": actual_error_squared,
+        "composed_state_error_bound": composed_state_error_bound,
+        "bound_slack": bound_slack,
+        "source_label": "FORMAL (Schmidt/SVD theorem + triangle inequality)",
+        "n": n_qubits,
+        "max_bond": keep_rank,
+    }

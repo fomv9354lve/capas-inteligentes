@@ -1,0 +1,335 @@
+{
+  "coverage_case": "formal_bound_composition_success",
+  "result": {
+    "engine_id": "physics_magnitude_quantum_engine.multi_step_schmidt_composition_bound",
+    "function_name": "multi_step_schmidt_composition_bound",
+    "kwargs": {
+      "keep_rank": 2,
+      "n_qubits": 6,
+      "seed": 11
+    },
+    "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
+    "module_sha256": "3ca0b449d4915eac01b0349e3cb328d4dc60aafed357792c8942d4e72daafab0",
+    "result": {
+      "abs_error": 0.0,
+      "actual_error_squared": 0.5946588973100263,
+      "benchmark_family": "TensorNetwork",
+      "bound_scope": "multi_step_state_truncation",
+      "bound_slack": 0.8776823124226517,
+      "bound_type": "triangle_composed_discarded_schmidt_weight_state_error_bound",
+      "certification_status": "formal_multi_step_state_norm_bound",
+      "composed_state_error_bound": 1.472341209732678,
+      "discarded_weight": 0.5758302213881996,
+      "expected": "actual_error_squared <= 1.472341209732678",
+      "formal_bound_status": "established_for_nonrenormalized_sequential_schmidt_truncations_not_observables",
+      "max_bond": 2,
+      "n": 6,
+      "observable": "Multi-step Schmidt truncation squared state-error bound",
+      "physical_evidence_detail": "Sequential non-renormalized Schmidt/SVD truncations compose into a formal state-norm bound by triangle inequality: final ||psi0-psim||^2 <= (sum_i sqrt(discarded_weight_i))^2. This certifies the full-state error for this controlled sequence, not an observable error and not yet a general DMRG sweep certificate.",
+      "physical_evidence_level": "formal_bound",
+      "reference_truth": "schmidt_eckart_young_plus_triangle_inequality",
+      "source_label": "FORMAL (Schmidt/SVD theorem + triangle inequality)",
+      "units": "squared_state_norm",
+      "value": {
+        "actual_error_squared": 0.5946588973100263,
+        "bound_slack": 0.8776823124226517,
+        "composed_state_error_bound": 1.472341209732678,
+        "cuts": [
+          3,
+          2,
+          4
+        ],
+        "kept_ranks": [
+          2,
+          2,
+          2
+        ],
+        "local_discarded_weights": [
+          0.4109263397557147,
+          0.09589250617327205,
+          0.06901137545921283
+        ],
+        "local_error_squared": [
+          0.4109263397557149,
+          0.0958925061732719,
+          0.06901137545921289
+        ]
+      },
+      "verification_independence": "algorithmic_certificate_exact_svd_same_runtime"
+    }
+  },
+  "trace": {
+    "decision_reason": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+    "decision_route": "external_engine",
+    "error": null,
+    "events": [
+      {
+        "message": "workload accepted",
+        "metrics": {
+          "budget": {
+            "flops_ceiling": 100000000.0,
+            "memory_budget_bytes": 536870912,
+            "safety_factor": 0.5
+          },
+          "engine": {
+            "engine_id": "physics_magnitude_quantum_engine.multi_step_schmidt_composition_bound",
+            "function_name": "multi_step_schmidt_composition_bound",
+            "kwargs_hash": "9294a3970c7055eaf3135d544451670ceb164739727b1cf058614c31e1783c28",
+            "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
+          },
+          "kind": "dense",
+          "n_qubits": 2
+        },
+        "stage": "ingest",
+        "status": "ok",
+        "timestamp": 1781726198.079828
+      },
+      {
+        "message": "runtime and hardware context recorded",
+        "metrics": {
+          "cotengra_available": true,
+          "cotengra_version": "0.8.1",
+          "machine": "arm64",
+          "mlx_probe": "skipped_in_default_trace; use apple_silicon_thermal_routing.py for Metal/MLX device probes",
+          "numpy_available": true,
+          "numpy_version": "2.4.6",
+          "platform": "macOS-26.5.1-arm64-arm-64bit",
+          "processor": "arm",
+          "python_executable": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/physics_quantum/physics-magnitude-lab/.pixi/envs/default/bin/python",
+          "python_version": "3.12.13",
+          "qiskit_aer_available": true,
+          "qiskit_aer_version": "0.17.2",
+          "quimb_available": true,
+          "quimb_version": "1.14.0",
+          "scipy_available": true,
+          "scipy_version": "1.17.1",
+          "stim_available": true,
+          "stim_version": "1.16.0"
+        },
+        "stage": "runtime_context",
+        "status": "ok",
+        "timestamp": 1781726198.079839
+      },
+      {
+        "message": "external engine provenance recorded",
+        "metrics": {
+          "engine_id": "physics_magnitude_quantum_engine.multi_step_schmidt_composition_bound",
+          "function_name": "multi_step_schmidt_composition_bound",
+          "kwargs": {
+            "keep_rank": 2,
+            "n_qubits": 6,
+            "seed": 11
+          },
+          "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
+          "module_sha256": "3ca0b449d4915eac01b0349e3cb328d4dc60aafed357792c8942d4e72daafab0"
+        },
+        "stage": "engine_provenance",
+        "status": "ok",
+        "timestamp": 1781726198.0798929
+      },
+      {
+        "message": "dense statevector cost estimated",
+        "metrics": {
+          "memory_viable": true,
+          "n_qubits": 2,
+          "route": "dense",
+          "statevector_bytes": 64,
+          "usable_memory_bytes": 268435456.0
+        },
+        "stage": "cost_model",
+        "status": "ok",
+        "timestamp": 1781726198.079896
+      },
+      {
+        "message": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+        "metrics": {
+          "engine_id": "physics_magnitude_quantum_engine.multi_step_schmidt_composition_bound",
+          "function_name": "multi_step_schmidt_composition_bound",
+          "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
+        },
+        "stage": "route",
+        "status": "ok",
+        "timestamp": 1781726198.0798988
+      },
+      {
+        "message": "backend executed",
+        "metrics": {
+          "abs_error": 0.0,
+          "actual_error_squared": 0.5946588973100263,
+          "benchmark_family": "TensorNetwork",
+          "bound_scope": "multi_step_state_truncation",
+          "bound_slack": 0.8776823124226517,
+          "bound_type": "triangle_composed_discarded_schmidt_weight_state_error_bound",
+          "certification_status": "formal_multi_step_state_norm_bound",
+          "composed_state_error_bound": 1.472341209732678,
+          "discarded_weight": 0.5758302213881996,
+          "expected": "actual_error_squared <= 1.472341209732678",
+          "formal_bound_status": "established_for_nonrenormalized_sequential_schmidt_truncations_not_observables",
+          "max_bond": 2,
+          "n": 6,
+          "observable": "Multi-step Schmidt truncation squared state-error bound",
+          "physical_evidence_detail": "Sequential non-renormalized Schmidt/SVD truncations compose into a formal state-norm bound by triangle inequality: final ||psi0-psim||^2 <= (sum_i sqrt(discarded_weight_i))^2. This certifies the full-state error for this controlled sequence, not an observable error and not yet a general DMRG sweep certificate.",
+          "physical_evidence_level": "formal_bound",
+          "reference_truth": "schmidt_eckart_young_plus_triangle_inequality",
+          "repr": "{'engine_id': 'physics_magnitude_quantum_engine.multi_step_schmidt_composition_bound', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physic",
+          "route": "external_engine",
+          "runtime_ms": 0.4294170066714287,
+          "source_label": "FORMAL (Schmidt/SVD theorem + triangle inequality)",
+          "type": "dict",
+          "units": "squared_state_norm",
+          "value": {
+            "actual_error_squared": 0.5946588973100263,
+            "bound_slack": 0.8776823124226517,
+            "composed_state_error_bound": 1.472341209732678,
+            "cuts": [
+              3,
+              2,
+              4
+            ],
+            "kept_ranks": [
+              2,
+              2,
+              2
+            ],
+            "local_discarded_weights": [
+              0.4109263397557147,
+              0.09589250617327205,
+              0.06901137545921283
+            ],
+            "local_error_squared": [
+              0.4109263397557149,
+              0.0958925061732719,
+              0.06901137545921289
+            ]
+          },
+          "verification_independence": "algorithmic_certificate_exact_svd_same_runtime"
+        },
+        "stage": "execute",
+        "status": "ok",
+        "timestamp": 1781726198.080388
+      },
+      {
+        "message": "physical evidence reported by backend",
+        "metrics": {
+          "abs_error": 0.0,
+          "actual_error_squared": 0.5946588973100263,
+          "benchmark_family": "TensorNetwork",
+          "bound_scope": "multi_step_state_truncation",
+          "bound_slack": 0.8776823124226517,
+          "bound_type": "triangle_composed_discarded_schmidt_weight_state_error_bound",
+          "certification_status": "formal_multi_step_state_norm_bound",
+          "composed_state_error_bound": 1.472341209732678,
+          "discarded_weight": 0.5758302213881996,
+          "evidence_hash": "9eae3cd27986ae56fc5a6bb594096a63eeb3172641c6bdca02dfa32bd32f76cf",
+          "expected": "actual_error_squared <= 1.472341209732678",
+          "formal_bound_status": "established_for_nonrenormalized_sequential_schmidt_truncations_not_observables",
+          "observable": "Multi-step Schmidt truncation squared state-error bound",
+          "physical_evidence_detail": "Sequential non-renormalized Schmidt/SVD truncations compose into a formal state-norm bound by triangle inequality: final ||psi0-psim||^2 <= (sum_i sqrt(discarded_weight_i))^2. This certifies the full-state error for this controlled sequence, not an observable error and not yet a general DMRG sweep certificate.",
+          "physical_evidence_level": "formal_bound",
+          "reference_truth": "schmidt_eckart_young_plus_triangle_inequality",
+          "source_label": "FORMAL (Schmidt/SVD theorem + triangle inequality)",
+          "units": "squared_state_norm",
+          "value": {
+            "actual_error_squared": 0.5946588973100263,
+            "bound_slack": 0.8776823124226517,
+            "composed_state_error_bound": 1.472341209732678,
+            "cuts": [
+              3,
+              2,
+              4
+            ],
+            "kept_ranks": [
+              2,
+              2,
+              2
+            ],
+            "local_discarded_weights": [
+              0.4109263397557147,
+              0.09589250617327205,
+              0.06901137545921283
+            ],
+            "local_error_squared": [
+              0.4109263397557149,
+              0.0958925061732719,
+              0.06901137545921289
+            ]
+          },
+          "verification_independence": "algorithmic_certificate_exact_svd_same_runtime"
+        },
+        "stage": "physical_evidence",
+        "status": "ok",
+        "timestamp": 1781726198.080414
+      }
+    ],
+    "hash_algorithm": "sha256(stable_json)",
+    "result_hash": "7e7dcaba5c6ce4705e05749a6eb4405a4e07ada9537045ea9498b0f18dd840f7",
+    "result_summary": {
+      "abs_error": 0.0,
+      "actual_error_squared": 0.5946588973100263,
+      "benchmark_family": "TensorNetwork",
+      "bound_scope": "multi_step_state_truncation",
+      "bound_slack": 0.8776823124226517,
+      "bound_type": "triangle_composed_discarded_schmidt_weight_state_error_bound",
+      "certification_status": "formal_multi_step_state_norm_bound",
+      "composed_state_error_bound": 1.472341209732678,
+      "discarded_weight": 0.5758302213881996,
+      "expected": "actual_error_squared <= 1.472341209732678",
+      "formal_bound_status": "established_for_nonrenormalized_sequential_schmidt_truncations_not_observables",
+      "max_bond": 2,
+      "n": 6,
+      "observable": "Multi-step Schmidt truncation squared state-error bound",
+      "physical_evidence_detail": "Sequential non-renormalized Schmidt/SVD truncations compose into a formal state-norm bound by triangle inequality: final ||psi0-psim||^2 <= (sum_i sqrt(discarded_weight_i))^2. This certifies the full-state error for this controlled sequence, not an observable error and not yet a general DMRG sweep certificate.",
+      "physical_evidence_level": "formal_bound",
+      "reference_truth": "schmidt_eckart_young_plus_triangle_inequality",
+      "repr": "{'engine_id': 'physics_magnitude_quantum_engine.multi_step_schmidt_composition_bound', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physic",
+      "source_label": "FORMAL (Schmidt/SVD theorem + triangle inequality)",
+      "type": "dict",
+      "units": "squared_state_norm",
+      "value": {
+        "actual_error_squared": 0.5946588973100263,
+        "bound_slack": 0.8776823124226517,
+        "composed_state_error_bound": 1.472341209732678,
+        "cuts": [
+          3,
+          2,
+          4
+        ],
+        "kept_ranks": [
+          2,
+          2,
+          2
+        ],
+        "local_discarded_weights": [
+          0.4109263397557147,
+          0.09589250617327205,
+          0.06901137545921283
+        ],
+        "local_error_squared": [
+          0.4109263397557149,
+          0.0958925061732719,
+          0.06901137545921289
+        ]
+      },
+      "verification_independence": "algorithmic_certificate_exact_svd_same_runtime"
+    },
+    "trace_schema_version": "capas-runtrace-v2",
+    "workload_hash": "8037aa9cea6c515a2f06f840e55418f9ec3fe7293edeffdc58b61abfd17e1260",
+    "workload_summary": {
+      "budget": {
+        "flops_ceiling": 100000000.0,
+        "memory_budget_bytes": 536870912,
+        "safety_factor": 0.5
+      },
+      "engine": {
+        "engine_id": "physics_magnitude_quantum_engine.multi_step_schmidt_composition_bound",
+        "function_name": "multi_step_schmidt_composition_bound",
+        "kwargs_hash": "9294a3970c7055eaf3135d544451670ceb164739727b1cf058614c31e1783c28",
+        "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
+      },
+      "kind": "dense",
+      "n_qubits": 2
+    }
+  },
+  "trace_hash": "99070bf739c831b6112a1a9857f9e3a63da804e5f37003857590c11133be0dd8",
+  "trace_id": "trace_017"
+}

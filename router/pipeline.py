@@ -156,6 +156,8 @@ def _physical_evidence_from_summary(summary: dict[str, Any]) -> dict[str, Any]:
         "source_label",
         "discarded_weight",
         "actual_error_squared",
+        "composed_state_error_bound",
+        "bound_slack",
         "bound_type",
         "bound_scope",
     )
