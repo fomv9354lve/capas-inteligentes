@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 from pathlib import Path
 from typing import Any
@@ -12,6 +13,9 @@ RO_CRATE_CONTEXT = "https://w3id.org/ro/crate/1.1/context"
 RO_CRATE_CONFORMS_TO = "https://w3id.org/ro/crate/1.1"
 WORKFLOW_RUN_CRATE_PROFILE = "https://w3id.org/workflowhub/workflow-ro-crate/1.0"
 CAPAS_PROFILE = "https://example.org/capas-inteligentes/ro-crate/physical-evidence/0.1"
+CAPAS_WORKFLOW_ID = "workflow:capas-costurero-run"
+CAPAS_SOFTWARE_ID = "software:capas-costurero"
+WORKLOAD_ID = "entity:workload"
 
 
 def run_trace_to_ro_crate_metadata(
@@ -19,6 +23,7 @@ def run_trace_to_ro_crate_metadata(
     *,
     trace_file: str,
     prov_file: str | None = None,
+    crate_dir: Path | None = None,
 ) -> dict[str, Any]:
     """Export a RunTrace as RO-Crate JSON-LD metadata.
 
@@ -32,6 +37,17 @@ def run_trace_to_ro_crate_metadata(
     decision_id = f"{trace_id}:routing-decision"
     evidence_id = f"{trace_id}:physical-evidence"
     root_id = "./"
+    run_status = _action_status(trace)
+    start_time, end_time = _event_time_bounds(trace)
+    has_part = [
+        {"@id": trace_file},
+        {"@id": CAPAS_WORKFLOW_ID},
+        {"@id": CAPAS_SOFTWARE_ID},
+        {"@id": WORKLOAD_ID},
+        {"@id": decision_id},
+    ]
+    if trace.result_hash:
+        has_part.append({"@id": result_id})
 
     graph: list[dict[str, Any]] = [
         {
@@ -39,6 +55,7 @@ def run_trace_to_ro_crate_metadata(
             "@type": "CreativeWork",
             "conformsTo": [
                 {"@id": RO_CRATE_CONFORMS_TO},
+                {"@id": WORKFLOW_RUN_CRATE_PROFILE},
                 {"@id": CAPAS_PROFILE},
             ],
             "about": {"@id": root_id},
@@ -51,43 +68,78 @@ def run_trace_to_ro_crate_metadata(
                 "RO-Crate package containing a sealed RunTrace, optional PROV export, "
                 "routing decision, runtime context, and CAPAS physical evidence metadata."
             ),
-            "hasPart": [{"@id": trace_file}],
+            "hasPart": has_part,
             "conformsTo": [
+                {"@id": RO_CRATE_CONFORMS_TO},
                 {"@id": WORKFLOW_RUN_CRATE_PROFILE},
                 {"@id": CAPAS_PROFILE},
             ],
             "capas:traceHash": trace.hash(),
             "capas:workloadHash": trace.workload_hash,
+            "capas:workflowRunCrateAlignment": "shape-compatible-with-workflow-run-ro-crate-v0",
         },
         {
             "@id": trace_file,
             "@type": ["File", "DigitalDocument"],
             "name": "Sealed CAPAS RunTrace",
             "encodingFormat": "application/json",
-            "sha256": _file_sha256_if_exists(trace_file),
+            "sha256": _file_sha256_if_exists(trace_file, crate_dir),
             "about": {"@id": trace_id},
         },
         {
             "@id": trace_id,
             "@type": "CreateAction",
             "name": "CAPAS costurero traced run",
-            "instrument": {"@id": "software:capas-costurero"},
-            "object": {"@id": "entity:workload"},
+            "agent": {"@id": CAPAS_SOFTWARE_ID},
+            "instrument": {"@id": CAPAS_WORKFLOW_ID},
+            "object": {"@id": WORKLOAD_ID},
             "result": {"@id": result_id} if trace.result_hash else None,
+            "actionStatus": run_status,
+            "startTime": start_time,
+            "endTime": end_time,
             "capas:routingDecision": {"@id": decision_id},
             "capas:traceHash": trace.hash(),
             "capas:traceSchemaVersion": trace.trace_schema_version,
             "capas:hashAlgorithm": trace.hash_algorithm,
             "capas:error": trace.error,
+            "capas:decisionRoute": trace.decision_route,
+            "capas:decisionReason": trace.decision_reason,
+            "capas:evidenceStatus": None,
         },
         {
-            "@id": "software:capas-costurero",
+            "@id": CAPAS_WORKFLOW_ID,
+            "@type": ["SoftwareSourceCode", "ComputationalWorkflow"],
+            "name": "CAPAS costurero workflow",
+            "description": (
+                "Workflow plan that ingests a scientific workload, records runtime context, "
+                "estimates routing cost, executes or skips the selected engine, and attaches "
+                "CAPAS physical-evidence metadata."
+            ),
+            "programmingLanguage": "Python",
+            "input": {"@id": "parameter:workload"},
+            "output": {"@id": "parameter:result"},
+            "capas:traceSchemaVersion": trace.trace_schema_version,
+        },
+        {
+            "@id": "parameter:workload",
+            "@type": "FormalParameter",
+            "name": "Scientific workload",
+            "additionalType": "https://bioschemas.org/FormalParameter",
+        },
+        {
+            "@id": "parameter:result",
+            "@type": "FormalParameter",
+            "name": "Result summary or skipped/failure state",
+            "additionalType": "https://bioschemas.org/FormalParameter",
+        },
+        {
+            "@id": CAPAS_SOFTWARE_ID,
             "@type": "SoftwareApplication",
             "name": "CAPAS INTELIGENTES costurero",
             "applicationCategory": "Scientific provenance and evidence tracing",
         },
         {
-            "@id": "entity:workload",
+            "@id": WORKLOAD_ID,
             "@type": "Dataset",
             "name": "Workload summary",
             "capas:workloadHash": trace.workload_hash,
@@ -110,7 +162,7 @@ def run_trace_to_ro_crate_metadata(
                 "@type": ["File", "DigitalDocument"],
                 "name": "W3C PROV-shaped export",
                 "encodingFormat": "application/json",
-                "sha256": _file_sha256_if_exists(prov_file),
+                "sha256": _file_sha256_if_exists(prov_file, crate_dir),
             }
         )
 
@@ -129,6 +181,8 @@ def run_trace_to_ro_crate_metadata(
     evidence_status = _evidence_status(trace, evidence)
     for node in graph:
         if node.get("@id") == root_id:
+            node["capas:evidenceStatus"] = evidence_status
+        if node.get("@id") == trace_id:
             node["capas:evidenceStatus"] = evidence_status
             break
     if evidence:
@@ -153,6 +207,10 @@ def run_trace_to_ro_crate_metadata(
                 "about": {"@id": result_id},
             }
         )
+        for node in graph:
+            if node.get("@id") == root_id:
+                node["hasPart"].append({"@id": evidence_id})
+                break
         if trace.result_hash:
             for node in graph:
                 if node.get("@id") == result_id:
@@ -197,6 +255,7 @@ def write_ro_crate_for_trace(trace: RunTrace, out_dir: Path, *, trace_payload: d
         trace,
         trace_file="runtrace.json",
         prov_file="runtrace.prov.json",
+        crate_dir=out_dir,
     )
     crate_path.write_text(json.dumps(crate, indent=2, sort_keys=True), encoding="utf-8")
     return crate_path
@@ -238,11 +297,26 @@ def _evidence_status(trace: RunTrace, evidence: dict[str, Any]) -> str:
     return "missing"
 
 
-def _file_sha256_if_exists(path: str) -> str | None:
+def _action_status(trace: RunTrace) -> str:
+    if trace.error:
+        return "FailedActionStatus"
+    return "CompletedActionStatus"
+
+
+def _event_time_bounds(trace: RunTrace) -> tuple[str | None, str | None]:
+    if not trace.events:
+        return None, None
+    timestamps = [event.timestamp for event in trace.events]
+    return timestamps[0], timestamps[-1]
+
+
+def _file_sha256_if_exists(path: str, base_dir: Path | None = None) -> str | None:
     p = Path(path)
+    if not p.is_absolute() and base_dir is not None:
+        p = base_dir / p
     if not p.exists():
         return None
-    return stable_hash(p.read_bytes().hex())
+    return hashlib.sha256(p.read_bytes()).hexdigest()
 
 
 def _strip_none(data: dict[str, Any]) -> dict[str, Any]:

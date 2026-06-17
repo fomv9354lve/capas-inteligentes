@@ -76,6 +76,7 @@ it would be dishonest:
 See:
 
 - `docs/SOTA_POSITIONING.md`
+- `docs/WORKFLOW_RUN_RO_CRATE_ALIGNMENT.md`
 - `docs/SCIAGENTGYM_AUDIT.md`
 - `docs/QMB100_AUDIT.md`
 - `docs/VVUQ_QUANTUM_AUDIT.md`
