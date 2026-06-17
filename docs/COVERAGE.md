@@ -19,6 +19,7 @@ without lying.
 | `quantum_chemistry_reference_definition_corrected` | `benchmarks/gold_traces/trace_024.json` | `benchmarks/ro_crates/trace_024/ro-crate-metadata.json` | `present` | H2/cc-pVTZ electronic binding energy compared with D0 plus same-model harmonic ZPE |
 | `quantum_chemistry_polyatomic_electronic_vibrational` | `benchmarks/gold_traces/trace_025.json` | `benchmarks/ro_crates/trace_025/ro-crate-metadata.json` | `present` | H2O/STO-3G exact model solve with harmonic ZPE and atomization reference |
 | `quantum_chemistry_larger_polyatomic_electronic_vibrational` | `benchmarks/gold_traces/trace_026.json` | `benchmarks/ro_crates/trace_026/ro-crate-metadata.json` | `present` | CH4/STO-3G exact model solve with harmonic ZPE and atomization reference |
+| `quantum_chemistry_basis_convergence_to_experiment` | `benchmarks/gold_traces/trace_027.json` | `benchmarks/ro_crates/trace_027/ro-crate-metadata.json` | `present` | H2 basis ladder to experimental D0 with robust threshold crossing |
 | `no_evidence_success` | `benchmarks/gold_traces/trace_012.json` | `benchmarks/ro_crates/trace_012/ro-crate-metadata.json` | `none_declared` | Successful result with no attached physical witness |
 | `backend_failed` | `benchmarks/gold_traces/trace_013.json` | `benchmarks/ro_crates/trace_013/ro-crate-metadata.json` | `not_applicable_failed` | Failed backend captured as provenance, not hidden |
 | `rejected_by_router` | `benchmarks/gold_traces/trace_014.json` | `benchmarks/ro_crates/trace_014/ro-crate-metadata.json` | `not_applicable_rejected` | Non-execution due memory/resource guard captured as provenance |
@@ -41,6 +42,7 @@ The local audit currently reports:
 - `quantum_chemistry_reference_definition_corrected`: 1
 - `quantum_chemistry_polyatomic_electronic_vibrational`: 1
 - `quantum_chemistry_larger_polyatomic_electronic_vibrational`: 1
+- `quantum_chemistry_basis_convergence_to_experiment`: 1
 - `no_evidence_success`: 1
 - `backend_failed`: 1
 - `rejected_by_router`: 1
@@ -73,6 +75,7 @@ trace_023: ok (quantum_chemistry_experimental_reference_larger_basis, present)
 trace_024: ok (quantum_chemistry_reference_definition_corrected, present)
 trace_025: ok (quantum_chemistry_polyatomic_electronic_vibrational, present)
 trace_026: ok (quantum_chemistry_larger_polyatomic_electronic_vibrational, present)
+trace_027: ok (quantum_chemistry_basis_convergence_to_experiment, present)
 trace_012: ok (no_evidence_success, none_declared)
 trace_013: ok (backend_failed, not_applicable_failed)
 trace_014: ok (rejected_by_router, not_applicable_rejected)

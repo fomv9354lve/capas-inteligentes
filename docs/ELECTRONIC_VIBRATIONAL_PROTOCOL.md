@@ -78,6 +78,12 @@ experiment because the model or basis is poor.
   nine positive modes, and comparison to a tabulated atomization reference
   assembled from successive C-H dissociation energies.
 
+`trace_027`
+
+: H2 exact FCI basis ladder from STO-3G through cc-pV5Z, with per-basis
+  same-model harmonic ZPE, monotonic error tracking, and explicit
+  `true_not_robust` versus `true_robust` threshold status.
+
 ## What This Proves
 
 The chemistry axis does not prove that CAPAS performs competitive quantum

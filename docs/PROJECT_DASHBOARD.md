@@ -37,11 +37,11 @@ See git log. This dashboard is updated in the same commit as state changes.
 Recent commits:
 
 ```text
-HEAD Add methane electronic/vibrational chemistry trace
+HEAD Add H2 basis convergence to experiment trace
+827d9f7 Add methane electronic vibrational chemistry trace
 65c1e5b Add electronic/vibrational chemistry protocol
 a7447b0 Add reference-definition corrected chemistry trace
 e80a598 Add larger-basis chemistry stress trace
-1de6e14 Add improved-basis chemistry evidence trace
 ```
 
 Current validation status:
@@ -50,7 +50,7 @@ Current validation status:
 coverage_ready: True
 fine_tune_ready: False
 local RO-Crate validation: passed
-external ResearchObject RO-Crate validation: valid_with_warning for 26/26 crates
+external ResearchObject RO-Crate validation: valid_with_warning for 27/27 crates
 external warning: .py is not a recognised workflow extension
 witness independence validation: passed
 ```
@@ -74,6 +74,7 @@ ResearchObject validator recognizes a fixed workflow-extension list.
 | `quantum_chemistry_reference_definition_corrected` | 1 | covered | H2/cc-pVTZ compared with D0 plus same-model harmonic ZPE |
 | `quantum_chemistry_polyatomic_electronic_vibrational` | 1 | covered | H2O/STO-3G electronic/vibrational split against atomization reference |
 | `quantum_chemistry_larger_polyatomic_electronic_vibrational` | 1 | covered | CH4/STO-3G electronic/vibrational split against atomization reference |
+| `quantum_chemistry_basis_convergence_to_experiment` | 1 | covered | H2 basis ladder converges to experiment with robust threshold crossing |
 | `formal_bound_success` | 1 | covered | formal single-cut Schmidt truncation certificate |
 | `formal_bound_composition_success` | 1 | covered | formal multi-step state truncation bound |
 | `estimated_bound_candidate` | 1 | covered | useful estimator, not formal |
@@ -86,7 +87,7 @@ Current evidence levels:
 ```text
 analytic: 12
 cross_sim: 2
-experimental: 6
+experimental: 7
 formal_bound: 2
 estimated_bound: 1
 none: 3
@@ -183,6 +184,15 @@ none: 3
    - corrected error: `0.034658618326405266`
    - within chemical accuracy: `False`
    - lesson: adding vibrational correction can reduce the mismatch without making a poor finite-basis model chemically accurate
+18. H2 basis convergence to experiment:
+   - basis ladder: `STO-3G -> cc-pVDZ -> cc-pVTZ -> cc-pVQZ -> cc-pV5Z`
+   - corrected errors: `[0.028646971371818652, 0.009825356013931502, 0.0015326709489749402, 0.0003112863147403111, 0.00002049610541435265]`
+   - monotonic non-increasing error: `True`
+   - first within chemical accuracy: `cc-pVTZ`
+   - first robust chemical accuracy: `cc-pVQZ`
+   - best basis: `cc-pV5Z`
+   - local ceiling solved: `cc-pV5Z`, `110` orbitals
+   - lesson: CAPAS can certify a robust True, not only honest False cases
 
 ## Non-Degradation Rules
 
@@ -220,7 +230,7 @@ Current state:
 
 ```text
 fine_tune_ready: False
-hold: 23
+hold: 24
 reject: 3
 blank: 0
 ```
@@ -401,12 +411,14 @@ What exists:
 - `trace_024`
 - `trace_025`
 - `trace_026`
+- `trace_027`
 - `coverage_case=quantum_chemistry_experimental_reference`
 - `coverage_case=quantum_chemistry_experimental_reference_improved_basis`
 - `coverage_case=quantum_chemistry_experimental_reference_larger_basis`
 - `coverage_case=quantum_chemistry_reference_definition_corrected`
 - `coverage_case=quantum_chemistry_polyatomic_electronic_vibrational`
 - `coverage_case=quantum_chemistry_larger_polyatomic_electronic_vibrational`
+- `coverage_case=quantum_chemistry_basis_convergence_to_experiment`
 - `physical_evidence_level=experimental`
 - `verification_independence=same_runtime_exact_fci_with_external_experimental_reference`
 - `bound_scope=single_molecule_minimal_basis_equilibrium_geometry`
@@ -429,11 +441,16 @@ What exists:
 - CH4 same-model harmonic ZPE: `0.05361901333601985`
 - CH4 corrected atomization error after ZPE correction: `0.034658618326405266`
 - CH4 within chemical accuracy: `False`
+- H2 convergence first within chemical accuracy: `cc-pVTZ`
+- H2 convergence first robust basis: `cc-pVQZ`
+- H2 convergence best/local ceiling basis: `cc-pV5Z`
+- H2 convergence best error: `0.00002049610541435265`
 
 Scope:
 
 - H2, H2O, and CH4 only
 - STO-3G, cc-pVDZ, and cc-pVTZ finite bases
+- H2 convergence through cc-pV5Z exact FCI
 - R(H-H) = 0.7414 Angstrom
 - PySCF FCI exact model solve
 - measured D0 reference from Holsch et al. 2019

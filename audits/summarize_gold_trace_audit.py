@@ -81,6 +81,7 @@ def main() -> int:
         "quantum_chemistry_reference_definition_corrected",
         "quantum_chemistry_polyatomic_electronic_vibrational",
         "quantum_chemistry_larger_polyatomic_electronic_vibrational",
+        "quantum_chemistry_basis_convergence_to_experiment",
         "no_evidence_success",
         "backend_failed",
         "rejected_by_router",
