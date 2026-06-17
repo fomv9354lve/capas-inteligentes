@@ -37,11 +37,11 @@ See git log. This dashboard is updated in the same commit as state changes.
 Recent commits:
 
 ```text
-HEAD Add electronic/vibrational chemistry protocol
+HEAD Add methane electronic/vibrational chemistry trace
+65c1e5b Add electronic/vibrational chemistry protocol
 a7447b0 Add reference-definition corrected chemistry trace
 e80a598 Add larger-basis chemistry stress trace
 1de6e14 Add improved-basis chemistry evidence trace
-2178525 Add experimental chemistry evidence trace
 ```
 
 Current validation status:
@@ -50,7 +50,7 @@ Current validation status:
 coverage_ready: True
 fine_tune_ready: False
 local RO-Crate validation: passed
-external ResearchObject RO-Crate validation: valid_with_warning for 25/25 crates
+external ResearchObject RO-Crate validation: valid_with_warning for 26/26 crates
 external warning: .py is not a recognised workflow extension
 witness independence validation: passed
 ```
@@ -73,6 +73,7 @@ ResearchObject validator recognizes a fixed workflow-extension list.
 | `quantum_chemistry_experimental_reference_larger_basis` | 1 | covered | H2/cc-pVTZ FCI compared with measured dissociation energy |
 | `quantum_chemistry_reference_definition_corrected` | 1 | covered | H2/cc-pVTZ compared with D0 plus same-model harmonic ZPE |
 | `quantum_chemistry_polyatomic_electronic_vibrational` | 1 | covered | H2O/STO-3G electronic/vibrational split against atomization reference |
+| `quantum_chemistry_larger_polyatomic_electronic_vibrational` | 1 | covered | CH4/STO-3G electronic/vibrational split against atomization reference |
 | `formal_bound_success` | 1 | covered | formal single-cut Schmidt truncation certificate |
 | `formal_bound_composition_success` | 1 | covered | formal multi-step state truncation bound |
 | `estimated_bound_candidate` | 1 | covered | useful estimator, not formal |
@@ -85,7 +86,7 @@ Current evidence levels:
 ```text
 analytic: 12
 cross_sim: 2
-experimental: 5
+experimental: 6
 formal_bound: 2
 estimated_bound: 1
 none: 3
@@ -171,6 +172,17 @@ none: 3
    - corrected error: `0.10200295763719147`
    - within chemical accuracy: `False`
    - lesson: CAPAS can seal a polyatomic electronic/vibrational split even when the model remains poor
+17. Larger polyatomic electronic/vibrational chemistry case:
+   - CH4/STO-3G tetrahedral demo geometry
+   - PySCF FCI total energy: `-39.80599835127127` Hartree
+   - electronic atomization energy: `0.7209374024057098` Hartree
+   - harmonic frequencies: `[1689.8745762074116, 1689.8745762074573, 1689.8745762074593, 1908.0111834277131, 1908.011183427716, 3470.156201716289, 3726.74135851723, 3726.74135851724, 3726.741358517245] cm^-1`
+   - same-model harmonic ZPE: `0.05361901333601985` Hartree
+   - ZPE-corrected atomization energy: `0.66731838906969` Hartree
+   - tabulated atomization reference: `0.6326597707432847` Hartree
+   - corrected error: `0.034658618326405266`
+   - within chemical accuracy: `False`
+   - lesson: adding vibrational correction can reduce the mismatch without making a poor finite-basis model chemically accurate
 
 ## Non-Degradation Rules
 
@@ -208,7 +220,7 @@ Current state:
 
 ```text
 fine_tune_ready: False
-hold: 22
+hold: 23
 reject: 3
 blank: 0
 ```
@@ -388,11 +400,13 @@ What exists:
 - `trace_023`
 - `trace_024`
 - `trace_025`
+- `trace_026`
 - `coverage_case=quantum_chemistry_experimental_reference`
 - `coverage_case=quantum_chemistry_experimental_reference_improved_basis`
 - `coverage_case=quantum_chemistry_experimental_reference_larger_basis`
 - `coverage_case=quantum_chemistry_reference_definition_corrected`
 - `coverage_case=quantum_chemistry_polyatomic_electronic_vibrational`
+- `coverage_case=quantum_chemistry_larger_polyatomic_electronic_vibrational`
 - `physical_evidence_level=experimental`
 - `verification_independence=same_runtime_exact_fci_with_external_experimental_reference`
 - `bound_scope=single_molecule_minimal_basis_equilibrium_geometry`
@@ -411,16 +425,20 @@ What exists:
 - H2O same-model harmonic ZPE: `0.025787667114932907`
 - H2O corrected atomization error after ZPE correction: `0.10200295763719147`
 - H2O within chemical accuracy: `False`
+- CH4 raw electronic atomization error before ZPE correction: `0.08827763166242508`
+- CH4 same-model harmonic ZPE: `0.05361901333601985`
+- CH4 corrected atomization error after ZPE correction: `0.034658618326405266`
+- CH4 within chemical accuracy: `False`
 
 Scope:
 
-- H2 and H2O only
+- H2, H2O, and CH4 only
 - STO-3G, cc-pVDZ, and cc-pVTZ finite bases
 - R(H-H) = 0.7414 Angstrom
 - PySCF FCI exact model solve
 - measured D0 reference from Holsch et al. 2019
 - same-model harmonic ZPE corrections, not full anharmonic spectroscopy
-- H2O experimental atomization reference assembled from tabulated O-H
+- H2O and CH4 experimental atomization references assembled from tabulated
   dissociation values, weaker provenance than the precision H2 D0 trace
 
 Next step:

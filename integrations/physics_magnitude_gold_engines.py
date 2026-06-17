@@ -1280,6 +1280,187 @@ def h2o_sto3g_electronic_vibrational_reference() -> dict:
     }
 
 
+def ch4_sto3g_electronic_vibrational_reference() -> dict:
+    """CH4/STO-3G exact model solve with electronic/vibrational split.
+
+    This trace is deliberately more complex than H2O: five atoms, nine
+    vibrational modes, and a tabulated atomization reference assembled from
+    successive C-H bond dissociation energies. The reference is useful but
+    weaker than a precision spectroscopic D0, and the trace records that scope.
+    """
+    from pyscf import fci, gto, hessian, scf
+    from pyscf.hessian import thermo
+
+    basis = "sto-3g"
+    # Tetrahedral methane with C-H distance about 1.089 Angstrom.
+    a = 0.629118
+    geometry = [
+        {"atom": "C", "xyz_angstrom": [0.0, 0.0, 0.0]},
+        {"atom": "H", "xyz_angstrom": [a, a, a]},
+        {"atom": "H", "xyz_angstrom": [-a, -a, a]},
+        {"atom": "H", "xyz_angstrom": [-a, a, -a]},
+        {"atom": "H", "xyz_angstrom": [a, -a, -a]},
+    ]
+    molecule = gto.M(
+        atom=(
+            f"C 0 0 0; H {a} {a} {a}; H {-a} {-a} {a}; "
+            f"H {-a} {a} {-a}; H {a} {-a} {-a}"
+        ),
+        basis=basis,
+        unit="Angstrom",
+        charge=0,
+        spin=0,
+        verbose=0,
+    )
+    mf = scf.RHF(molecule).run(verbose=0)
+    cisolver = fci.FCI(molecule, mf.mo_coeff)
+    fci_total_energy, _ = cisolver.kernel()
+    fci_total_energy = float(fci_total_energy)
+
+    hess = hessian.RHF(mf).kernel()
+    harmonic = thermo.harmonic_analysis(molecule, hess)
+    harmonic_frequencies_cm_inverse = [float(x) for x in harmonic["freq_wavenumber"] if float(x) > 0.0]
+    hartree_per_cm_inverse = 1.0 / 219474.6313705
+    zpe_cm_inverse = float(0.5 * sum(harmonic_frequencies_cm_inverse))
+    zpe_hartree = float(zpe_cm_inverse * hartree_per_cm_inverse)
+
+    h_atom = gto.M(atom="H 0 0 0", basis=basis, unit="Angstrom", charge=0, spin=1, verbose=0)
+    h_mf = scf.UHF(h_atom).run(verbose=0)
+    h_fci = fci.FCI(h_atom, h_mf.mo_coeff)
+    h_atom_energy, _ = h_fci.kernel(nelec=h_atom.nelec)
+    h_atom_energy = float(h_atom_energy)
+
+    c_atom = gto.M(atom="C 0 0 0", basis=basis, unit="Angstrom", charge=0, spin=2, verbose=0)
+    c_mf = scf.UHF(c_atom).run(verbose=0)
+    c_fci = fci.FCI(c_atom, c_mf.mo_coeff)
+    c_atom_energy, _ = c_fci.kernel(nelec=c_atom.nelec)
+    c_atom_energy = float(c_atom_energy)
+
+    electronic_atomization_energy = float(c_atom_energy + 4.0 * h_atom_energy - fci_total_energy)
+    zpe_corrected_atomization_energy = float(electronic_atomization_energy - zpe_hartree)
+
+    kcal_per_hartree = 627.5094740631
+    # Successive methane C-H dissociation energies cited in standard BDE tables.
+    successive_ch_bde_kcal_mol = [105.0, 110.0, 101.0, 81.0]
+    experimental_atomization_kcal_mol = float(sum(successive_ch_bde_kcal_mol))
+    experimental_atomization_energy = float(experimental_atomization_kcal_mol / kcal_per_hartree)
+    chemical_accuracy_threshold = 0.0015936
+
+    solver_error_hartree = 0.0
+    electronic_reference_error = abs(electronic_atomization_energy - experimental_atomization_energy)
+    zpe_corrected_reference_error = abs(zpe_corrected_atomization_energy - experimental_atomization_energy)
+    within_chemical_accuracy = bool(zpe_corrected_reference_error < chemical_accuracy_threshold)
+
+    return {
+        "observable": "CH4/STO-3G FCI atomization energy with model-harmonic ZPE correction",
+        "value": {
+            "fci_total_energy_hartree": fci_total_energy,
+            "h_atom_energy_hartree": h_atom_energy,
+            "c_atom_energy_hartree": c_atom_energy,
+            "electronic_atomization_energy_hartree": electronic_atomization_energy,
+            "vibrational_zpe_hartree": zpe_hartree,
+            "vibrational_zpe_cm_inverse": zpe_cm_inverse,
+            "harmonic_frequencies_cm_inverse": harmonic_frequencies_cm_inverse,
+            "zpe_corrected_atomization_energy_hartree": zpe_corrected_atomization_energy,
+            "experimental_atomization_energy_hartree": experimental_atomization_energy,
+            "experimental_atomization_energy_kcal_mol": experimental_atomization_kcal_mol,
+            "successive_ch_bde_kcal_mol": successive_ch_bde_kcal_mol,
+            "solver_error_hartree": solver_error_hartree,
+            "reference_definition_error_hartree": electronic_reference_error,
+            "reference_definition_corrected_error_hartree": zpe_corrected_reference_error,
+            "within_chemical_accuracy": within_chemical_accuracy,
+            "basis_orbitals": int(molecule.nao_nr()),
+        },
+        "expected": {
+            "reference_fci_total_energy_hartree": fci_total_energy,
+            "reference_experimental_atomization_energy_hartree": experimental_atomization_energy,
+            "chemical_accuracy_threshold_hartree": chemical_accuracy_threshold,
+        },
+        "abs_error": solver_error_hartree,
+        "abs_error_vs_fci": solver_error_hartree,
+        "abs_error_vs_experimental": zpe_corrected_reference_error,
+        "chemical_accuracy_threshold_hartree": chemical_accuracy_threshold,
+        "within_chemical_accuracy": within_chemical_accuracy,
+        "units": "hartree",
+        "physical_evidence_level": "experimental",
+        "physical_evidence_detail": (
+            "CH4/STO-3G is solved by PySCF FCI for the declared finite-basis electronic model. "
+            "A same-model harmonic ZPE is subtracted from the electronic atomization energy. "
+            "The trace records a larger polyatomic case where exact model solution does not imply "
+            "experimental chemical accuracy."
+        ),
+        "benchmark_family": "QuantumChemistry",
+        "reference_truth": {
+            "fci": {
+                "kind": "exact_model_solution",
+                "method": "PySCF FCI",
+                "basis": basis,
+                "geometry": "CH4 tetrahedral STO-3G demo geometry, C-H about 1.089 Angstrom",
+                "total_energy_hartree": fci_total_energy,
+            },
+            "experimental": {
+                "kind": "tabulated_atomization_reference_from_successive_C_H_bond_dissociation_energies",
+                "quantity": "CH4 -> C + 4H atomization D0-like reference",
+                "successive_ch_bde_kcal_mol": successive_ch_bde_kcal_mol,
+                "value_kcal_mol": experimental_atomization_kcal_mol,
+                "value_hartree": experimental_atomization_energy,
+                "source": "Bond dissociation energy reference table; successive methane C-H values 105, 110, 101, and 81 kcal/mol",
+            },
+            "vibrational": {
+                "kind": "same_model_harmonic_zpe",
+                "frequencies_cm_inverse": harmonic_frequencies_cm_inverse,
+                "zpe_cm_inverse": zpe_cm_inverse,
+                "zpe_hartree": zpe_hartree,
+            },
+            "chemical_accuracy": {
+                "threshold_hartree": chemical_accuracy_threshold,
+                "threshold_name": "1 kcal/mol",
+            },
+        },
+        "verification_independence": "same_runtime_exact_fci_with_external_experimental_reference",
+        "bound_scope": "single_molecule_polyatomic_minimal_basis_electronic_vibrational_split",
+        "evidence_status_detail": "experimental_larger_polyatomic_reference_definition_corrected_model_still_poor",
+        "basis": basis,
+        "basis_orbitals": int(molecule.nao_nr()),
+        "geometry": geometry,
+        "solver_error_hartree": solver_error_hartree,
+        "model_error_hartree": zpe_corrected_reference_error,
+        "reference_definition_error_hartree": electronic_reference_error,
+        "reference_definition_corrected_error_hartree": zpe_corrected_reference_error,
+        "reference_definition_match": "corrected_model_harmonic_electronic_atomization_minus_ZPE_to_match_D0_atomization",
+        "reference_definition_correction": {
+            "raw_computed_quantity": "clamped-nuclei electronic atomization energy",
+            "target_reference": "D0-like atomization energy with vibrational ground state",
+            "correction": "D0_model ~= De_model - ZPE_harmonic(model)",
+            "zpe_cm_inverse": zpe_cm_inverse,
+            "zpe_hartree": zpe_hartree,
+            "harmonic_frequencies_cm_inverse": harmonic_frequencies_cm_inverse,
+            "quality": "same_model_harmonic_vibrational_correction_not_anharmonic_spectroscopy",
+        },
+        "electronic_atomization_energy_hartree": electronic_atomization_energy,
+        "zpe_corrected_atomization_energy_hartree": zpe_corrected_atomization_energy,
+        "experimental_atomization_energy_hartree": experimental_atomization_energy,
+        "experimental_atomization_energy_kcal_mol": experimental_atomization_kcal_mol,
+        "vibrational_zpe_hartree": zpe_hartree,
+        "vibrational_zpe_cm_inverse": zpe_cm_inverse,
+        "harmonic_frequencies_cm_inverse": harmonic_frequencies_cm_inverse,
+        "reference_fci_total_energy_hartree": fci_total_energy,
+        "source_label": "PySCF FCI CH4/STO-3G model solve + harmonic ZPE + tabulated successive C-H dissociation references",
+        "falsification_notes": [
+            "This is larger than H2O but still a minimal-basis local demonstration.",
+            "The electronic FCI solve is exact for STO-3G methane, not for physical methane.",
+            "The experimental atomization reference is assembled from rounded tabulated C-H BDE values, so its provenance is weaker than the H2 precision D0 trace.",
+            "The harmonic ZPE is same-model and does not include anharmonic spectroscopy.",
+            "The defended claim is evidence separation for a larger polyatomic molecule, not competitive thermochemistry.",
+        ],
+        "witness_stack": {
+            "primary": "PySCF FCI exact CH4/STO-3G electronic model solve",
+            "witness": "external tabulated successive methane C-H dissociation values plus same-model harmonic ZPE",
+            "runtime_relation": "same_runtime_model_solve_plus_external_measurement_and_reference_correction",
+        },
+    }
+
+
 def bell_entropy_cross_sim() -> dict:
     bell = qe.bell_state()
     value = float(qe.entanglement_entropy(bell, dims=[2, 2], keep=[0]))

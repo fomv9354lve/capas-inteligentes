@@ -65,6 +65,19 @@ physical_evidence_level = experimental
 reference_definition_match = corrected_model_harmonic_electronic_atomization_minus_ZPE_to_match_D0_atomization
 ```
 
+Larger polyatomic electronic/vibrational trace:
+
+```text
+trace_026
+coverage_case = quantum_chemistry_larger_polyatomic_electronic_vibrational
+molecule = CH4
+geometry = tetrahedral CH4, STO-3G demo geometry
+basis = STO-3G
+solver = PySCF FCI
+physical_evidence_level = experimental
+reference_definition_match = corrected_model_harmonic_electronic_atomization_minus_ZPE_to_match_D0_atomization
+```
+
 ## References
 
 Model reference:
@@ -89,6 +102,9 @@ Reference-definition correction:
 - `trace_025` computes a same-model harmonic ZPE for H2O and compares the
   resulting `D0`-like atomization energy against a tabulated atomization
   reference assembled from O-H dissociation energies.
+- `trace_026` repeats the same protocol for CH4, with nine positive harmonic
+  modes and a tabulated atomization reference assembled from successive C-H
+  dissociation energies.
 - Source for the relation between `D0` and `D_e`: standard bond-dissociation
   terminology, where `D0 = D_e - epsilon_0`.
 
@@ -154,6 +170,11 @@ has three positive harmonic vibrational modes in the local STO-3G model. The
 trace records the electronic atomization energy, the model-harmonic ZPE, the
 ZPE-corrected atomization energy, and the remaining gap to experiment.
 
+For `trace_026`, CAPAS applies the same protocol to a larger polyatomic
+molecule. CH4 has nine positive harmonic vibrational modes in the local STO-3G
+model. The ZPE correction reduces the mismatch, but the minimal-basis model
+still remains outside chemical accuracy.
+
 ## Non-Degradation Rule
 
 Do not interpret:
@@ -214,6 +235,7 @@ single auditable trace.
 | `trace_023` | cc-pVTZ | 0.0 | 0.008689903240270247 | false |
 | `trace_024` | cc-pVTZ + model-harmonic D0/ZPE definition correction | 0.0 | 0.0015326709489927315 | true |
 | `trace_025` | H2O/STO-3G + model-harmonic ZPE | 0.0 | 0.10200295763719147 | false |
+| `trace_026` | CH4/STO-3G + model-harmonic ZPE | 0.0 | 0.034658618326405266 | false |
 
 For `trace_024`, the raw D0 comparison error remains
 `0.008689903240252483 Hartree`; the corrected error above is after adding
@@ -226,6 +248,12 @@ For `trace_025`, the raw electronic atomization mismatch is
 `0.10200295763719147 Hartree`. The correction makes the reference definition
 clear, but the minimal-basis model remains poor.
 
+For `trace_026`, the raw electronic atomization mismatch is
+`0.08827763166242508 Hartree`; after subtracting model-harmonic ZPE
+(`0.05361901333601985 Hartree`) the remaining mismatch is
+`0.034658618326405266 Hartree`. The correction moves the model closer to the
+tabulated reference, but not to chemical accuracy.
+
 Do not read this as a claim that cc-pVDZ fully solves H2 spectroscopy. It only
 shows that the trace grammar preserves the improvement in model error when the
 declared model improves.
@@ -234,7 +262,7 @@ Do not read `trace_023` as a solver failure. It is exact for its declared model.
 The useful fact is that CAPAS records a model/reference mismatch instead of
 forcing a monotonic "bigger basis is better" story.
 
-Do not read `trace_024` or `trace_025` as full spectroscopy. Their ZPE
+Do not read `trace_024`, `trace_025`, or `trace_026` as full spectroscopy. Their ZPE
 corrections are same-model harmonic corrections, not anharmonic spectroscopic
 constants. The traces are valuable because they record the correction and its
 scope instead of silently treating `D0` and `D_e` as the same physical quantity.

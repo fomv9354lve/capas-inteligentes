@@ -72,6 +72,12 @@ experiment because the model or basis is poor.
   comparison to a tabulated atomization reference assembled from O-H
   dissociation energies.
 
+`trace_026`
+
+: CH4/STO-3G exact finite-basis electronic solve, same-model harmonic ZPE with
+  nine positive modes, and comparison to a tabulated atomization reference
+  assembled from successive C-H dissociation energies.
+
 ## What This Proves
 
 The chemistry axis does not prove that CAPAS performs competitive quantum
