@@ -106,15 +106,25 @@ include all of:
 If that happens, CAPAS becomes an adapter or implementation variant, not a
 distinct evidence profile.
 
-## Second Track: Certified Bounds
+## Second Track: Bounds
 
 Investigate after QMB100 wrapping.
 
 Hypothesis:
 
-> Tensor-network certified truncation/error bounds can become a stronger
-> `physical_evidence_level`, e.g. `certified_bound`, inside CAPAS.
+> Tensor-network truncation/error bounds can become a stronger
+> `physical_evidence_level` inside CAPAS.
 
 This is potentially more original but must be grounded in specific algorithms
-and libraries. It should not be added as a claim until a trace can carry an
-actual numerical bound.
+and libraries.
+
+Current status:
+
+- Quimb `CircuitMPS.fidelity_estimate()` is documented as an estimate, not a
+  formal certificate.
+- CAPAS therefore uses `physical_evidence_level=estimated_bound` for the current
+  trace.
+- A future `formal_bound` level requires a documented mathematical bound, not
+  quimb's fidelity estimate wording.
+
+See `docs/QUIMB_FIDELITY_ESTIMATE_AUDIT.md`.

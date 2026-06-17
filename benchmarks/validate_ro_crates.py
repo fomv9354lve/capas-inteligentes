@@ -15,7 +15,7 @@ EXPECTED = {
     "trace_012": ("no_evidence_success", "none_declared", True),
     "trace_013": ("backend_failed", "not_applicable_failed", False),
     "trace_014": ("rejected_by_router", "not_applicable_rejected", False),
-    "trace_015": ("certified_bound_candidate", "present", True),
+    "trace_015": ("estimated_bound_candidate", "present", True),
 }
 
 

@@ -223,7 +223,7 @@ def deliberately_failing_engine() -> dict:
     raise RuntimeError("intentional failure for failed-trace coverage")
 
 
-def quimb_mps_certified_bound_candidate(n: int = 60, depth: int = 6, max_bond: int = 8, seed: int = 1) -> dict:
+def quimb_mps_estimated_bound(n: int = 60, depth: int = 6, max_bond: int = 8, seed: int = 1) -> dict:
     from physics_magnitude_lab.approx_hard_core import rcs_1d
     from physics_magnitude_lab.quimb_sim import quimb_truncated
 
@@ -231,7 +231,7 @@ def quimb_mps_certified_bound_candidate(n: int = 60, depth: int = 6, max_bond: i
     fidelity_lower_bound = float(result["fidelity_estimate"])
     trace_distance_upper_bound = float(np.sqrt(max(0.0, 1.0 - fidelity_lower_bound)))
     return {
-        "observable": "Truncated MPS fidelity/trace-distance bound candidate for 1D random circuit",
+        "observable": "Truncated MPS fidelity/trace-distance estimate for 1D random circuit",
         "value": {
             "fidelity_lower_bound": fidelity_lower_bound,
             "trace_distance_upper_bound": trace_distance_upper_bound,
@@ -240,15 +240,17 @@ def quimb_mps_certified_bound_candidate(n: int = 60, depth: int = 6, max_bond: i
         "expected": "no dense reference at this scale",
         "abs_error": None,
         "units": "dimensionless",
-        "physical_evidence_level": "certified_bound",
+        "physical_evidence_level": "estimated_bound",
         "physical_evidence_detail": (
-            "Derived from quimb CircuitMPS fidelity_estimate. Trace distance uses D<=sqrt(1-F). "
-            "This is an algorithmic truncation-bound candidate, not cross-sim or analytic validation."
+            "Derived from quimb CircuitMPS fidelity_estimate(), which quimb documents as an estimate based on "
+            "the norm of the truncated state and an approximation to the ideal overlap. Trace distance uses "
+            "D<=sqrt(1-F_est). This is not a formal truncation certificate."
         ),
         "benchmark_family": "TensorNetwork",
         "reference_truth": "quimb_circuitmps_truncation_error_tracker",
         "verification_independence": "algorithmic_error_certificate_same_runtime",
-        "certification_status": "candidate_not_external_validation",
+        "certification_status": "estimated_not_formal_certificate",
+        "formal_bound_status": "not_established_from_quimb_circuitmps_api",
         "n": n,
         "depth": depth,
         "max_bond": max_bond,
