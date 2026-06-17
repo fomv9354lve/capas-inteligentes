@@ -1,0 +1,186 @@
+{
+  "coverage_case": "no_evidence_success",
+  "result": {
+    "engine_id": "physics_magnitude_quantum_engine.unverified_variational_energy",
+    "function_name": "unverified_variational_energy",
+    "kwargs": {},
+    "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
+    "module_sha256": "637f6bce852aae2058adbc38ab6269d58c202cc53cde232236d4519b5a6e9418",
+    "result": {
+      "abs_error": null,
+      "benchmark_family": "UnverifiedToy",
+      "expected": null,
+      "observable": "Toy variational energy without external witness",
+      "physical_evidence_detail": "No analytic solution or independent witness attached to this trace",
+      "physical_evidence_level": "none",
+      "reference_truth": "none",
+      "units": "energy",
+      "value": -1.0801918402698152,
+      "verification_independence": "none"
+    }
+  },
+  "trace": {
+    "decision_reason": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+    "decision_route": "external_engine",
+    "error": null,
+    "events": [
+      {
+        "message": "workload accepted",
+        "metrics": {
+          "budget": {
+            "flops_ceiling": 100000000.0,
+            "memory_budget_bytes": 536870912,
+            "safety_factor": 0.5
+          },
+          "engine": {
+            "engine_id": "physics_magnitude_quantum_engine.unverified_variational_energy",
+            "function_name": "unverified_variational_energy",
+            "kwargs_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+            "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
+          },
+          "kind": "dense",
+          "n_qubits": 2
+        },
+        "stage": "ingest",
+        "status": "ok",
+        "timestamp": 1781724291.3902478
+      },
+      {
+        "message": "runtime and hardware context recorded",
+        "metrics": {
+          "cotengra_available": true,
+          "cotengra_version": "0.8.1",
+          "machine": "arm64",
+          "mlx_probe": "skipped_in_default_trace; use apple_silicon_thermal_routing.py for Metal/MLX device probes",
+          "numpy_available": true,
+          "numpy_version": "2.4.6",
+          "platform": "macOS-26.5.1-arm64-arm-64bit",
+          "processor": "arm",
+          "python_executable": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/physics_quantum/physics-magnitude-lab/.pixi/envs/default/bin/python",
+          "python_version": "3.12.13",
+          "qiskit_aer_available": true,
+          "qiskit_aer_version": "0.17.2",
+          "quimb_available": true,
+          "quimb_version": "1.14.0",
+          "scipy_available": true,
+          "scipy_version": "1.17.1",
+          "stim_available": true,
+          "stim_version": "1.16.0"
+        },
+        "stage": "runtime_context",
+        "status": "ok",
+        "timestamp": 1781724291.3902552
+      },
+      {
+        "message": "external engine provenance recorded",
+        "metrics": {
+          "engine_id": "physics_magnitude_quantum_engine.unverified_variational_energy",
+          "function_name": "unverified_variational_energy",
+          "kwargs": {},
+          "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
+          "module_sha256": "637f6bce852aae2058adbc38ab6269d58c202cc53cde232236d4519b5a6e9418"
+        },
+        "stage": "engine_provenance",
+        "status": "ok",
+        "timestamp": 1781724291.390286
+      },
+      {
+        "message": "dense statevector cost estimated",
+        "metrics": {
+          "memory_viable": true,
+          "n_qubits": 2,
+          "route": "dense",
+          "statevector_bytes": 64,
+          "usable_memory_bytes": 268435456.0
+        },
+        "stage": "cost_model",
+        "status": "ok",
+        "timestamp": 1781724291.3902879
+      },
+      {
+        "message": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+        "metrics": {
+          "engine_id": "physics_magnitude_quantum_engine.unverified_variational_energy",
+          "function_name": "unverified_variational_energy",
+          "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
+        },
+        "stage": "route",
+        "status": "ok",
+        "timestamp": 1781724291.39029
+      },
+      {
+        "message": "backend executed",
+        "metrics": {
+          "abs_error": null,
+          "benchmark_family": "UnverifiedToy",
+          "expected": null,
+          "observable": "Toy variational energy without external witness",
+          "physical_evidence_detail": "No analytic solution or independent witness attached to this trace",
+          "physical_evidence_level": "none",
+          "reference_truth": "none",
+          "repr": "{'engine_id': 'physics_magnitude_quantum_engine.unverified_variational_energy', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magni",
+          "route": "external_engine",
+          "runtime_ms": 0.3870000073220581,
+          "type": "dict",
+          "units": "energy",
+          "value": -1.0801918402698152,
+          "verification_independence": "none"
+        },
+        "stage": "execute",
+        "status": "ok",
+        "timestamp": 1781724291.3906932
+      },
+      {
+        "message": "physical evidence reported by backend",
+        "metrics": {
+          "abs_error": null,
+          "evidence_hash": "289f1c6ead34af7531d8527ecc9c8fd230b761a8c24bbe6bb68fe39dce87a197",
+          "expected": null,
+          "observable": "Toy variational energy without external witness",
+          "physical_evidence_detail": "No analytic solution or independent witness attached to this trace",
+          "physical_evidence_level": "none",
+          "units": "energy",
+          "value": -1.0801918402698152
+        },
+        "stage": "physical_evidence",
+        "status": "ok",
+        "timestamp": 1781724291.390699
+      }
+    ],
+    "hash_algorithm": "sha256(stable_json)",
+    "result_hash": "20d0d19d0131592125fa6f5a7a6221ea43b4064f3434543c7649b5df32593165",
+    "result_summary": {
+      "abs_error": null,
+      "benchmark_family": "UnverifiedToy",
+      "expected": null,
+      "observable": "Toy variational energy without external witness",
+      "physical_evidence_detail": "No analytic solution or independent witness attached to this trace",
+      "physical_evidence_level": "none",
+      "reference_truth": "none",
+      "repr": "{'engine_id': 'physics_magnitude_quantum_engine.unverified_variational_energy', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magni",
+      "type": "dict",
+      "units": "energy",
+      "value": -1.0801918402698152,
+      "verification_independence": "none"
+    },
+    "trace_schema_version": "capas-runtrace-v2",
+    "workload_hash": "7d9170e0127cf0440c6e096447b10bf7f14a3075c1b48be2bf6c14d65895600c",
+    "workload_summary": {
+      "budget": {
+        "flops_ceiling": 100000000.0,
+        "memory_budget_bytes": 536870912,
+        "safety_factor": 0.5
+      },
+      "engine": {
+        "engine_id": "physics_magnitude_quantum_engine.unverified_variational_energy",
+        "function_name": "unverified_variational_energy",
+        "kwargs_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
+      },
+      "kind": "dense",
+      "n_qubits": 2
+    }
+  },
+  "trace_hash": "33d77559b5b1c583ce04bea9f5b40fe28b4f5aabb701d9d5545e854dcf1be23a",
+  "trace_id": "trace_012"
+}

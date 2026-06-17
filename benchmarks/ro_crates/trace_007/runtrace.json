@@ -1,0 +1,192 @@
+{
+  "coverage_case": "analytic_success",
+  "result": {
+    "engine_id": "physics_magnitude_quantum_engine.transverse_field_ising_two_spin_ground_state",
+    "function_name": "transverse_field_ising_two_spin_ground_state",
+    "kwargs": {
+      "J": 1.0,
+      "h": 0.7
+    },
+    "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
+    "module_sha256": "637f6bce852aae2058adbc38ab6269d58c202cc53cde232236d4519b5a6e9418",
+    "result": {
+      "abs_error": 0.0,
+      "benchmark_family": "Ising",
+      "expected": -1.7204650534085253,
+      "observable": "Two-spin transverse-field Ising ground-state energy",
+      "physical_evidence_detail": "N=2 TFIM even block eigenvalues are +/-sqrt(J^2 + 4h^2); ground E0 = -sqrt(J^2 + 4h^2)",
+      "physical_evidence_level": "analytic",
+      "reference_truth": "closed_form_two_spin_TFIM_spectrum",
+      "units": "energy",
+      "value": -1.7204650534085253,
+      "verification_independence": "analytic_no_solver"
+    }
+  },
+  "trace": {
+    "decision_reason": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+    "decision_route": "external_engine",
+    "error": null,
+    "events": [
+      {
+        "message": "workload accepted",
+        "metrics": {
+          "budget": {
+            "flops_ceiling": 100000000.0,
+            "memory_budget_bytes": 536870912,
+            "safety_factor": 0.5
+          },
+          "engine": {
+            "engine_id": "physics_magnitude_quantum_engine.transverse_field_ising_two_spin_ground_state",
+            "function_name": "transverse_field_ising_two_spin_ground_state",
+            "kwargs_hash": "be3b0ac9280b8f5a12497dfd6d558b51545d32298aada524345189c89d8f5f8f",
+            "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
+          },
+          "kind": "dense",
+          "n_qubits": 2
+        },
+        "stage": "ingest",
+        "status": "ok",
+        "timestamp": 1781724291.3861918
+      },
+      {
+        "message": "runtime and hardware context recorded",
+        "metrics": {
+          "cotengra_available": true,
+          "cotengra_version": "0.8.1",
+          "machine": "arm64",
+          "mlx_probe": "skipped_in_default_trace; use apple_silicon_thermal_routing.py for Metal/MLX device probes",
+          "numpy_available": true,
+          "numpy_version": "2.4.6",
+          "platform": "macOS-26.5.1-arm64-arm-64bit",
+          "processor": "arm",
+          "python_executable": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/physics_quantum/physics-magnitude-lab/.pixi/envs/default/bin/python",
+          "python_version": "3.12.13",
+          "qiskit_aer_available": true,
+          "qiskit_aer_version": "0.17.2",
+          "quimb_available": true,
+          "quimb_version": "1.14.0",
+          "scipy_available": true,
+          "scipy_version": "1.17.1",
+          "stim_available": true,
+          "stim_version": "1.16.0"
+        },
+        "stage": "runtime_context",
+        "status": "ok",
+        "timestamp": 1781724291.3862028
+      },
+      {
+        "message": "external engine provenance recorded",
+        "metrics": {
+          "engine_id": "physics_magnitude_quantum_engine.transverse_field_ising_two_spin_ground_state",
+          "function_name": "transverse_field_ising_two_spin_ground_state",
+          "kwargs": {
+            "J": 1.0,
+            "h": 0.7
+          },
+          "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
+          "module_sha256": "637f6bce852aae2058adbc38ab6269d58c202cc53cde232236d4519b5a6e9418"
+        },
+        "stage": "engine_provenance",
+        "status": "ok",
+        "timestamp": 1781724291.386252
+      },
+      {
+        "message": "dense statevector cost estimated",
+        "metrics": {
+          "memory_viable": true,
+          "n_qubits": 2,
+          "route": "dense",
+          "statevector_bytes": 64,
+          "usable_memory_bytes": 268435456.0
+        },
+        "stage": "cost_model",
+        "status": "ok",
+        "timestamp": 1781724291.386254
+      },
+      {
+        "message": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+        "metrics": {
+          "engine_id": "physics_magnitude_quantum_engine.transverse_field_ising_two_spin_ground_state",
+          "function_name": "transverse_field_ising_two_spin_ground_state",
+          "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
+        },
+        "stage": "route",
+        "status": "ok",
+        "timestamp": 1781724291.386257
+      },
+      {
+        "message": "backend executed",
+        "metrics": {
+          "abs_error": 0.0,
+          "benchmark_family": "Ising",
+          "expected": -1.7204650534085253,
+          "observable": "Two-spin transverse-field Ising ground-state energy",
+          "physical_evidence_detail": "N=2 TFIM even block eigenvalues are +/-sqrt(J^2 + 4h^2); ground E0 = -sqrt(J^2 + 4h^2)",
+          "physical_evidence_level": "analytic",
+          "reference_truth": "closed_form_two_spin_TFIM_spectrum",
+          "repr": "{'engine_id': 'physics_magnitude_quantum_engine.transverse_field_ising_two_spin_ground_state', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integration",
+          "route": "external_engine",
+          "runtime_ms": 0.4918749909847975,
+          "type": "dict",
+          "units": "energy",
+          "value": -1.7204650534085253,
+          "verification_independence": "analytic_no_solver"
+        },
+        "stage": "execute",
+        "status": "ok",
+        "timestamp": 1781724291.386775
+      },
+      {
+        "message": "physical evidence reported by backend",
+        "metrics": {
+          "abs_error": 0.0,
+          "evidence_hash": "991f633a3331fc60491aee2e5598e246ade3cd16847804f08cd8b56fdccb5e34",
+          "expected": -1.7204650534085253,
+          "observable": "Two-spin transverse-field Ising ground-state energy",
+          "physical_evidence_detail": "N=2 TFIM even block eigenvalues are +/-sqrt(J^2 + 4h^2); ground E0 = -sqrt(J^2 + 4h^2)",
+          "physical_evidence_level": "analytic",
+          "units": "energy",
+          "value": -1.7204650534085253
+        },
+        "stage": "physical_evidence",
+        "status": "ok",
+        "timestamp": 1781724291.386782
+      }
+    ],
+    "hash_algorithm": "sha256(stable_json)",
+    "result_hash": "66db5dc7ffbb2c5ae73d846f3e6e38981a3fb803d27a9de8c9cca3a87d535d7d",
+    "result_summary": {
+      "abs_error": 0.0,
+      "benchmark_family": "Ising",
+      "expected": -1.7204650534085253,
+      "observable": "Two-spin transverse-field Ising ground-state energy",
+      "physical_evidence_detail": "N=2 TFIM even block eigenvalues are +/-sqrt(J^2 + 4h^2); ground E0 = -sqrt(J^2 + 4h^2)",
+      "physical_evidence_level": "analytic",
+      "reference_truth": "closed_form_two_spin_TFIM_spectrum",
+      "repr": "{'engine_id': 'physics_magnitude_quantum_engine.transverse_field_ising_two_spin_ground_state', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integration",
+      "type": "dict",
+      "units": "energy",
+      "value": -1.7204650534085253,
+      "verification_independence": "analytic_no_solver"
+    },
+    "trace_schema_version": "capas-runtrace-v2",
+    "workload_hash": "606868a39baea63f00c1ed6e72d15b78ab5b98532da4f2fbefec1274770ff092",
+    "workload_summary": {
+      "budget": {
+        "flops_ceiling": 100000000.0,
+        "memory_budget_bytes": 536870912,
+        "safety_factor": 0.5
+      },
+      "engine": {
+        "engine_id": "physics_magnitude_quantum_engine.transverse_field_ising_two_spin_ground_state",
+        "function_name": "transverse_field_ising_two_spin_ground_state",
+        "kwargs_hash": "be3b0ac9280b8f5a12497dfd6d558b51545d32298aada524345189c89d8f5f8f",
+        "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
+      },
+      "kind": "dense",
+      "n_qubits": 2
+    }
+  },
+  "trace_hash": "58f218c40df1d0216a28cf0d1f83dec44a2edb59b2895ef42446bd83197fe13b",
+  "trace_id": "trace_007"
+}

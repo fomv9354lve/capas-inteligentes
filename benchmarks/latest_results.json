@@ -1,0 +1,232 @@
+[
+  {
+    "case": "scalar_wrap_only",
+    "metric": {
+      "lazy_ms": 0.000125,
+      "overhead_pct": 197.64,
+      "raw_ms": 4.2e-05,
+      "threshold_pct": 10.0
+    },
+    "note": "raw=0.000042ms lazy=0.000125ms overhead=+197.6%",
+    "verdict": "FAIL"
+  },
+  {
+    "case": "scalar_prewrapped_add",
+    "metric": {
+      "lazy_ms": 0.00025,
+      "overhead_pct": 495.29,
+      "raw_ms": 4.2e-05,
+      "threshold_pct": 10.0
+    },
+    "note": "raw=0.000042ms lazy=0.000250ms overhead=+495.3%",
+    "verdict": "FAIL"
+  },
+  {
+    "case": "vec100_prewrapped_add",
+    "metric": {
+      "lazy_ms": 0.000667,
+      "overhead_pct": 129.2,
+      "raw_ms": 0.00029101,
+      "threshold_pct": 10.0
+    },
+    "note": "raw=0.000291ms lazy=0.000667ms overhead=+129.2%",
+    "verdict": "FAIL"
+  },
+  {
+    "case": "mat32_node_create_only",
+    "metric": {
+      "lazy_ms": 0.00029101,
+      "overhead_pct": 592.93,
+      "raw_ms": 4.2e-05,
+      "threshold_pct": 0.0
+    },
+    "note": "raw=0.000042ms lazy=0.000291ms overhead=+592.9%",
+    "verdict": "FAIL"
+  },
+  {
+    "case": "mat32_observe_node",
+    "metric": {
+      "lazy_ms": 0.00162501,
+      "overhead_pct": 14.68,
+      "raw_ms": 0.00141701,
+      "threshold_pct": 10.0
+    },
+    "note": "raw=0.001417ms lazy=0.001625ms overhead=+14.7%",
+    "verdict": "FAIL"
+  },
+  {
+    "case": "mat256_observe_node",
+    "metric": {
+      "lazy_ms": 0.11187501,
+      "overhead_pct": -3.94,
+      "raw_ms": 0.11645799,
+      "threshold_pct": 5.0
+    },
+    "note": "raw=0.116458ms lazy=0.111875ms overhead=-3.9%",
+    "verdict": "PASS"
+  },
+  {
+    "case": "reject_40q_latency",
+    "metric": {
+      "ms_median": 0.00020801
+    },
+    "note": "reject=0.21us",
+    "verdict": "PASS"
+  },
+  {
+    "case": "reject_40q_rss_delta",
+    "metric": {
+      "rss_delta_mb": 0.0
+    },
+    "note": "rss_delta=0.000000MB",
+    "verdict": "PASS"
+  },
+  {
+    "case": "safe_threshold_26_vs_27",
+    "metric": {
+      "q26": "dense",
+      "q27": "QPU_REQUIRED",
+      "safety_factor": 0.5
+    },
+    "note": "26q->dense, 27q->QPU_REQUIRED under 2GB budget with 0.5 safety",
+    "verdict": "PASS"
+  },
+  {
+    "case": "accept_10q_runs",
+    "metric": {
+      "route": "dense",
+      "shape": [
+        1024
+      ]
+    },
+    "note": "10q->dense, shape=(1024,)",
+    "verdict": "PASS"
+  },
+  {
+    "case": "clifford_20q",
+    "metric": {
+      "dense_mb": 16.0,
+      "estimate": "stim",
+      "measured": "stim",
+      "n_gates": 240,
+      "n_qubits": 20,
+      "stim_ms": 0.008416,
+      "t_count": 0
+    },
+    "note": "estimate=stim, measured=stim, T=0, dense=16.0MB",
+    "verdict": "PASS"
+  },
+  {
+    "case": "clifford_60q",
+    "metric": {
+      "dense_mb": 17592186044416.0,
+      "estimate": "stim",
+      "measured": "stim",
+      "n_gates": 720,
+      "n_qubits": 60,
+      "stim_ms": 0.011625,
+      "t_count": 0
+    },
+    "note": "estimate=stim, measured=stim, T=0, dense=17592186044416.0MB",
+    "verdict": "PASS"
+  },
+  {
+    "case": "t_small_8q",
+    "metric": {
+      "dense_mb": 0.004,
+      "dense_ms": 1.371833,
+      "estimate": "dense",
+      "measured": "dense",
+      "n_gates": 96,
+      "n_qubits": 8,
+      "t_count": 4
+    },
+    "note": "estimate=dense, measured=dense, T=4, dense=0.004MB",
+    "verdict": "PASS"
+  },
+  {
+    "case": "t_mid_dense_20q",
+    "metric": {
+      "dense_mb": 16.0,
+      "dense_ms": 12594.761417,
+      "estimate": "dense",
+      "measured": "dense",
+      "n_gates": 120,
+      "n_qubits": 20,
+      "t_count": 8
+    },
+    "note": "estimate=dense, measured=dense, T=8, dense=16.0MB",
+    "verdict": "PASS"
+  },
+  {
+    "case": "t_big_30q",
+    "metric": {
+      "dense_gb": 16.0,
+      "dense_mb": 16384.0,
+      "estimate": "QPU_OR_TENSOR_REQUIRED",
+      "measured": "QPU_OR_TENSOR_REQUIRED",
+      "n_gates": 180,
+      "n_qubits": 30,
+      "t_count": 4
+    },
+    "note": "estimate=QPU_OR_TENSOR_REQUIRED, measured=QPU_OR_TENSOR_REQUIRED, T=4, dense=16384.0MB",
+    "verdict": "PASS"
+  },
+  {
+    "case": "quimb_import",
+    "metric": {
+      "error": "RuntimeError",
+      "message": "cannot cache function 'threading_choose_num_blocks': no locator available for file '/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/quimb/core.py'"
+    },
+    "note": "quimb unavailable here: RuntimeError",
+    "verdict": "WARN"
+  },
+  {
+    "case": "tensor_matches_dense_10q",
+    "metric": {
+      "abs_error": 2.7755575615628914e-17,
+      "dense_ms": 3.8686,
+      "tensor_ms": 0.7262
+    },
+    "note": "error=2.78e-17, dense=3.869ms tensor=0.726ms",
+    "verdict": "PASS"
+  },
+  {
+    "case": "route_40q_low_entanglement",
+    "metric": {
+      "budget_mb": 256.0,
+      "contraction_cost": 759.0,
+      "contraction_width_log2": 2.0,
+      "dense_mb": 16777216.0,
+      "flops_ceiling": 100000000.0,
+      "max_size_elements": 4,
+      "memory_viable": true,
+      "n_tensors": 200,
+      "route": "tensor",
+      "tensor_ms": 2.2724,
+      "tensor_peak_mb": 6.1e-05,
+      "time_viable": true
+    },
+    "note": "route=tensor, width=2.0, tensor=2.27ms",
+    "verdict": "PASS"
+  },
+  {
+    "case": "route_24q_1d_entangled",
+    "metric": {
+      "budget_mb": 256.0,
+      "contraction_cost": 3785760.0,
+      "contraction_width_log2": 14.0,
+      "dense_mb": 256.0,
+      "flops_ceiling": 100000000.0,
+      "max_size_elements": 16384,
+      "memory_viable": true,
+      "n_tensors": 474,
+      "route": "tensor",
+      "tensor_ms": 5.4155,
+      "tensor_peak_mb": 0.25,
+      "time_viable": true
+    },
+    "note": "route=tensor, width=14.0, tensor=5.42ms",
+    "verdict": "PASS"
+  }
+]

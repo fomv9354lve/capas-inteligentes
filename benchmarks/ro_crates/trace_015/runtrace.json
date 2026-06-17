@@ -1,0 +1,227 @@
+{
+  "coverage_case": "certified_bound_candidate",
+  "result": {
+    "engine_id": "physics_magnitude_quantum_engine.quimb_mps_certified_bound_candidate",
+    "function_name": "quimb_mps_certified_bound_candidate",
+    "kwargs": {
+      "depth": 6,
+      "max_bond": 8,
+      "n": 60,
+      "seed": 1
+    },
+    "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
+    "module_sha256": "637f6bce852aae2058adbc38ab6269d58c202cc53cde232236d4519b5a6e9418",
+    "result": {
+      "abs_error": null,
+      "benchmark_family": "TensorNetwork",
+      "certification_status": "candidate_not_external_validation",
+      "depth": 6,
+      "expected": "no dense reference at this scale",
+      "max_bond": 8,
+      "n": 60,
+      "observable": "Truncated MPS fidelity/trace-distance bound candidate for 1D random circuit",
+      "physical_evidence_detail": "Derived from quimb CircuitMPS fidelity_estimate. Trace distance uses D<=sqrt(1-F). This is an algorithmic truncation-bound candidate, not cross-sim or analytic validation.",
+      "physical_evidence_level": "certified_bound",
+      "reference_truth": "quimb_circuitmps_truncation_error_tracker",
+      "source_label": "ESTIMATED (no dense ground truth; quimb fidelity_estimate, not verified)",
+      "units": "dimensionless",
+      "value": {
+        "bond_used": 8,
+        "fidelity_lower_bound": 0.9999999999999709,
+        "trace_distance_upper_bound": 1.70551585290724e-07
+      },
+      "verification_independence": "algorithmic_error_certificate_same_runtime"
+    }
+  },
+  "trace": {
+    "decision_reason": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+    "decision_route": "external_engine",
+    "error": null,
+    "events": [
+      {
+        "message": "workload accepted",
+        "metrics": {
+          "budget": {
+            "flops_ceiling": 100000000.0,
+            "memory_budget_bytes": 536870912,
+            "safety_factor": 0.5
+          },
+          "engine": {
+            "engine_id": "physics_magnitude_quantum_engine.quimb_mps_certified_bound_candidate",
+            "function_name": "quimb_mps_certified_bound_candidate",
+            "kwargs_hash": "81236cf696b918c94c16989ce258726c99ce4fdaee8db6a02574f0130753ceef",
+            "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
+          },
+          "kind": "dense",
+          "n_qubits": 2
+        },
+        "stage": "ingest",
+        "status": "ok",
+        "timestamp": 1781724291.3913338
+      },
+      {
+        "message": "runtime and hardware context recorded",
+        "metrics": {
+          "cotengra_available": true,
+          "cotengra_version": "0.8.1",
+          "machine": "arm64",
+          "mlx_probe": "skipped_in_default_trace; use apple_silicon_thermal_routing.py for Metal/MLX device probes",
+          "numpy_available": true,
+          "numpy_version": "2.4.6",
+          "platform": "macOS-26.5.1-arm64-arm-64bit",
+          "processor": "arm",
+          "python_executable": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/physics_quantum/physics-magnitude-lab/.pixi/envs/default/bin/python",
+          "python_version": "3.12.13",
+          "qiskit_aer_available": true,
+          "qiskit_aer_version": "0.17.2",
+          "quimb_available": true,
+          "quimb_version": "1.14.0",
+          "scipy_available": true,
+          "scipy_version": "1.17.1",
+          "stim_available": true,
+          "stim_version": "1.16.0"
+        },
+        "stage": "runtime_context",
+        "status": "ok",
+        "timestamp": 1781724291.39134
+      },
+      {
+        "message": "external engine provenance recorded",
+        "metrics": {
+          "engine_id": "physics_magnitude_quantum_engine.quimb_mps_certified_bound_candidate",
+          "function_name": "quimb_mps_certified_bound_candidate",
+          "kwargs": {
+            "depth": 6,
+            "max_bond": 8,
+            "n": 60,
+            "seed": 1
+          },
+          "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
+          "module_sha256": "637f6bce852aae2058adbc38ab6269d58c202cc53cde232236d4519b5a6e9418"
+        },
+        "stage": "engine_provenance",
+        "status": "ok",
+        "timestamp": 1781724291.391365
+      },
+      {
+        "message": "dense statevector cost estimated",
+        "metrics": {
+          "memory_viable": true,
+          "n_qubits": 2,
+          "route": "dense",
+          "statevector_bytes": 64,
+          "usable_memory_bytes": 268435456.0
+        },
+        "stage": "cost_model",
+        "status": "ok",
+        "timestamp": 1781724291.391366
+      },
+      {
+        "message": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+        "metrics": {
+          "engine_id": "physics_magnitude_quantum_engine.quimb_mps_certified_bound_candidate",
+          "function_name": "quimb_mps_certified_bound_candidate",
+          "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
+        },
+        "stage": "route",
+        "status": "ok",
+        "timestamp": 1781724291.391368
+      },
+      {
+        "message": "backend executed",
+        "metrics": {
+          "abs_error": null,
+          "benchmark_family": "TensorNetwork",
+          "certification_status": "candidate_not_external_validation",
+          "depth": 6,
+          "expected": "no dense reference at this scale",
+          "max_bond": 8,
+          "n": 60,
+          "observable": "Truncated MPS fidelity/trace-distance bound candidate for 1D random circuit",
+          "physical_evidence_detail": "Derived from quimb CircuitMPS fidelity_estimate. Trace distance uses D<=sqrt(1-F). This is an algorithmic truncation-bound candidate, not cross-sim or analytic validation.",
+          "physical_evidence_level": "certified_bound",
+          "reference_truth": "quimb_circuitmps_truncation_error_tracker",
+          "repr": "{'engine_id': 'physics_magnitude_quantum_engine.quimb_mps_certified_bound_candidate', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics",
+          "route": "external_engine",
+          "runtime_ms": 249.97024997719564,
+          "source_label": "ESTIMATED (no dense ground truth; quimb fidelity_estimate, not verified)",
+          "type": "dict",
+          "units": "dimensionless",
+          "value": {
+            "bond_used": 8,
+            "fidelity_lower_bound": 0.9999999999999709,
+            "trace_distance_upper_bound": 1.70551585290724e-07
+          },
+          "verification_independence": "algorithmic_error_certificate_same_runtime"
+        },
+        "stage": "execute",
+        "status": "ok",
+        "timestamp": 1781724291.641386
+      },
+      {
+        "message": "physical evidence reported by backend",
+        "metrics": {
+          "abs_error": null,
+          "evidence_hash": "176390b5f3b036edbd87100db590e92e4c027a143aa489f829e04455a929a172",
+          "expected": "no dense reference at this scale",
+          "observable": "Truncated MPS fidelity/trace-distance bound candidate for 1D random circuit",
+          "physical_evidence_detail": "Derived from quimb CircuitMPS fidelity_estimate. Trace distance uses D<=sqrt(1-F). This is an algorithmic truncation-bound candidate, not cross-sim or analytic validation.",
+          "physical_evidence_level": "certified_bound",
+          "units": "dimensionless",
+          "value": {
+            "bond_used": 8,
+            "fidelity_lower_bound": 0.9999999999999709,
+            "trace_distance_upper_bound": 1.70551585290724e-07
+          }
+        },
+        "stage": "physical_evidence",
+        "status": "ok",
+        "timestamp": 1781724291.641396
+      }
+    ],
+    "hash_algorithm": "sha256(stable_json)",
+    "result_hash": "00e912851d53666c4c327ba17885a94d450df74ac89dd3910ea82d015cb93d7a",
+    "result_summary": {
+      "abs_error": null,
+      "benchmark_family": "TensorNetwork",
+      "certification_status": "candidate_not_external_validation",
+      "depth": 6,
+      "expected": "no dense reference at this scale",
+      "max_bond": 8,
+      "n": 60,
+      "observable": "Truncated MPS fidelity/trace-distance bound candidate for 1D random circuit",
+      "physical_evidence_detail": "Derived from quimb CircuitMPS fidelity_estimate. Trace distance uses D<=sqrt(1-F). This is an algorithmic truncation-bound candidate, not cross-sim or analytic validation.",
+      "physical_evidence_level": "certified_bound",
+      "reference_truth": "quimb_circuitmps_truncation_error_tracker",
+      "repr": "{'engine_id': 'physics_magnitude_quantum_engine.quimb_mps_certified_bound_candidate', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics",
+      "source_label": "ESTIMATED (no dense ground truth; quimb fidelity_estimate, not verified)",
+      "type": "dict",
+      "units": "dimensionless",
+      "value": {
+        "bond_used": 8,
+        "fidelity_lower_bound": 0.9999999999999709,
+        "trace_distance_upper_bound": 1.70551585290724e-07
+      },
+      "verification_independence": "algorithmic_error_certificate_same_runtime"
+    },
+    "trace_schema_version": "capas-runtrace-v2",
+    "workload_hash": "6fec017272dc54e916e89a404b3cb27348e49db041a4ae13492fed2394563823",
+    "workload_summary": {
+      "budget": {
+        "flops_ceiling": 100000000.0,
+        "memory_budget_bytes": 536870912,
+        "safety_factor": 0.5
+      },
+      "engine": {
+        "engine_id": "physics_magnitude_quantum_engine.quimb_mps_certified_bound_candidate",
+        "function_name": "quimb_mps_certified_bound_candidate",
+        "kwargs_hash": "81236cf696b918c94c16989ce258726c99ce4fdaee8db6a02574f0130753ceef",
+        "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
+      },
+      "kind": "dense",
+      "n_qubits": 2
+    }
+  },
+  "trace_hash": "6a430fa2b72ebe76e7daa9cc8fe7b8fc1604f66937bc58d5221e90b086861a9e",
+  "trace_id": "trace_015"
+}

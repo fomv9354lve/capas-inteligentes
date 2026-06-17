@@ -1,0 +1,389 @@
+{
+  "activity": {
+    "capas:run:6a430fa2b72ebe76:activity:0:ingest": {
+      "capas:message": "workload accepted",
+      "capas:status": "ok",
+      "capas:timestamp": 1781724291.3913338,
+      "prov:type": "capas:ingest"
+    },
+    "capas:run:6a430fa2b72ebe76:activity:1:runtime_context": {
+      "capas:message": "runtime and hardware context recorded",
+      "capas:status": "ok",
+      "capas:timestamp": 1781724291.39134,
+      "prov:type": "capas:runtime_context"
+    },
+    "capas:run:6a430fa2b72ebe76:activity:2:engine_provenance": {
+      "capas:message": "external engine provenance recorded",
+      "capas:status": "ok",
+      "capas:timestamp": 1781724291.391365,
+      "prov:type": "capas:engine_provenance"
+    },
+    "capas:run:6a430fa2b72ebe76:activity:3:cost_model": {
+      "capas:message": "dense statevector cost estimated",
+      "capas:status": "ok",
+      "capas:timestamp": 1781724291.391366,
+      "prov:type": "capas:cost_model"
+    },
+    "capas:run:6a430fa2b72ebe76:activity:4:route": {
+      "capas:message": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+      "capas:status": "ok",
+      "capas:timestamp": 1781724291.391368,
+      "prov:type": "capas:route"
+    },
+    "capas:run:6a430fa2b72ebe76:activity:5:execute": {
+      "capas:message": "backend executed",
+      "capas:status": "ok",
+      "capas:timestamp": 1781724291.641386,
+      "prov:type": "capas:execute"
+    },
+    "capas:run:6a430fa2b72ebe76:activity:6:physical_evidence": {
+      "capas:message": "physical evidence reported by backend",
+      "capas:status": "ok",
+      "capas:timestamp": 1781724291.641396,
+      "prov:type": "capas:physical_evidence"
+    }
+  },
+  "agent": {
+    "capas:agent:costurero": {
+      "capas:name": "CAPAS INTELIGENTES costurero",
+      "prov:type": "prov:SoftwareAgent"
+    }
+  },
+  "bundle": "capas:run:6a430fa2b72ebe76",
+  "capas:traceHash": "6a430fa2b72ebe76e7daa9cc8fe7b8fc1604f66937bc58d5221e90b086861a9e",
+  "entity": {
+    "capas:run:6a430fa2b72ebe76:decision": {
+      "capas:reason": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+      "capas:route": "external_engine",
+      "prov:type": "capas:RoutingDecision"
+    },
+    "capas:run:6a430fa2b72ebe76:engine_module": {
+      "capas:engineId": "physics_magnitude_quantum_engine.quimb_mps_certified_bound_candidate",
+      "capas:functionName": "quimb_mps_certified_bound_candidate",
+      "capas:modulePath": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
+      "capas:moduleSha256": "637f6bce852aae2058adbc38ab6269d58c202cc53cde232236d4519b5a6e9418",
+      "prov:type": "capas:EngineModule"
+    },
+    "capas:run:6a430fa2b72ebe76:entity:0:ingest:metrics": {
+      "capas:eventHash": "e3642db587f9eb775078977a5cc2ef30c44081b4228e910a3250c89318be77b4",
+      "capas:metrics": {
+        "budget": {
+          "flops_ceiling": 100000000.0,
+          "memory_budget_bytes": 536870912,
+          "safety_factor": 0.5
+        },
+        "engine": {
+          "engine_id": "physics_magnitude_quantum_engine.quimb_mps_certified_bound_candidate",
+          "function_name": "quimb_mps_certified_bound_candidate",
+          "kwargs_hash": "81236cf696b918c94c16989ce258726c99ce4fdaee8db6a02574f0130753ceef",
+          "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
+        },
+        "kind": "dense",
+        "n_qubits": 2
+      },
+      "capas:stage": "ingest",
+      "prov:type": "capas:EventMetrics"
+    },
+    "capas:run:6a430fa2b72ebe76:entity:1:runtime_context:metrics": {
+      "capas:eventHash": "924c04255c13e664eeb6c1bd84a582f0ee6d5c0204e43e03231f33583c61afce",
+      "capas:metrics": {
+        "cotengra_available": true,
+        "cotengra_version": "0.8.1",
+        "machine": "arm64",
+        "mlx_probe": "skipped_in_default_trace; use apple_silicon_thermal_routing.py for Metal/MLX device probes",
+        "numpy_available": true,
+        "numpy_version": "2.4.6",
+        "platform": "macOS-26.5.1-arm64-arm-64bit",
+        "processor": "arm",
+        "python_executable": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/physics_quantum/physics-magnitude-lab/.pixi/envs/default/bin/python",
+        "python_version": "3.12.13",
+        "qiskit_aer_available": true,
+        "qiskit_aer_version": "0.17.2",
+        "quimb_available": true,
+        "quimb_version": "1.14.0",
+        "scipy_available": true,
+        "scipy_version": "1.17.1",
+        "stim_available": true,
+        "stim_version": "1.16.0"
+      },
+      "capas:stage": "runtime_context",
+      "prov:type": "capas:EventMetrics"
+    },
+    "capas:run:6a430fa2b72ebe76:entity:2:engine_provenance:metrics": {
+      "capas:eventHash": "03e1f9103cfba1b531433bedf13a9464793acf41ae202e32e7c067ea5b2ed79c",
+      "capas:metrics": {
+        "engine_id": "physics_magnitude_quantum_engine.quimb_mps_certified_bound_candidate",
+        "function_name": "quimb_mps_certified_bound_candidate",
+        "kwargs": {
+          "depth": 6,
+          "max_bond": 8,
+          "n": 60,
+          "seed": 1
+        },
+        "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
+        "module_sha256": "637f6bce852aae2058adbc38ab6269d58c202cc53cde232236d4519b5a6e9418"
+      },
+      "capas:stage": "engine_provenance",
+      "prov:type": "capas:EventMetrics"
+    },
+    "capas:run:6a430fa2b72ebe76:entity:3:cost_model:metrics": {
+      "capas:eventHash": "22bbe6ab292ab3f88ae0ca456c17ae33273a4596615985e1ee42f2d6f9f487ba",
+      "capas:metrics": {
+        "memory_viable": true,
+        "n_qubits": 2,
+        "route": "dense",
+        "statevector_bytes": 64,
+        "usable_memory_bytes": 268435456.0
+      },
+      "capas:stage": "cost_model",
+      "prov:type": "capas:EventMetrics"
+    },
+    "capas:run:6a430fa2b72ebe76:entity:4:route:metrics": {
+      "capas:eventHash": "37d9b3a0a4abb6b5451bdeef2d2eb78ec778dfb983f17adea123cbc84590dd26",
+      "capas:metrics": {
+        "engine_id": "physics_magnitude_quantum_engine.quimb_mps_certified_bound_candidate",
+        "function_name": "quimb_mps_certified_bound_candidate",
+        "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
+      },
+      "capas:stage": "route",
+      "prov:type": "capas:EventMetrics"
+    },
+    "capas:run:6a430fa2b72ebe76:entity:5:execute:metrics": {
+      "capas:eventHash": "73ab026b845a501844ec319d7f9e6e11d0632a317283f641b64bb334c54ef96a",
+      "capas:metrics": {
+        "abs_error": null,
+        "benchmark_family": "TensorNetwork",
+        "certification_status": "candidate_not_external_validation",
+        "depth": 6,
+        "expected": "no dense reference at this scale",
+        "max_bond": 8,
+        "n": 60,
+        "observable": "Truncated MPS fidelity/trace-distance bound candidate for 1D random circuit",
+        "physical_evidence_detail": "Derived from quimb CircuitMPS fidelity_estimate. Trace distance uses D<=sqrt(1-F). This is an algorithmic truncation-bound candidate, not cross-sim or analytic validation.",
+        "physical_evidence_level": "certified_bound",
+        "reference_truth": "quimb_circuitmps_truncation_error_tracker",
+        "repr": "{'engine_id': 'physics_magnitude_quantum_engine.quimb_mps_certified_bound_candidate', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics",
+        "route": "external_engine",
+        "runtime_ms": 249.97024997719564,
+        "source_label": "ESTIMATED (no dense ground truth; quimb fidelity_estimate, not verified)",
+        "type": "dict",
+        "units": "dimensionless",
+        "value": {
+          "bond_used": 8,
+          "fidelity_lower_bound": 0.9999999999999709,
+          "trace_distance_upper_bound": 1.70551585290724e-07
+        },
+        "verification_independence": "algorithmic_error_certificate_same_runtime"
+      },
+      "capas:stage": "execute",
+      "prov:type": "capas:EventMetrics"
+    },
+    "capas:run:6a430fa2b72ebe76:entity:6:physical_evidence:metrics": {
+      "capas:eventHash": "510fae3a0da52095d013fae7962b58e36d94860f227526a97c58ef1340513ecc",
+      "capas:metrics": {
+        "abs_error": null,
+        "evidence_hash": "176390b5f3b036edbd87100db590e92e4c027a143aa489f829e04455a929a172",
+        "expected": "no dense reference at this scale",
+        "observable": "Truncated MPS fidelity/trace-distance bound candidate for 1D random circuit",
+        "physical_evidence_detail": "Derived from quimb CircuitMPS fidelity_estimate. Trace distance uses D<=sqrt(1-F). This is an algorithmic truncation-bound candidate, not cross-sim or analytic validation.",
+        "physical_evidence_level": "certified_bound",
+        "units": "dimensionless",
+        "value": {
+          "bond_used": 8,
+          "fidelity_lower_bound": 0.9999999999999709,
+          "trace_distance_upper_bound": 1.70551585290724e-07
+        }
+      },
+      "capas:stage": "physical_evidence",
+      "prov:type": "capas:EventMetrics"
+    },
+    "capas:run:6a430fa2b72ebe76:physical_evidence": {
+      "capas:absError": null,
+      "capas:evidenceHash": "176390b5f3b036edbd87100db590e92e4c027a143aa489f829e04455a929a172",
+      "capas:expected": "no dense reference at this scale",
+      "capas:observable": "Truncated MPS fidelity/trace-distance bound candidate for 1D random circuit",
+      "capas:physicalEvidenceDetail": "Derived from quimb CircuitMPS fidelity_estimate. Trace distance uses D<=sqrt(1-F). This is an algorithmic truncation-bound candidate, not cross-sim or analytic validation.",
+      "capas:physicalEvidenceLevel": "certified_bound",
+      "capas:units": "dimensionless",
+      "capas:value": {
+        "bond_used": 8,
+        "fidelity_lower_bound": 0.9999999999999709,
+        "trace_distance_upper_bound": 1.70551585290724e-07
+      },
+      "prov:type": "capas:PhysicalEvidence"
+    },
+    "capas:run:6a430fa2b72ebe76:result": {
+      "capas:resultHash": "00e912851d53666c4c327ba17885a94d450df74ac89dd3910ea82d015cb93d7a",
+      "capas:summary": {
+        "abs_error": null,
+        "benchmark_family": "TensorNetwork",
+        "certification_status": "candidate_not_external_validation",
+        "depth": 6,
+        "expected": "no dense reference at this scale",
+        "max_bond": 8,
+        "n": 60,
+        "observable": "Truncated MPS fidelity/trace-distance bound candidate for 1D random circuit",
+        "physical_evidence_detail": "Derived from quimb CircuitMPS fidelity_estimate. Trace distance uses D<=sqrt(1-F). This is an algorithmic truncation-bound candidate, not cross-sim or analytic validation.",
+        "physical_evidence_level": "certified_bound",
+        "reference_truth": "quimb_circuitmps_truncation_error_tracker",
+        "repr": "{'engine_id': 'physics_magnitude_quantum_engine.quimb_mps_certified_bound_candidate', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics",
+        "source_label": "ESTIMATED (no dense ground truth; quimb fidelity_estimate, not verified)",
+        "type": "dict",
+        "units": "dimensionless",
+        "value": {
+          "bond_used": 8,
+          "fidelity_lower_bound": 0.9999999999999709,
+          "trace_distance_upper_bound": 1.70551585290724e-07
+        },
+        "verification_independence": "algorithmic_error_certificate_same_runtime"
+      },
+      "prov:type": "capas:Result"
+    },
+    "capas:run:6a430fa2b72ebe76:workload": {
+      "capas:summary": {
+        "budget": {
+          "flops_ceiling": 100000000.0,
+          "memory_budget_bytes": 536870912,
+          "safety_factor": 0.5
+        },
+        "engine": {
+          "engine_id": "physics_magnitude_quantum_engine.quimb_mps_certified_bound_candidate",
+          "function_name": "quimb_mps_certified_bound_candidate",
+          "kwargs_hash": "81236cf696b918c94c16989ce258726c99ce4fdaee8db6a02574f0130753ceef",
+          "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
+        },
+        "kind": "dense",
+        "n_qubits": 2
+      },
+      "capas:workloadHash": "6fec017272dc54e916e89a404b3cb27348e49db041a4ae13492fed2394563823",
+      "prov:type": "capas:Workload"
+    }
+  },
+  "prefix": {
+    "capas": "https://example.org/capas-inteligentes#",
+    "prov": "http://www.w3.org/ns/prov#"
+  },
+  "specializationOf": {},
+  "used": {
+    "capas:run:6a430fa2b72ebe76:activity:0:ingest:used:capas:run:6a430fa2b72ebe76:workload": {
+      "prov:activity": "capas:run:6a430fa2b72ebe76:activity:0:ingest",
+      "prov:entity": "capas:run:6a430fa2b72ebe76:workload"
+    },
+    "capas:run:6a430fa2b72ebe76:activity:1:runtime_context:used:capas:run:6a430fa2b72ebe76:entity:0:ingest:metrics": {
+      "prov:activity": "capas:run:6a430fa2b72ebe76:activity:1:runtime_context",
+      "prov:entity": "capas:run:6a430fa2b72ebe76:entity:0:ingest:metrics"
+    },
+    "capas:run:6a430fa2b72ebe76:activity:2:engine_provenance:used:capas:run:6a430fa2b72ebe76:engine_module": {
+      "prov:activity": "capas:run:6a430fa2b72ebe76:activity:2:engine_provenance",
+      "prov:entity": "capas:run:6a430fa2b72ebe76:engine_module"
+    },
+    "capas:run:6a430fa2b72ebe76:activity:2:engine_provenance:used:capas:run:6a430fa2b72ebe76:entity:1:runtime_context:metrics": {
+      "prov:activity": "capas:run:6a430fa2b72ebe76:activity:2:engine_provenance",
+      "prov:entity": "capas:run:6a430fa2b72ebe76:entity:1:runtime_context:metrics"
+    },
+    "capas:run:6a430fa2b72ebe76:activity:3:cost_model:used:capas:run:6a430fa2b72ebe76:entity:2:engine_provenance:metrics": {
+      "prov:activity": "capas:run:6a430fa2b72ebe76:activity:3:cost_model",
+      "prov:entity": "capas:run:6a430fa2b72ebe76:entity:2:engine_provenance:metrics"
+    },
+    "capas:run:6a430fa2b72ebe76:activity:4:route:used:capas:run:6a430fa2b72ebe76:entity:3:cost_model:metrics": {
+      "prov:activity": "capas:run:6a430fa2b72ebe76:activity:4:route",
+      "prov:entity": "capas:run:6a430fa2b72ebe76:entity:3:cost_model:metrics"
+    },
+    "capas:run:6a430fa2b72ebe76:activity:5:execute:used:capas:run:6a430fa2b72ebe76:entity:4:route:metrics": {
+      "prov:activity": "capas:run:6a430fa2b72ebe76:activity:5:execute",
+      "prov:entity": "capas:run:6a430fa2b72ebe76:entity:4:route:metrics"
+    },
+    "capas:run:6a430fa2b72ebe76:activity:6:physical_evidence:used:capas:run:6a430fa2b72ebe76:entity:5:execute:metrics": {
+      "prov:activity": "capas:run:6a430fa2b72ebe76:activity:6:physical_evidence",
+      "prov:entity": "capas:run:6a430fa2b72ebe76:entity:5:execute:metrics"
+    }
+  },
+  "wasAssociatedWith": {
+    "capas:run:6a430fa2b72ebe76:activity:0:ingest:agent": {
+      "prov:activity": "capas:run:6a430fa2b72ebe76:activity:0:ingest",
+      "prov:agent": "capas:agent:costurero"
+    },
+    "capas:run:6a430fa2b72ebe76:activity:1:runtime_context:agent": {
+      "prov:activity": "capas:run:6a430fa2b72ebe76:activity:1:runtime_context",
+      "prov:agent": "capas:agent:costurero"
+    },
+    "capas:run:6a430fa2b72ebe76:activity:2:engine_provenance:agent": {
+      "prov:activity": "capas:run:6a430fa2b72ebe76:activity:2:engine_provenance",
+      "prov:agent": "capas:agent:costurero"
+    },
+    "capas:run:6a430fa2b72ebe76:activity:3:cost_model:agent": {
+      "prov:activity": "capas:run:6a430fa2b72ebe76:activity:3:cost_model",
+      "prov:agent": "capas:agent:costurero"
+    },
+    "capas:run:6a430fa2b72ebe76:activity:4:route:agent": {
+      "prov:activity": "capas:run:6a430fa2b72ebe76:activity:4:route",
+      "prov:agent": "capas:agent:costurero"
+    },
+    "capas:run:6a430fa2b72ebe76:activity:5:execute:agent": {
+      "prov:activity": "capas:run:6a430fa2b72ebe76:activity:5:execute",
+      "prov:agent": "capas:agent:costurero"
+    },
+    "capas:run:6a430fa2b72ebe76:activity:6:physical_evidence:agent": {
+      "prov:activity": "capas:run:6a430fa2b72ebe76:activity:6:physical_evidence",
+      "prov:agent": "capas:agent:costurero"
+    }
+  },
+  "wasAttributedTo": {
+    "capas:run:6a430fa2b72ebe76:result:agent": {
+      "prov:agent": "capas:agent:costurero",
+      "prov:entity": "capas:run:6a430fa2b72ebe76:result"
+    }
+  },
+  "wasDerivedFrom": {
+    "capas:run:6a430fa2b72ebe76:physical_evidence:from:capas:run:6a430fa2b72ebe76:result": {
+      "prov:generatedEntity": "capas:run:6a430fa2b72ebe76:physical_evidence",
+      "prov:usedEntity": "capas:run:6a430fa2b72ebe76:result"
+    },
+    "capas:run:6a430fa2b72ebe76:result:from:capas:run:6a430fa2b72ebe76:workload": {
+      "prov:generatedEntity": "capas:run:6a430fa2b72ebe76:result",
+      "prov:usedEntity": "capas:run:6a430fa2b72ebe76:workload"
+    }
+  },
+  "wasGeneratedBy": {
+    "capas:run:6a430fa2b72ebe76:decision:generatedBy:capas:run:6a430fa2b72ebe76:activity:4:route": {
+      "prov:activity": "capas:run:6a430fa2b72ebe76:activity:4:route",
+      "prov:entity": "capas:run:6a430fa2b72ebe76:decision"
+    },
+    "capas:run:6a430fa2b72ebe76:entity:0:ingest:metrics:generatedBy:capas:run:6a430fa2b72ebe76:activity:0:ingest": {
+      "prov:activity": "capas:run:6a430fa2b72ebe76:activity:0:ingest",
+      "prov:entity": "capas:run:6a430fa2b72ebe76:entity:0:ingest:metrics"
+    },
+    "capas:run:6a430fa2b72ebe76:entity:1:runtime_context:metrics:generatedBy:capas:run:6a430fa2b72ebe76:activity:1:runtime_context": {
+      "prov:activity": "capas:run:6a430fa2b72ebe76:activity:1:runtime_context",
+      "prov:entity": "capas:run:6a430fa2b72ebe76:entity:1:runtime_context:metrics"
+    },
+    "capas:run:6a430fa2b72ebe76:entity:2:engine_provenance:metrics:generatedBy:capas:run:6a430fa2b72ebe76:activity:2:engine_provenance": {
+      "prov:activity": "capas:run:6a430fa2b72ebe76:activity:2:engine_provenance",
+      "prov:entity": "capas:run:6a430fa2b72ebe76:entity:2:engine_provenance:metrics"
+    },
+    "capas:run:6a430fa2b72ebe76:entity:3:cost_model:metrics:generatedBy:capas:run:6a430fa2b72ebe76:activity:3:cost_model": {
+      "prov:activity": "capas:run:6a430fa2b72ebe76:activity:3:cost_model",
+      "prov:entity": "capas:run:6a430fa2b72ebe76:entity:3:cost_model:metrics"
+    },
+    "capas:run:6a430fa2b72ebe76:entity:4:route:metrics:generatedBy:capas:run:6a430fa2b72ebe76:activity:4:route": {
+      "prov:activity": "capas:run:6a430fa2b72ebe76:activity:4:route",
+      "prov:entity": "capas:run:6a430fa2b72ebe76:entity:4:route:metrics"
+    },
+    "capas:run:6a430fa2b72ebe76:entity:5:execute:metrics:generatedBy:capas:run:6a430fa2b72ebe76:activity:5:execute": {
+      "prov:activity": "capas:run:6a430fa2b72ebe76:activity:5:execute",
+      "prov:entity": "capas:run:6a430fa2b72ebe76:entity:5:execute:metrics"
+    },
+    "capas:run:6a430fa2b72ebe76:entity:6:physical_evidence:metrics:generatedBy:capas:run:6a430fa2b72ebe76:activity:6:physical_evidence": {
+      "prov:activity": "capas:run:6a430fa2b72ebe76:activity:6:physical_evidence",
+      "prov:entity": "capas:run:6a430fa2b72ebe76:entity:6:physical_evidence:metrics"
+    },
+    "capas:run:6a430fa2b72ebe76:physical_evidence:generatedBy:capas:run:6a430fa2b72ebe76:activity:6:physical_evidence": {
+      "prov:activity": "capas:run:6a430fa2b72ebe76:activity:6:physical_evidence",
+      "prov:entity": "capas:run:6a430fa2b72ebe76:physical_evidence"
+    },
+    "capas:run:6a430fa2b72ebe76:result:generatedBy:capas:run:6a430fa2b72ebe76:activity:5:execute": {
+      "prov:activity": "capas:run:6a430fa2b72ebe76:activity:5:execute",
+      "prov:entity": "capas:run:6a430fa2b72ebe76:result"
+    }
+  }
+}

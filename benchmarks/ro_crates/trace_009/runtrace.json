@@ -1,0 +1,194 @@
+{
+  "coverage_case": "analytic_success",
+  "result": {
+    "engine_id": "physics_magnitude_quantum_engine.harmonic_oscillator_energy",
+    "function_name": "harmonic_oscillator_energy",
+    "kwargs": {
+      "hbar": 1.0,
+      "n": 0,
+      "omega": 1.0
+    },
+    "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
+    "module_sha256": "637f6bce852aae2058adbc38ab6269d58c202cc53cde232236d4519b5a6e9418",
+    "result": {
+      "abs_error": 0.0,
+      "benchmark_family": "Schrodinger",
+      "expected": 0.5,
+      "observable": "Quantum harmonic oscillator energy E_0",
+      "physical_evidence_detail": "Harmonic oscillator eigenvalues are E_n = hbar*omega*(n + 1/2)",
+      "physical_evidence_level": "analytic",
+      "reference_truth": "closed_form_harmonic_oscillator",
+      "units": "energy",
+      "value": 0.5,
+      "verification_independence": "analytic_no_solver"
+    }
+  },
+  "trace": {
+    "decision_reason": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+    "decision_route": "external_engine",
+    "error": null,
+    "events": [
+      {
+        "message": "workload accepted",
+        "metrics": {
+          "budget": {
+            "flops_ceiling": 100000000.0,
+            "memory_budget_bytes": 536870912,
+            "safety_factor": 0.5
+          },
+          "engine": {
+            "engine_id": "physics_magnitude_quantum_engine.harmonic_oscillator_energy",
+            "function_name": "harmonic_oscillator_energy",
+            "kwargs_hash": "b8afb288934a359ea7577c1040eb0665203cc8f4c8a62aeef51a4a0abd1b514c",
+            "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
+          },
+          "kind": "dense",
+          "n_qubits": 2
+        },
+        "stage": "ingest",
+        "status": "ok",
+        "timestamp": 1781724291.3879302
+      },
+      {
+        "message": "runtime and hardware context recorded",
+        "metrics": {
+          "cotengra_available": true,
+          "cotengra_version": "0.8.1",
+          "machine": "arm64",
+          "mlx_probe": "skipped_in_default_trace; use apple_silicon_thermal_routing.py for Metal/MLX device probes",
+          "numpy_available": true,
+          "numpy_version": "2.4.6",
+          "platform": "macOS-26.5.1-arm64-arm-64bit",
+          "processor": "arm",
+          "python_executable": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/physics_quantum/physics-magnitude-lab/.pixi/envs/default/bin/python",
+          "python_version": "3.12.13",
+          "qiskit_aer_available": true,
+          "qiskit_aer_version": "0.17.2",
+          "quimb_available": true,
+          "quimb_version": "1.14.0",
+          "scipy_available": true,
+          "scipy_version": "1.17.1",
+          "stim_available": true,
+          "stim_version": "1.16.0"
+        },
+        "stage": "runtime_context",
+        "status": "ok",
+        "timestamp": 1781724291.387937
+      },
+      {
+        "message": "external engine provenance recorded",
+        "metrics": {
+          "engine_id": "physics_magnitude_quantum_engine.harmonic_oscillator_energy",
+          "function_name": "harmonic_oscillator_energy",
+          "kwargs": {
+            "hbar": 1.0,
+            "n": 0,
+            "omega": 1.0
+          },
+          "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
+          "module_sha256": "637f6bce852aae2058adbc38ab6269d58c202cc53cde232236d4519b5a6e9418"
+        },
+        "stage": "engine_provenance",
+        "status": "ok",
+        "timestamp": 1781724291.387965
+      },
+      {
+        "message": "dense statevector cost estimated",
+        "metrics": {
+          "memory_viable": true,
+          "n_qubits": 2,
+          "route": "dense",
+          "statevector_bytes": 64,
+          "usable_memory_bytes": 268435456.0
+        },
+        "stage": "cost_model",
+        "status": "ok",
+        "timestamp": 1781724291.3879669
+      },
+      {
+        "message": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+        "metrics": {
+          "engine_id": "physics_magnitude_quantum_engine.harmonic_oscillator_energy",
+          "function_name": "harmonic_oscillator_energy",
+          "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
+        },
+        "stage": "route",
+        "status": "ok",
+        "timestamp": 1781724291.387969
+      },
+      {
+        "message": "backend executed",
+        "metrics": {
+          "abs_error": 0.0,
+          "benchmark_family": "Schrodinger",
+          "expected": 0.5,
+          "observable": "Quantum harmonic oscillator energy E_0",
+          "physical_evidence_detail": "Harmonic oscillator eigenvalues are E_n = hbar*omega*(n + 1/2)",
+          "physical_evidence_level": "analytic",
+          "reference_truth": "closed_form_harmonic_oscillator",
+          "repr": "{'engine_id': 'physics_magnitude_quantum_engine.harmonic_oscillator_energy', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitud",
+          "route": "external_engine",
+          "runtime_ms": 0.11720799375325441,
+          "type": "dict",
+          "units": "energy",
+          "value": 0.5,
+          "verification_independence": "analytic_no_solver"
+        },
+        "stage": "execute",
+        "status": "ok",
+        "timestamp": 1781724291.388104
+      },
+      {
+        "message": "physical evidence reported by backend",
+        "metrics": {
+          "abs_error": 0.0,
+          "evidence_hash": "92e9bb747a27566b455f8b91d5aa6ffa0df00edc7f021068edd964415aa98203",
+          "expected": 0.5,
+          "observable": "Quantum harmonic oscillator energy E_0",
+          "physical_evidence_detail": "Harmonic oscillator eigenvalues are E_n = hbar*omega*(n + 1/2)",
+          "physical_evidence_level": "analytic",
+          "units": "energy",
+          "value": 0.5
+        },
+        "stage": "physical_evidence",
+        "status": "ok",
+        "timestamp": 1781724291.388109
+      }
+    ],
+    "hash_algorithm": "sha256(stable_json)",
+    "result_hash": "6868637343c447a3800ad3a734fc28a73d97ca3a087131851352420d6f59c9a4",
+    "result_summary": {
+      "abs_error": 0.0,
+      "benchmark_family": "Schrodinger",
+      "expected": 0.5,
+      "observable": "Quantum harmonic oscillator energy E_0",
+      "physical_evidence_detail": "Harmonic oscillator eigenvalues are E_n = hbar*omega*(n + 1/2)",
+      "physical_evidence_level": "analytic",
+      "reference_truth": "closed_form_harmonic_oscillator",
+      "repr": "{'engine_id': 'physics_magnitude_quantum_engine.harmonic_oscillator_energy', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitud",
+      "type": "dict",
+      "units": "energy",
+      "value": 0.5,
+      "verification_independence": "analytic_no_solver"
+    },
+    "trace_schema_version": "capas-runtrace-v2",
+    "workload_hash": "3f3d11188a865293d577c2988b361ab6f919506e9570e3f91f1b8c9ebb7e5a4e",
+    "workload_summary": {
+      "budget": {
+        "flops_ceiling": 100000000.0,
+        "memory_budget_bytes": 536870912,
+        "safety_factor": 0.5
+      },
+      "engine": {
+        "engine_id": "physics_magnitude_quantum_engine.harmonic_oscillator_energy",
+        "function_name": "harmonic_oscillator_energy",
+        "kwargs_hash": "b8afb288934a359ea7577c1040eb0665203cc8f4c8a62aeef51a4a0abd1b514c",
+        "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
+      },
+      "kind": "dense",
+      "n_qubits": 2
+    }
+  },
+  "trace_hash": "e2387ed7641130222261827bd25568b06615c50ebd315c2243454cf9ca933848",
+  "trace_id": "trace_009"
+}

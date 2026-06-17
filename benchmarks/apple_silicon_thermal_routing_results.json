@@ -1,0 +1,148 @@
+{
+  "benchmark": "apple_silicon_thermal_routing",
+  "claim_under_test": "Does sustained Apple Silicon load change the optimal backend choice? If yes, thermal-aware routing has product value; if no, a static router is enough.",
+  "cold_results": [
+    {
+      "backend": "numpy_accelerate_cpu",
+      "device": "apple_accelerate_cpu",
+      "error": null,
+      "max_s": 0.026892166992183775,
+      "median_s": 0.01931012497516349,
+      "min_s": 0.00471320902579464,
+      "ok": true,
+      "result_fingerprint": "b8a4c0cf1ed1a1226045aefd2d79ac999942de1dc0647eff8f2f6e4a3b3b383a",
+      "size": 512,
+      "state": "cold",
+      "times_s": [
+        0.00471320902579464,
+        0.026892166992183775,
+        0.01931012497516349
+      ],
+      "trials": 3
+    },
+    {
+      "backend": "mlx_cpu",
+      "device": "apple_mlx_cpu",
+      "error": null,
+      "max_s": 0.002661790989805013,
+      "median_s": 0.0024130410165525973,
+      "min_s": 0.002156749978894368,
+      "ok": true,
+      "result_fingerprint": "b8a4c0cf1ed1a1226045aefd2d79ac999942de1dc0647eff8f2f6e4a3b3b383a",
+      "size": 512,
+      "state": "cold",
+      "times_s": [
+        0.0024130410165525973,
+        0.002156749978894368,
+        0.002661790989805013
+      ],
+      "trials": 3
+    },
+    {
+      "backend": "mlx_gpu_metal",
+      "device": "apple_metal_gpu",
+      "error": null,
+      "max_s": 0.0017873329925350845,
+      "median_s": 0.0016431660042144358,
+      "min_s": 0.001553582987980917,
+      "ok": true,
+      "result_fingerprint": "b8a4c0cf1ed1a1226045aefd2d79ac999942de1dc0647eff8f2f6e4a3b3b383a",
+      "size": 512,
+      "state": "cold",
+      "times_s": [
+        0.001553582987980917,
+        0.0017873329925350845,
+        0.0016431660042144358
+      ],
+      "trials": 3
+    }
+  ],
+  "decision": {
+    "cold_best": "mlx_gpu_metal",
+    "hot_best": "mlx_gpu_metal",
+    "interpretation": "no backend inversion observed for this workload; static routing may be enough",
+    "thermal_crossover": false
+  },
+  "heat": {
+    "backend": "mlx_gpu_metal",
+    "iterations": 1549,
+    "ok": true,
+    "seconds": 3.000244583003223
+  },
+  "hot_results": [
+    {
+      "backend": "numpy_accelerate_cpu",
+      "device": "apple_accelerate_cpu",
+      "error": null,
+      "max_s": 0.03129275000537746,
+      "median_s": 0.025481958989985287,
+      "min_s": 0.01047420798568055,
+      "ok": true,
+      "result_fingerprint": "b8a4c0cf1ed1a1226045aefd2d79ac999942de1dc0647eff8f2f6e4a3b3b383a",
+      "size": 512,
+      "state": "hot_after_sustained_load",
+      "times_s": [
+        0.03129275000537746,
+        0.01047420798568055,
+        0.025481958989985287
+      ],
+      "trials": 3
+    },
+    {
+      "backend": "mlx_cpu",
+      "device": "apple_mlx_cpu",
+      "error": null,
+      "max_s": 0.002126250008586794,
+      "median_s": 0.001743583008646965,
+      "min_s": 0.0015565420035272837,
+      "ok": true,
+      "result_fingerprint": "b8a4c0cf1ed1a1226045aefd2d79ac999942de1dc0647eff8f2f6e4a3b3b383a",
+      "size": 512,
+      "state": "hot_after_sustained_load",
+      "times_s": [
+        0.0015565420035272837,
+        0.002126250008586794,
+        0.001743583008646965
+      ],
+      "trials": 3
+    },
+    {
+      "backend": "mlx_gpu_metal",
+      "device": "apple_metal_gpu",
+      "error": null,
+      "max_s": 0.0013585830165538937,
+      "median_s": 0.0011799170169979334,
+      "min_s": 0.0010381669853813946,
+      "ok": true,
+      "result_fingerprint": "b8a4c0cf1ed1a1226045aefd2d79ac999942de1dc0647eff8f2f6e4a3b3b383a",
+      "size": 512,
+      "state": "hot_after_sustained_load",
+      "times_s": [
+        0.0011799170169979334,
+        0.0013585830165538937,
+        0.0010381669853813946
+      ],
+      "trials": 3
+    }
+  ],
+  "platform": {
+    "machine": "arm64",
+    "platform": "macOS-26.5.1-arm64-arm-64bit",
+    "processor": "arm"
+  },
+  "protocol": {
+    "backends": [
+      "numpy_accelerate_cpu",
+      "mlx_cpu",
+      "mlx_gpu_metal"
+    ],
+    "cooldown_s": 0.0,
+    "heat_backend": "mlx_gpu_metal",
+    "heat_s": 3.0,
+    "heat_size": 512,
+    "note": "Use --cooldown-s 90 for the controlled protocol suggested by the M4 thermal study.",
+    "size": 512,
+    "trials": 3
+  },
+  "trace_hash": "43e4b836a94ee9000301792edd43b7e0eec2741f2e3c82ef2c32023861e5f3bd"
+}

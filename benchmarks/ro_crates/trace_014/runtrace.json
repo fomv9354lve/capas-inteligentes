@@ -1,0 +1,103 @@
+{
+  "coverage_case": "rejected_by_router",
+  "result": null,
+  "trace": {
+    "decision_reason": "dense statevector exceeds memory budget",
+    "decision_route": "QPU_REQUIRED",
+    "error": null,
+    "events": [
+      {
+        "message": "workload accepted",
+        "metrics": {
+          "budget": {
+            "flops_ceiling": 100000000.0,
+            "memory_budget_bytes": 268435456,
+            "safety_factor": 0.5
+          },
+          "kind": "dense",
+          "n_qubits": 40
+        },
+        "stage": "ingest",
+        "status": "ok",
+        "timestamp": 1781724291.641896
+      },
+      {
+        "message": "runtime and hardware context recorded",
+        "metrics": {
+          "cotengra_available": true,
+          "cotengra_version": "0.8.1",
+          "machine": "arm64",
+          "mlx_probe": "skipped_in_default_trace; use apple_silicon_thermal_routing.py for Metal/MLX device probes",
+          "numpy_available": true,
+          "numpy_version": "2.4.6",
+          "platform": "macOS-26.5.1-arm64-arm-64bit",
+          "processor": "arm",
+          "python_executable": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/physics_quantum/physics-magnitude-lab/.pixi/envs/default/bin/python",
+          "python_version": "3.12.13",
+          "qiskit_aer_available": true,
+          "qiskit_aer_version": "0.17.2",
+          "quimb_available": true,
+          "quimb_version": "1.14.0",
+          "scipy_available": true,
+          "scipy_version": "1.17.1",
+          "stim_available": true,
+          "stim_version": "1.16.0"
+        },
+        "stage": "runtime_context",
+        "status": "ok",
+        "timestamp": 1781724291.64191
+      },
+      {
+        "message": "dense statevector cost estimated",
+        "metrics": {
+          "memory_viable": false,
+          "n_qubits": 40,
+          "route": "QPU_REQUIRED",
+          "statevector_bytes": 17592186044416,
+          "usable_memory_bytes": 134217728.0
+        },
+        "stage": "cost_model",
+        "status": "ok",
+        "timestamp": 1781724291.6419148
+      },
+      {
+        "message": "dense statevector exceeds memory budget",
+        "metrics": {
+          "memory_viable": false,
+          "n_qubits": 40,
+          "route": "QPU_REQUIRED",
+          "statevector_bytes": 17592186044416,
+          "usable_memory_bytes": 134217728.0
+        },
+        "stage": "route",
+        "status": "ok",
+        "timestamp": 1781724291.6419232
+      },
+      {
+        "message": "route is not executable",
+        "metrics": {
+          "route": "QPU_REQUIRED"
+        },
+        "stage": "execute",
+        "status": "skipped",
+        "timestamp": 1781724291.6419241
+      }
+    ],
+    "hash_algorithm": "sha256(stable_json)",
+    "result_hash": null,
+    "result_summary": null,
+    "trace_schema_version": "capas-runtrace-v2",
+    "workload_hash": "f88e2ad357171326cc090d4f5721a3ff4ff5bfba123dd554b119bc94f83fd70e",
+    "workload_summary": {
+      "budget": {
+        "flops_ceiling": 100000000.0,
+        "memory_budget_bytes": 268435456,
+        "safety_factor": 0.5
+      },
+      "kind": "dense",
+      "n_qubits": 40
+    }
+  },
+  "trace_hash": "40be18b27e801c7fcf5d343abff3c33e1de5694c00cb13ada88651a031ae6cf8",
+  "trace_id": "trace_014"
+}

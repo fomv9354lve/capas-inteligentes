@@ -1,0 +1,203 @@
+{
+  "@context": [
+    "https://w3id.org/ro/crate/1.1/context",
+    {
+      "capas": "https://example.org/capas-inteligentes#",
+      "sha256": "https://schema.org/sha256"
+    }
+  ],
+  "@graph": [
+    {
+      "@id": "ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "about": {
+        "@id": "./"
+      },
+      "conformsTo": [
+        {
+          "@id": "https://w3id.org/ro/crate/1.1"
+        },
+        {
+          "@id": "https://example.org/capas-inteligentes/ro-crate/physical-evidence/0.1"
+        }
+      ]
+    },
+    {
+      "@id": "./",
+      "@type": "Dataset",
+      "capas:evidenceStatus": "not_applicable_rejected",
+      "capas:traceHash": "40be18b27e801c7fcf5d343abff3c33e1de5694c00cb13ada88651a031ae6cf8",
+      "capas:workloadHash": "f88e2ad357171326cc090d4f5721a3ff4ff5bfba123dd554b119bc94f83fd70e",
+      "conformsTo": [
+        {
+          "@id": "https://w3id.org/workflowhub/workflow-ro-crate/1.0"
+        },
+        {
+          "@id": "https://example.org/capas-inteligentes/ro-crate/physical-evidence/0.1"
+        }
+      ],
+      "description": "RO-Crate package containing a sealed RunTrace, optional PROV export, routing decision, runtime context, and CAPAS physical evidence metadata.",
+      "hasPart": [
+        {
+          "@id": "runtrace.json"
+        },
+        {
+          "@id": "runtrace.prov.json"
+        }
+      ],
+      "name": "CAPAS traced scientific computation crate"
+    },
+    {
+      "@id": "runtrace.json",
+      "@type": [
+        "File",
+        "DigitalDocument"
+      ],
+      "about": {
+        "@id": "trace:40be18b27e801c7f"
+      },
+      "encodingFormat": "application/json",
+      "name": "Sealed CAPAS RunTrace"
+    },
+    {
+      "@id": "trace:40be18b27e801c7f",
+      "@type": "CreateAction",
+      "capas:hashAlgorithm": "sha256(stable_json)",
+      "capas:routingDecision": {
+        "@id": "trace:40be18b27e801c7f:routing-decision"
+      },
+      "capas:traceHash": "40be18b27e801c7fcf5d343abff3c33e1de5694c00cb13ada88651a031ae6cf8",
+      "capas:traceSchemaVersion": "capas-runtrace-v2",
+      "instrument": {
+        "@id": "software:capas-costurero"
+      },
+      "name": "CAPAS costurero traced run",
+      "object": {
+        "@id": "entity:workload"
+      }
+    },
+    {
+      "@id": "software:capas-costurero",
+      "@type": "SoftwareApplication",
+      "applicationCategory": "Scientific provenance and evidence tracing",
+      "name": "CAPAS INTELIGENTES costurero"
+    },
+    {
+      "@id": "entity:workload",
+      "@type": "Dataset",
+      "capas:summary": {
+        "budget": {
+          "flops_ceiling": 100000000.0,
+          "memory_budget_bytes": 268435456,
+          "safety_factor": 0.5
+        },
+        "kind": "dense",
+        "n_qubits": 40
+      },
+      "capas:workloadHash": "f88e2ad357171326cc090d4f5721a3ff4ff5bfba123dd554b119bc94f83fd70e",
+      "name": "Workload summary"
+    },
+    {
+      "@id": "trace:40be18b27e801c7f:routing-decision",
+      "@type": "Thing",
+      "capas:reason": "dense statevector exceeds memory budget",
+      "capas:route": "QPU_REQUIRED",
+      "name": "Routing decision"
+    },
+    {
+      "@id": "runtrace.prov.json",
+      "@type": [
+        "File",
+        "DigitalDocument"
+      ],
+      "encodingFormat": "application/json",
+      "name": "W3C PROV-shaped export"
+    },
+    {
+      "@id": "trace:40be18b27e801c7f:event:0:ingest",
+      "@type": "Action",
+      "actionStatus": "ok",
+      "capas:metrics": {
+        "budget": {
+          "flops_ceiling": 100000000.0,
+          "memory_budget_bytes": 268435456,
+          "safety_factor": 0.5
+        },
+        "kind": "dense",
+        "n_qubits": 40
+      },
+      "description": "workload accepted",
+      "name": "ingest",
+      "startTime": 1781724291.641896
+    },
+    {
+      "@id": "trace:40be18b27e801c7f:event:1:runtime_context",
+      "@type": "Action",
+      "actionStatus": "ok",
+      "capas:metrics": {
+        "cotengra_available": true,
+        "cotengra_version": "0.8.1",
+        "machine": "arm64",
+        "mlx_probe": "skipped_in_default_trace; use apple_silicon_thermal_routing.py for Metal/MLX device probes",
+        "numpy_available": true,
+        "numpy_version": "2.4.6",
+        "platform": "macOS-26.5.1-arm64-arm-64bit",
+        "processor": "arm",
+        "python_executable": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/physics_quantum/physics-magnitude-lab/.pixi/envs/default/bin/python",
+        "python_version": "3.12.13",
+        "qiskit_aer_available": true,
+        "qiskit_aer_version": "0.17.2",
+        "quimb_available": true,
+        "quimb_version": "1.14.0",
+        "scipy_available": true,
+        "scipy_version": "1.17.1",
+        "stim_available": true,
+        "stim_version": "1.16.0"
+      },
+      "description": "runtime and hardware context recorded",
+      "name": "runtime_context",
+      "startTime": 1781724291.64191
+    },
+    {
+      "@id": "trace:40be18b27e801c7f:event:2:cost_model",
+      "@type": "Action",
+      "actionStatus": "ok",
+      "capas:metrics": {
+        "memory_viable": false,
+        "n_qubits": 40,
+        "route": "QPU_REQUIRED",
+        "statevector_bytes": 17592186044416,
+        "usable_memory_bytes": 134217728.0
+      },
+      "description": "dense statevector cost estimated",
+      "name": "cost_model",
+      "startTime": 1781724291.6419148
+    },
+    {
+      "@id": "trace:40be18b27e801c7f:event:3:route",
+      "@type": "Action",
+      "actionStatus": "ok",
+      "capas:metrics": {
+        "memory_viable": false,
+        "n_qubits": 40,
+        "route": "QPU_REQUIRED",
+        "statevector_bytes": 17592186044416,
+        "usable_memory_bytes": 134217728.0
+      },
+      "description": "dense statevector exceeds memory budget",
+      "name": "route",
+      "startTime": 1781724291.6419232
+    },
+    {
+      "@id": "trace:40be18b27e801c7f:event:4:execute",
+      "@type": "Action",
+      "actionStatus": "skipped",
+      "capas:metrics": {
+        "route": "QPU_REQUIRED"
+      },
+      "description": "route is not executable",
+      "name": "execute",
+      "startTime": 1781724291.6419241
+    }
+  ]
+}

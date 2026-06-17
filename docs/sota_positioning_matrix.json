@@ -1,0 +1,52 @@
+{
+  "status": "hostile_positioning_audit",
+  "sources": {
+    "SciMLBenchmarks": "https://github.com/SciML/SciMLBenchmarks.jl",
+    "SciAgentGym": "https://arxiv.org/abs/2602.12984",
+    "RO-Crate": "https://arxiv.org/abs/2108.06503",
+    "Workflow Run RO-Crate": "https://arxiv.org/abs/2312.07852"
+  },
+  "systems": {
+    "SciMLBenchmarks": {
+      "reference_error": "yes",
+      "structured_trace": "partial/output-centric",
+      "prov_ro_crate": "no_or_unclear",
+      "physical_evidence_level": "not_found",
+      "verification_independence": "partial_reference_method_discussion",
+      "failed_rejected_evidence_status": "failures_handled_in_benchmark_docs"
+    },
+    "SciAgentGym": {
+      "reference_error": "yes_or_verified_execution",
+      "structured_trace": "yes",
+      "prov_ro_crate": "not_found_in_paper",
+      "physical_evidence_level": "not_found_in_paper",
+      "verification_independence": "not_found_in_paper",
+      "failed_rejected_evidence_status": "error_recovery_traces"
+    },
+    "PROV_ROCrate_TavernaProv": {
+      "reference_error": "generic_not_domain_specific",
+      "structured_trace": "yes",
+      "prov_ro_crate": "yes",
+      "physical_evidence_level": "no_domain_field",
+      "verification_independence": "no_domain_field",
+      "failed_rejected_evidence_status": "generic_workflow_status"
+    },
+    "CAPAS": {
+      "reference_error": "yes",
+      "structured_trace": "yes",
+      "prov_ro_crate": "yes",
+      "physical_evidence_level": "yes",
+      "verification_independence": "yes",
+      "failed_rejected_evidence_status": "yes"
+    }
+  },
+  "defensible_claim": "CAPAS is a RO-Crate/PROV physical-evidence profile for scientific computation traces. It adds explicit evidence semantics over existing trace systems: physical evidence level, witness independence, reference truth, numerical error against the reference, and honest evidence states for success, no evidence, backend failure, and router rejection.",
+  "claims_to_avoid": [
+    "new scientific trace system",
+    "new golden trace system",
+    "new provenance standard",
+    "new workflow provenance system",
+    "new reference-error benchmark framework"
+  ],
+  "falsation_condition": "Revise CAPAS positioning if SciAgentGym or another public system provides per-trace first-class physical evidence entities, analytic/cross_sim/none/failed/rejected taxonomy, witness-independence metadata, reference-truth metadata, and RO-Crate/PROV export with those fields."
+}

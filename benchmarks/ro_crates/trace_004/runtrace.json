@@ -1,0 +1,181 @@
+{
+  "coverage_case": "analytic_success",
+  "result": {
+    "engine_id": "physics_magnitude_quantum_engine.ghz_entropy_ln2",
+    "function_name": "ghz_entropy_ln2",
+    "kwargs": {
+      "n_qubits": 3
+    },
+    "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
+    "module_sha256": "637f6bce852aae2058adbc38ab6269d58c202cc53cde232236d4519b5a6e9418",
+    "result": {
+      "abs_error": 1.1102230246251565e-16,
+      "expected": 0.6931471805599453,
+      "observable": "GHZ(3) one-qubit bipartition entropy",
+      "physical_evidence_detail": "Single-qubit reduction of GHZ state is I/2, entropy = ln 2",
+      "physical_evidence_level": "analytic",
+      "units": "nats",
+      "value": 0.6931471805599454
+    }
+  },
+  "trace": {
+    "decision_reason": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+    "decision_route": "external_engine",
+    "error": null,
+    "events": [
+      {
+        "message": "workload accepted",
+        "metrics": {
+          "budget": {
+            "flops_ceiling": 100000000.0,
+            "memory_budget_bytes": 536870912,
+            "safety_factor": 0.5
+          },
+          "engine": {
+            "engine_id": "physics_magnitude_quantum_engine.ghz_entropy_ln2",
+            "function_name": "ghz_entropy_ln2",
+            "kwargs_hash": "723c468f489aee823e0990d0e66e8c2f315305d3d300e617fcc4f9cf09b82a20",
+            "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
+          },
+          "kind": "dense",
+          "n_qubits": 2
+        },
+        "stage": "ingest",
+        "status": "ok",
+        "timestamp": 1781724291.384031
+      },
+      {
+        "message": "runtime and hardware context recorded",
+        "metrics": {
+          "cotengra_available": true,
+          "cotengra_version": "0.8.1",
+          "machine": "arm64",
+          "mlx_probe": "skipped_in_default_trace; use apple_silicon_thermal_routing.py for Metal/MLX device probes",
+          "numpy_available": true,
+          "numpy_version": "2.4.6",
+          "platform": "macOS-26.5.1-arm64-arm-64bit",
+          "processor": "arm",
+          "python_executable": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/physics_quantum/physics-magnitude-lab/.pixi/envs/default/bin/python",
+          "python_version": "3.12.13",
+          "qiskit_aer_available": true,
+          "qiskit_aer_version": "0.17.2",
+          "quimb_available": true,
+          "quimb_version": "1.14.0",
+          "scipy_available": true,
+          "scipy_version": "1.17.1",
+          "stim_available": true,
+          "stim_version": "1.16.0"
+        },
+        "stage": "runtime_context",
+        "status": "ok",
+        "timestamp": 1781724291.384037
+      },
+      {
+        "message": "external engine provenance recorded",
+        "metrics": {
+          "engine_id": "physics_magnitude_quantum_engine.ghz_entropy_ln2",
+          "function_name": "ghz_entropy_ln2",
+          "kwargs": {
+            "n_qubits": 3
+          },
+          "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
+          "module_sha256": "637f6bce852aae2058adbc38ab6269d58c202cc53cde232236d4519b5a6e9418"
+        },
+        "stage": "engine_provenance",
+        "status": "ok",
+        "timestamp": 1781724291.384064
+      },
+      {
+        "message": "dense statevector cost estimated",
+        "metrics": {
+          "memory_viable": true,
+          "n_qubits": 2,
+          "route": "dense",
+          "statevector_bytes": 64,
+          "usable_memory_bytes": 268435456.0
+        },
+        "stage": "cost_model",
+        "status": "ok",
+        "timestamp": 1781724291.384066
+      },
+      {
+        "message": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+        "metrics": {
+          "engine_id": "physics_magnitude_quantum_engine.ghz_entropy_ln2",
+          "function_name": "ghz_entropy_ln2",
+          "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
+        },
+        "stage": "route",
+        "status": "ok",
+        "timestamp": 1781724291.384067
+      },
+      {
+        "message": "backend executed",
+        "metrics": {
+          "abs_error": 1.1102230246251565e-16,
+          "expected": 0.6931471805599453,
+          "observable": "GHZ(3) one-qubit bipartition entropy",
+          "physical_evidence_detail": "Single-qubit reduction of GHZ state is I/2, entropy = ln 2",
+          "physical_evidence_level": "analytic",
+          "repr": "{'engine_id': 'physics_magnitude_quantum_engine.ghz_entropy_ln2', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engi",
+          "route": "external_engine",
+          "runtime_ms": 0.18941698363050818,
+          "type": "dict",
+          "units": "nats",
+          "value": 0.6931471805599454
+        },
+        "stage": "execute",
+        "status": "ok",
+        "timestamp": 1781724291.3842719
+      },
+      {
+        "message": "physical evidence reported by backend",
+        "metrics": {
+          "abs_error": 1.1102230246251565e-16,
+          "evidence_hash": "47dfd21c61c2198fc2c9af0f33dac4ef5ae3dc6cda54392a14ef06c8eed0b722",
+          "expected": 0.6931471805599453,
+          "observable": "GHZ(3) one-qubit bipartition entropy",
+          "physical_evidence_detail": "Single-qubit reduction of GHZ state is I/2, entropy = ln 2",
+          "physical_evidence_level": "analytic",
+          "units": "nats",
+          "value": 0.6931471805599454
+        },
+        "stage": "physical_evidence",
+        "status": "ok",
+        "timestamp": 1781724291.384278
+      }
+    ],
+    "hash_algorithm": "sha256(stable_json)",
+    "result_hash": "8dca33cb5455cc5ea990ba2067ae3676d683cb3a27c235818aa02816d6c7e4dc",
+    "result_summary": {
+      "abs_error": 1.1102230246251565e-16,
+      "expected": 0.6931471805599453,
+      "observable": "GHZ(3) one-qubit bipartition entropy",
+      "physical_evidence_detail": "Single-qubit reduction of GHZ state is I/2, entropy = ln 2",
+      "physical_evidence_level": "analytic",
+      "repr": "{'engine_id': 'physics_magnitude_quantum_engine.ghz_entropy_ln2', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engi",
+      "type": "dict",
+      "units": "nats",
+      "value": 0.6931471805599454
+    },
+    "trace_schema_version": "capas-runtrace-v2",
+    "workload_hash": "1f537fb75d0f12db945dc52b52fb16d63eef9e546d12f1cf6f7e91f70a093227",
+    "workload_summary": {
+      "budget": {
+        "flops_ceiling": 100000000.0,
+        "memory_budget_bytes": 536870912,
+        "safety_factor": 0.5
+      },
+      "engine": {
+        "engine_id": "physics_magnitude_quantum_engine.ghz_entropy_ln2",
+        "function_name": "ghz_entropy_ln2",
+        "kwargs_hash": "723c468f489aee823e0990d0e66e8c2f315305d3d300e617fcc4f9cf09b82a20",
+        "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
+      },
+      "kind": "dense",
+      "n_qubits": 2
+    }
+  },
+  "trace_hash": "c674785892e1ff8025418b5b10a16b04a44b76acc58b05b861078e5cd120df78",
+  "trace_id": "trace_004"
+}

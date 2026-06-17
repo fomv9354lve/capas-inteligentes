@@ -1,0 +1,295 @@
+{
+  "@context": [
+    "https://w3id.org/ro/crate/1.1/context",
+    {
+      "capas": "https://example.org/capas-inteligentes#",
+      "sha256": "https://schema.org/sha256"
+    }
+  ],
+  "@graph": [
+    {
+      "@id": "ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "about": {
+        "@id": "./"
+      },
+      "conformsTo": [
+        {
+          "@id": "https://w3id.org/ro/crate/1.1"
+        },
+        {
+          "@id": "https://example.org/capas-inteligentes/ro-crate/physical-evidence/0.1"
+        }
+      ]
+    },
+    {
+      "@id": "./",
+      "@type": "Dataset",
+      "capas:evidenceStatus": "present",
+      "capas:traceHash": "20ae2f9f3c19d47cc2a81c66d69c0c70281a5c77f41689745b55fcc34663eb6d",
+      "capas:workloadHash": "102b85db3fd30d28346486c2d99bd03640546a5889a916e52307b09059313356",
+      "conformsTo": [
+        {
+          "@id": "https://w3id.org/workflowhub/workflow-ro-crate/1.0"
+        },
+        {
+          "@id": "https://example.org/capas-inteligentes/ro-crate/physical-evidence/0.1"
+        }
+      ],
+      "description": "RO-Crate package containing a sealed RunTrace, optional PROV export, routing decision, runtime context, and CAPAS physical evidence metadata.",
+      "hasPart": [
+        {
+          "@id": "runtrace.json"
+        },
+        {
+          "@id": "runtrace.prov.json"
+        }
+      ],
+      "name": "CAPAS traced scientific computation crate"
+    },
+    {
+      "@id": "runtrace.json",
+      "@type": [
+        "File",
+        "DigitalDocument"
+      ],
+      "about": {
+        "@id": "trace:20ae2f9f3c19d47c"
+      },
+      "encodingFormat": "application/json",
+      "name": "Sealed CAPAS RunTrace"
+    },
+    {
+      "@id": "trace:20ae2f9f3c19d47c",
+      "@type": "CreateAction",
+      "capas:hashAlgorithm": "sha256(stable_json)",
+      "capas:routingDecision": {
+        "@id": "trace:20ae2f9f3c19d47c:routing-decision"
+      },
+      "capas:traceHash": "20ae2f9f3c19d47cc2a81c66d69c0c70281a5c77f41689745b55fcc34663eb6d",
+      "capas:traceSchemaVersion": "capas-runtrace-v2",
+      "instrument": {
+        "@id": "software:capas-costurero"
+      },
+      "name": "CAPAS costurero traced run",
+      "object": {
+        "@id": "entity:workload"
+      },
+      "result": {
+        "@id": "trace:20ae2f9f3c19d47c:result"
+      }
+    },
+    {
+      "@id": "software:capas-costurero",
+      "@type": "SoftwareApplication",
+      "applicationCategory": "Scientific provenance and evidence tracing",
+      "name": "CAPAS INTELIGENTES costurero"
+    },
+    {
+      "@id": "entity:workload",
+      "@type": "Dataset",
+      "capas:summary": {
+        "budget": {
+          "flops_ceiling": 100000000.0,
+          "memory_budget_bytes": 536870912,
+          "safety_factor": 0.5
+        },
+        "engine": {
+          "engine_id": "physics_magnitude_quantum_engine.bell_entropy_ln2",
+          "function_name": "bell_entropy_ln2",
+          "kwargs_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
+        },
+        "kind": "dense",
+        "n_qubits": 2
+      },
+      "capas:workloadHash": "102b85db3fd30d28346486c2d99bd03640546a5889a916e52307b09059313356",
+      "name": "Workload summary"
+    },
+    {
+      "@id": "trace:20ae2f9f3c19d47c:routing-decision",
+      "@type": "Thing",
+      "capas:reason": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+      "capas:route": "external_engine",
+      "name": "Routing decision"
+    },
+    {
+      "@id": "runtrace.prov.json",
+      "@type": [
+        "File",
+        "DigitalDocument"
+      ],
+      "encodingFormat": "application/json",
+      "name": "W3C PROV-shaped export"
+    },
+    {
+      "@id": "trace:20ae2f9f3c19d47c:result",
+      "@type": "Dataset",
+      "capas:physicalEvidence": {
+        "@id": "trace:20ae2f9f3c19d47c:physical-evidence"
+      },
+      "capas:resultHash": "16208af211f166adf25172459a6bf536cda62f14df2e33e7fca4cf3b74bead8f",
+      "capas:summary": {
+        "abs_error": 1.1102230246251565e-16,
+        "expected": 0.6931471805599453,
+        "observable": "Bell pair entanglement entropy",
+        "physical_evidence_detail": "Reduced density matrix of Bell pair is I/2, entropy = ln 2",
+        "physical_evidence_level": "analytic",
+        "repr": "{'engine_id': 'physics_magnitude_quantum_engine.bell_entropy_ln2', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_eng",
+        "type": "dict",
+        "units": "nats",
+        "value": 0.6931471805599454
+      },
+      "name": "Result summary"
+    },
+    {
+      "@id": "trace:20ae2f9f3c19d47c:physical-evidence",
+      "@type": "capas:PhysicalEvidence",
+      "about": {
+        "@id": "trace:20ae2f9f3c19d47c:result"
+      },
+      "capas:absError": 1.1102230246251565e-16,
+      "capas:detail": "Reduced density matrix of Bell pair is I/2, entropy = ln 2",
+      "capas:evidenceHash": "436c0e1afd822db1dc8e3470fdf067ecc8995f87b9f30a8f22082055a344d9de",
+      "capas:expected": 0.6931471805599453,
+      "capas:observable": "Bell pair entanglement entropy",
+      "capas:physicalEvidenceLevel": "analytic",
+      "capas:units": "nats",
+      "capas:value": 0.6931471805599454,
+      "name": "Physical evidence attached to result"
+    },
+    {
+      "@id": "trace:20ae2f9f3c19d47c:event:0:ingest",
+      "@type": "Action",
+      "actionStatus": "ok",
+      "capas:metrics": {
+        "budget": {
+          "flops_ceiling": 100000000.0,
+          "memory_budget_bytes": 536870912,
+          "safety_factor": 0.5
+        },
+        "engine": {
+          "engine_id": "physics_magnitude_quantum_engine.bell_entropy_ln2",
+          "function_name": "bell_entropy_ln2",
+          "kwargs_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
+        },
+        "kind": "dense",
+        "n_qubits": 2
+      },
+      "description": "workload accepted",
+      "name": "ingest",
+      "startTime": 1781724291.381957
+    },
+    {
+      "@id": "trace:20ae2f9f3c19d47c:event:1:runtime_context",
+      "@type": "Action",
+      "actionStatus": "ok",
+      "capas:metrics": {
+        "cotengra_available": true,
+        "cotengra_version": "0.8.1",
+        "machine": "arm64",
+        "mlx_probe": "skipped_in_default_trace; use apple_silicon_thermal_routing.py for Metal/MLX device probes",
+        "numpy_available": true,
+        "numpy_version": "2.4.6",
+        "platform": "macOS-26.5.1-arm64-arm-64bit",
+        "processor": "arm",
+        "python_executable": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/physics_quantum/physics-magnitude-lab/.pixi/envs/default/bin/python",
+        "python_version": "3.12.13",
+        "qiskit_aer_available": true,
+        "qiskit_aer_version": "0.17.2",
+        "quimb_available": true,
+        "quimb_version": "1.14.0",
+        "scipy_available": true,
+        "scipy_version": "1.17.1",
+        "stim_available": true,
+        "stim_version": "1.16.0"
+      },
+      "description": "runtime and hardware context recorded",
+      "name": "runtime_context",
+      "startTime": 1781724291.381979
+    },
+    {
+      "@id": "trace:20ae2f9f3c19d47c:event:2:engine_provenance",
+      "@type": "Action",
+      "actionStatus": "ok",
+      "capas:metrics": {
+        "engine_id": "physics_magnitude_quantum_engine.bell_entropy_ln2",
+        "function_name": "bell_entropy_ln2",
+        "kwargs": {},
+        "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
+        "module_sha256": "637f6bce852aae2058adbc38ab6269d58c202cc53cde232236d4519b5a6e9418"
+      },
+      "description": "external engine provenance recorded",
+      "name": "engine_provenance",
+      "startTime": 1781724291.382012
+    },
+    {
+      "@id": "trace:20ae2f9f3c19d47c:event:3:cost_model",
+      "@type": "Action",
+      "actionStatus": "ok",
+      "capas:metrics": {
+        "memory_viable": true,
+        "n_qubits": 2,
+        "route": "dense",
+        "statevector_bytes": 64,
+        "usable_memory_bytes": 268435456.0
+      },
+      "description": "dense statevector cost estimated",
+      "name": "cost_model",
+      "startTime": 1781724291.382016
+    },
+    {
+      "@id": "trace:20ae2f9f3c19d47c:event:4:route",
+      "@type": "Action",
+      "actionStatus": "ok",
+      "capas:metrics": {
+        "engine_id": "physics_magnitude_quantum_engine.bell_entropy_ln2",
+        "function_name": "bell_entropy_ln2",
+        "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
+      },
+      "description": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+      "name": "route",
+      "startTime": 1781724291.382019
+    },
+    {
+      "@id": "trace:20ae2f9f3c19d47c:event:5:execute",
+      "@type": "Action",
+      "actionStatus": "ok",
+      "capas:metrics": {
+        "abs_error": 1.1102230246251565e-16,
+        "expected": 0.6931471805599453,
+        "observable": "Bell pair entanglement entropy",
+        "physical_evidence_detail": "Reduced density matrix of Bell pair is I/2, entropy = ln 2",
+        "physical_evidence_level": "analytic",
+        "repr": "{'engine_id': 'physics_magnitude_quantum_engine.bell_entropy_ln2', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_eng",
+        "route": "external_engine",
+        "runtime_ms": 1.018959010252729,
+        "type": "dict",
+        "units": "nats",
+        "value": 0.6931471805599454
+      },
+      "description": "backend executed",
+      "name": "execute",
+      "startTime": 1781724291.3830569
+    },
+    {
+      "@id": "trace:20ae2f9f3c19d47c:event:6:physical_evidence",
+      "@type": "Action",
+      "actionStatus": "ok",
+      "capas:metrics": {
+        "abs_error": 1.1102230246251565e-16,
+        "evidence_hash": "d56d577e2ba9a4a7d9e502b4aeff8ec84323adb6f847007492c31d7a07f9dd94",
+        "expected": 0.6931471805599453,
+        "observable": "Bell pair entanglement entropy",
+        "physical_evidence_detail": "Reduced density matrix of Bell pair is I/2, entropy = ln 2",
+        "physical_evidence_level": "analytic",
+        "units": "nats",
+        "value": 0.6931471805599454
+      },
+      "description": "physical evidence reported by backend",
+      "name": "physical_evidence",
+      "startTime": 1781724291.383063
+    }
+  ]
+}

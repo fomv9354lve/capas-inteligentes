@@ -1,0 +1,210 @@
+{
+  "activity": {
+    "capas:run:40be18b27e801c7f:activity:0:ingest": {
+      "capas:message": "workload accepted",
+      "capas:status": "ok",
+      "capas:timestamp": 1781724291.641896,
+      "prov:type": "capas:ingest"
+    },
+    "capas:run:40be18b27e801c7f:activity:1:runtime_context": {
+      "capas:message": "runtime and hardware context recorded",
+      "capas:status": "ok",
+      "capas:timestamp": 1781724291.64191,
+      "prov:type": "capas:runtime_context"
+    },
+    "capas:run:40be18b27e801c7f:activity:2:cost_model": {
+      "capas:message": "dense statevector cost estimated",
+      "capas:status": "ok",
+      "capas:timestamp": 1781724291.6419148,
+      "prov:type": "capas:cost_model"
+    },
+    "capas:run:40be18b27e801c7f:activity:3:route": {
+      "capas:message": "dense statevector exceeds memory budget",
+      "capas:status": "ok",
+      "capas:timestamp": 1781724291.6419232,
+      "prov:type": "capas:route"
+    },
+    "capas:run:40be18b27e801c7f:activity:4:execute": {
+      "capas:message": "route is not executable",
+      "capas:status": "skipped",
+      "capas:timestamp": 1781724291.6419241,
+      "prov:type": "capas:execute"
+    }
+  },
+  "agent": {
+    "capas:agent:costurero": {
+      "capas:name": "CAPAS INTELIGENTES costurero",
+      "prov:type": "prov:SoftwareAgent"
+    }
+  },
+  "bundle": "capas:run:40be18b27e801c7f",
+  "capas:traceHash": "40be18b27e801c7fcf5d343abff3c33e1de5694c00cb13ada88651a031ae6cf8",
+  "entity": {
+    "capas:run:40be18b27e801c7f:decision": {
+      "capas:reason": "dense statevector exceeds memory budget",
+      "capas:route": "QPU_REQUIRED",
+      "prov:type": "capas:RoutingDecision"
+    },
+    "capas:run:40be18b27e801c7f:entity:0:ingest:metrics": {
+      "capas:eventHash": "b2ad2f24407a043ba73eee447e76b26a3f50cba823cf57dc27a73569232acfdc",
+      "capas:metrics": {
+        "budget": {
+          "flops_ceiling": 100000000.0,
+          "memory_budget_bytes": 268435456,
+          "safety_factor": 0.5
+        },
+        "kind": "dense",
+        "n_qubits": 40
+      },
+      "capas:stage": "ingest",
+      "prov:type": "capas:EventMetrics"
+    },
+    "capas:run:40be18b27e801c7f:entity:1:runtime_context:metrics": {
+      "capas:eventHash": "b2c6982f09c8e5d46b7265ea1fb039817da78f28922a843f6899287e9023be7f",
+      "capas:metrics": {
+        "cotengra_available": true,
+        "cotengra_version": "0.8.1",
+        "machine": "arm64",
+        "mlx_probe": "skipped_in_default_trace; use apple_silicon_thermal_routing.py for Metal/MLX device probes",
+        "numpy_available": true,
+        "numpy_version": "2.4.6",
+        "platform": "macOS-26.5.1-arm64-arm-64bit",
+        "processor": "arm",
+        "python_executable": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/physics_quantum/physics-magnitude-lab/.pixi/envs/default/bin/python",
+        "python_version": "3.12.13",
+        "qiskit_aer_available": true,
+        "qiskit_aer_version": "0.17.2",
+        "quimb_available": true,
+        "quimb_version": "1.14.0",
+        "scipy_available": true,
+        "scipy_version": "1.17.1",
+        "stim_available": true,
+        "stim_version": "1.16.0"
+      },
+      "capas:stage": "runtime_context",
+      "prov:type": "capas:EventMetrics"
+    },
+    "capas:run:40be18b27e801c7f:entity:2:cost_model:metrics": {
+      "capas:eventHash": "3b62ce6b3cde22137e19fc19024c3309dd1f6ed1c7495597793eaf0f81f6ad1a",
+      "capas:metrics": {
+        "memory_viable": false,
+        "n_qubits": 40,
+        "route": "QPU_REQUIRED",
+        "statevector_bytes": 17592186044416,
+        "usable_memory_bytes": 134217728.0
+      },
+      "capas:stage": "cost_model",
+      "prov:type": "capas:EventMetrics"
+    },
+    "capas:run:40be18b27e801c7f:entity:3:route:metrics": {
+      "capas:eventHash": "d92e4ee431184109f954ef8fabb512a5a38f810a38b0c50387dcad70233f319a",
+      "capas:metrics": {
+        "memory_viable": false,
+        "n_qubits": 40,
+        "route": "QPU_REQUIRED",
+        "statevector_bytes": 17592186044416,
+        "usable_memory_bytes": 134217728.0
+      },
+      "capas:stage": "route",
+      "prov:type": "capas:EventMetrics"
+    },
+    "capas:run:40be18b27e801c7f:entity:4:execute:metrics": {
+      "capas:eventHash": "44d41752504ab0cc8fd0f98bcbede5336b4512a3905455aa11d265645590a509",
+      "capas:metrics": {
+        "route": "QPU_REQUIRED"
+      },
+      "capas:stage": "execute",
+      "prov:type": "capas:EventMetrics"
+    },
+    "capas:run:40be18b27e801c7f:workload": {
+      "capas:summary": {
+        "budget": {
+          "flops_ceiling": 100000000.0,
+          "memory_budget_bytes": 268435456,
+          "safety_factor": 0.5
+        },
+        "kind": "dense",
+        "n_qubits": 40
+      },
+      "capas:workloadHash": "f88e2ad357171326cc090d4f5721a3ff4ff5bfba123dd554b119bc94f83fd70e",
+      "prov:type": "capas:Workload"
+    }
+  },
+  "prefix": {
+    "capas": "https://example.org/capas-inteligentes#",
+    "prov": "http://www.w3.org/ns/prov#"
+  },
+  "specializationOf": {},
+  "used": {
+    "capas:run:40be18b27e801c7f:activity:0:ingest:used:capas:run:40be18b27e801c7f:workload": {
+      "prov:activity": "capas:run:40be18b27e801c7f:activity:0:ingest",
+      "prov:entity": "capas:run:40be18b27e801c7f:workload"
+    },
+    "capas:run:40be18b27e801c7f:activity:1:runtime_context:used:capas:run:40be18b27e801c7f:entity:0:ingest:metrics": {
+      "prov:activity": "capas:run:40be18b27e801c7f:activity:1:runtime_context",
+      "prov:entity": "capas:run:40be18b27e801c7f:entity:0:ingest:metrics"
+    },
+    "capas:run:40be18b27e801c7f:activity:2:cost_model:used:capas:run:40be18b27e801c7f:entity:1:runtime_context:metrics": {
+      "prov:activity": "capas:run:40be18b27e801c7f:activity:2:cost_model",
+      "prov:entity": "capas:run:40be18b27e801c7f:entity:1:runtime_context:metrics"
+    },
+    "capas:run:40be18b27e801c7f:activity:3:route:used:capas:run:40be18b27e801c7f:entity:2:cost_model:metrics": {
+      "prov:activity": "capas:run:40be18b27e801c7f:activity:3:route",
+      "prov:entity": "capas:run:40be18b27e801c7f:entity:2:cost_model:metrics"
+    },
+    "capas:run:40be18b27e801c7f:activity:4:execute:used:capas:run:40be18b27e801c7f:entity:3:route:metrics": {
+      "prov:activity": "capas:run:40be18b27e801c7f:activity:4:execute",
+      "prov:entity": "capas:run:40be18b27e801c7f:entity:3:route:metrics"
+    }
+  },
+  "wasAssociatedWith": {
+    "capas:run:40be18b27e801c7f:activity:0:ingest:agent": {
+      "prov:activity": "capas:run:40be18b27e801c7f:activity:0:ingest",
+      "prov:agent": "capas:agent:costurero"
+    },
+    "capas:run:40be18b27e801c7f:activity:1:runtime_context:agent": {
+      "prov:activity": "capas:run:40be18b27e801c7f:activity:1:runtime_context",
+      "prov:agent": "capas:agent:costurero"
+    },
+    "capas:run:40be18b27e801c7f:activity:2:cost_model:agent": {
+      "prov:activity": "capas:run:40be18b27e801c7f:activity:2:cost_model",
+      "prov:agent": "capas:agent:costurero"
+    },
+    "capas:run:40be18b27e801c7f:activity:3:route:agent": {
+      "prov:activity": "capas:run:40be18b27e801c7f:activity:3:route",
+      "prov:agent": "capas:agent:costurero"
+    },
+    "capas:run:40be18b27e801c7f:activity:4:execute:agent": {
+      "prov:activity": "capas:run:40be18b27e801c7f:activity:4:execute",
+      "prov:agent": "capas:agent:costurero"
+    }
+  },
+  "wasAttributedTo": {},
+  "wasDerivedFrom": {},
+  "wasGeneratedBy": {
+    "capas:run:40be18b27e801c7f:decision:generatedBy:capas:run:40be18b27e801c7f:activity:3:route": {
+      "prov:activity": "capas:run:40be18b27e801c7f:activity:3:route",
+      "prov:entity": "capas:run:40be18b27e801c7f:decision"
+    },
+    "capas:run:40be18b27e801c7f:entity:0:ingest:metrics:generatedBy:capas:run:40be18b27e801c7f:activity:0:ingest": {
+      "prov:activity": "capas:run:40be18b27e801c7f:activity:0:ingest",
+      "prov:entity": "capas:run:40be18b27e801c7f:entity:0:ingest:metrics"
+    },
+    "capas:run:40be18b27e801c7f:entity:1:runtime_context:metrics:generatedBy:capas:run:40be18b27e801c7f:activity:1:runtime_context": {
+      "prov:activity": "capas:run:40be18b27e801c7f:activity:1:runtime_context",
+      "prov:entity": "capas:run:40be18b27e801c7f:entity:1:runtime_context:metrics"
+    },
+    "capas:run:40be18b27e801c7f:entity:2:cost_model:metrics:generatedBy:capas:run:40be18b27e801c7f:activity:2:cost_model": {
+      "prov:activity": "capas:run:40be18b27e801c7f:activity:2:cost_model",
+      "prov:entity": "capas:run:40be18b27e801c7f:entity:2:cost_model:metrics"
+    },
+    "capas:run:40be18b27e801c7f:entity:3:route:metrics:generatedBy:capas:run:40be18b27e801c7f:activity:3:route": {
+      "prov:activity": "capas:run:40be18b27e801c7f:activity:3:route",
+      "prov:entity": "capas:run:40be18b27e801c7f:entity:3:route:metrics"
+    },
+    "capas:run:40be18b27e801c7f:entity:4:execute:metrics:generatedBy:capas:run:40be18b27e801c7f:activity:4:execute": {
+      "prov:activity": "capas:run:40be18b27e801c7f:activity:4:execute",
+      "prov:entity": "capas:run:40be18b27e801c7f:entity:4:execute:metrics"
+    }
+  }
+}

@@ -1,0 +1,190 @@
+{
+  "coverage_case": "analytic_success",
+  "result": {
+    "engine_id": "physics_magnitude_quantum_engine.pauli_z_ground_energy",
+    "function_name": "pauli_z_ground_energy",
+    "kwargs": {
+      "field": 1.25
+    },
+    "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
+    "module_sha256": "637f6bce852aae2058adbc38ab6269d58c202cc53cde232236d4519b5a6e9418",
+    "result": {
+      "abs_error": 0.0,
+      "benchmark_family": "Pauli",
+      "expected": -1.25,
+      "observable": "Single-spin Pauli-Z Hamiltonian ground-state energy",
+      "physical_evidence_detail": "Eigenvalues of -h Z are {-h, +h}; ground energy is -|h|",
+      "physical_evidence_level": "analytic",
+      "reference_truth": "closed_form_pauli_z_spectrum",
+      "units": "energy",
+      "value": -1.25,
+      "verification_independence": "analytic_no_solver"
+    }
+  },
+  "trace": {
+    "decision_reason": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+    "decision_route": "external_engine",
+    "error": null,
+    "events": [
+      {
+        "message": "workload accepted",
+        "metrics": {
+          "budget": {
+            "flops_ceiling": 100000000.0,
+            "memory_budget_bytes": 536870912,
+            "safety_factor": 0.5
+          },
+          "engine": {
+            "engine_id": "physics_magnitude_quantum_engine.pauli_z_ground_energy",
+            "function_name": "pauli_z_ground_energy",
+            "kwargs_hash": "d65cd0a67a91f5c8780d1c54d878099c07980ca80529af85d105a410f0c7615d",
+            "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
+          },
+          "kind": "dense",
+          "n_qubits": 2
+        },
+        "stage": "ingest",
+        "status": "ok",
+        "timestamp": 1781724291.388413
+      },
+      {
+        "message": "runtime and hardware context recorded",
+        "metrics": {
+          "cotengra_available": true,
+          "cotengra_version": "0.8.1",
+          "machine": "arm64",
+          "mlx_probe": "skipped_in_default_trace; use apple_silicon_thermal_routing.py for Metal/MLX device probes",
+          "numpy_available": true,
+          "numpy_version": "2.4.6",
+          "platform": "macOS-26.5.1-arm64-arm-64bit",
+          "processor": "arm",
+          "python_executable": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/physics_quantum/physics-magnitude-lab/.pixi/envs/default/bin/python",
+          "python_version": "3.12.13",
+          "qiskit_aer_available": true,
+          "qiskit_aer_version": "0.17.2",
+          "quimb_available": true,
+          "quimb_version": "1.14.0",
+          "scipy_available": true,
+          "scipy_version": "1.17.1",
+          "stim_available": true,
+          "stim_version": "1.16.0"
+        },
+        "stage": "runtime_context",
+        "status": "ok",
+        "timestamp": 1781724291.3884192
+      },
+      {
+        "message": "external engine provenance recorded",
+        "metrics": {
+          "engine_id": "physics_magnitude_quantum_engine.pauli_z_ground_energy",
+          "function_name": "pauli_z_ground_energy",
+          "kwargs": {
+            "field": 1.25
+          },
+          "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
+          "module_sha256": "637f6bce852aae2058adbc38ab6269d58c202cc53cde232236d4519b5a6e9418"
+        },
+        "stage": "engine_provenance",
+        "status": "ok",
+        "timestamp": 1781724291.3884459
+      },
+      {
+        "message": "dense statevector cost estimated",
+        "metrics": {
+          "memory_viable": true,
+          "n_qubits": 2,
+          "route": "dense",
+          "statevector_bytes": 64,
+          "usable_memory_bytes": 268435456.0
+        },
+        "stage": "cost_model",
+        "status": "ok",
+        "timestamp": 1781724291.388448
+      },
+      {
+        "message": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+        "metrics": {
+          "engine_id": "physics_magnitude_quantum_engine.pauli_z_ground_energy",
+          "function_name": "pauli_z_ground_energy",
+          "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
+        },
+        "stage": "route",
+        "status": "ok",
+        "timestamp": 1781724291.3884501
+      },
+      {
+        "message": "backend executed",
+        "metrics": {
+          "abs_error": 0.0,
+          "benchmark_family": "Pauli",
+          "expected": -1.25,
+          "observable": "Single-spin Pauli-Z Hamiltonian ground-state energy",
+          "physical_evidence_detail": "Eigenvalues of -h Z are {-h, +h}; ground energy is -|h|",
+          "physical_evidence_level": "analytic",
+          "reference_truth": "closed_form_pauli_z_spectrum",
+          "repr": "{'engine_id': 'physics_magnitude_quantum_engine.pauli_z_ground_energy', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gol",
+          "route": "external_engine",
+          "runtime_ms": 0.12795798829756677,
+          "type": "dict",
+          "units": "energy",
+          "value": -1.25,
+          "verification_independence": "analytic_no_solver"
+        },
+        "stage": "execute",
+        "status": "ok",
+        "timestamp": 1781724291.3885922
+      },
+      {
+        "message": "physical evidence reported by backend",
+        "metrics": {
+          "abs_error": 0.0,
+          "evidence_hash": "3a4792af818f31b503815c04e6dd6ad7808e7660cedcbb34f9ca9b51656fc115",
+          "expected": -1.25,
+          "observable": "Single-spin Pauli-Z Hamiltonian ground-state energy",
+          "physical_evidence_detail": "Eigenvalues of -h Z are {-h, +h}; ground energy is -|h|",
+          "physical_evidence_level": "analytic",
+          "units": "energy",
+          "value": -1.25
+        },
+        "stage": "physical_evidence",
+        "status": "ok",
+        "timestamp": 1781724291.388597
+      }
+    ],
+    "hash_algorithm": "sha256(stable_json)",
+    "result_hash": "c94d26bd27739d31fa71a0b44be95673d76e1979eeefdd3e77eda38a233f2a99",
+    "result_summary": {
+      "abs_error": 0.0,
+      "benchmark_family": "Pauli",
+      "expected": -1.25,
+      "observable": "Single-spin Pauli-Z Hamiltonian ground-state energy",
+      "physical_evidence_detail": "Eigenvalues of -h Z are {-h, +h}; ground energy is -|h|",
+      "physical_evidence_level": "analytic",
+      "reference_truth": "closed_form_pauli_z_spectrum",
+      "repr": "{'engine_id': 'physics_magnitude_quantum_engine.pauli_z_ground_energy', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gol",
+      "type": "dict",
+      "units": "energy",
+      "value": -1.25,
+      "verification_independence": "analytic_no_solver"
+    },
+    "trace_schema_version": "capas-runtrace-v2",
+    "workload_hash": "2bfdf5c156552cf63eeb8869ee6a3e2215e2b90af113ba972df8e5273b97d7e6",
+    "workload_summary": {
+      "budget": {
+        "flops_ceiling": 100000000.0,
+        "memory_budget_bytes": 536870912,
+        "safety_factor": 0.5
+      },
+      "engine": {
+        "engine_id": "physics_magnitude_quantum_engine.pauli_z_ground_energy",
+        "function_name": "pauli_z_ground_energy",
+        "kwargs_hash": "d65cd0a67a91f5c8780d1c54d878099c07980ca80529af85d105a410f0c7615d",
+        "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
+      },
+      "kind": "dense",
+      "n_qubits": 2
+    }
+  },
+  "trace_hash": "519478075030eae649a4288e2469202208f5b5b3ebfd20d0f958c1fa188ded47",
+  "trace_id": "trace_010"
+}

@@ -1,0 +1,190 @@
+{
+  "coverage_case": "analytic_success",
+  "result": {
+    "engine_id": "physics_magnitude_quantum_engine.heisenberg_dimer_ground_state",
+    "function_name": "heisenberg_dimer_ground_state",
+    "kwargs": {
+      "J": 1.0
+    },
+    "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
+    "module_sha256": "637f6bce852aae2058adbc38ab6269d58c202cc53cde232236d4519b5a6e9418",
+    "result": {
+      "abs_error": 0.0,
+      "benchmark_family": "Heisenberg",
+      "expected": -0.75,
+      "observable": "Spin-1/2 Heisenberg dimer ground-state energy",
+      "physical_evidence_detail": "For H = J S1.S2, the singlet ground state has E0 = -3J/4",
+      "physical_evidence_level": "analytic",
+      "reference_truth": "closed_form_singlet_triplet_spectrum",
+      "units": "energy",
+      "value": -0.75,
+      "verification_independence": "analytic_no_solver"
+    }
+  },
+  "trace": {
+    "decision_reason": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+    "decision_route": "external_engine",
+    "error": null,
+    "events": [
+      {
+        "message": "workload accepted",
+        "metrics": {
+          "budget": {
+            "flops_ceiling": 100000000.0,
+            "memory_budget_bytes": 536870912,
+            "safety_factor": 0.5
+          },
+          "engine": {
+            "engine_id": "physics_magnitude_quantum_engine.heisenberg_dimer_ground_state",
+            "function_name": "heisenberg_dimer_ground_state",
+            "kwargs_hash": "39feb61ceef08e462d7b8a39febbdf53073173006a4b5b228c07a98cc3f7ebcb",
+            "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
+          },
+          "kind": "dense",
+          "n_qubits": 2
+        },
+        "stage": "ingest",
+        "status": "ok",
+        "timestamp": 1781724291.385321
+      },
+      {
+        "message": "runtime and hardware context recorded",
+        "metrics": {
+          "cotengra_available": true,
+          "cotengra_version": "0.8.1",
+          "machine": "arm64",
+          "mlx_probe": "skipped_in_default_trace; use apple_silicon_thermal_routing.py for Metal/MLX device probes",
+          "numpy_available": true,
+          "numpy_version": "2.4.6",
+          "platform": "macOS-26.5.1-arm64-arm-64bit",
+          "processor": "arm",
+          "python_executable": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/physics_quantum/physics-magnitude-lab/.pixi/envs/default/bin/python",
+          "python_version": "3.12.13",
+          "qiskit_aer_available": true,
+          "qiskit_aer_version": "0.17.2",
+          "quimb_available": true,
+          "quimb_version": "1.14.0",
+          "scipy_available": true,
+          "scipy_version": "1.17.1",
+          "stim_available": true,
+          "stim_version": "1.16.0"
+        },
+        "stage": "runtime_context",
+        "status": "ok",
+        "timestamp": 1781724291.385327
+      },
+      {
+        "message": "external engine provenance recorded",
+        "metrics": {
+          "engine_id": "physics_magnitude_quantum_engine.heisenberg_dimer_ground_state",
+          "function_name": "heisenberg_dimer_ground_state",
+          "kwargs": {
+            "J": 1.0
+          },
+          "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
+          "module_sha256": "637f6bce852aae2058adbc38ab6269d58c202cc53cde232236d4519b5a6e9418"
+        },
+        "stage": "engine_provenance",
+        "status": "ok",
+        "timestamp": 1781724291.385354
+      },
+      {
+        "message": "dense statevector cost estimated",
+        "metrics": {
+          "memory_viable": true,
+          "n_qubits": 2,
+          "route": "dense",
+          "statevector_bytes": 64,
+          "usable_memory_bytes": 268435456.0
+        },
+        "stage": "cost_model",
+        "status": "ok",
+        "timestamp": 1781724291.385356
+      },
+      {
+        "message": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+        "metrics": {
+          "engine_id": "physics_magnitude_quantum_engine.heisenberg_dimer_ground_state",
+          "function_name": "heisenberg_dimer_ground_state",
+          "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
+        },
+        "stage": "route",
+        "status": "ok",
+        "timestamp": 1781724291.385358
+      },
+      {
+        "message": "backend executed",
+        "metrics": {
+          "abs_error": 0.0,
+          "benchmark_family": "Heisenberg",
+          "expected": -0.75,
+          "observable": "Spin-1/2 Heisenberg dimer ground-state energy",
+          "physical_evidence_detail": "For H = J S1.S2, the singlet ground state has E0 = -3J/4",
+          "physical_evidence_level": "analytic",
+          "reference_truth": "closed_form_singlet_triplet_spectrum",
+          "repr": "{'engine_id': 'physics_magnitude_quantum_engine.heisenberg_dimer_ground_state', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magni",
+          "route": "external_engine",
+          "runtime_ms": 0.1459580089431256,
+          "type": "dict",
+          "units": "energy",
+          "value": -0.75,
+          "verification_independence": "analytic_no_solver"
+        },
+        "stage": "execute",
+        "status": "ok",
+        "timestamp": 1781724291.3855202
+      },
+      {
+        "message": "physical evidence reported by backend",
+        "metrics": {
+          "abs_error": 0.0,
+          "evidence_hash": "a638dd94ceb4564dc60dc9f40ec30869e5de72479198060827242d5c89b306cf",
+          "expected": -0.75,
+          "observable": "Spin-1/2 Heisenberg dimer ground-state energy",
+          "physical_evidence_detail": "For H = J S1.S2, the singlet ground state has E0 = -3J/4",
+          "physical_evidence_level": "analytic",
+          "units": "energy",
+          "value": -0.75
+        },
+        "stage": "physical_evidence",
+        "status": "ok",
+        "timestamp": 1781724291.385526
+      }
+    ],
+    "hash_algorithm": "sha256(stable_json)",
+    "result_hash": "59ee0f9ca80c76f9e0a68bc9fafd99e3a8d113b19892481521c5e69ed1f009a5",
+    "result_summary": {
+      "abs_error": 0.0,
+      "benchmark_family": "Heisenberg",
+      "expected": -0.75,
+      "observable": "Spin-1/2 Heisenberg dimer ground-state energy",
+      "physical_evidence_detail": "For H = J S1.S2, the singlet ground state has E0 = -3J/4",
+      "physical_evidence_level": "analytic",
+      "reference_truth": "closed_form_singlet_triplet_spectrum",
+      "repr": "{'engine_id': 'physics_magnitude_quantum_engine.heisenberg_dimer_ground_state', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magni",
+      "type": "dict",
+      "units": "energy",
+      "value": -0.75,
+      "verification_independence": "analytic_no_solver"
+    },
+    "trace_schema_version": "capas-runtrace-v2",
+    "workload_hash": "aabdf7c6a4f583b23fc6008e1325dca981611a591ff8e1ce9e98d094fdecb3f3",
+    "workload_summary": {
+      "budget": {
+        "flops_ceiling": 100000000.0,
+        "memory_budget_bytes": 536870912,
+        "safety_factor": 0.5
+      },
+      "engine": {
+        "engine_id": "physics_magnitude_quantum_engine.heisenberg_dimer_ground_state",
+        "function_name": "heisenberg_dimer_ground_state",
+        "kwargs_hash": "39feb61ceef08e462d7b8a39febbdf53073173006a4b5b228c07a98cc3f7ebcb",
+        "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
+      },
+      "kind": "dense",
+      "n_qubits": 2
+    }
+  },
+  "trace_hash": "196f6ae0194285613f62051fb32db63601824abd7f847c05d25e53b58d9fd1d7",
+  "trace_id": "trace_006"
+}

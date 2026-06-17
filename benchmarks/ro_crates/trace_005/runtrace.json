@@ -1,0 +1,201 @@
+{
+  "coverage_case": "analytic_success",
+  "result": {
+    "engine_id": "physics_magnitude_quantum_engine.born_rule_plus_state",
+    "function_name": "born_rule_plus_state",
+    "kwargs": {},
+    "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
+    "module_sha256": "637f6bce852aae2058adbc38ab6269d58c202cc53cde232236d4519b5a6e9418",
+    "result": {
+      "abs_error": 1.1102230246251565e-16,
+      "expected": [
+        0.5,
+        0.5
+      ],
+      "observable": "Born probabilities for |+> in Z basis",
+      "physical_evidence_detail": "|+> measured in Z basis gives 50/50 probabilities",
+      "physical_evidence_level": "analytic",
+      "units": "probability",
+      "value": [
+        0.4999999999999999,
+        0.4999999999999999
+      ]
+    }
+  },
+  "trace": {
+    "decision_reason": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+    "decision_route": "external_engine",
+    "error": null,
+    "events": [
+      {
+        "message": "workload accepted",
+        "metrics": {
+          "budget": {
+            "flops_ceiling": 100000000.0,
+            "memory_budget_bytes": 536870912,
+            "safety_factor": 0.5
+          },
+          "engine": {
+            "engine_id": "physics_magnitude_quantum_engine.born_rule_plus_state",
+            "function_name": "born_rule_plus_state",
+            "kwargs_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+            "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
+          },
+          "kind": "dense",
+          "n_qubits": 2
+        },
+        "stage": "ingest",
+        "status": "ok",
+        "timestamp": 1781724291.384562
+      },
+      {
+        "message": "runtime and hardware context recorded",
+        "metrics": {
+          "cotengra_available": true,
+          "cotengra_version": "0.8.1",
+          "machine": "arm64",
+          "mlx_probe": "skipped_in_default_trace; use apple_silicon_thermal_routing.py for Metal/MLX device probes",
+          "numpy_available": true,
+          "numpy_version": "2.4.6",
+          "platform": "macOS-26.5.1-arm64-arm-64bit",
+          "processor": "arm",
+          "python_executable": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/physics_quantum/physics-magnitude-lab/.pixi/envs/default/bin/python",
+          "python_version": "3.12.13",
+          "qiskit_aer_available": true,
+          "qiskit_aer_version": "0.17.2",
+          "quimb_available": true,
+          "quimb_version": "1.14.0",
+          "scipy_available": true,
+          "scipy_version": "1.17.1",
+          "stim_available": true,
+          "stim_version": "1.16.0"
+        },
+        "stage": "runtime_context",
+        "status": "ok",
+        "timestamp": 1781724291.384568
+      },
+      {
+        "message": "external engine provenance recorded",
+        "metrics": {
+          "engine_id": "physics_magnitude_quantum_engine.born_rule_plus_state",
+          "function_name": "born_rule_plus_state",
+          "kwargs": {},
+          "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
+          "module_sha256": "637f6bce852aae2058adbc38ab6269d58c202cc53cde232236d4519b5a6e9418"
+        },
+        "stage": "engine_provenance",
+        "status": "ok",
+        "timestamp": 1781724291.384595
+      },
+      {
+        "message": "dense statevector cost estimated",
+        "metrics": {
+          "memory_viable": true,
+          "n_qubits": 2,
+          "route": "dense",
+          "statevector_bytes": 64,
+          "usable_memory_bytes": 268435456.0
+        },
+        "stage": "cost_model",
+        "status": "ok",
+        "timestamp": 1781724291.384597
+      },
+      {
+        "message": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+        "metrics": {
+          "engine_id": "physics_magnitude_quantum_engine.born_rule_plus_state",
+          "function_name": "born_rule_plus_state",
+          "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
+        },
+        "stage": "route",
+        "status": "ok",
+        "timestamp": 1781724291.384598
+      },
+      {
+        "message": "backend executed",
+        "metrics": {
+          "abs_error": 1.1102230246251565e-16,
+          "expected": [
+            0.5,
+            0.5
+          ],
+          "observable": "Born probabilities for |+> in Z basis",
+          "physical_evidence_detail": "|+> measured in Z basis gives 50/50 probabilities",
+          "physical_evidence_level": "analytic",
+          "repr": "{'engine_id': 'physics_magnitude_quantum_engine.born_rule_plus_state', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold",
+          "route": "external_engine",
+          "runtime_ms": 0.3946659853681922,
+          "type": "dict",
+          "units": "probability",
+          "value": [
+            0.4999999999999999,
+            0.4999999999999999
+          ]
+        },
+        "stage": "execute",
+        "status": "ok",
+        "timestamp": 1781724291.3850088
+      },
+      {
+        "message": "physical evidence reported by backend",
+        "metrics": {
+          "abs_error": 1.1102230246251565e-16,
+          "evidence_hash": "17fc603bbd6ff8155a90b18bbf0ffae3a1a85057e8e5ebd19226d0815be117ac",
+          "expected": [
+            0.5,
+            0.5
+          ],
+          "observable": "Born probabilities for |+> in Z basis",
+          "physical_evidence_detail": "|+> measured in Z basis gives 50/50 probabilities",
+          "physical_evidence_level": "analytic",
+          "units": "probability",
+          "value": [
+            0.4999999999999999,
+            0.4999999999999999
+          ]
+        },
+        "stage": "physical_evidence",
+        "status": "ok",
+        "timestamp": 1781724291.385016
+      }
+    ],
+    "hash_algorithm": "sha256(stable_json)",
+    "result_hash": "e56f7b060af648ad1eb7124e4b4d0a62accc6c5ffc03c8ee864b7e91a9476ef6",
+    "result_summary": {
+      "abs_error": 1.1102230246251565e-16,
+      "expected": [
+        0.5,
+        0.5
+      ],
+      "observable": "Born probabilities for |+> in Z basis",
+      "physical_evidence_detail": "|+> measured in Z basis gives 50/50 probabilities",
+      "physical_evidence_level": "analytic",
+      "repr": "{'engine_id': 'physics_magnitude_quantum_engine.born_rule_plus_state', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold",
+      "type": "dict",
+      "units": "probability",
+      "value": [
+        0.4999999999999999,
+        0.4999999999999999
+      ]
+    },
+    "trace_schema_version": "capas-runtrace-v2",
+    "workload_hash": "7327a72894c935387edea9de7151c9ccb88b3eee2fecc0edddefd4eb2d6a7172",
+    "workload_summary": {
+      "budget": {
+        "flops_ceiling": 100000000.0,
+        "memory_budget_bytes": 536870912,
+        "safety_factor": 0.5
+      },
+      "engine": {
+        "engine_id": "physics_magnitude_quantum_engine.born_rule_plus_state",
+        "function_name": "born_rule_plus_state",
+        "kwargs_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
+      },
+      "kind": "dense",
+      "n_qubits": 2
+    }
+  },
+  "trace_hash": "74fe9063415db2bf30b7e610cb046e216007eaf9888eb06a9a76288ba8203c56",
+  "trace_id": "trace_005"
+}
