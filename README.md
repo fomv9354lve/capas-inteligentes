@@ -87,6 +87,7 @@ and that validator only recognizes a fixed list of workflow file extensions.
 
 See:
 
+- `docs/PROJECT_DASHBOARD.md`
 - `docs/SOTA_POSITIONING.md`
 - `docs/WORKFLOW_RUN_RO_CRATE_ALIGNMENT.md`
 - `docs/FORMAL_BOUND_AXIS.md`

@@ -1,0 +1,462 @@
+# CAPAS Project Dashboard
+
+Last updated: 2026-06-17
+
+This dashboard is the non-degradable control surface for CAPAS. If future work
+changes a claim, a coverage case, or a validation status, update this file in the
+same commit.
+
+## Current Position
+
+CAPAS is a RO-Crate/PROV evidence profile for scientific computation traces.
+
+It does not claim to invent:
+
+- scientific workflow provenance
+- structured scientific traces
+- golden traces
+- RO-Crate/PROV packaging
+- verification against reference
+- VVUQ
+- automatic backend routing
+
+Defensible claim:
+
+> CAPAS packages graduated physical evidence into sealed RO-Crate/PROV workflow
+> run traces, explicitly recording evidence strength, witness independence,
+> route/result provenance, and honest failure/rejection/no-evidence states.
+
+## Latest Auditable State
+
+Repository head:
+
+```text
+1f9184a Add formal Schmidt truncation evidence trace
+```
+
+Recent commits:
+
+```text
+1f9184a Add formal Schmidt truncation evidence trace
+733278e Validate RO-Crates with external ResearchObject checker
+3cdd27c Align RO-Crate export with workflow run shape
+240d9c1 Classify quimb fidelity as estimated evidence
+180bf19 Initial CAPAS evidence profile prototype
+```
+
+Current validation status:
+
+```text
+coverage_ready: True
+fine_tune_ready: False
+local RO-Crate validation: passed
+external ResearchObject RO-Crate validation: valid_with_warning for 16/16 crates
+external warning: .py is not a recognised workflow extension
+```
+
+The external warning is known and currently accepted: CAPAS emits a Python
+workflow descriptor because the costurero is implemented in Python. The
+ResearchObject validator recognizes a fixed workflow-extension list.
+
+## Evidence Coverage
+
+| Case | Count | Status | Meaning |
+|---|---:|---|---|
+| `analytic_success` | 10 | covered | closed-form truth |
+| `cross_sim_success` | 1 | covered | independent algorithmic witness |
+| `formal_bound_success` | 1 | covered | formal single-cut Schmidt truncation certificate |
+| `estimated_bound_candidate` | 1 | covered | useful estimator, not formal |
+| `no_evidence_success` | 1 | covered | successful result with no witness |
+| `backend_failed` | 1 | covered | backend failure sealed honestly |
+| `rejected_by_router` | 1 | covered | non-execution/rejection sealed honestly |
+
+Current evidence levels:
+
+```text
+analytic: 10
+cross_sim: 1
+formal_bound: 1
+estimated_bound: 1
+none: 3
+blank: 1
+```
+
+## What Works
+
+1. Sealed RunTrace generation.
+2. PROV-shaped export.
+3. RO-Crate export.
+4. Workflow Run RO-Crate-compatible shape.
+5. External RO-Crate validation through ResearchObject `rocrateValidator`.
+6. CAPAS `PhysicalEvidence` entity in RO-Crate and PROV exports.
+7. Honest distinction between:
+   - analytic truth
+   - cross-sim witness
+   - formal bounded evidence
+   - estimated bounded evidence
+   - no evidence
+   - failed execution
+   - rejected execution
+8. Formal-bound seed case:
+   - single-cut Schmidt truncation
+   - discarded weight equals squared state error
+   - not claimed as global DMRG certificate
+
+## Non-Degradation Rules
+
+These are hard guardrails.
+
+1. Do not rename `estimated_bound` to `formal_bound`.
+2. Do not call quimb `CircuitMPS.fidelity_estimate()` a formal certificate.
+3. Do not claim CAPAS invented provenance, RO-Crate, PROV, golden traces, VVUQ,
+   or workflow tracing.
+4. Do not mark `fine_tune_ready=True` without blind inference review.
+5. Do not remove failed/rejected/no-evidence coverage cases.
+6. Do not treat same-runtime certificates as independent witnesses.
+7. Do not claim DMRG global error bounds until the assumptions and accumulation
+   rule are explicit and tested.
+8. Do not claim official CAPAS profile registration until a profile URI is
+   actually registered externally.
+9. Do not treat external RO-Crate `valid_with_warning` as warning-free
+   validation.
+10. Any new evidence level must include:
+    - scope
+    - witness independence
+    - failure mode
+    - validation command
+
+## Debt Register
+
+### D1. Fine-Tune Readiness
+
+Status: open.
+
+Current state:
+
+```text
+fine_tune_ready: False
+hold: 13
+reject: 3
+blank: 1
+```
+
+Debt:
+
+- blind inference review is not done
+- accepted rows are not selected
+- 17-row audit still has one blank slot
+
+Done when:
+
+- each accepted trace has blind inference judgment
+- each accepted trace has acceptable physical evidence
+- enough accepted traces exist to justify training
+
+Validation:
+
+```bash
+python3 audits/summarize_gold_trace_audit.py
+```
+
+### D2. Formal Bound Beyond Single-Cut SVD
+
+Status: open.
+
+What exists:
+
+- `trace_016`
+- `physical_evidence_level=formal_bound`
+- `bound_scope=single_bipartition_state_truncation`
+
+Debt:
+
+- no global DMRG state certificate
+- no observable-error transfer bound
+- no truncation accumulation rule across sweeps
+
+Next step:
+
+- instrument `physics-magnitude-lab` DMRG to return local discarded weights
+- document canonical-form and normalization assumptions
+- decide whether the accumulated quantity is formal, estimated, or candidate
+
+Done when:
+
+- a DMRG trace can emit `formal_bound` or `formal_bound_candidate` with explicit
+  scope and assumptions
+- no observable bound is implied unless actually derived
+
+### D3. Witness Independence Axis
+
+Status: not started.
+
+Seed fact:
+
+- CAPAS already records `verification_independence`
+- current levels include `analytic_no_solver`, `different_algorithm_same_runtime`,
+  `algorithmic_certificate_exact_svd_same_runtime`, and `none`
+
+Debt:
+
+- no formal taxonomy yet
+- no matrix distinguishing same solver, same method, same BLAS, same runtime,
+  different runtime, different method, analytic witness
+
+Next step:
+
+- create `docs/WITNESS_INDEPENDENCE_AXIS.md`
+- define 5-7 levels
+- add one trace demonstrating weak independence and one demonstrating stronger
+  cross-runtime or cross-method independence
+
+Done when:
+
+- audit criteria uses the taxonomy
+- RO-Crate/PROV exports preserve the level
+- tests reject missing/ambiguous independence for accepted traces
+
+### D4. Execution Context / Hardware Topology Axis
+
+Status: partially explored, not productized.
+
+What exists:
+
+- runtime context is captured
+- Apple Silicon thermal benchmark script exists
+- external validation records workflow shape
+
+Debt:
+
+- no stable hardware/topology evidence schema
+- no thermal state in default RunTrace
+- no routing decision based on thermal state
+- no distributed provenance/topology support
+
+Next step:
+
+- define `execution_context_level`
+- decide minimal fields:
+  - CPU/GPU/Metal/AMX/BLAS
+  - thermal state
+  - memory pressure
+  - backend selected
+  - backend rejected
+
+Done when:
+
+- one trace records meaningful hardware context beyond library versions
+- one benchmark shows whether thermal state changes backend choice
+
+### D5. Workflow Run RO-Crate Alignment
+
+Status: shape-compatible, externally RO-Crate-valid with warning.
+
+What exists:
+
+- root `Dataset`
+- `ComputationalWorkflow`
+- `CreateAction`
+- input/output formal parameters
+- PROV export
+- CAPAS physical evidence entity
+
+Debt:
+
+- no external Workflow Run RO-Crate profile-specific validator run
+- CAPAS profile URI is provisional
+- CAPAS profile is not registered
+
+Next step:
+
+- locate or ask the Workflow Run RO-Crate community for the preferred profile
+  validation path
+- decide whether to submit/register a CAPAS physical evidence profile
+
+Done when:
+
+- validation status can distinguish:
+  - RO-Crate valid
+  - Workflow Run RO-Crate profile valid
+  - CAPAS profile registered
+
+### D6. QMB100 / Quantum Many-Body Applicability
+
+Status: blocked on dataset/access.
+
+What exists:
+
+- paper-level audit
+- integration plan
+- CAPAS traces on local quantum/many-body-adjacent examples
+
+Debt:
+
+- no QMB100 task wrapped
+- no real QMB100 output emitted as CAPAS RO-Crate
+- no author/community feedback
+
+Next step:
+
+- contact QMB100 authors for dataset/tasks
+- meanwhile wrap local DMRG/Heisenberg tasks with CAPAS evidence levels
+
+Done when:
+
+- one external QMB100-style task emits a CAPAS trace
+- comparison shows what QMB100 emits vs what CAPAS adds
+
+### D7. Public Usefulness
+
+Status: unvalidated.
+
+Debt:
+
+- no external user has confirmed usefulness
+- no community review from RO-Crate, Workflow Run RO-Crate, QMB100, SciML, or
+  quantum many-body practitioners
+
+Next step:
+
+- prepare one minimal trace bundle:
+  - analytic trace
+  - formal-bound trace
+  - estimated-bound trace
+  - failed trace
+  - rejected trace
+- ask one relevant practitioner whether `PhysicalEvidence` and witness
+  independence would help their audit process
+
+Done when:
+
+- feedback changes the schema or confirms the profile solves a real problem
+
+## Roadmap
+
+### Phase 0: Freeze Current Floor
+
+Goal: preserve what already works.
+
+Tasks:
+
+- keep `coverage_ready=True`
+- keep local and external RO-Crate validation passing
+- keep `fine_tune_ready=False` until blind review
+- keep all seven coverage cases
+
+Exit criteria:
+
+```bash
+/Users/kreniq/.pixi/bin/pixi run python scripts/build_evidence_corpus.py
+python3 benchmarks/validate_ro_crates.py
+python3 benchmarks/validate_ro_crates_external.py
+python3 audits/summarize_gold_trace_audit.py
+```
+
+### Phase 1: Complete Evidence Axis 1 - Correctness
+
+Goal: make the correctness axis explicit and non-degradable.
+
+Tasks:
+
+- document `analytic`, `formal_bound`, `cross_sim`, `estimated_bound`, `none`
+- add tests that forbid `estimated_bound` being accepted as formal
+- extend `formal_bound` only when a theorem/scope is explicit
+
+Exit criteria:
+
+- `trace_016` remains formal and narrow
+- quimb trace remains estimated
+- docs reflect both
+
+### Phase 2: Build Evidence Axis 2 - Witness Independence
+
+Goal: stop treating all witnesses as equal.
+
+Tasks:
+
+- write independence taxonomy
+- encode levels in audit criteria
+- add at least two new traces with different independence levels
+
+Exit criteria:
+
+- audit can fail a trace with ambiguous witness independence
+
+### Phase 3: Build Evidence Axis 3 - Execution Context
+
+Goal: distinguish evidence produced under different hardware/runtime contexts.
+
+Tasks:
+
+- stabilize runtime/hardware schema
+- run Apple Silicon thermal crossover benchmark
+- decide whether thermal state affects routing
+
+Exit criteria:
+
+- one trace carries hardware context as first-class evidence metadata
+- if thermal routing has no crossover, document it and do not claim it
+
+### Phase 4: Interop And Community
+
+Goal: make CAPAS a profile candidate, not a private dialect.
+
+Tasks:
+
+- validate against the strongest available Workflow Run RO-Crate path
+- prepare profile description
+- ask RO-Crate/Workflow Run RO-Crate community where CAPAS should fit
+- ask QMB100/SciML-adjacent users whether `PhysicalEvidence` is useful
+
+Exit criteria:
+
+- one external compatibility issue or review thread exists
+- dashboard records outcome
+
+## Command Dashboard
+
+Build corpus:
+
+```bash
+cd "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/physics_quantum/physics-magnitude-lab"
+/Users/kreniq/.pixi/bin/pixi run python "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/scripts/build_evidence_corpus.py"
+```
+
+Local validation:
+
+```bash
+python3 benchmarks/validate_ro_crates.py
+```
+
+External RO-Crate validation:
+
+```bash
+python3 -m pip install -r requirements-validation.txt
+python3 benchmarks/validate_ro_crates_external.py
+```
+
+Audit summary:
+
+```bash
+python3 audits/summarize_gold_trace_audit.py
+```
+
+Git state:
+
+```bash
+git status --short
+git log --oneline --decorate -5
+```
+
+## Dashboard Update Rule
+
+Update this file whenever any of these changes:
+
+- evidence level taxonomy
+- coverage cases
+- external validation result
+- fine-tune readiness
+- SotA positioning
+- public usefulness status
+- profile registration status
+- claims CAPAS is allowed or forbidden to make
