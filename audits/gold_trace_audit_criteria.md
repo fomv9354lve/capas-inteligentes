@@ -11,7 +11,7 @@ It does not answer whether the engine is physically correct or whether the surro
 - `output_correct`: `yes/no/unknown`. Is the numeric output correct under an independent check?
 - `inference_blind_judge`: `yes/no`. Was `inference_correct` judged without seeing `hash_gate_pass`, `engine_hash`, `decision`, or any prior "gold" label?
 - `inference_correct`: `yes/no/unknown`. Is the natural-language conclusion drawn from the output valid?
-- `physical_evidence_level`: `analytic/cross_sim/invariant/self_derivation/none/unknown`. What kind of evidence supports the engine/model physics for this case?
+- `physical_evidence_level`: `analytic/cross_sim/formal_bound/invariant/self_derivation/none/unknown`. What kind of evidence supports the engine/model physics for this case?
 - `physical_evidence_detail`: short citation, check name, equation, independent implementation, or reviewer note.
 - `risk_level`: `low/medium/high`. How damaging would this trace be if learned incorrectly?
 - `decision`: `accept/rewrite/reject/hold`.
@@ -80,7 +80,7 @@ Do not fine-tune on the 17 traces unless:
 - every accepted trace has non-empty `output_correct_evidence`,
 - every accepted trace has non-empty `inference_correct_evidence`,
 - every accepted trace has `inference_blind_judge == yes`,
-- every accepted trace has `physical_evidence_level` in `analytic/cross_sim`, or `invariant` for low/medium-risk traces only,
+- every accepted trace has `physical_evidence_level` in `analytic/cross_sim/formal_bound`, or `invariant` for low/medium-risk traces only,
 - no accepted trace has `physical_evidence_level` in `self_derivation/none/unknown`,
 - no accepted trace relies on hash/provenance as correctness evidence.
 

@@ -9,7 +9,7 @@
       "omega": 1.0
     },
     "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
-    "module_sha256": "1026e97280a2de075c75ee8114bb06216c055a7b0dcec001555919c54612dc34",
+    "module_sha256": "46dd1369a7198ad7be8f6f5a47a36eb2696fdeec147ae414381dbc56e7aaae82",
     "result": {
       "abs_error": 0.0,
       "benchmark_family": "Schrodinger",
@@ -47,7 +47,7 @@
         },
         "stage": "ingest",
         "status": "ok",
-        "timestamp": 1781725499.883685
+        "timestamp": 1781725790.1732638
       },
       {
         "message": "runtime and hardware context recorded",
@@ -73,7 +73,7 @@
         },
         "stage": "runtime_context",
         "status": "ok",
-        "timestamp": 1781725499.883703
+        "timestamp": 1781725790.173274
       },
       {
         "message": "external engine provenance recorded",
@@ -86,11 +86,11 @@
             "omega": 1.0
           },
           "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
-          "module_sha256": "1026e97280a2de075c75ee8114bb06216c055a7b0dcec001555919c54612dc34"
+          "module_sha256": "46dd1369a7198ad7be8f6f5a47a36eb2696fdeec147ae414381dbc56e7aaae82"
         },
         "stage": "engine_provenance",
         "status": "ok",
-        "timestamp": 1781725499.8837729
+        "timestamp": 1781725790.1733131
       },
       {
         "message": "dense statevector cost estimated",
@@ -103,7 +103,7 @@
         },
         "stage": "cost_model",
         "status": "ok",
-        "timestamp": 1781725499.883778
+        "timestamp": 1781725790.173316
       },
       {
         "message": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
@@ -114,7 +114,7 @@
         },
         "stage": "route",
         "status": "ok",
-        "timestamp": 1781725499.883782
+        "timestamp": 1781725790.1733189
       },
       {
         "message": "backend executed",
@@ -128,7 +128,7 @@
           "reference_truth": "closed_form_harmonic_oscillator",
           "repr": "{'engine_id': 'physics_magnitude_quantum_engine.harmonic_oscillator_energy', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitud",
           "route": "external_engine",
-          "runtime_ms": 0.2925829903688282,
+          "runtime_ms": 0.15287499991245568,
           "type": "dict",
           "units": "energy",
           "value": 0.5,
@@ -136,23 +136,26 @@
         },
         "stage": "execute",
         "status": "ok",
-        "timestamp": 1781725499.884114
+        "timestamp": 1781725790.173494
       },
       {
         "message": "physical evidence reported by backend",
         "metrics": {
           "abs_error": 0.0,
-          "evidence_hash": "92e9bb747a27566b455f8b91d5aa6ffa0df00edc7f021068edd964415aa98203",
+          "benchmark_family": "Schrodinger",
+          "evidence_hash": "5f48564fc2e6654dffeb84831b1e9f355279558c5a56157a285f48bd8acba410",
           "expected": 0.5,
           "observable": "Quantum harmonic oscillator energy E_0",
           "physical_evidence_detail": "Harmonic oscillator eigenvalues are E_n = hbar*omega*(n + 1/2)",
           "physical_evidence_level": "analytic",
+          "reference_truth": "closed_form_harmonic_oscillator",
           "units": "energy",
-          "value": 0.5
+          "value": 0.5,
+          "verification_independence": "analytic_no_solver"
         },
         "stage": "physical_evidence",
         "status": "ok",
-        "timestamp": 1781725499.884126
+        "timestamp": 1781725790.173502
       }
     ],
     "hash_algorithm": "sha256(stable_json)",
@@ -189,6 +192,6 @@
       "n_qubits": 2
     }
   },
-  "trace_hash": "16b36f5f73488b116c08af188a05ed9e03bdd9358e0f99b27e69da5e94827882",
+  "trace_hash": "506992ebe647006a9906a96cc1c1723e119904b4730bf124909ae09f163b7048",
   "trace_id": "trace_009"
 }

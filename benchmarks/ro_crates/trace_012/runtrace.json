@@ -5,7 +5,7 @@
     "function_name": "unverified_variational_energy",
     "kwargs": {},
     "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
-    "module_sha256": "1026e97280a2de075c75ee8114bb06216c055a7b0dcec001555919c54612dc34",
+    "module_sha256": "46dd1369a7198ad7be8f6f5a47a36eb2696fdeec147ae414381dbc56e7aaae82",
     "result": {
       "abs_error": null,
       "benchmark_family": "UnverifiedToy",
@@ -43,7 +43,7 @@
         },
         "stage": "ingest",
         "status": "ok",
-        "timestamp": 1781725499.887237
+        "timestamp": 1781725790.179162
       },
       {
         "message": "runtime and hardware context recorded",
@@ -69,7 +69,7 @@
         },
         "stage": "runtime_context",
         "status": "ok",
-        "timestamp": 1781725499.8872519
+        "timestamp": 1781725790.179174
       },
       {
         "message": "external engine provenance recorded",
@@ -78,11 +78,11 @@
           "function_name": "unverified_variational_energy",
           "kwargs": {},
           "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
-          "module_sha256": "1026e97280a2de075c75ee8114bb06216c055a7b0dcec001555919c54612dc34"
+          "module_sha256": "46dd1369a7198ad7be8f6f5a47a36eb2696fdeec147ae414381dbc56e7aaae82"
         },
         "stage": "engine_provenance",
         "status": "ok",
-        "timestamp": 1781725499.887319
+        "timestamp": 1781725790.179518
       },
       {
         "message": "dense statevector cost estimated",
@@ -95,7 +95,7 @@
         },
         "stage": "cost_model",
         "status": "ok",
-        "timestamp": 1781725499.887323
+        "timestamp": 1781725790.17952
       },
       {
         "message": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
@@ -106,7 +106,7 @@
         },
         "stage": "route",
         "status": "ok",
-        "timestamp": 1781725499.887327
+        "timestamp": 1781725790.179523
       },
       {
         "message": "backend executed",
@@ -120,7 +120,7 @@
           "reference_truth": "none",
           "repr": "{'engine_id': 'physics_magnitude_quantum_engine.unverified_variational_energy', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magni",
           "route": "external_engine",
-          "runtime_ms": 0.35924999974668026,
+          "runtime_ms": 0.2490829792805016,
           "type": "dict",
           "units": "energy",
           "value": -1.0801918402698152,
@@ -128,23 +128,26 @@
         },
         "stage": "execute",
         "status": "ok",
-        "timestamp": 1781725499.8877199
+        "timestamp": 1781725790.179799
       },
       {
         "message": "physical evidence reported by backend",
         "metrics": {
           "abs_error": null,
-          "evidence_hash": "289f1c6ead34af7531d8527ecc9c8fd230b761a8c24bbe6bb68fe39dce87a197",
+          "benchmark_family": "UnverifiedToy",
+          "evidence_hash": "8fe99b56d00d135b6735a94fc33219f6d99061d2cf1b94e3a72245fa39da7f37",
           "expected": null,
           "observable": "Toy variational energy without external witness",
           "physical_evidence_detail": "No analytic solution or independent witness attached to this trace",
           "physical_evidence_level": "none",
+          "reference_truth": "none",
           "units": "energy",
-          "value": -1.0801918402698152
+          "value": -1.0801918402698152,
+          "verification_independence": "none"
         },
         "stage": "physical_evidence",
         "status": "ok",
-        "timestamp": 1781725499.887732
+        "timestamp": 1781725790.179809
       }
     ],
     "hash_algorithm": "sha256(stable_json)",
@@ -181,6 +184,6 @@
       "n_qubits": 2
     }
   },
-  "trace_hash": "234062ca32e6ba79140218f0be6f8ecff2c53c14c5e9ffb60dc06cc5345ee6aa",
+  "trace_hash": "01db82b601fe76331fa81fa79bda27e472fee663e5a473137b2a9645e196ce70",
   "trace_id": "trace_012"
 }

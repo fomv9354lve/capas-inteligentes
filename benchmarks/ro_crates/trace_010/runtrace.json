@@ -7,7 +7,7 @@
       "field": 1.25
     },
     "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
-    "module_sha256": "1026e97280a2de075c75ee8114bb06216c055a7b0dcec001555919c54612dc34",
+    "module_sha256": "46dd1369a7198ad7be8f6f5a47a36eb2696fdeec147ae414381dbc56e7aaae82",
     "result": {
       "abs_error": 0.0,
       "benchmark_family": "Pauli",
@@ -45,7 +45,7 @@
         },
         "stage": "ingest",
         "status": "ok",
-        "timestamp": 1781725499.884795
+        "timestamp": 1781725790.1740339
       },
       {
         "message": "runtime and hardware context recorded",
@@ -71,7 +71,7 @@
         },
         "stage": "runtime_context",
         "status": "ok",
-        "timestamp": 1781725499.884811
+        "timestamp": 1781725790.174043
       },
       {
         "message": "external engine provenance recorded",
@@ -82,11 +82,11 @@
             "field": 1.25
           },
           "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
-          "module_sha256": "1026e97280a2de075c75ee8114bb06216c055a7b0dcec001555919c54612dc34"
+          "module_sha256": "46dd1369a7198ad7be8f6f5a47a36eb2696fdeec147ae414381dbc56e7aaae82"
         },
         "stage": "engine_provenance",
         "status": "ok",
-        "timestamp": 1781725499.884882
+        "timestamp": 1781725790.174082
       },
       {
         "message": "dense statevector cost estimated",
@@ -99,7 +99,7 @@
         },
         "stage": "cost_model",
         "status": "ok",
-        "timestamp": 1781725499.884886
+        "timestamp": 1781725790.1740851
       },
       {
         "message": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
@@ -110,7 +110,7 @@
         },
         "stage": "route",
         "status": "ok",
-        "timestamp": 1781725499.88489
+        "timestamp": 1781725790.1740868
       },
       {
         "message": "backend executed",
@@ -124,7 +124,7 @@
           "reference_truth": "closed_form_pauli_z_spectrum",
           "repr": "{'engine_id': 'physics_magnitude_quantum_engine.pauli_z_ground_energy', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gol",
           "route": "external_engine",
-          "runtime_ms": 0.3187500115018338,
+          "runtime_ms": 0.17966600717045367,
           "type": "dict",
           "units": "energy",
           "value": -1.25,
@@ -132,23 +132,26 @@
         },
         "stage": "execute",
         "status": "ok",
-        "timestamp": 1781725499.885244
+        "timestamp": 1781725790.174289
       },
       {
         "message": "physical evidence reported by backend",
         "metrics": {
           "abs_error": 0.0,
-          "evidence_hash": "3a4792af818f31b503815c04e6dd6ad7808e7660cedcbb34f9ca9b51656fc115",
+          "benchmark_family": "Pauli",
+          "evidence_hash": "dc74a5931de9473650c7042f1a91dfafa20f9cef278742f67e499ffb15bfd1a5",
           "expected": -1.25,
           "observable": "Single-spin Pauli-Z Hamiltonian ground-state energy",
           "physical_evidence_detail": "Eigenvalues of -h Z are {-h, +h}; ground energy is -|h|",
           "physical_evidence_level": "analytic",
+          "reference_truth": "closed_form_pauli_z_spectrum",
           "units": "energy",
-          "value": -1.25
+          "value": -1.25,
+          "verification_independence": "analytic_no_solver"
         },
         "stage": "physical_evidence",
         "status": "ok",
-        "timestamp": 1781725499.885256
+        "timestamp": 1781725790.174298
       }
     ],
     "hash_algorithm": "sha256(stable_json)",
@@ -185,6 +188,6 @@
       "n_qubits": 2
     }
   },
-  "trace_hash": "c1cc793b5a8b18fedfdae97f6c4744406d0b3c21b742889b1f3723a9150d5b20",
+  "trace_hash": "ec9966de9c25989f5a6f8c12da67c7dcc741ec27f7e21a1399019282d5a0f072",
   "trace_id": "trace_010"
 }

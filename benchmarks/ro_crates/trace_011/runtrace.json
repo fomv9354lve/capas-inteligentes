@@ -5,7 +5,7 @@
     "function_name": "bell_entropy_cross_sim",
     "kwargs": {},
     "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
-    "module_sha256": "1026e97280a2de075c75ee8114bb06216c055a7b0dcec001555919c54612dc34",
+    "module_sha256": "46dd1369a7198ad7be8f6f5a47a36eb2696fdeec147ae414381dbc56e7aaae82",
     "result": {
       "abs_error": 1.1102230246251565e-16,
       "benchmark_family": "Entanglement",
@@ -43,7 +43,7 @@
         },
         "stage": "ingest",
         "status": "ok",
-        "timestamp": 1781725499.885889
+        "timestamp": 1781725790.174809
       },
       {
         "message": "runtime and hardware context recorded",
@@ -69,7 +69,7 @@
         },
         "stage": "runtime_context",
         "status": "ok",
-        "timestamp": 1781725499.8859031
+        "timestamp": 1781725790.174819
       },
       {
         "message": "external engine provenance recorded",
@@ -78,11 +78,11 @@
           "function_name": "bell_entropy_cross_sim",
           "kwargs": {},
           "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
-          "module_sha256": "1026e97280a2de075c75ee8114bb06216c055a7b0dcec001555919c54612dc34"
+          "module_sha256": "46dd1369a7198ad7be8f6f5a47a36eb2696fdeec147ae414381dbc56e7aaae82"
         },
         "stage": "engine_provenance",
         "status": "ok",
-        "timestamp": 1781725499.885972
+        "timestamp": 1781725790.177862
       },
       {
         "message": "dense statevector cost estimated",
@@ -95,7 +95,7 @@
         },
         "stage": "cost_model",
         "status": "ok",
-        "timestamp": 1781725499.885976
+        "timestamp": 1781725790.1778638
       },
       {
         "message": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
@@ -106,7 +106,7 @@
         },
         "stage": "route",
         "status": "ok",
-        "timestamp": 1781725499.88598
+        "timestamp": 1781725790.177866
       },
       {
         "message": "backend executed",
@@ -120,7 +120,7 @@
           "reference_truth": "independent_reduced_density_eigenspectrum",
           "repr": "{'engine_id': 'physics_magnitude_quantum_engine.bell_entropy_cross_sim', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_go",
           "route": "external_engine",
-          "runtime_ms": 0.5658750014845282,
+          "runtime_ms": 0.5498749960679561,
           "type": "dict",
           "units": "nats",
           "value": 0.6931471805599454,
@@ -128,23 +128,26 @@
         },
         "stage": "execute",
         "status": "ok",
-        "timestamp": 1781725499.8865888
+        "timestamp": 1781725790.1784499
       },
       {
         "message": "physical evidence reported by backend",
         "metrics": {
           "abs_error": 1.1102230246251565e-16,
-          "evidence_hash": "deb1bf779155a777853093fead19749a46c270269d922d0e8a2083ed609dcdd4",
+          "benchmark_family": "Entanglement",
+          "evidence_hash": "b9723afe8f04008cb9d28bade706ae0929787f358262666f0be683965ae82b2f",
           "expected": 0.6931471805599453,
           "observable": "Bell pair entanglement entropy cross-sim witness",
           "physical_evidence_detail": "quantum_engine entropy checked against independent reduced-density eigenvalue calculation",
           "physical_evidence_level": "cross_sim",
+          "reference_truth": "independent_reduced_density_eigenspectrum",
           "units": "nats",
-          "value": 0.6931471805599454
+          "value": 0.6931471805599454,
+          "verification_independence": "different_algorithm_same_runtime"
         },
         "stage": "physical_evidence",
         "status": "ok",
-        "timestamp": 1781725499.886603
+        "timestamp": 1781725790.1784608
       }
     ],
     "hash_algorithm": "sha256(stable_json)",
@@ -181,6 +184,6 @@
       "n_qubits": 2
     }
   },
-  "trace_hash": "206540fc9723e473cd12b655e907d00f6451452a2fce513d27d9cdb518c23d26",
+  "trace_hash": "0da569cabbd03179e79bfb66a53d2fdddb4324252c4f7249c9414f87c291a6de",
   "trace_id": "trace_011"
 }

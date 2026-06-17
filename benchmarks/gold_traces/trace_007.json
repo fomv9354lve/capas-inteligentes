@@ -8,7 +8,7 @@
       "h": 0.7
     },
     "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
-    "module_sha256": "1026e97280a2de075c75ee8114bb06216c055a7b0dcec001555919c54612dc34",
+    "module_sha256": "46dd1369a7198ad7be8f6f5a47a36eb2696fdeec147ae414381dbc56e7aaae82",
     "result": {
       "abs_error": 0.0,
       "benchmark_family": "Ising",
@@ -46,7 +46,7 @@
         },
         "stage": "ingest",
         "status": "ok",
-        "timestamp": 1781725499.881082
+        "timestamp": 1781725790.1716568
       },
       {
         "message": "runtime and hardware context recorded",
@@ -72,7 +72,7 @@
         },
         "stage": "runtime_context",
         "status": "ok",
-        "timestamp": 1781725499.881095
+        "timestamp": 1781725790.171668
       },
       {
         "message": "external engine provenance recorded",
@@ -84,11 +84,11 @@
             "h": 0.7
           },
           "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
-          "module_sha256": "1026e97280a2de075c75ee8114bb06216c055a7b0dcec001555919c54612dc34"
+          "module_sha256": "46dd1369a7198ad7be8f6f5a47a36eb2696fdeec147ae414381dbc56e7aaae82"
         },
         "stage": "engine_provenance",
         "status": "ok",
-        "timestamp": 1781725499.8811562
+        "timestamp": 1781725790.1717088
       },
       {
         "message": "dense statevector cost estimated",
@@ -101,7 +101,7 @@
         },
         "stage": "cost_model",
         "status": "ok",
-        "timestamp": 1781725499.8811588
+        "timestamp": 1781725790.171712
       },
       {
         "message": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
@@ -112,7 +112,7 @@
         },
         "stage": "route",
         "status": "ok",
-        "timestamp": 1781725499.8811631
+        "timestamp": 1781725790.171715
       },
       {
         "message": "backend executed",
@@ -126,7 +126,7 @@
           "reference_truth": "closed_form_two_spin_TFIM_spectrum",
           "repr": "{'engine_id': 'physics_magnitude_quantum_engine.transverse_field_ising_two_spin_ground_state', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integration",
           "route": "external_engine",
-          "runtime_ms": 0.36933302180841565,
+          "runtime_ms": 0.26458300999365747,
           "type": "dict",
           "units": "energy",
           "value": -1.7204650534085253,
@@ -134,23 +134,26 @@
         },
         "stage": "execute",
         "status": "ok",
-        "timestamp": 1781725499.881566
+        "timestamp": 1781725790.172006
       },
       {
         "message": "physical evidence reported by backend",
         "metrics": {
           "abs_error": 0.0,
-          "evidence_hash": "991f633a3331fc60491aee2e5598e246ade3cd16847804f08cd8b56fdccb5e34",
+          "benchmark_family": "Ising",
+          "evidence_hash": "70d5eb0caa85d2a911ecaf923563038f1b138a375bca21b77a0133bb700d3ae3",
           "expected": -1.7204650534085253,
           "observable": "Two-spin transverse-field Ising ground-state energy",
           "physical_evidence_detail": "N=2 TFIM even block eigenvalues are +/-sqrt(J^2 + 4h^2); ground E0 = -sqrt(J^2 + 4h^2)",
           "physical_evidence_level": "analytic",
+          "reference_truth": "closed_form_two_spin_TFIM_spectrum",
           "units": "energy",
-          "value": -1.7204650534085253
+          "value": -1.7204650534085253,
+          "verification_independence": "analytic_no_solver"
         },
         "stage": "physical_evidence",
         "status": "ok",
-        "timestamp": 1781725499.881577
+        "timestamp": 1781725790.1720161
       }
     ],
     "hash_algorithm": "sha256(stable_json)",
@@ -187,6 +190,6 @@
       "n_qubits": 2
     }
   },
-  "trace_hash": "7007225403d5d32c914c481e46b82a6e74badd32c2253c9c44f0c9a6698e816c",
+  "trace_hash": "47275dade88a9a98a660e481d2adeb06a33e29411156333ec493f1936d661c6c",
   "trace_id": "trace_007"
 }

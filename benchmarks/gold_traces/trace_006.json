@@ -7,7 +7,7 @@
       "J": 1.0
     },
     "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
-    "module_sha256": "1026e97280a2de075c75ee8114bb06216c055a7b0dcec001555919c54612dc34",
+    "module_sha256": "46dd1369a7198ad7be8f6f5a47a36eb2696fdeec147ae414381dbc56e7aaae82",
     "result": {
       "abs_error": 0.0,
       "benchmark_family": "Heisenberg",
@@ -45,7 +45,7 @@
         },
         "stage": "ingest",
         "status": "ok",
-        "timestamp": 1781725499.880044
+        "timestamp": 1781725790.17071
       },
       {
         "message": "runtime and hardware context recorded",
@@ -71,7 +71,7 @@
         },
         "stage": "runtime_context",
         "status": "ok",
-        "timestamp": 1781725499.880058
+        "timestamp": 1781725790.170722
       },
       {
         "message": "external engine provenance recorded",
@@ -82,11 +82,11 @@
             "J": 1.0
           },
           "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
-          "module_sha256": "1026e97280a2de075c75ee8114bb06216c055a7b0dcec001555919c54612dc34"
+          "module_sha256": "46dd1369a7198ad7be8f6f5a47a36eb2696fdeec147ae414381dbc56e7aaae82"
         },
         "stage": "engine_provenance",
         "status": "ok",
-        "timestamp": 1781725499.8801181
+        "timestamp": 1781725790.17077
       },
       {
         "message": "dense statevector cost estimated",
@@ -99,7 +99,7 @@
         },
         "stage": "cost_model",
         "status": "ok",
-        "timestamp": 1781725499.8801222
+        "timestamp": 1781725790.170773
       },
       {
         "message": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
@@ -110,7 +110,7 @@
         },
         "stage": "route",
         "status": "ok",
-        "timestamp": 1781725499.880126
+        "timestamp": 1781725790.1707761
       },
       {
         "message": "backend executed",
@@ -124,7 +124,7 @@
           "reference_truth": "closed_form_singlet_triplet_spectrum",
           "repr": "{'engine_id': 'physics_magnitude_quantum_engine.heisenberg_dimer_ground_state', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magni",
           "route": "external_engine",
-          "runtime_ms": 0.3303330158814788,
+          "runtime_ms": 0.26933298795484006,
           "type": "dict",
           "units": "energy",
           "value": -0.75,
@@ -132,23 +132,26 @@
         },
         "stage": "execute",
         "status": "ok",
-        "timestamp": 1781725499.88049
+        "timestamp": 1781725790.171073
       },
       {
         "message": "physical evidence reported by backend",
         "metrics": {
           "abs_error": 0.0,
-          "evidence_hash": "a638dd94ceb4564dc60dc9f40ec30869e5de72479198060827242d5c89b306cf",
+          "benchmark_family": "Heisenberg",
+          "evidence_hash": "b8c486e94417684e4c8b9df9369d7025c01f8ee900dba543068bc17f181736fb",
           "expected": -0.75,
           "observable": "Spin-1/2 Heisenberg dimer ground-state energy",
           "physical_evidence_detail": "For H = J S1.S2, the singlet ground state has E0 = -3J/4",
           "physical_evidence_level": "analytic",
+          "reference_truth": "closed_form_singlet_triplet_spectrum",
           "units": "energy",
-          "value": -0.75
+          "value": -0.75,
+          "verification_independence": "analytic_no_solver"
         },
         "stage": "physical_evidence",
         "status": "ok",
-        "timestamp": 1781725499.880502
+        "timestamp": 1781725790.171083
       }
     ],
     "hash_algorithm": "sha256(stable_json)",
@@ -185,6 +188,6 @@
       "n_qubits": 2
     }
   },
-  "trace_hash": "ba144091ef6be08c2a279c0e439384a07fca26a11b1ce6482a963a5a22d3ddc3",
+  "trace_hash": "69d5a84d74b6dbaf8b7ef685932829a4cf3a35deb9aa567dfc8c63c15a613bdc",
   "trace_id": "trace_006"
 }

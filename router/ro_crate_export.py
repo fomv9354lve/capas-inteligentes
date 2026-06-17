@@ -204,7 +204,12 @@ def run_trace_to_ro_crate_metadata(
                 "capas:units": evidence.get("units"),
                 "capas:detail": evidence.get("physical_evidence_detail"),
                 "capas:certificationStatus": evidence.get("certification_status"),
+                "capas:formalBoundStatus": evidence.get("formal_bound_status"),
                 "capas:sourceLabel": evidence.get("source_label"),
+                "capas:discardedWeight": evidence.get("discarded_weight"),
+                "capas:actualErrorSquared": evidence.get("actual_error_squared"),
+                "capas:boundType": evidence.get("bound_type"),
+                "capas:boundScope": evidence.get("bound_scope"),
                 "capas:evidenceHash": stable_hash(evidence),
                 "about": {"@id": result_id},
             }
@@ -281,6 +286,13 @@ def _physical_evidence_from_trace(trace: RunTrace) -> dict[str, Any]:
             "benchmark_family",
             "reference_truth",
             "verification_independence",
+            "certification_status",
+            "formal_bound_status",
+            "source_label",
+            "discarded_weight",
+            "actual_error_squared",
+            "bound_type",
+            "bound_scope",
         ):
             if key in trace.result_summary:
                 evidence[key] = trace.result_summary[key]

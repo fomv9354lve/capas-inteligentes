@@ -139,6 +139,16 @@ def run_trace_to_prov_json(trace: RunTrace, *, bundle_id: str | None = None) -> 
                 "capas:absError": event.metrics.get("abs_error"),
                 "capas:expected": event.metrics.get("expected"),
                 "capas:value": event.metrics.get("value"),
+                "capas:benchmarkFamily": event.metrics.get("benchmark_family"),
+                "capas:referenceTruth": event.metrics.get("reference_truth"),
+                "capas:verificationIndependence": event.metrics.get("verification_independence"),
+                "capas:certificationStatus": event.metrics.get("certification_status"),
+                "capas:formalBoundStatus": event.metrics.get("formal_bound_status"),
+                "capas:sourceLabel": event.metrics.get("source_label"),
+                "capas:discardedWeight": event.metrics.get("discarded_weight"),
+                "capas:actualErrorSquared": event.metrics.get("actual_error_squared"),
+                "capas:boundType": event.metrics.get("bound_type"),
+                "capas:boundScope": event.metrics.get("bound_scope"),
                 "capas:evidenceHash": event.metrics.get("evidence_hash"),
             }
             prov["wasGeneratedBy"][f"{evidence_id}:generatedBy:{event_id}"] = {

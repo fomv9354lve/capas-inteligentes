@@ -10,7 +10,7 @@
       "seed": 1
     },
     "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
-    "module_sha256": "1026e97280a2de075c75ee8114bb06216c055a7b0dcec001555919c54612dc34",
+    "module_sha256": "46dd1369a7198ad7be8f6f5a47a36eb2696fdeec147ae414381dbc56e7aaae82",
     "result": {
       "abs_error": null,
       "benchmark_family": "TensorNetwork",
@@ -58,7 +58,7 @@
         },
         "stage": "ingest",
         "status": "ok",
-        "timestamp": 1781725499.889065
+        "timestamp": 1781725790.180758
       },
       {
         "message": "runtime and hardware context recorded",
@@ -84,7 +84,7 @@
         },
         "stage": "runtime_context",
         "status": "ok",
-        "timestamp": 1781725499.889077
+        "timestamp": 1781725790.1807659
       },
       {
         "message": "external engine provenance recorded",
@@ -98,11 +98,11 @@
             "seed": 1
           },
           "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
-          "module_sha256": "1026e97280a2de075c75ee8114bb06216c055a7b0dcec001555919c54612dc34"
+          "module_sha256": "46dd1369a7198ad7be8f6f5a47a36eb2696fdeec147ae414381dbc56e7aaae82"
         },
         "stage": "engine_provenance",
         "status": "ok",
-        "timestamp": 1781725499.889138
+        "timestamp": 1781725790.1808052
       },
       {
         "message": "dense statevector cost estimated",
@@ -115,7 +115,7 @@
         },
         "stage": "cost_model",
         "status": "ok",
-        "timestamp": 1781725499.889141
+        "timestamp": 1781725790.1808069
       },
       {
         "message": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
@@ -126,7 +126,7 @@
         },
         "stage": "route",
         "status": "ok",
-        "timestamp": 1781725499.8891442
+        "timestamp": 1781725790.180809
       },
       {
         "message": "backend executed",
@@ -136,6 +136,7 @@
           "certification_status": "estimated_not_formal_certificate",
           "depth": 6,
           "expected": "no dense reference at this scale",
+          "formal_bound_status": "not_established_from_quimb_circuitmps_api",
           "max_bond": 8,
           "n": 60,
           "observable": "Truncated MPS fidelity/trace-distance estimate for 1D random circuit",
@@ -144,7 +145,7 @@
           "reference_truth": "quimb_circuitmps_truncation_error_tracker",
           "repr": "{'engine_id': 'physics_magnitude_quantum_engine.quimb_mps_estimated_bound', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude",
           "route": "external_engine",
-          "runtime_ms": 277.37562500988133,
+          "runtime_ms": 329.78000000002794,
           "source_label": "ESTIMATED (no dense ground truth; quimb fidelity_estimate, not verified)",
           "type": "dict",
           "units": "dimensionless",
@@ -157,37 +158,44 @@
         },
         "stage": "execute",
         "status": "ok",
-        "timestamp": 1781725500.1665852
+        "timestamp": 1781725790.510655
       },
       {
         "message": "physical evidence reported by backend",
         "metrics": {
           "abs_error": null,
-          "evidence_hash": "abebd0e4494790a1a1fa52b89d05b1d51c2fed38febd6ce9c865f052f5536345",
+          "benchmark_family": "TensorNetwork",
+          "certification_status": "estimated_not_formal_certificate",
+          "evidence_hash": "e6591d425188ffede52c2dbea464630db63c072327b2efbb59f7c9e34f3f8f7c",
           "expected": "no dense reference at this scale",
+          "formal_bound_status": "not_established_from_quimb_circuitmps_api",
           "observable": "Truncated MPS fidelity/trace-distance estimate for 1D random circuit",
           "physical_evidence_detail": "Derived from quimb CircuitMPS fidelity_estimate(), which quimb documents as an estimate based on the norm of the truncated state and an approximation to the ideal overlap. Trace distance uses D<=sqrt(1-F_est). This is not a formal truncation certificate.",
           "physical_evidence_level": "estimated_bound",
+          "reference_truth": "quimb_circuitmps_truncation_error_tracker",
+          "source_label": "ESTIMATED (no dense ground truth; quimb fidelity_estimate, not verified)",
           "units": "dimensionless",
           "value": {
             "bond_used": 8,
             "fidelity_lower_bound": 0.9999999999999709,
             "trace_distance_upper_bound": 1.70551585290724e-07
-          }
+          },
+          "verification_independence": "algorithmic_error_certificate_same_runtime"
         },
         "stage": "physical_evidence",
         "status": "ok",
-        "timestamp": 1781725500.166601
+        "timestamp": 1781725790.5106719
       }
     ],
     "hash_algorithm": "sha256(stable_json)",
-    "result_hash": "d0f8c911d2807e5d20a607538f00abf1bfd1c20d27d1136b8f1eadfc398f4840",
+    "result_hash": "104d4b69c5639fb6259e13d9e49d0d6cee4907d46b36cba66a66df6e739affc0",
     "result_summary": {
       "abs_error": null,
       "benchmark_family": "TensorNetwork",
       "certification_status": "estimated_not_formal_certificate",
       "depth": 6,
       "expected": "no dense reference at this scale",
+      "formal_bound_status": "not_established_from_quimb_circuitmps_api",
       "max_bond": 8,
       "n": 60,
       "observable": "Truncated MPS fidelity/trace-distance estimate for 1D random circuit",
@@ -223,6 +231,6 @@
       "n_qubits": 2
     }
   },
-  "trace_hash": "f00731531fd2f3fbd97157d18a1b58e41d3136ed4d05bfc8bdb2ec6f79ca0f22",
+  "trace_hash": "511a5fe5236ea9b56a75d217cb42fcdb27891c005a3c2aed0cf3a7462dfebd01",
   "trace_id": "trace_015"
 }

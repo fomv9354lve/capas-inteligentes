@@ -43,7 +43,7 @@ def main() -> int:
     def physical_evidence_acceptable(row: dict[str, str]) -> bool:
         level = norm(row.get("physical_evidence_level", ""))
         risk = norm(row.get("risk_level", ""))
-        if level in {"analytic", "cross_sim"}:
+        if level in {"analytic", "cross_sim", "formal_bound"}:
             return True
         return level == "invariant" and risk in {"low", "medium"}
 
@@ -76,6 +76,7 @@ def main() -> int:
         "backend_failed",
         "rejected_by_router",
         "estimated_bound_candidate",
+        "formal_bound_success",
     }
     present_coverage = set(coverage) - {"blank"}
     missing_coverage = sorted(required_coverage - present_coverage)

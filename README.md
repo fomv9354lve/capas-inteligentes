@@ -89,6 +89,7 @@ See:
 
 - `docs/SOTA_POSITIONING.md`
 - `docs/WORKFLOW_RUN_RO_CRATE_ALIGNMENT.md`
+- `docs/FORMAL_BOUND_AXIS.md`
 - `docs/SCIAGENTGYM_AUDIT.md`
 - `docs/QMB100_AUDIT.md`
 - `docs/VVUQ_QUANTUM_AUDIT.md`

@@ -29,7 +29,7 @@
       "@id": "./",
       "@type": "Dataset",
       "capas:evidenceStatus": "present",
-      "capas:traceHash": "f00731531fd2f3fbd97157d18a1b58e41d3136ed4d05bfc8bdb2ec6f79ca0f22",
+      "capas:traceHash": "511a5fe5236ea9b56a75d217cb42fcdb27891c005a3c2aed0cf3a7462dfebd01",
       "capas:workflowRunCrateAlignment": "shape-compatible-with-workflow-run-ro-crate-v0",
       "capas:workloadHash": "82330974c69ef53c86389a955a208c3777ab640f4646615f66953d79f3fd5ced",
       "conformsTo": [
@@ -43,7 +43,7 @@
           "@id": "https://example.org/capas-inteligentes/ro-crate/physical-evidence/0.1"
         }
       ],
-      "datePublished": "2026-06-17T19:45:00.166601Z",
+      "datePublished": "2026-06-17T19:49:50.510672Z",
       "description": "RO-Crate package containing a sealed RunTrace, optional PROV export, routing decision, runtime context, and CAPAS physical evidence metadata.",
       "hasPart": [
         {
@@ -59,16 +59,16 @@
           "@id": "entity:workload"
         },
         {
-          "@id": "trace:f00731531fd2f3fb:routing-decision"
+          "@id": "trace:511a5fe5236ea9b5:routing-decision"
         },
         {
-          "@id": "trace:f00731531fd2f3fb:result"
+          "@id": "trace:511a5fe5236ea9b5:result"
         },
         {
           "@id": "runtrace.prov.json"
         },
         {
-          "@id": "trace:f00731531fd2f3fb:physical-evidence"
+          "@id": "trace:511a5fe5236ea9b5:physical-evidence"
         }
       ],
       "name": "CAPAS traced scientific computation crate"
@@ -80,14 +80,14 @@
         "DigitalDocument"
       ],
       "about": {
-        "@id": "trace:f00731531fd2f3fb"
+        "@id": "trace:511a5fe5236ea9b5"
       },
       "encodingFormat": "application/json",
       "name": "Sealed CAPAS RunTrace",
-      "sha256": "705a5f315c342a556614d51b45053e2c3d108daa6b8cde75afa24bd07e054078"
+      "sha256": "6dced2fd6cfc0b91a4c33a5ef7f7dfaa7a5cfaf72402f04cb3340b21875605cc"
     },
     {
-      "@id": "trace:f00731531fd2f3fb",
+      "@id": "trace:511a5fe5236ea9b5",
       "@type": "CreateAction",
       "actionStatus": "CompletedActionStatus",
       "agent": {
@@ -98,11 +98,11 @@
       "capas:evidenceStatus": "present",
       "capas:hashAlgorithm": "sha256(stable_json)",
       "capas:routingDecision": {
-        "@id": "trace:f00731531fd2f3fb:routing-decision"
+        "@id": "trace:511a5fe5236ea9b5:routing-decision"
       },
-      "capas:traceHash": "f00731531fd2f3fbd97157d18a1b58e41d3136ed4d05bfc8bdb2ec6f79ca0f22",
+      "capas:traceHash": "511a5fe5236ea9b56a75d217cb42fcdb27891c005a3c2aed0cf3a7462dfebd01",
       "capas:traceSchemaVersion": "capas-runtrace-v2",
-      "endTime": "2026-06-17T19:45:00.166601Z",
+      "endTime": "2026-06-17T19:49:50.510672Z",
       "instrument": {
         "@id": "workflow/capas-costurero-run.py"
       },
@@ -111,9 +111,9 @@
         "@id": "entity:workload"
       },
       "result": {
-        "@id": "trace:f00731531fd2f3fb:result"
+        "@id": "trace:511a5fe5236ea9b5:result"
       },
-      "startTime": "2026-06-17T19:44:59.889065Z"
+      "startTime": "2026-06-17T19:49:50.180758Z"
     },
     {
       "@id": "workflow/capas-costurero-run.py",
@@ -173,7 +173,7 @@
       "name": "Workload summary"
     },
     {
-      "@id": "trace:f00731531fd2f3fb:routing-decision",
+      "@id": "trace:511a5fe5236ea9b5:routing-decision",
       "@type": "Thing",
       "capas:reason": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
       "capas:route": "external_engine",
@@ -187,21 +187,22 @@
       ],
       "encodingFormat": "application/json",
       "name": "W3C PROV-shaped export",
-      "sha256": "626221b23dce5df56b350d6fb319de936c6990d774835adda9241ae893d7299f"
+      "sha256": "305bf43bef2892a035af8a8322460526f0494934641f6385cde7ecc7ed9e69c0"
     },
     {
-      "@id": "trace:f00731531fd2f3fb:result",
+      "@id": "trace:511a5fe5236ea9b5:result",
       "@type": "Dataset",
       "capas:physicalEvidence": {
-        "@id": "trace:f00731531fd2f3fb:physical-evidence"
+        "@id": "trace:511a5fe5236ea9b5:physical-evidence"
       },
-      "capas:resultHash": "d0f8c911d2807e5d20a607538f00abf1bfd1c20d27d1136b8f1eadfc398f4840",
+      "capas:resultHash": "104d4b69c5639fb6259e13d9e49d0d6cee4907d46b36cba66a66df6e739affc0",
       "capas:summary": {
         "abs_error": null,
         "benchmark_family": "TensorNetwork",
         "certification_status": "estimated_not_formal_certificate",
         "depth": 6,
         "expected": "no dense reference at this scale",
+        "formal_bound_status": "not_established_from_quimb_circuitmps_api",
         "max_bond": 8,
         "n": 60,
         "observable": "Truncated MPS fidelity/trace-distance estimate for 1D random circuit",
@@ -222,18 +223,21 @@
       "name": "Result summary"
     },
     {
-      "@id": "trace:f00731531fd2f3fb:physical-evidence",
+      "@id": "trace:511a5fe5236ea9b5:physical-evidence",
       "@type": "capas:PhysicalEvidence",
       "about": {
-        "@id": "trace:f00731531fd2f3fb:result"
+        "@id": "trace:511a5fe5236ea9b5:result"
       },
       "capas:benchmarkFamily": "TensorNetwork",
+      "capas:certificationStatus": "estimated_not_formal_certificate",
       "capas:detail": "Derived from quimb CircuitMPS fidelity_estimate(), which quimb documents as an estimate based on the norm of the truncated state and an approximation to the ideal overlap. Trace distance uses D<=sqrt(1-F_est). This is not a formal truncation certificate.",
-      "capas:evidenceHash": "3f4cf0877cc6de8ea350ab7d48530aa1feeffbde43708e07286770cf57994af1",
+      "capas:evidenceHash": "e01bd727f389a83672fde3d8d915f7065361bcc63b7acf9dbe9857f849cba020",
       "capas:expected": "no dense reference at this scale",
+      "capas:formalBoundStatus": "not_established_from_quimb_circuitmps_api",
       "capas:observable": "Truncated MPS fidelity/trace-distance estimate for 1D random circuit",
       "capas:physicalEvidenceLevel": "estimated_bound",
       "capas:referenceTruth": "quimb_circuitmps_truncation_error_tracker",
+      "capas:sourceLabel": "ESTIMATED (no dense ground truth; quimb fidelity_estimate, not verified)",
       "capas:units": "dimensionless",
       "capas:value": {
         "bond_used": 8,
@@ -244,7 +248,7 @@
       "name": "Physical evidence attached to result"
     },
     {
-      "@id": "trace:f00731531fd2f3fb:event:0:ingest",
+      "@id": "trace:511a5fe5236ea9b5:event:0:ingest",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -264,10 +268,10 @@
       },
       "description": "workload accepted",
       "name": "ingest",
-      "startTime": 1781725499.889065
+      "startTime": 1781725790.180758
     },
     {
-      "@id": "trace:f00731531fd2f3fb:event:1:runtime_context",
+      "@id": "trace:511a5fe5236ea9b5:event:1:runtime_context",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -292,10 +296,10 @@
       },
       "description": "runtime and hardware context recorded",
       "name": "runtime_context",
-      "startTime": 1781725499.889077
+      "startTime": 1781725790.1807659
     },
     {
-      "@id": "trace:f00731531fd2f3fb:event:2:engine_provenance",
+      "@id": "trace:511a5fe5236ea9b5:event:2:engine_provenance",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -308,14 +312,14 @@
           "seed": 1
         },
         "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
-        "module_sha256": "1026e97280a2de075c75ee8114bb06216c055a7b0dcec001555919c54612dc34"
+        "module_sha256": "46dd1369a7198ad7be8f6f5a47a36eb2696fdeec147ae414381dbc56e7aaae82"
       },
       "description": "external engine provenance recorded",
       "name": "engine_provenance",
-      "startTime": 1781725499.889138
+      "startTime": 1781725790.1808052
     },
     {
-      "@id": "trace:f00731531fd2f3fb:event:3:cost_model",
+      "@id": "trace:511a5fe5236ea9b5:event:3:cost_model",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -327,10 +331,10 @@
       },
       "description": "dense statevector cost estimated",
       "name": "cost_model",
-      "startTime": 1781725499.889141
+      "startTime": 1781725790.1808069
     },
     {
-      "@id": "trace:f00731531fd2f3fb:event:4:route",
+      "@id": "trace:511a5fe5236ea9b5:event:4:route",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -340,10 +344,10 @@
       },
       "description": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
       "name": "route",
-      "startTime": 1781725499.8891442
+      "startTime": 1781725790.180809
     },
     {
-      "@id": "trace:f00731531fd2f3fb:event:5:execute",
+      "@id": "trace:511a5fe5236ea9b5:event:5:execute",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -352,6 +356,7 @@
         "certification_status": "estimated_not_formal_certificate",
         "depth": 6,
         "expected": "no dense reference at this scale",
+        "formal_bound_status": "not_established_from_quimb_circuitmps_api",
         "max_bond": 8,
         "n": 60,
         "observable": "Truncated MPS fidelity/trace-distance estimate for 1D random circuit",
@@ -360,7 +365,7 @@
         "reference_truth": "quimb_circuitmps_truncation_error_tracker",
         "repr": "{'engine_id': 'physics_magnitude_quantum_engine.quimb_mps_estimated_bound', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude",
         "route": "external_engine",
-        "runtime_ms": 277.37562500988133,
+        "runtime_ms": 329.78000000002794,
         "source_label": "ESTIMATED (no dense ground truth; quimb fidelity_estimate, not verified)",
         "type": "dict",
         "units": "dimensionless",
@@ -373,29 +378,35 @@
       },
       "description": "backend executed",
       "name": "execute",
-      "startTime": 1781725500.1665852
+      "startTime": 1781725790.510655
     },
     {
-      "@id": "trace:f00731531fd2f3fb:event:6:physical_evidence",
+      "@id": "trace:511a5fe5236ea9b5:event:6:physical_evidence",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
         "abs_error": null,
-        "evidence_hash": "abebd0e4494790a1a1fa52b89d05b1d51c2fed38febd6ce9c865f052f5536345",
+        "benchmark_family": "TensorNetwork",
+        "certification_status": "estimated_not_formal_certificate",
+        "evidence_hash": "e6591d425188ffede52c2dbea464630db63c072327b2efbb59f7c9e34f3f8f7c",
         "expected": "no dense reference at this scale",
+        "formal_bound_status": "not_established_from_quimb_circuitmps_api",
         "observable": "Truncated MPS fidelity/trace-distance estimate for 1D random circuit",
         "physical_evidence_detail": "Derived from quimb CircuitMPS fidelity_estimate(), which quimb documents as an estimate based on the norm of the truncated state and an approximation to the ideal overlap. Trace distance uses D<=sqrt(1-F_est). This is not a formal truncation certificate.",
         "physical_evidence_level": "estimated_bound",
+        "reference_truth": "quimb_circuitmps_truncation_error_tracker",
+        "source_label": "ESTIMATED (no dense ground truth; quimb fidelity_estimate, not verified)",
         "units": "dimensionless",
         "value": {
           "bond_used": 8,
           "fidelity_lower_bound": 0.9999999999999709,
           "trace_distance_upper_bound": 1.70551585290724e-07
-        }
+        },
+        "verification_independence": "algorithmic_error_certificate_same_runtime"
       },
       "description": "physical evidence reported by backend",
       "name": "physical_evidence",
-      "startTime": 1781725500.166601
+      "startTime": 1781725790.5106719
     }
   ]
 }

@@ -29,7 +29,7 @@
       "@id": "./",
       "@type": "Dataset",
       "capas:evidenceStatus": "present",
-      "capas:traceHash": "7007225403d5d32c914c481e46b82a6e74badd32c2253c9c44f0c9a6698e816c",
+      "capas:traceHash": "47275dade88a9a98a660e481d2adeb06a33e29411156333ec493f1936d661c6c",
       "capas:workflowRunCrateAlignment": "shape-compatible-with-workflow-run-ro-crate-v0",
       "capas:workloadHash": "606868a39baea63f00c1ed6e72d15b78ab5b98532da4f2fbefec1274770ff092",
       "conformsTo": [
@@ -43,7 +43,7 @@
           "@id": "https://example.org/capas-inteligentes/ro-crate/physical-evidence/0.1"
         }
       ],
-      "datePublished": "2026-06-17T19:44:59.881577Z",
+      "datePublished": "2026-06-17T19:49:50.172016Z",
       "description": "RO-Crate package containing a sealed RunTrace, optional PROV export, routing decision, runtime context, and CAPAS physical evidence metadata.",
       "hasPart": [
         {
@@ -59,16 +59,16 @@
           "@id": "entity:workload"
         },
         {
-          "@id": "trace:7007225403d5d32c:routing-decision"
+          "@id": "trace:47275dade88a9a98:routing-decision"
         },
         {
-          "@id": "trace:7007225403d5d32c:result"
+          "@id": "trace:47275dade88a9a98:result"
         },
         {
           "@id": "runtrace.prov.json"
         },
         {
-          "@id": "trace:7007225403d5d32c:physical-evidence"
+          "@id": "trace:47275dade88a9a98:physical-evidence"
         }
       ],
       "name": "CAPAS traced scientific computation crate"
@@ -80,14 +80,14 @@
         "DigitalDocument"
       ],
       "about": {
-        "@id": "trace:7007225403d5d32c"
+        "@id": "trace:47275dade88a9a98"
       },
       "encodingFormat": "application/json",
       "name": "Sealed CAPAS RunTrace",
-      "sha256": "1447d7409656bcc6d6905bf61802525732b7e1ae387e9d1be48bda063b5f8fc4"
+      "sha256": "9c3cd79032069574d37573c67952f9443f4fa66291437f22f34686cc6dae06f8"
     },
     {
-      "@id": "trace:7007225403d5d32c",
+      "@id": "trace:47275dade88a9a98",
       "@type": "CreateAction",
       "actionStatus": "CompletedActionStatus",
       "agent": {
@@ -98,11 +98,11 @@
       "capas:evidenceStatus": "present",
       "capas:hashAlgorithm": "sha256(stable_json)",
       "capas:routingDecision": {
-        "@id": "trace:7007225403d5d32c:routing-decision"
+        "@id": "trace:47275dade88a9a98:routing-decision"
       },
-      "capas:traceHash": "7007225403d5d32c914c481e46b82a6e74badd32c2253c9c44f0c9a6698e816c",
+      "capas:traceHash": "47275dade88a9a98a660e481d2adeb06a33e29411156333ec493f1936d661c6c",
       "capas:traceSchemaVersion": "capas-runtrace-v2",
-      "endTime": "2026-06-17T19:44:59.881577Z",
+      "endTime": "2026-06-17T19:49:50.172016Z",
       "instrument": {
         "@id": "workflow/capas-costurero-run.py"
       },
@@ -111,9 +111,9 @@
         "@id": "entity:workload"
       },
       "result": {
-        "@id": "trace:7007225403d5d32c:result"
+        "@id": "trace:47275dade88a9a98:result"
       },
-      "startTime": "2026-06-17T19:44:59.881082Z"
+      "startTime": "2026-06-17T19:49:50.171657Z"
     },
     {
       "@id": "workflow/capas-costurero-run.py",
@@ -173,7 +173,7 @@
       "name": "Workload summary"
     },
     {
-      "@id": "trace:7007225403d5d32c:routing-decision",
+      "@id": "trace:47275dade88a9a98:routing-decision",
       "@type": "Thing",
       "capas:reason": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
       "capas:route": "external_engine",
@@ -187,13 +187,13 @@
       ],
       "encodingFormat": "application/json",
       "name": "W3C PROV-shaped export",
-      "sha256": "8cc19bb56962440ecd895bc5d4f146b6b64030cdb9695e683411ac736af23fd9"
+      "sha256": "dc4a38134584e15cf53db983bc206b5eb99c0708ae06a93b18ead4261558dbd4"
     },
     {
-      "@id": "trace:7007225403d5d32c:result",
+      "@id": "trace:47275dade88a9a98:result",
       "@type": "Dataset",
       "capas:physicalEvidence": {
-        "@id": "trace:7007225403d5d32c:physical-evidence"
+        "@id": "trace:47275dade88a9a98:physical-evidence"
       },
       "capas:resultHash": "66db5dc7ffbb2c5ae73d846f3e6e38981a3fb803d27a9de8c9cca3a87d535d7d",
       "capas:summary": {
@@ -213,15 +213,15 @@
       "name": "Result summary"
     },
     {
-      "@id": "trace:7007225403d5d32c:physical-evidence",
+      "@id": "trace:47275dade88a9a98:physical-evidence",
       "@type": "capas:PhysicalEvidence",
       "about": {
-        "@id": "trace:7007225403d5d32c:result"
+        "@id": "trace:47275dade88a9a98:result"
       },
       "capas:absError": 0.0,
       "capas:benchmarkFamily": "Ising",
       "capas:detail": "N=2 TFIM even block eigenvalues are +/-sqrt(J^2 + 4h^2); ground E0 = -sqrt(J^2 + 4h^2)",
-      "capas:evidenceHash": "3bca9d59bae0aa746003d2f249c04b620c0677020f75e8109d13ce9b05e6d063",
+      "capas:evidenceHash": "cd9b9a1e75d3309634a9fd2263e80d1cf92429224bda75be8ee1cb1e900ee0de",
       "capas:expected": -1.7204650534085253,
       "capas:observable": "Two-spin transverse-field Ising ground-state energy",
       "capas:physicalEvidenceLevel": "analytic",
@@ -232,7 +232,7 @@
       "name": "Physical evidence attached to result"
     },
     {
-      "@id": "trace:7007225403d5d32c:event:0:ingest",
+      "@id": "trace:47275dade88a9a98:event:0:ingest",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -252,10 +252,10 @@
       },
       "description": "workload accepted",
       "name": "ingest",
-      "startTime": 1781725499.881082
+      "startTime": 1781725790.1716568
     },
     {
-      "@id": "trace:7007225403d5d32c:event:1:runtime_context",
+      "@id": "trace:47275dade88a9a98:event:1:runtime_context",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -280,10 +280,10 @@
       },
       "description": "runtime and hardware context recorded",
       "name": "runtime_context",
-      "startTime": 1781725499.881095
+      "startTime": 1781725790.171668
     },
     {
-      "@id": "trace:7007225403d5d32c:event:2:engine_provenance",
+      "@id": "trace:47275dade88a9a98:event:2:engine_provenance",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -294,14 +294,14 @@
           "h": 0.7
         },
         "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
-        "module_sha256": "1026e97280a2de075c75ee8114bb06216c055a7b0dcec001555919c54612dc34"
+        "module_sha256": "46dd1369a7198ad7be8f6f5a47a36eb2696fdeec147ae414381dbc56e7aaae82"
       },
       "description": "external engine provenance recorded",
       "name": "engine_provenance",
-      "startTime": 1781725499.8811562
+      "startTime": 1781725790.1717088
     },
     {
-      "@id": "trace:7007225403d5d32c:event:3:cost_model",
+      "@id": "trace:47275dade88a9a98:event:3:cost_model",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -313,10 +313,10 @@
       },
       "description": "dense statevector cost estimated",
       "name": "cost_model",
-      "startTime": 1781725499.8811588
+      "startTime": 1781725790.171712
     },
     {
-      "@id": "trace:7007225403d5d32c:event:4:route",
+      "@id": "trace:47275dade88a9a98:event:4:route",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -326,10 +326,10 @@
       },
       "description": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
       "name": "route",
-      "startTime": 1781725499.8811631
+      "startTime": 1781725790.171715
     },
     {
-      "@id": "trace:7007225403d5d32c:event:5:execute",
+      "@id": "trace:47275dade88a9a98:event:5:execute",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -342,7 +342,7 @@
         "reference_truth": "closed_form_two_spin_TFIM_spectrum",
         "repr": "{'engine_id': 'physics_magnitude_quantum_engine.transverse_field_ising_two_spin_ground_state', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integration",
         "route": "external_engine",
-        "runtime_ms": 0.36933302180841565,
+        "runtime_ms": 0.26458300999365747,
         "type": "dict",
         "units": "energy",
         "value": -1.7204650534085253,
@@ -350,25 +350,28 @@
       },
       "description": "backend executed",
       "name": "execute",
-      "startTime": 1781725499.881566
+      "startTime": 1781725790.172006
     },
     {
-      "@id": "trace:7007225403d5d32c:event:6:physical_evidence",
+      "@id": "trace:47275dade88a9a98:event:6:physical_evidence",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
         "abs_error": 0.0,
-        "evidence_hash": "991f633a3331fc60491aee2e5598e246ade3cd16847804f08cd8b56fdccb5e34",
+        "benchmark_family": "Ising",
+        "evidence_hash": "70d5eb0caa85d2a911ecaf923563038f1b138a375bca21b77a0133bb700d3ae3",
         "expected": -1.7204650534085253,
         "observable": "Two-spin transverse-field Ising ground-state energy",
         "physical_evidence_detail": "N=2 TFIM even block eigenvalues are +/-sqrt(J^2 + 4h^2); ground E0 = -sqrt(J^2 + 4h^2)",
         "physical_evidence_level": "analytic",
+        "reference_truth": "closed_form_two_spin_TFIM_spectrum",
         "units": "energy",
-        "value": -1.7204650534085253
+        "value": -1.7204650534085253,
+        "verification_independence": "analytic_no_solver"
       },
       "description": "physical evidence reported by backend",
       "name": "physical_evidence",
-      "startTime": 1781725499.881577
+      "startTime": 1781725790.1720161
     }
   ]
 }

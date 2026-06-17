@@ -10,7 +10,7 @@
       "n": 1
     },
     "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
-    "module_sha256": "1026e97280a2de075c75ee8114bb06216c055a7b0dcec001555919c54612dc34",
+    "module_sha256": "46dd1369a7198ad7be8f6f5a47a36eb2696fdeec147ae414381dbc56e7aaae82",
     "result": {
       "abs_error": 0.0,
       "benchmark_family": "Schrodinger",
@@ -48,7 +48,7 @@
         },
         "stage": "ingest",
         "status": "ok",
-        "timestamp": 1781725499.882462
+        "timestamp": 1781725790.1725929
       },
       {
         "message": "runtime and hardware context recorded",
@@ -74,7 +74,7 @@
         },
         "stage": "runtime_context",
         "status": "ok",
-        "timestamp": 1781725499.8824818
+        "timestamp": 1781725790.172603
       },
       {
         "message": "external engine provenance recorded",
@@ -88,11 +88,11 @@
             "n": 1
           },
           "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
-          "module_sha256": "1026e97280a2de075c75ee8114bb06216c055a7b0dcec001555919c54612dc34"
+          "module_sha256": "46dd1369a7198ad7be8f6f5a47a36eb2696fdeec147ae414381dbc56e7aaae82"
         },
         "stage": "engine_provenance",
         "status": "ok",
-        "timestamp": 1781725499.882572
+        "timestamp": 1781725790.1726432
       },
       {
         "message": "dense statevector cost estimated",
@@ -105,7 +105,7 @@
         },
         "stage": "cost_model",
         "status": "ok",
-        "timestamp": 1781725499.882578
+        "timestamp": 1781725790.1726458
       },
       {
         "message": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
@@ -116,7 +116,7 @@
         },
         "stage": "route",
         "status": "ok",
-        "timestamp": 1781725499.8825831
+        "timestamp": 1781725790.172648
       },
       {
         "message": "backend executed",
@@ -130,7 +130,7 @@
           "reference_truth": "closed_form_infinite_square_well",
           "repr": "{'engine_id': 'physics_magnitude_quantum_engine.particle_in_box_energy', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_go",
           "route": "external_engine",
-          "runtime_ms": 0.3435419930610806,
+          "runtime_ms": 0.16300001880154014,
           "type": "dict",
           "units": "energy",
           "value": 4.934802200544679,
@@ -138,23 +138,26 @@
         },
         "stage": "execute",
         "status": "ok",
-        "timestamp": 1781725499.882974
+        "timestamp": 1781725790.172836
       },
       {
         "message": "physical evidence reported by backend",
         "metrics": {
           "abs_error": 0.0,
-          "evidence_hash": "4bd5c8fbc3aa2624e7806d4696a24342bd0b6e754be57fc1b5a976f88c489a46",
+          "benchmark_family": "Schrodinger",
+          "evidence_hash": "096b7e08f5904a9ccb7360fc4adb2992c13a368589ccde88f8b819d773c3d3df",
           "expected": 4.934802200544679,
           "observable": "1D infinite square well energy E_1",
           "physical_evidence_detail": "Infinite square well eigenvalues are E_n = n^2*pi^2*hbar^2/(2mL^2)",
           "physical_evidence_level": "analytic",
+          "reference_truth": "closed_form_infinite_square_well",
           "units": "energy",
-          "value": 4.934802200544679
+          "value": 4.934802200544679,
+          "verification_independence": "analytic_no_solver"
         },
         "stage": "physical_evidence",
         "status": "ok",
-        "timestamp": 1781725499.882988
+        "timestamp": 1781725790.1728451
       }
     ],
     "hash_algorithm": "sha256(stable_json)",
@@ -191,6 +194,6 @@
       "n_qubits": 2
     }
   },
-  "trace_hash": "9e5bd6ad9fa1aca522d85547856d06472a09b4157a3f5bf852c4e0ce024a7bae",
+  "trace_hash": "2551138cc0cd7077c34f813fe5928fa4602a2ae81e0c7a0d0e7db952f2c60ff0",
   "trace_id": "trace_008"
 }

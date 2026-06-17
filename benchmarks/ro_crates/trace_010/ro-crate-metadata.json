@@ -29,7 +29,7 @@
       "@id": "./",
       "@type": "Dataset",
       "capas:evidenceStatus": "present",
-      "capas:traceHash": "c1cc793b5a8b18fedfdae97f6c4744406d0b3c21b742889b1f3723a9150d5b20",
+      "capas:traceHash": "ec9966de9c25989f5a6f8c12da67c7dcc741ec27f7e21a1399019282d5a0f072",
       "capas:workflowRunCrateAlignment": "shape-compatible-with-workflow-run-ro-crate-v0",
       "capas:workloadHash": "2bfdf5c156552cf63eeb8869ee6a3e2215e2b90af113ba972df8e5273b97d7e6",
       "conformsTo": [
@@ -43,7 +43,7 @@
           "@id": "https://example.org/capas-inteligentes/ro-crate/physical-evidence/0.1"
         }
       ],
-      "datePublished": "2026-06-17T19:44:59.885256Z",
+      "datePublished": "2026-06-17T19:49:50.174298Z",
       "description": "RO-Crate package containing a sealed RunTrace, optional PROV export, routing decision, runtime context, and CAPAS physical evidence metadata.",
       "hasPart": [
         {
@@ -59,16 +59,16 @@
           "@id": "entity:workload"
         },
         {
-          "@id": "trace:c1cc793b5a8b18fe:routing-decision"
+          "@id": "trace:ec9966de9c25989f:routing-decision"
         },
         {
-          "@id": "trace:c1cc793b5a8b18fe:result"
+          "@id": "trace:ec9966de9c25989f:result"
         },
         {
           "@id": "runtrace.prov.json"
         },
         {
-          "@id": "trace:c1cc793b5a8b18fe:physical-evidence"
+          "@id": "trace:ec9966de9c25989f:physical-evidence"
         }
       ],
       "name": "CAPAS traced scientific computation crate"
@@ -80,14 +80,14 @@
         "DigitalDocument"
       ],
       "about": {
-        "@id": "trace:c1cc793b5a8b18fe"
+        "@id": "trace:ec9966de9c25989f"
       },
       "encodingFormat": "application/json",
       "name": "Sealed CAPAS RunTrace",
-      "sha256": "3ed0fc9957a51e67a725e43ab930460bd0262ce74718ff1324331eb1bd43b2f8"
+      "sha256": "15e2366ac8fa6cfcbbd62550e3f864e3e6a7fd87e1c5ca3505e114b58680c5d9"
     },
     {
-      "@id": "trace:c1cc793b5a8b18fe",
+      "@id": "trace:ec9966de9c25989f",
       "@type": "CreateAction",
       "actionStatus": "CompletedActionStatus",
       "agent": {
@@ -98,11 +98,11 @@
       "capas:evidenceStatus": "present",
       "capas:hashAlgorithm": "sha256(stable_json)",
       "capas:routingDecision": {
-        "@id": "trace:c1cc793b5a8b18fe:routing-decision"
+        "@id": "trace:ec9966de9c25989f:routing-decision"
       },
-      "capas:traceHash": "c1cc793b5a8b18fedfdae97f6c4744406d0b3c21b742889b1f3723a9150d5b20",
+      "capas:traceHash": "ec9966de9c25989f5a6f8c12da67c7dcc741ec27f7e21a1399019282d5a0f072",
       "capas:traceSchemaVersion": "capas-runtrace-v2",
-      "endTime": "2026-06-17T19:44:59.885256Z",
+      "endTime": "2026-06-17T19:49:50.174298Z",
       "instrument": {
         "@id": "workflow/capas-costurero-run.py"
       },
@@ -111,9 +111,9 @@
         "@id": "entity:workload"
       },
       "result": {
-        "@id": "trace:c1cc793b5a8b18fe:result"
+        "@id": "trace:ec9966de9c25989f:result"
       },
-      "startTime": "2026-06-17T19:44:59.884795Z"
+      "startTime": "2026-06-17T19:49:50.174034Z"
     },
     {
       "@id": "workflow/capas-costurero-run.py",
@@ -173,7 +173,7 @@
       "name": "Workload summary"
     },
     {
-      "@id": "trace:c1cc793b5a8b18fe:routing-decision",
+      "@id": "trace:ec9966de9c25989f:routing-decision",
       "@type": "Thing",
       "capas:reason": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
       "capas:route": "external_engine",
@@ -187,13 +187,13 @@
       ],
       "encodingFormat": "application/json",
       "name": "W3C PROV-shaped export",
-      "sha256": "5f8b3b4cb684270215a9992b2fbae0d1311665419d862ee652a293bd5b20d9d4"
+      "sha256": "44bf6e6270a5fdcb1a0f1f9b48cac29a2c689037bb95e10a3ee41760be210643"
     },
     {
-      "@id": "trace:c1cc793b5a8b18fe:result",
+      "@id": "trace:ec9966de9c25989f:result",
       "@type": "Dataset",
       "capas:physicalEvidence": {
-        "@id": "trace:c1cc793b5a8b18fe:physical-evidence"
+        "@id": "trace:ec9966de9c25989f:physical-evidence"
       },
       "capas:resultHash": "c94d26bd27739d31fa71a0b44be95673d76e1979eeefdd3e77eda38a233f2a99",
       "capas:summary": {
@@ -213,15 +213,15 @@
       "name": "Result summary"
     },
     {
-      "@id": "trace:c1cc793b5a8b18fe:physical-evidence",
+      "@id": "trace:ec9966de9c25989f:physical-evidence",
       "@type": "capas:PhysicalEvidence",
       "about": {
-        "@id": "trace:c1cc793b5a8b18fe:result"
+        "@id": "trace:ec9966de9c25989f:result"
       },
       "capas:absError": 0.0,
       "capas:benchmarkFamily": "Pauli",
       "capas:detail": "Eigenvalues of -h Z are {-h, +h}; ground energy is -|h|",
-      "capas:evidenceHash": "dd9afc71d3358c20021e57d9a86d647b4601e4d55c82677299cf571690266251",
+      "capas:evidenceHash": "b1adf66ef14fa6a91652c0c179dafd75569017d5ec8c093457910619110e2fce",
       "capas:expected": -1.25,
       "capas:observable": "Single-spin Pauli-Z Hamiltonian ground-state energy",
       "capas:physicalEvidenceLevel": "analytic",
@@ -232,7 +232,7 @@
       "name": "Physical evidence attached to result"
     },
     {
-      "@id": "trace:c1cc793b5a8b18fe:event:0:ingest",
+      "@id": "trace:ec9966de9c25989f:event:0:ingest",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -252,10 +252,10 @@
       },
       "description": "workload accepted",
       "name": "ingest",
-      "startTime": 1781725499.884795
+      "startTime": 1781725790.1740339
     },
     {
-      "@id": "trace:c1cc793b5a8b18fe:event:1:runtime_context",
+      "@id": "trace:ec9966de9c25989f:event:1:runtime_context",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -280,10 +280,10 @@
       },
       "description": "runtime and hardware context recorded",
       "name": "runtime_context",
-      "startTime": 1781725499.884811
+      "startTime": 1781725790.174043
     },
     {
-      "@id": "trace:c1cc793b5a8b18fe:event:2:engine_provenance",
+      "@id": "trace:ec9966de9c25989f:event:2:engine_provenance",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -293,14 +293,14 @@
           "field": 1.25
         },
         "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
-        "module_sha256": "1026e97280a2de075c75ee8114bb06216c055a7b0dcec001555919c54612dc34"
+        "module_sha256": "46dd1369a7198ad7be8f6f5a47a36eb2696fdeec147ae414381dbc56e7aaae82"
       },
       "description": "external engine provenance recorded",
       "name": "engine_provenance",
-      "startTime": 1781725499.884882
+      "startTime": 1781725790.174082
     },
     {
-      "@id": "trace:c1cc793b5a8b18fe:event:3:cost_model",
+      "@id": "trace:ec9966de9c25989f:event:3:cost_model",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -312,10 +312,10 @@
       },
       "description": "dense statevector cost estimated",
       "name": "cost_model",
-      "startTime": 1781725499.884886
+      "startTime": 1781725790.1740851
     },
     {
-      "@id": "trace:c1cc793b5a8b18fe:event:4:route",
+      "@id": "trace:ec9966de9c25989f:event:4:route",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -325,10 +325,10 @@
       },
       "description": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
       "name": "route",
-      "startTime": 1781725499.88489
+      "startTime": 1781725790.1740868
     },
     {
-      "@id": "trace:c1cc793b5a8b18fe:event:5:execute",
+      "@id": "trace:ec9966de9c25989f:event:5:execute",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -341,7 +341,7 @@
         "reference_truth": "closed_form_pauli_z_spectrum",
         "repr": "{'engine_id': 'physics_magnitude_quantum_engine.pauli_z_ground_energy', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gol",
         "route": "external_engine",
-        "runtime_ms": 0.3187500115018338,
+        "runtime_ms": 0.17966600717045367,
         "type": "dict",
         "units": "energy",
         "value": -1.25,
@@ -349,25 +349,28 @@
       },
       "description": "backend executed",
       "name": "execute",
-      "startTime": 1781725499.885244
+      "startTime": 1781725790.174289
     },
     {
-      "@id": "trace:c1cc793b5a8b18fe:event:6:physical_evidence",
+      "@id": "trace:ec9966de9c25989f:event:6:physical_evidence",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
         "abs_error": 0.0,
-        "evidence_hash": "3a4792af818f31b503815c04e6dd6ad7808e7660cedcbb34f9ca9b51656fc115",
+        "benchmark_family": "Pauli",
+        "evidence_hash": "dc74a5931de9473650c7042f1a91dfafa20f9cef278742f67e499ffb15bfd1a5",
         "expected": -1.25,
         "observable": "Single-spin Pauli-Z Hamiltonian ground-state energy",
         "physical_evidence_detail": "Eigenvalues of -h Z are {-h, +h}; ground energy is -|h|",
         "physical_evidence_level": "analytic",
+        "reference_truth": "closed_form_pauli_z_spectrum",
         "units": "energy",
-        "value": -1.25
+        "value": -1.25,
+        "verification_independence": "analytic_no_solver"
       },
       "description": "physical evidence reported by backend",
       "name": "physical_evidence",
-      "startTime": 1781725499.885256
+      "startTime": 1781725790.174298
     }
   ]
 }

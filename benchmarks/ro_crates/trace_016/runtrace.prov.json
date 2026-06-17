@@ -1,0 +1,420 @@
+{
+  "activity": {
+    "capas:run:3a070aa72e4f1d3c:activity:0:ingest": {
+      "capas:message": "workload accepted",
+      "capas:status": "ok",
+      "capas:timestamp": 1781725790.5124521,
+      "prov:type": "capas:ingest"
+    },
+    "capas:run:3a070aa72e4f1d3c:activity:1:runtime_context": {
+      "capas:message": "runtime and hardware context recorded",
+      "capas:status": "ok",
+      "capas:timestamp": 1781725790.512479,
+      "prov:type": "capas:runtime_context"
+    },
+    "capas:run:3a070aa72e4f1d3c:activity:2:engine_provenance": {
+      "capas:message": "external engine provenance recorded",
+      "capas:status": "ok",
+      "capas:timestamp": 1781725790.5133922,
+      "prov:type": "capas:engine_provenance"
+    },
+    "capas:run:3a070aa72e4f1d3c:activity:3:cost_model": {
+      "capas:message": "dense statevector cost estimated",
+      "capas:status": "ok",
+      "capas:timestamp": 1781725790.5134,
+      "prov:type": "capas:cost_model"
+    },
+    "capas:run:3a070aa72e4f1d3c:activity:4:route": {
+      "capas:message": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+      "capas:status": "ok",
+      "capas:timestamp": 1781725790.513407,
+      "prov:type": "capas:route"
+    },
+    "capas:run:3a070aa72e4f1d3c:activity:5:execute": {
+      "capas:message": "backend executed",
+      "capas:status": "ok",
+      "capas:timestamp": 1781725790.5147798,
+      "prov:type": "capas:execute"
+    },
+    "capas:run:3a070aa72e4f1d3c:activity:6:physical_evidence": {
+      "capas:message": "physical evidence reported by backend",
+      "capas:status": "ok",
+      "capas:timestamp": 1781725790.5148108,
+      "prov:type": "capas:physical_evidence"
+    }
+  },
+  "agent": {
+    "capas:agent:costurero": {
+      "capas:name": "CAPAS INTELIGENTES costurero",
+      "prov:type": "prov:SoftwareAgent"
+    }
+  },
+  "bundle": "capas:run:3a070aa72e4f1d3c",
+  "capas:traceHash": "3a070aa72e4f1d3c8e03375f8da76c03f911af213569ede2a017c4932fc9a3ed",
+  "entity": {
+    "capas:run:3a070aa72e4f1d3c:decision": {
+      "capas:reason": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+      "capas:route": "external_engine",
+      "prov:type": "capas:RoutingDecision"
+    },
+    "capas:run:3a070aa72e4f1d3c:engine_module": {
+      "capas:engineId": "physics_magnitude_quantum_engine.schmidt_truncation_formal_bound",
+      "capas:functionName": "schmidt_truncation_formal_bound",
+      "capas:modulePath": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
+      "capas:moduleSha256": "46dd1369a7198ad7be8f6f5a47a36eb2696fdeec147ae414381dbc56e7aaae82",
+      "prov:type": "capas:EngineModule"
+    },
+    "capas:run:3a070aa72e4f1d3c:entity:0:ingest:metrics": {
+      "capas:eventHash": "292b03b5788723267cb04593c9cb51499889301e73990046e15ca8f6a41df0df",
+      "capas:metrics": {
+        "budget": {
+          "flops_ceiling": 100000000.0,
+          "memory_budget_bytes": 536870912,
+          "safety_factor": 0.5
+        },
+        "engine": {
+          "engine_id": "physics_magnitude_quantum_engine.schmidt_truncation_formal_bound",
+          "function_name": "schmidt_truncation_formal_bound",
+          "kwargs_hash": "e2c00a7ebf368bc6a93476590d4fb515b52370833f5a05d827d1d164a0f4a9f3",
+          "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
+        },
+        "kind": "dense",
+        "n_qubits": 2
+      },
+      "capas:stage": "ingest",
+      "prov:type": "capas:EventMetrics"
+    },
+    "capas:run:3a070aa72e4f1d3c:entity:1:runtime_context:metrics": {
+      "capas:eventHash": "44f6986ee270f2972d127b033830a63eeb094aae5ac95f2760f116024ede066d",
+      "capas:metrics": {
+        "cotengra_available": true,
+        "cotengra_version": "0.8.1",
+        "machine": "arm64",
+        "mlx_probe": "skipped_in_default_trace; use apple_silicon_thermal_routing.py for Metal/MLX device probes",
+        "numpy_available": true,
+        "numpy_version": "2.4.6",
+        "platform": "macOS-26.5.1-arm64-arm-64bit",
+        "processor": "arm",
+        "python_executable": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/physics_quantum/physics-magnitude-lab/.pixi/envs/default/bin/python",
+        "python_version": "3.12.13",
+        "qiskit_aer_available": true,
+        "qiskit_aer_version": "0.17.2",
+        "quimb_available": true,
+        "quimb_version": "1.14.0",
+        "scipy_available": true,
+        "scipy_version": "1.17.1",
+        "stim_available": true,
+        "stim_version": "1.16.0"
+      },
+      "capas:stage": "runtime_context",
+      "prov:type": "capas:EventMetrics"
+    },
+    "capas:run:3a070aa72e4f1d3c:entity:2:engine_provenance:metrics": {
+      "capas:eventHash": "66b61cb027e4ee92162b3ce324b27fd35a9e67c478c64e97a0e66506b9b6ff9e",
+      "capas:metrics": {
+        "engine_id": "physics_magnitude_quantum_engine.schmidt_truncation_formal_bound",
+        "function_name": "schmidt_truncation_formal_bound",
+        "kwargs": {
+          "keep_rank": 2,
+          "n_qubits": 4,
+          "seed": 7
+        },
+        "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
+        "module_sha256": "46dd1369a7198ad7be8f6f5a47a36eb2696fdeec147ae414381dbc56e7aaae82"
+      },
+      "capas:stage": "engine_provenance",
+      "prov:type": "capas:EventMetrics"
+    },
+    "capas:run:3a070aa72e4f1d3c:entity:3:cost_model:metrics": {
+      "capas:eventHash": "8eebe2e778613cbc57594183ffb2d2d0a609ca7901e7dd569847e1b0c19fbeca",
+      "capas:metrics": {
+        "memory_viable": true,
+        "n_qubits": 2,
+        "route": "dense",
+        "statevector_bytes": 64,
+        "usable_memory_bytes": 268435456.0
+      },
+      "capas:stage": "cost_model",
+      "prov:type": "capas:EventMetrics"
+    },
+    "capas:run:3a070aa72e4f1d3c:entity:4:route:metrics": {
+      "capas:eventHash": "791f75ecd3082cc3aa55cd6210a8c5a1de965eabb85f757787f834901e1ed12b",
+      "capas:metrics": {
+        "engine_id": "physics_magnitude_quantum_engine.schmidt_truncation_formal_bound",
+        "function_name": "schmidt_truncation_formal_bound",
+        "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
+      },
+      "capas:stage": "route",
+      "prov:type": "capas:EventMetrics"
+    },
+    "capas:run:3a070aa72e4f1d3c:entity:5:execute:metrics": {
+      "capas:eventHash": "e552a16b270cb0a40b4e2833edf25381850ec29cdede65301bc14907e3f0b99c",
+      "capas:metrics": {
+        "abs_error": 2.7755575615628914e-17,
+        "actual_error_squared": 0.11318392617103658,
+        "benchmark_family": "TensorNetwork",
+        "bound_scope": "single_bipartition_state_truncation",
+        "bound_type": "discarded_schmidt_weight_equals_squared_state_2norm_error",
+        "certification_status": "formal_single_cut_state_norm_bound",
+        "discarded_weight": 0.1131839261710366,
+        "expected": 0.1131839261710366,
+        "formal_bound_status": "established_for_single_schmidt_truncation_not_global_dmrg",
+        "max_bond": 2,
+        "n": 4,
+        "observable": "Single-cut Schmidt truncation squared state error",
+        "physical_evidence_detail": "For a normalized state in Schmidt form, the sum of discarded Schmidt values squared is exactly the squared 2-norm error of the optimal rank-k truncation across that cut. This certifies a single-cut state truncation error, not a global DMRG observable error.",
+        "physical_evidence_level": "formal_bound",
+        "reference_truth": "schmidt_eckart_young_theorem",
+        "repr": "{'engine_id': 'physics_magnitude_quantum_engine.schmidt_truncation_formal_bound', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_mag",
+        "route": "external_engine",
+        "runtime_ms": 0.7995830092113465,
+        "source_label": "FORMAL (single-cut Schmidt/SVD theorem)",
+        "type": "dict",
+        "units": "squared_state_norm",
+        "value": {
+          "actual_error_squared": 0.11318392617103658,
+          "discarded_weight": 0.1131839261710366,
+          "full_rank": 4,
+          "kept_rank": 2
+        },
+        "verification_independence": "algorithmic_certificate_exact_svd_same_runtime"
+      },
+      "capas:stage": "execute",
+      "prov:type": "capas:EventMetrics"
+    },
+    "capas:run:3a070aa72e4f1d3c:entity:6:physical_evidence:metrics": {
+      "capas:eventHash": "bc41a73e231f943d5f58123470c4ee83b1583e4dfec8416ede1a055da6e408fc",
+      "capas:metrics": {
+        "abs_error": 2.7755575615628914e-17,
+        "actual_error_squared": 0.11318392617103658,
+        "benchmark_family": "TensorNetwork",
+        "bound_scope": "single_bipartition_state_truncation",
+        "bound_type": "discarded_schmidt_weight_equals_squared_state_2norm_error",
+        "certification_status": "formal_single_cut_state_norm_bound",
+        "discarded_weight": 0.1131839261710366,
+        "evidence_hash": "0ce57d5b5b6791413e3b417f0bb1b8d4f7d9d9a87b70293ba30a78f9e296c409",
+        "expected": 0.1131839261710366,
+        "formal_bound_status": "established_for_single_schmidt_truncation_not_global_dmrg",
+        "observable": "Single-cut Schmidt truncation squared state error",
+        "physical_evidence_detail": "For a normalized state in Schmidt form, the sum of discarded Schmidt values squared is exactly the squared 2-norm error of the optimal rank-k truncation across that cut. This certifies a single-cut state truncation error, not a global DMRG observable error.",
+        "physical_evidence_level": "formal_bound",
+        "reference_truth": "schmidt_eckart_young_theorem",
+        "source_label": "FORMAL (single-cut Schmidt/SVD theorem)",
+        "units": "squared_state_norm",
+        "value": {
+          "actual_error_squared": 0.11318392617103658,
+          "discarded_weight": 0.1131839261710366,
+          "full_rank": 4,
+          "kept_rank": 2
+        },
+        "verification_independence": "algorithmic_certificate_exact_svd_same_runtime"
+      },
+      "capas:stage": "physical_evidence",
+      "prov:type": "capas:EventMetrics"
+    },
+    "capas:run:3a070aa72e4f1d3c:physical_evidence": {
+      "capas:absError": 2.7755575615628914e-17,
+      "capas:actualErrorSquared": 0.11318392617103658,
+      "capas:benchmarkFamily": "TensorNetwork",
+      "capas:boundScope": "single_bipartition_state_truncation",
+      "capas:boundType": "discarded_schmidt_weight_equals_squared_state_2norm_error",
+      "capas:certificationStatus": "formal_single_cut_state_norm_bound",
+      "capas:discardedWeight": 0.1131839261710366,
+      "capas:evidenceHash": "0ce57d5b5b6791413e3b417f0bb1b8d4f7d9d9a87b70293ba30a78f9e296c409",
+      "capas:expected": 0.1131839261710366,
+      "capas:formalBoundStatus": "established_for_single_schmidt_truncation_not_global_dmrg",
+      "capas:observable": "Single-cut Schmidt truncation squared state error",
+      "capas:physicalEvidenceDetail": "For a normalized state in Schmidt form, the sum of discarded Schmidt values squared is exactly the squared 2-norm error of the optimal rank-k truncation across that cut. This certifies a single-cut state truncation error, not a global DMRG observable error.",
+      "capas:physicalEvidenceLevel": "formal_bound",
+      "capas:referenceTruth": "schmidt_eckart_young_theorem",
+      "capas:sourceLabel": "FORMAL (single-cut Schmidt/SVD theorem)",
+      "capas:units": "squared_state_norm",
+      "capas:value": {
+        "actual_error_squared": 0.11318392617103658,
+        "discarded_weight": 0.1131839261710366,
+        "full_rank": 4,
+        "kept_rank": 2
+      },
+      "capas:verificationIndependence": "algorithmic_certificate_exact_svd_same_runtime",
+      "prov:type": "capas:PhysicalEvidence"
+    },
+    "capas:run:3a070aa72e4f1d3c:result": {
+      "capas:resultHash": "094afc7c56f1d07cfa4033a08906c6c273f6c1d15c161982a3328835c589f645",
+      "capas:summary": {
+        "abs_error": 2.7755575615628914e-17,
+        "actual_error_squared": 0.11318392617103658,
+        "benchmark_family": "TensorNetwork",
+        "bound_scope": "single_bipartition_state_truncation",
+        "bound_type": "discarded_schmidt_weight_equals_squared_state_2norm_error",
+        "certification_status": "formal_single_cut_state_norm_bound",
+        "discarded_weight": 0.1131839261710366,
+        "expected": 0.1131839261710366,
+        "formal_bound_status": "established_for_single_schmidt_truncation_not_global_dmrg",
+        "max_bond": 2,
+        "n": 4,
+        "observable": "Single-cut Schmidt truncation squared state error",
+        "physical_evidence_detail": "For a normalized state in Schmidt form, the sum of discarded Schmidt values squared is exactly the squared 2-norm error of the optimal rank-k truncation across that cut. This certifies a single-cut state truncation error, not a global DMRG observable error.",
+        "physical_evidence_level": "formal_bound",
+        "reference_truth": "schmidt_eckart_young_theorem",
+        "repr": "{'engine_id': 'physics_magnitude_quantum_engine.schmidt_truncation_formal_bound', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_mag",
+        "source_label": "FORMAL (single-cut Schmidt/SVD theorem)",
+        "type": "dict",
+        "units": "squared_state_norm",
+        "value": {
+          "actual_error_squared": 0.11318392617103658,
+          "discarded_weight": 0.1131839261710366,
+          "full_rank": 4,
+          "kept_rank": 2
+        },
+        "verification_independence": "algorithmic_certificate_exact_svd_same_runtime"
+      },
+      "prov:type": "capas:Result"
+    },
+    "capas:run:3a070aa72e4f1d3c:workload": {
+      "capas:summary": {
+        "budget": {
+          "flops_ceiling": 100000000.0,
+          "memory_budget_bytes": 536870912,
+          "safety_factor": 0.5
+        },
+        "engine": {
+          "engine_id": "physics_magnitude_quantum_engine.schmidt_truncation_formal_bound",
+          "function_name": "schmidt_truncation_formal_bound",
+          "kwargs_hash": "e2c00a7ebf368bc6a93476590d4fb515b52370833f5a05d827d1d164a0f4a9f3",
+          "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
+        },
+        "kind": "dense",
+        "n_qubits": 2
+      },
+      "capas:workloadHash": "400f17b69ab8ff67668ba640b41bb03e89c8b23463d637553c242b90e073b9c0",
+      "prov:type": "capas:Workload"
+    }
+  },
+  "prefix": {
+    "capas": "https://example.org/capas-inteligentes#",
+    "prov": "http://www.w3.org/ns/prov#"
+  },
+  "specializationOf": {},
+  "used": {
+    "capas:run:3a070aa72e4f1d3c:activity:0:ingest:used:capas:run:3a070aa72e4f1d3c:workload": {
+      "prov:activity": "capas:run:3a070aa72e4f1d3c:activity:0:ingest",
+      "prov:entity": "capas:run:3a070aa72e4f1d3c:workload"
+    },
+    "capas:run:3a070aa72e4f1d3c:activity:1:runtime_context:used:capas:run:3a070aa72e4f1d3c:entity:0:ingest:metrics": {
+      "prov:activity": "capas:run:3a070aa72e4f1d3c:activity:1:runtime_context",
+      "prov:entity": "capas:run:3a070aa72e4f1d3c:entity:0:ingest:metrics"
+    },
+    "capas:run:3a070aa72e4f1d3c:activity:2:engine_provenance:used:capas:run:3a070aa72e4f1d3c:engine_module": {
+      "prov:activity": "capas:run:3a070aa72e4f1d3c:activity:2:engine_provenance",
+      "prov:entity": "capas:run:3a070aa72e4f1d3c:engine_module"
+    },
+    "capas:run:3a070aa72e4f1d3c:activity:2:engine_provenance:used:capas:run:3a070aa72e4f1d3c:entity:1:runtime_context:metrics": {
+      "prov:activity": "capas:run:3a070aa72e4f1d3c:activity:2:engine_provenance",
+      "prov:entity": "capas:run:3a070aa72e4f1d3c:entity:1:runtime_context:metrics"
+    },
+    "capas:run:3a070aa72e4f1d3c:activity:3:cost_model:used:capas:run:3a070aa72e4f1d3c:entity:2:engine_provenance:metrics": {
+      "prov:activity": "capas:run:3a070aa72e4f1d3c:activity:3:cost_model",
+      "prov:entity": "capas:run:3a070aa72e4f1d3c:entity:2:engine_provenance:metrics"
+    },
+    "capas:run:3a070aa72e4f1d3c:activity:4:route:used:capas:run:3a070aa72e4f1d3c:entity:3:cost_model:metrics": {
+      "prov:activity": "capas:run:3a070aa72e4f1d3c:activity:4:route",
+      "prov:entity": "capas:run:3a070aa72e4f1d3c:entity:3:cost_model:metrics"
+    },
+    "capas:run:3a070aa72e4f1d3c:activity:5:execute:used:capas:run:3a070aa72e4f1d3c:entity:4:route:metrics": {
+      "prov:activity": "capas:run:3a070aa72e4f1d3c:activity:5:execute",
+      "prov:entity": "capas:run:3a070aa72e4f1d3c:entity:4:route:metrics"
+    },
+    "capas:run:3a070aa72e4f1d3c:activity:6:physical_evidence:used:capas:run:3a070aa72e4f1d3c:entity:5:execute:metrics": {
+      "prov:activity": "capas:run:3a070aa72e4f1d3c:activity:6:physical_evidence",
+      "prov:entity": "capas:run:3a070aa72e4f1d3c:entity:5:execute:metrics"
+    }
+  },
+  "wasAssociatedWith": {
+    "capas:run:3a070aa72e4f1d3c:activity:0:ingest:agent": {
+      "prov:activity": "capas:run:3a070aa72e4f1d3c:activity:0:ingest",
+      "prov:agent": "capas:agent:costurero"
+    },
+    "capas:run:3a070aa72e4f1d3c:activity:1:runtime_context:agent": {
+      "prov:activity": "capas:run:3a070aa72e4f1d3c:activity:1:runtime_context",
+      "prov:agent": "capas:agent:costurero"
+    },
+    "capas:run:3a070aa72e4f1d3c:activity:2:engine_provenance:agent": {
+      "prov:activity": "capas:run:3a070aa72e4f1d3c:activity:2:engine_provenance",
+      "prov:agent": "capas:agent:costurero"
+    },
+    "capas:run:3a070aa72e4f1d3c:activity:3:cost_model:agent": {
+      "prov:activity": "capas:run:3a070aa72e4f1d3c:activity:3:cost_model",
+      "prov:agent": "capas:agent:costurero"
+    },
+    "capas:run:3a070aa72e4f1d3c:activity:4:route:agent": {
+      "prov:activity": "capas:run:3a070aa72e4f1d3c:activity:4:route",
+      "prov:agent": "capas:agent:costurero"
+    },
+    "capas:run:3a070aa72e4f1d3c:activity:5:execute:agent": {
+      "prov:activity": "capas:run:3a070aa72e4f1d3c:activity:5:execute",
+      "prov:agent": "capas:agent:costurero"
+    },
+    "capas:run:3a070aa72e4f1d3c:activity:6:physical_evidence:agent": {
+      "prov:activity": "capas:run:3a070aa72e4f1d3c:activity:6:physical_evidence",
+      "prov:agent": "capas:agent:costurero"
+    }
+  },
+  "wasAttributedTo": {
+    "capas:run:3a070aa72e4f1d3c:result:agent": {
+      "prov:agent": "capas:agent:costurero",
+      "prov:entity": "capas:run:3a070aa72e4f1d3c:result"
+    }
+  },
+  "wasDerivedFrom": {
+    "capas:run:3a070aa72e4f1d3c:physical_evidence:from:capas:run:3a070aa72e4f1d3c:result": {
+      "prov:generatedEntity": "capas:run:3a070aa72e4f1d3c:physical_evidence",
+      "prov:usedEntity": "capas:run:3a070aa72e4f1d3c:result"
+    },
+    "capas:run:3a070aa72e4f1d3c:result:from:capas:run:3a070aa72e4f1d3c:workload": {
+      "prov:generatedEntity": "capas:run:3a070aa72e4f1d3c:result",
+      "prov:usedEntity": "capas:run:3a070aa72e4f1d3c:workload"
+    }
+  },
+  "wasGeneratedBy": {
+    "capas:run:3a070aa72e4f1d3c:decision:generatedBy:capas:run:3a070aa72e4f1d3c:activity:4:route": {
+      "prov:activity": "capas:run:3a070aa72e4f1d3c:activity:4:route",
+      "prov:entity": "capas:run:3a070aa72e4f1d3c:decision"
+    },
+    "capas:run:3a070aa72e4f1d3c:entity:0:ingest:metrics:generatedBy:capas:run:3a070aa72e4f1d3c:activity:0:ingest": {
+      "prov:activity": "capas:run:3a070aa72e4f1d3c:activity:0:ingest",
+      "prov:entity": "capas:run:3a070aa72e4f1d3c:entity:0:ingest:metrics"
+    },
+    "capas:run:3a070aa72e4f1d3c:entity:1:runtime_context:metrics:generatedBy:capas:run:3a070aa72e4f1d3c:activity:1:runtime_context": {
+      "prov:activity": "capas:run:3a070aa72e4f1d3c:activity:1:runtime_context",
+      "prov:entity": "capas:run:3a070aa72e4f1d3c:entity:1:runtime_context:metrics"
+    },
+    "capas:run:3a070aa72e4f1d3c:entity:2:engine_provenance:metrics:generatedBy:capas:run:3a070aa72e4f1d3c:activity:2:engine_provenance": {
+      "prov:activity": "capas:run:3a070aa72e4f1d3c:activity:2:engine_provenance",
+      "prov:entity": "capas:run:3a070aa72e4f1d3c:entity:2:engine_provenance:metrics"
+    },
+    "capas:run:3a070aa72e4f1d3c:entity:3:cost_model:metrics:generatedBy:capas:run:3a070aa72e4f1d3c:activity:3:cost_model": {
+      "prov:activity": "capas:run:3a070aa72e4f1d3c:activity:3:cost_model",
+      "prov:entity": "capas:run:3a070aa72e4f1d3c:entity:3:cost_model:metrics"
+    },
+    "capas:run:3a070aa72e4f1d3c:entity:4:route:metrics:generatedBy:capas:run:3a070aa72e4f1d3c:activity:4:route": {
+      "prov:activity": "capas:run:3a070aa72e4f1d3c:activity:4:route",
+      "prov:entity": "capas:run:3a070aa72e4f1d3c:entity:4:route:metrics"
+    },
+    "capas:run:3a070aa72e4f1d3c:entity:5:execute:metrics:generatedBy:capas:run:3a070aa72e4f1d3c:activity:5:execute": {
+      "prov:activity": "capas:run:3a070aa72e4f1d3c:activity:5:execute",
+      "prov:entity": "capas:run:3a070aa72e4f1d3c:entity:5:execute:metrics"
+    },
+    "capas:run:3a070aa72e4f1d3c:entity:6:physical_evidence:metrics:generatedBy:capas:run:3a070aa72e4f1d3c:activity:6:physical_evidence": {
+      "prov:activity": "capas:run:3a070aa72e4f1d3c:activity:6:physical_evidence",
+      "prov:entity": "capas:run:3a070aa72e4f1d3c:entity:6:physical_evidence:metrics"
+    },
+    "capas:run:3a070aa72e4f1d3c:physical_evidence:generatedBy:capas:run:3a070aa72e4f1d3c:activity:6:physical_evidence": {
+      "prov:activity": "capas:run:3a070aa72e4f1d3c:activity:6:physical_evidence",
+      "prov:entity": "capas:run:3a070aa72e4f1d3c:physical_evidence"
+    },
+    "capas:run:3a070aa72e4f1d3c:result:generatedBy:capas:run:3a070aa72e4f1d3c:activity:5:execute": {
+      "prov:activity": "capas:run:3a070aa72e4f1d3c:activity:5:execute",
+      "prov:entity": "capas:run:3a070aa72e4f1d3c:result"
+    }
+  }
+}

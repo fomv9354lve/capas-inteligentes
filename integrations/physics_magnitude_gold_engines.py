@@ -256,3 +256,62 @@ def quimb_mps_estimated_bound(n: int = 60, depth: int = 6, max_bond: int = 8, se
         "max_bond": max_bond,
         "source_label": result["label"],
     }
+
+
+def schmidt_truncation_formal_bound(n_qubits: int = 4, keep_rank: int = 2, seed: int = 7) -> dict:
+    """Exact Schmidt/SVD truncation certificate for a normalized state.
+
+    This is deliberately narrower than a global DMRG certificate. For a single
+    bipartite Schmidt truncation, the discarded Schmidt weight is exactly the
+    squared 2-norm error of the optimal rank-k approximation.
+    """
+    if n_qubits % 2 != 0:
+        raise ValueError("n_qubits must be even for this bipartition demo")
+    if keep_rank < 1:
+        raise ValueError("keep_rank must be positive")
+
+    rng = np.random.default_rng(seed)
+    psi = rng.normal(size=2**n_qubits) + 1j * rng.normal(size=2**n_qubits)
+    psi = psi / np.linalg.norm(psi)
+
+    left_dim = 2 ** (n_qubits // 2)
+    right_dim = 2 ** (n_qubits // 2)
+    matrix = psi.reshape(left_dim, right_dim)
+    u, s, vh = np.linalg.svd(matrix, full_matrices=False)
+    rank = min(keep_rank, len(s))
+    discarded_weight = float(np.sum(s[rank:] ** 2))
+
+    truncated = (u[:, :rank] @ np.diag(s[:rank]) @ vh[:rank, :]).reshape(-1)
+    actual_error_squared = float(np.linalg.norm(psi - truncated) ** 2)
+    abs_error = abs(discarded_weight - actual_error_squared)
+
+    return {
+        "observable": "Single-cut Schmidt truncation squared state error",
+        "value": {
+            "discarded_weight": discarded_weight,
+            "actual_error_squared": actual_error_squared,
+            "kept_rank": rank,
+            "full_rank": len(s),
+        },
+        "expected": discarded_weight,
+        "abs_error": abs_error,
+        "units": "squared_state_norm",
+        "physical_evidence_level": "formal_bound",
+        "physical_evidence_detail": (
+            "For a normalized state in Schmidt form, the sum of discarded Schmidt values squared is exactly "
+            "the squared 2-norm error of the optimal rank-k truncation across that cut. This certifies a "
+            "single-cut state truncation error, not a global DMRG observable error."
+        ),
+        "benchmark_family": "TensorNetwork",
+        "reference_truth": "schmidt_eckart_young_theorem",
+        "verification_independence": "algorithmic_certificate_exact_svd_same_runtime",
+        "certification_status": "formal_single_cut_state_norm_bound",
+        "formal_bound_status": "established_for_single_schmidt_truncation_not_global_dmrg",
+        "bound_type": "discarded_schmidt_weight_equals_squared_state_2norm_error",
+        "bound_scope": "single_bipartition_state_truncation",
+        "discarded_weight": discarded_weight,
+        "actual_error_squared": actual_error_squared,
+        "source_label": "FORMAL (single-cut Schmidt/SVD theorem)",
+        "n": n_qubits,
+        "max_bond": keep_rank,
+    }

@@ -1,0 +1,430 @@
+{
+  "@context": [
+    "https://w3id.org/ro/crate/1.1/context",
+    {
+      "capas": "https://example.org/capas-inteligentes#",
+      "sha256": "https://schema.org/sha256"
+    }
+  ],
+  "@graph": [
+    {
+      "@id": "ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "about": {
+        "@id": "./"
+      },
+      "conformsTo": [
+        {
+          "@id": "https://w3id.org/ro/crate/1.1"
+        },
+        {
+          "@id": "https://w3id.org/workflowhub/workflow-ro-crate/1.0"
+        },
+        {
+          "@id": "https://example.org/capas-inteligentes/ro-crate/physical-evidence/0.1"
+        }
+      ]
+    },
+    {
+      "@id": "./",
+      "@type": "Dataset",
+      "capas:evidenceStatus": "present",
+      "capas:traceHash": "3a070aa72e4f1d3c8e03375f8da76c03f911af213569ede2a017c4932fc9a3ed",
+      "capas:workflowRunCrateAlignment": "shape-compatible-with-workflow-run-ro-crate-v0",
+      "capas:workloadHash": "400f17b69ab8ff67668ba640b41bb03e89c8b23463d637553c242b90e073b9c0",
+      "conformsTo": [
+        {
+          "@id": "https://w3id.org/ro/crate/1.1"
+        },
+        {
+          "@id": "https://w3id.org/workflowhub/workflow-ro-crate/1.0"
+        },
+        {
+          "@id": "https://example.org/capas-inteligentes/ro-crate/physical-evidence/0.1"
+        }
+      ],
+      "datePublished": "2026-06-17T19:49:50.514811Z",
+      "description": "RO-Crate package containing a sealed RunTrace, optional PROV export, routing decision, runtime context, and CAPAS physical evidence metadata.",
+      "hasPart": [
+        {
+          "@id": "runtrace.json"
+        },
+        {
+          "@id": "workflow/capas-costurero-run.py"
+        },
+        {
+          "@id": "software:capas-costurero"
+        },
+        {
+          "@id": "entity:workload"
+        },
+        {
+          "@id": "trace:3a070aa72e4f1d3c:routing-decision"
+        },
+        {
+          "@id": "trace:3a070aa72e4f1d3c:result"
+        },
+        {
+          "@id": "runtrace.prov.json"
+        },
+        {
+          "@id": "trace:3a070aa72e4f1d3c:physical-evidence"
+        }
+      ],
+      "name": "CAPAS traced scientific computation crate"
+    },
+    {
+      "@id": "runtrace.json",
+      "@type": [
+        "File",
+        "DigitalDocument"
+      ],
+      "about": {
+        "@id": "trace:3a070aa72e4f1d3c"
+      },
+      "encodingFormat": "application/json",
+      "name": "Sealed CAPAS RunTrace",
+      "sha256": "11e706439b8e7755ae4cc12f8bb5f67bdf31ee4a4d134946fa7270b17df1b361"
+    },
+    {
+      "@id": "trace:3a070aa72e4f1d3c",
+      "@type": "CreateAction",
+      "actionStatus": "CompletedActionStatus",
+      "agent": {
+        "@id": "software:capas-costurero"
+      },
+      "capas:decisionReason": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+      "capas:decisionRoute": "external_engine",
+      "capas:evidenceStatus": "present",
+      "capas:hashAlgorithm": "sha256(stable_json)",
+      "capas:routingDecision": {
+        "@id": "trace:3a070aa72e4f1d3c:routing-decision"
+      },
+      "capas:traceHash": "3a070aa72e4f1d3c8e03375f8da76c03f911af213569ede2a017c4932fc9a3ed",
+      "capas:traceSchemaVersion": "capas-runtrace-v2",
+      "endTime": "2026-06-17T19:49:50.514811Z",
+      "instrument": {
+        "@id": "workflow/capas-costurero-run.py"
+      },
+      "name": "CAPAS costurero traced run",
+      "object": {
+        "@id": "entity:workload"
+      },
+      "result": {
+        "@id": "trace:3a070aa72e4f1d3c:result"
+      },
+      "startTime": "2026-06-17T19:49:50.512452Z"
+    },
+    {
+      "@id": "workflow/capas-costurero-run.py",
+      "@type": [
+        "File",
+        "SoftwareSourceCode",
+        "ComputationalWorkflow"
+      ],
+      "capas:traceSchemaVersion": "capas-runtrace-v2",
+      "description": "Workflow plan that ingests a scientific workload, records runtime context, estimates routing cost, executes or skips the selected engine, and attaches CAPAS physical-evidence metadata.",
+      "input": {
+        "@id": "parameter:workload"
+      },
+      "name": "CAPAS costurero workflow",
+      "output": {
+        "@id": "parameter:result"
+      },
+      "programmingLanguage": "Python"
+    },
+    {
+      "@id": "parameter:workload",
+      "@type": "FormalParameter",
+      "additionalType": "https://bioschemas.org/FormalParameter",
+      "name": "Scientific workload"
+    },
+    {
+      "@id": "parameter:result",
+      "@type": "FormalParameter",
+      "additionalType": "https://bioschemas.org/FormalParameter",
+      "name": "Result summary or skipped/failure state"
+    },
+    {
+      "@id": "software:capas-costurero",
+      "@type": "SoftwareApplication",
+      "applicationCategory": "Scientific provenance and evidence tracing",
+      "name": "CAPAS INTELIGENTES costurero"
+    },
+    {
+      "@id": "entity:workload",
+      "@type": "Dataset",
+      "capas:summary": {
+        "budget": {
+          "flops_ceiling": 100000000.0,
+          "memory_budget_bytes": 536870912,
+          "safety_factor": 0.5
+        },
+        "engine": {
+          "engine_id": "physics_magnitude_quantum_engine.schmidt_truncation_formal_bound",
+          "function_name": "schmidt_truncation_formal_bound",
+          "kwargs_hash": "e2c00a7ebf368bc6a93476590d4fb515b52370833f5a05d827d1d164a0f4a9f3",
+          "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
+        },
+        "kind": "dense",
+        "n_qubits": 2
+      },
+      "capas:workloadHash": "400f17b69ab8ff67668ba640b41bb03e89c8b23463d637553c242b90e073b9c0",
+      "name": "Workload summary"
+    },
+    {
+      "@id": "trace:3a070aa72e4f1d3c:routing-decision",
+      "@type": "Thing",
+      "capas:reason": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+      "capas:route": "external_engine",
+      "name": "Routing decision"
+    },
+    {
+      "@id": "runtrace.prov.json",
+      "@type": [
+        "File",
+        "DigitalDocument"
+      ],
+      "encodingFormat": "application/json",
+      "name": "W3C PROV-shaped export",
+      "sha256": "5a7df482f43def5a08fbbd48fddcc5c96cb8a7c4dd7e4fd69e1bcae84fefc162"
+    },
+    {
+      "@id": "trace:3a070aa72e4f1d3c:result",
+      "@type": "Dataset",
+      "capas:physicalEvidence": {
+        "@id": "trace:3a070aa72e4f1d3c:physical-evidence"
+      },
+      "capas:resultHash": "094afc7c56f1d07cfa4033a08906c6c273f6c1d15c161982a3328835c589f645",
+      "capas:summary": {
+        "abs_error": 2.7755575615628914e-17,
+        "actual_error_squared": 0.11318392617103658,
+        "benchmark_family": "TensorNetwork",
+        "bound_scope": "single_bipartition_state_truncation",
+        "bound_type": "discarded_schmidt_weight_equals_squared_state_2norm_error",
+        "certification_status": "formal_single_cut_state_norm_bound",
+        "discarded_weight": 0.1131839261710366,
+        "expected": 0.1131839261710366,
+        "formal_bound_status": "established_for_single_schmidt_truncation_not_global_dmrg",
+        "max_bond": 2,
+        "n": 4,
+        "observable": "Single-cut Schmidt truncation squared state error",
+        "physical_evidence_detail": "For a normalized state in Schmidt form, the sum of discarded Schmidt values squared is exactly the squared 2-norm error of the optimal rank-k truncation across that cut. This certifies a single-cut state truncation error, not a global DMRG observable error.",
+        "physical_evidence_level": "formal_bound",
+        "reference_truth": "schmidt_eckart_young_theorem",
+        "repr": "{'engine_id': 'physics_magnitude_quantum_engine.schmidt_truncation_formal_bound', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_mag",
+        "source_label": "FORMAL (single-cut Schmidt/SVD theorem)",
+        "type": "dict",
+        "units": "squared_state_norm",
+        "value": {
+          "actual_error_squared": 0.11318392617103658,
+          "discarded_weight": 0.1131839261710366,
+          "full_rank": 4,
+          "kept_rank": 2
+        },
+        "verification_independence": "algorithmic_certificate_exact_svd_same_runtime"
+      },
+      "name": "Result summary"
+    },
+    {
+      "@id": "trace:3a070aa72e4f1d3c:physical-evidence",
+      "@type": "capas:PhysicalEvidence",
+      "about": {
+        "@id": "trace:3a070aa72e4f1d3c:result"
+      },
+      "capas:absError": 2.7755575615628914e-17,
+      "capas:actualErrorSquared": 0.11318392617103658,
+      "capas:benchmarkFamily": "TensorNetwork",
+      "capas:boundScope": "single_bipartition_state_truncation",
+      "capas:boundType": "discarded_schmidt_weight_equals_squared_state_2norm_error",
+      "capas:certificationStatus": "formal_single_cut_state_norm_bound",
+      "capas:detail": "For a normalized state in Schmidt form, the sum of discarded Schmidt values squared is exactly the squared 2-norm error of the optimal rank-k truncation across that cut. This certifies a single-cut state truncation error, not a global DMRG observable error.",
+      "capas:discardedWeight": 0.1131839261710366,
+      "capas:evidenceHash": "5744765a5c1e6f7ba9ab6cc9a67aa24e7b6c3054dbe55c8c4d53b2c930f5a747",
+      "capas:expected": 0.1131839261710366,
+      "capas:formalBoundStatus": "established_for_single_schmidt_truncation_not_global_dmrg",
+      "capas:observable": "Single-cut Schmidt truncation squared state error",
+      "capas:physicalEvidenceLevel": "formal_bound",
+      "capas:referenceTruth": "schmidt_eckart_young_theorem",
+      "capas:sourceLabel": "FORMAL (single-cut Schmidt/SVD theorem)",
+      "capas:units": "squared_state_norm",
+      "capas:value": {
+        "actual_error_squared": 0.11318392617103658,
+        "discarded_weight": 0.1131839261710366,
+        "full_rank": 4,
+        "kept_rank": 2
+      },
+      "capas:verificationIndependence": "algorithmic_certificate_exact_svd_same_runtime",
+      "name": "Physical evidence attached to result"
+    },
+    {
+      "@id": "trace:3a070aa72e4f1d3c:event:0:ingest",
+      "@type": "Action",
+      "actionStatus": "ok",
+      "capas:metrics": {
+        "budget": {
+          "flops_ceiling": 100000000.0,
+          "memory_budget_bytes": 536870912,
+          "safety_factor": 0.5
+        },
+        "engine": {
+          "engine_id": "physics_magnitude_quantum_engine.schmidt_truncation_formal_bound",
+          "function_name": "schmidt_truncation_formal_bound",
+          "kwargs_hash": "e2c00a7ebf368bc6a93476590d4fb515b52370833f5a05d827d1d164a0f4a9f3",
+          "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
+        },
+        "kind": "dense",
+        "n_qubits": 2
+      },
+      "description": "workload accepted",
+      "name": "ingest",
+      "startTime": 1781725790.5124521
+    },
+    {
+      "@id": "trace:3a070aa72e4f1d3c:event:1:runtime_context",
+      "@type": "Action",
+      "actionStatus": "ok",
+      "capas:metrics": {
+        "cotengra_available": true,
+        "cotengra_version": "0.8.1",
+        "machine": "arm64",
+        "mlx_probe": "skipped_in_default_trace; use apple_silicon_thermal_routing.py for Metal/MLX device probes",
+        "numpy_available": true,
+        "numpy_version": "2.4.6",
+        "platform": "macOS-26.5.1-arm64-arm-64bit",
+        "processor": "arm",
+        "python_executable": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/physics_quantum/physics-magnitude-lab/.pixi/envs/default/bin/python",
+        "python_version": "3.12.13",
+        "qiskit_aer_available": true,
+        "qiskit_aer_version": "0.17.2",
+        "quimb_available": true,
+        "quimb_version": "1.14.0",
+        "scipy_available": true,
+        "scipy_version": "1.17.1",
+        "stim_available": true,
+        "stim_version": "1.16.0"
+      },
+      "description": "runtime and hardware context recorded",
+      "name": "runtime_context",
+      "startTime": 1781725790.512479
+    },
+    {
+      "@id": "trace:3a070aa72e4f1d3c:event:2:engine_provenance",
+      "@type": "Action",
+      "actionStatus": "ok",
+      "capas:metrics": {
+        "engine_id": "physics_magnitude_quantum_engine.schmidt_truncation_formal_bound",
+        "function_name": "schmidt_truncation_formal_bound",
+        "kwargs": {
+          "keep_rank": 2,
+          "n_qubits": 4,
+          "seed": 7
+        },
+        "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
+        "module_sha256": "46dd1369a7198ad7be8f6f5a47a36eb2696fdeec147ae414381dbc56e7aaae82"
+      },
+      "description": "external engine provenance recorded",
+      "name": "engine_provenance",
+      "startTime": 1781725790.5133922
+    },
+    {
+      "@id": "trace:3a070aa72e4f1d3c:event:3:cost_model",
+      "@type": "Action",
+      "actionStatus": "ok",
+      "capas:metrics": {
+        "memory_viable": true,
+        "n_qubits": 2,
+        "route": "dense",
+        "statevector_bytes": 64,
+        "usable_memory_bytes": 268435456.0
+      },
+      "description": "dense statevector cost estimated",
+      "name": "cost_model",
+      "startTime": 1781725790.5134
+    },
+    {
+      "@id": "trace:3a070aa72e4f1d3c:event:4:route",
+      "@type": "Action",
+      "actionStatus": "ok",
+      "capas:metrics": {
+        "engine_id": "physics_magnitude_quantum_engine.schmidt_truncation_formal_bound",
+        "function_name": "schmidt_truncation_formal_bound",
+        "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
+      },
+      "description": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+      "name": "route",
+      "startTime": 1781725790.513407
+    },
+    {
+      "@id": "trace:3a070aa72e4f1d3c:event:5:execute",
+      "@type": "Action",
+      "actionStatus": "ok",
+      "capas:metrics": {
+        "abs_error": 2.7755575615628914e-17,
+        "actual_error_squared": 0.11318392617103658,
+        "benchmark_family": "TensorNetwork",
+        "bound_scope": "single_bipartition_state_truncation",
+        "bound_type": "discarded_schmidt_weight_equals_squared_state_2norm_error",
+        "certification_status": "formal_single_cut_state_norm_bound",
+        "discarded_weight": 0.1131839261710366,
+        "expected": 0.1131839261710366,
+        "formal_bound_status": "established_for_single_schmidt_truncation_not_global_dmrg",
+        "max_bond": 2,
+        "n": 4,
+        "observable": "Single-cut Schmidt truncation squared state error",
+        "physical_evidence_detail": "For a normalized state in Schmidt form, the sum of discarded Schmidt values squared is exactly the squared 2-norm error of the optimal rank-k truncation across that cut. This certifies a single-cut state truncation error, not a global DMRG observable error.",
+        "physical_evidence_level": "formal_bound",
+        "reference_truth": "schmidt_eckart_young_theorem",
+        "repr": "{'engine_id': 'physics_magnitude_quantum_engine.schmidt_truncation_formal_bound', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_mag",
+        "route": "external_engine",
+        "runtime_ms": 0.7995830092113465,
+        "source_label": "FORMAL (single-cut Schmidt/SVD theorem)",
+        "type": "dict",
+        "units": "squared_state_norm",
+        "value": {
+          "actual_error_squared": 0.11318392617103658,
+          "discarded_weight": 0.1131839261710366,
+          "full_rank": 4,
+          "kept_rank": 2
+        },
+        "verification_independence": "algorithmic_certificate_exact_svd_same_runtime"
+      },
+      "description": "backend executed",
+      "name": "execute",
+      "startTime": 1781725790.5147798
+    },
+    {
+      "@id": "trace:3a070aa72e4f1d3c:event:6:physical_evidence",
+      "@type": "Action",
+      "actionStatus": "ok",
+      "capas:metrics": {
+        "abs_error": 2.7755575615628914e-17,
+        "actual_error_squared": 0.11318392617103658,
+        "benchmark_family": "TensorNetwork",
+        "bound_scope": "single_bipartition_state_truncation",
+        "bound_type": "discarded_schmidt_weight_equals_squared_state_2norm_error",
+        "certification_status": "formal_single_cut_state_norm_bound",
+        "discarded_weight": 0.1131839261710366,
+        "evidence_hash": "0ce57d5b5b6791413e3b417f0bb1b8d4f7d9d9a87b70293ba30a78f9e296c409",
+        "expected": 0.1131839261710366,
+        "formal_bound_status": "established_for_single_schmidt_truncation_not_global_dmrg",
+        "observable": "Single-cut Schmidt truncation squared state error",
+        "physical_evidence_detail": "For a normalized state in Schmidt form, the sum of discarded Schmidt values squared is exactly the squared 2-norm error of the optimal rank-k truncation across that cut. This certifies a single-cut state truncation error, not a global DMRG observable error.",
+        "physical_evidence_level": "formal_bound",
+        "reference_truth": "schmidt_eckart_young_theorem",
+        "source_label": "FORMAL (single-cut Schmidt/SVD theorem)",
+        "units": "squared_state_norm",
+        "value": {
+          "actual_error_squared": 0.11318392617103658,
+          "discarded_weight": 0.1131839261710366,
+          "full_rank": 4,
+          "kept_rank": 2
+        },
+        "verification_independence": "algorithmic_certificate_exact_svd_same_runtime"
+      },
+      "description": "physical evidence reported by backend",
+      "name": "physical_evidence",
+      "startTime": 1781725790.5148108
+    }
+  ]
+}

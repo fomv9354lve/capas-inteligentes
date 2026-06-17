@@ -29,7 +29,7 @@
       "@id": "./",
       "@type": "Dataset",
       "capas:evidenceStatus": "present",
-      "capas:traceHash": "ba144091ef6be08c2a279c0e439384a07fca26a11b1ce6482a963a5a22d3ddc3",
+      "capas:traceHash": "69d5a84d74b6dbaf8b7ef685932829a4cf3a35deb9aa567dfc8c63c15a613bdc",
       "capas:workflowRunCrateAlignment": "shape-compatible-with-workflow-run-ro-crate-v0",
       "capas:workloadHash": "aabdf7c6a4f583b23fc6008e1325dca981611a591ff8e1ce9e98d094fdecb3f3",
       "conformsTo": [
@@ -43,7 +43,7 @@
           "@id": "https://example.org/capas-inteligentes/ro-crate/physical-evidence/0.1"
         }
       ],
-      "datePublished": "2026-06-17T19:44:59.880502Z",
+      "datePublished": "2026-06-17T19:49:50.171083Z",
       "description": "RO-Crate package containing a sealed RunTrace, optional PROV export, routing decision, runtime context, and CAPAS physical evidence metadata.",
       "hasPart": [
         {
@@ -59,16 +59,16 @@
           "@id": "entity:workload"
         },
         {
-          "@id": "trace:ba144091ef6be08c:routing-decision"
+          "@id": "trace:69d5a84d74b6dbaf:routing-decision"
         },
         {
-          "@id": "trace:ba144091ef6be08c:result"
+          "@id": "trace:69d5a84d74b6dbaf:result"
         },
         {
           "@id": "runtrace.prov.json"
         },
         {
-          "@id": "trace:ba144091ef6be08c:physical-evidence"
+          "@id": "trace:69d5a84d74b6dbaf:physical-evidence"
         }
       ],
       "name": "CAPAS traced scientific computation crate"
@@ -80,14 +80,14 @@
         "DigitalDocument"
       ],
       "about": {
-        "@id": "trace:ba144091ef6be08c"
+        "@id": "trace:69d5a84d74b6dbaf"
       },
       "encodingFormat": "application/json",
       "name": "Sealed CAPAS RunTrace",
-      "sha256": "4bc248855cf1770282fd3821dd19b1b4841895ea0a8627cd10e43e93c5d9af20"
+      "sha256": "4e5e001495c6e852d3d82fe0725aabf02b5c9c582ea7070f83d13719a152f0e3"
     },
     {
-      "@id": "trace:ba144091ef6be08c",
+      "@id": "trace:69d5a84d74b6dbaf",
       "@type": "CreateAction",
       "actionStatus": "CompletedActionStatus",
       "agent": {
@@ -98,11 +98,11 @@
       "capas:evidenceStatus": "present",
       "capas:hashAlgorithm": "sha256(stable_json)",
       "capas:routingDecision": {
-        "@id": "trace:ba144091ef6be08c:routing-decision"
+        "@id": "trace:69d5a84d74b6dbaf:routing-decision"
       },
-      "capas:traceHash": "ba144091ef6be08c2a279c0e439384a07fca26a11b1ce6482a963a5a22d3ddc3",
+      "capas:traceHash": "69d5a84d74b6dbaf8b7ef685932829a4cf3a35deb9aa567dfc8c63c15a613bdc",
       "capas:traceSchemaVersion": "capas-runtrace-v2",
-      "endTime": "2026-06-17T19:44:59.880502Z",
+      "endTime": "2026-06-17T19:49:50.171083Z",
       "instrument": {
         "@id": "workflow/capas-costurero-run.py"
       },
@@ -111,9 +111,9 @@
         "@id": "entity:workload"
       },
       "result": {
-        "@id": "trace:ba144091ef6be08c:result"
+        "@id": "trace:69d5a84d74b6dbaf:result"
       },
-      "startTime": "2026-06-17T19:44:59.880044Z"
+      "startTime": "2026-06-17T19:49:50.170710Z"
     },
     {
       "@id": "workflow/capas-costurero-run.py",
@@ -173,7 +173,7 @@
       "name": "Workload summary"
     },
     {
-      "@id": "trace:ba144091ef6be08c:routing-decision",
+      "@id": "trace:69d5a84d74b6dbaf:routing-decision",
       "@type": "Thing",
       "capas:reason": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
       "capas:route": "external_engine",
@@ -187,13 +187,13 @@
       ],
       "encodingFormat": "application/json",
       "name": "W3C PROV-shaped export",
-      "sha256": "3983f4e2d1235478d3a06fb4462493a3838d877029e27cc148b963e8e0891240"
+      "sha256": "2a418c96e74e69138fedb79b43705b40a67f8178b664faad1f8407dca42d8ab4"
     },
     {
-      "@id": "trace:ba144091ef6be08c:result",
+      "@id": "trace:69d5a84d74b6dbaf:result",
       "@type": "Dataset",
       "capas:physicalEvidence": {
-        "@id": "trace:ba144091ef6be08c:physical-evidence"
+        "@id": "trace:69d5a84d74b6dbaf:physical-evidence"
       },
       "capas:resultHash": "59ee0f9ca80c76f9e0a68bc9fafd99e3a8d113b19892481521c5e69ed1f009a5",
       "capas:summary": {
@@ -213,15 +213,15 @@
       "name": "Result summary"
     },
     {
-      "@id": "trace:ba144091ef6be08c:physical-evidence",
+      "@id": "trace:69d5a84d74b6dbaf:physical-evidence",
       "@type": "capas:PhysicalEvidence",
       "about": {
-        "@id": "trace:ba144091ef6be08c:result"
+        "@id": "trace:69d5a84d74b6dbaf:result"
       },
       "capas:absError": 0.0,
       "capas:benchmarkFamily": "Heisenberg",
       "capas:detail": "For H = J S1.S2, the singlet ground state has E0 = -3J/4",
-      "capas:evidenceHash": "19823e777c8489b97171a31285146aa0ea0fb04bbe5f8205ddc8df85bd3575cd",
+      "capas:evidenceHash": "be9eae54445826c67ababe05a1f4ac4acd400ef1cdf350a87d1b92f9ed84c19f",
       "capas:expected": -0.75,
       "capas:observable": "Spin-1/2 Heisenberg dimer ground-state energy",
       "capas:physicalEvidenceLevel": "analytic",
@@ -232,7 +232,7 @@
       "name": "Physical evidence attached to result"
     },
     {
-      "@id": "trace:ba144091ef6be08c:event:0:ingest",
+      "@id": "trace:69d5a84d74b6dbaf:event:0:ingest",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -252,10 +252,10 @@
       },
       "description": "workload accepted",
       "name": "ingest",
-      "startTime": 1781725499.880044
+      "startTime": 1781725790.17071
     },
     {
-      "@id": "trace:ba144091ef6be08c:event:1:runtime_context",
+      "@id": "trace:69d5a84d74b6dbaf:event:1:runtime_context",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -280,10 +280,10 @@
       },
       "description": "runtime and hardware context recorded",
       "name": "runtime_context",
-      "startTime": 1781725499.880058
+      "startTime": 1781725790.170722
     },
     {
-      "@id": "trace:ba144091ef6be08c:event:2:engine_provenance",
+      "@id": "trace:69d5a84d74b6dbaf:event:2:engine_provenance",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -293,14 +293,14 @@
           "J": 1.0
         },
         "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
-        "module_sha256": "1026e97280a2de075c75ee8114bb06216c055a7b0dcec001555919c54612dc34"
+        "module_sha256": "46dd1369a7198ad7be8f6f5a47a36eb2696fdeec147ae414381dbc56e7aaae82"
       },
       "description": "external engine provenance recorded",
       "name": "engine_provenance",
-      "startTime": 1781725499.8801181
+      "startTime": 1781725790.17077
     },
     {
-      "@id": "trace:ba144091ef6be08c:event:3:cost_model",
+      "@id": "trace:69d5a84d74b6dbaf:event:3:cost_model",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -312,10 +312,10 @@
       },
       "description": "dense statevector cost estimated",
       "name": "cost_model",
-      "startTime": 1781725499.8801222
+      "startTime": 1781725790.170773
     },
     {
-      "@id": "trace:ba144091ef6be08c:event:4:route",
+      "@id": "trace:69d5a84d74b6dbaf:event:4:route",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -325,10 +325,10 @@
       },
       "description": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
       "name": "route",
-      "startTime": 1781725499.880126
+      "startTime": 1781725790.1707761
     },
     {
-      "@id": "trace:ba144091ef6be08c:event:5:execute",
+      "@id": "trace:69d5a84d74b6dbaf:event:5:execute",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -341,7 +341,7 @@
         "reference_truth": "closed_form_singlet_triplet_spectrum",
         "repr": "{'engine_id': 'physics_magnitude_quantum_engine.heisenberg_dimer_ground_state', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magni",
         "route": "external_engine",
-        "runtime_ms": 0.3303330158814788,
+        "runtime_ms": 0.26933298795484006,
         "type": "dict",
         "units": "energy",
         "value": -0.75,
@@ -349,25 +349,28 @@
       },
       "description": "backend executed",
       "name": "execute",
-      "startTime": 1781725499.88049
+      "startTime": 1781725790.171073
     },
     {
-      "@id": "trace:ba144091ef6be08c:event:6:physical_evidence",
+      "@id": "trace:69d5a84d74b6dbaf:event:6:physical_evidence",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
         "abs_error": 0.0,
-        "evidence_hash": "a638dd94ceb4564dc60dc9f40ec30869e5de72479198060827242d5c89b306cf",
+        "benchmark_family": "Heisenberg",
+        "evidence_hash": "b8c486e94417684e4c8b9df9369d7025c01f8ee900dba543068bc17f181736fb",
         "expected": -0.75,
         "observable": "Spin-1/2 Heisenberg dimer ground-state energy",
         "physical_evidence_detail": "For H = J S1.S2, the singlet ground state has E0 = -3J/4",
         "physical_evidence_level": "analytic",
+        "reference_truth": "closed_form_singlet_triplet_spectrum",
         "units": "energy",
-        "value": -0.75
+        "value": -0.75,
+        "verification_independence": "analytic_no_solver"
       },
       "description": "physical evidence reported by backend",
       "name": "physical_evidence",
-      "startTime": 1781725499.880502
+      "startTime": 1781725790.171083
     }
   ]
 }
