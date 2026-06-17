@@ -12,6 +12,7 @@ from router import CostBudget, EngineSpec, Workload, run_with_trace  # noqa: E40
 
 
 ENGINE_PATH = ROOT / "integrations" / "physics_magnitude_gold_engines.py"
+ADVERSARIAL_ENGINE_PATH = ROOT / "integrations" / "universal_invariant_adversarial_engines.py"
 OUT_DIR = ROOT / "benchmarks" / "gold_traces"
 AUDIT_CSV = ROOT / "audits" / "gold_trace_audit_template.csv"
 
@@ -38,12 +39,19 @@ TRACE_SPECS = [
     ("trace_025", "h2o_sto3g_electronic_vibrational_reference", {}, "quantum_chemistry_polyatomic_electronic_vibrational"),
     ("trace_026", "ch4_sto3g_electronic_vibrational_reference", {}, "quantum_chemistry_larger_polyatomic_electronic_vibrational"),
     ("trace_027", "h2_basis_convergence_to_experiment", {}, "quantum_chemistry_basis_convergence_to_experiment"),
+    ("trace_028", "heisenberg_wrong_sign_passes_local_properties", {}, "universal_invariant_adversarial_failure"),
     ("trace_012", "unverified_variational_energy", {}, "no_evidence_success"),
     ("trace_013", "deliberately_failing_engine", {}, "backend_failed"),
     ("trace_015", "quimb_mps_estimated_bound", {"n": 60, "depth": 6, "max_bond": 8, "seed": 1}, "estimated_bound_candidate"),
     ("trace_016", "schmidt_truncation_formal_bound", {"n_qubits": 4, "keep_rank": 2, "seed": 7}, "formal_bound_success"),
     ("trace_017", "multi_step_schmidt_composition_bound", {"n_qubits": 6, "keep_rank": 2, "seed": 11}, "formal_bound_composition_success"),
 ]
+
+
+def _engine_path_for(function_name: str) -> Path:
+    if function_name == "heisenberg_wrong_sign_passes_local_properties":
+        return ADVERSARIAL_ENGINE_PATH
+    return ENGINE_PATH
 
 
 def _rejected_workload() -> Workload:
@@ -58,18 +66,24 @@ def main() -> None:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     audit_rows = []
     for trace_id, fn, kwargs, coverage_case in TRACE_SPECS:
+        engine_path = _engine_path_for(fn)
         workload = Workload(
             kind="dense",
             n_qubits=2,
             engine=EngineSpec(
-                module_path=str(ENGINE_PATH),
+                module_path=str(engine_path),
                 function_name=fn,
                 kwargs=kwargs,
-                engine_id=f"physics_magnitude_quantum_engine.{fn}",
+                engine_id=f"{engine_path.stem}.{fn}",
             ),
         )
         result, trace = run_with_trace(workload, raise_on_error=False)
-        if coverage_case not in {"backend_failed", "no_evidence_success", "estimated_bound_candidate"}:
+        if coverage_case == "universal_invariant_adversarial_failure":
+            assert result is not None
+            assert result["result"]["local_property_tests_pass"] is True
+            assert result["result"]["universal_anchor_pass"] is False
+            assert result["result"]["invariant_caught"] is True
+        elif coverage_case not in {"backend_failed", "no_evidence_success", "estimated_bound_candidate"}:
             assert result is not None
             assert result["result"]["abs_error"] < 1e-9
         payload = {
@@ -85,7 +99,7 @@ def main() -> None:
             audit_rows.append({
                 "trace_id": trace_id,
                 "source_file": str(OUT_DIR / f"{trace_id}.json"),
-                "engine_id": f"physics_magnitude_quantum_engine.{fn}",
+                "engine_id": f"{engine_path.stem}.{fn}",
                 "engine_hash": "",
                 "hash_gate_pass": "yes",
                 "output_value": "",
@@ -117,6 +131,7 @@ def main() -> None:
         abs_error = result["result"].get("abs_error")
         abs_error_text = f"{abs_error:.3e}" if isinstance(abs_error, (int, float)) else "n/a"
 
+        is_adversarial_invariant_failure = coverage_case == "universal_invariant_adversarial_failure"
         audit_rows.append({
             "trace_id": trace_id,
             "source_file": str(OUT_DIR / f"{trace_id}.json"),
@@ -128,8 +143,8 @@ def main() -> None:
             "output_correct": output_correct,
             "output_correct_evidence": f"{result['result']['observable']}: expected {result['result']['expected']}, abs_error={abs_error_text}",
             "reasoning_claim": result["result"]["physical_evidence_detail"],
-            "inference_blind_judge": "hold" if physical_level in {"analytic", "cross_sim", "estimated_bound", "formal_bound", "experimental"} else "no",
-            "inference_correct": "unknown" if physical_level in {"analytic", "cross_sim", "estimated_bound", "formal_bound", "experimental"} else "no",
+            "inference_blind_judge": "no" if is_adversarial_invariant_failure else "hold" if physical_level in {"analytic", "cross_sim", "estimated_bound", "formal_bound", "experimental"} else "no",
+            "inference_correct": "no" if is_adversarial_invariant_failure else "unknown" if physical_level in {"analytic", "cross_sim", "estimated_bound", "formal_bound", "experimental"} else "no",
             "inference_correct_evidence": "",
             "physical_evidence_level": result["result"]["physical_evidence_level"],
             "physical_evidence_detail": result["result"]["physical_evidence_detail"],
@@ -137,9 +152,12 @@ def main() -> None:
             "reference_truth": result["result"].get("reference_truth", "closed_form_quantum_identity"),
             "verification_independence": result["result"].get("verification_independence", "analytic_no_solver"),
             "coverage_case": coverage_case,
-            "risk_level": "low",
-            "decision": "hold" if physical_level in {"analytic", "cross_sim", "estimated_bound", "formal_bound", "experimental"} else "reject",
+            "risk_level": "high" if is_adversarial_invariant_failure else "low",
+            "decision": "reject" if is_adversarial_invariant_failure else "hold" if physical_level in {"analytic", "cross_sim", "estimated_bound", "formal_bound", "experimental"} else "reject",
             "notes": (
+                "Adversarial generator case: local properties pass, universal analytic invariant catches wrong sign."
+                if coverage_case == "universal_invariant_adversarial_failure"
+                else
                 "Generated by traced quantum_engine invariant; needs blind inference review before accept."
                 if physical_level in {"analytic", "cross_sim"}
                 else "Experimental-reference trace; records solver/model error separation and needs blind inference review."

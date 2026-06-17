@@ -1,7 +1,7 @@
 {
   "coverage_case": "analytic_success",
   "result": {
-    "engine_id": "physics_magnitude_quantum_engine.ghz_entropy_ln2",
+    "engine_id": "physics_magnitude_gold_engines.ghz_entropy_ln2",
     "function_name": "ghz_entropy_ln2",
     "kwargs": {
       "n_qubits": 3
@@ -32,7 +32,7 @@
             "safety_factor": 0.5
           },
           "engine": {
-            "engine_id": "physics_magnitude_quantum_engine.ghz_entropy_ln2",
+            "engine_id": "physics_magnitude_gold_engines.ghz_entropy_ln2",
             "function_name": "ghz_entropy_ln2",
             "kwargs_hash": "723c468f489aee823e0990d0e66e8c2f315305d3d300e617fcc4f9cf09b82a20",
             "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
@@ -42,7 +42,7 @@
         },
         "stage": "ingest",
         "status": "ok",
-        "timestamp": 1781736137.628191
+        "timestamp": 1781737807.337022
       },
       {
         "message": "runtime and hardware context recorded",
@@ -68,12 +68,12 @@
         },
         "stage": "runtime_context",
         "status": "ok",
-        "timestamp": 1781736137.6282399
+        "timestamp": 1781737807.33713
       },
       {
         "message": "external engine provenance recorded",
         "metrics": {
-          "engine_id": "physics_magnitude_quantum_engine.ghz_entropy_ln2",
+          "engine_id": "physics_magnitude_gold_engines.ghz_entropy_ln2",
           "function_name": "ghz_entropy_ln2",
           "kwargs": {
             "n_qubits": 3
@@ -83,7 +83,7 @@
         },
         "stage": "engine_provenance",
         "status": "ok",
-        "timestamp": 1781736137.628309
+        "timestamp": 1781737807.337258
       },
       {
         "message": "dense statevector cost estimated",
@@ -96,18 +96,18 @@
         },
         "stage": "cost_model",
         "status": "ok",
-        "timestamp": 1781736137.6283112
+        "timestamp": 1781737807.3372622
       },
       {
         "message": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
         "metrics": {
-          "engine_id": "physics_magnitude_quantum_engine.ghz_entropy_ln2",
+          "engine_id": "physics_magnitude_gold_engines.ghz_entropy_ln2",
           "function_name": "ghz_entropy_ln2",
           "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
         },
         "stage": "route",
         "status": "ok",
-        "timestamp": 1781736137.628313
+        "timestamp": 1781737807.337266
       },
       {
         "message": "backend executed",
@@ -117,16 +117,16 @@
           "observable": "GHZ(3) one-qubit bipartition entropy",
           "physical_evidence_detail": "Single-qubit reduction of GHZ state is I/2, entropy = ln 2",
           "physical_evidence_level": "analytic",
-          "repr": "{'engine_id': 'physics_magnitude_quantum_engine.ghz_entropy_ln2', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engi",
+          "repr": "{'engine_id': 'physics_magnitude_gold_engines.ghz_entropy_ln2', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engine",
           "route": "external_engine",
-          "runtime_ms": 0.2850829914677888,
+          "runtime_ms": 0.6222089868970215,
           "type": "dict",
           "units": "nats",
           "value": 0.6931471805599454
         },
         "stage": "execute",
         "status": "ok",
-        "timestamp": 1781736137.628615
+        "timestamp": 1781737807.337933
       },
       {
         "message": "physical evidence reported by backend",
@@ -142,24 +142,24 @@
         },
         "stage": "physical_evidence",
         "status": "ok",
-        "timestamp": 1781736137.628622
+        "timestamp": 1781737807.3379478
       }
     ],
     "hash_algorithm": "sha256(stable_json)",
-    "result_hash": "8dca33cb5455cc5ea990ba2067ae3676d683cb3a27c235818aa02816d6c7e4dc",
+    "result_hash": "7dd77adfe13735e4590db2609eafd72cad79a45f5f7b8f700cda4b134c56712f",
     "result_summary": {
       "abs_error": 1.1102230246251565e-16,
       "expected": 0.6931471805599453,
       "observable": "GHZ(3) one-qubit bipartition entropy",
       "physical_evidence_detail": "Single-qubit reduction of GHZ state is I/2, entropy = ln 2",
       "physical_evidence_level": "analytic",
-      "repr": "{'engine_id': 'physics_magnitude_quantum_engine.ghz_entropy_ln2', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engi",
+      "repr": "{'engine_id': 'physics_magnitude_gold_engines.ghz_entropy_ln2', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engine",
       "type": "dict",
       "units": "nats",
       "value": 0.6931471805599454
     },
     "trace_schema_version": "capas-runtrace-v2",
-    "workload_hash": "1f537fb75d0f12db945dc52b52fb16d63eef9e546d12f1cf6f7e91f70a093227",
+    "workload_hash": "41df8d4a91e46f25924bba97ff791df228aabf086482d6a239ee4f8b73e638db",
     "workload_summary": {
       "budget": {
         "flops_ceiling": 100000000.0,
@@ -167,7 +167,7 @@
         "safety_factor": 0.5
       },
       "engine": {
-        "engine_id": "physics_magnitude_quantum_engine.ghz_entropy_ln2",
+        "engine_id": "physics_magnitude_gold_engines.ghz_entropy_ln2",
         "function_name": "ghz_entropy_ln2",
         "kwargs_hash": "723c468f489aee823e0990d0e66e8c2f315305d3d300e617fcc4f9cf09b82a20",
         "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
@@ -176,6 +176,6 @@
       "n_qubits": 2
     }
   },
-  "trace_hash": "489971e7d4de79dca64c877610d461983c07f2531ea720c059b55a9b820550c9",
+  "trace_hash": "8e3c51b48df229eb3d46b47ad66b4bef69a6fdb6cc2092436ca8efb84aa8e0bf",
   "trace_id": "trace_004"
 }

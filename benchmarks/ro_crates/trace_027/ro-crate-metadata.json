@@ -36,9 +36,9 @@
       "@id": "./",
       "@type": "Dataset",
       "capas:evidenceStatus": "present",
-      "capas:traceHash": "fd5d88ac258fb39ba3361fda71b6513802be8c962d46feeeca33efbfc75f54d4",
+      "capas:traceHash": "3828543e3b7696c6e70bebce1a45cb10bdfc2e33b2ff44774ccaf356cbdc74ca",
       "capas:workflowRunCrateAlignment": "shape-compatible-with-workflow-run-crate-0.5",
-      "capas:workloadHash": "fe17cd8889057350705c7cadcd69b3bbf9b369997af2a35b0a88c0b98285d0ff",
+      "capas:workloadHash": "524ce4b96e1c69b694a5ab9d084f300885b4755677102c734252684878dcc280",
       "conformsTo": [
         {
           "@id": "https://w3id.org/ro/crate/1.1"
@@ -56,7 +56,7 @@
           "@id": "https://example.org/capas-inteligentes/ro-crate/physical-evidence/0.1"
         }
       ],
-      "datePublished": "2026-06-17T22:43:30.518964Z",
+      "datePublished": "2026-06-17T23:12:35.635161Z",
       "description": "RO-Crate package containing a sealed RunTrace, optional PROV export, routing decision, runtime context, and CAPAS physical evidence metadata.",
       "hasPart": [
         {
@@ -72,23 +72,23 @@
           "@id": "entity:workload"
         },
         {
-          "@id": "trace:fd5d88ac258fb39b:routing-decision"
+          "@id": "trace:3828543e3b7696c6:routing-decision"
         },
         {
-          "@id": "trace:fd5d88ac258fb39b:result"
+          "@id": "trace:3828543e3b7696c6:result"
         },
         {
           "@id": "runtrace.prov.json"
         },
         {
-          "@id": "trace:fd5d88ac258fb39b:physical-evidence"
+          "@id": "trace:3828543e3b7696c6:physical-evidence"
         }
       ],
       "mainEntity": {
         "@id": "workflow/capas-costurero-run.cwl"
       },
       "mentions": {
-        "@id": "trace:fd5d88ac258fb39b"
+        "@id": "trace:3828543e3b7696c6"
       },
       "name": "CAPAS traced scientific computation crate"
     },
@@ -124,14 +124,14 @@
         "DigitalDocument"
       ],
       "about": {
-        "@id": "trace:fd5d88ac258fb39b"
+        "@id": "trace:3828543e3b7696c6"
       },
       "encodingFormat": "application/json",
       "name": "Sealed CAPAS RunTrace",
-      "sha256": "66eb643287531bcc5c4bcb1f4ec3bc3e0fe78512d1e54067b9ae64c12a34497a"
+      "sha256": "9c34a003fedebe5e85bec3ec17949a8ecdd75a55721123c9e9d61e5069b5e1eb"
     },
     {
-      "@id": "trace:fd5d88ac258fb39b",
+      "@id": "trace:3828543e3b7696c6",
       "@type": "CreateAction",
       "actionStatus": "CompletedActionStatus",
       "agent": {
@@ -142,11 +142,11 @@
       "capas:evidenceStatus": "present",
       "capas:hashAlgorithm": "sha256(stable_json)",
       "capas:routingDecision": {
-        "@id": "trace:fd5d88ac258fb39b:routing-decision"
+        "@id": "trace:3828543e3b7696c6:routing-decision"
       },
-      "capas:traceHash": "fd5d88ac258fb39ba3361fda71b6513802be8c962d46feeeca33efbfc75f54d4",
+      "capas:traceHash": "3828543e3b7696c6e70bebce1a45cb10bdfc2e33b2ff44774ccaf356cbdc74ca",
       "capas:traceSchemaVersion": "capas-runtrace-v2",
-      "endTime": "2026-06-17T22:43:30.518964Z",
+      "endTime": "2026-06-17T23:12:35.635161Z",
       "instrument": {
         "@id": "workflow/capas-costurero-run.cwl"
       },
@@ -155,9 +155,9 @@
         "@id": "entity:workload"
       },
       "result": {
-        "@id": "trace:fd5d88ac258fb39b:result"
+        "@id": "trace:3828543e3b7696c6:result"
       },
-      "startTime": "2026-06-17T22:42:18.483252Z"
+      "startTime": "2026-06-17T23:10:09.155743Z"
     },
     {
       "@id": "workflow/capas-costurero-run.cwl",
@@ -207,7 +207,7 @@
           "safety_factor": 0.5
         },
         "engine": {
-          "engine_id": "physics_magnitude_quantum_engine.h2_basis_convergence_to_experiment",
+          "engine_id": "physics_magnitude_gold_engines.h2_basis_convergence_to_experiment",
           "function_name": "h2_basis_convergence_to_experiment",
           "kwargs_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
           "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
@@ -215,14 +215,14 @@
         "kind": "dense",
         "n_qubits": 2
       },
-      "capas:workloadHash": "fe17cd8889057350705c7cadcd69b3bbf9b369997af2a35b0a88c0b98285d0ff",
+      "capas:workloadHash": "524ce4b96e1c69b694a5ab9d084f300885b4755677102c734252684878dcc280",
       "exampleOfWork": {
         "@id": "parameter:workload"
       },
       "name": "Workload summary"
     },
     {
-      "@id": "trace:fd5d88ac258fb39b:routing-decision",
+      "@id": "trace:3828543e3b7696c6:routing-decision",
       "@type": "Thing",
       "capas:reason": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
       "capas:route": "external_engine",
@@ -236,18 +236,18 @@
       ],
       "encodingFormat": "application/json",
       "name": "W3C PROV-shaped export",
-      "sha256": "9187e2ffc17df70fbaf28b4983cb2f7e73ad4bef82c24ae05840349e14880f2d"
+      "sha256": "6a9d997bf7de54c3ceb67f682e70f679852103d5f02ddd520873ae9ea90080db"
     },
     {
-      "@id": "trace:fd5d88ac258fb39b:result",
+      "@id": "trace:3828543e3b7696c6:result",
       "@type": "Dataset",
       "capas:physicalEvidence": {
-        "@id": "trace:fd5d88ac258fb39b:physical-evidence"
+        "@id": "trace:3828543e3b7696c6:physical-evidence"
       },
-      "capas:resultHash": "abe4e59bcfa16a2764deeeba7e55473bc95a4875aff3967a867d3b2a312c083b",
+      "capas:resultHash": "facda86ec40c57104602083ed6cd2a794287c5c69b767888b5514a01f285e915",
       "capas:summary": {
         "abs_error": 0.0,
-        "abs_error_vs_experimental": 2.0496105661238495e-05,
+        "abs_error_vs_experimental": 2.0496105730100078e-05,
         "abs_error_vs_fci": 0.0,
         "basis": [
           "sto-3g",
@@ -293,76 +293,76 @@
             "basis": "cc-pvdz",
             "basis_orbitals": 10,
             "corrected_de_reference_hartree": 0.17468248271208817,
-            "corrected_error_hartree": 0.009825356013931058,
-            "electronic_binding_energy_hartree": 0.1648571266981571,
-            "fci_total_energy_hartree": -1.1634139335373233,
+            "corrected_error_hartree": 0.009825356013931946,
+            "electronic_binding_energy_hartree": 0.16485712669815622,
+            "fci_total_energy_hartree": -1.1634139335373224,
             "harmonic_frequencies_cm_inverse": [
-              4677.58133223857
+              4677.5813322385675
             ],
-            "margin_hartree": -0.008231756013931057,
+            "margin_hartree": -0.008231756013931946,
             "model_atom_energy_hartree": -0.49927840341958307,
-            "raw_error_vs_d0_hartree": 0.0008309583469351955,
+            "raw_error_vs_d0_hartree": 0.0008309583469343074,
             "robustness": "false",
             "solver_error_hartree": 0.0,
-            "vibrational_zpe_cm_inverse": 2338.790666119285,
-            "vibrational_zpe_hartree": 0.010656314360866248,
+            "vibrational_zpe_cm_inverse": 2338.7906661192837,
+            "vibrational_zpe_hartree": 0.010656314360866241,
             "within_chemical_accuracy": false
           },
           {
             "basis": "cc-pvtz",
             "basis_orbitals": 28,
             "corrected_de_reference_hartree": 0.1742487425404671,
-            "corrected_error_hartree": 0.0015326709489962564,
-            "electronic_binding_energy_hartree": 0.17271607159147084,
-            "fci_total_energy_hartree": -1.1723356941951564,
+            "corrected_error_hartree": 0.0015326709489820456,
+            "electronic_binding_energy_hartree": 0.17271607159148505,
+            "fci_total_energy_hartree": -1.1723356941951706,
             "harmonic_frequencies_cm_inverse": [
-              4487.1914036843555
+              4487.191403684353
             ],
-            "margin_hartree": 6.092905100374348e-05,
+            "margin_hartree": 6.092905101795433e-05,
             "model_atom_energy_hartree": -0.49980981130184277,
-            "raw_error_vs_d0_hartree": 0.00868990324024893,
+            "raw_error_vs_d0_hartree": 0.008689903240263142,
             "robustness": "true_not_robust",
             "solver_error_hartree": 0.0,
-            "vibrational_zpe_cm_inverse": 2243.5957018421777,
-            "vibrational_zpe_hartree": 0.010222574189245198,
+            "vibrational_zpe_cm_inverse": 2243.5957018421764,
+            "vibrational_zpe_hartree": 0.010222574189245192,
             "within_chemical_accuracy": true
           },
           {
             "basis": "cc-pvqz",
             "basis_orbitals": 60,
             "corrected_de_reference_hartree": 0.17421648010077684,
-            "corrected_error_hartree": 0.0003112863147443079,
-            "electronic_binding_energy_hartree": 0.17390519378603253,
-            "fci_total_energy_hartree": -1.1737963309520096,
+            "corrected_error_hartree": 0.00031128631473498203,
+            "electronic_binding_energy_hartree": 0.17390519378604186,
+            "fci_total_energy_hartree": -1.173796330952019,
             "harmonic_frequencies_cm_inverse": [
-              4473.029829568088
+              4473.029829568087
             ],
-            "margin_hartree": 0.001282313685255692,
+            "margin_hartree": 0.001282313685265018,
             "model_atom_energy_hartree": -0.49994556858298855,
-            "raw_error_vs_d0_hartree": 0.009879025434810618,
+            "raw_error_vs_d0_hartree": 0.009879025434819944,
             "robustness": "true_robust",
             "solver_error_hartree": 0.0,
-            "vibrational_zpe_cm_inverse": 2236.514914784044,
-            "vibrational_zpe_hartree": 0.010190311749554934,
+            "vibrational_zpe_cm_inverse": 2236.5149147840434,
+            "vibrational_zpe_hartree": 0.01019031174955493,
             "within_chemical_accuracy": true
           },
           {
             "basis": "cc-pv5z",
             "basis_orbitals": 110,
-            "corrected_de_reference_hartree": 0.17421340440083433,
-            "corrected_error_hartree": 2.0496105661238495e-05,
-            "electronic_binding_energy_hartree": 0.17423390050649556,
-            "fci_total_energy_hartree": -1.1742229708243048,
+            "corrected_de_reference_hartree": 0.1742134044008343,
+            "corrected_error_hartree": 2.0496105730100078e-05,
+            "electronic_binding_energy_hartree": 0.1742339005065644,
+            "fci_total_energy_hartree": -1.1742229708243737,
             "harmonic_frequencies_cm_inverse": [
-              4471.679753345902
+              4471.679753345891
             ],
-            "margin_hartree": 0.0015731038943387614,
+            "margin_hartree": 0.0015731038942698998,
             "model_atom_energy_hartree": -0.49999453515890463,
-            "raw_error_vs_d0_hartree": 0.010207732155273652,
+            "raw_error_vs_d0_hartree": 0.010207732155342486,
             "robustness": "true_robust",
             "solver_error_hartree": 0.0,
-            "vibrational_zpe_cm_inverse": 2235.839876672951,
-            "vibrational_zpe_hartree": 0.010187236049612405,
+            "vibrational_zpe_cm_inverse": 2235.8398766729456,
+            "vibrational_zpe_hartree": 0.010187236049612379,
             "within_chemical_accuracy": true
           }
         ],
@@ -372,7 +372,7 @@
           "first_robust_basis": "cc-pvqz",
           "monotonic_nonincreasing_error": true
         },
-        "experimental_binding_energy_hartree": 0.17421340440083433,
+        "experimental_binding_energy_hartree": 0.1742134044008343,
         "falsification_notes": [
           "This trace certifies convergence for H2 only, not general quantum chemistry.",
           "A true result with margin below 5% of the threshold is marked true_not_robust.",
@@ -400,25 +400,25 @@
           }
         ],
         "harmonic_frequencies_cm_inverse": [
-          4471.679753345902
+          4471.679753345891
         ],
-        "model_binding_energy_hartree": 0.17423390050649556,
-        "model_error_hartree": 2.0496105661238495e-05,
+        "model_binding_energy_hartree": 0.1742339005065644,
+        "model_error_hartree": 2.0496105730100078e-05,
         "monotonic_nonincreasing_error": true,
         "observable": "H2 finite-basis convergence to experimental D0 with model-harmonic ZPE",
         "physical_evidence_detail": "H2 is solved by exact FCI across an increasing Dunning basis ladder. Each point compares the electronic binding energy to measured D0 corrected by same-model harmonic ZPE. The trace records the full error curve, monotonicity, first threshold crossing, and first robust chemical-accuracy crossing.",
         "physical_evidence_level": "experimental",
-        "reference_definition_corrected_error_hartree": 2.0496105661238495e-05,
+        "reference_definition_corrected_error_hartree": 2.0496105730100078e-05,
         "reference_definition_correction": {
           "computed_quantity": "clamped-nuclei electronic binding energy",
           "correction": "D_e ~= D0 + ZPE_harmonic(model), recomputed per basis",
           "quality": "same_model_harmonic_vibrational_correction_not_full_spectroscopic_audit",
           "raw_reference": "D0 includes vibrational zero-point energy"
         },
-        "reference_definition_error_hartree": 0.010207732155273652,
+        "reference_definition_error_hartree": 0.010207732155342486,
         "reference_definition_match": "per_basis_corrected_model_harmonic_D0_plus_ZPE_to_match_electronic_De",
         "reference_experimental_d0_cm_inverse": 35999.582834,
-        "reference_fci_total_energy_hartree": -1.1742229708243048,
+        "reference_fci_total_energy_hartree": -1.1742229708243737,
         "reference_truth": {
           "chemical_accuracy": {
             "robust_margin_fraction": 0.05,
@@ -446,22 +446,22 @@
             "method": "PySCF FCI"
           }
         },
-        "repr": "{'engine_id': 'physics_magnitude_quantum_engine.h2_basis_convergence_to_experiment', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_",
+        "repr": "{'engine_id': 'physics_magnitude_gold_engines.h2_basis_convergence_to_experiment', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_ma",
         "solver_error_hartree": 0.0,
         "source_label": "PySCF FCI H2 basis ladder + per-basis harmonic ZPE + external H2 D0 measurement",
         "type": "dict",
         "units": "hartree",
         "value": {
           "best_basis": "cc-pv5z",
-          "best_error_hartree": 2.0496105661238495e-05,
+          "best_error_hartree": 2.0496105730100078e-05,
           "ceiling_basis_orbitals": 110,
           "ceiling_basis_solved": "cc-pv5z",
           "errors_hartree": [
             0.028646971371818652,
-            0.009825356013931058,
-            0.0015326709489962564,
-            0.0003112863147443079,
-            2.0496105661238495e-05
+            0.009825356013931946,
+            0.0015326709489820456,
+            0.00031128631473498203,
+            2.0496105730100078e-05
           ],
           "first_robust_basis": "cc-pvqz",
           "first_within_chemical_accuracy_basis": "cc-pvtz",
@@ -490,76 +490,76 @@
               "basis": "cc-pvdz",
               "basis_orbitals": 10,
               "corrected_de_reference_hartree": 0.17468248271208817,
-              "corrected_error_hartree": 0.009825356013931058,
-              "electronic_binding_energy_hartree": 0.1648571266981571,
-              "fci_total_energy_hartree": -1.1634139335373233,
+              "corrected_error_hartree": 0.009825356013931946,
+              "electronic_binding_energy_hartree": 0.16485712669815622,
+              "fci_total_energy_hartree": -1.1634139335373224,
               "harmonic_frequencies_cm_inverse": [
-                4677.58133223857
+                4677.5813322385675
               ],
-              "margin_hartree": -0.008231756013931057,
+              "margin_hartree": -0.008231756013931946,
               "model_atom_energy_hartree": -0.49927840341958307,
-              "raw_error_vs_d0_hartree": 0.0008309583469351955,
+              "raw_error_vs_d0_hartree": 0.0008309583469343074,
               "robustness": "false",
               "solver_error_hartree": 0.0,
-              "vibrational_zpe_cm_inverse": 2338.790666119285,
-              "vibrational_zpe_hartree": 0.010656314360866248,
+              "vibrational_zpe_cm_inverse": 2338.7906661192837,
+              "vibrational_zpe_hartree": 0.010656314360866241,
               "within_chemical_accuracy": false
             },
             {
               "basis": "cc-pvtz",
               "basis_orbitals": 28,
               "corrected_de_reference_hartree": 0.1742487425404671,
-              "corrected_error_hartree": 0.0015326709489962564,
-              "electronic_binding_energy_hartree": 0.17271607159147084,
-              "fci_total_energy_hartree": -1.1723356941951564,
+              "corrected_error_hartree": 0.0015326709489820456,
+              "electronic_binding_energy_hartree": 0.17271607159148505,
+              "fci_total_energy_hartree": -1.1723356941951706,
               "harmonic_frequencies_cm_inverse": [
-                4487.1914036843555
+                4487.191403684353
               ],
-              "margin_hartree": 6.092905100374348e-05,
+              "margin_hartree": 6.092905101795433e-05,
               "model_atom_energy_hartree": -0.49980981130184277,
-              "raw_error_vs_d0_hartree": 0.00868990324024893,
+              "raw_error_vs_d0_hartree": 0.008689903240263142,
               "robustness": "true_not_robust",
               "solver_error_hartree": 0.0,
-              "vibrational_zpe_cm_inverse": 2243.5957018421777,
-              "vibrational_zpe_hartree": 0.010222574189245198,
+              "vibrational_zpe_cm_inverse": 2243.5957018421764,
+              "vibrational_zpe_hartree": 0.010222574189245192,
               "within_chemical_accuracy": true
             },
             {
               "basis": "cc-pvqz",
               "basis_orbitals": 60,
               "corrected_de_reference_hartree": 0.17421648010077684,
-              "corrected_error_hartree": 0.0003112863147443079,
-              "electronic_binding_energy_hartree": 0.17390519378603253,
-              "fci_total_energy_hartree": -1.1737963309520096,
+              "corrected_error_hartree": 0.00031128631473498203,
+              "electronic_binding_energy_hartree": 0.17390519378604186,
+              "fci_total_energy_hartree": -1.173796330952019,
               "harmonic_frequencies_cm_inverse": [
-                4473.029829568088
+                4473.029829568087
               ],
-              "margin_hartree": 0.001282313685255692,
+              "margin_hartree": 0.001282313685265018,
               "model_atom_energy_hartree": -0.49994556858298855,
-              "raw_error_vs_d0_hartree": 0.009879025434810618,
+              "raw_error_vs_d0_hartree": 0.009879025434819944,
               "robustness": "true_robust",
               "solver_error_hartree": 0.0,
-              "vibrational_zpe_cm_inverse": 2236.514914784044,
-              "vibrational_zpe_hartree": 0.010190311749554934,
+              "vibrational_zpe_cm_inverse": 2236.5149147840434,
+              "vibrational_zpe_hartree": 0.01019031174955493,
               "within_chemical_accuracy": true
             },
             {
               "basis": "cc-pv5z",
               "basis_orbitals": 110,
-              "corrected_de_reference_hartree": 0.17421340440083433,
-              "corrected_error_hartree": 2.0496105661238495e-05,
-              "electronic_binding_energy_hartree": 0.17423390050649556,
-              "fci_total_energy_hartree": -1.1742229708243048,
+              "corrected_de_reference_hartree": 0.1742134044008343,
+              "corrected_error_hartree": 2.0496105730100078e-05,
+              "electronic_binding_energy_hartree": 0.1742339005065644,
+              "fci_total_energy_hartree": -1.1742229708243737,
               "harmonic_frequencies_cm_inverse": [
-                4471.679753345902
+                4471.679753345891
               ],
-              "margin_hartree": 0.0015731038943387614,
+              "margin_hartree": 0.0015731038942698998,
               "model_atom_energy_hartree": -0.49999453515890463,
-              "raw_error_vs_d0_hartree": 0.010207732155273652,
+              "raw_error_vs_d0_hartree": 0.010207732155342486,
               "robustness": "true_robust",
               "solver_error_hartree": 0.0,
-              "vibrational_zpe_cm_inverse": 2235.839876672951,
-              "vibrational_zpe_hartree": 0.010187236049612405,
+              "vibrational_zpe_cm_inverse": 2235.8398766729456,
+              "vibrational_zpe_hartree": 0.010187236049612379,
               "within_chemical_accuracy": true
             }
           ],
@@ -567,8 +567,8 @@
           "robust_margin_hartree": 7.968e-05
         },
         "verification_independence": "same_runtime_exact_fci_with_external_experimental_reference",
-        "vibrational_zpe_cm_inverse": 2235.839876672951,
-        "vibrational_zpe_hartree": 0.010187236049612405,
+        "vibrational_zpe_cm_inverse": 2235.8398766729456,
+        "vibrational_zpe_hartree": 0.010187236049612379,
         "within_chemical_accuracy": true,
         "witness_stack": {
           "primary": "PySCF FCI exact H2 model solve at each basis",
@@ -582,13 +582,13 @@
       "name": "Result summary"
     },
     {
-      "@id": "trace:fd5d88ac258fb39b:physical-evidence",
+      "@id": "trace:3828543e3b7696c6:physical-evidence",
       "@type": "capas:PhysicalEvidence",
       "about": {
-        "@id": "trace:fd5d88ac258fb39b:result"
+        "@id": "trace:3828543e3b7696c6:result"
       },
       "capas:absError": 0.0,
-      "capas:absErrorVsExperimental": 2.0496105661238495e-05,
+      "capas:absErrorVsExperimental": 2.0496105730100078e-05,
       "capas:absErrorVsFci": 0.0,
       "capas:basis": [
         "sto-3g",
@@ -634,88 +634,88 @@
           "basis": "cc-pvdz",
           "basis_orbitals": 10,
           "corrected_de_reference_hartree": 0.17468248271208817,
-          "corrected_error_hartree": 0.009825356013931058,
-          "electronic_binding_energy_hartree": 0.1648571266981571,
-          "fci_total_energy_hartree": -1.1634139335373233,
+          "corrected_error_hartree": 0.009825356013931946,
+          "electronic_binding_energy_hartree": 0.16485712669815622,
+          "fci_total_energy_hartree": -1.1634139335373224,
           "harmonic_frequencies_cm_inverse": [
-            4677.58133223857
+            4677.5813322385675
           ],
-          "margin_hartree": -0.008231756013931057,
+          "margin_hartree": -0.008231756013931946,
           "model_atom_energy_hartree": -0.49927840341958307,
-          "raw_error_vs_d0_hartree": 0.0008309583469351955,
+          "raw_error_vs_d0_hartree": 0.0008309583469343074,
           "robustness": "false",
           "solver_error_hartree": 0.0,
-          "vibrational_zpe_cm_inverse": 2338.790666119285,
-          "vibrational_zpe_hartree": 0.010656314360866248,
+          "vibrational_zpe_cm_inverse": 2338.7906661192837,
+          "vibrational_zpe_hartree": 0.010656314360866241,
           "within_chemical_accuracy": false
         },
         {
           "basis": "cc-pvtz",
           "basis_orbitals": 28,
           "corrected_de_reference_hartree": 0.1742487425404671,
-          "corrected_error_hartree": 0.0015326709489962564,
-          "electronic_binding_energy_hartree": 0.17271607159147084,
-          "fci_total_energy_hartree": -1.1723356941951564,
+          "corrected_error_hartree": 0.0015326709489820456,
+          "electronic_binding_energy_hartree": 0.17271607159148505,
+          "fci_total_energy_hartree": -1.1723356941951706,
           "harmonic_frequencies_cm_inverse": [
-            4487.1914036843555
+            4487.191403684353
           ],
-          "margin_hartree": 6.092905100374348e-05,
+          "margin_hartree": 6.092905101795433e-05,
           "model_atom_energy_hartree": -0.49980981130184277,
-          "raw_error_vs_d0_hartree": 0.00868990324024893,
+          "raw_error_vs_d0_hartree": 0.008689903240263142,
           "robustness": "true_not_robust",
           "solver_error_hartree": 0.0,
-          "vibrational_zpe_cm_inverse": 2243.5957018421777,
-          "vibrational_zpe_hartree": 0.010222574189245198,
+          "vibrational_zpe_cm_inverse": 2243.5957018421764,
+          "vibrational_zpe_hartree": 0.010222574189245192,
           "within_chemical_accuracy": true
         },
         {
           "basis": "cc-pvqz",
           "basis_orbitals": 60,
           "corrected_de_reference_hartree": 0.17421648010077684,
-          "corrected_error_hartree": 0.0003112863147443079,
-          "electronic_binding_energy_hartree": 0.17390519378603253,
-          "fci_total_energy_hartree": -1.1737963309520096,
+          "corrected_error_hartree": 0.00031128631473498203,
+          "electronic_binding_energy_hartree": 0.17390519378604186,
+          "fci_total_energy_hartree": -1.173796330952019,
           "harmonic_frequencies_cm_inverse": [
-            4473.029829568088
+            4473.029829568087
           ],
-          "margin_hartree": 0.001282313685255692,
+          "margin_hartree": 0.001282313685265018,
           "model_atom_energy_hartree": -0.49994556858298855,
-          "raw_error_vs_d0_hartree": 0.009879025434810618,
+          "raw_error_vs_d0_hartree": 0.009879025434819944,
           "robustness": "true_robust",
           "solver_error_hartree": 0.0,
-          "vibrational_zpe_cm_inverse": 2236.514914784044,
-          "vibrational_zpe_hartree": 0.010190311749554934,
+          "vibrational_zpe_cm_inverse": 2236.5149147840434,
+          "vibrational_zpe_hartree": 0.01019031174955493,
           "within_chemical_accuracy": true
         },
         {
           "basis": "cc-pv5z",
           "basis_orbitals": 110,
-          "corrected_de_reference_hartree": 0.17421340440083433,
-          "corrected_error_hartree": 2.0496105661238495e-05,
-          "electronic_binding_energy_hartree": 0.17423390050649556,
-          "fci_total_energy_hartree": -1.1742229708243048,
+          "corrected_de_reference_hartree": 0.1742134044008343,
+          "corrected_error_hartree": 2.0496105730100078e-05,
+          "electronic_binding_energy_hartree": 0.1742339005065644,
+          "fci_total_energy_hartree": -1.1742229708243737,
           "harmonic_frequencies_cm_inverse": [
-            4471.679753345902
+            4471.679753345891
           ],
-          "margin_hartree": 0.0015731038943387614,
+          "margin_hartree": 0.0015731038942698998,
           "model_atom_energy_hartree": -0.49999453515890463,
-          "raw_error_vs_d0_hartree": 0.010207732155273652,
+          "raw_error_vs_d0_hartree": 0.010207732155342486,
           "robustness": "true_robust",
           "solver_error_hartree": 0.0,
-          "vibrational_zpe_cm_inverse": 2235.839876672951,
-          "vibrational_zpe_hartree": 0.010187236049612405,
+          "vibrational_zpe_cm_inverse": 2235.8398766729456,
+          "vibrational_zpe_hartree": 0.010187236049612379,
           "within_chemical_accuracy": true
         }
       ],
       "capas:detail": "H2 is solved by exact FCI across an increasing Dunning basis ladder. Each point compares the electronic binding energy to measured D0 corrected by same-model harmonic ZPE. The trace records the full error curve, monotonicity, first threshold crossing, and first robust chemical-accuracy crossing.",
-      "capas:evidenceHash": "59ad407610382625ca31c5768ecb4999da708e2e7c2d1cc835cd8f04eece2dd2",
+      "capas:evidenceHash": "9c3460893f7e8edc790238ed0dfc9f0b37c973f49e695830477e42fcef60a892",
       "capas:evidenceStatusDetail": "experimental_basis_convergence_curve_with_robust_true_crossing",
       "capas:expected": {
         "chemical_accuracy_threshold_hartree": 0.0015936,
         "first_robust_basis": "cc-pvqz",
         "monotonic_nonincreasing_error": true
       },
-      "capas:experimentalBindingEnergyHartree": 0.17421340440083433,
+      "capas:experimentalBindingEnergyHartree": 0.1742134044008343,
       "capas:falsificationNotes": [
         "This trace certifies convergence for H2 only, not general quantum chemistry.",
         "A true result with margin below 5% of the threshold is marked true_not_robust.",
@@ -743,24 +743,24 @@
         }
       ],
       "capas:harmonicFrequenciesCmInverse": [
-        4471.679753345902
+        4471.679753345891
       ],
-      "capas:modelBindingEnergyHartree": 0.17423390050649556,
-      "capas:modelErrorHartree": 2.0496105661238495e-05,
+      "capas:modelBindingEnergyHartree": 0.1742339005065644,
+      "capas:modelErrorHartree": 2.0496105730100078e-05,
       "capas:monotonicNonincreasingError": true,
       "capas:observable": "H2 finite-basis convergence to experimental D0 with model-harmonic ZPE",
       "capas:physicalEvidenceLevel": "experimental",
-      "capas:referenceDefinitionCorrectedErrorHartree": 2.0496105661238495e-05,
+      "capas:referenceDefinitionCorrectedErrorHartree": 2.0496105730100078e-05,
       "capas:referenceDefinitionCorrection": {
         "computed_quantity": "clamped-nuclei electronic binding energy",
         "correction": "D_e ~= D0 + ZPE_harmonic(model), recomputed per basis",
         "quality": "same_model_harmonic_vibrational_correction_not_full_spectroscopic_audit",
         "raw_reference": "D0 includes vibrational zero-point energy"
       },
-      "capas:referenceDefinitionErrorHartree": 0.010207732155273652,
+      "capas:referenceDefinitionErrorHartree": 0.010207732155342486,
       "capas:referenceDefinitionMatch": "per_basis_corrected_model_harmonic_D0_plus_ZPE_to_match_electronic_De",
       "capas:referenceExperimentalD0CmInverse": 35999.582834,
-      "capas:referenceFciTotalEnergyHartree": -1.1742229708243048,
+      "capas:referenceFciTotalEnergyHartree": -1.1742229708243737,
       "capas:referenceTruth": {
         "chemical_accuracy": {
           "robust_margin_fraction": 0.05,
@@ -793,15 +793,15 @@
       "capas:units": "hartree",
       "capas:value": {
         "best_basis": "cc-pv5z",
-        "best_error_hartree": 2.0496105661238495e-05,
+        "best_error_hartree": 2.0496105730100078e-05,
         "ceiling_basis_orbitals": 110,
         "ceiling_basis_solved": "cc-pv5z",
         "errors_hartree": [
           0.028646971371818652,
-          0.009825356013931058,
-          0.0015326709489962564,
-          0.0003112863147443079,
-          2.0496105661238495e-05
+          0.009825356013931946,
+          0.0015326709489820456,
+          0.00031128631473498203,
+          2.0496105730100078e-05
         ],
         "first_robust_basis": "cc-pvqz",
         "first_within_chemical_accuracy_basis": "cc-pvtz",
@@ -830,76 +830,76 @@
             "basis": "cc-pvdz",
             "basis_orbitals": 10,
             "corrected_de_reference_hartree": 0.17468248271208817,
-            "corrected_error_hartree": 0.009825356013931058,
-            "electronic_binding_energy_hartree": 0.1648571266981571,
-            "fci_total_energy_hartree": -1.1634139335373233,
+            "corrected_error_hartree": 0.009825356013931946,
+            "electronic_binding_energy_hartree": 0.16485712669815622,
+            "fci_total_energy_hartree": -1.1634139335373224,
             "harmonic_frequencies_cm_inverse": [
-              4677.58133223857
+              4677.5813322385675
             ],
-            "margin_hartree": -0.008231756013931057,
+            "margin_hartree": -0.008231756013931946,
             "model_atom_energy_hartree": -0.49927840341958307,
-            "raw_error_vs_d0_hartree": 0.0008309583469351955,
+            "raw_error_vs_d0_hartree": 0.0008309583469343074,
             "robustness": "false",
             "solver_error_hartree": 0.0,
-            "vibrational_zpe_cm_inverse": 2338.790666119285,
-            "vibrational_zpe_hartree": 0.010656314360866248,
+            "vibrational_zpe_cm_inverse": 2338.7906661192837,
+            "vibrational_zpe_hartree": 0.010656314360866241,
             "within_chemical_accuracy": false
           },
           {
             "basis": "cc-pvtz",
             "basis_orbitals": 28,
             "corrected_de_reference_hartree": 0.1742487425404671,
-            "corrected_error_hartree": 0.0015326709489962564,
-            "electronic_binding_energy_hartree": 0.17271607159147084,
-            "fci_total_energy_hartree": -1.1723356941951564,
+            "corrected_error_hartree": 0.0015326709489820456,
+            "electronic_binding_energy_hartree": 0.17271607159148505,
+            "fci_total_energy_hartree": -1.1723356941951706,
             "harmonic_frequencies_cm_inverse": [
-              4487.1914036843555
+              4487.191403684353
             ],
-            "margin_hartree": 6.092905100374348e-05,
+            "margin_hartree": 6.092905101795433e-05,
             "model_atom_energy_hartree": -0.49980981130184277,
-            "raw_error_vs_d0_hartree": 0.00868990324024893,
+            "raw_error_vs_d0_hartree": 0.008689903240263142,
             "robustness": "true_not_robust",
             "solver_error_hartree": 0.0,
-            "vibrational_zpe_cm_inverse": 2243.5957018421777,
-            "vibrational_zpe_hartree": 0.010222574189245198,
+            "vibrational_zpe_cm_inverse": 2243.5957018421764,
+            "vibrational_zpe_hartree": 0.010222574189245192,
             "within_chemical_accuracy": true
           },
           {
             "basis": "cc-pvqz",
             "basis_orbitals": 60,
             "corrected_de_reference_hartree": 0.17421648010077684,
-            "corrected_error_hartree": 0.0003112863147443079,
-            "electronic_binding_energy_hartree": 0.17390519378603253,
-            "fci_total_energy_hartree": -1.1737963309520096,
+            "corrected_error_hartree": 0.00031128631473498203,
+            "electronic_binding_energy_hartree": 0.17390519378604186,
+            "fci_total_energy_hartree": -1.173796330952019,
             "harmonic_frequencies_cm_inverse": [
-              4473.029829568088
+              4473.029829568087
             ],
-            "margin_hartree": 0.001282313685255692,
+            "margin_hartree": 0.001282313685265018,
             "model_atom_energy_hartree": -0.49994556858298855,
-            "raw_error_vs_d0_hartree": 0.009879025434810618,
+            "raw_error_vs_d0_hartree": 0.009879025434819944,
             "robustness": "true_robust",
             "solver_error_hartree": 0.0,
-            "vibrational_zpe_cm_inverse": 2236.514914784044,
-            "vibrational_zpe_hartree": 0.010190311749554934,
+            "vibrational_zpe_cm_inverse": 2236.5149147840434,
+            "vibrational_zpe_hartree": 0.01019031174955493,
             "within_chemical_accuracy": true
           },
           {
             "basis": "cc-pv5z",
             "basis_orbitals": 110,
-            "corrected_de_reference_hartree": 0.17421340440083433,
-            "corrected_error_hartree": 2.0496105661238495e-05,
-            "electronic_binding_energy_hartree": 0.17423390050649556,
-            "fci_total_energy_hartree": -1.1742229708243048,
+            "corrected_de_reference_hartree": 0.1742134044008343,
+            "corrected_error_hartree": 2.0496105730100078e-05,
+            "electronic_binding_energy_hartree": 0.1742339005065644,
+            "fci_total_energy_hartree": -1.1742229708243737,
             "harmonic_frequencies_cm_inverse": [
-              4471.679753345902
+              4471.679753345891
             ],
-            "margin_hartree": 0.0015731038943387614,
+            "margin_hartree": 0.0015731038942698998,
             "model_atom_energy_hartree": -0.49999453515890463,
-            "raw_error_vs_d0_hartree": 0.010207732155273652,
+            "raw_error_vs_d0_hartree": 0.010207732155342486,
             "robustness": "true_robust",
             "solver_error_hartree": 0.0,
-            "vibrational_zpe_cm_inverse": 2235.839876672951,
-            "vibrational_zpe_hartree": 0.010187236049612405,
+            "vibrational_zpe_cm_inverse": 2235.8398766729456,
+            "vibrational_zpe_hartree": 0.010187236049612379,
             "within_chemical_accuracy": true
           }
         ],
@@ -907,8 +907,8 @@
         "robust_margin_hartree": 7.968e-05
       },
       "capas:verificationIndependence": "same_runtime_exact_fci_with_external_experimental_reference",
-      "capas:vibrationalZpeCmInverse": 2235.839876672951,
-      "capas:vibrationalZpeHartree": 0.010187236049612405,
+      "capas:vibrationalZpeCmInverse": 2235.8398766729456,
+      "capas:vibrationalZpeHartree": 0.010187236049612379,
       "capas:withinChemicalAccuracy": true,
       "capas:witnessStack": {
         "primary": "PySCF FCI exact H2 model solve at each basis",
@@ -918,7 +918,7 @@
       "name": "Physical evidence attached to result"
     },
     {
-      "@id": "trace:fd5d88ac258fb39b:event:0:ingest",
+      "@id": "trace:3828543e3b7696c6:event:0:ingest",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -928,7 +928,7 @@
           "safety_factor": 0.5
         },
         "engine": {
-          "engine_id": "physics_magnitude_quantum_engine.h2_basis_convergence_to_experiment",
+          "engine_id": "physics_magnitude_gold_engines.h2_basis_convergence_to_experiment",
           "function_name": "h2_basis_convergence_to_experiment",
           "kwargs_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
           "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
@@ -938,10 +938,10 @@
       },
       "description": "workload accepted",
       "name": "ingest",
-      "startTime": 1781736138.483252
+      "startTime": 1781737809.155743
     },
     {
-      "@id": "trace:fd5d88ac258fb39b:event:1:runtime_context",
+      "@id": "trace:3828543e3b7696c6:event:1:runtime_context",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -966,14 +966,14 @@
       },
       "description": "runtime and hardware context recorded",
       "name": "runtime_context",
-      "startTime": 1781736138.483356
+      "startTime": 1781737809.155915
     },
     {
-      "@id": "trace:fd5d88ac258fb39b:event:2:engine_provenance",
+      "@id": "trace:3828543e3b7696c6:event:2:engine_provenance",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
-        "engine_id": "physics_magnitude_quantum_engine.h2_basis_convergence_to_experiment",
+        "engine_id": "physics_magnitude_gold_engines.h2_basis_convergence_to_experiment",
         "function_name": "h2_basis_convergence_to_experiment",
         "kwargs": {},
         "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
@@ -981,10 +981,10 @@
       },
       "description": "external engine provenance recorded",
       "name": "engine_provenance",
-      "startTime": 1781736138.483488
+      "startTime": 1781737809.156112
     },
     {
-      "@id": "trace:fd5d88ac258fb39b:event:3:cost_model",
+      "@id": "trace:3828543e3b7696c6:event:3:cost_model",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -996,28 +996,28 @@
       },
       "description": "dense statevector cost estimated",
       "name": "cost_model",
-      "startTime": 1781736138.4834921
+      "startTime": 1781737809.156117
     },
     {
-      "@id": "trace:fd5d88ac258fb39b:event:4:route",
+      "@id": "trace:3828543e3b7696c6:event:4:route",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
-        "engine_id": "physics_magnitude_quantum_engine.h2_basis_convergence_to_experiment",
+        "engine_id": "physics_magnitude_gold_engines.h2_basis_convergence_to_experiment",
         "function_name": "h2_basis_convergence_to_experiment",
         "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
       },
       "description": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
       "name": "route",
-      "startTime": 1781736138.483496
+      "startTime": 1781737809.156123
     },
     {
-      "@id": "trace:fd5d88ac258fb39b:event:5:execute",
+      "@id": "trace:3828543e3b7696c6:event:5:execute",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
         "abs_error": 0.0,
-        "abs_error_vs_experimental": 2.0496105661238495e-05,
+        "abs_error_vs_experimental": 2.0496105730100078e-05,
         "abs_error_vs_fci": 0.0,
         "basis": [
           "sto-3g",
@@ -1063,76 +1063,76 @@
             "basis": "cc-pvdz",
             "basis_orbitals": 10,
             "corrected_de_reference_hartree": 0.17468248271208817,
-            "corrected_error_hartree": 0.009825356013931058,
-            "electronic_binding_energy_hartree": 0.1648571266981571,
-            "fci_total_energy_hartree": -1.1634139335373233,
+            "corrected_error_hartree": 0.009825356013931946,
+            "electronic_binding_energy_hartree": 0.16485712669815622,
+            "fci_total_energy_hartree": -1.1634139335373224,
             "harmonic_frequencies_cm_inverse": [
-              4677.58133223857
+              4677.5813322385675
             ],
-            "margin_hartree": -0.008231756013931057,
+            "margin_hartree": -0.008231756013931946,
             "model_atom_energy_hartree": -0.49927840341958307,
-            "raw_error_vs_d0_hartree": 0.0008309583469351955,
+            "raw_error_vs_d0_hartree": 0.0008309583469343074,
             "robustness": "false",
             "solver_error_hartree": 0.0,
-            "vibrational_zpe_cm_inverse": 2338.790666119285,
-            "vibrational_zpe_hartree": 0.010656314360866248,
+            "vibrational_zpe_cm_inverse": 2338.7906661192837,
+            "vibrational_zpe_hartree": 0.010656314360866241,
             "within_chemical_accuracy": false
           },
           {
             "basis": "cc-pvtz",
             "basis_orbitals": 28,
             "corrected_de_reference_hartree": 0.1742487425404671,
-            "corrected_error_hartree": 0.0015326709489962564,
-            "electronic_binding_energy_hartree": 0.17271607159147084,
-            "fci_total_energy_hartree": -1.1723356941951564,
+            "corrected_error_hartree": 0.0015326709489820456,
+            "electronic_binding_energy_hartree": 0.17271607159148505,
+            "fci_total_energy_hartree": -1.1723356941951706,
             "harmonic_frequencies_cm_inverse": [
-              4487.1914036843555
+              4487.191403684353
             ],
-            "margin_hartree": 6.092905100374348e-05,
+            "margin_hartree": 6.092905101795433e-05,
             "model_atom_energy_hartree": -0.49980981130184277,
-            "raw_error_vs_d0_hartree": 0.00868990324024893,
+            "raw_error_vs_d0_hartree": 0.008689903240263142,
             "robustness": "true_not_robust",
             "solver_error_hartree": 0.0,
-            "vibrational_zpe_cm_inverse": 2243.5957018421777,
-            "vibrational_zpe_hartree": 0.010222574189245198,
+            "vibrational_zpe_cm_inverse": 2243.5957018421764,
+            "vibrational_zpe_hartree": 0.010222574189245192,
             "within_chemical_accuracy": true
           },
           {
             "basis": "cc-pvqz",
             "basis_orbitals": 60,
             "corrected_de_reference_hartree": 0.17421648010077684,
-            "corrected_error_hartree": 0.0003112863147443079,
-            "electronic_binding_energy_hartree": 0.17390519378603253,
-            "fci_total_energy_hartree": -1.1737963309520096,
+            "corrected_error_hartree": 0.00031128631473498203,
+            "electronic_binding_energy_hartree": 0.17390519378604186,
+            "fci_total_energy_hartree": -1.173796330952019,
             "harmonic_frequencies_cm_inverse": [
-              4473.029829568088
+              4473.029829568087
             ],
-            "margin_hartree": 0.001282313685255692,
+            "margin_hartree": 0.001282313685265018,
             "model_atom_energy_hartree": -0.49994556858298855,
-            "raw_error_vs_d0_hartree": 0.009879025434810618,
+            "raw_error_vs_d0_hartree": 0.009879025434819944,
             "robustness": "true_robust",
             "solver_error_hartree": 0.0,
-            "vibrational_zpe_cm_inverse": 2236.514914784044,
-            "vibrational_zpe_hartree": 0.010190311749554934,
+            "vibrational_zpe_cm_inverse": 2236.5149147840434,
+            "vibrational_zpe_hartree": 0.01019031174955493,
             "within_chemical_accuracy": true
           },
           {
             "basis": "cc-pv5z",
             "basis_orbitals": 110,
-            "corrected_de_reference_hartree": 0.17421340440083433,
-            "corrected_error_hartree": 2.0496105661238495e-05,
-            "electronic_binding_energy_hartree": 0.17423390050649556,
-            "fci_total_energy_hartree": -1.1742229708243048,
+            "corrected_de_reference_hartree": 0.1742134044008343,
+            "corrected_error_hartree": 2.0496105730100078e-05,
+            "electronic_binding_energy_hartree": 0.1742339005065644,
+            "fci_total_energy_hartree": -1.1742229708243737,
             "harmonic_frequencies_cm_inverse": [
-              4471.679753345902
+              4471.679753345891
             ],
-            "margin_hartree": 0.0015731038943387614,
+            "margin_hartree": 0.0015731038942698998,
             "model_atom_energy_hartree": -0.49999453515890463,
-            "raw_error_vs_d0_hartree": 0.010207732155273652,
+            "raw_error_vs_d0_hartree": 0.010207732155342486,
             "robustness": "true_robust",
             "solver_error_hartree": 0.0,
-            "vibrational_zpe_cm_inverse": 2235.839876672951,
-            "vibrational_zpe_hartree": 0.010187236049612405,
+            "vibrational_zpe_cm_inverse": 2235.8398766729456,
+            "vibrational_zpe_hartree": 0.010187236049612379,
             "within_chemical_accuracy": true
           }
         ],
@@ -1142,7 +1142,7 @@
           "first_robust_basis": "cc-pvqz",
           "monotonic_nonincreasing_error": true
         },
-        "experimental_binding_energy_hartree": 0.17421340440083433,
+        "experimental_binding_energy_hartree": 0.1742134044008343,
         "falsification_notes": [
           "This trace certifies convergence for H2 only, not general quantum chemistry.",
           "A true result with margin below 5% of the threshold is marked true_not_robust.",
@@ -1170,25 +1170,25 @@
           }
         ],
         "harmonic_frequencies_cm_inverse": [
-          4471.679753345902
+          4471.679753345891
         ],
-        "model_binding_energy_hartree": 0.17423390050649556,
-        "model_error_hartree": 2.0496105661238495e-05,
+        "model_binding_energy_hartree": 0.1742339005065644,
+        "model_error_hartree": 2.0496105730100078e-05,
         "monotonic_nonincreasing_error": true,
         "observable": "H2 finite-basis convergence to experimental D0 with model-harmonic ZPE",
         "physical_evidence_detail": "H2 is solved by exact FCI across an increasing Dunning basis ladder. Each point compares the electronic binding energy to measured D0 corrected by same-model harmonic ZPE. The trace records the full error curve, monotonicity, first threshold crossing, and first robust chemical-accuracy crossing.",
         "physical_evidence_level": "experimental",
-        "reference_definition_corrected_error_hartree": 2.0496105661238495e-05,
+        "reference_definition_corrected_error_hartree": 2.0496105730100078e-05,
         "reference_definition_correction": {
           "computed_quantity": "clamped-nuclei electronic binding energy",
           "correction": "D_e ~= D0 + ZPE_harmonic(model), recomputed per basis",
           "quality": "same_model_harmonic_vibrational_correction_not_full_spectroscopic_audit",
           "raw_reference": "D0 includes vibrational zero-point energy"
         },
-        "reference_definition_error_hartree": 0.010207732155273652,
+        "reference_definition_error_hartree": 0.010207732155342486,
         "reference_definition_match": "per_basis_corrected_model_harmonic_D0_plus_ZPE_to_match_electronic_De",
         "reference_experimental_d0_cm_inverse": 35999.582834,
-        "reference_fci_total_energy_hartree": -1.1742229708243048,
+        "reference_fci_total_energy_hartree": -1.1742229708243737,
         "reference_truth": {
           "chemical_accuracy": {
             "robust_margin_fraction": 0.05,
@@ -1216,24 +1216,24 @@
             "method": "PySCF FCI"
           }
         },
-        "repr": "{'engine_id': 'physics_magnitude_quantum_engine.h2_basis_convergence_to_experiment', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_",
+        "repr": "{'engine_id': 'physics_magnitude_gold_engines.h2_basis_convergence_to_experiment', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_ma",
         "route": "external_engine",
-        "runtime_ms": 72016.36658300413,
+        "runtime_ms": 146476.52991698124,
         "solver_error_hartree": 0.0,
         "source_label": "PySCF FCI H2 basis ladder + per-basis harmonic ZPE + external H2 D0 measurement",
         "type": "dict",
         "units": "hartree",
         "value": {
           "best_basis": "cc-pv5z",
-          "best_error_hartree": 2.0496105661238495e-05,
+          "best_error_hartree": 2.0496105730100078e-05,
           "ceiling_basis_orbitals": 110,
           "ceiling_basis_solved": "cc-pv5z",
           "errors_hartree": [
             0.028646971371818652,
-            0.009825356013931058,
-            0.0015326709489962564,
-            0.0003112863147443079,
-            2.0496105661238495e-05
+            0.009825356013931946,
+            0.0015326709489820456,
+            0.00031128631473498203,
+            2.0496105730100078e-05
           ],
           "first_robust_basis": "cc-pvqz",
           "first_within_chemical_accuracy_basis": "cc-pvtz",
@@ -1262,76 +1262,76 @@
               "basis": "cc-pvdz",
               "basis_orbitals": 10,
               "corrected_de_reference_hartree": 0.17468248271208817,
-              "corrected_error_hartree": 0.009825356013931058,
-              "electronic_binding_energy_hartree": 0.1648571266981571,
-              "fci_total_energy_hartree": -1.1634139335373233,
+              "corrected_error_hartree": 0.009825356013931946,
+              "electronic_binding_energy_hartree": 0.16485712669815622,
+              "fci_total_energy_hartree": -1.1634139335373224,
               "harmonic_frequencies_cm_inverse": [
-                4677.58133223857
+                4677.5813322385675
               ],
-              "margin_hartree": -0.008231756013931057,
+              "margin_hartree": -0.008231756013931946,
               "model_atom_energy_hartree": -0.49927840341958307,
-              "raw_error_vs_d0_hartree": 0.0008309583469351955,
+              "raw_error_vs_d0_hartree": 0.0008309583469343074,
               "robustness": "false",
               "solver_error_hartree": 0.0,
-              "vibrational_zpe_cm_inverse": 2338.790666119285,
-              "vibrational_zpe_hartree": 0.010656314360866248,
+              "vibrational_zpe_cm_inverse": 2338.7906661192837,
+              "vibrational_zpe_hartree": 0.010656314360866241,
               "within_chemical_accuracy": false
             },
             {
               "basis": "cc-pvtz",
               "basis_orbitals": 28,
               "corrected_de_reference_hartree": 0.1742487425404671,
-              "corrected_error_hartree": 0.0015326709489962564,
-              "electronic_binding_energy_hartree": 0.17271607159147084,
-              "fci_total_energy_hartree": -1.1723356941951564,
+              "corrected_error_hartree": 0.0015326709489820456,
+              "electronic_binding_energy_hartree": 0.17271607159148505,
+              "fci_total_energy_hartree": -1.1723356941951706,
               "harmonic_frequencies_cm_inverse": [
-                4487.1914036843555
+                4487.191403684353
               ],
-              "margin_hartree": 6.092905100374348e-05,
+              "margin_hartree": 6.092905101795433e-05,
               "model_atom_energy_hartree": -0.49980981130184277,
-              "raw_error_vs_d0_hartree": 0.00868990324024893,
+              "raw_error_vs_d0_hartree": 0.008689903240263142,
               "robustness": "true_not_robust",
               "solver_error_hartree": 0.0,
-              "vibrational_zpe_cm_inverse": 2243.5957018421777,
-              "vibrational_zpe_hartree": 0.010222574189245198,
+              "vibrational_zpe_cm_inverse": 2243.5957018421764,
+              "vibrational_zpe_hartree": 0.010222574189245192,
               "within_chemical_accuracy": true
             },
             {
               "basis": "cc-pvqz",
               "basis_orbitals": 60,
               "corrected_de_reference_hartree": 0.17421648010077684,
-              "corrected_error_hartree": 0.0003112863147443079,
-              "electronic_binding_energy_hartree": 0.17390519378603253,
-              "fci_total_energy_hartree": -1.1737963309520096,
+              "corrected_error_hartree": 0.00031128631473498203,
+              "electronic_binding_energy_hartree": 0.17390519378604186,
+              "fci_total_energy_hartree": -1.173796330952019,
               "harmonic_frequencies_cm_inverse": [
-                4473.029829568088
+                4473.029829568087
               ],
-              "margin_hartree": 0.001282313685255692,
+              "margin_hartree": 0.001282313685265018,
               "model_atom_energy_hartree": -0.49994556858298855,
-              "raw_error_vs_d0_hartree": 0.009879025434810618,
+              "raw_error_vs_d0_hartree": 0.009879025434819944,
               "robustness": "true_robust",
               "solver_error_hartree": 0.0,
-              "vibrational_zpe_cm_inverse": 2236.514914784044,
-              "vibrational_zpe_hartree": 0.010190311749554934,
+              "vibrational_zpe_cm_inverse": 2236.5149147840434,
+              "vibrational_zpe_hartree": 0.01019031174955493,
               "within_chemical_accuracy": true
             },
             {
               "basis": "cc-pv5z",
               "basis_orbitals": 110,
-              "corrected_de_reference_hartree": 0.17421340440083433,
-              "corrected_error_hartree": 2.0496105661238495e-05,
-              "electronic_binding_energy_hartree": 0.17423390050649556,
-              "fci_total_energy_hartree": -1.1742229708243048,
+              "corrected_de_reference_hartree": 0.1742134044008343,
+              "corrected_error_hartree": 2.0496105730100078e-05,
+              "electronic_binding_energy_hartree": 0.1742339005065644,
+              "fci_total_energy_hartree": -1.1742229708243737,
               "harmonic_frequencies_cm_inverse": [
-                4471.679753345902
+                4471.679753345891
               ],
-              "margin_hartree": 0.0015731038943387614,
+              "margin_hartree": 0.0015731038942698998,
               "model_atom_energy_hartree": -0.49999453515890463,
-              "raw_error_vs_d0_hartree": 0.010207732155273652,
+              "raw_error_vs_d0_hartree": 0.010207732155342486,
               "robustness": "true_robust",
               "solver_error_hartree": 0.0,
-              "vibrational_zpe_cm_inverse": 2235.839876672951,
-              "vibrational_zpe_hartree": 0.010187236049612405,
+              "vibrational_zpe_cm_inverse": 2235.8398766729456,
+              "vibrational_zpe_hartree": 0.010187236049612379,
               "within_chemical_accuracy": true
             }
           ],
@@ -1339,8 +1339,8 @@
           "robust_margin_hartree": 7.968e-05
         },
         "verification_independence": "same_runtime_exact_fci_with_external_experimental_reference",
-        "vibrational_zpe_cm_inverse": 2235.839876672951,
-        "vibrational_zpe_hartree": 0.010187236049612405,
+        "vibrational_zpe_cm_inverse": 2235.8398766729456,
+        "vibrational_zpe_hartree": 0.010187236049612379,
         "within_chemical_accuracy": true,
         "witness_stack": {
           "primary": "PySCF FCI exact H2 model solve at each basis",
@@ -1350,15 +1350,15 @@
       },
       "description": "backend executed",
       "name": "execute",
-      "startTime": 1781736210.518761
+      "startTime": 1781737955.634909
     },
     {
-      "@id": "trace:fd5d88ac258fb39b:event:6:physical_evidence",
+      "@id": "trace:3828543e3b7696c6:event:6:physical_evidence",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
         "abs_error": 0.0,
-        "abs_error_vs_experimental": 2.0496105661238495e-05,
+        "abs_error_vs_experimental": 2.0496105730100078e-05,
         "abs_error_vs_fci": 0.0,
         "basis": [
           "sto-3g",
@@ -1404,87 +1404,87 @@
             "basis": "cc-pvdz",
             "basis_orbitals": 10,
             "corrected_de_reference_hartree": 0.17468248271208817,
-            "corrected_error_hartree": 0.009825356013931058,
-            "electronic_binding_energy_hartree": 0.1648571266981571,
-            "fci_total_energy_hartree": -1.1634139335373233,
+            "corrected_error_hartree": 0.009825356013931946,
+            "electronic_binding_energy_hartree": 0.16485712669815622,
+            "fci_total_energy_hartree": -1.1634139335373224,
             "harmonic_frequencies_cm_inverse": [
-              4677.58133223857
+              4677.5813322385675
             ],
-            "margin_hartree": -0.008231756013931057,
+            "margin_hartree": -0.008231756013931946,
             "model_atom_energy_hartree": -0.49927840341958307,
-            "raw_error_vs_d0_hartree": 0.0008309583469351955,
+            "raw_error_vs_d0_hartree": 0.0008309583469343074,
             "robustness": "false",
             "solver_error_hartree": 0.0,
-            "vibrational_zpe_cm_inverse": 2338.790666119285,
-            "vibrational_zpe_hartree": 0.010656314360866248,
+            "vibrational_zpe_cm_inverse": 2338.7906661192837,
+            "vibrational_zpe_hartree": 0.010656314360866241,
             "within_chemical_accuracy": false
           },
           {
             "basis": "cc-pvtz",
             "basis_orbitals": 28,
             "corrected_de_reference_hartree": 0.1742487425404671,
-            "corrected_error_hartree": 0.0015326709489962564,
-            "electronic_binding_energy_hartree": 0.17271607159147084,
-            "fci_total_energy_hartree": -1.1723356941951564,
+            "corrected_error_hartree": 0.0015326709489820456,
+            "electronic_binding_energy_hartree": 0.17271607159148505,
+            "fci_total_energy_hartree": -1.1723356941951706,
             "harmonic_frequencies_cm_inverse": [
-              4487.1914036843555
+              4487.191403684353
             ],
-            "margin_hartree": 6.092905100374348e-05,
+            "margin_hartree": 6.092905101795433e-05,
             "model_atom_energy_hartree": -0.49980981130184277,
-            "raw_error_vs_d0_hartree": 0.00868990324024893,
+            "raw_error_vs_d0_hartree": 0.008689903240263142,
             "robustness": "true_not_robust",
             "solver_error_hartree": 0.0,
-            "vibrational_zpe_cm_inverse": 2243.5957018421777,
-            "vibrational_zpe_hartree": 0.010222574189245198,
+            "vibrational_zpe_cm_inverse": 2243.5957018421764,
+            "vibrational_zpe_hartree": 0.010222574189245192,
             "within_chemical_accuracy": true
           },
           {
             "basis": "cc-pvqz",
             "basis_orbitals": 60,
             "corrected_de_reference_hartree": 0.17421648010077684,
-            "corrected_error_hartree": 0.0003112863147443079,
-            "electronic_binding_energy_hartree": 0.17390519378603253,
-            "fci_total_energy_hartree": -1.1737963309520096,
+            "corrected_error_hartree": 0.00031128631473498203,
+            "electronic_binding_energy_hartree": 0.17390519378604186,
+            "fci_total_energy_hartree": -1.173796330952019,
             "harmonic_frequencies_cm_inverse": [
-              4473.029829568088
+              4473.029829568087
             ],
-            "margin_hartree": 0.001282313685255692,
+            "margin_hartree": 0.001282313685265018,
             "model_atom_energy_hartree": -0.49994556858298855,
-            "raw_error_vs_d0_hartree": 0.009879025434810618,
+            "raw_error_vs_d0_hartree": 0.009879025434819944,
             "robustness": "true_robust",
             "solver_error_hartree": 0.0,
-            "vibrational_zpe_cm_inverse": 2236.514914784044,
-            "vibrational_zpe_hartree": 0.010190311749554934,
+            "vibrational_zpe_cm_inverse": 2236.5149147840434,
+            "vibrational_zpe_hartree": 0.01019031174955493,
             "within_chemical_accuracy": true
           },
           {
             "basis": "cc-pv5z",
             "basis_orbitals": 110,
-            "corrected_de_reference_hartree": 0.17421340440083433,
-            "corrected_error_hartree": 2.0496105661238495e-05,
-            "electronic_binding_energy_hartree": 0.17423390050649556,
-            "fci_total_energy_hartree": -1.1742229708243048,
+            "corrected_de_reference_hartree": 0.1742134044008343,
+            "corrected_error_hartree": 2.0496105730100078e-05,
+            "electronic_binding_energy_hartree": 0.1742339005065644,
+            "fci_total_energy_hartree": -1.1742229708243737,
             "harmonic_frequencies_cm_inverse": [
-              4471.679753345902
+              4471.679753345891
             ],
-            "margin_hartree": 0.0015731038943387614,
+            "margin_hartree": 0.0015731038942698998,
             "model_atom_energy_hartree": -0.49999453515890463,
-            "raw_error_vs_d0_hartree": 0.010207732155273652,
+            "raw_error_vs_d0_hartree": 0.010207732155342486,
             "robustness": "true_robust",
             "solver_error_hartree": 0.0,
-            "vibrational_zpe_cm_inverse": 2235.839876672951,
-            "vibrational_zpe_hartree": 0.010187236049612405,
+            "vibrational_zpe_cm_inverse": 2235.8398766729456,
+            "vibrational_zpe_hartree": 0.010187236049612379,
             "within_chemical_accuracy": true
           }
         ],
-        "evidence_hash": "d8897da1dec81052c61378d84d6afac8faebeaea89ea16222b065c5b13f99a8a",
+        "evidence_hash": "62bdc0223a39a7d4c2f3efd13b93c1eb618aacab932b9a711e454635b2ddd554",
         "evidence_status_detail": "experimental_basis_convergence_curve_with_robust_true_crossing",
         "expected": {
           "chemical_accuracy_threshold_hartree": 0.0015936,
           "first_robust_basis": "cc-pvqz",
           "monotonic_nonincreasing_error": true
         },
-        "experimental_binding_energy_hartree": 0.17421340440083433,
+        "experimental_binding_energy_hartree": 0.1742134044008343,
         "falsification_notes": [
           "This trace certifies convergence for H2 only, not general quantum chemistry.",
           "A true result with margin below 5% of the threshold is marked true_not_robust.",
@@ -1512,25 +1512,25 @@
           }
         ],
         "harmonic_frequencies_cm_inverse": [
-          4471.679753345902
+          4471.679753345891
         ],
-        "model_binding_energy_hartree": 0.17423390050649556,
-        "model_error_hartree": 2.0496105661238495e-05,
+        "model_binding_energy_hartree": 0.1742339005065644,
+        "model_error_hartree": 2.0496105730100078e-05,
         "monotonic_nonincreasing_error": true,
         "observable": "H2 finite-basis convergence to experimental D0 with model-harmonic ZPE",
         "physical_evidence_detail": "H2 is solved by exact FCI across an increasing Dunning basis ladder. Each point compares the electronic binding energy to measured D0 corrected by same-model harmonic ZPE. The trace records the full error curve, monotonicity, first threshold crossing, and first robust chemical-accuracy crossing.",
         "physical_evidence_level": "experimental",
-        "reference_definition_corrected_error_hartree": 2.0496105661238495e-05,
+        "reference_definition_corrected_error_hartree": 2.0496105730100078e-05,
         "reference_definition_correction": {
           "computed_quantity": "clamped-nuclei electronic binding energy",
           "correction": "D_e ~= D0 + ZPE_harmonic(model), recomputed per basis",
           "quality": "same_model_harmonic_vibrational_correction_not_full_spectroscopic_audit",
           "raw_reference": "D0 includes vibrational zero-point energy"
         },
-        "reference_definition_error_hartree": 0.010207732155273652,
+        "reference_definition_error_hartree": 0.010207732155342486,
         "reference_definition_match": "per_basis_corrected_model_harmonic_D0_plus_ZPE_to_match_electronic_De",
         "reference_experimental_d0_cm_inverse": 35999.582834,
-        "reference_fci_total_energy_hartree": -1.1742229708243048,
+        "reference_fci_total_energy_hartree": -1.1742229708243737,
         "reference_truth": {
           "chemical_accuracy": {
             "robust_margin_fraction": 0.05,
@@ -1563,15 +1563,15 @@
         "units": "hartree",
         "value": {
           "best_basis": "cc-pv5z",
-          "best_error_hartree": 2.0496105661238495e-05,
+          "best_error_hartree": 2.0496105730100078e-05,
           "ceiling_basis_orbitals": 110,
           "ceiling_basis_solved": "cc-pv5z",
           "errors_hartree": [
             0.028646971371818652,
-            0.009825356013931058,
-            0.0015326709489962564,
-            0.0003112863147443079,
-            2.0496105661238495e-05
+            0.009825356013931946,
+            0.0015326709489820456,
+            0.00031128631473498203,
+            2.0496105730100078e-05
           ],
           "first_robust_basis": "cc-pvqz",
           "first_within_chemical_accuracy_basis": "cc-pvtz",
@@ -1600,76 +1600,76 @@
               "basis": "cc-pvdz",
               "basis_orbitals": 10,
               "corrected_de_reference_hartree": 0.17468248271208817,
-              "corrected_error_hartree": 0.009825356013931058,
-              "electronic_binding_energy_hartree": 0.1648571266981571,
-              "fci_total_energy_hartree": -1.1634139335373233,
+              "corrected_error_hartree": 0.009825356013931946,
+              "electronic_binding_energy_hartree": 0.16485712669815622,
+              "fci_total_energy_hartree": -1.1634139335373224,
               "harmonic_frequencies_cm_inverse": [
-                4677.58133223857
+                4677.5813322385675
               ],
-              "margin_hartree": -0.008231756013931057,
+              "margin_hartree": -0.008231756013931946,
               "model_atom_energy_hartree": -0.49927840341958307,
-              "raw_error_vs_d0_hartree": 0.0008309583469351955,
+              "raw_error_vs_d0_hartree": 0.0008309583469343074,
               "robustness": "false",
               "solver_error_hartree": 0.0,
-              "vibrational_zpe_cm_inverse": 2338.790666119285,
-              "vibrational_zpe_hartree": 0.010656314360866248,
+              "vibrational_zpe_cm_inverse": 2338.7906661192837,
+              "vibrational_zpe_hartree": 0.010656314360866241,
               "within_chemical_accuracy": false
             },
             {
               "basis": "cc-pvtz",
               "basis_orbitals": 28,
               "corrected_de_reference_hartree": 0.1742487425404671,
-              "corrected_error_hartree": 0.0015326709489962564,
-              "electronic_binding_energy_hartree": 0.17271607159147084,
-              "fci_total_energy_hartree": -1.1723356941951564,
+              "corrected_error_hartree": 0.0015326709489820456,
+              "electronic_binding_energy_hartree": 0.17271607159148505,
+              "fci_total_energy_hartree": -1.1723356941951706,
               "harmonic_frequencies_cm_inverse": [
-                4487.1914036843555
+                4487.191403684353
               ],
-              "margin_hartree": 6.092905100374348e-05,
+              "margin_hartree": 6.092905101795433e-05,
               "model_atom_energy_hartree": -0.49980981130184277,
-              "raw_error_vs_d0_hartree": 0.00868990324024893,
+              "raw_error_vs_d0_hartree": 0.008689903240263142,
               "robustness": "true_not_robust",
               "solver_error_hartree": 0.0,
-              "vibrational_zpe_cm_inverse": 2243.5957018421777,
-              "vibrational_zpe_hartree": 0.010222574189245198,
+              "vibrational_zpe_cm_inverse": 2243.5957018421764,
+              "vibrational_zpe_hartree": 0.010222574189245192,
               "within_chemical_accuracy": true
             },
             {
               "basis": "cc-pvqz",
               "basis_orbitals": 60,
               "corrected_de_reference_hartree": 0.17421648010077684,
-              "corrected_error_hartree": 0.0003112863147443079,
-              "electronic_binding_energy_hartree": 0.17390519378603253,
-              "fci_total_energy_hartree": -1.1737963309520096,
+              "corrected_error_hartree": 0.00031128631473498203,
+              "electronic_binding_energy_hartree": 0.17390519378604186,
+              "fci_total_energy_hartree": -1.173796330952019,
               "harmonic_frequencies_cm_inverse": [
-                4473.029829568088
+                4473.029829568087
               ],
-              "margin_hartree": 0.001282313685255692,
+              "margin_hartree": 0.001282313685265018,
               "model_atom_energy_hartree": -0.49994556858298855,
-              "raw_error_vs_d0_hartree": 0.009879025434810618,
+              "raw_error_vs_d0_hartree": 0.009879025434819944,
               "robustness": "true_robust",
               "solver_error_hartree": 0.0,
-              "vibrational_zpe_cm_inverse": 2236.514914784044,
-              "vibrational_zpe_hartree": 0.010190311749554934,
+              "vibrational_zpe_cm_inverse": 2236.5149147840434,
+              "vibrational_zpe_hartree": 0.01019031174955493,
               "within_chemical_accuracy": true
             },
             {
               "basis": "cc-pv5z",
               "basis_orbitals": 110,
-              "corrected_de_reference_hartree": 0.17421340440083433,
-              "corrected_error_hartree": 2.0496105661238495e-05,
-              "electronic_binding_energy_hartree": 0.17423390050649556,
-              "fci_total_energy_hartree": -1.1742229708243048,
+              "corrected_de_reference_hartree": 0.1742134044008343,
+              "corrected_error_hartree": 2.0496105730100078e-05,
+              "electronic_binding_energy_hartree": 0.1742339005065644,
+              "fci_total_energy_hartree": -1.1742229708243737,
               "harmonic_frequencies_cm_inverse": [
-                4471.679753345902
+                4471.679753345891
               ],
-              "margin_hartree": 0.0015731038943387614,
+              "margin_hartree": 0.0015731038942698998,
               "model_atom_energy_hartree": -0.49999453515890463,
-              "raw_error_vs_d0_hartree": 0.010207732155273652,
+              "raw_error_vs_d0_hartree": 0.010207732155342486,
               "robustness": "true_robust",
               "solver_error_hartree": 0.0,
-              "vibrational_zpe_cm_inverse": 2235.839876672951,
-              "vibrational_zpe_hartree": 0.010187236049612405,
+              "vibrational_zpe_cm_inverse": 2235.8398766729456,
+              "vibrational_zpe_hartree": 0.010187236049612379,
               "within_chemical_accuracy": true
             }
           ],
@@ -1677,8 +1677,8 @@
           "robust_margin_hartree": 7.968e-05
         },
         "verification_independence": "same_runtime_exact_fci_with_external_experimental_reference",
-        "vibrational_zpe_cm_inverse": 2235.839876672951,
-        "vibrational_zpe_hartree": 0.010187236049612405,
+        "vibrational_zpe_cm_inverse": 2235.8398766729456,
+        "vibrational_zpe_hartree": 0.010187236049612379,
         "within_chemical_accuracy": true,
         "witness_stack": {
           "primary": "PySCF FCI exact H2 model solve at each basis",
@@ -1688,7 +1688,7 @@
       },
       "description": "physical evidence reported by backend",
       "name": "physical_evidence",
-      "startTime": 1781736210.518964
+      "startTime": 1781737955.6351612
     }
   ]
 }

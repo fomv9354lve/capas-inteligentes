@@ -36,9 +36,9 @@
       "@id": "./",
       "@type": "Dataset",
       "capas:evidenceStatus": "present",
-      "capas:traceHash": "d58232dd8834878e5a204d5868c6ab6cd3202f2dca6d6d12c4e71c448acfc058",
+      "capas:traceHash": "b2f341507b1b2a05ee8ab4d5297198f9525677875e8d5843dce0d16eae916d8d",
       "capas:workflowRunCrateAlignment": "shape-compatible-with-workflow-run-crate-0.5",
-      "capas:workloadHash": "8037aa9cea6c515a2f06f840e55418f9ec3fe7293edeffdc58b61abfd17e1260",
+      "capas:workloadHash": "d4d3b9220350a256ee3aa9065954146e9b09e1201cef45c5f9f7d4c3017028be",
       "conformsTo": [
         {
           "@id": "https://w3id.org/ro/crate/1.1"
@@ -56,7 +56,7 @@
           "@id": "https://example.org/capas-inteligentes/ro-crate/physical-evidence/0.1"
         }
       ],
-      "datePublished": "2026-06-17T22:43:30.803725Z",
+      "datePublished": "2026-06-17T23:12:36.248529Z",
       "description": "RO-Crate package containing a sealed RunTrace, optional PROV export, routing decision, runtime context, and CAPAS physical evidence metadata.",
       "hasPart": [
         {
@@ -72,23 +72,23 @@
           "@id": "entity:workload"
         },
         {
-          "@id": "trace:d58232dd8834878e:routing-decision"
+          "@id": "trace:b2f341507b1b2a05:routing-decision"
         },
         {
-          "@id": "trace:d58232dd8834878e:result"
+          "@id": "trace:b2f341507b1b2a05:result"
         },
         {
           "@id": "runtrace.prov.json"
         },
         {
-          "@id": "trace:d58232dd8834878e:physical-evidence"
+          "@id": "trace:b2f341507b1b2a05:physical-evidence"
         }
       ],
       "mainEntity": {
         "@id": "workflow/capas-costurero-run.cwl"
       },
       "mentions": {
-        "@id": "trace:d58232dd8834878e"
+        "@id": "trace:b2f341507b1b2a05"
       },
       "name": "CAPAS traced scientific computation crate"
     },
@@ -124,14 +124,14 @@
         "DigitalDocument"
       ],
       "about": {
-        "@id": "trace:d58232dd8834878e"
+        "@id": "trace:b2f341507b1b2a05"
       },
       "encodingFormat": "application/json",
       "name": "Sealed CAPAS RunTrace",
-      "sha256": "1d657dde82820242b46b7ea714e48085de66f411eadb9f89418e4ed29686ee63"
+      "sha256": "b854b050d8b5e91fa0cb682d8b4259a2a46d0059c7779feaf3617377f8951779"
     },
     {
-      "@id": "trace:d58232dd8834878e",
+      "@id": "trace:b2f341507b1b2a05",
       "@type": "CreateAction",
       "actionStatus": "CompletedActionStatus",
       "agent": {
@@ -142,11 +142,11 @@
       "capas:evidenceStatus": "present",
       "capas:hashAlgorithm": "sha256(stable_json)",
       "capas:routingDecision": {
-        "@id": "trace:d58232dd8834878e:routing-decision"
+        "@id": "trace:b2f341507b1b2a05:routing-decision"
       },
-      "capas:traceHash": "d58232dd8834878e5a204d5868c6ab6cd3202f2dca6d6d12c4e71c448acfc058",
+      "capas:traceHash": "b2f341507b1b2a05ee8ab4d5297198f9525677875e8d5843dce0d16eae916d8d",
       "capas:traceSchemaVersion": "capas-runtrace-v2",
-      "endTime": "2026-06-17T22:43:30.803725Z",
+      "endTime": "2026-06-17T23:12:36.248529Z",
       "instrument": {
         "@id": "workflow/capas-costurero-run.cwl"
       },
@@ -155,9 +155,9 @@
         "@id": "entity:workload"
       },
       "result": {
-        "@id": "trace:d58232dd8834878e:result"
+        "@id": "trace:b2f341507b1b2a05:result"
       },
-      "startTime": "2026-06-17T22:43:30.802764Z"
+      "startTime": "2026-06-17T23:12:36.245522Z"
     },
     {
       "@id": "workflow/capas-costurero-run.cwl",
@@ -207,7 +207,7 @@
           "safety_factor": 0.5
         },
         "engine": {
-          "engine_id": "physics_magnitude_quantum_engine.multi_step_schmidt_composition_bound",
+          "engine_id": "physics_magnitude_gold_engines.multi_step_schmidt_composition_bound",
           "function_name": "multi_step_schmidt_composition_bound",
           "kwargs_hash": "9294a3970c7055eaf3135d544451670ceb164739727b1cf058614c31e1783c28",
           "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
@@ -215,14 +215,14 @@
         "kind": "dense",
         "n_qubits": 2
       },
-      "capas:workloadHash": "8037aa9cea6c515a2f06f840e55418f9ec3fe7293edeffdc58b61abfd17e1260",
+      "capas:workloadHash": "d4d3b9220350a256ee3aa9065954146e9b09e1201cef45c5f9f7d4c3017028be",
       "exampleOfWork": {
         "@id": "parameter:workload"
       },
       "name": "Workload summary"
     },
     {
-      "@id": "trace:d58232dd8834878e:routing-decision",
+      "@id": "trace:b2f341507b1b2a05:routing-decision",
       "@type": "Thing",
       "capas:reason": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
       "capas:route": "external_engine",
@@ -236,15 +236,15 @@
       ],
       "encodingFormat": "application/json",
       "name": "W3C PROV-shaped export",
-      "sha256": "36b74645ca7b01b432b9d3e7dbc648f589b0804f99290ec50987c5d157b67493"
+      "sha256": "2f7ff09aca406f4cc69c79c4112f00603fc0b73464a1510f6b4eb52644f6be88"
     },
     {
-      "@id": "trace:d58232dd8834878e:result",
+      "@id": "trace:b2f341507b1b2a05:result",
       "@type": "Dataset",
       "capas:physicalEvidence": {
-        "@id": "trace:d58232dd8834878e:physical-evidence"
+        "@id": "trace:b2f341507b1b2a05:physical-evidence"
       },
-      "capas:resultHash": "7e7dcaba5c6ce4705e05749a6eb4405a4e07ada9537045ea9498b0f18dd840f7",
+      "capas:resultHash": "8ab1858db97631cc6371173f7618e4fef61d72c69b151b5bb70a0aecc1471f92",
       "capas:summary": {
         "abs_error": 0.0,
         "actual_error_squared": 0.5946588973100263,
@@ -263,7 +263,7 @@
         "physical_evidence_detail": "Sequential non-renormalized Schmidt/SVD truncations compose into a formal state-norm bound by triangle inequality: final ||psi0-psim||^2 <= (sum_i sqrt(discarded_weight_i))^2. This certifies the full-state error for this controlled sequence, not an observable error and not yet a general DMRG sweep certificate.",
         "physical_evidence_level": "formal_bound",
         "reference_truth": "schmidt_eckart_young_plus_triangle_inequality",
-        "repr": "{'engine_id': 'physics_magnitude_quantum_engine.multi_step_schmidt_composition_bound', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physic",
+        "repr": "{'engine_id': 'physics_magnitude_gold_engines.multi_step_schmidt_composition_bound', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_",
         "source_label": "FORMAL (Schmidt/SVD theorem + triangle inequality)",
         "type": "dict",
         "units": "squared_state_norm",
@@ -300,10 +300,10 @@
       "name": "Result summary"
     },
     {
-      "@id": "trace:d58232dd8834878e:physical-evidence",
+      "@id": "trace:b2f341507b1b2a05:physical-evidence",
       "@type": "capas:PhysicalEvidence",
       "about": {
-        "@id": "trace:d58232dd8834878e:result"
+        "@id": "trace:b2f341507b1b2a05:result"
       },
       "capas:absError": 0.0,
       "capas:actualErrorSquared": 0.5946588973100263,
@@ -352,7 +352,7 @@
       "name": "Physical evidence attached to result"
     },
     {
-      "@id": "trace:d58232dd8834878e:event:0:ingest",
+      "@id": "trace:b2f341507b1b2a05:event:0:ingest",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -362,7 +362,7 @@
           "safety_factor": 0.5
         },
         "engine": {
-          "engine_id": "physics_magnitude_quantum_engine.multi_step_schmidt_composition_bound",
+          "engine_id": "physics_magnitude_gold_engines.multi_step_schmidt_composition_bound",
           "function_name": "multi_step_schmidt_composition_bound",
           "kwargs_hash": "9294a3970c7055eaf3135d544451670ceb164739727b1cf058614c31e1783c28",
           "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
@@ -372,10 +372,10 @@
       },
       "description": "workload accepted",
       "name": "ingest",
-      "startTime": 1781736210.802764
+      "startTime": 1781737956.245522
     },
     {
-      "@id": "trace:d58232dd8834878e:event:1:runtime_context",
+      "@id": "trace:b2f341507b1b2a05:event:1:runtime_context",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -400,14 +400,14 @@
       },
       "description": "runtime and hardware context recorded",
       "name": "runtime_context",
-      "startTime": 1781736210.80285
+      "startTime": 1781737956.245829
     },
     {
-      "@id": "trace:d58232dd8834878e:event:2:engine_provenance",
+      "@id": "trace:b2f341507b1b2a05:event:2:engine_provenance",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
-        "engine_id": "physics_magnitude_quantum_engine.multi_step_schmidt_composition_bound",
+        "engine_id": "physics_magnitude_gold_engines.multi_step_schmidt_composition_bound",
         "function_name": "multi_step_schmidt_composition_bound",
         "kwargs": {
           "keep_rank": 2,
@@ -419,10 +419,10 @@
       },
       "description": "external engine provenance recorded",
       "name": "engine_provenance",
-      "startTime": 1781736210.8030038
+      "startTime": 1781737956.246343
     },
     {
-      "@id": "trace:d58232dd8834878e:event:3:cost_model",
+      "@id": "trace:b2f341507b1b2a05:event:3:cost_model",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -434,23 +434,23 @@
       },
       "description": "dense statevector cost estimated",
       "name": "cost_model",
-      "startTime": 1781736210.803008
+      "startTime": 1781737956.2463539
     },
     {
-      "@id": "trace:d58232dd8834878e:event:4:route",
+      "@id": "trace:b2f341507b1b2a05:event:4:route",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
-        "engine_id": "physics_magnitude_quantum_engine.multi_step_schmidt_composition_bound",
+        "engine_id": "physics_magnitude_gold_engines.multi_step_schmidt_composition_bound",
         "function_name": "multi_step_schmidt_composition_bound",
         "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
       },
       "description": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
       "name": "route",
-      "startTime": 1781736210.8030112
+      "startTime": 1781737956.246363
     },
     {
-      "@id": "trace:d58232dd8834878e:event:5:execute",
+      "@id": "trace:b2f341507b1b2a05:event:5:execute",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -471,9 +471,9 @@
         "physical_evidence_detail": "Sequential non-renormalized Schmidt/SVD truncations compose into a formal state-norm bound by triangle inequality: final ||psi0-psim||^2 <= (sum_i sqrt(discarded_weight_i))^2. This certifies the full-state error for this controlled sequence, not an observable error and not yet a general DMRG sweep certificate.",
         "physical_evidence_level": "formal_bound",
         "reference_truth": "schmidt_eckart_young_plus_triangle_inequality",
-        "repr": "{'engine_id': 'physics_magnitude_quantum_engine.multi_step_schmidt_composition_bound', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physic",
+        "repr": "{'engine_id': 'physics_magnitude_gold_engines.multi_step_schmidt_composition_bound', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_",
         "route": "external_engine",
-        "runtime_ms": 0.6345000001601875,
+        "runtime_ms": 1.996167004108429,
         "source_label": "FORMAL (Schmidt/SVD theorem + triangle inequality)",
         "type": "dict",
         "units": "squared_state_norm",
@@ -506,10 +506,10 @@
       },
       "description": "backend executed",
       "name": "execute",
-      "startTime": 1781736210.803702
+      "startTime": 1781737956.2484832
     },
     {
-      "@id": "trace:d58232dd8834878e:event:6:physical_evidence",
+      "@id": "trace:b2f341507b1b2a05:event:6:physical_evidence",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -560,7 +560,7 @@
       },
       "description": "physical evidence reported by backend",
       "name": "physical_evidence",
-      "startTime": 1781736210.803725
+      "startTime": 1781737956.248529
     }
   ]
 }

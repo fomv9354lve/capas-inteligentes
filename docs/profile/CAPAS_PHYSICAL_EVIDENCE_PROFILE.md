@@ -68,6 +68,16 @@ Common optional fields:
 | `capas:witnessStack` | Human-readable or structured description of the producer/witness relationship. |
 | `capas:withinChemicalAccuracy` | Chemistry threshold judgment, when applicable. |
 | `capas:convergencePoints` | Basis/model convergence curve, when applicable. |
+| `capas:localPropertyTests` | Local/generic property checks used as a weaker oracle, when applicable. |
+| `capas:localPropertyTestsPass` | Whether local property checks passed. |
+| `capas:localOracleCaught` | Whether the local oracle caught the error. |
+| `capas:universalAnchor` | Analytic or universal invariant used as independent anchor. |
+| `capas:universalAnchorPass` | Whether the generated result satisfies the universal anchor. |
+| `capas:invariantCaught` | Whether the universal anchor caught an error missed by the local oracle. |
+| `capas:generatorError` | Declared injected or diagnosed generator error, when applicable. |
+| `capas:structureMapping` | Relationship-preserving map between generator artifact, local oracle, and universal oracle. |
+| `capas:preRegisteredSuccessCriterion` | Criterion declared before interpreting the trace. |
+| `capas:claimScope` | Narrow scope of what the trace supports. |
 
 ## Robustness Semantics
 
@@ -79,6 +89,21 @@ CAPAS distinguishes threshold success from robust success. A result may be:
 
 This is domain-specific evidence, not generic provenance.
 
+## Universal Invariant Anchoring
+
+CAPAS may record a universal/analytic invariant as an independent oracle for a
+generated scientific artifact. The profile distinguishes:
+
+- generic local property checks,
+- whether those checks passed,
+- the universal anchor,
+- whether the anchor passed,
+- whether the anchor caught an error missed by the local oracle.
+
+This does not make failed generated output training gold. Adversarial invariant
+traces should remain `reject` in the audit unless a separate blind review says
+otherwise.
+
 ## Non-Claims
 
 This profile does not claim:
@@ -89,6 +114,8 @@ This profile does not claim:
 - a replacement for Workflow Run RO-Crate,
 - physical correctness when `evidenceStatus` is not `present`,
 - independence when the witness runs in the same runtime.
+- novelty of universal invariants as physics.
+- that one adversarial invariant trace proves general LLM-verification utility.
 
 ## Local Validation
 

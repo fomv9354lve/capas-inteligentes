@@ -206,6 +206,16 @@ def _physical_evidence_from_summary(summary: dict[str, Any]) -> dict[str, Any]:
         "bound_slack",
         "bound_type",
         "bound_scope",
+        "local_property_tests",
+        "local_property_tests_pass",
+        "local_oracle_caught",
+        "universal_anchor",
+        "universal_anchor_pass",
+        "invariant_caught",
+        "generator_error",
+        "structure_mapping",
+        "pre_registered_success_criterion",
+        "claim_scope",
     )
     evidence = {key: summary[key] for key in keys if key in summary}
     if not evidence:

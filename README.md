@@ -30,6 +30,10 @@ CAPAS adds domain evidence fields over standard provenance:
 - `expected`
 - `value`
 - `observable`
+- `local_property_tests`
+- `universal_anchor`
+- `invariant_caught`
+- `claim_scope`
 
 The important distinction is that not all traces are training gold. Some traces
 exist to prove the format can honestly represent uncertainty, failure, or
@@ -118,6 +122,7 @@ See:
 - `docs/WITNESS_INDEPENDENCE_AXIS.md`
 - `docs/OPTIMIZATION_BRIDGE.md`
 - `docs/EXPERIMENTAL_EVIDENCE_AXIS.md`
+- `docs/UNIVERSAL_INVARIANT_ANCHORING.md`
 - `docs/SCIAGENTGYM_AUDIT.md`
 - `docs/QMB100_AUDIT.md`
 - `docs/VVUQ_QUANTUM_AUDIT.md`

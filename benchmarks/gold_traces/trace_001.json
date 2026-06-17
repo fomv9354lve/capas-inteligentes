@@ -1,7 +1,7 @@
 {
   "coverage_case": "analytic_success",
   "result": {
-    "engine_id": "physics_magnitude_quantum_engine.hadamard_square_returns_zero",
+    "engine_id": "physics_magnitude_gold_engines.hadamard_square_returns_zero",
     "function_name": "hadamard_square_returns_zero",
     "kwargs": {},
     "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
@@ -30,7 +30,7 @@
             "safety_factor": 0.5
           },
           "engine": {
-            "engine_id": "physics_magnitude_quantum_engine.hadamard_square_returns_zero",
+            "engine_id": "physics_magnitude_gold_engines.hadamard_square_returns_zero",
             "function_name": "hadamard_square_returns_zero",
             "kwargs_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
             "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
@@ -40,7 +40,7 @@
         },
         "stage": "ingest",
         "status": "ok",
-        "timestamp": 1781736136.872962
+        "timestamp": 1781737805.8326569
       },
       {
         "message": "runtime and hardware context recorded",
@@ -66,12 +66,12 @@
         },
         "stage": "runtime_context",
         "status": "ok",
-        "timestamp": 1781736137.3564181
+        "timestamp": 1781737806.87852
       },
       {
         "message": "external engine provenance recorded",
         "metrics": {
-          "engine_id": "physics_magnitude_quantum_engine.hadamard_square_returns_zero",
+          "engine_id": "physics_magnitude_gold_engines.hadamard_square_returns_zero",
           "function_name": "hadamard_square_returns_zero",
           "kwargs": {},
           "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
@@ -79,7 +79,7 @@
         },
         "stage": "engine_provenance",
         "status": "ok",
-        "timestamp": 1781736137.356601
+        "timestamp": 1781737806.8787022
       },
       {
         "message": "dense statevector cost estimated",
@@ -92,18 +92,18 @@
         },
         "stage": "cost_model",
         "status": "ok",
-        "timestamp": 1781736137.35661
+        "timestamp": 1781737806.878711
       },
       {
         "message": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
         "metrics": {
-          "engine_id": "physics_magnitude_quantum_engine.hadamard_square_returns_zero",
+          "engine_id": "physics_magnitude_gold_engines.hadamard_square_returns_zero",
           "function_name": "hadamard_square_returns_zero",
           "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
         },
         "stage": "route",
         "status": "ok",
-        "timestamp": 1781736137.356626
+        "timestamp": 1781737806.878722
       },
       {
         "message": "backend executed",
@@ -113,16 +113,16 @@
           "observable": "P(|0>) after H H |0>",
           "physical_evidence_detail": "H^2 = I, so H H |0> = |0>",
           "physical_evidence_level": "analytic",
-          "repr": "{'engine_id': 'physics_magnitude_quantum_engine.hadamard_square_returns_zero', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnit",
+          "repr": "{'engine_id': 'physics_magnitude_gold_engines.hadamard_square_returns_zero', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitud",
           "route": "external_engine",
-          "runtime_ms": 269.13249999051914,
+          "runtime_ms": 450.7186660193838,
           "type": "dict",
           "units": "probability",
           "value": 0.9999999999999996
         },
         "stage": "execute",
         "status": "ok",
-        "timestamp": 1781736137.625797
+        "timestamp": 1781737807.329511
       },
       {
         "message": "physical evidence reported by backend",
@@ -138,24 +138,24 @@
         },
         "stage": "physical_evidence",
         "status": "ok",
-        "timestamp": 1781736137.625807
+        "timestamp": 1781737807.329531
       }
     ],
     "hash_algorithm": "sha256(stable_json)",
-    "result_hash": "ed8142150bf1c9e6aed5c778b30083d9ce1000b5680011ff7794abd7f10c5d57",
+    "result_hash": "88117d48cfefacf1cda60d8482873dc497bdc06a4da59044c03221d39aca9b72",
     "result_summary": {
       "abs_error": 4.440892098500626e-16,
       "expected": 1.0,
       "observable": "P(|0>) after H H |0>",
       "physical_evidence_detail": "H^2 = I, so H H |0> = |0>",
       "physical_evidence_level": "analytic",
-      "repr": "{'engine_id': 'physics_magnitude_quantum_engine.hadamard_square_returns_zero', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnit",
+      "repr": "{'engine_id': 'physics_magnitude_gold_engines.hadamard_square_returns_zero', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitud",
       "type": "dict",
       "units": "probability",
       "value": 0.9999999999999996
     },
     "trace_schema_version": "capas-runtrace-v2",
-    "workload_hash": "7c1f92ca3449b01d585daafa8d4893f4c52c2c39c93c098a3a7c22dcda349158",
+    "workload_hash": "bbe140c27192d5f1f920840275a415c4f163df09b07819cca8f30e5ecd03bd18",
     "workload_summary": {
       "budget": {
         "flops_ceiling": 100000000.0,
@@ -163,7 +163,7 @@
         "safety_factor": 0.5
       },
       "engine": {
-        "engine_id": "physics_magnitude_quantum_engine.hadamard_square_returns_zero",
+        "engine_id": "physics_magnitude_gold_engines.hadamard_square_returns_zero",
         "function_name": "hadamard_square_returns_zero",
         "kwargs_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
         "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
@@ -172,6 +172,6 @@
       "n_qubits": 2
     }
   },
-  "trace_hash": "04fff5d2db7a1e2f1cf64d0299e20414ad8a3099821e969ac2eb324efab964cc",
+  "trace_hash": "9233b1327f605e194f638eeeb6c6fcb8a7a6d8482c1401decf21d41bfc67ad1c",
   "trace_id": "trace_001"
 }

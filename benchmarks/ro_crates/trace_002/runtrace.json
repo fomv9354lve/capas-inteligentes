@@ -1,7 +1,7 @@
 {
   "coverage_case": "analytic_success",
   "result": {
-    "engine_id": "physics_magnitude_quantum_engine.bell_entropy_ln2",
+    "engine_id": "physics_magnitude_gold_engines.bell_entropy_ln2",
     "function_name": "bell_entropy_ln2",
     "kwargs": {},
     "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
@@ -30,7 +30,7 @@
             "safety_factor": 0.5
           },
           "engine": {
-            "engine_id": "physics_magnitude_quantum_engine.bell_entropy_ln2",
+            "engine_id": "physics_magnitude_gold_engines.bell_entropy_ln2",
             "function_name": "bell_entropy_ln2",
             "kwargs_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
             "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
@@ -40,7 +40,7 @@
         },
         "stage": "ingest",
         "status": "ok",
-        "timestamp": 1781736137.6262138
+        "timestamp": 1781737807.330442
       },
       {
         "message": "runtime and hardware context recorded",
@@ -66,12 +66,12 @@
         },
         "stage": "runtime_context",
         "status": "ok",
-        "timestamp": 1781736137.6262772
+        "timestamp": 1781737807.330679
       },
       {
         "message": "external engine provenance recorded",
         "metrics": {
-          "engine_id": "physics_magnitude_quantum_engine.bell_entropy_ln2",
+          "engine_id": "physics_magnitude_gold_engines.bell_entropy_ln2",
           "function_name": "bell_entropy_ln2",
           "kwargs": {},
           "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
@@ -79,7 +79,7 @@
         },
         "stage": "engine_provenance",
         "status": "ok",
-        "timestamp": 1781736137.626345
+        "timestamp": 1781737807.330945
       },
       {
         "message": "dense statevector cost estimated",
@@ -92,18 +92,18 @@
         },
         "stage": "cost_model",
         "status": "ok",
-        "timestamp": 1781736137.626349
+        "timestamp": 1781737807.330955
       },
       {
         "message": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
         "metrics": {
-          "engine_id": "physics_magnitude_quantum_engine.bell_entropy_ln2",
+          "engine_id": "physics_magnitude_gold_engines.bell_entropy_ln2",
           "function_name": "bell_entropy_ln2",
           "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
         },
         "stage": "route",
         "status": "ok",
-        "timestamp": 1781736137.626352
+        "timestamp": 1781737807.330963
       },
       {
         "message": "backend executed",
@@ -113,16 +113,16 @@
           "observable": "Bell pair entanglement entropy",
           "physical_evidence_detail": "Reduced density matrix of Bell pair is I/2, entropy = ln 2",
           "physical_evidence_level": "analytic",
-          "repr": "{'engine_id': 'physics_magnitude_quantum_engine.bell_entropy_ln2', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_eng",
+          "repr": "{'engine_id': 'physics_magnitude_gold_engines.bell_entropy_ln2', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engin",
           "route": "external_engine",
-          "runtime_ms": 0.535999977728352,
+          "runtime_ms": 2.5180840166285634,
           "type": "dict",
           "units": "nats",
           "value": 0.6931471805599454
         },
         "stage": "execute",
         "status": "ok",
-        "timestamp": 1781736137.6269162
+        "timestamp": 1781737807.333697
       },
       {
         "message": "physical evidence reported by backend",
@@ -138,24 +138,24 @@
         },
         "stage": "physical_evidence",
         "status": "ok",
-        "timestamp": 1781736137.626925
+        "timestamp": 1781737807.333722
       }
     ],
     "hash_algorithm": "sha256(stable_json)",
-    "result_hash": "16208af211f166adf25172459a6bf536cda62f14df2e33e7fca4cf3b74bead8f",
+    "result_hash": "74f0773eb4d197016343035b0d6ba88014c144d6b6437c1b81df81cf3e575e69",
     "result_summary": {
       "abs_error": 1.1102230246251565e-16,
       "expected": 0.6931471805599453,
       "observable": "Bell pair entanglement entropy",
       "physical_evidence_detail": "Reduced density matrix of Bell pair is I/2, entropy = ln 2",
       "physical_evidence_level": "analytic",
-      "repr": "{'engine_id': 'physics_magnitude_quantum_engine.bell_entropy_ln2', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_eng",
+      "repr": "{'engine_id': 'physics_magnitude_gold_engines.bell_entropy_ln2', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engin",
       "type": "dict",
       "units": "nats",
       "value": 0.6931471805599454
     },
     "trace_schema_version": "capas-runtrace-v2",
-    "workload_hash": "102b85db3fd30d28346486c2d99bd03640546a5889a916e52307b09059313356",
+    "workload_hash": "7667fff7ad84412c3d82acf4fe182a7f2efd7b14a04ce3d00b1cf7a8627bf65d",
     "workload_summary": {
       "budget": {
         "flops_ceiling": 100000000.0,
@@ -163,7 +163,7 @@
         "safety_factor": 0.5
       },
       "engine": {
-        "engine_id": "physics_magnitude_quantum_engine.bell_entropy_ln2",
+        "engine_id": "physics_magnitude_gold_engines.bell_entropy_ln2",
         "function_name": "bell_entropy_ln2",
         "kwargs_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
         "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
@@ -172,6 +172,6 @@
       "n_qubits": 2
     }
   },
-  "trace_hash": "3855a31c588b0d47cb2d6194df7285e3af76751e3acb35eb21b9aa3047884ec5",
+  "trace_hash": "849965eb9e2c5c11d103f2c1d64e5c0a1d9b054b2ccafb7bcc6f69dec67bd29b",
   "trace_id": "trace_002"
 }

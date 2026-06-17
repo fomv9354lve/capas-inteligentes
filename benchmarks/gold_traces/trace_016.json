@@ -1,7 +1,7 @@
 {
   "coverage_case": "formal_bound_success",
   "result": {
-    "engine_id": "physics_magnitude_quantum_engine.schmidt_truncation_formal_bound",
+    "engine_id": "physics_magnitude_gold_engines.schmidt_truncation_formal_bound",
     "function_name": "schmidt_truncation_formal_bound",
     "kwargs": {
       "keep_rank": 2,
@@ -51,7 +51,7 @@
             "safety_factor": 0.5
           },
           "engine": {
-            "engine_id": "physics_magnitude_quantum_engine.schmidt_truncation_formal_bound",
+            "engine_id": "physics_magnitude_gold_engines.schmidt_truncation_formal_bound",
             "function_name": "schmidt_truncation_formal_bound",
             "kwargs_hash": "e2c00a7ebf368bc6a93476590d4fb515b52370833f5a05d827d1d164a0f4a9f3",
             "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
@@ -61,7 +61,7 @@
         },
         "stage": "ingest",
         "status": "ok",
-        "timestamp": 1781736210.800971
+        "timestamp": 1781737956.24133
       },
       {
         "message": "runtime and hardware context recorded",
@@ -87,12 +87,12 @@
         },
         "stage": "runtime_context",
         "status": "ok",
-        "timestamp": 1781736210.801111
+        "timestamp": 1781737956.241583
       },
       {
         "message": "external engine provenance recorded",
         "metrics": {
-          "engine_id": "physics_magnitude_quantum_engine.schmidt_truncation_formal_bound",
+          "engine_id": "physics_magnitude_gold_engines.schmidt_truncation_formal_bound",
           "function_name": "schmidt_truncation_formal_bound",
           "kwargs": {
             "keep_rank": 2,
@@ -104,7 +104,7 @@
         },
         "stage": "engine_provenance",
         "status": "ok",
-        "timestamp": 1781736210.8012989
+        "timestamp": 1781737956.2419
       },
       {
         "message": "dense statevector cost estimated",
@@ -117,18 +117,18 @@
         },
         "stage": "cost_model",
         "status": "ok",
-        "timestamp": 1781736210.801304
+        "timestamp": 1781737956.241909
       },
       {
         "message": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
         "metrics": {
-          "engine_id": "physics_magnitude_quantum_engine.schmidt_truncation_formal_bound",
+          "engine_id": "physics_magnitude_gold_engines.schmidt_truncation_formal_bound",
           "function_name": "schmidt_truncation_formal_bound",
           "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
         },
         "stage": "route",
         "status": "ok",
-        "timestamp": 1781736210.8013089
+        "timestamp": 1781737956.241917
       },
       {
         "message": "backend executed",
@@ -148,9 +148,9 @@
           "physical_evidence_detail": "For a normalized state in Schmidt form, the sum of discarded Schmidt values squared is exactly the squared 2-norm error of the optimal rank-k truncation across that cut. This certifies a single-cut state truncation error, not a global DMRG observable error.",
           "physical_evidence_level": "formal_bound",
           "reference_truth": "schmidt_eckart_young_theorem",
-          "repr": "{'engine_id': 'physics_magnitude_quantum_engine.schmidt_truncation_formal_bound', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_mag",
+          "repr": "{'engine_id': 'physics_magnitude_gold_engines.schmidt_truncation_formal_bound', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magni",
           "route": "external_engine",
-          "runtime_ms": 0.7874170260038227,
+          "runtime_ms": 1.8416669918224216,
           "source_label": "FORMAL (single-cut Schmidt/SVD theorem)",
           "type": "dict",
           "units": "squared_state_norm",
@@ -164,7 +164,7 @@
         },
         "stage": "execute",
         "status": "ok",
-        "timestamp": 1781736210.802146
+        "timestamp": 1781737956.243884
       },
       {
         "message": "physical evidence reported by backend",
@@ -195,11 +195,11 @@
         },
         "stage": "physical_evidence",
         "status": "ok",
-        "timestamp": 1781736210.802167
+        "timestamp": 1781737956.243922
       }
     ],
     "hash_algorithm": "sha256(stable_json)",
-    "result_hash": "094afc7c56f1d07cfa4033a08906c6c273f6c1d15c161982a3328835c589f645",
+    "result_hash": "6a6ef905311ac19bc48e1eb61046ca60b0c5807eb828206fb92ed84bb789c491",
     "result_summary": {
       "abs_error": 2.7755575615628914e-17,
       "actual_error_squared": 0.11318392617103658,
@@ -216,7 +216,7 @@
       "physical_evidence_detail": "For a normalized state in Schmidt form, the sum of discarded Schmidt values squared is exactly the squared 2-norm error of the optimal rank-k truncation across that cut. This certifies a single-cut state truncation error, not a global DMRG observable error.",
       "physical_evidence_level": "formal_bound",
       "reference_truth": "schmidt_eckart_young_theorem",
-      "repr": "{'engine_id': 'physics_magnitude_quantum_engine.schmidt_truncation_formal_bound', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_mag",
+      "repr": "{'engine_id': 'physics_magnitude_gold_engines.schmidt_truncation_formal_bound', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magni",
       "source_label": "FORMAL (single-cut Schmidt/SVD theorem)",
       "type": "dict",
       "units": "squared_state_norm",
@@ -229,7 +229,7 @@
       "verification_independence": "algorithmic_certificate_exact_svd_same_runtime"
     },
     "trace_schema_version": "capas-runtrace-v2",
-    "workload_hash": "400f17b69ab8ff67668ba640b41bb03e89c8b23463d637553c242b90e073b9c0",
+    "workload_hash": "92e81193f4af354f6368ff90401276e70d6f30970137c0b36832f53074b4b810",
     "workload_summary": {
       "budget": {
         "flops_ceiling": 100000000.0,
@@ -237,7 +237,7 @@
         "safety_factor": 0.5
       },
       "engine": {
-        "engine_id": "physics_magnitude_quantum_engine.schmidt_truncation_formal_bound",
+        "engine_id": "physics_magnitude_gold_engines.schmidt_truncation_formal_bound",
         "function_name": "schmidt_truncation_formal_bound",
         "kwargs_hash": "e2c00a7ebf368bc6a93476590d4fb515b52370833f5a05d827d1d164a0f4a9f3",
         "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
@@ -246,6 +246,6 @@
       "n_qubits": 2
     }
   },
-  "trace_hash": "cd83e05ae708f0ce6387e80a0c80604f7376ec88da6b4265b0ae16afe744a019",
+  "trace_hash": "ac113c1d0327224b9e2022d6211fd749eb09b31865b9cbe3962d1c676c8fbe31",
   "trace_id": "trace_016"
 }

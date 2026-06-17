@@ -1,7 +1,7 @@
 {
   "coverage_case": "analytic_success",
   "result": {
-    "engine_id": "physics_magnitude_quantum_engine.pauli_z_ground_energy",
+    "engine_id": "physics_magnitude_gold_engines.pauli_z_ground_energy",
     "function_name": "pauli_z_ground_energy",
     "kwargs": {
       "field": 1.25
@@ -35,7 +35,7 @@
             "safety_factor": 0.5
           },
           "engine": {
-            "engine_id": "physics_magnitude_quantum_engine.pauli_z_ground_energy",
+            "engine_id": "physics_magnitude_gold_engines.pauli_z_ground_energy",
             "function_name": "pauli_z_ground_energy",
             "kwargs_hash": "d65cd0a67a91f5c8780d1c54d878099c07980ca80529af85d105a410f0c7615d",
             "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
@@ -45,7 +45,7 @@
         },
         "stage": "ingest",
         "status": "ok",
-        "timestamp": 1781736137.632438
+        "timestamp": 1781737807.34929
       },
       {
         "message": "runtime and hardware context recorded",
@@ -71,12 +71,12 @@
         },
         "stage": "runtime_context",
         "status": "ok",
-        "timestamp": 1781736137.632479
+        "timestamp": 1781737807.3493729
       },
       {
         "message": "external engine provenance recorded",
         "metrics": {
-          "engine_id": "physics_magnitude_quantum_engine.pauli_z_ground_energy",
+          "engine_id": "physics_magnitude_gold_engines.pauli_z_ground_energy",
           "function_name": "pauli_z_ground_energy",
           "kwargs": {
             "field": 1.25
@@ -86,7 +86,7 @@
         },
         "stage": "engine_provenance",
         "status": "ok",
-        "timestamp": 1781736137.632548
+        "timestamp": 1781737807.3494961
       },
       {
         "message": "dense statevector cost estimated",
@@ -99,18 +99,18 @@
         },
         "stage": "cost_model",
         "status": "ok",
-        "timestamp": 1781736137.63255
+        "timestamp": 1781737807.349499
       },
       {
         "message": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
         "metrics": {
-          "engine_id": "physics_magnitude_quantum_engine.pauli_z_ground_energy",
+          "engine_id": "physics_magnitude_gold_engines.pauli_z_ground_energy",
           "function_name": "pauli_z_ground_energy",
           "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
         },
         "stage": "route",
         "status": "ok",
-        "timestamp": 1781736137.632551
+        "timestamp": 1781737807.3495018
       },
       {
         "message": "backend executed",
@@ -122,9 +122,9 @@
           "physical_evidence_detail": "Eigenvalues of -h Z are {-h, +h}; ground energy is -|h|",
           "physical_evidence_level": "analytic",
           "reference_truth": "closed_form_pauli_z_spectrum",
-          "repr": "{'engine_id': 'physics_magnitude_quantum_engine.pauli_z_ground_energy', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gol",
+          "repr": "{'engine_id': 'physics_magnitude_gold_engines.pauli_z_ground_energy', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_",
           "route": "external_engine",
-          "runtime_ms": 0.21366600412875414,
+          "runtime_ms": 0.41166599839925766,
           "type": "dict",
           "units": "energy",
           "value": -1.25,
@@ -132,7 +132,7 @@
         },
         "stage": "execute",
         "status": "ok",
-        "timestamp": 1781736137.63278
+        "timestamp": 1781737807.349943
       },
       {
         "message": "physical evidence reported by backend",
@@ -151,11 +151,11 @@
         },
         "stage": "physical_evidence",
         "status": "ok",
-        "timestamp": 1781736137.632787
+        "timestamp": 1781737807.3499572
       }
     ],
     "hash_algorithm": "sha256(stable_json)",
-    "result_hash": "c94d26bd27739d31fa71a0b44be95673d76e1979eeefdd3e77eda38a233f2a99",
+    "result_hash": "3e4236941ccbebdf6b8f3418e38e0ab5c233ae52a88c80686e82842877266f48",
     "result_summary": {
       "abs_error": 0.0,
       "benchmark_family": "Pauli",
@@ -164,14 +164,14 @@
       "physical_evidence_detail": "Eigenvalues of -h Z are {-h, +h}; ground energy is -|h|",
       "physical_evidence_level": "analytic",
       "reference_truth": "closed_form_pauli_z_spectrum",
-      "repr": "{'engine_id': 'physics_magnitude_quantum_engine.pauli_z_ground_energy', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gol",
+      "repr": "{'engine_id': 'physics_magnitude_gold_engines.pauli_z_ground_energy', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_",
       "type": "dict",
       "units": "energy",
       "value": -1.25,
       "verification_independence": "analytic_no_solver"
     },
     "trace_schema_version": "capas-runtrace-v2",
-    "workload_hash": "2bfdf5c156552cf63eeb8869ee6a3e2215e2b90af113ba972df8e5273b97d7e6",
+    "workload_hash": "29f89d09c1857cc35af16dbbc0091186c2c0dd64d8e4f33718745cd213d0f7c4",
     "workload_summary": {
       "budget": {
         "flops_ceiling": 100000000.0,
@@ -179,7 +179,7 @@
         "safety_factor": 0.5
       },
       "engine": {
-        "engine_id": "physics_magnitude_quantum_engine.pauli_z_ground_energy",
+        "engine_id": "physics_magnitude_gold_engines.pauli_z_ground_energy",
         "function_name": "pauli_z_ground_energy",
         "kwargs_hash": "d65cd0a67a91f5c8780d1c54d878099c07980ca80529af85d105a410f0c7615d",
         "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
@@ -188,6 +188,6 @@
       "n_qubits": 2
     }
   },
-  "trace_hash": "f4e70ce11b5acb03b03a9cafeb3bf37834efca862b14ead2300b05325a2ba492",
+  "trace_hash": "b9d6e2775b1cf8bab213ad69a3511d2af43b91dfc9aea760252879dbda91a54f",
   "trace_id": "trace_010"
 }

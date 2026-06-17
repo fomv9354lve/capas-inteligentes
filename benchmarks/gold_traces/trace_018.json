@@ -1,7 +1,7 @@
 {
   "coverage_case": "cross_library_success",
   "result": {
-    "engine_id": "physics_magnitude_quantum_engine.bell_entropy_scipy_cross_library",
+    "engine_id": "physics_magnitude_gold_engines.bell_entropy_scipy_cross_library",
     "function_name": "bell_entropy_scipy_cross_library",
     "kwargs": {},
     "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
@@ -38,7 +38,7 @@
             "safety_factor": 0.5
           },
           "engine": {
-            "engine_id": "physics_magnitude_quantum_engine.bell_entropy_scipy_cross_library",
+            "engine_id": "physics_magnitude_gold_engines.bell_entropy_scipy_cross_library",
             "function_name": "bell_entropy_scipy_cross_library",
             "kwargs_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
             "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
@@ -48,7 +48,7 @@
         },
         "stage": "ingest",
         "status": "ok",
-        "timestamp": 1781736137.633895
+        "timestamp": 1781737807.3520799
       },
       {
         "message": "runtime and hardware context recorded",
@@ -74,12 +74,12 @@
         },
         "stage": "runtime_context",
         "status": "ok",
-        "timestamp": 1781736137.633939
+        "timestamp": 1781737807.3521621
       },
       {
         "message": "external engine provenance recorded",
         "metrics": {
-          "engine_id": "physics_magnitude_quantum_engine.bell_entropy_scipy_cross_library",
+          "engine_id": "physics_magnitude_gold_engines.bell_entropy_scipy_cross_library",
           "function_name": "bell_entropy_scipy_cross_library",
           "kwargs": {},
           "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
@@ -87,7 +87,7 @@
         },
         "stage": "engine_provenance",
         "status": "ok",
-        "timestamp": 1781736137.634007
+        "timestamp": 1781737807.352288
       },
       {
         "message": "dense statevector cost estimated",
@@ -100,18 +100,18 @@
         },
         "stage": "cost_model",
         "status": "ok",
-        "timestamp": 1781736137.6340082
+        "timestamp": 1781737807.352291
       },
       {
         "message": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
         "metrics": {
-          "engine_id": "physics_magnitude_quantum_engine.bell_entropy_scipy_cross_library",
+          "engine_id": "physics_magnitude_gold_engines.bell_entropy_scipy_cross_library",
           "function_name": "bell_entropy_scipy_cross_library",
           "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
         },
         "stage": "route",
         "status": "ok",
-        "timestamp": 1781736137.63401
+        "timestamp": 1781737807.352295
       },
       {
         "message": "backend executed",
@@ -123,9 +123,9 @@
           "physical_evidence_detail": "quantum_engine entropy checked against explicit reduced density matrix diagonalized with scipy.linalg.eigh. Same Python runtime, different library witness.",
           "physical_evidence_level": "cross_sim",
           "reference_truth": "scipy_linalg_reduced_density_eigenspectrum",
-          "repr": "{'engine_id': 'physics_magnitude_quantum_engine.bell_entropy_scipy_cross_library', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_ma",
+          "repr": "{'engine_id': 'physics_magnitude_gold_engines.bell_entropy_scipy_cross_library', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magn",
           "route": "external_engine",
-          "runtime_ms": 0.5525840097106993,
+          "runtime_ms": 1.736708014504984,
           "type": "dict",
           "units": "nats",
           "value": 0.6931471805599454,
@@ -138,7 +138,7 @@
         },
         "stage": "execute",
         "status": "ok",
-        "timestamp": 1781736137.634584
+        "timestamp": 1781737807.35407
       },
       {
         "message": "physical evidence reported by backend",
@@ -162,11 +162,11 @@
         },
         "stage": "physical_evidence",
         "status": "ok",
-        "timestamp": 1781736137.634594
+        "timestamp": 1781737807.354089
       }
     ],
     "hash_algorithm": "sha256(stable_json)",
-    "result_hash": "24ebc0654aee1caf76576ad8ac3e358309766d278b77906e82eb633e8f090872",
+    "result_hash": "3a68403647c221c2f22af0ee35c01383af6dd846b28c034e35ced38c7954321b",
     "result_summary": {
       "abs_error": 0.0,
       "benchmark_family": "Entanglement",
@@ -175,7 +175,7 @@
       "physical_evidence_detail": "quantum_engine entropy checked against explicit reduced density matrix diagonalized with scipy.linalg.eigh. Same Python runtime, different library witness.",
       "physical_evidence_level": "cross_sim",
       "reference_truth": "scipy_linalg_reduced_density_eigenspectrum",
-      "repr": "{'engine_id': 'physics_magnitude_quantum_engine.bell_entropy_scipy_cross_library', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_ma",
+      "repr": "{'engine_id': 'physics_magnitude_gold_engines.bell_entropy_scipy_cross_library', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magn",
       "type": "dict",
       "units": "nats",
       "value": 0.6931471805599454,
@@ -187,7 +187,7 @@
       }
     },
     "trace_schema_version": "capas-runtrace-v2",
-    "workload_hash": "a095868945cf13df732cadca379e0d20fc4508032f63357ad02dc2934f0c4457",
+    "workload_hash": "5b1b55d70a5993bd7e7dbf1725fec0784d202222e32e17f2f2844fc8aef10f6d",
     "workload_summary": {
       "budget": {
         "flops_ceiling": 100000000.0,
@@ -195,7 +195,7 @@
         "safety_factor": 0.5
       },
       "engine": {
-        "engine_id": "physics_magnitude_quantum_engine.bell_entropy_scipy_cross_library",
+        "engine_id": "physics_magnitude_gold_engines.bell_entropy_scipy_cross_library",
         "function_name": "bell_entropy_scipy_cross_library",
         "kwargs_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
         "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
@@ -204,6 +204,6 @@
       "n_qubits": 2
     }
   },
-  "trace_hash": "6b216873fd78e044a5ce67bed6242fb435819e981253a4a239de3398cc3fad1f",
+  "trace_hash": "0f5a823cae09cf2e77fc85ca8a9d1c2767456cc6db57ca1130717edfc46abe59",
   "trace_id": "trace_018"
 }

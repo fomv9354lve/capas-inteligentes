@@ -1,7 +1,7 @@
 {
   "coverage_case": "analytic_success",
   "result": {
-    "engine_id": "physics_magnitude_quantum_engine.heisenberg_dimer_ground_state",
+    "engine_id": "physics_magnitude_gold_engines.heisenberg_dimer_ground_state",
     "function_name": "heisenberg_dimer_ground_state",
     "kwargs": {
       "J": 1.0
@@ -35,7 +35,7 @@
             "safety_factor": 0.5
           },
           "engine": {
-            "engine_id": "physics_magnitude_quantum_engine.heisenberg_dimer_ground_state",
+            "engine_id": "physics_magnitude_gold_engines.heisenberg_dimer_ground_state",
             "function_name": "heisenberg_dimer_ground_state",
             "kwargs_hash": "39feb61ceef08e462d7b8a39febbdf53073173006a4b5b228c07a98cc3f7ebcb",
             "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
@@ -45,7 +45,7 @@
         },
         "stage": "ingest",
         "status": "ok",
-        "timestamp": 1781736137.629647
+        "timestamp": 1781737807.3424919
       },
       {
         "message": "runtime and hardware context recorded",
@@ -71,12 +71,12 @@
         },
         "stage": "runtime_context",
         "status": "ok",
-        "timestamp": 1781736137.6296918
+        "timestamp": 1781737807.3428018
       },
       {
         "message": "external engine provenance recorded",
         "metrics": {
-          "engine_id": "physics_magnitude_quantum_engine.heisenberg_dimer_ground_state",
+          "engine_id": "physics_magnitude_gold_engines.heisenberg_dimer_ground_state",
           "function_name": "heisenberg_dimer_ground_state",
           "kwargs": {
             "J": 1.0
@@ -86,7 +86,7 @@
         },
         "stage": "engine_provenance",
         "status": "ok",
-        "timestamp": 1781736137.629758
+        "timestamp": 1781737807.3430111
       },
       {
         "message": "dense statevector cost estimated",
@@ -99,18 +99,18 @@
         },
         "stage": "cost_model",
         "status": "ok",
-        "timestamp": 1781736137.629759
+        "timestamp": 1781737807.343019
       },
       {
         "message": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
         "metrics": {
-          "engine_id": "physics_magnitude_quantum_engine.heisenberg_dimer_ground_state",
+          "engine_id": "physics_magnitude_gold_engines.heisenberg_dimer_ground_state",
           "function_name": "heisenberg_dimer_ground_state",
           "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
         },
         "stage": "route",
         "status": "ok",
-        "timestamp": 1781736137.629761
+        "timestamp": 1781737807.343025
       },
       {
         "message": "backend executed",
@@ -122,9 +122,9 @@
           "physical_evidence_detail": "For H = J S1.S2, the singlet ground state has E0 = -3J/4",
           "physical_evidence_level": "analytic",
           "reference_truth": "closed_form_singlet_triplet_spectrum",
-          "repr": "{'engine_id': 'physics_magnitude_quantum_engine.heisenberg_dimer_ground_state', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magni",
+          "repr": "{'engine_id': 'physics_magnitude_gold_engines.heisenberg_dimer_ground_state', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitu",
           "route": "external_engine",
-          "runtime_ms": 0.28045798535458744,
+          "runtime_ms": 0.9994579886551946,
           "type": "dict",
           "units": "energy",
           "value": -0.75,
@@ -132,7 +132,7 @@
         },
         "stage": "execute",
         "status": "ok",
-        "timestamp": 1781736137.630058
+        "timestamp": 1781737807.3440661
       },
       {
         "message": "physical evidence reported by backend",
@@ -151,11 +151,11 @@
         },
         "stage": "physical_evidence",
         "status": "ok",
-        "timestamp": 1781736137.630065
+        "timestamp": 1781737807.344081
       }
     ],
     "hash_algorithm": "sha256(stable_json)",
-    "result_hash": "59ee0f9ca80c76f9e0a68bc9fafd99e3a8d113b19892481521c5e69ed1f009a5",
+    "result_hash": "8c7948941ec912e38174204df82925ff1c8027ef0aea45bcc7eb144ce5492de6",
     "result_summary": {
       "abs_error": 0.0,
       "benchmark_family": "Heisenberg",
@@ -164,14 +164,14 @@
       "physical_evidence_detail": "For H = J S1.S2, the singlet ground state has E0 = -3J/4",
       "physical_evidence_level": "analytic",
       "reference_truth": "closed_form_singlet_triplet_spectrum",
-      "repr": "{'engine_id': 'physics_magnitude_quantum_engine.heisenberg_dimer_ground_state', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magni",
+      "repr": "{'engine_id': 'physics_magnitude_gold_engines.heisenberg_dimer_ground_state', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitu",
       "type": "dict",
       "units": "energy",
       "value": -0.75,
       "verification_independence": "analytic_no_solver"
     },
     "trace_schema_version": "capas-runtrace-v2",
-    "workload_hash": "aabdf7c6a4f583b23fc6008e1325dca981611a591ff8e1ce9e98d094fdecb3f3",
+    "workload_hash": "a33f7f7ed3e18cb0bc6235b6d0ca596a67f356146da32bdd5ebdba934e1b07cf",
     "workload_summary": {
       "budget": {
         "flops_ceiling": 100000000.0,
@@ -179,7 +179,7 @@
         "safety_factor": 0.5
       },
       "engine": {
-        "engine_id": "physics_magnitude_quantum_engine.heisenberg_dimer_ground_state",
+        "engine_id": "physics_magnitude_gold_engines.heisenberg_dimer_ground_state",
         "function_name": "heisenberg_dimer_ground_state",
         "kwargs_hash": "39feb61ceef08e462d7b8a39febbdf53073173006a4b5b228c07a98cc3f7ebcb",
         "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
@@ -188,6 +188,6 @@
       "n_qubits": 2
     }
   },
-  "trace_hash": "5a0a69d6681c69aff79ca31344f24f9cdf524f44a77d689f63b5a4055d4731ed",
+  "trace_hash": "6ed23e4d2421a996aea257f492c93dfb1cca2da1250bc19bb6bf86be0b15ed12",
   "trace_id": "trace_006"
 }

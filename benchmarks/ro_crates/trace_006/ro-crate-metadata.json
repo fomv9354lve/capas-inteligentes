@@ -36,9 +36,9 @@
       "@id": "./",
       "@type": "Dataset",
       "capas:evidenceStatus": "present",
-      "capas:traceHash": "5a0a69d6681c69aff79ca31344f24f9cdf524f44a77d689f63b5a4055d4731ed",
+      "capas:traceHash": "6ed23e4d2421a996aea257f492c93dfb1cca2da1250bc19bb6bf86be0b15ed12",
       "capas:workflowRunCrateAlignment": "shape-compatible-with-workflow-run-crate-0.5",
-      "capas:workloadHash": "aabdf7c6a4f583b23fc6008e1325dca981611a591ff8e1ce9e98d094fdecb3f3",
+      "capas:workloadHash": "a33f7f7ed3e18cb0bc6235b6d0ca596a67f356146da32bdd5ebdba934e1b07cf",
       "conformsTo": [
         {
           "@id": "https://w3id.org/ro/crate/1.1"
@@ -56,7 +56,7 @@
           "@id": "https://example.org/capas-inteligentes/ro-crate/physical-evidence/0.1"
         }
       ],
-      "datePublished": "2026-06-17T22:42:17.630065Z",
+      "datePublished": "2026-06-17T23:10:07.344081Z",
       "description": "RO-Crate package containing a sealed RunTrace, optional PROV export, routing decision, runtime context, and CAPAS physical evidence metadata.",
       "hasPart": [
         {
@@ -72,23 +72,23 @@
           "@id": "entity:workload"
         },
         {
-          "@id": "trace:5a0a69d6681c69af:routing-decision"
+          "@id": "trace:6ed23e4d2421a996:routing-decision"
         },
         {
-          "@id": "trace:5a0a69d6681c69af:result"
+          "@id": "trace:6ed23e4d2421a996:result"
         },
         {
           "@id": "runtrace.prov.json"
         },
         {
-          "@id": "trace:5a0a69d6681c69af:physical-evidence"
+          "@id": "trace:6ed23e4d2421a996:physical-evidence"
         }
       ],
       "mainEntity": {
         "@id": "workflow/capas-costurero-run.cwl"
       },
       "mentions": {
-        "@id": "trace:5a0a69d6681c69af"
+        "@id": "trace:6ed23e4d2421a996"
       },
       "name": "CAPAS traced scientific computation crate"
     },
@@ -124,14 +124,14 @@
         "DigitalDocument"
       ],
       "about": {
-        "@id": "trace:5a0a69d6681c69af"
+        "@id": "trace:6ed23e4d2421a996"
       },
       "encodingFormat": "application/json",
       "name": "Sealed CAPAS RunTrace",
-      "sha256": "0f5c911643e155bc0c26b58f5c0a6d697fabf8fe6a06e4ae1c2ea4f9532ab4d9"
+      "sha256": "fa2260792b1eb98b980a3ae1502ed1f4b2bbb626dc2fea853fb7d1df4be77e0e"
     },
     {
-      "@id": "trace:5a0a69d6681c69af",
+      "@id": "trace:6ed23e4d2421a996",
       "@type": "CreateAction",
       "actionStatus": "CompletedActionStatus",
       "agent": {
@@ -142,11 +142,11 @@
       "capas:evidenceStatus": "present",
       "capas:hashAlgorithm": "sha256(stable_json)",
       "capas:routingDecision": {
-        "@id": "trace:5a0a69d6681c69af:routing-decision"
+        "@id": "trace:6ed23e4d2421a996:routing-decision"
       },
-      "capas:traceHash": "5a0a69d6681c69aff79ca31344f24f9cdf524f44a77d689f63b5a4055d4731ed",
+      "capas:traceHash": "6ed23e4d2421a996aea257f492c93dfb1cca2da1250bc19bb6bf86be0b15ed12",
       "capas:traceSchemaVersion": "capas-runtrace-v2",
-      "endTime": "2026-06-17T22:42:17.630065Z",
+      "endTime": "2026-06-17T23:10:07.344081Z",
       "instrument": {
         "@id": "workflow/capas-costurero-run.cwl"
       },
@@ -155,9 +155,9 @@
         "@id": "entity:workload"
       },
       "result": {
-        "@id": "trace:5a0a69d6681c69af:result"
+        "@id": "trace:6ed23e4d2421a996:result"
       },
-      "startTime": "2026-06-17T22:42:17.629647Z"
+      "startTime": "2026-06-17T23:10:07.342492Z"
     },
     {
       "@id": "workflow/capas-costurero-run.cwl",
@@ -207,7 +207,7 @@
           "safety_factor": 0.5
         },
         "engine": {
-          "engine_id": "physics_magnitude_quantum_engine.heisenberg_dimer_ground_state",
+          "engine_id": "physics_magnitude_gold_engines.heisenberg_dimer_ground_state",
           "function_name": "heisenberg_dimer_ground_state",
           "kwargs_hash": "39feb61ceef08e462d7b8a39febbdf53073173006a4b5b228c07a98cc3f7ebcb",
           "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
@@ -215,14 +215,14 @@
         "kind": "dense",
         "n_qubits": 2
       },
-      "capas:workloadHash": "aabdf7c6a4f583b23fc6008e1325dca981611a591ff8e1ce9e98d094fdecb3f3",
+      "capas:workloadHash": "a33f7f7ed3e18cb0bc6235b6d0ca596a67f356146da32bdd5ebdba934e1b07cf",
       "exampleOfWork": {
         "@id": "parameter:workload"
       },
       "name": "Workload summary"
     },
     {
-      "@id": "trace:5a0a69d6681c69af:routing-decision",
+      "@id": "trace:6ed23e4d2421a996:routing-decision",
       "@type": "Thing",
       "capas:reason": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
       "capas:route": "external_engine",
@@ -236,15 +236,15 @@
       ],
       "encodingFormat": "application/json",
       "name": "W3C PROV-shaped export",
-      "sha256": "da4acfd790fe4cf8fc35c551fd3360f3ee2c0f75aff80af0153a5cbfa4329dd0"
+      "sha256": "e05c5f417c8af224f22c6c9915c60e8e5ce7f9253afaa92c184cebbb93d40c6b"
     },
     {
-      "@id": "trace:5a0a69d6681c69af:result",
+      "@id": "trace:6ed23e4d2421a996:result",
       "@type": "Dataset",
       "capas:physicalEvidence": {
-        "@id": "trace:5a0a69d6681c69af:physical-evidence"
+        "@id": "trace:6ed23e4d2421a996:physical-evidence"
       },
-      "capas:resultHash": "59ee0f9ca80c76f9e0a68bc9fafd99e3a8d113b19892481521c5e69ed1f009a5",
+      "capas:resultHash": "8c7948941ec912e38174204df82925ff1c8027ef0aea45bcc7eb144ce5492de6",
       "capas:summary": {
         "abs_error": 0.0,
         "benchmark_family": "Heisenberg",
@@ -253,7 +253,7 @@
         "physical_evidence_detail": "For H = J S1.S2, the singlet ground state has E0 = -3J/4",
         "physical_evidence_level": "analytic",
         "reference_truth": "closed_form_singlet_triplet_spectrum",
-        "repr": "{'engine_id': 'physics_magnitude_quantum_engine.heisenberg_dimer_ground_state', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magni",
+        "repr": "{'engine_id': 'physics_magnitude_gold_engines.heisenberg_dimer_ground_state', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitu",
         "type": "dict",
         "units": "energy",
         "value": -0.75,
@@ -265,10 +265,10 @@
       "name": "Result summary"
     },
     {
-      "@id": "trace:5a0a69d6681c69af:physical-evidence",
+      "@id": "trace:6ed23e4d2421a996:physical-evidence",
       "@type": "capas:PhysicalEvidence",
       "about": {
-        "@id": "trace:5a0a69d6681c69af:result"
+        "@id": "trace:6ed23e4d2421a996:result"
       },
       "capas:absError": 0.0,
       "capas:benchmarkFamily": "Heisenberg",
@@ -284,7 +284,7 @@
       "name": "Physical evidence attached to result"
     },
     {
-      "@id": "trace:5a0a69d6681c69af:event:0:ingest",
+      "@id": "trace:6ed23e4d2421a996:event:0:ingest",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -294,7 +294,7 @@
           "safety_factor": 0.5
         },
         "engine": {
-          "engine_id": "physics_magnitude_quantum_engine.heisenberg_dimer_ground_state",
+          "engine_id": "physics_magnitude_gold_engines.heisenberg_dimer_ground_state",
           "function_name": "heisenberg_dimer_ground_state",
           "kwargs_hash": "39feb61ceef08e462d7b8a39febbdf53073173006a4b5b228c07a98cc3f7ebcb",
           "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
@@ -304,10 +304,10 @@
       },
       "description": "workload accepted",
       "name": "ingest",
-      "startTime": 1781736137.629647
+      "startTime": 1781737807.3424919
     },
     {
-      "@id": "trace:5a0a69d6681c69af:event:1:runtime_context",
+      "@id": "trace:6ed23e4d2421a996:event:1:runtime_context",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -332,14 +332,14 @@
       },
       "description": "runtime and hardware context recorded",
       "name": "runtime_context",
-      "startTime": 1781736137.6296918
+      "startTime": 1781737807.3428018
     },
     {
-      "@id": "trace:5a0a69d6681c69af:event:2:engine_provenance",
+      "@id": "trace:6ed23e4d2421a996:event:2:engine_provenance",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
-        "engine_id": "physics_magnitude_quantum_engine.heisenberg_dimer_ground_state",
+        "engine_id": "physics_magnitude_gold_engines.heisenberg_dimer_ground_state",
         "function_name": "heisenberg_dimer_ground_state",
         "kwargs": {
           "J": 1.0
@@ -349,10 +349,10 @@
       },
       "description": "external engine provenance recorded",
       "name": "engine_provenance",
-      "startTime": 1781736137.629758
+      "startTime": 1781737807.3430111
     },
     {
-      "@id": "trace:5a0a69d6681c69af:event:3:cost_model",
+      "@id": "trace:6ed23e4d2421a996:event:3:cost_model",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -364,23 +364,23 @@
       },
       "description": "dense statevector cost estimated",
       "name": "cost_model",
-      "startTime": 1781736137.629759
+      "startTime": 1781737807.343019
     },
     {
-      "@id": "trace:5a0a69d6681c69af:event:4:route",
+      "@id": "trace:6ed23e4d2421a996:event:4:route",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
-        "engine_id": "physics_magnitude_quantum_engine.heisenberg_dimer_ground_state",
+        "engine_id": "physics_magnitude_gold_engines.heisenberg_dimer_ground_state",
         "function_name": "heisenberg_dimer_ground_state",
         "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
       },
       "description": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
       "name": "route",
-      "startTime": 1781736137.629761
+      "startTime": 1781737807.343025
     },
     {
-      "@id": "trace:5a0a69d6681c69af:event:5:execute",
+      "@id": "trace:6ed23e4d2421a996:event:5:execute",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -391,9 +391,9 @@
         "physical_evidence_detail": "For H = J S1.S2, the singlet ground state has E0 = -3J/4",
         "physical_evidence_level": "analytic",
         "reference_truth": "closed_form_singlet_triplet_spectrum",
-        "repr": "{'engine_id': 'physics_magnitude_quantum_engine.heisenberg_dimer_ground_state', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magni",
+        "repr": "{'engine_id': 'physics_magnitude_gold_engines.heisenberg_dimer_ground_state', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitu",
         "route": "external_engine",
-        "runtime_ms": 0.28045798535458744,
+        "runtime_ms": 0.9994579886551946,
         "type": "dict",
         "units": "energy",
         "value": -0.75,
@@ -401,10 +401,10 @@
       },
       "description": "backend executed",
       "name": "execute",
-      "startTime": 1781736137.630058
+      "startTime": 1781737807.3440661
     },
     {
-      "@id": "trace:5a0a69d6681c69af:event:6:physical_evidence",
+      "@id": "trace:6ed23e4d2421a996:event:6:physical_evidence",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -422,7 +422,7 @@
       },
       "description": "physical evidence reported by backend",
       "name": "physical_evidence",
-      "startTime": 1781736137.630065
+      "startTime": 1781737807.344081
     }
   ]
 }

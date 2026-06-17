@@ -1,0 +1,503 @@
+{
+  "activity": {
+    "capas:run:137c1a4e781fa2aa:activity:0:ingest": {
+      "capas:message": "workload accepted",
+      "capas:status": "ok",
+      "capas:timestamp": 1781737955.6403499,
+      "prov:type": "capas:ingest"
+    },
+    "capas:run:137c1a4e781fa2aa:activity:1:runtime_context": {
+      "capas:message": "runtime and hardware context recorded",
+      "capas:status": "ok",
+      "capas:timestamp": 1781737955.640834,
+      "prov:type": "capas:runtime_context"
+    },
+    "capas:run:137c1a4e781fa2aa:activity:2:engine_provenance": {
+      "capas:message": "external engine provenance recorded",
+      "capas:status": "ok",
+      "capas:timestamp": 1781737955.6411269,
+      "prov:type": "capas:engine_provenance"
+    },
+    "capas:run:137c1a4e781fa2aa:activity:3:cost_model": {
+      "capas:message": "dense statevector cost estimated",
+      "capas:status": "ok",
+      "capas:timestamp": 1781737955.641145,
+      "prov:type": "capas:cost_model"
+    },
+    "capas:run:137c1a4e781fa2aa:activity:4:route": {
+      "capas:message": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+      "capas:status": "ok",
+      "capas:timestamp": 1781737955.641152,
+      "prov:type": "capas:route"
+    },
+    "capas:run:137c1a4e781fa2aa:activity:5:execute": {
+      "capas:message": "backend executed",
+      "capas:status": "ok",
+      "capas:timestamp": 1781737955.6455941,
+      "prov:type": "capas:execute"
+    },
+    "capas:run:137c1a4e781fa2aa:activity:6:physical_evidence": {
+      "capas:message": "physical evidence reported by backend",
+      "capas:status": "ok",
+      "capas:timestamp": 1781737955.645647,
+      "prov:type": "capas:physical_evidence"
+    }
+  },
+  "agent": {
+    "capas:agent:costurero": {
+      "capas:name": "CAPAS INTELIGENTES costurero",
+      "prov:type": "prov:SoftwareAgent"
+    }
+  },
+  "bundle": "capas:run:137c1a4e781fa2aa",
+  "capas:traceHash": "137c1a4e781fa2aaacce09fff6fcc0df61cc96b1ce80b722f15c0b6745a1465d",
+  "entity": {
+    "capas:run:137c1a4e781fa2aa:decision": {
+      "capas:reason": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+      "capas:route": "external_engine",
+      "prov:type": "capas:RoutingDecision"
+    },
+    "capas:run:137c1a4e781fa2aa:engine_module": {
+      "capas:engineId": "universal_invariant_adversarial_engines.heisenberg_wrong_sign_passes_local_properties",
+      "capas:functionName": "heisenberg_wrong_sign_passes_local_properties",
+      "capas:modulePath": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py",
+      "capas:moduleSha256": "b7eba51ae02eb6648cb48486fbedacf0e6d14276f283cfc366ee5ee8cd0d106d",
+      "prov:type": "capas:EngineModule"
+    },
+    "capas:run:137c1a4e781fa2aa:entity:0:ingest:metrics": {
+      "capas:eventHash": "2e0a3fe37ea9fd3018d69fdcd6e2a99173975be495c706e5027ad88ebdb5fdfb",
+      "capas:metrics": {
+        "budget": {
+          "flops_ceiling": 100000000.0,
+          "memory_budget_bytes": 536870912,
+          "safety_factor": 0.5
+        },
+        "engine": {
+          "engine_id": "universal_invariant_adversarial_engines.heisenberg_wrong_sign_passes_local_properties",
+          "function_name": "heisenberg_wrong_sign_passes_local_properties",
+          "kwargs_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py"
+        },
+        "kind": "dense",
+        "n_qubits": 2
+      },
+      "capas:stage": "ingest",
+      "prov:type": "capas:EventMetrics"
+    },
+    "capas:run:137c1a4e781fa2aa:entity:1:runtime_context:metrics": {
+      "capas:eventHash": "55b0a19d81b4247fe4e2df864c57f029bef81a40ddc06de7f8a2be4bc635cda5",
+      "capas:metrics": {
+        "cotengra_available": true,
+        "cotengra_version": "0.8.1",
+        "machine": "arm64",
+        "mlx_probe": "skipped_in_default_trace; use apple_silicon_thermal_routing.py for Metal/MLX device probes",
+        "numpy_available": true,
+        "numpy_version": "2.4.6",
+        "platform": "macOS-26.5.1-arm64-arm-64bit",
+        "processor": "arm",
+        "python_executable": "/Users/kreniq/physics-magnitude-lab/.pixi/envs/default/bin/python",
+        "python_version": "3.12.13",
+        "qiskit_aer_available": false,
+        "qiskit_aer_error": "ModuleNotFoundError: No module named 'qiskit_aer'",
+        "quimb_available": true,
+        "quimb_version": "1.14.0",
+        "scipy_available": true,
+        "scipy_version": "1.17.1",
+        "stim_available": true,
+        "stim_version": "1.16.0"
+      },
+      "capas:stage": "runtime_context",
+      "prov:type": "capas:EventMetrics"
+    },
+    "capas:run:137c1a4e781fa2aa:entity:2:engine_provenance:metrics": {
+      "capas:eventHash": "1e07dbedc9110dd51eaa04d0a1b4404b0938a53225b6303c6e5fb59f181c5413",
+      "capas:metrics": {
+        "engine_id": "universal_invariant_adversarial_engines.heisenberg_wrong_sign_passes_local_properties",
+        "function_name": "heisenberg_wrong_sign_passes_local_properties",
+        "kwargs": {},
+        "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py",
+        "module_sha256": "b7eba51ae02eb6648cb48486fbedacf0e6d14276f283cfc366ee5ee8cd0d106d"
+      },
+      "capas:stage": "engine_provenance",
+      "prov:type": "capas:EventMetrics"
+    },
+    "capas:run:137c1a4e781fa2aa:entity:3:cost_model:metrics": {
+      "capas:eventHash": "7451280336840947aa3c816a74b1e2b03d8867de98edc2730b7dbb3a89e8a65b",
+      "capas:metrics": {
+        "memory_viable": true,
+        "n_qubits": 2,
+        "route": "dense",
+        "statevector_bytes": 64,
+        "usable_memory_bytes": 268435456.0
+      },
+      "capas:stage": "cost_model",
+      "prov:type": "capas:EventMetrics"
+    },
+    "capas:run:137c1a4e781fa2aa:entity:4:route:metrics": {
+      "capas:eventHash": "79967774faf0e37beed7e82348a4b87fa1babfb775f32b04ebf0d7a7bf09e2fe",
+      "capas:metrics": {
+        "engine_id": "universal_invariant_adversarial_engines.heisenberg_wrong_sign_passes_local_properties",
+        "function_name": "heisenberg_wrong_sign_passes_local_properties",
+        "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py"
+      },
+      "capas:stage": "route",
+      "prov:type": "capas:EventMetrics"
+    },
+    "capas:run:137c1a4e781fa2aa:entity:5:execute:metrics": {
+      "capas:eventHash": "8d43ddb7ce10fc01876ddf45e3e88fc9376a8ec30fdd42a02e82eb713d4e8296",
+      "capas:metrics": {
+        "abs_error": 0.5,
+        "benchmark_family": "Heisenberg",
+        "claim_scope": "minimal falsation case only; shows an analytic physical invariant can catch a generator error missed by local property tests",
+        "expected": -0.75,
+        "generator_error": "wrong_coupling_sign",
+        "invariant_caught": true,
+        "local_oracle_caught": false,
+        "local_property_tests": {
+          "exchange_symmetric": true,
+          "finite_entries": true,
+          "hermitian": true,
+          "real_spectrum": true,
+          "trace_zero": true
+        },
+        "local_property_tests_pass": true,
+        "observable": "Generated Heisenberg dimer ground-state energy with wrong coupling sign",
+        "physical_evidence_detail": "Universal analytic invariant for antiferromagnetic H = J S1.S2 requires E0 = -3J/4; the generated Hamiltonian uses the wrong sign.",
+        "physical_evidence_level": "analytic",
+        "pre_registered_success_criterion": "local_property_tests_pass is true and universal_anchor_pass is false",
+        "reference_truth": "closed_form_antiferromagnetic_singlet_ground_energy",
+        "repr": "{'engine_id': 'universal_invariant_adversarial_engines.heisenberg_wrong_sign_passes_local_properties', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/int",
+        "route": "external_engine",
+        "runtime_ms": 4.3347499740775675,
+        "structure_mapping": {
+          "generator_output": "Hamiltonian implementation",
+          "local_oracle_relation": "generic matrix properties preserved by sign flip",
+          "preserved_relation": "same generated object judged by both local properties and independent physics",
+          "universal_oracle_relation": "model-specific singlet/triplet spectrum invariant"
+        },
+        "type": "dict",
+        "units": "energy",
+        "universal_anchor": "E0_antiferromagnetic_heisenberg_dimer=-3J/4",
+        "universal_anchor_pass": false,
+        "value": -0.25,
+        "verification_independence": "analytic_no_solver"
+      },
+      "capas:stage": "execute",
+      "prov:type": "capas:EventMetrics"
+    },
+    "capas:run:137c1a4e781fa2aa:entity:6:physical_evidence:metrics": {
+      "capas:eventHash": "69f59890f2eda4ebbcc1fbc88fb86327d6b069018af14f124be93c1f04412f59",
+      "capas:metrics": {
+        "abs_error": 0.5,
+        "benchmark_family": "Heisenberg",
+        "claim_scope": "minimal falsation case only; shows an analytic physical invariant can catch a generator error missed by local property tests",
+        "evidence_hash": "b6e9ad438d1fd5cb3dbb06280ff85ad6e6c4bb16203f622497f69d9678b5579f",
+        "expected": -0.75,
+        "generator_error": "wrong_coupling_sign",
+        "invariant_caught": true,
+        "local_oracle_caught": false,
+        "local_property_tests": {
+          "exchange_symmetric": true,
+          "finite_entries": true,
+          "hermitian": true,
+          "real_spectrum": true,
+          "trace_zero": true
+        },
+        "local_property_tests_pass": true,
+        "observable": "Generated Heisenberg dimer ground-state energy with wrong coupling sign",
+        "physical_evidence_detail": "Universal analytic invariant for antiferromagnetic H = J S1.S2 requires E0 = -3J/4; the generated Hamiltonian uses the wrong sign.",
+        "physical_evidence_level": "analytic",
+        "pre_registered_success_criterion": "local_property_tests_pass is true and universal_anchor_pass is false",
+        "reference_truth": "closed_form_antiferromagnetic_singlet_ground_energy",
+        "structure_mapping": {
+          "generator_output": "Hamiltonian implementation",
+          "local_oracle_relation": "generic matrix properties preserved by sign flip",
+          "preserved_relation": "same generated object judged by both local properties and independent physics",
+          "universal_oracle_relation": "model-specific singlet/triplet spectrum invariant"
+        },
+        "units": "energy",
+        "universal_anchor": "E0_antiferromagnetic_heisenberg_dimer=-3J/4",
+        "universal_anchor_pass": false,
+        "value": -0.25,
+        "verification_independence": "analytic_no_solver"
+      },
+      "capas:stage": "physical_evidence",
+      "prov:type": "capas:EventMetrics"
+    },
+    "capas:run:137c1a4e781fa2aa:physical_evidence": {
+      "capas:absError": 0.5,
+      "capas:absErrorVsExperimental": null,
+      "capas:absErrorVsFci": null,
+      "capas:actualErrorSquared": null,
+      "capas:balanceLambda": null,
+      "capas:basis": null,
+      "capas:basisOrbitals": null,
+      "capas:benchmarkFamily": "Heisenberg",
+      "capas:bondLengthAngstrom": null,
+      "capas:boundScope": null,
+      "capas:boundSlack": null,
+      "capas:boundType": null,
+      "capas:ceilingBasisOrbitals": null,
+      "capas:ceilingBasisSolved": null,
+      "capas:certificationStatus": null,
+      "capas:chemicalAccuracyThresholdHartree": null,
+      "capas:claimScope": "minimal falsation case only; shows an analytic physical invariant can catch a generator error missed by local property tests",
+      "capas:composedStateErrorBound": null,
+      "capas:conflicts": null,
+      "capas:constantOffset": null,
+      "capas:convergencePoints": null,
+      "capas:costs": null,
+      "capas:degeneracyCount": null,
+      "capas:discardedWeight": null,
+      "capas:electronicAtomizationEnergyHartree": null,
+      "capas:evidenceHash": "b6e9ad438d1fd5cb3dbb06280ff85ad6e6c4bb16203f622497f69d9678b5579f",
+      "capas:evidenceStatusDetail": null,
+      "capas:expected": -0.75,
+      "capas:experimentalAtomizationEnergyHartree": null,
+      "capas:experimentalAtomizationEnergyKcalMol": null,
+      "capas:experimentalBindingEnergyHartree": null,
+      "capas:falsificationNotes": null,
+      "capas:firstRobustBasis": null,
+      "capas:firstWithinChemicalAccuracyBasis": null,
+      "capas:formalBoundStatus": null,
+      "capas:generatorError": "wrong_coupling_sign",
+      "capas:geometry": null,
+      "capas:harmonicFrequenciesCmInverse": null,
+      "capas:invariantCaught": true,
+      "capas:isingH": null,
+      "capas:isingJ": null,
+      "capas:localOracleCaught": false,
+      "capas:localPropertyTests": {
+        "exchange_symmetric": true,
+        "finite_entries": true,
+        "hermitian": true,
+        "real_spectrum": true,
+        "trace_zero": true
+      },
+      "capas:localPropertyTestsPass": true,
+      "capas:mappingTerms": null,
+      "capas:modelBindingEnergyHartree": null,
+      "capas:modelErrorHartree": null,
+      "capas:monotonicNonincreasingError": null,
+      "capas:observable": "Generated Heisenberg dimer ground-state energy with wrong coupling sign",
+      "capas:optimalAssignments": null,
+      "capas:people": null,
+      "capas:physicalEvidenceDetail": "Universal analytic invariant for antiferromagnetic H = J S1.S2 requires E0 = -3J/4; the generated Hamiltonian uses the wrong sign.",
+      "capas:physicalEvidenceLevel": "analytic",
+      "capas:preRegisteredSuccessCriterion": "local_property_tests_pass is true and universal_anchor_pass is false",
+      "capas:referenceDefinitionCorrectedErrorHartree": null,
+      "capas:referenceDefinitionCorrection": null,
+      "capas:referenceDefinitionErrorHartree": null,
+      "capas:referenceDefinitionMatch": null,
+      "capas:referenceExperimentalD0CmInverse": null,
+      "capas:referenceFciTotalEnergyHartree": null,
+      "capas:referenceTruth": "closed_form_antiferromagnetic_singlet_ground_energy",
+      "capas:solverErrorHartree": null,
+      "capas:sourceLabel": null,
+      "capas:spinEncoding": null,
+      "capas:structureMapping": {
+        "generator_output": "Hamiltonian implementation",
+        "local_oracle_relation": "generic matrix properties preserved by sign flip",
+        "preserved_relation": "same generated object judged by both local properties and independent physics",
+        "universal_oracle_relation": "model-specific singlet/triplet spectrum invariant"
+      },
+      "capas:tasks": null,
+      "capas:units": "energy",
+      "capas:universalAnchor": "E0_antiferromagnetic_heisenberg_dimer=-3J/4",
+      "capas:universalAnchorPass": false,
+      "capas:value": -0.25,
+      "capas:verificationIndependence": "analytic_no_solver",
+      "capas:vibrationalZpeCmInverse": null,
+      "capas:vibrationalZpeHartree": null,
+      "capas:withinChemicalAccuracy": null,
+      "capas:witnessStack": null,
+      "capas:zpeCorrectedAtomizationEnergyHartree": null,
+      "prov:type": "capas:PhysicalEvidence"
+    },
+    "capas:run:137c1a4e781fa2aa:result": {
+      "capas:resultHash": "e827d80e3f3135d4c6d0f5abff219455064272b5c5f4f135bd2607dced461f55",
+      "capas:summary": {
+        "abs_error": 0.5,
+        "benchmark_family": "Heisenberg",
+        "claim_scope": "minimal falsation case only; shows an analytic physical invariant can catch a generator error missed by local property tests",
+        "expected": -0.75,
+        "generator_error": "wrong_coupling_sign",
+        "invariant_caught": true,
+        "local_oracle_caught": false,
+        "local_property_tests": {
+          "exchange_symmetric": true,
+          "finite_entries": true,
+          "hermitian": true,
+          "real_spectrum": true,
+          "trace_zero": true
+        },
+        "local_property_tests_pass": true,
+        "observable": "Generated Heisenberg dimer ground-state energy with wrong coupling sign",
+        "physical_evidence_detail": "Universal analytic invariant for antiferromagnetic H = J S1.S2 requires E0 = -3J/4; the generated Hamiltonian uses the wrong sign.",
+        "physical_evidence_level": "analytic",
+        "pre_registered_success_criterion": "local_property_tests_pass is true and universal_anchor_pass is false",
+        "reference_truth": "closed_form_antiferromagnetic_singlet_ground_energy",
+        "repr": "{'engine_id': 'universal_invariant_adversarial_engines.heisenberg_wrong_sign_passes_local_properties', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/int",
+        "structure_mapping": {
+          "generator_output": "Hamiltonian implementation",
+          "local_oracle_relation": "generic matrix properties preserved by sign flip",
+          "preserved_relation": "same generated object judged by both local properties and independent physics",
+          "universal_oracle_relation": "model-specific singlet/triplet spectrum invariant"
+        },
+        "type": "dict",
+        "units": "energy",
+        "universal_anchor": "E0_antiferromagnetic_heisenberg_dimer=-3J/4",
+        "universal_anchor_pass": false,
+        "value": -0.25,
+        "verification_independence": "analytic_no_solver"
+      },
+      "prov:type": "capas:Result"
+    },
+    "capas:run:137c1a4e781fa2aa:workload": {
+      "capas:summary": {
+        "budget": {
+          "flops_ceiling": 100000000.0,
+          "memory_budget_bytes": 536870912,
+          "safety_factor": 0.5
+        },
+        "engine": {
+          "engine_id": "universal_invariant_adversarial_engines.heisenberg_wrong_sign_passes_local_properties",
+          "function_name": "heisenberg_wrong_sign_passes_local_properties",
+          "kwargs_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py"
+        },
+        "kind": "dense",
+        "n_qubits": 2
+      },
+      "capas:workloadHash": "b1dbf9afac782ec807345d88e2939968b07adc7a73bad7e050766c7e142da146",
+      "prov:type": "capas:Workload"
+    }
+  },
+  "prefix": {
+    "capas": "https://example.org/capas-inteligentes#",
+    "prov": "http://www.w3.org/ns/prov#"
+  },
+  "specializationOf": {},
+  "used": {
+    "capas:run:137c1a4e781fa2aa:activity:0:ingest:used:capas:run:137c1a4e781fa2aa:workload": {
+      "prov:activity": "capas:run:137c1a4e781fa2aa:activity:0:ingest",
+      "prov:entity": "capas:run:137c1a4e781fa2aa:workload"
+    },
+    "capas:run:137c1a4e781fa2aa:activity:1:runtime_context:used:capas:run:137c1a4e781fa2aa:entity:0:ingest:metrics": {
+      "prov:activity": "capas:run:137c1a4e781fa2aa:activity:1:runtime_context",
+      "prov:entity": "capas:run:137c1a4e781fa2aa:entity:0:ingest:metrics"
+    },
+    "capas:run:137c1a4e781fa2aa:activity:2:engine_provenance:used:capas:run:137c1a4e781fa2aa:engine_module": {
+      "prov:activity": "capas:run:137c1a4e781fa2aa:activity:2:engine_provenance",
+      "prov:entity": "capas:run:137c1a4e781fa2aa:engine_module"
+    },
+    "capas:run:137c1a4e781fa2aa:activity:2:engine_provenance:used:capas:run:137c1a4e781fa2aa:entity:1:runtime_context:metrics": {
+      "prov:activity": "capas:run:137c1a4e781fa2aa:activity:2:engine_provenance",
+      "prov:entity": "capas:run:137c1a4e781fa2aa:entity:1:runtime_context:metrics"
+    },
+    "capas:run:137c1a4e781fa2aa:activity:3:cost_model:used:capas:run:137c1a4e781fa2aa:entity:2:engine_provenance:metrics": {
+      "prov:activity": "capas:run:137c1a4e781fa2aa:activity:3:cost_model",
+      "prov:entity": "capas:run:137c1a4e781fa2aa:entity:2:engine_provenance:metrics"
+    },
+    "capas:run:137c1a4e781fa2aa:activity:4:route:used:capas:run:137c1a4e781fa2aa:entity:3:cost_model:metrics": {
+      "prov:activity": "capas:run:137c1a4e781fa2aa:activity:4:route",
+      "prov:entity": "capas:run:137c1a4e781fa2aa:entity:3:cost_model:metrics"
+    },
+    "capas:run:137c1a4e781fa2aa:activity:5:execute:used:capas:run:137c1a4e781fa2aa:entity:4:route:metrics": {
+      "prov:activity": "capas:run:137c1a4e781fa2aa:activity:5:execute",
+      "prov:entity": "capas:run:137c1a4e781fa2aa:entity:4:route:metrics"
+    },
+    "capas:run:137c1a4e781fa2aa:activity:6:physical_evidence:used:capas:run:137c1a4e781fa2aa:entity:5:execute:metrics": {
+      "prov:activity": "capas:run:137c1a4e781fa2aa:activity:6:physical_evidence",
+      "prov:entity": "capas:run:137c1a4e781fa2aa:entity:5:execute:metrics"
+    }
+  },
+  "wasAssociatedWith": {
+    "capas:run:137c1a4e781fa2aa:activity:0:ingest:agent": {
+      "prov:activity": "capas:run:137c1a4e781fa2aa:activity:0:ingest",
+      "prov:agent": "capas:agent:costurero"
+    },
+    "capas:run:137c1a4e781fa2aa:activity:1:runtime_context:agent": {
+      "prov:activity": "capas:run:137c1a4e781fa2aa:activity:1:runtime_context",
+      "prov:agent": "capas:agent:costurero"
+    },
+    "capas:run:137c1a4e781fa2aa:activity:2:engine_provenance:agent": {
+      "prov:activity": "capas:run:137c1a4e781fa2aa:activity:2:engine_provenance",
+      "prov:agent": "capas:agent:costurero"
+    },
+    "capas:run:137c1a4e781fa2aa:activity:3:cost_model:agent": {
+      "prov:activity": "capas:run:137c1a4e781fa2aa:activity:3:cost_model",
+      "prov:agent": "capas:agent:costurero"
+    },
+    "capas:run:137c1a4e781fa2aa:activity:4:route:agent": {
+      "prov:activity": "capas:run:137c1a4e781fa2aa:activity:4:route",
+      "prov:agent": "capas:agent:costurero"
+    },
+    "capas:run:137c1a4e781fa2aa:activity:5:execute:agent": {
+      "prov:activity": "capas:run:137c1a4e781fa2aa:activity:5:execute",
+      "prov:agent": "capas:agent:costurero"
+    },
+    "capas:run:137c1a4e781fa2aa:activity:6:physical_evidence:agent": {
+      "prov:activity": "capas:run:137c1a4e781fa2aa:activity:6:physical_evidence",
+      "prov:agent": "capas:agent:costurero"
+    }
+  },
+  "wasAttributedTo": {
+    "capas:run:137c1a4e781fa2aa:result:agent": {
+      "prov:agent": "capas:agent:costurero",
+      "prov:entity": "capas:run:137c1a4e781fa2aa:result"
+    }
+  },
+  "wasDerivedFrom": {
+    "capas:run:137c1a4e781fa2aa:physical_evidence:from:capas:run:137c1a4e781fa2aa:result": {
+      "prov:generatedEntity": "capas:run:137c1a4e781fa2aa:physical_evidence",
+      "prov:usedEntity": "capas:run:137c1a4e781fa2aa:result"
+    },
+    "capas:run:137c1a4e781fa2aa:result:from:capas:run:137c1a4e781fa2aa:workload": {
+      "prov:generatedEntity": "capas:run:137c1a4e781fa2aa:result",
+      "prov:usedEntity": "capas:run:137c1a4e781fa2aa:workload"
+    }
+  },
+  "wasGeneratedBy": {
+    "capas:run:137c1a4e781fa2aa:decision:generatedBy:capas:run:137c1a4e781fa2aa:activity:4:route": {
+      "prov:activity": "capas:run:137c1a4e781fa2aa:activity:4:route",
+      "prov:entity": "capas:run:137c1a4e781fa2aa:decision"
+    },
+    "capas:run:137c1a4e781fa2aa:entity:0:ingest:metrics:generatedBy:capas:run:137c1a4e781fa2aa:activity:0:ingest": {
+      "prov:activity": "capas:run:137c1a4e781fa2aa:activity:0:ingest",
+      "prov:entity": "capas:run:137c1a4e781fa2aa:entity:0:ingest:metrics"
+    },
+    "capas:run:137c1a4e781fa2aa:entity:1:runtime_context:metrics:generatedBy:capas:run:137c1a4e781fa2aa:activity:1:runtime_context": {
+      "prov:activity": "capas:run:137c1a4e781fa2aa:activity:1:runtime_context",
+      "prov:entity": "capas:run:137c1a4e781fa2aa:entity:1:runtime_context:metrics"
+    },
+    "capas:run:137c1a4e781fa2aa:entity:2:engine_provenance:metrics:generatedBy:capas:run:137c1a4e781fa2aa:activity:2:engine_provenance": {
+      "prov:activity": "capas:run:137c1a4e781fa2aa:activity:2:engine_provenance",
+      "prov:entity": "capas:run:137c1a4e781fa2aa:entity:2:engine_provenance:metrics"
+    },
+    "capas:run:137c1a4e781fa2aa:entity:3:cost_model:metrics:generatedBy:capas:run:137c1a4e781fa2aa:activity:3:cost_model": {
+      "prov:activity": "capas:run:137c1a4e781fa2aa:activity:3:cost_model",
+      "prov:entity": "capas:run:137c1a4e781fa2aa:entity:3:cost_model:metrics"
+    },
+    "capas:run:137c1a4e781fa2aa:entity:4:route:metrics:generatedBy:capas:run:137c1a4e781fa2aa:activity:4:route": {
+      "prov:activity": "capas:run:137c1a4e781fa2aa:activity:4:route",
+      "prov:entity": "capas:run:137c1a4e781fa2aa:entity:4:route:metrics"
+    },
+    "capas:run:137c1a4e781fa2aa:entity:5:execute:metrics:generatedBy:capas:run:137c1a4e781fa2aa:activity:5:execute": {
+      "prov:activity": "capas:run:137c1a4e781fa2aa:activity:5:execute",
+      "prov:entity": "capas:run:137c1a4e781fa2aa:entity:5:execute:metrics"
+    },
+    "capas:run:137c1a4e781fa2aa:entity:6:physical_evidence:metrics:generatedBy:capas:run:137c1a4e781fa2aa:activity:6:physical_evidence": {
+      "prov:activity": "capas:run:137c1a4e781fa2aa:activity:6:physical_evidence",
+      "prov:entity": "capas:run:137c1a4e781fa2aa:entity:6:physical_evidence:metrics"
+    },
+    "capas:run:137c1a4e781fa2aa:physical_evidence:generatedBy:capas:run:137c1a4e781fa2aa:activity:6:physical_evidence": {
+      "prov:activity": "capas:run:137c1a4e781fa2aa:activity:6:physical_evidence",
+      "prov:entity": "capas:run:137c1a4e781fa2aa:physical_evidence"
+    },
+    "capas:run:137c1a4e781fa2aa:result:generatedBy:capas:run:137c1a4e781fa2aa:activity:5:execute": {
+      "prov:activity": "capas:run:137c1a4e781fa2aa:activity:5:execute",
+      "prov:entity": "capas:run:137c1a4e781fa2aa:result"
+    }
+  }
+}

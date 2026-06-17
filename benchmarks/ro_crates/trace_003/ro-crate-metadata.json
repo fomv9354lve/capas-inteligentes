@@ -36,9 +36,9 @@
       "@id": "./",
       "@type": "Dataset",
       "capas:evidenceStatus": "present",
-      "capas:traceHash": "ddd63562167df195182e33d0435a498fb6337ecfc464a4b8cb29ab0b9e977ebc",
+      "capas:traceHash": "73ace183e49809ae782ae9e5a075178db1264ffa367e138d3a6674365ca5165f",
       "capas:workflowRunCrateAlignment": "shape-compatible-with-workflow-run-crate-0.5",
-      "capas:workloadHash": "f46675fb65f2714d04baeb6cae918c9487548d8cce3ff8ca4a61f1722c95f433",
+      "capas:workloadHash": "66cd9a658763d6a4ee4a584f1c31d394072e19e23594f5e3b65dbdf5fb3eef4c",
       "conformsTo": [
         {
           "@id": "https://w3id.org/ro/crate/1.1"
@@ -56,7 +56,7 @@
           "@id": "https://example.org/capas-inteligentes/ro-crate/physical-evidence/0.1"
         }
       ],
-      "datePublished": "2026-06-17T22:42:17.627886Z",
+      "datePublished": "2026-06-17T23:10:07.336430Z",
       "description": "RO-Crate package containing a sealed RunTrace, optional PROV export, routing decision, runtime context, and CAPAS physical evidence metadata.",
       "hasPart": [
         {
@@ -72,23 +72,23 @@
           "@id": "entity:workload"
         },
         {
-          "@id": "trace:ddd63562167df195:routing-decision"
+          "@id": "trace:73ace183e49809ae:routing-decision"
         },
         {
-          "@id": "trace:ddd63562167df195:result"
+          "@id": "trace:73ace183e49809ae:result"
         },
         {
           "@id": "runtrace.prov.json"
         },
         {
-          "@id": "trace:ddd63562167df195:physical-evidence"
+          "@id": "trace:73ace183e49809ae:physical-evidence"
         }
       ],
       "mainEntity": {
         "@id": "workflow/capas-costurero-run.cwl"
       },
       "mentions": {
-        "@id": "trace:ddd63562167df195"
+        "@id": "trace:73ace183e49809ae"
       },
       "name": "CAPAS traced scientific computation crate"
     },
@@ -124,14 +124,14 @@
         "DigitalDocument"
       ],
       "about": {
-        "@id": "trace:ddd63562167df195"
+        "@id": "trace:73ace183e49809ae"
       },
       "encodingFormat": "application/json",
       "name": "Sealed CAPAS RunTrace",
-      "sha256": "f430f70b69691584ab38f64c456547daa5acd16b0d9858785d8945fee76ac7cc"
+      "sha256": "a8db1571e65aad09e687695aa66f3838895ac438aabf40aabeabc6eecb1fc891"
     },
     {
-      "@id": "trace:ddd63562167df195",
+      "@id": "trace:73ace183e49809ae",
       "@type": "CreateAction",
       "actionStatus": "CompletedActionStatus",
       "agent": {
@@ -142,11 +142,11 @@
       "capas:evidenceStatus": "present",
       "capas:hashAlgorithm": "sha256(stable_json)",
       "capas:routingDecision": {
-        "@id": "trace:ddd63562167df195:routing-decision"
+        "@id": "trace:73ace183e49809ae:routing-decision"
       },
-      "capas:traceHash": "ddd63562167df195182e33d0435a498fb6337ecfc464a4b8cb29ab0b9e977ebc",
+      "capas:traceHash": "73ace183e49809ae782ae9e5a075178db1264ffa367e138d3a6674365ca5165f",
       "capas:traceSchemaVersion": "capas-runtrace-v2",
-      "endTime": "2026-06-17T22:42:17.627886Z",
+      "endTime": "2026-06-17T23:10:07.336430Z",
       "instrument": {
         "@id": "workflow/capas-costurero-run.cwl"
       },
@@ -155,9 +155,9 @@
         "@id": "entity:workload"
       },
       "result": {
-        "@id": "trace:ddd63562167df195:result"
+        "@id": "trace:73ace183e49809ae:result"
       },
-      "startTime": "2026-06-17T22:42:17.627273Z"
+      "startTime": "2026-06-17T23:10:07.334991Z"
     },
     {
       "@id": "workflow/capas-costurero-run.cwl",
@@ -207,7 +207,7 @@
           "safety_factor": 0.5
         },
         "engine": {
-          "engine_id": "physics_magnitude_quantum_engine.product_entropy_zero",
+          "engine_id": "physics_magnitude_gold_engines.product_entropy_zero",
           "function_name": "product_entropy_zero",
           "kwargs_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
           "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
@@ -215,14 +215,14 @@
         "kind": "dense",
         "n_qubits": 2
       },
-      "capas:workloadHash": "f46675fb65f2714d04baeb6cae918c9487548d8cce3ff8ca4a61f1722c95f433",
+      "capas:workloadHash": "66cd9a658763d6a4ee4a584f1c31d394072e19e23594f5e3b65dbdf5fb3eef4c",
       "exampleOfWork": {
         "@id": "parameter:workload"
       },
       "name": "Workload summary"
     },
     {
-      "@id": "trace:ddd63562167df195:routing-decision",
+      "@id": "trace:73ace183e49809ae:routing-decision",
       "@type": "Thing",
       "capas:reason": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
       "capas:route": "external_engine",
@@ -236,22 +236,22 @@
       ],
       "encodingFormat": "application/json",
       "name": "W3C PROV-shaped export",
-      "sha256": "01d0f02cc5de316c85e408108bb9c0746bfec5e83426d3949609849bc1d43875"
+      "sha256": "a6ab2025d0f459d41d9676320d702c2dc16397bae9e50e50a47b511532c482af"
     },
     {
-      "@id": "trace:ddd63562167df195:result",
+      "@id": "trace:73ace183e49809ae:result",
       "@type": "Dataset",
       "capas:physicalEvidence": {
-        "@id": "trace:ddd63562167df195:physical-evidence"
+        "@id": "trace:73ace183e49809ae:physical-evidence"
       },
-      "capas:resultHash": "54b11c14028c0a823747d78e8302c0099d74dcdaff5df1f25c9f9f2ad5745049",
+      "capas:resultHash": "19525a9114b2e4e25db39f12c05efec00a258899796be8a13c9caa8cb5b1c968",
       "capas:summary": {
         "abs_error": 0.0,
         "expected": 0.0,
         "observable": "Product state entanglement entropy",
         "physical_evidence_detail": "Product states have rank-1 reduced density matrix, entropy = 0",
         "physical_evidence_level": "analytic",
-        "repr": "{'engine_id': 'physics_magnitude_quantum_engine.product_entropy_zero', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold",
+        "repr": "{'engine_id': 'physics_magnitude_gold_engines.product_entropy_zero', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_e",
         "type": "dict",
         "units": "nats",
         "value": -0.0
@@ -262,10 +262,10 @@
       "name": "Result summary"
     },
     {
-      "@id": "trace:ddd63562167df195:physical-evidence",
+      "@id": "trace:73ace183e49809ae:physical-evidence",
       "@type": "capas:PhysicalEvidence",
       "about": {
-        "@id": "trace:ddd63562167df195:result"
+        "@id": "trace:73ace183e49809ae:result"
       },
       "capas:absError": 0.0,
       "capas:detail": "Product states have rank-1 reduced density matrix, entropy = 0",
@@ -284,7 +284,7 @@
       "name": "Physical evidence attached to result"
     },
     {
-      "@id": "trace:ddd63562167df195:event:0:ingest",
+      "@id": "trace:73ace183e49809ae:event:0:ingest",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -294,7 +294,7 @@
           "safety_factor": 0.5
         },
         "engine": {
-          "engine_id": "physics_magnitude_quantum_engine.product_entropy_zero",
+          "engine_id": "physics_magnitude_gold_engines.product_entropy_zero",
           "function_name": "product_entropy_zero",
           "kwargs_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
           "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
@@ -304,10 +304,10 @@
       },
       "description": "workload accepted",
       "name": "ingest",
-      "startTime": 1781736137.6272728
+      "startTime": 1781737807.3349912
     },
     {
-      "@id": "trace:ddd63562167df195:event:1:runtime_context",
+      "@id": "trace:73ace183e49809ae:event:1:runtime_context",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -332,14 +332,14 @@
       },
       "description": "runtime and hardware context recorded",
       "name": "runtime_context",
-      "startTime": 1781736137.62733
+      "startTime": 1781737807.335176
     },
     {
-      "@id": "trace:ddd63562167df195:event:2:engine_provenance",
+      "@id": "trace:73ace183e49809ae:event:2:engine_provenance",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
-        "engine_id": "physics_magnitude_quantum_engine.product_entropy_zero",
+        "engine_id": "physics_magnitude_gold_engines.product_entropy_zero",
         "function_name": "product_entropy_zero",
         "kwargs": {},
         "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
@@ -347,10 +347,10 @@
       },
       "description": "external engine provenance recorded",
       "name": "engine_provenance",
-      "startTime": 1781736137.6274061
+      "startTime": 1781737807.335329
     },
     {
-      "@id": "trace:ddd63562167df195:event:3:cost_model",
+      "@id": "trace:73ace183e49809ae:event:3:cost_model",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -362,23 +362,23 @@
       },
       "description": "dense statevector cost estimated",
       "name": "cost_model",
-      "startTime": 1781736137.627409
+      "startTime": 1781737807.335336
     },
     {
-      "@id": "trace:ddd63562167df195:event:4:route",
+      "@id": "trace:73ace183e49809ae:event:4:route",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
-        "engine_id": "physics_magnitude_quantum_engine.product_entropy_zero",
+        "engine_id": "physics_magnitude_gold_engines.product_entropy_zero",
         "function_name": "product_entropy_zero",
         "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
       },
       "description": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
       "name": "route",
-      "startTime": 1781736137.627411
+      "startTime": 1781737807.33534
     },
     {
-      "@id": "trace:ddd63562167df195:event:5:execute",
+      "@id": "trace:73ace183e49809ae:event:5:execute",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -387,19 +387,19 @@
         "observable": "Product state entanglement entropy",
         "physical_evidence_detail": "Product states have rank-1 reduced density matrix, entropy = 0",
         "physical_evidence_level": "analytic",
-        "repr": "{'engine_id': 'physics_magnitude_quantum_engine.product_entropy_zero', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold",
+        "repr": "{'engine_id': 'physics_magnitude_gold_engines.product_entropy_zero', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_e",
         "route": "external_engine",
-        "runtime_ms": 0.4518750065471977,
+        "runtime_ms": 1.0364169720560312,
         "type": "dict",
         "units": "nats",
         "value": -0.0
       },
       "description": "backend executed",
       "name": "execute",
-      "startTime": 1781736137.627879
+      "startTime": 1781737807.336415
     },
     {
-      "@id": "trace:ddd63562167df195:event:6:physical_evidence",
+      "@id": "trace:73ace183e49809ae:event:6:physical_evidence",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -414,7 +414,7 @@
       },
       "description": "physical evidence reported by backend",
       "name": "physical_evidence",
-      "startTime": 1781736137.627886
+      "startTime": 1781737807.33643
     }
   ]
 }

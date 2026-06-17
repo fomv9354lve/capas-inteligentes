@@ -300,6 +300,16 @@ def run_trace_to_ro_crate_metadata(
                 "capas:boundSlack": evidence.get("bound_slack"),
                 "capas:boundType": evidence.get("bound_type"),
                 "capas:boundScope": evidence.get("bound_scope"),
+                "capas:localPropertyTests": evidence.get("local_property_tests"),
+                "capas:localPropertyTestsPass": evidence.get("local_property_tests_pass"),
+                "capas:localOracleCaught": evidence.get("local_oracle_caught"),
+                "capas:universalAnchor": evidence.get("universal_anchor"),
+                "capas:universalAnchorPass": evidence.get("universal_anchor_pass"),
+                "capas:invariantCaught": evidence.get("invariant_caught"),
+                "capas:generatorError": evidence.get("generator_error"),
+                "capas:structureMapping": evidence.get("structure_mapping"),
+                "capas:preRegisteredSuccessCriterion": evidence.get("pre_registered_success_criterion"),
+                "capas:claimScope": evidence.get("claim_scope"),
                 "capas:evidenceHash": stable_hash(evidence),
                 "about": {"@id": result_id},
             }
@@ -436,6 +446,16 @@ def _physical_evidence_from_trace(trace: RunTrace) -> dict[str, Any]:
             "bound_slack",
             "bound_type",
             "bound_scope",
+            "local_property_tests",
+            "local_property_tests_pass",
+            "local_oracle_caught",
+            "universal_anchor",
+            "universal_anchor_pass",
+            "invariant_caught",
+            "generator_error",
+            "structure_mapping",
+            "pre_registered_success_criterion",
+            "claim_scope",
         ):
             if key in trace.result_summary:
                 evidence[key] = trace.result_summary[key]

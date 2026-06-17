@@ -1,7 +1,7 @@
 {
   "coverage_case": "analytic_success",
   "result": {
-    "engine_id": "physics_magnitude_quantum_engine.particle_in_box_energy",
+    "engine_id": "physics_magnitude_gold_engines.particle_in_box_energy",
     "function_name": "particle_in_box_energy",
     "kwargs": {
       "hbar": 1.0,
@@ -38,7 +38,7 @@
             "safety_factor": 0.5
           },
           "engine": {
-            "engine_id": "physics_magnitude_quantum_engine.particle_in_box_energy",
+            "engine_id": "physics_magnitude_gold_engines.particle_in_box_energy",
             "function_name": "particle_in_box_energy",
             "kwargs_hash": "feb8a26e26e200f948f2aa974e38425d8023b520b164e2b7618cd4ba2e35a592",
             "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
@@ -48,7 +48,7 @@
         },
         "stage": "ingest",
         "status": "ok",
-        "timestamp": 1781736137.631194
+        "timestamp": 1781737807.346795
       },
       {
         "message": "runtime and hardware context recorded",
@@ -74,12 +74,12 @@
         },
         "stage": "runtime_context",
         "status": "ok",
-        "timestamp": 1781736137.631238
+        "timestamp": 1781737807.346892
       },
       {
         "message": "external engine provenance recorded",
         "metrics": {
-          "engine_id": "physics_magnitude_quantum_engine.particle_in_box_energy",
+          "engine_id": "physics_magnitude_gold_engines.particle_in_box_energy",
           "function_name": "particle_in_box_energy",
           "kwargs": {
             "hbar": 1.0,
@@ -92,7 +92,7 @@
         },
         "stage": "engine_provenance",
         "status": "ok",
-        "timestamp": 1781736137.631298
+        "timestamp": 1781737807.347019
       },
       {
         "message": "dense statevector cost estimated",
@@ -105,18 +105,18 @@
         },
         "stage": "cost_model",
         "status": "ok",
-        "timestamp": 1781736137.631299
+        "timestamp": 1781737807.347023
       },
       {
         "message": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
         "metrics": {
-          "engine_id": "physics_magnitude_quantum_engine.particle_in_box_energy",
+          "engine_id": "physics_magnitude_gold_engines.particle_in_box_energy",
           "function_name": "particle_in_box_energy",
           "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
         },
         "stage": "route",
         "status": "ok",
-        "timestamp": 1781736137.6313012
+        "timestamp": 1781737807.3470268
       },
       {
         "message": "backend executed",
@@ -128,9 +128,9 @@
           "physical_evidence_detail": "Infinite square well eigenvalues are E_n = n^2*pi^2*hbar^2/(2mL^2)",
           "physical_evidence_level": "analytic",
           "reference_truth": "closed_form_infinite_square_well",
-          "repr": "{'engine_id': 'physics_magnitude_quantum_engine.particle_in_box_energy', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_go",
+          "repr": "{'engine_id': 'physics_magnitude_gold_engines.particle_in_box_energy', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold",
           "route": "external_engine",
-          "runtime_ms": 0.21345799905247986,
+          "runtime_ms": 0.45654200948774815,
           "type": "dict",
           "units": "energy",
           "value": 4.934802200544679,
@@ -138,7 +138,7 @@
         },
         "stage": "execute",
         "status": "ok",
-        "timestamp": 1781736137.63153
+        "timestamp": 1781737807.3475158
       },
       {
         "message": "physical evidence reported by backend",
@@ -157,11 +157,11 @@
         },
         "stage": "physical_evidence",
         "status": "ok",
-        "timestamp": 1781736137.631537
+        "timestamp": 1781737807.34753
       }
     ],
     "hash_algorithm": "sha256(stable_json)",
-    "result_hash": "a64dbd99c33c6a5f51536097149768f8fdd71abdd927da08aabf19ebb83007b1",
+    "result_hash": "ba0a8e9b58a8c0d8abb0c4e77525c76596490f4262001345d60d4532ec1bd8f8",
     "result_summary": {
       "abs_error": 0.0,
       "benchmark_family": "Schrodinger",
@@ -170,14 +170,14 @@
       "physical_evidence_detail": "Infinite square well eigenvalues are E_n = n^2*pi^2*hbar^2/(2mL^2)",
       "physical_evidence_level": "analytic",
       "reference_truth": "closed_form_infinite_square_well",
-      "repr": "{'engine_id': 'physics_magnitude_quantum_engine.particle_in_box_energy', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_go",
+      "repr": "{'engine_id': 'physics_magnitude_gold_engines.particle_in_box_energy', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold",
       "type": "dict",
       "units": "energy",
       "value": 4.934802200544679,
       "verification_independence": "analytic_no_solver"
     },
     "trace_schema_version": "capas-runtrace-v2",
-    "workload_hash": "13d394d09e9f7fb099c6da4b3688b9901d7a6824af9e0247e4d87f96775f56a4",
+    "workload_hash": "7e061b23cb8d88897ac433ee2d6a439aec3aade83d39dcd51b1bab74846dd5ac",
     "workload_summary": {
       "budget": {
         "flops_ceiling": 100000000.0,
@@ -185,7 +185,7 @@
         "safety_factor": 0.5
       },
       "engine": {
-        "engine_id": "physics_magnitude_quantum_engine.particle_in_box_energy",
+        "engine_id": "physics_magnitude_gold_engines.particle_in_box_energy",
         "function_name": "particle_in_box_energy",
         "kwargs_hash": "feb8a26e26e200f948f2aa974e38425d8023b520b164e2b7618cd4ba2e35a592",
         "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
@@ -194,6 +194,6 @@
       "n_qubits": 2
     }
   },
-  "trace_hash": "df401c717b8b1769e377e93f5c77c270f6d0d8721e216f14d36aa0315a090391",
+  "trace_hash": "17b79d705cb40d3f39fb9bc0108868084c40508d13db3c955cee0b3de6208f34",
   "trace_id": "trace_008"
 }

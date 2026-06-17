@@ -1,7 +1,7 @@
 {
   "coverage_case": "estimated_bound_candidate",
   "result": {
-    "engine_id": "physics_magnitude_quantum_engine.quimb_mps_estimated_bound",
+    "engine_id": "physics_magnitude_gold_engines.quimb_mps_estimated_bound",
     "function_name": "quimb_mps_estimated_bound",
     "kwargs": {
       "depth": 6,
@@ -48,7 +48,7 @@
             "safety_factor": 0.5
           },
           "engine": {
-            "engine_id": "physics_magnitude_quantum_engine.quimb_mps_estimated_bound",
+            "engine_id": "physics_magnitude_gold_engines.quimb_mps_estimated_bound",
             "function_name": "quimb_mps_estimated_bound",
             "kwargs_hash": "81236cf696b918c94c16989ce258726c99ce4fdaee8db6a02574f0130753ceef",
             "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
@@ -58,7 +58,7 @@
         },
         "stage": "ingest",
         "status": "ok",
-        "timestamp": 1781736210.5261672
+        "timestamp": 1781737955.652818
       },
       {
         "message": "runtime and hardware context recorded",
@@ -84,12 +84,12 @@
         },
         "stage": "runtime_context",
         "status": "ok",
-        "timestamp": 1781736210.526284
+        "timestamp": 1781737955.652952
       },
       {
         "message": "external engine provenance recorded",
         "metrics": {
-          "engine_id": "physics_magnitude_quantum_engine.quimb_mps_estimated_bound",
+          "engine_id": "physics_magnitude_gold_engines.quimb_mps_estimated_bound",
           "function_name": "quimb_mps_estimated_bound",
           "kwargs": {
             "depth": 6,
@@ -102,7 +102,7 @@
         },
         "stage": "engine_provenance",
         "status": "ok",
-        "timestamp": 1781736210.5264268
+        "timestamp": 1781737955.6531
       },
       {
         "message": "dense statevector cost estimated",
@@ -115,18 +115,18 @@
         },
         "stage": "cost_model",
         "status": "ok",
-        "timestamp": 1781736210.526431
+        "timestamp": 1781737955.6531048
       },
       {
         "message": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
         "metrics": {
-          "engine_id": "physics_magnitude_quantum_engine.quimb_mps_estimated_bound",
+          "engine_id": "physics_magnitude_gold_engines.quimb_mps_estimated_bound",
           "function_name": "quimb_mps_estimated_bound",
           "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
         },
         "stage": "route",
         "status": "ok",
-        "timestamp": 1781736210.5264351
+        "timestamp": 1781737955.65311
       },
       {
         "message": "backend executed",
@@ -143,9 +143,9 @@
           "physical_evidence_detail": "Derived from quimb CircuitMPS fidelity_estimate(), which quimb documents as an estimate based on the norm of the truncated state and an approximation to the ideal overlap. Trace distance uses D<=sqrt(1-F_est). This is not a formal truncation certificate.",
           "physical_evidence_level": "estimated_bound",
           "reference_truth": "quimb_circuitmps_truncation_error_tracker",
-          "repr": "{'engine_id': 'physics_magnitude_quantum_engine.quimb_mps_estimated_bound', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude",
+          "repr": "{'engine_id': 'physics_magnitude_gold_engines.quimb_mps_estimated_bound', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_g",
           "route": "external_engine",
-          "runtime_ms": 273.5337920021266,
+          "runtime_ms": 586.8469160050154,
           "source_label": "ESTIMATED (no dense ground truth; quimb fidelity_estimate, not verified)",
           "type": "dict",
           "units": "dimensionless",
@@ -158,7 +158,7 @@
         },
         "stage": "execute",
         "status": "ok",
-        "timestamp": 1781736210.800235
+        "timestamp": 1781737956.240082
       },
       {
         "message": "physical evidence reported by backend",
@@ -184,11 +184,11 @@
         },
         "stage": "physical_evidence",
         "status": "ok",
-        "timestamp": 1781736210.800256
+        "timestamp": 1781737956.240116
       }
     ],
     "hash_algorithm": "sha256(stable_json)",
-    "result_hash": "104d4b69c5639fb6259e13d9e49d0d6cee4907d46b36cba66a66df6e739affc0",
+    "result_hash": "1e89b324aa13abb909cc1c5f9700fd2e3746809fb3e9a32925f50e785c6bf652",
     "result_summary": {
       "abs_error": null,
       "benchmark_family": "TensorNetwork",
@@ -202,7 +202,7 @@
       "physical_evidence_detail": "Derived from quimb CircuitMPS fidelity_estimate(), which quimb documents as an estimate based on the norm of the truncated state and an approximation to the ideal overlap. Trace distance uses D<=sqrt(1-F_est). This is not a formal truncation certificate.",
       "physical_evidence_level": "estimated_bound",
       "reference_truth": "quimb_circuitmps_truncation_error_tracker",
-      "repr": "{'engine_id': 'physics_magnitude_quantum_engine.quimb_mps_estimated_bound', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude",
+      "repr": "{'engine_id': 'physics_magnitude_gold_engines.quimb_mps_estimated_bound', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_g",
       "source_label": "ESTIMATED (no dense ground truth; quimb fidelity_estimate, not verified)",
       "type": "dict",
       "units": "dimensionless",
@@ -214,7 +214,7 @@
       "verification_independence": "algorithmic_error_certificate_same_runtime"
     },
     "trace_schema_version": "capas-runtrace-v2",
-    "workload_hash": "82330974c69ef53c86389a955a208c3777ab640f4646615f66953d79f3fd5ced",
+    "workload_hash": "10f8658a96430f2cae005de9693908601dde735b689286e0b86be7ff7e31353e",
     "workload_summary": {
       "budget": {
         "flops_ceiling": 100000000.0,
@@ -222,7 +222,7 @@
         "safety_factor": 0.5
       },
       "engine": {
-        "engine_id": "physics_magnitude_quantum_engine.quimb_mps_estimated_bound",
+        "engine_id": "physics_magnitude_gold_engines.quimb_mps_estimated_bound",
         "function_name": "quimb_mps_estimated_bound",
         "kwargs_hash": "81236cf696b918c94c16989ce258726c99ce4fdaee8db6a02574f0130753ceef",
         "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
@@ -231,6 +231,6 @@
       "n_qubits": 2
     }
   },
-  "trace_hash": "b83feac909a3ad5078d361629fcd4ef004433311f0c9485c587cb97fa6ebea26",
+  "trace_hash": "9413dab1ee12e4f0eb30099bd064328b1c5a578060ee92c602015e98194e100b",
   "trace_id": "trace_015"
 }

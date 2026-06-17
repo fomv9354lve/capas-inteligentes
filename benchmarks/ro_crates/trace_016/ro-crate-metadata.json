@@ -36,9 +36,9 @@
       "@id": "./",
       "@type": "Dataset",
       "capas:evidenceStatus": "present",
-      "capas:traceHash": "cd83e05ae708f0ce6387e80a0c80604f7376ec88da6b4265b0ae16afe744a019",
+      "capas:traceHash": "ac113c1d0327224b9e2022d6211fd749eb09b31865b9cbe3962d1c676c8fbe31",
       "capas:workflowRunCrateAlignment": "shape-compatible-with-workflow-run-crate-0.5",
-      "capas:workloadHash": "400f17b69ab8ff67668ba640b41bb03e89c8b23463d637553c242b90e073b9c0",
+      "capas:workloadHash": "92e81193f4af354f6368ff90401276e70d6f30970137c0b36832f53074b4b810",
       "conformsTo": [
         {
           "@id": "https://w3id.org/ro/crate/1.1"
@@ -56,7 +56,7 @@
           "@id": "https://example.org/capas-inteligentes/ro-crate/physical-evidence/0.1"
         }
       ],
-      "datePublished": "2026-06-17T22:43:30.802167Z",
+      "datePublished": "2026-06-17T23:12:36.243922Z",
       "description": "RO-Crate package containing a sealed RunTrace, optional PROV export, routing decision, runtime context, and CAPAS physical evidence metadata.",
       "hasPart": [
         {
@@ -72,23 +72,23 @@
           "@id": "entity:workload"
         },
         {
-          "@id": "trace:cd83e05ae708f0ce:routing-decision"
+          "@id": "trace:ac113c1d0327224b:routing-decision"
         },
         {
-          "@id": "trace:cd83e05ae708f0ce:result"
+          "@id": "trace:ac113c1d0327224b:result"
         },
         {
           "@id": "runtrace.prov.json"
         },
         {
-          "@id": "trace:cd83e05ae708f0ce:physical-evidence"
+          "@id": "trace:ac113c1d0327224b:physical-evidence"
         }
       ],
       "mainEntity": {
         "@id": "workflow/capas-costurero-run.cwl"
       },
       "mentions": {
-        "@id": "trace:cd83e05ae708f0ce"
+        "@id": "trace:ac113c1d0327224b"
       },
       "name": "CAPAS traced scientific computation crate"
     },
@@ -124,14 +124,14 @@
         "DigitalDocument"
       ],
       "about": {
-        "@id": "trace:cd83e05ae708f0ce"
+        "@id": "trace:ac113c1d0327224b"
       },
       "encodingFormat": "application/json",
       "name": "Sealed CAPAS RunTrace",
-      "sha256": "552f28ee74128d89174aa92da7efe2d0bf9f9e4f34dbb00d96c8a8a612b76d67"
+      "sha256": "a5ffd3c2b4c5598693c3e49e1df3e8f56f924031677aeef6a3015d5a482a2a21"
     },
     {
-      "@id": "trace:cd83e05ae708f0ce",
+      "@id": "trace:ac113c1d0327224b",
       "@type": "CreateAction",
       "actionStatus": "CompletedActionStatus",
       "agent": {
@@ -142,11 +142,11 @@
       "capas:evidenceStatus": "present",
       "capas:hashAlgorithm": "sha256(stable_json)",
       "capas:routingDecision": {
-        "@id": "trace:cd83e05ae708f0ce:routing-decision"
+        "@id": "trace:ac113c1d0327224b:routing-decision"
       },
-      "capas:traceHash": "cd83e05ae708f0ce6387e80a0c80604f7376ec88da6b4265b0ae16afe744a019",
+      "capas:traceHash": "ac113c1d0327224b9e2022d6211fd749eb09b31865b9cbe3962d1c676c8fbe31",
       "capas:traceSchemaVersion": "capas-runtrace-v2",
-      "endTime": "2026-06-17T22:43:30.802167Z",
+      "endTime": "2026-06-17T23:12:36.243922Z",
       "instrument": {
         "@id": "workflow/capas-costurero-run.cwl"
       },
@@ -155,9 +155,9 @@
         "@id": "entity:workload"
       },
       "result": {
-        "@id": "trace:cd83e05ae708f0ce:result"
+        "@id": "trace:ac113c1d0327224b:result"
       },
-      "startTime": "2026-06-17T22:43:30.800971Z"
+      "startTime": "2026-06-17T23:12:36.241330Z"
     },
     {
       "@id": "workflow/capas-costurero-run.cwl",
@@ -207,7 +207,7 @@
           "safety_factor": 0.5
         },
         "engine": {
-          "engine_id": "physics_magnitude_quantum_engine.schmidt_truncation_formal_bound",
+          "engine_id": "physics_magnitude_gold_engines.schmidt_truncation_formal_bound",
           "function_name": "schmidt_truncation_formal_bound",
           "kwargs_hash": "e2c00a7ebf368bc6a93476590d4fb515b52370833f5a05d827d1d164a0f4a9f3",
           "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
@@ -215,14 +215,14 @@
         "kind": "dense",
         "n_qubits": 2
       },
-      "capas:workloadHash": "400f17b69ab8ff67668ba640b41bb03e89c8b23463d637553c242b90e073b9c0",
+      "capas:workloadHash": "92e81193f4af354f6368ff90401276e70d6f30970137c0b36832f53074b4b810",
       "exampleOfWork": {
         "@id": "parameter:workload"
       },
       "name": "Workload summary"
     },
     {
-      "@id": "trace:cd83e05ae708f0ce:routing-decision",
+      "@id": "trace:ac113c1d0327224b:routing-decision",
       "@type": "Thing",
       "capas:reason": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
       "capas:route": "external_engine",
@@ -236,15 +236,15 @@
       ],
       "encodingFormat": "application/json",
       "name": "W3C PROV-shaped export",
-      "sha256": "a7bfbcb319e8b4a89b8e253d0cb60225c8ce7d36989dac876aa4767047f24703"
+      "sha256": "557974a0bd0bcd7092ba06ee05186fa7b867d77a0573a8d269c68fe93043e74f"
     },
     {
-      "@id": "trace:cd83e05ae708f0ce:result",
+      "@id": "trace:ac113c1d0327224b:result",
       "@type": "Dataset",
       "capas:physicalEvidence": {
-        "@id": "trace:cd83e05ae708f0ce:physical-evidence"
+        "@id": "trace:ac113c1d0327224b:physical-evidence"
       },
-      "capas:resultHash": "094afc7c56f1d07cfa4033a08906c6c273f6c1d15c161982a3328835c589f645",
+      "capas:resultHash": "6a6ef905311ac19bc48e1eb61046ca60b0c5807eb828206fb92ed84bb789c491",
       "capas:summary": {
         "abs_error": 2.7755575615628914e-17,
         "actual_error_squared": 0.11318392617103658,
@@ -261,7 +261,7 @@
         "physical_evidence_detail": "For a normalized state in Schmidt form, the sum of discarded Schmidt values squared is exactly the squared 2-norm error of the optimal rank-k truncation across that cut. This certifies a single-cut state truncation error, not a global DMRG observable error.",
         "physical_evidence_level": "formal_bound",
         "reference_truth": "schmidt_eckart_young_theorem",
-        "repr": "{'engine_id': 'physics_magnitude_quantum_engine.schmidt_truncation_formal_bound', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_mag",
+        "repr": "{'engine_id': 'physics_magnitude_gold_engines.schmidt_truncation_formal_bound', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magni",
         "source_label": "FORMAL (single-cut Schmidt/SVD theorem)",
         "type": "dict",
         "units": "squared_state_norm",
@@ -279,10 +279,10 @@
       "name": "Result summary"
     },
     {
-      "@id": "trace:cd83e05ae708f0ce:physical-evidence",
+      "@id": "trace:ac113c1d0327224b:physical-evidence",
       "@type": "capas:PhysicalEvidence",
       "about": {
-        "@id": "trace:cd83e05ae708f0ce:result"
+        "@id": "trace:ac113c1d0327224b:result"
       },
       "capas:absError": 2.7755575615628914e-17,
       "capas:actualErrorSquared": 0.11318392617103658,
@@ -310,7 +310,7 @@
       "name": "Physical evidence attached to result"
     },
     {
-      "@id": "trace:cd83e05ae708f0ce:event:0:ingest",
+      "@id": "trace:ac113c1d0327224b:event:0:ingest",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -320,7 +320,7 @@
           "safety_factor": 0.5
         },
         "engine": {
-          "engine_id": "physics_magnitude_quantum_engine.schmidt_truncation_formal_bound",
+          "engine_id": "physics_magnitude_gold_engines.schmidt_truncation_formal_bound",
           "function_name": "schmidt_truncation_formal_bound",
           "kwargs_hash": "e2c00a7ebf368bc6a93476590d4fb515b52370833f5a05d827d1d164a0f4a9f3",
           "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
@@ -330,10 +330,10 @@
       },
       "description": "workload accepted",
       "name": "ingest",
-      "startTime": 1781736210.800971
+      "startTime": 1781737956.24133
     },
     {
-      "@id": "trace:cd83e05ae708f0ce:event:1:runtime_context",
+      "@id": "trace:ac113c1d0327224b:event:1:runtime_context",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -358,14 +358,14 @@
       },
       "description": "runtime and hardware context recorded",
       "name": "runtime_context",
-      "startTime": 1781736210.801111
+      "startTime": 1781737956.241583
     },
     {
-      "@id": "trace:cd83e05ae708f0ce:event:2:engine_provenance",
+      "@id": "trace:ac113c1d0327224b:event:2:engine_provenance",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
-        "engine_id": "physics_magnitude_quantum_engine.schmidt_truncation_formal_bound",
+        "engine_id": "physics_magnitude_gold_engines.schmidt_truncation_formal_bound",
         "function_name": "schmidt_truncation_formal_bound",
         "kwargs": {
           "keep_rank": 2,
@@ -377,10 +377,10 @@
       },
       "description": "external engine provenance recorded",
       "name": "engine_provenance",
-      "startTime": 1781736210.8012989
+      "startTime": 1781737956.2419
     },
     {
-      "@id": "trace:cd83e05ae708f0ce:event:3:cost_model",
+      "@id": "trace:ac113c1d0327224b:event:3:cost_model",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -392,23 +392,23 @@
       },
       "description": "dense statevector cost estimated",
       "name": "cost_model",
-      "startTime": 1781736210.801304
+      "startTime": 1781737956.241909
     },
     {
-      "@id": "trace:cd83e05ae708f0ce:event:4:route",
+      "@id": "trace:ac113c1d0327224b:event:4:route",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
-        "engine_id": "physics_magnitude_quantum_engine.schmidt_truncation_formal_bound",
+        "engine_id": "physics_magnitude_gold_engines.schmidt_truncation_formal_bound",
         "function_name": "schmidt_truncation_formal_bound",
         "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
       },
       "description": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
       "name": "route",
-      "startTime": 1781736210.8013089
+      "startTime": 1781737956.241917
     },
     {
-      "@id": "trace:cd83e05ae708f0ce:event:5:execute",
+      "@id": "trace:ac113c1d0327224b:event:5:execute",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -427,9 +427,9 @@
         "physical_evidence_detail": "For a normalized state in Schmidt form, the sum of discarded Schmidt values squared is exactly the squared 2-norm error of the optimal rank-k truncation across that cut. This certifies a single-cut state truncation error, not a global DMRG observable error.",
         "physical_evidence_level": "formal_bound",
         "reference_truth": "schmidt_eckart_young_theorem",
-        "repr": "{'engine_id': 'physics_magnitude_quantum_engine.schmidt_truncation_formal_bound', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_mag",
+        "repr": "{'engine_id': 'physics_magnitude_gold_engines.schmidt_truncation_formal_bound', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magni",
         "route": "external_engine",
-        "runtime_ms": 0.7874170260038227,
+        "runtime_ms": 1.8416669918224216,
         "source_label": "FORMAL (single-cut Schmidt/SVD theorem)",
         "type": "dict",
         "units": "squared_state_norm",
@@ -443,10 +443,10 @@
       },
       "description": "backend executed",
       "name": "execute",
-      "startTime": 1781736210.802146
+      "startTime": 1781737956.243884
     },
     {
-      "@id": "trace:cd83e05ae708f0ce:event:6:physical_evidence",
+      "@id": "trace:ac113c1d0327224b:event:6:physical_evidence",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -476,7 +476,7 @@
       },
       "description": "physical evidence reported by backend",
       "name": "physical_evidence",
-      "startTime": 1781736210.802167
+      "startTime": 1781737956.243922
     }
   ]
 }

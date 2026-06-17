@@ -1,0 +1,274 @@
+{
+  "coverage_case": "universal_invariant_adversarial_failure",
+  "result": {
+    "engine_id": "universal_invariant_adversarial_engines.heisenberg_wrong_sign_passes_local_properties",
+    "function_name": "heisenberg_wrong_sign_passes_local_properties",
+    "kwargs": {},
+    "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py",
+    "module_sha256": "b7eba51ae02eb6648cb48486fbedacf0e6d14276f283cfc366ee5ee8cd0d106d",
+    "result": {
+      "abs_error": 0.5,
+      "benchmark_family": "Heisenberg",
+      "claim_scope": "minimal falsation case only; shows an analytic physical invariant can catch a generator error missed by local property tests",
+      "coverage_case": "universal_invariant_adversarial_failure",
+      "expected": -0.75,
+      "generator_error": "wrong_coupling_sign",
+      "invariant_caught": true,
+      "local_oracle_caught": false,
+      "local_property_tests": {
+        "exchange_symmetric": true,
+        "finite_entries": true,
+        "hermitian": true,
+        "real_spectrum": true,
+        "trace_zero": true
+      },
+      "local_property_tests_pass": true,
+      "observable": "Generated Heisenberg dimer ground-state energy with wrong coupling sign",
+      "physical_evidence_detail": "Universal analytic invariant for antiferromagnetic H = J S1.S2 requires E0 = -3J/4; the generated Hamiltonian uses the wrong sign.",
+      "physical_evidence_level": "analytic",
+      "pre_registered_success_criterion": "local_property_tests_pass is true and universal_anchor_pass is false",
+      "reference_truth": "closed_form_antiferromagnetic_singlet_ground_energy",
+      "structure_mapping": {
+        "generator_output": "Hamiltonian implementation",
+        "local_oracle_relation": "generic matrix properties preserved by sign flip",
+        "preserved_relation": "same generated object judged by both local properties and independent physics",
+        "universal_oracle_relation": "model-specific singlet/triplet spectrum invariant"
+      },
+      "units": "energy",
+      "universal_anchor": "E0_antiferromagnetic_heisenberg_dimer=-3J/4",
+      "universal_anchor_pass": false,
+      "value": -0.25,
+      "verification_independence": "analytic_no_solver"
+    }
+  },
+  "trace": {
+    "decision_reason": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+    "decision_route": "external_engine",
+    "error": null,
+    "events": [
+      {
+        "message": "workload accepted",
+        "metrics": {
+          "budget": {
+            "flops_ceiling": 100000000.0,
+            "memory_budget_bytes": 536870912,
+            "safety_factor": 0.5
+          },
+          "engine": {
+            "engine_id": "universal_invariant_adversarial_engines.heisenberg_wrong_sign_passes_local_properties",
+            "function_name": "heisenberg_wrong_sign_passes_local_properties",
+            "kwargs_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+            "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py"
+          },
+          "kind": "dense",
+          "n_qubits": 2
+        },
+        "stage": "ingest",
+        "status": "ok",
+        "timestamp": 1781737955.6403499
+      },
+      {
+        "message": "runtime and hardware context recorded",
+        "metrics": {
+          "cotengra_available": true,
+          "cotengra_version": "0.8.1",
+          "machine": "arm64",
+          "mlx_probe": "skipped_in_default_trace; use apple_silicon_thermal_routing.py for Metal/MLX device probes",
+          "numpy_available": true,
+          "numpy_version": "2.4.6",
+          "platform": "macOS-26.5.1-arm64-arm-64bit",
+          "processor": "arm",
+          "python_executable": "/Users/kreniq/physics-magnitude-lab/.pixi/envs/default/bin/python",
+          "python_version": "3.12.13",
+          "qiskit_aer_available": false,
+          "qiskit_aer_error": "ModuleNotFoundError: No module named 'qiskit_aer'",
+          "quimb_available": true,
+          "quimb_version": "1.14.0",
+          "scipy_available": true,
+          "scipy_version": "1.17.1",
+          "stim_available": true,
+          "stim_version": "1.16.0"
+        },
+        "stage": "runtime_context",
+        "status": "ok",
+        "timestamp": 1781737955.640834
+      },
+      {
+        "message": "external engine provenance recorded",
+        "metrics": {
+          "engine_id": "universal_invariant_adversarial_engines.heisenberg_wrong_sign_passes_local_properties",
+          "function_name": "heisenberg_wrong_sign_passes_local_properties",
+          "kwargs": {},
+          "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py",
+          "module_sha256": "b7eba51ae02eb6648cb48486fbedacf0e6d14276f283cfc366ee5ee8cd0d106d"
+        },
+        "stage": "engine_provenance",
+        "status": "ok",
+        "timestamp": 1781737955.6411269
+      },
+      {
+        "message": "dense statevector cost estimated",
+        "metrics": {
+          "memory_viable": true,
+          "n_qubits": 2,
+          "route": "dense",
+          "statevector_bytes": 64,
+          "usable_memory_bytes": 268435456.0
+        },
+        "stage": "cost_model",
+        "status": "ok",
+        "timestamp": 1781737955.641145
+      },
+      {
+        "message": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+        "metrics": {
+          "engine_id": "universal_invariant_adversarial_engines.heisenberg_wrong_sign_passes_local_properties",
+          "function_name": "heisenberg_wrong_sign_passes_local_properties",
+          "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py"
+        },
+        "stage": "route",
+        "status": "ok",
+        "timestamp": 1781737955.641152
+      },
+      {
+        "message": "backend executed",
+        "metrics": {
+          "abs_error": 0.5,
+          "benchmark_family": "Heisenberg",
+          "claim_scope": "minimal falsation case only; shows an analytic physical invariant can catch a generator error missed by local property tests",
+          "expected": -0.75,
+          "generator_error": "wrong_coupling_sign",
+          "invariant_caught": true,
+          "local_oracle_caught": false,
+          "local_property_tests": {
+            "exchange_symmetric": true,
+            "finite_entries": true,
+            "hermitian": true,
+            "real_spectrum": true,
+            "trace_zero": true
+          },
+          "local_property_tests_pass": true,
+          "observable": "Generated Heisenberg dimer ground-state energy with wrong coupling sign",
+          "physical_evidence_detail": "Universal analytic invariant for antiferromagnetic H = J S1.S2 requires E0 = -3J/4; the generated Hamiltonian uses the wrong sign.",
+          "physical_evidence_level": "analytic",
+          "pre_registered_success_criterion": "local_property_tests_pass is true and universal_anchor_pass is false",
+          "reference_truth": "closed_form_antiferromagnetic_singlet_ground_energy",
+          "repr": "{'engine_id': 'universal_invariant_adversarial_engines.heisenberg_wrong_sign_passes_local_properties', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/int",
+          "route": "external_engine",
+          "runtime_ms": 4.3347499740775675,
+          "structure_mapping": {
+            "generator_output": "Hamiltonian implementation",
+            "local_oracle_relation": "generic matrix properties preserved by sign flip",
+            "preserved_relation": "same generated object judged by both local properties and independent physics",
+            "universal_oracle_relation": "model-specific singlet/triplet spectrum invariant"
+          },
+          "type": "dict",
+          "units": "energy",
+          "universal_anchor": "E0_antiferromagnetic_heisenberg_dimer=-3J/4",
+          "universal_anchor_pass": false,
+          "value": -0.25,
+          "verification_independence": "analytic_no_solver"
+        },
+        "stage": "execute",
+        "status": "ok",
+        "timestamp": 1781737955.6455941
+      },
+      {
+        "message": "physical evidence reported by backend",
+        "metrics": {
+          "abs_error": 0.5,
+          "benchmark_family": "Heisenberg",
+          "claim_scope": "minimal falsation case only; shows an analytic physical invariant can catch a generator error missed by local property tests",
+          "evidence_hash": "b6e9ad438d1fd5cb3dbb06280ff85ad6e6c4bb16203f622497f69d9678b5579f",
+          "expected": -0.75,
+          "generator_error": "wrong_coupling_sign",
+          "invariant_caught": true,
+          "local_oracle_caught": false,
+          "local_property_tests": {
+            "exchange_symmetric": true,
+            "finite_entries": true,
+            "hermitian": true,
+            "real_spectrum": true,
+            "trace_zero": true
+          },
+          "local_property_tests_pass": true,
+          "observable": "Generated Heisenberg dimer ground-state energy with wrong coupling sign",
+          "physical_evidence_detail": "Universal analytic invariant for antiferromagnetic H = J S1.S2 requires E0 = -3J/4; the generated Hamiltonian uses the wrong sign.",
+          "physical_evidence_level": "analytic",
+          "pre_registered_success_criterion": "local_property_tests_pass is true and universal_anchor_pass is false",
+          "reference_truth": "closed_form_antiferromagnetic_singlet_ground_energy",
+          "structure_mapping": {
+            "generator_output": "Hamiltonian implementation",
+            "local_oracle_relation": "generic matrix properties preserved by sign flip",
+            "preserved_relation": "same generated object judged by both local properties and independent physics",
+            "universal_oracle_relation": "model-specific singlet/triplet spectrum invariant"
+          },
+          "units": "energy",
+          "universal_anchor": "E0_antiferromagnetic_heisenberg_dimer=-3J/4",
+          "universal_anchor_pass": false,
+          "value": -0.25,
+          "verification_independence": "analytic_no_solver"
+        },
+        "stage": "physical_evidence",
+        "status": "ok",
+        "timestamp": 1781737955.645647
+      }
+    ],
+    "hash_algorithm": "sha256(stable_json)",
+    "result_hash": "e827d80e3f3135d4c6d0f5abff219455064272b5c5f4f135bd2607dced461f55",
+    "result_summary": {
+      "abs_error": 0.5,
+      "benchmark_family": "Heisenberg",
+      "claim_scope": "minimal falsation case only; shows an analytic physical invariant can catch a generator error missed by local property tests",
+      "expected": -0.75,
+      "generator_error": "wrong_coupling_sign",
+      "invariant_caught": true,
+      "local_oracle_caught": false,
+      "local_property_tests": {
+        "exchange_symmetric": true,
+        "finite_entries": true,
+        "hermitian": true,
+        "real_spectrum": true,
+        "trace_zero": true
+      },
+      "local_property_tests_pass": true,
+      "observable": "Generated Heisenberg dimer ground-state energy with wrong coupling sign",
+      "physical_evidence_detail": "Universal analytic invariant for antiferromagnetic H = J S1.S2 requires E0 = -3J/4; the generated Hamiltonian uses the wrong sign.",
+      "physical_evidence_level": "analytic",
+      "pre_registered_success_criterion": "local_property_tests_pass is true and universal_anchor_pass is false",
+      "reference_truth": "closed_form_antiferromagnetic_singlet_ground_energy",
+      "repr": "{'engine_id': 'universal_invariant_adversarial_engines.heisenberg_wrong_sign_passes_local_properties', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/int",
+      "structure_mapping": {
+        "generator_output": "Hamiltonian implementation",
+        "local_oracle_relation": "generic matrix properties preserved by sign flip",
+        "preserved_relation": "same generated object judged by both local properties and independent physics",
+        "universal_oracle_relation": "model-specific singlet/triplet spectrum invariant"
+      },
+      "type": "dict",
+      "units": "energy",
+      "universal_anchor": "E0_antiferromagnetic_heisenberg_dimer=-3J/4",
+      "universal_anchor_pass": false,
+      "value": -0.25,
+      "verification_independence": "analytic_no_solver"
+    },
+    "trace_schema_version": "capas-runtrace-v2",
+    "workload_hash": "b1dbf9afac782ec807345d88e2939968b07adc7a73bad7e050766c7e142da146",
+    "workload_summary": {
+      "budget": {
+        "flops_ceiling": 100000000.0,
+        "memory_budget_bytes": 536870912,
+        "safety_factor": 0.5
+      },
+      "engine": {
+        "engine_id": "universal_invariant_adversarial_engines.heisenberg_wrong_sign_passes_local_properties",
+        "function_name": "heisenberg_wrong_sign_passes_local_properties",
+        "kwargs_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py"
+      },
+      "kind": "dense",
+      "n_qubits": 2
+    }
+  },
+  "trace_hash": "137c1a4e781fa2aaacce09fff6fcc0df61cc96b1ce80b722f15c0b6745a1465d",
+  "trace_id": "trace_028"
+}

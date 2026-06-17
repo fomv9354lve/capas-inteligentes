@@ -22,6 +22,7 @@ EXPECTED = {
     "trace_025": ("quantum_chemistry_polyatomic_electronic_vibrational", "present", True, "CompletedActionStatus"),
     "trace_026": ("quantum_chemistry_larger_polyatomic_electronic_vibrational", "present", True, "CompletedActionStatus"),
     "trace_027": ("quantum_chemistry_basis_convergence_to_experiment", "present", True, "CompletedActionStatus"),
+    "trace_028": ("universal_invariant_adversarial_failure", "present", True, "CompletedActionStatus"),
     "trace_012": ("no_evidence_success", "none_declared", False, "CompletedActionStatus"),
     "trace_013": ("backend_failed", "not_applicable_failed", False, "FailedActionStatus"),
     "trace_014": ("rejected_by_router", "not_applicable_rejected", False, "CompletedActionStatus"),
@@ -61,6 +62,13 @@ def metadata_node(crate: dict) -> dict:
 
 def has_physical_evidence(crate: dict) -> bool:
     return any(node.get("@type") == "capas:PhysicalEvidence" for node in crate.get("@graph", []))
+
+
+def physical_evidence_node(crate: dict) -> dict:
+    for node in crate.get("@graph", []):
+        if node.get("@type") == "capas:PhysicalEvidence":
+            return node
+    raise AssertionError("missing PhysicalEvidence node")
 
 
 def type_contains(node: dict, expected: str) -> bool:
@@ -122,6 +130,15 @@ def main() -> int:
             report_path = CRATES / "ro_crate_export_report.json"
             report = json.loads(report_path.read_text(encoding="utf-8"))
             assert report[trace_id]["coverage_case"] == coverage, "wrong coverage_case"
+            if coverage == "universal_invariant_adversarial_failure":
+                evidence = physical_evidence_node(crate)
+                assert evidence.get("capas:localPropertyTestsPass") is True, "local property tests did not pass"
+                assert evidence.get("capas:localOracleCaught") is False, "local oracle should not catch this adversarial case"
+                assert evidence.get("capas:universalAnchor"), "missing universal anchor"
+                assert evidence.get("capas:universalAnchorPass") is False, "universal anchor should fail this adversarial case"
+                assert evidence.get("capas:invariantCaught") is True, "invariant did not catch the adversarial case"
+                assert evidence.get("capas:preRegisteredSuccessCriterion"), "missing pre-registered success criterion"
+                assert evidence.get("capas:claimScope"), "missing claim scope"
             print(f"{trace_id}: ok ({coverage}, {status}, {action_status})")
         except Exception as exc:
             failures.append(f"{trace_id}: {type(exc).__name__}: {exc}")

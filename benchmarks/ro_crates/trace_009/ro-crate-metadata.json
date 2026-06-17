@@ -36,9 +36,9 @@
       "@id": "./",
       "@type": "Dataset",
       "capas:evidenceStatus": "present",
-      "capas:traceHash": "77622bfd81c68a73d03423a880ed56a356bcaac22c7d4f0121f57d31c63b08e6",
+      "capas:traceHash": "63140b6e4dfad944b14e0246fbb69fd4f9b8c7b9e8aa82f5eba9d3986bfe7cb6",
       "capas:workflowRunCrateAlignment": "shape-compatible-with-workflow-run-crate-0.5",
-      "capas:workloadHash": "3f3d11188a865293d577c2988b361ab6f919506e9570e3f91f1b8c9ebb7e5a4e",
+      "capas:workloadHash": "737b473eb5f7757b0833eca792a5724a70164e109ddebae023ff935b200d8232",
       "conformsTo": [
         {
           "@id": "https://w3id.org/ro/crate/1.1"
@@ -56,7 +56,7 @@
           "@id": "https://example.org/capas-inteligentes/ro-crate/physical-evidence/0.1"
         }
       ],
-      "datePublished": "2026-06-17T22:42:17.632163Z",
+      "datePublished": "2026-06-17T23:10:07.348766Z",
       "description": "RO-Crate package containing a sealed RunTrace, optional PROV export, routing decision, runtime context, and CAPAS physical evidence metadata.",
       "hasPart": [
         {
@@ -72,23 +72,23 @@
           "@id": "entity:workload"
         },
         {
-          "@id": "trace:77622bfd81c68a73:routing-decision"
+          "@id": "trace:63140b6e4dfad944:routing-decision"
         },
         {
-          "@id": "trace:77622bfd81c68a73:result"
+          "@id": "trace:63140b6e4dfad944:result"
         },
         {
           "@id": "runtrace.prov.json"
         },
         {
-          "@id": "trace:77622bfd81c68a73:physical-evidence"
+          "@id": "trace:63140b6e4dfad944:physical-evidence"
         }
       ],
       "mainEntity": {
         "@id": "workflow/capas-costurero-run.cwl"
       },
       "mentions": {
-        "@id": "trace:77622bfd81c68a73"
+        "@id": "trace:63140b6e4dfad944"
       },
       "name": "CAPAS traced scientific computation crate"
     },
@@ -124,14 +124,14 @@
         "DigitalDocument"
       ],
       "about": {
-        "@id": "trace:77622bfd81c68a73"
+        "@id": "trace:63140b6e4dfad944"
       },
       "encodingFormat": "application/json",
       "name": "Sealed CAPAS RunTrace",
-      "sha256": "1104d006834b518bccca6715909cca156915656912ffb1fd4a85e32f460aa4eb"
+      "sha256": "3d845e23204922ac33a4d7e2dfa08385a362b5675ab53d30f621d89dc72cf13c"
     },
     {
-      "@id": "trace:77622bfd81c68a73",
+      "@id": "trace:63140b6e4dfad944",
       "@type": "CreateAction",
       "actionStatus": "CompletedActionStatus",
       "agent": {
@@ -142,11 +142,11 @@
       "capas:evidenceStatus": "present",
       "capas:hashAlgorithm": "sha256(stable_json)",
       "capas:routingDecision": {
-        "@id": "trace:77622bfd81c68a73:routing-decision"
+        "@id": "trace:63140b6e4dfad944:routing-decision"
       },
-      "capas:traceHash": "77622bfd81c68a73d03423a880ed56a356bcaac22c7d4f0121f57d31c63b08e6",
+      "capas:traceHash": "63140b6e4dfad944b14e0246fbb69fd4f9b8c7b9e8aa82f5eba9d3986bfe7cb6",
       "capas:traceSchemaVersion": "capas-runtrace-v2",
-      "endTime": "2026-06-17T22:42:17.632163Z",
+      "endTime": "2026-06-17T23:10:07.348766Z",
       "instrument": {
         "@id": "workflow/capas-costurero-run.cwl"
       },
@@ -155,9 +155,9 @@
         "@id": "entity:workload"
       },
       "result": {
-        "@id": "trace:77622bfd81c68a73:result"
+        "@id": "trace:63140b6e4dfad944:result"
       },
-      "startTime": "2026-06-17T22:42:17.631821Z"
+      "startTime": "2026-06-17T23:10:07.348090Z"
     },
     {
       "@id": "workflow/capas-costurero-run.cwl",
@@ -207,7 +207,7 @@
           "safety_factor": 0.5
         },
         "engine": {
-          "engine_id": "physics_magnitude_quantum_engine.harmonic_oscillator_energy",
+          "engine_id": "physics_magnitude_gold_engines.harmonic_oscillator_energy",
           "function_name": "harmonic_oscillator_energy",
           "kwargs_hash": "b8afb288934a359ea7577c1040eb0665203cc8f4c8a62aeef51a4a0abd1b514c",
           "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
@@ -215,14 +215,14 @@
         "kind": "dense",
         "n_qubits": 2
       },
-      "capas:workloadHash": "3f3d11188a865293d577c2988b361ab6f919506e9570e3f91f1b8c9ebb7e5a4e",
+      "capas:workloadHash": "737b473eb5f7757b0833eca792a5724a70164e109ddebae023ff935b200d8232",
       "exampleOfWork": {
         "@id": "parameter:workload"
       },
       "name": "Workload summary"
     },
     {
-      "@id": "trace:77622bfd81c68a73:routing-decision",
+      "@id": "trace:63140b6e4dfad944:routing-decision",
       "@type": "Thing",
       "capas:reason": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
       "capas:route": "external_engine",
@@ -236,15 +236,15 @@
       ],
       "encodingFormat": "application/json",
       "name": "W3C PROV-shaped export",
-      "sha256": "183b94ba5a46dcd9fb9fe6483804ba3e8ef4c0827d184fc50c49132bf9b3cee4"
+      "sha256": "46e5c3554f57da096794344bac64bd963b6ecacda5ba23101664cce3815dd360"
     },
     {
-      "@id": "trace:77622bfd81c68a73:result",
+      "@id": "trace:63140b6e4dfad944:result",
       "@type": "Dataset",
       "capas:physicalEvidence": {
-        "@id": "trace:77622bfd81c68a73:physical-evidence"
+        "@id": "trace:63140b6e4dfad944:physical-evidence"
       },
-      "capas:resultHash": "6868637343c447a3800ad3a734fc28a73d97ca3a087131851352420d6f59c9a4",
+      "capas:resultHash": "53182201ab0fc5dddea5a7d8af51705d901d96e4b976238261d21e6492d32267",
       "capas:summary": {
         "abs_error": 0.0,
         "benchmark_family": "Schrodinger",
@@ -253,7 +253,7 @@
         "physical_evidence_detail": "Harmonic oscillator eigenvalues are E_n = hbar*omega*(n + 1/2)",
         "physical_evidence_level": "analytic",
         "reference_truth": "closed_form_harmonic_oscillator",
-        "repr": "{'engine_id': 'physics_magnitude_quantum_engine.harmonic_oscillator_energy', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitud",
+        "repr": "{'engine_id': 'physics_magnitude_gold_engines.harmonic_oscillator_energy', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_",
         "type": "dict",
         "units": "energy",
         "value": 0.5,
@@ -265,10 +265,10 @@
       "name": "Result summary"
     },
     {
-      "@id": "trace:77622bfd81c68a73:physical-evidence",
+      "@id": "trace:63140b6e4dfad944:physical-evidence",
       "@type": "capas:PhysicalEvidence",
       "about": {
-        "@id": "trace:77622bfd81c68a73:result"
+        "@id": "trace:63140b6e4dfad944:result"
       },
       "capas:absError": 0.0,
       "capas:benchmarkFamily": "Schrodinger",
@@ -284,7 +284,7 @@
       "name": "Physical evidence attached to result"
     },
     {
-      "@id": "trace:77622bfd81c68a73:event:0:ingest",
+      "@id": "trace:63140b6e4dfad944:event:0:ingest",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -294,7 +294,7 @@
           "safety_factor": 0.5
         },
         "engine": {
-          "engine_id": "physics_magnitude_quantum_engine.harmonic_oscillator_energy",
+          "engine_id": "physics_magnitude_gold_engines.harmonic_oscillator_energy",
           "function_name": "harmonic_oscillator_energy",
           "kwargs_hash": "b8afb288934a359ea7577c1040eb0665203cc8f4c8a62aeef51a4a0abd1b514c",
           "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
@@ -304,10 +304,10 @@
       },
       "description": "workload accepted",
       "name": "ingest",
-      "startTime": 1781736137.6318212
+      "startTime": 1781737807.3480902
     },
     {
-      "@id": "trace:77622bfd81c68a73:event:1:runtime_context",
+      "@id": "trace:63140b6e4dfad944:event:1:runtime_context",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -332,14 +332,14 @@
       },
       "description": "runtime and hardware context recorded",
       "name": "runtime_context",
-      "startTime": 1781736137.631865
+      "startTime": 1781737807.348178
     },
     {
-      "@id": "trace:77622bfd81c68a73:event:2:engine_provenance",
+      "@id": "trace:63140b6e4dfad944:event:2:engine_provenance",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
-        "engine_id": "physics_magnitude_quantum_engine.harmonic_oscillator_energy",
+        "engine_id": "physics_magnitude_gold_engines.harmonic_oscillator_energy",
         "function_name": "harmonic_oscillator_energy",
         "kwargs": {
           "hbar": 1.0,
@@ -351,10 +351,10 @@
       },
       "description": "external engine provenance recorded",
       "name": "engine_provenance",
-      "startTime": 1781736137.631932
+      "startTime": 1781737807.348299
     },
     {
-      "@id": "trace:77622bfd81c68a73:event:3:cost_model",
+      "@id": "trace:63140b6e4dfad944:event:3:cost_model",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -366,23 +366,23 @@
       },
       "description": "dense statevector cost estimated",
       "name": "cost_model",
-      "startTime": 1781736137.631934
+      "startTime": 1781737807.3483021
     },
     {
-      "@id": "trace:77622bfd81c68a73:event:4:route",
+      "@id": "trace:63140b6e4dfad944:event:4:route",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
-        "engine_id": "physics_magnitude_quantum_engine.harmonic_oscillator_energy",
+        "engine_id": "physics_magnitude_gold_engines.harmonic_oscillator_energy",
         "function_name": "harmonic_oscillator_energy",
         "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
       },
       "description": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
       "name": "route",
-      "startTime": 1781736137.631936
+      "startTime": 1781737807.348306
     },
     {
-      "@id": "trace:77622bfd81c68a73:event:5:execute",
+      "@id": "trace:63140b6e4dfad944:event:5:execute",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -393,9 +393,9 @@
         "physical_evidence_detail": "Harmonic oscillator eigenvalues are E_n = hbar*omega*(n + 1/2)",
         "physical_evidence_level": "analytic",
         "reference_truth": "closed_form_harmonic_oscillator",
-        "repr": "{'engine_id': 'physics_magnitude_quantum_engine.harmonic_oscillator_energy', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitud",
+        "repr": "{'engine_id': 'physics_magnitude_gold_engines.harmonic_oscillator_energy', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_",
         "route": "external_engine",
-        "runtime_ms": 0.2058749960269779,
+        "runtime_ms": 0.41808298556134105,
         "type": "dict",
         "units": "energy",
         "value": 0.5,
@@ -403,10 +403,10 @@
       },
       "description": "backend executed",
       "name": "execute",
-      "startTime": 1781736137.632156
+      "startTime": 1781737807.348753
     },
     {
-      "@id": "trace:77622bfd81c68a73:event:6:physical_evidence",
+      "@id": "trace:63140b6e4dfad944:event:6:physical_evidence",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -424,7 +424,7 @@
       },
       "description": "physical evidence reported by backend",
       "name": "physical_evidence",
-      "startTime": 1781736137.632163
+      "startTime": 1781737807.3487659
     }
   ]
 }
