@@ -5,7 +5,7 @@
     "function_name": "product_entropy_zero",
     "kwargs": {},
     "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
-    "module_sha256": "026c0adea6ed83beca79d542c681f096fa3aabe4df62f7bbeadefdeba372b8de",
+    "module_sha256": "3cc9ed6ed3b290e231510c04fcd1f11e14a6a6ad24d1fc8f04257024bc4ef4d7",
     "result": {
       "abs_error": 0.0,
       "expected": 0.0,
@@ -40,7 +40,7 @@
         },
         "stage": "ingest",
         "status": "ok",
-        "timestamp": 1781731416.597815
+        "timestamp": 1781731995.283652
       },
       {
         "message": "runtime and hardware context recorded",
@@ -53,10 +53,10 @@
           "numpy_version": "2.4.6",
           "platform": "macOS-26.5.1-arm64-arm-64bit",
           "processor": "arm",
-          "python_executable": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/physics_quantum/physics-magnitude-lab/.pixi/envs/default/bin/python",
+          "python_executable": "/Users/kreniq/physics-magnitude-lab/.pixi/envs/default/bin/python",
           "python_version": "3.12.13",
-          "qiskit_aer_available": true,
-          "qiskit_aer_version": "0.17.2",
+          "qiskit_aer_available": false,
+          "qiskit_aer_error": "ModuleNotFoundError: No module named 'qiskit_aer'",
           "quimb_available": true,
           "quimb_version": "1.14.0",
           "scipy_available": true,
@@ -66,7 +66,7 @@
         },
         "stage": "runtime_context",
         "status": "ok",
-        "timestamp": 1781731416.597837
+        "timestamp": 1781731995.28399
       },
       {
         "message": "external engine provenance recorded",
@@ -75,11 +75,11 @@
           "function_name": "product_entropy_zero",
           "kwargs": {},
           "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
-          "module_sha256": "026c0adea6ed83beca79d542c681f096fa3aabe4df62f7bbeadefdeba372b8de"
+          "module_sha256": "3cc9ed6ed3b290e231510c04fcd1f11e14a6a6ad24d1fc8f04257024bc4ef4d7"
         },
         "stage": "engine_provenance",
         "status": "ok",
-        "timestamp": 1781731416.597972
+        "timestamp": 1781731995.28436
       },
       {
         "message": "dense statevector cost estimated",
@@ -92,7 +92,7 @@
         },
         "stage": "cost_model",
         "status": "ok",
-        "timestamp": 1781731416.5979772
+        "timestamp": 1781731995.2843719
       },
       {
         "message": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
@@ -103,7 +103,7 @@
         },
         "stage": "route",
         "status": "ok",
-        "timestamp": 1781731416.597982
+        "timestamp": 1781731995.284381
       },
       {
         "message": "backend executed",
@@ -115,14 +115,14 @@
           "physical_evidence_level": "analytic",
           "repr": "{'engine_id': 'physics_magnitude_quantum_engine.product_entropy_zero', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold",
           "route": "external_engine",
-          "runtime_ms": 0.7727909833192825,
+          "runtime_ms": 2.471749990945682,
           "type": "dict",
           "units": "nats",
           "value": -0.0
         },
         "stage": "execute",
         "status": "ok",
-        "timestamp": 1781731416.598788
+        "timestamp": 1781731995.286973
       },
       {
         "message": "physical evidence reported by backend",
@@ -138,7 +138,7 @@
         },
         "stage": "physical_evidence",
         "status": "ok",
-        "timestamp": 1781731416.5988019
+        "timestamp": 1781731995.286998
       }
     ],
     "hash_algorithm": "sha256(stable_json)",
@@ -172,6 +172,6 @@
       "n_qubits": 2
     }
   },
-  "trace_hash": "722da71bfd8c57a7c5e5f8d9c375732b49aea1fe6b8c4b940b4213189aaacd82",
+  "trace_hash": "1ff6bde1af1802b0e1141622df7f96a34bd5eb0d3e9c6beeeff83c86069de1e0",
   "trace_id": "trace_003"
 }

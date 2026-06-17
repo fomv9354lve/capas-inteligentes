@@ -29,7 +29,7 @@
       "@id": "./",
       "@type": "Dataset",
       "capas:evidenceStatus": "not_applicable_rejected",
-      "capas:traceHash": "20e7a1385c71219b98f2af9d7dec474946b8bea9b46f52506e50e11702e757d8",
+      "capas:traceHash": "6dc27b11dffda8555ba348c4c28c231ae63dced41555ab2d4f8ae3ed3f485dc2",
       "capas:workflowRunCrateAlignment": "shape-compatible-with-workflow-run-ro-crate-v0",
       "capas:workloadHash": "f88e2ad357171326cc090d4f5721a3ff4ff5bfba123dd554b119bc94f83fd70e",
       "conformsTo": [
@@ -43,7 +43,7 @@
           "@id": "https://example.org/capas-inteligentes/ro-crate/physical-evidence/0.1"
         }
       ],
-      "datePublished": "2026-06-17T21:23:38.730346Z",
+      "datePublished": "2026-06-17T21:33:44.350162Z",
       "description": "RO-Crate package containing a sealed RunTrace, optional PROV export, routing decision, runtime context, and CAPAS physical evidence metadata.",
       "hasPart": [
         {
@@ -59,7 +59,7 @@
           "@id": "entity:workload"
         },
         {
-          "@id": "trace:20e7a1385c71219b:routing-decision"
+          "@id": "trace:6dc27b11dffda855:routing-decision"
         },
         {
           "@id": "runtrace.prov.json"
@@ -74,14 +74,14 @@
         "DigitalDocument"
       ],
       "about": {
-        "@id": "trace:20e7a1385c71219b"
+        "@id": "trace:6dc27b11dffda855"
       },
       "encodingFormat": "application/json",
       "name": "Sealed CAPAS RunTrace",
-      "sha256": "b79c11e8269723e26c2cbf8a57a5f6b38e4dc070605b298f8f4f9cabb133a914"
+      "sha256": "0b1dd13a4a4176332c0a7be1e996070cf3b057829dee278eaaebbf85f4345555"
     },
     {
-      "@id": "trace:20e7a1385c71219b",
+      "@id": "trace:6dc27b11dffda855",
       "@type": "CreateAction",
       "actionStatus": "CompletedActionStatus",
       "agent": {
@@ -92,11 +92,11 @@
       "capas:evidenceStatus": "not_applicable_rejected",
       "capas:hashAlgorithm": "sha256(stable_json)",
       "capas:routingDecision": {
-        "@id": "trace:20e7a1385c71219b:routing-decision"
+        "@id": "trace:6dc27b11dffda855:routing-decision"
       },
-      "capas:traceHash": "20e7a1385c71219b98f2af9d7dec474946b8bea9b46f52506e50e11702e757d8",
+      "capas:traceHash": "6dc27b11dffda8555ba348c4c28c231ae63dced41555ab2d4f8ae3ed3f485dc2",
       "capas:traceSchemaVersion": "capas-runtrace-v2",
-      "endTime": "2026-06-17T21:23:38.730346Z",
+      "endTime": "2026-06-17T21:33:44.350162Z",
       "instrument": {
         "@id": "workflow/capas-costurero-run.py"
       },
@@ -104,7 +104,7 @@
       "object": {
         "@id": "entity:workload"
       },
-      "startTime": "2026-06-17T21:23:38.730289Z"
+      "startTime": "2026-06-17T21:33:44.349612Z"
     },
     {
       "@id": "workflow/capas-costurero-run.py",
@@ -158,7 +158,7 @@
       "name": "Workload summary"
     },
     {
-      "@id": "trace:20e7a1385c71219b:routing-decision",
+      "@id": "trace:6dc27b11dffda855:routing-decision",
       "@type": "Thing",
       "capas:reason": "dense statevector exceeds memory budget",
       "capas:route": "QPU_REQUIRED",
@@ -172,10 +172,10 @@
       ],
       "encodingFormat": "application/json",
       "name": "W3C PROV-shaped export",
-      "sha256": "4d8fcb18be6287916cd82111d57ac90d57bf14090cffa9ee597ddee9a09f4a24"
+      "sha256": "ca127c4b11175915e59c2b850b052023b2c3b32217844bdf1b525e52e376209f"
     },
     {
-      "@id": "trace:20e7a1385c71219b:event:0:ingest",
+      "@id": "trace:6dc27b11dffda855:event:0:ingest",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -189,10 +189,10 @@
       },
       "description": "workload accepted",
       "name": "ingest",
-      "startTime": 1781731418.730289
+      "startTime": 1781732024.349612
     },
     {
-      "@id": "trace:20e7a1385c71219b:event:1:runtime_context",
+      "@id": "trace:6dc27b11dffda855:event:1:runtime_context",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -204,10 +204,10 @@
         "numpy_version": "2.4.6",
         "platform": "macOS-26.5.1-arm64-arm-64bit",
         "processor": "arm",
-        "python_executable": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/physics_quantum/physics-magnitude-lab/.pixi/envs/default/bin/python",
+        "python_executable": "/Users/kreniq/physics-magnitude-lab/.pixi/envs/default/bin/python",
         "python_version": "3.12.13",
-        "qiskit_aer_available": true,
-        "qiskit_aer_version": "0.17.2",
+        "qiskit_aer_available": false,
+        "qiskit_aer_error": "ModuleNotFoundError: No module named 'qiskit_aer'",
         "quimb_available": true,
         "quimb_version": "1.14.0",
         "scipy_available": true,
@@ -217,10 +217,10 @@
       },
       "description": "runtime and hardware context recorded",
       "name": "runtime_context",
-      "startTime": 1781731418.730314
+      "startTime": 1781732024.350115
     },
     {
-      "@id": "trace:20e7a1385c71219b:event:2:cost_model",
+      "@id": "trace:6dc27b11dffda855:event:2:cost_model",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -232,10 +232,10 @@
       },
       "description": "dense statevector cost estimated",
       "name": "cost_model",
-      "startTime": 1781731418.730322
+      "startTime": 1781732024.350135
     },
     {
-      "@id": "trace:20e7a1385c71219b:event:3:route",
+      "@id": "trace:6dc27b11dffda855:event:3:route",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -247,10 +247,10 @@
       },
       "description": "dense statevector exceeds memory budget",
       "name": "route",
-      "startTime": 1781731418.7303429
+      "startTime": 1781732024.350158
     },
     {
-      "@id": "trace:20e7a1385c71219b:event:4:execute",
+      "@id": "trace:6dc27b11dffda855:event:4:execute",
       "@type": "Action",
       "actionStatus": "skipped",
       "capas:metrics": {
@@ -258,7 +258,7 @@
       },
       "description": "route is not executable",
       "name": "execute",
-      "startTime": 1781731418.730346
+      "startTime": 1781732024.350162
     }
   ]
 }

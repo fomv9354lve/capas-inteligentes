@@ -1,0 +1,767 @@
+{
+  "activity": {
+    "capas:run:77e4f724053450ab:activity:0:ingest": {
+      "capas:message": "workload accepted",
+      "capas:status": "ok",
+      "capas:timestamp": 1781732023.070496,
+      "prov:type": "capas:ingest"
+    },
+    "capas:run:77e4f724053450ab:activity:1:runtime_context": {
+      "capas:message": "runtime and hardware context recorded",
+      "capas:status": "ok",
+      "capas:timestamp": 1781732023.071383,
+      "prov:type": "capas:runtime_context"
+    },
+    "capas:run:77e4f724053450ab:activity:2:engine_provenance": {
+      "capas:message": "external engine provenance recorded",
+      "capas:status": "ok",
+      "capas:timestamp": 1781732023.071929,
+      "prov:type": "capas:engine_provenance"
+    },
+    "capas:run:77e4f724053450ab:activity:3:cost_model": {
+      "capas:message": "dense statevector cost estimated",
+      "capas:status": "ok",
+      "capas:timestamp": 1781732023.07199,
+      "prov:type": "capas:cost_model"
+    },
+    "capas:run:77e4f724053450ab:activity:4:route": {
+      "capas:message": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+      "capas:status": "ok",
+      "capas:timestamp": 1781732023.072,
+      "prov:type": "capas:route"
+    },
+    "capas:run:77e4f724053450ab:activity:5:execute": {
+      "capas:message": "backend executed",
+      "capas:status": "ok",
+      "capas:timestamp": 1781732023.435593,
+      "prov:type": "capas:execute"
+    },
+    "capas:run:77e4f724053450ab:activity:6:physical_evidence": {
+      "capas:message": "physical evidence reported by backend",
+      "capas:status": "ok",
+      "capas:timestamp": 1781732023.4356968,
+      "prov:type": "capas:physical_evidence"
+    }
+  },
+  "agent": {
+    "capas:agent:costurero": {
+      "capas:name": "CAPAS INTELIGENTES costurero",
+      "prov:type": "prov:SoftwareAgent"
+    }
+  },
+  "bundle": "capas:run:77e4f724053450ab",
+  "capas:traceHash": "77e4f724053450ab12a589caad1b37ddc74b49aa9ab06ccf2c2fdf882c4f9706",
+  "entity": {
+    "capas:run:77e4f724053450ab:decision": {
+      "capas:reason": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+      "capas:route": "external_engine",
+      "prov:type": "capas:RoutingDecision"
+    },
+    "capas:run:77e4f724053450ab:engine_module": {
+      "capas:engineId": "physics_magnitude_quantum_engine.h2_ccpvtz_reference_definition_corrected",
+      "capas:functionName": "h2_ccpvtz_reference_definition_corrected",
+      "capas:modulePath": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
+      "capas:moduleSha256": "3cc9ed6ed3b290e231510c04fcd1f11e14a6a6ad24d1fc8f04257024bc4ef4d7",
+      "prov:type": "capas:EngineModule"
+    },
+    "capas:run:77e4f724053450ab:entity:0:ingest:metrics": {
+      "capas:eventHash": "f5db985e3abcfec932c5cffeca5fbd07c8e5a566330fe5b8e219be384782a6ef",
+      "capas:metrics": {
+        "budget": {
+          "flops_ceiling": 100000000.0,
+          "memory_budget_bytes": 536870912,
+          "safety_factor": 0.5
+        },
+        "engine": {
+          "engine_id": "physics_magnitude_quantum_engine.h2_ccpvtz_reference_definition_corrected",
+          "function_name": "h2_ccpvtz_reference_definition_corrected",
+          "kwargs_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
+        },
+        "kind": "dense",
+        "n_qubits": 2
+      },
+      "capas:stage": "ingest",
+      "prov:type": "capas:EventMetrics"
+    },
+    "capas:run:77e4f724053450ab:entity:1:runtime_context:metrics": {
+      "capas:eventHash": "471625463798fe4b45c0a95c6e3e62dc66e9101193452b52aff0a4515a6f52d6",
+      "capas:metrics": {
+        "cotengra_available": true,
+        "cotengra_version": "0.8.1",
+        "machine": "arm64",
+        "mlx_probe": "skipped_in_default_trace; use apple_silicon_thermal_routing.py for Metal/MLX device probes",
+        "numpy_available": true,
+        "numpy_version": "2.4.6",
+        "platform": "macOS-26.5.1-arm64-arm-64bit",
+        "processor": "arm",
+        "python_executable": "/Users/kreniq/physics-magnitude-lab/.pixi/envs/default/bin/python",
+        "python_version": "3.12.13",
+        "qiskit_aer_available": false,
+        "qiskit_aer_error": "ModuleNotFoundError: No module named 'qiskit_aer'",
+        "quimb_available": true,
+        "quimb_version": "1.14.0",
+        "scipy_available": true,
+        "scipy_version": "1.17.1",
+        "stim_available": true,
+        "stim_version": "1.16.0"
+      },
+      "capas:stage": "runtime_context",
+      "prov:type": "capas:EventMetrics"
+    },
+    "capas:run:77e4f724053450ab:entity:2:engine_provenance:metrics": {
+      "capas:eventHash": "1dccdfee1dbf474425793b549f6895f8fc465ff70b4cb10dfe275dd2308b1ba0",
+      "capas:metrics": {
+        "engine_id": "physics_magnitude_quantum_engine.h2_ccpvtz_reference_definition_corrected",
+        "function_name": "h2_ccpvtz_reference_definition_corrected",
+        "kwargs": {},
+        "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
+        "module_sha256": "3cc9ed6ed3b290e231510c04fcd1f11e14a6a6ad24d1fc8f04257024bc4ef4d7"
+      },
+      "capas:stage": "engine_provenance",
+      "prov:type": "capas:EventMetrics"
+    },
+    "capas:run:77e4f724053450ab:entity:3:cost_model:metrics": {
+      "capas:eventHash": "31f5953c04f9d74d527ac3b971b5ea2533e5af196370b8f4c46ec5665aded46b",
+      "capas:metrics": {
+        "memory_viable": true,
+        "n_qubits": 2,
+        "route": "dense",
+        "statevector_bytes": 64,
+        "usable_memory_bytes": 268435456.0
+      },
+      "capas:stage": "cost_model",
+      "prov:type": "capas:EventMetrics"
+    },
+    "capas:run:77e4f724053450ab:entity:4:route:metrics": {
+      "capas:eventHash": "c0e680c64159aade97ca456d212550c1e83f239799cceb1e1ad562dc223f6253",
+      "capas:metrics": {
+        "engine_id": "physics_magnitude_quantum_engine.h2_ccpvtz_reference_definition_corrected",
+        "function_name": "h2_ccpvtz_reference_definition_corrected",
+        "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
+      },
+      "capas:stage": "route",
+      "prov:type": "capas:EventMetrics"
+    },
+    "capas:run:77e4f724053450ab:entity:5:execute:metrics": {
+      "capas:eventHash": "3216115fc29b89e27881a549264616301cbe3c2e96504ba86a3a773cdfa9e54a",
+      "capas:metrics": {
+        "abs_error": 0.0,
+        "abs_error_vs_experimental": 0.0008649205254178116,
+        "abs_error_vs_fci": 0.0,
+        "basis": "cc-pvtz",
+        "basis_orbitals": 28,
+        "benchmark_family": "QuantumChemistry",
+        "bond_length_angstrom": 0.7414,
+        "bound_scope": "single_molecule_larger_basis_reference_definition_corrected",
+        "chemical_accuracy_threshold_hartree": 0.0015936,
+        "evidence_status_detail": "experimental_reference_definition_corrected_approximate_zpe",
+        "expected": {
+          "chemical_accuracy_threshold_hartree": 0.0015936,
+          "reference_experimental_de_corrected_hartree": 0.1735809921168922,
+          "reference_fci_total_energy_hartree": -1.17233569419516
+        },
+        "experimental_binding_energy_hartree": 0.1735809921168922,
+        "falsification_notes": [
+          "trace_023 compared an electronic D_e-like quantity against raw D0, which mixes reference definitions.",
+          "This trace applies an approximate ZPE correction to compare electronic binding against D_e-like reference.",
+          "The ZPE value is approximate; this is a reference-definition correction trace, not a precision spectroscopy claim.",
+          "The defended claim is that CAPAS can record and correct reference-definition mismatch explicitly."
+        ],
+        "geometry": [
+          {
+            "atom": "H",
+            "xyz_angstrom": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "atom": "H",
+            "xyz_angstrom": [
+              0.0,
+              0.0,
+              0.7414
+            ]
+          }
+        ],
+        "model_binding_energy_hartree": 0.1727160715914744,
+        "model_error_hartree": 0.0008649205254178116,
+        "observable": "H2 cc-pVTZ electronic binding energy vs ZPE-corrected experimental D_e reference",
+        "physical_evidence_detail": "H2/cc-pVTZ electronic binding energy is compared to an approximate D_e reference rather than raw D0. The D_e reference is formed by adding a literature-scale H2 zero-point energy of 0.26 eV to the measured D0. This records reference-definition correction: electronic D_e-like quantity versus D0-with-vibration was the mismatch in trace_023.",
+        "physical_evidence_level": "experimental",
+        "reference_definition_corrected_error_hartree": 0.0008649205254178116,
+        "reference_definition_correction": {
+          "computed_quantity": "clamped-nuclei electronic binding energy",
+          "correction": "D_e ~= D0 + ZPE",
+          "quality": "approximate_literature_scale_not_full_spectroscopic_audit",
+          "raw_reference": "D0 includes vibrational zero-point energy",
+          "zpe_electron_volt": 0.26,
+          "zpe_hartree": 0.009554823765670298
+        },
+        "reference_definition_error_hartree": 0.008689903240252483,
+        "reference_definition_match": "corrected_approximate_D0_plus_ZPE_to_match_electronic_De",
+        "reference_experimental_d0_cm_inverse": 35999.582834,
+        "reference_fci_total_energy_hartree": -1.17233569419516,
+        "reference_truth": {
+          "chemical_accuracy": {
+            "threshold_hartree": 0.0015936,
+            "threshold_name": "1 kcal/mol"
+          },
+          "experimental": {
+            "corrected_quantity": "approximate D_e = D0 + ZPE",
+            "corrected_value_hartree": 0.1735809921168922,
+            "kind": "measured_dissociation_energy_with_reference_definition_correction",
+            "raw_quantity": "D0(N=1) ortho-H2",
+            "raw_value_cm_inverse": 35999.582834,
+            "raw_value_hartree": 0.1640261683512219,
+            "source": "D0: H\u00f6lsch et al. 2019, arXiv:1902.09471; ZPE scale: Gross and Scheffler 1997, arXiv:cond-mat/9702090",
+            "zpe_value_ev": 0.26,
+            "zpe_value_hartree": 0.009554823765670298
+          },
+          "fci": {
+            "basis": "cc-pvtz",
+            "geometry": "H-H 0.7414 Angstrom",
+            "kind": "exact_model_solution",
+            "method": "PySCF FCI",
+            "total_energy_hartree": -1.17233569419516
+          }
+        },
+        "repr": "{'engine_id': 'physics_magnitude_quantum_engine.h2_ccpvtz_reference_definition_corrected', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/ph",
+        "route": "external_engine",
+        "runtime_ms": 363.2180840068031,
+        "solver_error_hartree": 0.0,
+        "source_label": "PySCF FCI cc-pVTZ model solve + D0 experimental reference corrected by approximate H2 ZPE",
+        "type": "dict",
+        "units": "hartree",
+        "value": {
+          "basis_orbitals": 28,
+          "experimental_d0_hartree": 0.1640261683512219,
+          "experimental_de_corrected_hartree": 0.1735809921168922,
+          "fci_total_energy_hartree": -1.17233569419516,
+          "model_atom_energy_hartree": -0.49980981130184277,
+          "model_binding_energy_hartree": 0.1727160715914744,
+          "reference_definition_corrected_error_hartree": 0.0008649205254178116,
+          "solver_error_hartree": 0.0,
+          "uncorrected_reference_error_hartree": 0.008689903240252483,
+          "within_chemical_accuracy": true,
+          "zpe_electron_volt": 0.26,
+          "zpe_hartree": 0.009554823765670298
+        },
+        "verification_independence": "same_runtime_exact_fci_with_external_experimental_reference",
+        "within_chemical_accuracy": true,
+        "witness_stack": {
+          "primary": "PySCF FCI exact cc-pVTZ model solve",
+          "runtime_relation": "same_runtime_model_solve_plus_external_measurement_and_reference_correction",
+          "witness": "external experimental H2 D0 plus approximate ZPE reference-definition correction"
+        }
+      },
+      "capas:stage": "execute",
+      "prov:type": "capas:EventMetrics"
+    },
+    "capas:run:77e4f724053450ab:entity:6:physical_evidence:metrics": {
+      "capas:eventHash": "4e920eaf02c4e52ce6f0f272561e8ef7b7b70c531fffd807106f1b7967e3519f",
+      "capas:metrics": {
+        "abs_error": 0.0,
+        "abs_error_vs_experimental": 0.0008649205254178116,
+        "abs_error_vs_fci": 0.0,
+        "basis": "cc-pvtz",
+        "basis_orbitals": 28,
+        "benchmark_family": "QuantumChemistry",
+        "bond_length_angstrom": 0.7414,
+        "bound_scope": "single_molecule_larger_basis_reference_definition_corrected",
+        "chemical_accuracy_threshold_hartree": 0.0015936,
+        "evidence_hash": "f0ced9f5a4072f976f4813846c9030f0cfc6329251ca638b166893ee8a3a8fc4",
+        "evidence_status_detail": "experimental_reference_definition_corrected_approximate_zpe",
+        "expected": {
+          "chemical_accuracy_threshold_hartree": 0.0015936,
+          "reference_experimental_de_corrected_hartree": 0.1735809921168922,
+          "reference_fci_total_energy_hartree": -1.17233569419516
+        },
+        "experimental_binding_energy_hartree": 0.1735809921168922,
+        "falsification_notes": [
+          "trace_023 compared an electronic D_e-like quantity against raw D0, which mixes reference definitions.",
+          "This trace applies an approximate ZPE correction to compare electronic binding against D_e-like reference.",
+          "The ZPE value is approximate; this is a reference-definition correction trace, not a precision spectroscopy claim.",
+          "The defended claim is that CAPAS can record and correct reference-definition mismatch explicitly."
+        ],
+        "geometry": [
+          {
+            "atom": "H",
+            "xyz_angstrom": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "atom": "H",
+            "xyz_angstrom": [
+              0.0,
+              0.0,
+              0.7414
+            ]
+          }
+        ],
+        "model_binding_energy_hartree": 0.1727160715914744,
+        "model_error_hartree": 0.0008649205254178116,
+        "observable": "H2 cc-pVTZ electronic binding energy vs ZPE-corrected experimental D_e reference",
+        "physical_evidence_detail": "H2/cc-pVTZ electronic binding energy is compared to an approximate D_e reference rather than raw D0. The D_e reference is formed by adding a literature-scale H2 zero-point energy of 0.26 eV to the measured D0. This records reference-definition correction: electronic D_e-like quantity versus D0-with-vibration was the mismatch in trace_023.",
+        "physical_evidence_level": "experimental",
+        "reference_definition_corrected_error_hartree": 0.0008649205254178116,
+        "reference_definition_correction": {
+          "computed_quantity": "clamped-nuclei electronic binding energy",
+          "correction": "D_e ~= D0 + ZPE",
+          "quality": "approximate_literature_scale_not_full_spectroscopic_audit",
+          "raw_reference": "D0 includes vibrational zero-point energy",
+          "zpe_electron_volt": 0.26,
+          "zpe_hartree": 0.009554823765670298
+        },
+        "reference_definition_error_hartree": 0.008689903240252483,
+        "reference_definition_match": "corrected_approximate_D0_plus_ZPE_to_match_electronic_De",
+        "reference_experimental_d0_cm_inverse": 35999.582834,
+        "reference_fci_total_energy_hartree": -1.17233569419516,
+        "reference_truth": {
+          "chemical_accuracy": {
+            "threshold_hartree": 0.0015936,
+            "threshold_name": "1 kcal/mol"
+          },
+          "experimental": {
+            "corrected_quantity": "approximate D_e = D0 + ZPE",
+            "corrected_value_hartree": 0.1735809921168922,
+            "kind": "measured_dissociation_energy_with_reference_definition_correction",
+            "raw_quantity": "D0(N=1) ortho-H2",
+            "raw_value_cm_inverse": 35999.582834,
+            "raw_value_hartree": 0.1640261683512219,
+            "source": "D0: H\u00f6lsch et al. 2019, arXiv:1902.09471; ZPE scale: Gross and Scheffler 1997, arXiv:cond-mat/9702090",
+            "zpe_value_ev": 0.26,
+            "zpe_value_hartree": 0.009554823765670298
+          },
+          "fci": {
+            "basis": "cc-pvtz",
+            "geometry": "H-H 0.7414 Angstrom",
+            "kind": "exact_model_solution",
+            "method": "PySCF FCI",
+            "total_energy_hartree": -1.17233569419516
+          }
+        },
+        "solver_error_hartree": 0.0,
+        "source_label": "PySCF FCI cc-pVTZ model solve + D0 experimental reference corrected by approximate H2 ZPE",
+        "units": "hartree",
+        "value": {
+          "basis_orbitals": 28,
+          "experimental_d0_hartree": 0.1640261683512219,
+          "experimental_de_corrected_hartree": 0.1735809921168922,
+          "fci_total_energy_hartree": -1.17233569419516,
+          "model_atom_energy_hartree": -0.49980981130184277,
+          "model_binding_energy_hartree": 0.1727160715914744,
+          "reference_definition_corrected_error_hartree": 0.0008649205254178116,
+          "solver_error_hartree": 0.0,
+          "uncorrected_reference_error_hartree": 0.008689903240252483,
+          "within_chemical_accuracy": true,
+          "zpe_electron_volt": 0.26,
+          "zpe_hartree": 0.009554823765670298
+        },
+        "verification_independence": "same_runtime_exact_fci_with_external_experimental_reference",
+        "within_chemical_accuracy": true,
+        "witness_stack": {
+          "primary": "PySCF FCI exact cc-pVTZ model solve",
+          "runtime_relation": "same_runtime_model_solve_plus_external_measurement_and_reference_correction",
+          "witness": "external experimental H2 D0 plus approximate ZPE reference-definition correction"
+        }
+      },
+      "capas:stage": "physical_evidence",
+      "prov:type": "capas:EventMetrics"
+    },
+    "capas:run:77e4f724053450ab:physical_evidence": {
+      "capas:absError": 0.0,
+      "capas:absErrorVsExperimental": 0.0008649205254178116,
+      "capas:absErrorVsFci": 0.0,
+      "capas:actualErrorSquared": null,
+      "capas:balanceLambda": null,
+      "capas:basis": "cc-pvtz",
+      "capas:basisOrbitals": 28,
+      "capas:benchmarkFamily": "QuantumChemistry",
+      "capas:bondLengthAngstrom": 0.7414,
+      "capas:boundScope": "single_molecule_larger_basis_reference_definition_corrected",
+      "capas:boundSlack": null,
+      "capas:boundType": null,
+      "capas:certificationStatus": null,
+      "capas:chemicalAccuracyThresholdHartree": 0.0015936,
+      "capas:composedStateErrorBound": null,
+      "capas:conflicts": null,
+      "capas:constantOffset": null,
+      "capas:costs": null,
+      "capas:degeneracyCount": null,
+      "capas:discardedWeight": null,
+      "capas:evidenceHash": "f0ced9f5a4072f976f4813846c9030f0cfc6329251ca638b166893ee8a3a8fc4",
+      "capas:evidenceStatusDetail": "experimental_reference_definition_corrected_approximate_zpe",
+      "capas:expected": {
+        "chemical_accuracy_threshold_hartree": 0.0015936,
+        "reference_experimental_de_corrected_hartree": 0.1735809921168922,
+        "reference_fci_total_energy_hartree": -1.17233569419516
+      },
+      "capas:experimentalBindingEnergyHartree": 0.1735809921168922,
+      "capas:falsificationNotes": [
+        "trace_023 compared an electronic D_e-like quantity against raw D0, which mixes reference definitions.",
+        "This trace applies an approximate ZPE correction to compare electronic binding against D_e-like reference.",
+        "The ZPE value is approximate; this is a reference-definition correction trace, not a precision spectroscopy claim.",
+        "The defended claim is that CAPAS can record and correct reference-definition mismatch explicitly."
+      ],
+      "capas:formalBoundStatus": null,
+      "capas:geometry": [
+        {
+          "atom": "H",
+          "xyz_angstrom": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "atom": "H",
+          "xyz_angstrom": [
+            0.0,
+            0.0,
+            0.7414
+          ]
+        }
+      ],
+      "capas:isingH": null,
+      "capas:isingJ": null,
+      "capas:mappingTerms": null,
+      "capas:modelBindingEnergyHartree": 0.1727160715914744,
+      "capas:modelErrorHartree": 0.0008649205254178116,
+      "capas:observable": "H2 cc-pVTZ electronic binding energy vs ZPE-corrected experimental D_e reference",
+      "capas:optimalAssignments": null,
+      "capas:people": null,
+      "capas:physicalEvidenceDetail": "H2/cc-pVTZ electronic binding energy is compared to an approximate D_e reference rather than raw D0. The D_e reference is formed by adding a literature-scale H2 zero-point energy of 0.26 eV to the measured D0. This records reference-definition correction: electronic D_e-like quantity versus D0-with-vibration was the mismatch in trace_023.",
+      "capas:physicalEvidenceLevel": "experimental",
+      "capas:referenceDefinitionCorrectedErrorHartree": 0.0008649205254178116,
+      "capas:referenceDefinitionCorrection": {
+        "computed_quantity": "clamped-nuclei electronic binding energy",
+        "correction": "D_e ~= D0 + ZPE",
+        "quality": "approximate_literature_scale_not_full_spectroscopic_audit",
+        "raw_reference": "D0 includes vibrational zero-point energy",
+        "zpe_electron_volt": 0.26,
+        "zpe_hartree": 0.009554823765670298
+      },
+      "capas:referenceDefinitionErrorHartree": 0.008689903240252483,
+      "capas:referenceDefinitionMatch": "corrected_approximate_D0_plus_ZPE_to_match_electronic_De",
+      "capas:referenceExperimentalD0CmInverse": 35999.582834,
+      "capas:referenceFciTotalEnergyHartree": -1.17233569419516,
+      "capas:referenceTruth": {
+        "chemical_accuracy": {
+          "threshold_hartree": 0.0015936,
+          "threshold_name": "1 kcal/mol"
+        },
+        "experimental": {
+          "corrected_quantity": "approximate D_e = D0 + ZPE",
+          "corrected_value_hartree": 0.1735809921168922,
+          "kind": "measured_dissociation_energy_with_reference_definition_correction",
+          "raw_quantity": "D0(N=1) ortho-H2",
+          "raw_value_cm_inverse": 35999.582834,
+          "raw_value_hartree": 0.1640261683512219,
+          "source": "D0: H\u00f6lsch et al. 2019, arXiv:1902.09471; ZPE scale: Gross and Scheffler 1997, arXiv:cond-mat/9702090",
+          "zpe_value_ev": 0.26,
+          "zpe_value_hartree": 0.009554823765670298
+        },
+        "fci": {
+          "basis": "cc-pvtz",
+          "geometry": "H-H 0.7414 Angstrom",
+          "kind": "exact_model_solution",
+          "method": "PySCF FCI",
+          "total_energy_hartree": -1.17233569419516
+        }
+      },
+      "capas:solverErrorHartree": 0.0,
+      "capas:sourceLabel": "PySCF FCI cc-pVTZ model solve + D0 experimental reference corrected by approximate H2 ZPE",
+      "capas:spinEncoding": null,
+      "capas:tasks": null,
+      "capas:units": "hartree",
+      "capas:value": {
+        "basis_orbitals": 28,
+        "experimental_d0_hartree": 0.1640261683512219,
+        "experimental_de_corrected_hartree": 0.1735809921168922,
+        "fci_total_energy_hartree": -1.17233569419516,
+        "model_atom_energy_hartree": -0.49980981130184277,
+        "model_binding_energy_hartree": 0.1727160715914744,
+        "reference_definition_corrected_error_hartree": 0.0008649205254178116,
+        "solver_error_hartree": 0.0,
+        "uncorrected_reference_error_hartree": 0.008689903240252483,
+        "within_chemical_accuracy": true,
+        "zpe_electron_volt": 0.26,
+        "zpe_hartree": 0.009554823765670298
+      },
+      "capas:verificationIndependence": "same_runtime_exact_fci_with_external_experimental_reference",
+      "capas:withinChemicalAccuracy": true,
+      "capas:witnessStack": {
+        "primary": "PySCF FCI exact cc-pVTZ model solve",
+        "runtime_relation": "same_runtime_model_solve_plus_external_measurement_and_reference_correction",
+        "witness": "external experimental H2 D0 plus approximate ZPE reference-definition correction"
+      },
+      "prov:type": "capas:PhysicalEvidence"
+    },
+    "capas:run:77e4f724053450ab:result": {
+      "capas:resultHash": "0ba68c324effc130e93fb29441042c8a7a7fc6a65876e722be5613d37138ea2c",
+      "capas:summary": {
+        "abs_error": 0.0,
+        "abs_error_vs_experimental": 0.0008649205254178116,
+        "abs_error_vs_fci": 0.0,
+        "basis": "cc-pvtz",
+        "basis_orbitals": 28,
+        "benchmark_family": "QuantumChemistry",
+        "bond_length_angstrom": 0.7414,
+        "bound_scope": "single_molecule_larger_basis_reference_definition_corrected",
+        "chemical_accuracy_threshold_hartree": 0.0015936,
+        "evidence_status_detail": "experimental_reference_definition_corrected_approximate_zpe",
+        "expected": {
+          "chemical_accuracy_threshold_hartree": 0.0015936,
+          "reference_experimental_de_corrected_hartree": 0.1735809921168922,
+          "reference_fci_total_energy_hartree": -1.17233569419516
+        },
+        "experimental_binding_energy_hartree": 0.1735809921168922,
+        "falsification_notes": [
+          "trace_023 compared an electronic D_e-like quantity against raw D0, which mixes reference definitions.",
+          "This trace applies an approximate ZPE correction to compare electronic binding against D_e-like reference.",
+          "The ZPE value is approximate; this is a reference-definition correction trace, not a precision spectroscopy claim.",
+          "The defended claim is that CAPAS can record and correct reference-definition mismatch explicitly."
+        ],
+        "geometry": [
+          {
+            "atom": "H",
+            "xyz_angstrom": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "atom": "H",
+            "xyz_angstrom": [
+              0.0,
+              0.0,
+              0.7414
+            ]
+          }
+        ],
+        "model_binding_energy_hartree": 0.1727160715914744,
+        "model_error_hartree": 0.0008649205254178116,
+        "observable": "H2 cc-pVTZ electronic binding energy vs ZPE-corrected experimental D_e reference",
+        "physical_evidence_detail": "H2/cc-pVTZ electronic binding energy is compared to an approximate D_e reference rather than raw D0. The D_e reference is formed by adding a literature-scale H2 zero-point energy of 0.26 eV to the measured D0. This records reference-definition correction: electronic D_e-like quantity versus D0-with-vibration was the mismatch in trace_023.",
+        "physical_evidence_level": "experimental",
+        "reference_definition_corrected_error_hartree": 0.0008649205254178116,
+        "reference_definition_correction": {
+          "computed_quantity": "clamped-nuclei electronic binding energy",
+          "correction": "D_e ~= D0 + ZPE",
+          "quality": "approximate_literature_scale_not_full_spectroscopic_audit",
+          "raw_reference": "D0 includes vibrational zero-point energy",
+          "zpe_electron_volt": 0.26,
+          "zpe_hartree": 0.009554823765670298
+        },
+        "reference_definition_error_hartree": 0.008689903240252483,
+        "reference_definition_match": "corrected_approximate_D0_plus_ZPE_to_match_electronic_De",
+        "reference_experimental_d0_cm_inverse": 35999.582834,
+        "reference_fci_total_energy_hartree": -1.17233569419516,
+        "reference_truth": {
+          "chemical_accuracy": {
+            "threshold_hartree": 0.0015936,
+            "threshold_name": "1 kcal/mol"
+          },
+          "experimental": {
+            "corrected_quantity": "approximate D_e = D0 + ZPE",
+            "corrected_value_hartree": 0.1735809921168922,
+            "kind": "measured_dissociation_energy_with_reference_definition_correction",
+            "raw_quantity": "D0(N=1) ortho-H2",
+            "raw_value_cm_inverse": 35999.582834,
+            "raw_value_hartree": 0.1640261683512219,
+            "source": "D0: H\u00f6lsch et al. 2019, arXiv:1902.09471; ZPE scale: Gross and Scheffler 1997, arXiv:cond-mat/9702090",
+            "zpe_value_ev": 0.26,
+            "zpe_value_hartree": 0.009554823765670298
+          },
+          "fci": {
+            "basis": "cc-pvtz",
+            "geometry": "H-H 0.7414 Angstrom",
+            "kind": "exact_model_solution",
+            "method": "PySCF FCI",
+            "total_energy_hartree": -1.17233569419516
+          }
+        },
+        "repr": "{'engine_id': 'physics_magnitude_quantum_engine.h2_ccpvtz_reference_definition_corrected', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/ph",
+        "solver_error_hartree": 0.0,
+        "source_label": "PySCF FCI cc-pVTZ model solve + D0 experimental reference corrected by approximate H2 ZPE",
+        "type": "dict",
+        "units": "hartree",
+        "value": {
+          "basis_orbitals": 28,
+          "experimental_d0_hartree": 0.1640261683512219,
+          "experimental_de_corrected_hartree": 0.1735809921168922,
+          "fci_total_energy_hartree": -1.17233569419516,
+          "model_atom_energy_hartree": -0.49980981130184277,
+          "model_binding_energy_hartree": 0.1727160715914744,
+          "reference_definition_corrected_error_hartree": 0.0008649205254178116,
+          "solver_error_hartree": 0.0,
+          "uncorrected_reference_error_hartree": 0.008689903240252483,
+          "within_chemical_accuracy": true,
+          "zpe_electron_volt": 0.26,
+          "zpe_hartree": 0.009554823765670298
+        },
+        "verification_independence": "same_runtime_exact_fci_with_external_experimental_reference",
+        "within_chemical_accuracy": true,
+        "witness_stack": {
+          "primary": "PySCF FCI exact cc-pVTZ model solve",
+          "runtime_relation": "same_runtime_model_solve_plus_external_measurement_and_reference_correction",
+          "witness": "external experimental H2 D0 plus approximate ZPE reference-definition correction"
+        }
+      },
+      "prov:type": "capas:Result"
+    },
+    "capas:run:77e4f724053450ab:workload": {
+      "capas:summary": {
+        "budget": {
+          "flops_ceiling": 100000000.0,
+          "memory_budget_bytes": 536870912,
+          "safety_factor": 0.5
+        },
+        "engine": {
+          "engine_id": "physics_magnitude_quantum_engine.h2_ccpvtz_reference_definition_corrected",
+          "function_name": "h2_ccpvtz_reference_definition_corrected",
+          "kwargs_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
+        },
+        "kind": "dense",
+        "n_qubits": 2
+      },
+      "capas:workloadHash": "d5aba343ab6555f979ea8b80884acfadaf01efaee167552519389df02a55bbae",
+      "prov:type": "capas:Workload"
+    }
+  },
+  "prefix": {
+    "capas": "https://example.org/capas-inteligentes#",
+    "prov": "http://www.w3.org/ns/prov#"
+  },
+  "specializationOf": {},
+  "used": {
+    "capas:run:77e4f724053450ab:activity:0:ingest:used:capas:run:77e4f724053450ab:workload": {
+      "prov:activity": "capas:run:77e4f724053450ab:activity:0:ingest",
+      "prov:entity": "capas:run:77e4f724053450ab:workload"
+    },
+    "capas:run:77e4f724053450ab:activity:1:runtime_context:used:capas:run:77e4f724053450ab:entity:0:ingest:metrics": {
+      "prov:activity": "capas:run:77e4f724053450ab:activity:1:runtime_context",
+      "prov:entity": "capas:run:77e4f724053450ab:entity:0:ingest:metrics"
+    },
+    "capas:run:77e4f724053450ab:activity:2:engine_provenance:used:capas:run:77e4f724053450ab:engine_module": {
+      "prov:activity": "capas:run:77e4f724053450ab:activity:2:engine_provenance",
+      "prov:entity": "capas:run:77e4f724053450ab:engine_module"
+    },
+    "capas:run:77e4f724053450ab:activity:2:engine_provenance:used:capas:run:77e4f724053450ab:entity:1:runtime_context:metrics": {
+      "prov:activity": "capas:run:77e4f724053450ab:activity:2:engine_provenance",
+      "prov:entity": "capas:run:77e4f724053450ab:entity:1:runtime_context:metrics"
+    },
+    "capas:run:77e4f724053450ab:activity:3:cost_model:used:capas:run:77e4f724053450ab:entity:2:engine_provenance:metrics": {
+      "prov:activity": "capas:run:77e4f724053450ab:activity:3:cost_model",
+      "prov:entity": "capas:run:77e4f724053450ab:entity:2:engine_provenance:metrics"
+    },
+    "capas:run:77e4f724053450ab:activity:4:route:used:capas:run:77e4f724053450ab:entity:3:cost_model:metrics": {
+      "prov:activity": "capas:run:77e4f724053450ab:activity:4:route",
+      "prov:entity": "capas:run:77e4f724053450ab:entity:3:cost_model:metrics"
+    },
+    "capas:run:77e4f724053450ab:activity:5:execute:used:capas:run:77e4f724053450ab:entity:4:route:metrics": {
+      "prov:activity": "capas:run:77e4f724053450ab:activity:5:execute",
+      "prov:entity": "capas:run:77e4f724053450ab:entity:4:route:metrics"
+    },
+    "capas:run:77e4f724053450ab:activity:6:physical_evidence:used:capas:run:77e4f724053450ab:entity:5:execute:metrics": {
+      "prov:activity": "capas:run:77e4f724053450ab:activity:6:physical_evidence",
+      "prov:entity": "capas:run:77e4f724053450ab:entity:5:execute:metrics"
+    }
+  },
+  "wasAssociatedWith": {
+    "capas:run:77e4f724053450ab:activity:0:ingest:agent": {
+      "prov:activity": "capas:run:77e4f724053450ab:activity:0:ingest",
+      "prov:agent": "capas:agent:costurero"
+    },
+    "capas:run:77e4f724053450ab:activity:1:runtime_context:agent": {
+      "prov:activity": "capas:run:77e4f724053450ab:activity:1:runtime_context",
+      "prov:agent": "capas:agent:costurero"
+    },
+    "capas:run:77e4f724053450ab:activity:2:engine_provenance:agent": {
+      "prov:activity": "capas:run:77e4f724053450ab:activity:2:engine_provenance",
+      "prov:agent": "capas:agent:costurero"
+    },
+    "capas:run:77e4f724053450ab:activity:3:cost_model:agent": {
+      "prov:activity": "capas:run:77e4f724053450ab:activity:3:cost_model",
+      "prov:agent": "capas:agent:costurero"
+    },
+    "capas:run:77e4f724053450ab:activity:4:route:agent": {
+      "prov:activity": "capas:run:77e4f724053450ab:activity:4:route",
+      "prov:agent": "capas:agent:costurero"
+    },
+    "capas:run:77e4f724053450ab:activity:5:execute:agent": {
+      "prov:activity": "capas:run:77e4f724053450ab:activity:5:execute",
+      "prov:agent": "capas:agent:costurero"
+    },
+    "capas:run:77e4f724053450ab:activity:6:physical_evidence:agent": {
+      "prov:activity": "capas:run:77e4f724053450ab:activity:6:physical_evidence",
+      "prov:agent": "capas:agent:costurero"
+    }
+  },
+  "wasAttributedTo": {
+    "capas:run:77e4f724053450ab:result:agent": {
+      "prov:agent": "capas:agent:costurero",
+      "prov:entity": "capas:run:77e4f724053450ab:result"
+    }
+  },
+  "wasDerivedFrom": {
+    "capas:run:77e4f724053450ab:physical_evidence:from:capas:run:77e4f724053450ab:result": {
+      "prov:generatedEntity": "capas:run:77e4f724053450ab:physical_evidence",
+      "prov:usedEntity": "capas:run:77e4f724053450ab:result"
+    },
+    "capas:run:77e4f724053450ab:result:from:capas:run:77e4f724053450ab:workload": {
+      "prov:generatedEntity": "capas:run:77e4f724053450ab:result",
+      "prov:usedEntity": "capas:run:77e4f724053450ab:workload"
+    }
+  },
+  "wasGeneratedBy": {
+    "capas:run:77e4f724053450ab:decision:generatedBy:capas:run:77e4f724053450ab:activity:4:route": {
+      "prov:activity": "capas:run:77e4f724053450ab:activity:4:route",
+      "prov:entity": "capas:run:77e4f724053450ab:decision"
+    },
+    "capas:run:77e4f724053450ab:entity:0:ingest:metrics:generatedBy:capas:run:77e4f724053450ab:activity:0:ingest": {
+      "prov:activity": "capas:run:77e4f724053450ab:activity:0:ingest",
+      "prov:entity": "capas:run:77e4f724053450ab:entity:0:ingest:metrics"
+    },
+    "capas:run:77e4f724053450ab:entity:1:runtime_context:metrics:generatedBy:capas:run:77e4f724053450ab:activity:1:runtime_context": {
+      "prov:activity": "capas:run:77e4f724053450ab:activity:1:runtime_context",
+      "prov:entity": "capas:run:77e4f724053450ab:entity:1:runtime_context:metrics"
+    },
+    "capas:run:77e4f724053450ab:entity:2:engine_provenance:metrics:generatedBy:capas:run:77e4f724053450ab:activity:2:engine_provenance": {
+      "prov:activity": "capas:run:77e4f724053450ab:activity:2:engine_provenance",
+      "prov:entity": "capas:run:77e4f724053450ab:entity:2:engine_provenance:metrics"
+    },
+    "capas:run:77e4f724053450ab:entity:3:cost_model:metrics:generatedBy:capas:run:77e4f724053450ab:activity:3:cost_model": {
+      "prov:activity": "capas:run:77e4f724053450ab:activity:3:cost_model",
+      "prov:entity": "capas:run:77e4f724053450ab:entity:3:cost_model:metrics"
+    },
+    "capas:run:77e4f724053450ab:entity:4:route:metrics:generatedBy:capas:run:77e4f724053450ab:activity:4:route": {
+      "prov:activity": "capas:run:77e4f724053450ab:activity:4:route",
+      "prov:entity": "capas:run:77e4f724053450ab:entity:4:route:metrics"
+    },
+    "capas:run:77e4f724053450ab:entity:5:execute:metrics:generatedBy:capas:run:77e4f724053450ab:activity:5:execute": {
+      "prov:activity": "capas:run:77e4f724053450ab:activity:5:execute",
+      "prov:entity": "capas:run:77e4f724053450ab:entity:5:execute:metrics"
+    },
+    "capas:run:77e4f724053450ab:entity:6:physical_evidence:metrics:generatedBy:capas:run:77e4f724053450ab:activity:6:physical_evidence": {
+      "prov:activity": "capas:run:77e4f724053450ab:activity:6:physical_evidence",
+      "prov:entity": "capas:run:77e4f724053450ab:entity:6:physical_evidence:metrics"
+    },
+    "capas:run:77e4f724053450ab:physical_evidence:generatedBy:capas:run:77e4f724053450ab:activity:6:physical_evidence": {
+      "prov:activity": "capas:run:77e4f724053450ab:activity:6:physical_evidence",
+      "prov:entity": "capas:run:77e4f724053450ab:physical_evidence"
+    },
+    "capas:run:77e4f724053450ab:result:generatedBy:capas:run:77e4f724053450ab:activity:5:execute": {
+      "prov:activity": "capas:run:77e4f724053450ab:activity:5:execute",
+      "prov:entity": "capas:run:77e4f724053450ab:result"
+    }
+  }
+}

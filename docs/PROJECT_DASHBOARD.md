@@ -37,11 +37,11 @@ See git log. This dashboard is updated in the same commit as state changes.
 Recent commits:
 
 ```text
-HEAD Add larger-basis chemistry stress trace
+HEAD Add reference-definition corrected chemistry trace
+e80a598 Add larger-basis chemistry stress trace
 1de6e14 Add improved-basis chemistry evidence trace
 2178525 Add experimental chemistry evidence trace
 32d8681 Add degenerate optimization bridge trace
-6d89780 Add optimization bridge trace
 ```
 
 Current validation status:
@@ -50,7 +50,7 @@ Current validation status:
 coverage_ready: True
 fine_tune_ready: False
 local RO-Crate validation: passed
-external ResearchObject RO-Crate validation: valid_with_warning for 23/23 crates
+external ResearchObject RO-Crate validation: valid_with_warning for 24/24 crates
 external warning: .py is not a recognised workflow extension
 witness independence validation: passed
 ```
@@ -71,6 +71,7 @@ ResearchObject validator recognizes a fixed workflow-extension list.
 | `quantum_chemistry_experimental_reference` | 1 | covered | H2/STO-3G FCI compared with measured dissociation energy |
 | `quantum_chemistry_experimental_reference_improved_basis` | 1 | covered | H2/cc-pVDZ FCI compared with measured dissociation energy |
 | `quantum_chemistry_experimental_reference_larger_basis` | 1 | covered | H2/cc-pVTZ FCI compared with measured dissociation energy |
+| `quantum_chemistry_reference_definition_corrected` | 1 | covered | H2/cc-pVTZ compared with D0 plus approximate ZPE |
 | `formal_bound_success` | 1 | covered | formal single-cut Schmidt truncation certificate |
 | `formal_bound_composition_success` | 1 | covered | formal multi-step state truncation bound |
 | `estimated_bound_candidate` | 1 | covered | useful estimator, not formal |
@@ -83,7 +84,7 @@ Current evidence levels:
 ```text
 analytic: 12
 cross_sim: 2
-experimental: 3
+experimental: 4
 formal_bound: 2
 estimated_bound: 1
 none: 3
@@ -147,6 +148,17 @@ none: 3
    - model error: `0.008689903240272911`
    - within chemical accuracy: `False`
    - lesson: larger basis alone is not a monotonic guarantee against the chosen measured reference
+15. Reference-definition corrected chemistry case:
+   - H2/cc-pVTZ at R=0.7414 Angstrom
+   - basis orbitals: `28`
+   - model binding energy: `0.1727160715914744` Hartree
+   - raw measured D0 reference: `0.1640261683512219` Hartree
+   - approximate ZPE correction: `0.009554823765670298` Hartree
+   - corrected De-like reference: `0.1735809921168922` Hartree
+   - raw D0/reference-definition error: `0.008689903240252483`
+   - corrected error: `0.0008649205254178116`
+   - within chemical accuracy after definition correction: `True`
+   - lesson: `trace_023` was not a solver failure; it mixed electronic De-like energy with experimental D0
 
 ## Non-Degradation Rules
 
@@ -170,6 +182,8 @@ These are hard guardrails.
     - witness independence
     - failure mode
     - validation command
+11. Do not compare electronic `D_e`-like quantities against experimental `D0`
+    without recording `reference_definition_match` and any correction.
 
 ## Debt Register
 
@@ -181,7 +195,7 @@ Current state:
 
 ```text
 fine_tune_ready: False
-hold: 14
+hold: 21
 reject: 3
 blank: 0
 ```
@@ -261,7 +275,7 @@ What exists:
   - `analytic_no_solver`: 10
   - `different_library_same_runtime`: 1
   - `different_method_same_runtime`: 2
-  - `same_runtime_exact_fci_with_external_experimental_reference`: 3
+  - `same_runtime_exact_fci_with_external_experimental_reference`: 4
   - `different_algorithm_same_runtime`: 1
   - `algorithmic_certificate_exact_svd_same_runtime`: 2
   - `algorithmic_error_certificate_same_runtime`: 1
@@ -359,9 +373,11 @@ What exists:
 - `trace_021`
 - `trace_022`
 - `trace_023`
+- `trace_024`
 - `coverage_case=quantum_chemistry_experimental_reference`
 - `coverage_case=quantum_chemistry_experimental_reference_improved_basis`
 - `coverage_case=quantum_chemistry_experimental_reference_larger_basis`
+- `coverage_case=quantum_chemistry_reference_definition_corrected`
 - `physical_evidence_level=experimental`
 - `verification_independence=same_runtime_exact_fci_with_external_experimental_reference`
 - `bound_scope=single_molecule_minimal_basis_equilibrium_geometry`
@@ -372,18 +388,26 @@ What exists:
 - cc-pVDZ within chemical accuracy: `True`
 - cc-pVTZ model error: `0.008689903240272911`
 - cc-pVTZ within chemical accuracy: `False`
+- cc-pVTZ raw D0/reference-definition error: `0.008689903240252483`
+- cc-pVTZ approximate ZPE correction: `0.009554823765670298`
+- cc-pVTZ corrected De-like reference error: `0.0008649205254178116`
+- cc-pVTZ after reference-definition correction within chemical accuracy: `True`
 
 Scope:
 
 - H2 only
-- STO-3G minimal basis
+- STO-3G, cc-pVDZ, and cc-pVTZ finite bases
 - R(H-H) = 0.7414 Angstrom
 - PySCF FCI exact model solve
 - measured D0 reference from Holsch et al. 2019
+- approximate H2 ZPE correction from literature-scale value, not a full
+  spectroscopy audit
 
 Next step:
 
-- keep solver error and model error separate
+- keep solver error, basis/model error, and reference-definition error separate
+- replace the approximate ZPE correction with an audited spectroscopic De
+  reference if this axis needs publication-grade chemistry
 
 ### D7. Workflow Run RO-Crate Alignment
 

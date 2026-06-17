@@ -29,7 +29,7 @@
       "@id": "./",
       "@type": "Dataset",
       "capas:evidenceStatus": "present",
-      "capas:traceHash": "fb0e09c2e76e1279bec63025c62b55c0d1ed37864faf7de0f51e60d2a064c775",
+      "capas:traceHash": "931efdefff552d7d54e15a3361f7a187aa7c65eeb80658dfe8e16d80b1737cdc",
       "capas:workflowRunCrateAlignment": "shape-compatible-with-workflow-run-ro-crate-v0",
       "capas:workloadHash": "afc98ab4652539ed7e42835dc38417ef3690a4ac504c9b8c95da80524ec8880f",
       "conformsTo": [
@@ -43,7 +43,7 @@
           "@id": "https://example.org/capas-inteligentes/ro-crate/physical-evidence/0.1"
         }
       ],
-      "datePublished": "2026-06-17T21:23:36.631479Z",
+      "datePublished": "2026-06-17T21:33:15.410677Z",
       "description": "RO-Crate package containing a sealed RunTrace, optional PROV export, routing decision, runtime context, and CAPAS physical evidence metadata.",
       "hasPart": [
         {
@@ -59,16 +59,16 @@
           "@id": "entity:workload"
         },
         {
-          "@id": "trace:fb0e09c2e76e1279:routing-decision"
+          "@id": "trace:931efdefff552d7d:routing-decision"
         },
         {
-          "@id": "trace:fb0e09c2e76e1279:result"
+          "@id": "trace:931efdefff552d7d:result"
         },
         {
           "@id": "runtrace.prov.json"
         },
         {
-          "@id": "trace:fb0e09c2e76e1279:physical-evidence"
+          "@id": "trace:931efdefff552d7d:physical-evidence"
         }
       ],
       "name": "CAPAS traced scientific computation crate"
@@ -80,14 +80,14 @@
         "DigitalDocument"
       ],
       "about": {
-        "@id": "trace:fb0e09c2e76e1279"
+        "@id": "trace:931efdefff552d7d"
       },
       "encodingFormat": "application/json",
       "name": "Sealed CAPAS RunTrace",
-      "sha256": "3047eb0d8983d39bdc83114098dff72c7bfca76a19fc0c6d52461bc8108859b5"
+      "sha256": "86ffbd460e119bc2010bda252140d79b44dcba8d789295acc9cdf82d0f75fbbe"
     },
     {
-      "@id": "trace:fb0e09c2e76e1279",
+      "@id": "trace:931efdefff552d7d",
       "@type": "CreateAction",
       "actionStatus": "CompletedActionStatus",
       "agent": {
@@ -98,11 +98,11 @@
       "capas:evidenceStatus": "present",
       "capas:hashAlgorithm": "sha256(stable_json)",
       "capas:routingDecision": {
-        "@id": "trace:fb0e09c2e76e1279:routing-decision"
+        "@id": "trace:931efdefff552d7d:routing-decision"
       },
-      "capas:traceHash": "fb0e09c2e76e1279bec63025c62b55c0d1ed37864faf7de0f51e60d2a064c775",
+      "capas:traceHash": "931efdefff552d7d54e15a3361f7a187aa7c65eeb80658dfe8e16d80b1737cdc",
       "capas:traceSchemaVersion": "capas-runtrace-v2",
-      "endTime": "2026-06-17T21:23:36.631479Z",
+      "endTime": "2026-06-17T21:33:15.410677Z",
       "instrument": {
         "@id": "workflow/capas-costurero-run.py"
       },
@@ -111,9 +111,9 @@
         "@id": "entity:workload"
       },
       "result": {
-        "@id": "trace:fb0e09c2e76e1279:result"
+        "@id": "trace:931efdefff552d7d:result"
       },
-      "startTime": "2026-06-17T21:23:36.616670Z"
+      "startTime": "2026-06-17T21:33:15.336785Z"
     },
     {
       "@id": "workflow/capas-costurero-run.py",
@@ -173,7 +173,7 @@
       "name": "Workload summary"
     },
     {
-      "@id": "trace:fb0e09c2e76e1279:routing-decision",
+      "@id": "trace:931efdefff552d7d:routing-decision",
       "@type": "Thing",
       "capas:reason": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
       "capas:route": "external_engine",
@@ -187,13 +187,13 @@
       ],
       "encodingFormat": "application/json",
       "name": "W3C PROV-shaped export",
-      "sha256": "a69b9c672171184a3a49bf6bd2899c984a89ac3d5c88f3b6eaee0d8005429fcb"
+      "sha256": "62dd0e41d15917b554347e444aa109d71e7901af633c7ed15c37395489122203"
     },
     {
-      "@id": "trace:fb0e09c2e76e1279:result",
+      "@id": "trace:931efdefff552d7d:result",
       "@type": "Dataset",
       "capas:physicalEvidence": {
-        "@id": "trace:fb0e09c2e76e1279:physical-evidence"
+        "@id": "trace:931efdefff552d7d:physical-evidence"
       },
       "capas:resultHash": "11df4e1a89a915da2c406a3352a8693990f3123d993815c12554a6e9100c70ff",
       "capas:summary": {
@@ -641,10 +641,10 @@
       "name": "Result summary"
     },
     {
-      "@id": "trace:fb0e09c2e76e1279:physical-evidence",
+      "@id": "trace:931efdefff552d7d:physical-evidence",
       "@type": "capas:PhysicalEvidence",
       "about": {
-        "@id": "trace:fb0e09c2e76e1279:result"
+        "@id": "trace:931efdefff552d7d:result"
       },
       "capas:absError": 0.0,
       "capas:balanceLambda": 0.35,
@@ -1088,7 +1088,7 @@
       "name": "Physical evidence attached to result"
     },
     {
-      "@id": "trace:fb0e09c2e76e1279:event:0:ingest",
+      "@id": "trace:931efdefff552d7d:event:0:ingest",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -1108,10 +1108,10 @@
       },
       "description": "workload accepted",
       "name": "ingest",
-      "startTime": 1781731416.61667
+      "startTime": 1781731995.3367848
     },
     {
-      "@id": "trace:fb0e09c2e76e1279:event:1:runtime_context",
+      "@id": "trace:931efdefff552d7d:event:1:runtime_context",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -1123,10 +1123,10 @@
         "numpy_version": "2.4.6",
         "platform": "macOS-26.5.1-arm64-arm-64bit",
         "processor": "arm",
-        "python_executable": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/physics_quantum/physics-magnitude-lab/.pixi/envs/default/bin/python",
+        "python_executable": "/Users/kreniq/physics-magnitude-lab/.pixi/envs/default/bin/python",
         "python_version": "3.12.13",
-        "qiskit_aer_available": true,
-        "qiskit_aer_version": "0.17.2",
+        "qiskit_aer_available": false,
+        "qiskit_aer_error": "ModuleNotFoundError: No module named 'qiskit_aer'",
         "quimb_available": true,
         "quimb_version": "1.14.0",
         "scipy_available": true,
@@ -1136,10 +1136,10 @@
       },
       "description": "runtime and hardware context recorded",
       "name": "runtime_context",
-      "startTime": 1781731416.616686
+      "startTime": 1781731995.3372061
     },
     {
-      "@id": "trace:fb0e09c2e76e1279:event:2:engine_provenance",
+      "@id": "trace:931efdefff552d7d:event:2:engine_provenance",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -1147,14 +1147,14 @@
         "function_name": "assignment_to_ising_function_level",
         "kwargs": {},
         "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
-        "module_sha256": "026c0adea6ed83beca79d542c681f096fa3aabe4df62f7bbeadefdeba372b8de"
+        "module_sha256": "3cc9ed6ed3b290e231510c04fcd1f11e14a6a6ad24d1fc8f04257024bc4ef4d7"
       },
       "description": "external engine provenance recorded",
       "name": "engine_provenance",
-      "startTime": 1781731416.616823
+      "startTime": 1781731995.3375602
     },
     {
-      "@id": "trace:fb0e09c2e76e1279:event:3:cost_model",
+      "@id": "trace:931efdefff552d7d:event:3:cost_model",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -1166,10 +1166,10 @@
       },
       "description": "dense statevector cost estimated",
       "name": "cost_model",
-      "startTime": 1781731416.6168268
+      "startTime": 1781731995.33757
     },
     {
-      "@id": "trace:fb0e09c2e76e1279:event:4:route",
+      "@id": "trace:931efdefff552d7d:event:4:route",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -1179,10 +1179,10 @@
       },
       "description": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
       "name": "route",
-      "startTime": 1781731416.616831
+      "startTime": 1781731995.337579
     },
     {
-      "@id": "trace:fb0e09c2e76e1279:event:5:execute",
+      "@id": "trace:931efdefff552d7d:event:5:execute",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -1550,7 +1550,7 @@
         "reference_truth": "exact_brute_force_enumeration_2^8_assignments",
         "repr": "{'engine_id': 'physics_magnitude_quantum_engine.assignment_to_ising_function_level', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_",
         "route": "external_engine",
-        "runtime_ms": 14.219042001059279,
+        "runtime_ms": 72.4423750070855,
         "spin_encoding": {
           "+1": "Ben",
           "-1": "Ada"
@@ -1631,10 +1631,10 @@
       },
       "description": "backend executed",
       "name": "execute",
-      "startTime": 1781731416.631349
+      "startTime": 1781731995.410505
     },
     {
-      "@id": "trace:fb0e09c2e76e1279:event:6:physical_evidence",
+      "@id": "trace:931efdefff552d7d:event:6:physical_evidence",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -2080,7 +2080,7 @@
       },
       "description": "physical evidence reported by backend",
       "name": "physical_evidence",
-      "startTime": 1781731416.631479
+      "startTime": 1781731995.410677
     }
   ]
 }

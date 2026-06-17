@@ -5,10 +5,10 @@
     "function_name": "h2_ccpvdz_experimental_reference",
     "kwargs": {},
     "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
-    "module_sha256": "026c0adea6ed83beca79d542c681f096fa3aabe4df62f7bbeadefdeba372b8de",
+    "module_sha256": "3cc9ed6ed3b290e231510c04fcd1f11e14a6a6ad24d1fc8f04257024bc4ef4d7",
     "result": {
       "abs_error": 0.0,
-      "abs_error_vs_experimental": 0.0008309583469347515,
+      "abs_error_vs_experimental": 0.0008309583469343074,
       "abs_error_vs_fci": 0.0,
       "basis": "cc-pvdz",
       "benchmark_family": "QuantumChemistry",
@@ -19,7 +19,7 @@
       "expected": {
         "chemical_accuracy_threshold_hartree": 0.0015936,
         "reference_experimental_binding_energy_hartree": 0.1640261683512219,
-        "reference_fci_total_energy_hartree": -1.1634139335373228
+        "reference_fci_total_energy_hartree": -1.1634139335373224
       },
       "experimental_binding_energy_hartree": 0.1640261683512219,
       "falsification_notes": [
@@ -46,13 +46,13 @@
           ]
         }
       ],
-      "model_binding_energy_hartree": 0.16485712669815666,
-      "model_error_hartree": 0.0008309583469347515,
+      "model_binding_energy_hartree": 0.16485712669815622,
+      "model_error_hartree": 0.0008309583469343074,
       "observable": "H2 cc-pVDZ binding energy vs experimental dissociation energy",
       "physical_evidence_detail": "H2/cc-pVDZ at R=0.7414 Angstrom is solved by PySCF FCI. The solver error against the model FCI reference is zero by construction. Compared with the same measured H2 D0 reference used by trace_021, the larger basis reduces model error and is within the 1 kcal/mol chemical-accuracy threshold for this binding-energy comparison.",
       "physical_evidence_level": "experimental",
       "reference_experimental_d0_cm_inverse": 35999.582834,
-      "reference_fci_total_energy_hartree": -1.1634139335373228,
+      "reference_fci_total_energy_hartree": -1.1634139335373224,
       "reference_truth": {
         "chemical_accuracy": {
           "threshold_hartree": 0.0015936,
@@ -70,7 +70,7 @@
           "geometry": "H-H 0.7414 Angstrom",
           "kind": "exact_model_solution",
           "method": "PySCF FCI",
-          "total_energy_hartree": -1.1634139335373228
+          "total_energy_hartree": -1.1634139335373224
         }
       },
       "solver_error_hartree": 0.0,
@@ -79,10 +79,10 @@
       "value": {
         "experimental_binding_energy_hartree": 0.1640261683512219,
         "experimental_d0_cm_inverse": 35999.582834,
-        "fci_total_energy_hartree": -1.1634139335373228,
+        "fci_total_energy_hartree": -1.1634139335373224,
         "model_atom_energy_hartree": -0.49927840341958307,
-        "model_binding_energy_hartree": 0.16485712669815666,
-        "model_error_hartree": 0.0008309583469347515,
+        "model_binding_energy_hartree": 0.16485712669815622,
+        "model_error_hartree": 0.0008309583469343074,
         "solver_error_hartree": 0.0,
         "within_chemical_accuracy": true
       },
@@ -119,7 +119,7 @@
         },
         "stage": "ingest",
         "status": "ok",
-        "timestamp": 1781731417.421273
+        "timestamp": 1781732022.405259
       },
       {
         "message": "runtime and hardware context recorded",
@@ -132,10 +132,10 @@
           "numpy_version": "2.4.6",
           "platform": "macOS-26.5.1-arm64-arm-64bit",
           "processor": "arm",
-          "python_executable": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/physics_quantum/physics-magnitude-lab/.pixi/envs/default/bin/python",
+          "python_executable": "/Users/kreniq/physics-magnitude-lab/.pixi/envs/default/bin/python",
           "python_version": "3.12.13",
-          "qiskit_aer_available": true,
-          "qiskit_aer_version": "0.17.2",
+          "qiskit_aer_available": false,
+          "qiskit_aer_error": "ModuleNotFoundError: No module named 'qiskit_aer'",
           "quimb_available": true,
           "quimb_version": "1.14.0",
           "scipy_available": true,
@@ -145,7 +145,7 @@
         },
         "stage": "runtime_context",
         "status": "ok",
-        "timestamp": 1781731417.421303
+        "timestamp": 1781732022.406019
       },
       {
         "message": "external engine provenance recorded",
@@ -154,11 +154,11 @@
           "function_name": "h2_ccpvdz_experimental_reference",
           "kwargs": {},
           "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
-          "module_sha256": "026c0adea6ed83beca79d542c681f096fa3aabe4df62f7bbeadefdeba372b8de"
+          "module_sha256": "3cc9ed6ed3b290e231510c04fcd1f11e14a6a6ad24d1fc8f04257024bc4ef4d7"
         },
         "stage": "engine_provenance",
         "status": "ok",
-        "timestamp": 1781731417.421449
+        "timestamp": 1781732022.4064279
       },
       {
         "message": "dense statevector cost estimated",
@@ -171,7 +171,7 @@
         },
         "stage": "cost_model",
         "status": "ok",
-        "timestamp": 1781731417.4214551
+        "timestamp": 1781732022.406444
       },
       {
         "message": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
@@ -182,13 +182,13 @@
         },
         "stage": "route",
         "status": "ok",
-        "timestamp": 1781731417.421462
+        "timestamp": 1781732022.4064572
       },
       {
         "message": "backend executed",
         "metrics": {
           "abs_error": 0.0,
-          "abs_error_vs_experimental": 0.0008309583469347515,
+          "abs_error_vs_experimental": 0.0008309583469343074,
           "abs_error_vs_fci": 0.0,
           "basis": "cc-pvdz",
           "benchmark_family": "QuantumChemistry",
@@ -199,7 +199,7 @@
           "expected": {
             "chemical_accuracy_threshold_hartree": 0.0015936,
             "reference_experimental_binding_energy_hartree": 0.1640261683512219,
-            "reference_fci_total_energy_hartree": -1.1634139335373228
+            "reference_fci_total_energy_hartree": -1.1634139335373224
           },
           "experimental_binding_energy_hartree": 0.1640261683512219,
           "falsification_notes": [
@@ -226,13 +226,13 @@
               ]
             }
           ],
-          "model_binding_energy_hartree": 0.16485712669815666,
-          "model_error_hartree": 0.0008309583469347515,
+          "model_binding_energy_hartree": 0.16485712669815622,
+          "model_error_hartree": 0.0008309583469343074,
           "observable": "H2 cc-pVDZ binding energy vs experimental dissociation energy",
           "physical_evidence_detail": "H2/cc-pVDZ at R=0.7414 Angstrom is solved by PySCF FCI. The solver error against the model FCI reference is zero by construction. Compared with the same measured H2 D0 reference used by trace_021, the larger basis reduces model error and is within the 1 kcal/mol chemical-accuracy threshold for this binding-energy comparison.",
           "physical_evidence_level": "experimental",
           "reference_experimental_d0_cm_inverse": 35999.582834,
-          "reference_fci_total_energy_hartree": -1.1634139335373228,
+          "reference_fci_total_energy_hartree": -1.1634139335373224,
           "reference_truth": {
             "chemical_accuracy": {
               "threshold_hartree": 0.0015936,
@@ -250,12 +250,12 @@
               "geometry": "H-H 0.7414 Angstrom",
               "kind": "exact_model_solution",
               "method": "PySCF FCI",
-              "total_energy_hartree": -1.1634139335373228
+              "total_energy_hartree": -1.1634139335373224
             }
           },
           "repr": "{'engine_id': 'physics_magnitude_quantum_engine.h2_ccpvdz_experimental_reference', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_ma",
           "route": "external_engine",
-          "runtime_ms": 51.785332994768396,
+          "runtime_ms": 112.23924998193979,
           "solver_error_hartree": 0.0,
           "source_label": "PySCF FCI cc-pVDZ model solve + external H2 D0 measurement",
           "type": "dict",
@@ -263,10 +263,10 @@
           "value": {
             "experimental_binding_energy_hartree": 0.1640261683512219,
             "experimental_d0_cm_inverse": 35999.582834,
-            "fci_total_energy_hartree": -1.1634139335373228,
+            "fci_total_energy_hartree": -1.1634139335373224,
             "model_atom_energy_hartree": -0.49927840341958307,
-            "model_binding_energy_hartree": 0.16485712669815666,
-            "model_error_hartree": 0.0008309583469347515,
+            "model_binding_energy_hartree": 0.16485712669815622,
+            "model_error_hartree": 0.0008309583469343074,
             "solver_error_hartree": 0.0,
             "within_chemical_accuracy": true
           },
@@ -280,25 +280,25 @@
         },
         "stage": "execute",
         "status": "ok",
-        "timestamp": 1781731417.4734368
+        "timestamp": 1781732022.518991
       },
       {
         "message": "physical evidence reported by backend",
         "metrics": {
           "abs_error": 0.0,
-          "abs_error_vs_experimental": 0.0008309583469347515,
+          "abs_error_vs_experimental": 0.0008309583469343074,
           "abs_error_vs_fci": 0.0,
           "basis": "cc-pvdz",
           "benchmark_family": "QuantumChemistry",
           "bond_length_angstrom": 0.7414,
           "bound_scope": "single_molecule_larger_basis_equilibrium_geometry",
           "chemical_accuracy_threshold_hartree": 0.0015936,
-          "evidence_hash": "6d0a40608f4c7a4daa27e181011a789a95553f493feb3bc482e3ecd418832cbf",
+          "evidence_hash": "1dafc72df22329872a259c9828ba2db2cb8ac5b462711614faf8b359c0607ef2",
           "evidence_status_detail": "experimental_reference_model_error_within_chemical_accuracy",
           "expected": {
             "chemical_accuracy_threshold_hartree": 0.0015936,
             "reference_experimental_binding_energy_hartree": 0.1640261683512219,
-            "reference_fci_total_energy_hartree": -1.1634139335373228
+            "reference_fci_total_energy_hartree": -1.1634139335373224
           },
           "experimental_binding_energy_hartree": 0.1640261683512219,
           "falsification_notes": [
@@ -325,13 +325,13 @@
               ]
             }
           ],
-          "model_binding_energy_hartree": 0.16485712669815666,
-          "model_error_hartree": 0.0008309583469347515,
+          "model_binding_energy_hartree": 0.16485712669815622,
+          "model_error_hartree": 0.0008309583469343074,
           "observable": "H2 cc-pVDZ binding energy vs experimental dissociation energy",
           "physical_evidence_detail": "H2/cc-pVDZ at R=0.7414 Angstrom is solved by PySCF FCI. The solver error against the model FCI reference is zero by construction. Compared with the same measured H2 D0 reference used by trace_021, the larger basis reduces model error and is within the 1 kcal/mol chemical-accuracy threshold for this binding-energy comparison.",
           "physical_evidence_level": "experimental",
           "reference_experimental_d0_cm_inverse": 35999.582834,
-          "reference_fci_total_energy_hartree": -1.1634139335373228,
+          "reference_fci_total_energy_hartree": -1.1634139335373224,
           "reference_truth": {
             "chemical_accuracy": {
               "threshold_hartree": 0.0015936,
@@ -349,7 +349,7 @@
               "geometry": "H-H 0.7414 Angstrom",
               "kind": "exact_model_solution",
               "method": "PySCF FCI",
-              "total_energy_hartree": -1.1634139335373228
+              "total_energy_hartree": -1.1634139335373224
             }
           },
           "solver_error_hartree": 0.0,
@@ -358,10 +358,10 @@
           "value": {
             "experimental_binding_energy_hartree": 0.1640261683512219,
             "experimental_d0_cm_inverse": 35999.582834,
-            "fci_total_energy_hartree": -1.1634139335373228,
+            "fci_total_energy_hartree": -1.1634139335373224,
             "model_atom_energy_hartree": -0.49927840341958307,
-            "model_binding_energy_hartree": 0.16485712669815666,
-            "model_error_hartree": 0.0008309583469347515,
+            "model_binding_energy_hartree": 0.16485712669815622,
+            "model_error_hartree": 0.0008309583469343074,
             "solver_error_hartree": 0.0,
             "within_chemical_accuracy": true
           },
@@ -375,14 +375,14 @@
         },
         "stage": "physical_evidence",
         "status": "ok",
-        "timestamp": 1781731417.473509
+        "timestamp": 1781732022.519076
       }
     ],
     "hash_algorithm": "sha256(stable_json)",
-    "result_hash": "6ab89b5d9183390e974199e92a6dc75f4e43ce68950c7a2f4247dbd2e418819d",
+    "result_hash": "1ac192f3089b981f1a87c26c9c771cc5c1f922b88950305f6f377e6d6f730c72",
     "result_summary": {
       "abs_error": 0.0,
-      "abs_error_vs_experimental": 0.0008309583469347515,
+      "abs_error_vs_experimental": 0.0008309583469343074,
       "abs_error_vs_fci": 0.0,
       "basis": "cc-pvdz",
       "benchmark_family": "QuantumChemistry",
@@ -393,7 +393,7 @@
       "expected": {
         "chemical_accuracy_threshold_hartree": 0.0015936,
         "reference_experimental_binding_energy_hartree": 0.1640261683512219,
-        "reference_fci_total_energy_hartree": -1.1634139335373228
+        "reference_fci_total_energy_hartree": -1.1634139335373224
       },
       "experimental_binding_energy_hartree": 0.1640261683512219,
       "falsification_notes": [
@@ -420,13 +420,13 @@
           ]
         }
       ],
-      "model_binding_energy_hartree": 0.16485712669815666,
-      "model_error_hartree": 0.0008309583469347515,
+      "model_binding_energy_hartree": 0.16485712669815622,
+      "model_error_hartree": 0.0008309583469343074,
       "observable": "H2 cc-pVDZ binding energy vs experimental dissociation energy",
       "physical_evidence_detail": "H2/cc-pVDZ at R=0.7414 Angstrom is solved by PySCF FCI. The solver error against the model FCI reference is zero by construction. Compared with the same measured H2 D0 reference used by trace_021, the larger basis reduces model error and is within the 1 kcal/mol chemical-accuracy threshold for this binding-energy comparison.",
       "physical_evidence_level": "experimental",
       "reference_experimental_d0_cm_inverse": 35999.582834,
-      "reference_fci_total_energy_hartree": -1.1634139335373228,
+      "reference_fci_total_energy_hartree": -1.1634139335373224,
       "reference_truth": {
         "chemical_accuracy": {
           "threshold_hartree": 0.0015936,
@@ -444,7 +444,7 @@
           "geometry": "H-H 0.7414 Angstrom",
           "kind": "exact_model_solution",
           "method": "PySCF FCI",
-          "total_energy_hartree": -1.1634139335373228
+          "total_energy_hartree": -1.1634139335373224
         }
       },
       "repr": "{'engine_id': 'physics_magnitude_quantum_engine.h2_ccpvdz_experimental_reference', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_ma",
@@ -455,10 +455,10 @@
       "value": {
         "experimental_binding_energy_hartree": 0.1640261683512219,
         "experimental_d0_cm_inverse": 35999.582834,
-        "fci_total_energy_hartree": -1.1634139335373228,
+        "fci_total_energy_hartree": -1.1634139335373224,
         "model_atom_energy_hartree": -0.49927840341958307,
-        "model_binding_energy_hartree": 0.16485712669815666,
-        "model_error_hartree": 0.0008309583469347515,
+        "model_binding_energy_hartree": 0.16485712669815622,
+        "model_error_hartree": 0.0008309583469343074,
         "solver_error_hartree": 0.0,
         "within_chemical_accuracy": true
       },
@@ -488,6 +488,6 @@
       "n_qubits": 2
     }
   },
-  "trace_hash": "b5164f3e883fc33e403948d36acd2141d5b8242dd2d7b05ea0e219a3e0bac768",
+  "trace_hash": "15caf927719956dc975ecd99ae9d05a088054564ca1611c09e2f42a027b171a8",
   "trace_id": "trace_022"
 }
