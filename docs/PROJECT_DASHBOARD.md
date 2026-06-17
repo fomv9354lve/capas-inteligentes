@@ -37,11 +37,11 @@ See git log. This dashboard is updated in the same commit as state changes.
 Recent commits:
 
 ```text
-HEAD Add reproducibility gate for evidence corpus
+HEAD Add PCM / closest-SotA audit
+a948b44 Add reproducibility gate for evidence corpus
 c64f317 Add H2 basis convergence to experiment trace
 827d9f7 Add methane electronic vibrational chemistry trace
 65c1e5b Add electronic/vibrational chemistry protocol
-a7447b0 Add reference-definition corrected chemistry trace
 ```
 
 Current validation status:
@@ -194,6 +194,14 @@ none: 3
    - best basis: `cc-pV5Z`
    - local ceiling solved: `cc-pV5Z`, `110` orbitals
    - lesson: CAPAS can certify a robust True, not only honest False cases
+19. Closest-SotA / PCM audit:
+   - targeted search did not identify a single dominant `PCM` project occupying
+     the full CAPAS position
+   - closest neighbors are Workflow Run RO-Crate, HyProv, FAIR Data Pipeline,
+     SciAgentGym/SciAgentBench, QMB100/PhysVEC, and SciMLBenchmarks
+   - lesson: CAPAS must not claim provenance, workflow tracing, golden traces,
+     or reference-error benchmarking as new; its defensible position is a
+     physical-evidence profile over existing trace/provenance systems
 
 ## Non-Degradation Rules
 
@@ -534,7 +542,56 @@ Done when:
   - Workflow Run RO-Crate profile valid
   - CAPAS profile registered
 
-### D6. QMB100 / Quantum Many-Body Applicability
+### D8. PCM / Closest-SotA Audit
+
+Status: paper-level audit complete, code/API-level audit not complete.
+
+What exists:
+
+- `docs/PCM_SOTA_AUDIT.md`
+- targeted search across provenance/correctness/RO-Crate/physical-evidence
+  neighbors
+- capability matrix covering Workflow Run RO-Crate, HyProv, FAIR Data Pipeline,
+  SciAgentGym/SciAgentBench, QMB100/PhysVEC, SciMLBenchmarks, and CAPAS
+
+Current result:
+
+```text
+No single dominant PCM-style system was found occupying the full CAPAS position.
+Closest neighbors cover provenance, workflow traces, or reference correctness,
+but not the complete CAPAS combination as currently documented.
+```
+
+CAPAS position after audit:
+
+```text
+physical-evidence profile over RO-Crate/PROV-style scientific traces,
+with explicit reference truth, witness independence, evidence status,
+and robust/marginal correctness semantics
+```
+
+Debt:
+
+- this is not an exhaustive proof of absence
+- no code-level audit of every neighbor's repository/API
+- no external community confirmation
+- no Workflow Run RO-Crate profile-specific validation yet
+
+Next step:
+
+- build one minimal CAPAS example crate for interop review
+- draft `docs/profile/` JSON-LD/context notes for CAPAS physical evidence fields
+- compare one CAPAS crate directly against Workflow Run RO-Crate expectations
+
+Done when:
+
+- CAPAS can say whether it is:
+  - plain RO-Crate valid
+  - Workflow Run RO-Crate shape-compatible
+  - CAPAS physical-evidence-profile valid
+- one minimal crate is ready for external standards/community review
+
+### D9. QMB100 / Quantum Many-Body Applicability
 
 Status: blocked on dataset/access.
 
@@ -560,7 +617,7 @@ Done when:
 - one external QMB100-style task emits a CAPAS trace
 - comparison shows what QMB100 emits vs what CAPAS adds
 
-### D7. Public Usefulness
+### D10. Public Usefulness
 
 Status: unvalidated.
 

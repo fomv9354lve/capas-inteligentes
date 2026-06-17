@@ -128,6 +128,7 @@ Relevant sources:
 
 - RO-Crate paper: https://arxiv.org/abs/2108.06503
 - Workflow Run RO-Crate: https://arxiv.org/abs/2312.07852
+- Closest-SotA / PCM audit: `docs/PCM_SOTA_AUDIT.md`
 
 ### VVUQ
 
@@ -178,3 +179,12 @@ vocabulary:
 > states.
 
 That is the defensible integration.
+
+After the PCM / closest-SotA audit, the next non-degradable formulation is:
+
+> CAPAS is a physical-evidence profile layered over RO-Crate/PROV-style
+> scientific traces, with explicit reference truth, witness independence,
+> evidence status, and robust/marginal correctness semantics.
+
+This should be revised if a public system is found that provides all of those
+fields as first-class per-run artifacts over comparable scientific examples.
