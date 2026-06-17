@@ -29,9 +29,9 @@
       "@id": "./",
       "@type": "Dataset",
       "capas:evidenceStatus": "present",
-      "capas:traceHash": "e83dfde4598048c0e8c36d71199790145bbbd73160ada2c263029fa4ca1f76a0",
+      "capas:traceHash": "10c0187e756a59e3bd190aa928e344dede0de6367267a7a9dc82ff0a86c8af18",
       "capas:workflowRunCrateAlignment": "shape-compatible-with-workflow-run-ro-crate-v0",
-      "capas:workloadHash": "afc98ab4652539ed7e42835dc38417ef3690a4ac504c9b8c95da80524ec8880f",
+      "capas:workloadHash": "9c5847df0812907fafe2c145e424454a0c31f1d2dd1943439188dab2d195507e",
       "conformsTo": [
         {
           "@id": "https://w3id.org/ro/crate/1.1"
@@ -43,7 +43,7 @@
           "@id": "https://example.org/capas-inteligentes/ro-crate/physical-evidence/0.1"
         }
       ],
-      "datePublished": "2026-06-17T20:20:17.761274Z",
+      "datePublished": "2026-06-17T20:20:17.770198Z",
       "description": "RO-Crate package containing a sealed RunTrace, optional PROV export, routing decision, runtime context, and CAPAS physical evidence metadata.",
       "hasPart": [
         {
@@ -59,16 +59,16 @@
           "@id": "entity:workload"
         },
         {
-          "@id": "trace:e83dfde4598048c0:routing-decision"
+          "@id": "trace:10c0187e756a59e3:routing-decision"
         },
         {
-          "@id": "trace:e83dfde4598048c0:result"
+          "@id": "trace:10c0187e756a59e3:result"
         },
         {
           "@id": "runtrace.prov.json"
         },
         {
-          "@id": "trace:e83dfde4598048c0:physical-evidence"
+          "@id": "trace:10c0187e756a59e3:physical-evidence"
         }
       ],
       "name": "CAPAS traced scientific computation crate"
@@ -80,14 +80,14 @@
         "DigitalDocument"
       ],
       "about": {
-        "@id": "trace:e83dfde4598048c0"
+        "@id": "trace:10c0187e756a59e3"
       },
       "encodingFormat": "application/json",
       "name": "Sealed CAPAS RunTrace",
-      "sha256": "55d19ed1e4cc460449dcc174160186f6edeefbfff70a6f24393cf809cda9b93b"
+      "sha256": "3a9380dcad55a7a2ed86e1849c93e73d3131c53bd528739ba5c3e449bc11a20e"
     },
     {
-      "@id": "trace:e83dfde4598048c0",
+      "@id": "trace:10c0187e756a59e3",
       "@type": "CreateAction",
       "actionStatus": "CompletedActionStatus",
       "agent": {
@@ -98,11 +98,11 @@
       "capas:evidenceStatus": "present",
       "capas:hashAlgorithm": "sha256(stable_json)",
       "capas:routingDecision": {
-        "@id": "trace:e83dfde4598048c0:routing-decision"
+        "@id": "trace:10c0187e756a59e3:routing-decision"
       },
-      "capas:traceHash": "e83dfde4598048c0e8c36d71199790145bbbd73160ada2c263029fa4ca1f76a0",
+      "capas:traceHash": "10c0187e756a59e3bd190aa928e344dede0de6367267a7a9dc82ff0a86c8af18",
       "capas:traceSchemaVersion": "capas-runtrace-v2",
-      "endTime": "2026-06-17T20:20:17.761274Z",
+      "endTime": "2026-06-17T20:20:17.770198Z",
       "instrument": {
         "@id": "workflow/capas-costurero-run.py"
       },
@@ -111,9 +111,9 @@
         "@id": "entity:workload"
       },
       "result": {
-        "@id": "trace:e83dfde4598048c0:result"
+        "@id": "trace:10c0187e756a59e3:result"
       },
-      "startTime": "2026-06-17T20:20:17.753889Z"
+      "startTime": "2026-06-17T20:20:17.762893Z"
     },
     {
       "@id": "workflow/capas-costurero-run.py",
@@ -161,19 +161,19 @@
           "safety_factor": 0.5
         },
         "engine": {
-          "engine_id": "physics_magnitude_quantum_engine.assignment_to_ising_function_level",
-          "function_name": "assignment_to_ising_function_level",
+          "engine_id": "physics_magnitude_quantum_engine.assignment_to_ising_degenerate_function_level",
+          "function_name": "assignment_to_ising_degenerate_function_level",
           "kwargs_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
           "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
         },
         "kind": "dense",
         "n_qubits": 2
       },
-      "capas:workloadHash": "afc98ab4652539ed7e42835dc38417ef3690a4ac504c9b8c95da80524ec8880f",
+      "capas:workloadHash": "9c5847df0812907fafe2c145e424454a0c31f1d2dd1943439188dab2d195507e",
       "name": "Workload summary"
     },
     {
-      "@id": "trace:e83dfde4598048c0:routing-decision",
+      "@id": "trace:10c0187e756a59e3:routing-decision",
       "@type": "Thing",
       "capas:reason": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
       "capas:route": "external_engine",
@@ -187,15 +187,15 @@
       ],
       "encodingFormat": "application/json",
       "name": "W3C PROV-shaped export",
-      "sha256": "c692a515e9354d25fe431dfc3b62af73af0064ac6ef6da16c70310c1ab3da278"
+      "sha256": "d800e411c81473ae8160e04da2ab52ceaf5e5406e10fac50752cc3a566b7666b"
     },
     {
-      "@id": "trace:e83dfde4598048c0:result",
+      "@id": "trace:10c0187e756a59e3:result",
       "@type": "Dataset",
       "capas:physicalEvidence": {
-        "@id": "trace:e83dfde4598048c0:physical-evidence"
+        "@id": "trace:10c0187e756a59e3:physical-evidence"
       },
-      "capas:resultHash": "11df4e1a89a915da2c406a3352a8693990f3123d993815c12554a6e9100c70ff",
+      "capas:resultHash": "81f65483d3d1e0c4911ecd96ad7624a9d11b3b6b07a00a17109ead828fc690f6",
       "capas:summary": {
         "abs_error": 0.0,
         "balance_lambda": 0.35,
@@ -203,35 +203,28 @@
         "bound_scope": "exact_small_instance_brute_force_verified",
         "conflicts": [
           {
-            "gamma": 1.4,
+            "gamma": 0.8,
             "tasks": [
               "data_cleaning",
-              "model_eval"
-            ]
-          },
-          {
-            "gamma": 1.1,
-            "tasks": [
-              "api_integration",
-              "dashboard"
-            ]
-          },
-          {
-            "gamma": 0.9,
-            "tasks": [
-              "ux_copy",
-              "deployment_notes"
+              "api_integration"
             ]
           },
           {
             "gamma": 0.8,
             "tasks": [
-              "vendor_followup",
-              "qa_pass"
+              "model_eval",
+              "dashboard"
+            ]
+          },
+          {
+            "gamma": 0.6,
+            "tasks": [
+              "documentation_polish",
+              "release_notes"
             ]
           }
         ],
-        "constant_offset": 20.75,
+        "constant_offset": 19.9,
         "costs": [
           {
             "Ada": 1.0,
@@ -244,7 +237,7 @@
             "task": "api_integration"
           },
           {
-            "Ada": 2.6,
+            "Ada": 2.7,
             "Ben": 1.2,
             "task": "ux_copy"
           },
@@ -259,9 +252,9 @@
             "task": "dashboard"
           },
           {
-            "Ada": 1.8,
-            "Ben": 2.1,
-            "task": "vendor_followup"
+            "Ada": 2.0,
+            "Ben": 2.0,
+            "task": "documentation_polish"
           },
           {
             "Ada": 1.2,
@@ -269,154 +262,155 @@
             "task": "qa_pass"
           },
           {
-            "Ada": 2.9,
-            "Ben": 1.0,
-            "task": "deployment_notes"
+            "Ada": 2.0,
+            "Ben": 2.0,
+            "task": "release_notes"
           }
         ],
-        "degeneracy_count": 1,
-        "evidence_status_detail": "success",
-        "expected": 13.4,
+        "degeneracy_count": 2,
+        "evidence_status_detail": "success_degenerate_optimum_set",
+        "expected": 10.999999999999998,
         "falsification_notes": [
-          "No artificial terms were added beyond affinity, load balance, and stated conflict penalties.",
+          "Degeneracy is deliberate: documentation_polish and release_notes are symmetric neutral tasks.",
           "At N=8 brute force is trivial; the simulator does not add speed at this scale.",
-          "The defended claim is sealed optimality evidence, not superior optimization performance."
+          "The defended claim is sealed optimality-set evidence, not superior optimization performance.",
+          "The trace shows where mathematics stops: choosing among equivalent optima needs an external criterion."
         ],
         "ising_J": [
           {
             "i": 0,
             "j": 1,
-            "value": 0.7
-          },
-          {
-            "i": 0,
-            "j": 2,
-            "value": 0.7
-          },
-          {
-            "i": 0,
-            "j": 3,
-            "value": 1.4
-          },
-          {
-            "i": 0,
-            "j": 4,
-            "value": 0.7
-          },
-          {
-            "i": 0,
-            "j": 5,
-            "value": 0.7
-          },
-          {
-            "i": 0,
-            "j": 6,
-            "value": 0.7
-          },
-          {
-            "i": 0,
-            "j": 7,
-            "value": 0.7
-          },
-          {
-            "i": 1,
-            "j": 2,
-            "value": 0.7
-          },
-          {
-            "i": 1,
-            "j": 3,
-            "value": 0.7
-          },
-          {
-            "i": 1,
-            "j": 4,
-            "value": 1.25
-          },
-          {
-            "i": 1,
-            "j": 5,
-            "value": 0.7
-          },
-          {
-            "i": 1,
-            "j": 6,
-            "value": 0.7
-          },
-          {
-            "i": 1,
-            "j": 7,
-            "value": 0.7
-          },
-          {
-            "i": 2,
-            "j": 3,
-            "value": 0.7
-          },
-          {
-            "i": 2,
-            "j": 4,
-            "value": 0.7
-          },
-          {
-            "i": 2,
-            "j": 5,
-            "value": 0.7
-          },
-          {
-            "i": 2,
-            "j": 6,
-            "value": 0.7
-          },
-          {
-            "i": 2,
-            "j": 7,
-            "value": 1.15
-          },
-          {
-            "i": 3,
-            "j": 4,
-            "value": 0.7
-          },
-          {
-            "i": 3,
-            "j": 5,
-            "value": 0.7
-          },
-          {
-            "i": 3,
-            "j": 6,
-            "value": 0.7
-          },
-          {
-            "i": 3,
-            "j": 7,
-            "value": 0.7
-          },
-          {
-            "i": 4,
-            "j": 5,
-            "value": 0.7
-          },
-          {
-            "i": 4,
-            "j": 6,
-            "value": 0.7
-          },
-          {
-            "i": 4,
-            "j": 7,
-            "value": 0.7
-          },
-          {
-            "i": 5,
-            "j": 6,
             "value": 1.1
           },
           {
-            "i": 5,
+            "i": 0,
+            "j": 2,
+            "value": 0.7
+          },
+          {
+            "i": 0,
+            "j": 3,
+            "value": 0.7
+          },
+          {
+            "i": 0,
+            "j": 4,
+            "value": 0.7
+          },
+          {
+            "i": 0,
+            "j": 5,
+            "value": 0.7
+          },
+          {
+            "i": 0,
+            "j": 6,
+            "value": 0.7
+          },
+          {
+            "i": 0,
             "j": 7,
             "value": 0.7
+          },
+          {
+            "i": 1,
+            "j": 2,
+            "value": 0.7
+          },
+          {
+            "i": 1,
+            "j": 3,
+            "value": 0.7
+          },
+          {
+            "i": 1,
+            "j": 4,
+            "value": 0.7
+          },
+          {
+            "i": 1,
+            "j": 5,
+            "value": 0.7
+          },
+          {
+            "i": 1,
+            "j": 6,
+            "value": 0.7
+          },
+          {
+            "i": 1,
+            "j": 7,
+            "value": 0.7
+          },
+          {
+            "i": 2,
+            "j": 3,
+            "value": 0.7
+          },
+          {
+            "i": 2,
+            "j": 4,
+            "value": 0.7
+          },
+          {
+            "i": 2,
+            "j": 5,
+            "value": 0.7
+          },
+          {
+            "i": 2,
+            "j": 6,
+            "value": 0.7
+          },
+          {
+            "i": 2,
+            "j": 7,
+            "value": 0.7
+          },
+          {
+            "i": 3,
+            "j": 4,
+            "value": 1.1
+          },
+          {
+            "i": 3,
+            "j": 5,
+            "value": 0.7
+          },
+          {
+            "i": 3,
+            "j": 6,
+            "value": 0.7
+          },
+          {
+            "i": 3,
+            "j": 7,
+            "value": 0.7
+          },
+          {
+            "i": 4,
+            "j": 5,
+            "value": 0.7
+          },
+          {
+            "i": 4,
+            "j": 6,
+            "value": 0.7
+          },
+          {
+            "i": 4,
+            "j": 7,
+            "value": 0.7
+          },
+          {
+            "i": 5,
+            "j": 6,
+            "value": 0.7
+          },
+          {
+            "i": 5,
+            "j": 7,
+            "value": 1.0
           },
           {
             "i": 6,
@@ -427,12 +421,12 @@
         "ising_h": [
           1.1,
           -0.95,
-          -0.7000000000000001,
+          -0.7500000000000001,
           0.95,
           -0.5,
-          0.15000000000000002,
+          0.0,
           0.7500000000000001,
-          -0.95
+          0.0
         ],
         "mapping_terms": [
           {
@@ -452,10 +446,10 @@
             "task": "api_integration"
           },
           {
-            "ada_cost": 2.6,
+            "ada_cost": 2.7,
             "ben_cost": 1.2,
-            "constant_delta": 1.9,
-            "h_delta": -0.7000000000000001,
+            "constant_delta": 1.9500000000000002,
+            "h_delta": -0.7500000000000001,
             "kind": "individual_affinity",
             "task": "ux_copy"
           },
@@ -476,12 +470,12 @@
             "task": "dashboard"
           },
           {
-            "ada_cost": 1.8,
-            "ben_cost": 2.1,
-            "constant_delta": 1.9500000000000002,
-            "h_delta": 0.15000000000000002,
+            "ada_cost": 2.0,
+            "ben_cost": 2.0,
+            "constant_delta": 2.0,
+            "h_delta": 0.0,
             "kind": "individual_affinity",
-            "task": "vendor_followup"
+            "task": "documentation_polish"
           },
           {
             "ada_cost": 1.2,
@@ -492,12 +486,12 @@
             "task": "qa_pass"
           },
           {
-            "ada_cost": 2.9,
-            "ben_cost": 1.0,
-            "constant_delta": 1.95,
-            "h_delta": -0.95,
+            "ada_cost": 2.0,
+            "ben_cost": 2.0,
+            "constant_delta": 2.0,
+            "h_delta": 0.0,
             "kind": "individual_affinity",
-            "task": "deployment_notes"
+            "task": "release_notes"
           },
           {
             "constant_delta": 2.8,
@@ -507,36 +501,14 @@
             "penalty": "lambda * (sum_i s_i)^2"
           },
           {
-            "J_delta": 0.7,
-            "constant_delta": 0.7,
-            "gamma": 1.4,
+            "J_delta": 0.4,
+            "constant_delta": 0.4,
+            "gamma": 0.8,
             "kind": "same_person_conflict",
             "penalty": "gamma * (1 + s_i s_j) / 2",
             "tasks": [
               "data_cleaning",
-              "model_eval"
-            ]
-          },
-          {
-            "J_delta": 0.55,
-            "constant_delta": 0.55,
-            "gamma": 1.1,
-            "kind": "same_person_conflict",
-            "penalty": "gamma * (1 + s_i s_j) / 2",
-            "tasks": [
-              "api_integration",
-              "dashboard"
-            ]
-          },
-          {
-            "J_delta": 0.45,
-            "constant_delta": 0.45,
-            "gamma": 0.9,
-            "kind": "same_person_conflict",
-            "penalty": "gamma * (1 + s_i s_j) / 2",
-            "tasks": [
-              "ux_copy",
-              "deployment_notes"
+              "api_integration"
             ]
           },
           {
@@ -546,20 +518,31 @@
             "kind": "same_person_conflict",
             "penalty": "gamma * (1 + s_i s_j) / 2",
             "tasks": [
-              "vendor_followup",
-              "qa_pass"
+              "model_eval",
+              "dashboard"
+            ]
+          },
+          {
+            "J_delta": 0.3,
+            "constant_delta": 0.3,
+            "gamma": 0.6,
+            "kind": "same_person_conflict",
+            "penalty": "gamma * (1 + s_i s_j) / 2",
+            "tasks": [
+              "documentation_polish",
+              "release_notes"
             ]
           }
         ],
-        "observable": "N=8 K=2 assignment Ising ground-state energy",
+        "observable": "Degenerate N=8 K=2 assignment Ising ground-state energy",
         "people": [
           "Ada",
           "Ben"
         ],
-        "physical_evidence_detail": "A small real assignment objective is mapped explicitly to an Ising Hamiltonian. Exact diagonalization of the diagonal Hamiltonian is checked against exhaustive enumeration of all 2^8 assignments. This certifies optimality only for this small function-level instance; it does not claim optimization speedup.",
+        "physical_evidence_detail": "A deliberately symmetric assignment objective is mapped to Ising and solved by exact diagonalization. Exhaustive enumeration confirms multiple equally optimal assignments. The trace certifies the optimal set for this small instance and records that final choice among optima requires an external/business criterion.",
         "physical_evidence_level": "analytic",
-        "reference_truth": "exact_brute_force_enumeration_2^8_assignments",
-        "repr": "{'engine_id': 'physics_magnitude_quantum_engine.assignment_to_ising_function_level', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_",
+        "reference_truth": "exact_brute_force_enumeration_2^8_assignments_degenerate",
+        "repr": "{'engine_id': 'physics_magnitude_quantum_engine.assignment_to_ising_degenerate_function_level', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integratio",
         "spin_encoding": {
           "+1": "Ben",
           "-1": "Ada"
@@ -570,15 +553,15 @@
           "ux_copy",
           "model_eval",
           "dashboard",
-          "vendor_followup",
+          "documentation_polish",
           "qa_pass",
-          "deployment_notes"
+          "release_notes"
         ],
         "type": "dict",
         "units": "objective_energy",
         "value": {
-          "brute_force_energy": 13.4,
-          "degeneracy_count": 1,
+          "brute_force_energy": 10.999999999999998,
+          "degeneracy_count": 2,
           "optimal_assignments": [
             {
               "assignees": [
@@ -586,20 +569,44 @@
                 "Ben",
                 "Ben",
                 "Ada",
-                "Ada",
+                "Ben",
                 "Ben",
                 "Ada",
-                "Ben"
+                "Ada"
               ],
-              "bits": 166,
-              "energy": 13.4,
+              "bits": 54,
+              "energy": 10.999999999999998,
               "spins": [
                 -1,
                 1,
                 1,
                 -1,
+                1,
+                1,
+                -1,
+                -1
+              ]
+            },
+            {
+              "assignees": [
+                "Ada",
+                "Ben",
+                "Ben",
+                "Ada",
+                "Ben",
+                "Ada",
+                "Ada",
+                "Ben"
+              ],
+              "bits": 150,
+              "energy": 10.999999999999998,
+              "spins": [
                 -1,
                 1,
+                1,
+                -1,
+                1,
+                -1,
                 -1,
                 1
               ]
@@ -611,25 +618,25 @@
               "Ben",
               "Ben",
               "Ada",
-              "Ada",
+              "Ben",
               "Ben",
               "Ada",
-              "Ben"
+              "Ada"
             ],
-            "bits": 166,
-            "energy": 13.4,
+            "bits": 54,
+            "energy": 10.999999999999998,
             "spins": [
               -1,
               1,
               1,
               -1,
-              -1,
+              1,
               1,
               -1,
-              1
+              -1
             ]
           },
-          "solver_energy": 13.4
+          "solver_energy": 10.999999999999998
         },
         "verification_independence": "different_method_same_runtime",
         "witness_stack": {
@@ -641,10 +648,10 @@
       "name": "Result summary"
     },
     {
-      "@id": "trace:e83dfde4598048c0:physical-evidence",
+      "@id": "trace:10c0187e756a59e3:physical-evidence",
       "@type": "capas:PhysicalEvidence",
       "about": {
-        "@id": "trace:e83dfde4598048c0:result"
+        "@id": "trace:10c0187e756a59e3:result"
       },
       "capas:absError": 0.0,
       "capas:balanceLambda": 0.35,
@@ -652,35 +659,28 @@
       "capas:boundScope": "exact_small_instance_brute_force_verified",
       "capas:conflicts": [
         {
-          "gamma": 1.4,
+          "gamma": 0.8,
           "tasks": [
             "data_cleaning",
-            "model_eval"
-          ]
-        },
-        {
-          "gamma": 1.1,
-          "tasks": [
-            "api_integration",
-            "dashboard"
-          ]
-        },
-        {
-          "gamma": 0.9,
-          "tasks": [
-            "ux_copy",
-            "deployment_notes"
+            "api_integration"
           ]
         },
         {
           "gamma": 0.8,
           "tasks": [
-            "vendor_followup",
-            "qa_pass"
+            "model_eval",
+            "dashboard"
+          ]
+        },
+        {
+          "gamma": 0.6,
+          "tasks": [
+            "documentation_polish",
+            "release_notes"
           ]
         }
       ],
-      "capas:constantOffset": 20.75,
+      "capas:constantOffset": 19.9,
       "capas:costs": [
         {
           "Ada": 1.0,
@@ -693,7 +693,7 @@
           "task": "api_integration"
         },
         {
-          "Ada": 2.6,
+          "Ada": 2.7,
           "Ben": 1.2,
           "task": "ux_copy"
         },
@@ -708,9 +708,9 @@
           "task": "dashboard"
         },
         {
-          "Ada": 1.8,
-          "Ben": 2.1,
-          "task": "vendor_followup"
+          "Ada": 2.0,
+          "Ben": 2.0,
+          "task": "documentation_polish"
         },
         {
           "Ada": 1.2,
@@ -718,166 +718,167 @@
           "task": "qa_pass"
         },
         {
-          "Ada": 2.9,
-          "Ben": 1.0,
-          "task": "deployment_notes"
+          "Ada": 2.0,
+          "Ben": 2.0,
+          "task": "release_notes"
         }
       ],
-      "capas:degeneracyCount": 1,
-      "capas:detail": "A small real assignment objective is mapped explicitly to an Ising Hamiltonian. Exact diagonalization of the diagonal Hamiltonian is checked against exhaustive enumeration of all 2^8 assignments. This certifies optimality only for this small function-level instance; it does not claim optimization speedup.",
-      "capas:evidenceHash": "ad3d81cf76659726b0a9b0a1fb01ec6566c710ead91b3ff320849d7aa7a7aecd",
-      "capas:evidenceStatusDetail": "success",
-      "capas:expected": 13.4,
+      "capas:degeneracyCount": 2,
+      "capas:detail": "A deliberately symmetric assignment objective is mapped to Ising and solved by exact diagonalization. Exhaustive enumeration confirms multiple equally optimal assignments. The trace certifies the optimal set for this small instance and records that final choice among optima requires an external/business criterion.",
+      "capas:evidenceHash": "a2c778b1c0ddc4a7bc7dc1091947e29eb7381ec6929a0126fb35f4592ac343dc",
+      "capas:evidenceStatusDetail": "success_degenerate_optimum_set",
+      "capas:expected": 10.999999999999998,
       "capas:falsificationNotes": [
-        "No artificial terms were added beyond affinity, load balance, and stated conflict penalties.",
+        "Degeneracy is deliberate: documentation_polish and release_notes are symmetric neutral tasks.",
         "At N=8 brute force is trivial; the simulator does not add speed at this scale.",
-        "The defended claim is sealed optimality evidence, not superior optimization performance."
+        "The defended claim is sealed optimality-set evidence, not superior optimization performance.",
+        "The trace shows where mathematics stops: choosing among equivalent optima needs an external criterion."
       ],
       "capas:isingH": [
         1.1,
         -0.95,
-        -0.7000000000000001,
+        -0.7500000000000001,
         0.95,
         -0.5,
-        0.15000000000000002,
+        0.0,
         0.7500000000000001,
-        -0.95
+        0.0
       ],
       "capas:isingJ": [
         {
           "i": 0,
           "j": 1,
-          "value": 0.7
-        },
-        {
-          "i": 0,
-          "j": 2,
-          "value": 0.7
-        },
-        {
-          "i": 0,
-          "j": 3,
-          "value": 1.4
-        },
-        {
-          "i": 0,
-          "j": 4,
-          "value": 0.7
-        },
-        {
-          "i": 0,
-          "j": 5,
-          "value": 0.7
-        },
-        {
-          "i": 0,
-          "j": 6,
-          "value": 0.7
-        },
-        {
-          "i": 0,
-          "j": 7,
-          "value": 0.7
-        },
-        {
-          "i": 1,
-          "j": 2,
-          "value": 0.7
-        },
-        {
-          "i": 1,
-          "j": 3,
-          "value": 0.7
-        },
-        {
-          "i": 1,
-          "j": 4,
-          "value": 1.25
-        },
-        {
-          "i": 1,
-          "j": 5,
-          "value": 0.7
-        },
-        {
-          "i": 1,
-          "j": 6,
-          "value": 0.7
-        },
-        {
-          "i": 1,
-          "j": 7,
-          "value": 0.7
-        },
-        {
-          "i": 2,
-          "j": 3,
-          "value": 0.7
-        },
-        {
-          "i": 2,
-          "j": 4,
-          "value": 0.7
-        },
-        {
-          "i": 2,
-          "j": 5,
-          "value": 0.7
-        },
-        {
-          "i": 2,
-          "j": 6,
-          "value": 0.7
-        },
-        {
-          "i": 2,
-          "j": 7,
-          "value": 1.15
-        },
-        {
-          "i": 3,
-          "j": 4,
-          "value": 0.7
-        },
-        {
-          "i": 3,
-          "j": 5,
-          "value": 0.7
-        },
-        {
-          "i": 3,
-          "j": 6,
-          "value": 0.7
-        },
-        {
-          "i": 3,
-          "j": 7,
-          "value": 0.7
-        },
-        {
-          "i": 4,
-          "j": 5,
-          "value": 0.7
-        },
-        {
-          "i": 4,
-          "j": 6,
-          "value": 0.7
-        },
-        {
-          "i": 4,
-          "j": 7,
-          "value": 0.7
-        },
-        {
-          "i": 5,
-          "j": 6,
           "value": 1.1
         },
         {
-          "i": 5,
+          "i": 0,
+          "j": 2,
+          "value": 0.7
+        },
+        {
+          "i": 0,
+          "j": 3,
+          "value": 0.7
+        },
+        {
+          "i": 0,
+          "j": 4,
+          "value": 0.7
+        },
+        {
+          "i": 0,
+          "j": 5,
+          "value": 0.7
+        },
+        {
+          "i": 0,
+          "j": 6,
+          "value": 0.7
+        },
+        {
+          "i": 0,
           "j": 7,
           "value": 0.7
+        },
+        {
+          "i": 1,
+          "j": 2,
+          "value": 0.7
+        },
+        {
+          "i": 1,
+          "j": 3,
+          "value": 0.7
+        },
+        {
+          "i": 1,
+          "j": 4,
+          "value": 0.7
+        },
+        {
+          "i": 1,
+          "j": 5,
+          "value": 0.7
+        },
+        {
+          "i": 1,
+          "j": 6,
+          "value": 0.7
+        },
+        {
+          "i": 1,
+          "j": 7,
+          "value": 0.7
+        },
+        {
+          "i": 2,
+          "j": 3,
+          "value": 0.7
+        },
+        {
+          "i": 2,
+          "j": 4,
+          "value": 0.7
+        },
+        {
+          "i": 2,
+          "j": 5,
+          "value": 0.7
+        },
+        {
+          "i": 2,
+          "j": 6,
+          "value": 0.7
+        },
+        {
+          "i": 2,
+          "j": 7,
+          "value": 0.7
+        },
+        {
+          "i": 3,
+          "j": 4,
+          "value": 1.1
+        },
+        {
+          "i": 3,
+          "j": 5,
+          "value": 0.7
+        },
+        {
+          "i": 3,
+          "j": 6,
+          "value": 0.7
+        },
+        {
+          "i": 3,
+          "j": 7,
+          "value": 0.7
+        },
+        {
+          "i": 4,
+          "j": 5,
+          "value": 0.7
+        },
+        {
+          "i": 4,
+          "j": 6,
+          "value": 0.7
+        },
+        {
+          "i": 4,
+          "j": 7,
+          "value": 0.7
+        },
+        {
+          "i": 5,
+          "j": 6,
+          "value": 0.7
+        },
+        {
+          "i": 5,
+          "j": 7,
+          "value": 1.0
         },
         {
           "i": 6,
@@ -903,10 +904,10 @@
           "task": "api_integration"
         },
         {
-          "ada_cost": 2.6,
+          "ada_cost": 2.7,
           "ben_cost": 1.2,
-          "constant_delta": 1.9,
-          "h_delta": -0.7000000000000001,
+          "constant_delta": 1.9500000000000002,
+          "h_delta": -0.7500000000000001,
           "kind": "individual_affinity",
           "task": "ux_copy"
         },
@@ -927,12 +928,12 @@
           "task": "dashboard"
         },
         {
-          "ada_cost": 1.8,
-          "ben_cost": 2.1,
-          "constant_delta": 1.9500000000000002,
-          "h_delta": 0.15000000000000002,
+          "ada_cost": 2.0,
+          "ben_cost": 2.0,
+          "constant_delta": 2.0,
+          "h_delta": 0.0,
           "kind": "individual_affinity",
-          "task": "vendor_followup"
+          "task": "documentation_polish"
         },
         {
           "ada_cost": 1.2,
@@ -943,12 +944,12 @@
           "task": "qa_pass"
         },
         {
-          "ada_cost": 2.9,
-          "ben_cost": 1.0,
-          "constant_delta": 1.95,
-          "h_delta": -0.95,
+          "ada_cost": 2.0,
+          "ben_cost": 2.0,
+          "constant_delta": 2.0,
+          "h_delta": 0.0,
           "kind": "individual_affinity",
-          "task": "deployment_notes"
+          "task": "release_notes"
         },
         {
           "constant_delta": 2.8,
@@ -958,36 +959,14 @@
           "penalty": "lambda * (sum_i s_i)^2"
         },
         {
-          "J_delta": 0.7,
-          "constant_delta": 0.7,
-          "gamma": 1.4,
+          "J_delta": 0.4,
+          "constant_delta": 0.4,
+          "gamma": 0.8,
           "kind": "same_person_conflict",
           "penalty": "gamma * (1 + s_i s_j) / 2",
           "tasks": [
             "data_cleaning",
-            "model_eval"
-          ]
-        },
-        {
-          "J_delta": 0.55,
-          "constant_delta": 0.55,
-          "gamma": 1.1,
-          "kind": "same_person_conflict",
-          "penalty": "gamma * (1 + s_i s_j) / 2",
-          "tasks": [
-            "api_integration",
-            "dashboard"
-          ]
-        },
-        {
-          "J_delta": 0.45,
-          "constant_delta": 0.45,
-          "gamma": 0.9,
-          "kind": "same_person_conflict",
-          "penalty": "gamma * (1 + s_i s_j) / 2",
-          "tasks": [
-            "ux_copy",
-            "deployment_notes"
+            "api_integration"
           ]
         },
         {
@@ -997,18 +976,29 @@
           "kind": "same_person_conflict",
           "penalty": "gamma * (1 + s_i s_j) / 2",
           "tasks": [
-            "vendor_followup",
-            "qa_pass"
+            "model_eval",
+            "dashboard"
+          ]
+        },
+        {
+          "J_delta": 0.3,
+          "constant_delta": 0.3,
+          "gamma": 0.6,
+          "kind": "same_person_conflict",
+          "penalty": "gamma * (1 + s_i s_j) / 2",
+          "tasks": [
+            "documentation_polish",
+            "release_notes"
           ]
         }
       ],
-      "capas:observable": "N=8 K=2 assignment Ising ground-state energy",
+      "capas:observable": "Degenerate N=8 K=2 assignment Ising ground-state energy",
       "capas:people": [
         "Ada",
         "Ben"
       ],
       "capas:physicalEvidenceLevel": "analytic",
-      "capas:referenceTruth": "exact_brute_force_enumeration_2^8_assignments",
+      "capas:referenceTruth": "exact_brute_force_enumeration_2^8_assignments_degenerate",
       "capas:spinEncoding": {
         "+1": "Ben",
         "-1": "Ada"
@@ -1019,14 +1009,14 @@
         "ux_copy",
         "model_eval",
         "dashboard",
-        "vendor_followup",
+        "documentation_polish",
         "qa_pass",
-        "deployment_notes"
+        "release_notes"
       ],
       "capas:units": "objective_energy",
       "capas:value": {
-        "brute_force_energy": 13.4,
-        "degeneracy_count": 1,
+        "brute_force_energy": 10.999999999999998,
+        "degeneracy_count": 2,
         "optimal_assignments": [
           {
             "assignees": [
@@ -1034,20 +1024,44 @@
               "Ben",
               "Ben",
               "Ada",
-              "Ada",
+              "Ben",
               "Ben",
               "Ada",
-              "Ben"
+              "Ada"
             ],
-            "bits": 166,
-            "energy": 13.4,
+            "bits": 54,
+            "energy": 10.999999999999998,
             "spins": [
               -1,
               1,
               1,
               -1,
+              1,
+              1,
+              -1,
+              -1
+            ]
+          },
+          {
+            "assignees": [
+              "Ada",
+              "Ben",
+              "Ben",
+              "Ada",
+              "Ben",
+              "Ada",
+              "Ada",
+              "Ben"
+            ],
+            "bits": 150,
+            "energy": 10.999999999999998,
+            "spins": [
               -1,
               1,
+              1,
+              -1,
+              1,
+              -1,
               -1,
               1
             ]
@@ -1059,25 +1073,25 @@
             "Ben",
             "Ben",
             "Ada",
-            "Ada",
+            "Ben",
             "Ben",
             "Ada",
-            "Ben"
+            "Ada"
           ],
-          "bits": 166,
-          "energy": 13.4,
+          "bits": 54,
+          "energy": 10.999999999999998,
           "spins": [
             -1,
             1,
             1,
             -1,
-            -1,
+            1,
             1,
             -1,
-            1
+            -1
           ]
         },
-        "solver_energy": 13.4
+        "solver_energy": 10.999999999999998
       },
       "capas:verificationIndependence": "different_method_same_runtime",
       "capas:witnessStack": {
@@ -1088,7 +1102,7 @@
       "name": "Physical evidence attached to result"
     },
     {
-      "@id": "trace:e83dfde4598048c0:event:0:ingest",
+      "@id": "trace:10c0187e756a59e3:event:0:ingest",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -1098,8 +1112,8 @@
           "safety_factor": 0.5
         },
         "engine": {
-          "engine_id": "physics_magnitude_quantum_engine.assignment_to_ising_function_level",
-          "function_name": "assignment_to_ising_function_level",
+          "engine_id": "physics_magnitude_quantum_engine.assignment_to_ising_degenerate_function_level",
+          "function_name": "assignment_to_ising_degenerate_function_level",
           "kwargs_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
           "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
         },
@@ -1108,10 +1122,10 @@
       },
       "description": "workload accepted",
       "name": "ingest",
-      "startTime": 1781727617.753889
+      "startTime": 1781727617.762893
     },
     {
-      "@id": "trace:e83dfde4598048c0:event:1:runtime_context",
+      "@id": "trace:10c0187e756a59e3:event:1:runtime_context",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -1136,25 +1150,25 @@
       },
       "description": "runtime and hardware context recorded",
       "name": "runtime_context",
-      "startTime": 1781727617.7538948
+      "startTime": 1781727617.7629051
     },
     {
-      "@id": "trace:e83dfde4598048c0:event:2:engine_provenance",
+      "@id": "trace:10c0187e756a59e3:event:2:engine_provenance",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
-        "engine_id": "physics_magnitude_quantum_engine.assignment_to_ising_function_level",
-        "function_name": "assignment_to_ising_function_level",
+        "engine_id": "physics_magnitude_quantum_engine.assignment_to_ising_degenerate_function_level",
+        "function_name": "assignment_to_ising_degenerate_function_level",
         "kwargs": {},
         "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
         "module_sha256": "b32e6f771b880eb2de3fc74c0d24c674abc1f1ea368793734b212b025ae56b83"
       },
       "description": "external engine provenance recorded",
       "name": "engine_provenance",
-      "startTime": 1781727617.753938
+      "startTime": 1781727617.762957
     },
     {
-      "@id": "trace:e83dfde4598048c0:event:3:cost_model",
+      "@id": "trace:10c0187e756a59e3:event:3:cost_model",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -1166,23 +1180,23 @@
       },
       "description": "dense statevector cost estimated",
       "name": "cost_model",
-      "startTime": 1781727617.7539399
+      "startTime": 1781727617.76296
     },
     {
-      "@id": "trace:e83dfde4598048c0:event:4:route",
+      "@id": "trace:10c0187e756a59e3:event:4:route",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
-        "engine_id": "physics_magnitude_quantum_engine.assignment_to_ising_function_level",
-        "function_name": "assignment_to_ising_function_level",
+        "engine_id": "physics_magnitude_quantum_engine.assignment_to_ising_degenerate_function_level",
+        "function_name": "assignment_to_ising_degenerate_function_level",
         "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
       },
       "description": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
       "name": "route",
-      "startTime": 1781727617.753941
+      "startTime": 1781727617.7629619
     },
     {
-      "@id": "trace:e83dfde4598048c0:event:5:execute",
+      "@id": "trace:10c0187e756a59e3:event:5:execute",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -1192,35 +1206,28 @@
         "bound_scope": "exact_small_instance_brute_force_verified",
         "conflicts": [
           {
-            "gamma": 1.4,
+            "gamma": 0.8,
             "tasks": [
               "data_cleaning",
-              "model_eval"
-            ]
-          },
-          {
-            "gamma": 1.1,
-            "tasks": [
-              "api_integration",
-              "dashboard"
-            ]
-          },
-          {
-            "gamma": 0.9,
-            "tasks": [
-              "ux_copy",
-              "deployment_notes"
+              "api_integration"
             ]
           },
           {
             "gamma": 0.8,
             "tasks": [
-              "vendor_followup",
-              "qa_pass"
+              "model_eval",
+              "dashboard"
+            ]
+          },
+          {
+            "gamma": 0.6,
+            "tasks": [
+              "documentation_polish",
+              "release_notes"
             ]
           }
         ],
-        "constant_offset": 20.75,
+        "constant_offset": 19.9,
         "costs": [
           {
             "Ada": 1.0,
@@ -1233,7 +1240,7 @@
             "task": "api_integration"
           },
           {
-            "Ada": 2.6,
+            "Ada": 2.7,
             "Ben": 1.2,
             "task": "ux_copy"
           },
@@ -1248,9 +1255,9 @@
             "task": "dashboard"
           },
           {
-            "Ada": 1.8,
-            "Ben": 2.1,
-            "task": "vendor_followup"
+            "Ada": 2.0,
+            "Ben": 2.0,
+            "task": "documentation_polish"
           },
           {
             "Ada": 1.2,
@@ -1258,154 +1265,155 @@
             "task": "qa_pass"
           },
           {
-            "Ada": 2.9,
-            "Ben": 1.0,
-            "task": "deployment_notes"
+            "Ada": 2.0,
+            "Ben": 2.0,
+            "task": "release_notes"
           }
         ],
-        "degeneracy_count": 1,
-        "evidence_status_detail": "success",
-        "expected": 13.4,
+        "degeneracy_count": 2,
+        "evidence_status_detail": "success_degenerate_optimum_set",
+        "expected": 10.999999999999998,
         "falsification_notes": [
-          "No artificial terms were added beyond affinity, load balance, and stated conflict penalties.",
+          "Degeneracy is deliberate: documentation_polish and release_notes are symmetric neutral tasks.",
           "At N=8 brute force is trivial; the simulator does not add speed at this scale.",
-          "The defended claim is sealed optimality evidence, not superior optimization performance."
+          "The defended claim is sealed optimality-set evidence, not superior optimization performance.",
+          "The trace shows where mathematics stops: choosing among equivalent optima needs an external criterion."
         ],
         "ising_J": [
           {
             "i": 0,
             "j": 1,
-            "value": 0.7
-          },
-          {
-            "i": 0,
-            "j": 2,
-            "value": 0.7
-          },
-          {
-            "i": 0,
-            "j": 3,
-            "value": 1.4
-          },
-          {
-            "i": 0,
-            "j": 4,
-            "value": 0.7
-          },
-          {
-            "i": 0,
-            "j": 5,
-            "value": 0.7
-          },
-          {
-            "i": 0,
-            "j": 6,
-            "value": 0.7
-          },
-          {
-            "i": 0,
-            "j": 7,
-            "value": 0.7
-          },
-          {
-            "i": 1,
-            "j": 2,
-            "value": 0.7
-          },
-          {
-            "i": 1,
-            "j": 3,
-            "value": 0.7
-          },
-          {
-            "i": 1,
-            "j": 4,
-            "value": 1.25
-          },
-          {
-            "i": 1,
-            "j": 5,
-            "value": 0.7
-          },
-          {
-            "i": 1,
-            "j": 6,
-            "value": 0.7
-          },
-          {
-            "i": 1,
-            "j": 7,
-            "value": 0.7
-          },
-          {
-            "i": 2,
-            "j": 3,
-            "value": 0.7
-          },
-          {
-            "i": 2,
-            "j": 4,
-            "value": 0.7
-          },
-          {
-            "i": 2,
-            "j": 5,
-            "value": 0.7
-          },
-          {
-            "i": 2,
-            "j": 6,
-            "value": 0.7
-          },
-          {
-            "i": 2,
-            "j": 7,
-            "value": 1.15
-          },
-          {
-            "i": 3,
-            "j": 4,
-            "value": 0.7
-          },
-          {
-            "i": 3,
-            "j": 5,
-            "value": 0.7
-          },
-          {
-            "i": 3,
-            "j": 6,
-            "value": 0.7
-          },
-          {
-            "i": 3,
-            "j": 7,
-            "value": 0.7
-          },
-          {
-            "i": 4,
-            "j": 5,
-            "value": 0.7
-          },
-          {
-            "i": 4,
-            "j": 6,
-            "value": 0.7
-          },
-          {
-            "i": 4,
-            "j": 7,
-            "value": 0.7
-          },
-          {
-            "i": 5,
-            "j": 6,
             "value": 1.1
           },
           {
-            "i": 5,
+            "i": 0,
+            "j": 2,
+            "value": 0.7
+          },
+          {
+            "i": 0,
+            "j": 3,
+            "value": 0.7
+          },
+          {
+            "i": 0,
+            "j": 4,
+            "value": 0.7
+          },
+          {
+            "i": 0,
+            "j": 5,
+            "value": 0.7
+          },
+          {
+            "i": 0,
+            "j": 6,
+            "value": 0.7
+          },
+          {
+            "i": 0,
             "j": 7,
             "value": 0.7
+          },
+          {
+            "i": 1,
+            "j": 2,
+            "value": 0.7
+          },
+          {
+            "i": 1,
+            "j": 3,
+            "value": 0.7
+          },
+          {
+            "i": 1,
+            "j": 4,
+            "value": 0.7
+          },
+          {
+            "i": 1,
+            "j": 5,
+            "value": 0.7
+          },
+          {
+            "i": 1,
+            "j": 6,
+            "value": 0.7
+          },
+          {
+            "i": 1,
+            "j": 7,
+            "value": 0.7
+          },
+          {
+            "i": 2,
+            "j": 3,
+            "value": 0.7
+          },
+          {
+            "i": 2,
+            "j": 4,
+            "value": 0.7
+          },
+          {
+            "i": 2,
+            "j": 5,
+            "value": 0.7
+          },
+          {
+            "i": 2,
+            "j": 6,
+            "value": 0.7
+          },
+          {
+            "i": 2,
+            "j": 7,
+            "value": 0.7
+          },
+          {
+            "i": 3,
+            "j": 4,
+            "value": 1.1
+          },
+          {
+            "i": 3,
+            "j": 5,
+            "value": 0.7
+          },
+          {
+            "i": 3,
+            "j": 6,
+            "value": 0.7
+          },
+          {
+            "i": 3,
+            "j": 7,
+            "value": 0.7
+          },
+          {
+            "i": 4,
+            "j": 5,
+            "value": 0.7
+          },
+          {
+            "i": 4,
+            "j": 6,
+            "value": 0.7
+          },
+          {
+            "i": 4,
+            "j": 7,
+            "value": 0.7
+          },
+          {
+            "i": 5,
+            "j": 6,
+            "value": 0.7
+          },
+          {
+            "i": 5,
+            "j": 7,
+            "value": 1.0
           },
           {
             "i": 6,
@@ -1416,12 +1424,12 @@
         "ising_h": [
           1.1,
           -0.95,
-          -0.7000000000000001,
+          -0.7500000000000001,
           0.95,
           -0.5,
-          0.15000000000000002,
+          0.0,
           0.7500000000000001,
-          -0.95
+          0.0
         ],
         "mapping_terms": [
           {
@@ -1441,10 +1449,10 @@
             "task": "api_integration"
           },
           {
-            "ada_cost": 2.6,
+            "ada_cost": 2.7,
             "ben_cost": 1.2,
-            "constant_delta": 1.9,
-            "h_delta": -0.7000000000000001,
+            "constant_delta": 1.9500000000000002,
+            "h_delta": -0.7500000000000001,
             "kind": "individual_affinity",
             "task": "ux_copy"
           },
@@ -1465,12 +1473,12 @@
             "task": "dashboard"
           },
           {
-            "ada_cost": 1.8,
-            "ben_cost": 2.1,
-            "constant_delta": 1.9500000000000002,
-            "h_delta": 0.15000000000000002,
+            "ada_cost": 2.0,
+            "ben_cost": 2.0,
+            "constant_delta": 2.0,
+            "h_delta": 0.0,
             "kind": "individual_affinity",
-            "task": "vendor_followup"
+            "task": "documentation_polish"
           },
           {
             "ada_cost": 1.2,
@@ -1481,12 +1489,12 @@
             "task": "qa_pass"
           },
           {
-            "ada_cost": 2.9,
-            "ben_cost": 1.0,
-            "constant_delta": 1.95,
-            "h_delta": -0.95,
+            "ada_cost": 2.0,
+            "ben_cost": 2.0,
+            "constant_delta": 2.0,
+            "h_delta": 0.0,
             "kind": "individual_affinity",
-            "task": "deployment_notes"
+            "task": "release_notes"
           },
           {
             "constant_delta": 2.8,
@@ -1496,36 +1504,14 @@
             "penalty": "lambda * (sum_i s_i)^2"
           },
           {
-            "J_delta": 0.7,
-            "constant_delta": 0.7,
-            "gamma": 1.4,
+            "J_delta": 0.4,
+            "constant_delta": 0.4,
+            "gamma": 0.8,
             "kind": "same_person_conflict",
             "penalty": "gamma * (1 + s_i s_j) / 2",
             "tasks": [
               "data_cleaning",
-              "model_eval"
-            ]
-          },
-          {
-            "J_delta": 0.55,
-            "constant_delta": 0.55,
-            "gamma": 1.1,
-            "kind": "same_person_conflict",
-            "penalty": "gamma * (1 + s_i s_j) / 2",
-            "tasks": [
-              "api_integration",
-              "dashboard"
-            ]
-          },
-          {
-            "J_delta": 0.45,
-            "constant_delta": 0.45,
-            "gamma": 0.9,
-            "kind": "same_person_conflict",
-            "penalty": "gamma * (1 + s_i s_j) / 2",
-            "tasks": [
-              "ux_copy",
-              "deployment_notes"
+              "api_integration"
             ]
           },
           {
@@ -1535,22 +1521,33 @@
             "kind": "same_person_conflict",
             "penalty": "gamma * (1 + s_i s_j) / 2",
             "tasks": [
-              "vendor_followup",
-              "qa_pass"
+              "model_eval",
+              "dashboard"
+            ]
+          },
+          {
+            "J_delta": 0.3,
+            "constant_delta": 0.3,
+            "gamma": 0.6,
+            "kind": "same_person_conflict",
+            "penalty": "gamma * (1 + s_i s_j) / 2",
+            "tasks": [
+              "documentation_polish",
+              "release_notes"
             ]
           }
         ],
-        "observable": "N=8 K=2 assignment Ising ground-state energy",
+        "observable": "Degenerate N=8 K=2 assignment Ising ground-state energy",
         "people": [
           "Ada",
           "Ben"
         ],
-        "physical_evidence_detail": "A small real assignment objective is mapped explicitly to an Ising Hamiltonian. Exact diagonalization of the diagonal Hamiltonian is checked against exhaustive enumeration of all 2^8 assignments. This certifies optimality only for this small function-level instance; it does not claim optimization speedup.",
+        "physical_evidence_detail": "A deliberately symmetric assignment objective is mapped to Ising and solved by exact diagonalization. Exhaustive enumeration confirms multiple equally optimal assignments. The trace certifies the optimal set for this small instance and records that final choice among optima requires an external/business criterion.",
         "physical_evidence_level": "analytic",
-        "reference_truth": "exact_brute_force_enumeration_2^8_assignments",
-        "repr": "{'engine_id': 'physics_magnitude_quantum_engine.assignment_to_ising_function_level', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_",
+        "reference_truth": "exact_brute_force_enumeration_2^8_assignments_degenerate",
+        "repr": "{'engine_id': 'physics_magnitude_quantum_engine.assignment_to_ising_degenerate_function_level', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integratio",
         "route": "external_engine",
-        "runtime_ms": 7.142791990190744,
+        "runtime_ms": 7.0552920224145055,
         "spin_encoding": {
           "+1": "Ben",
           "-1": "Ada"
@@ -1561,15 +1558,15 @@
           "ux_copy",
           "model_eval",
           "dashboard",
-          "vendor_followup",
+          "documentation_polish",
           "qa_pass",
-          "deployment_notes"
+          "release_notes"
         ],
         "type": "dict",
         "units": "objective_energy",
         "value": {
-          "brute_force_energy": 13.4,
-          "degeneracy_count": 1,
+          "brute_force_energy": 10.999999999999998,
+          "degeneracy_count": 2,
           "optimal_assignments": [
             {
               "assignees": [
@@ -1577,20 +1574,44 @@
                 "Ben",
                 "Ben",
                 "Ada",
-                "Ada",
+                "Ben",
                 "Ben",
                 "Ada",
-                "Ben"
+                "Ada"
               ],
-              "bits": 166,
-              "energy": 13.4,
+              "bits": 54,
+              "energy": 10.999999999999998,
               "spins": [
                 -1,
                 1,
                 1,
                 -1,
+                1,
+                1,
+                -1,
+                -1
+              ]
+            },
+            {
+              "assignees": [
+                "Ada",
+                "Ben",
+                "Ben",
+                "Ada",
+                "Ben",
+                "Ada",
+                "Ada",
+                "Ben"
+              ],
+              "bits": 150,
+              "energy": 10.999999999999998,
+              "spins": [
                 -1,
                 1,
+                1,
+                -1,
+                1,
+                -1,
                 -1,
                 1
               ]
@@ -1602,25 +1623,25 @@
               "Ben",
               "Ben",
               "Ada",
-              "Ada",
+              "Ben",
               "Ben",
               "Ada",
-              "Ben"
+              "Ada"
             ],
-            "bits": 166,
-            "energy": 13.4,
+            "bits": 54,
+            "energy": 10.999999999999998,
             "spins": [
               -1,
               1,
               1,
               -1,
-              -1,
+              1,
               1,
               -1,
-              1
+              -1
             ]
           },
-          "solver_energy": 13.4
+          "solver_energy": 10.999999999999998
         },
         "verification_independence": "different_method_same_runtime",
         "witness_stack": {
@@ -1631,10 +1652,10 @@
       },
       "description": "backend executed",
       "name": "execute",
-      "startTime": 1781727617.761217
+      "startTime": 1781727617.770143
     },
     {
-      "@id": "trace:e83dfde4598048c0:event:6:physical_evidence",
+      "@id": "trace:10c0187e756a59e3:event:6:physical_evidence",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -1644,35 +1665,28 @@
         "bound_scope": "exact_small_instance_brute_force_verified",
         "conflicts": [
           {
-            "gamma": 1.4,
+            "gamma": 0.8,
             "tasks": [
               "data_cleaning",
-              "model_eval"
-            ]
-          },
-          {
-            "gamma": 1.1,
-            "tasks": [
-              "api_integration",
-              "dashboard"
-            ]
-          },
-          {
-            "gamma": 0.9,
-            "tasks": [
-              "ux_copy",
-              "deployment_notes"
+              "api_integration"
             ]
           },
           {
             "gamma": 0.8,
             "tasks": [
-              "vendor_followup",
-              "qa_pass"
+              "model_eval",
+              "dashboard"
+            ]
+          },
+          {
+            "gamma": 0.6,
+            "tasks": [
+              "documentation_polish",
+              "release_notes"
             ]
           }
         ],
-        "constant_offset": 20.75,
+        "constant_offset": 19.9,
         "costs": [
           {
             "Ada": 1.0,
@@ -1685,7 +1699,7 @@
             "task": "api_integration"
           },
           {
-            "Ada": 2.6,
+            "Ada": 2.7,
             "Ben": 1.2,
             "task": "ux_copy"
           },
@@ -1700,9 +1714,9 @@
             "task": "dashboard"
           },
           {
-            "Ada": 1.8,
-            "Ben": 2.1,
-            "task": "vendor_followup"
+            "Ada": 2.0,
+            "Ben": 2.0,
+            "task": "documentation_polish"
           },
           {
             "Ada": 1.2,
@@ -1710,155 +1724,156 @@
             "task": "qa_pass"
           },
           {
-            "Ada": 2.9,
-            "Ben": 1.0,
-            "task": "deployment_notes"
+            "Ada": 2.0,
+            "Ben": 2.0,
+            "task": "release_notes"
           }
         ],
-        "degeneracy_count": 1,
-        "evidence_hash": "0f8ffa18e65f6f490352a5989f065978ed98e01d935f96e92eb6062675dcf4d3",
-        "evidence_status_detail": "success",
-        "expected": 13.4,
+        "degeneracy_count": 2,
+        "evidence_hash": "44eba33d70897ff5e0bab3ea0ac6faa7b9c3866f138012e3ed115fb965789fb1",
+        "evidence_status_detail": "success_degenerate_optimum_set",
+        "expected": 10.999999999999998,
         "falsification_notes": [
-          "No artificial terms were added beyond affinity, load balance, and stated conflict penalties.",
+          "Degeneracy is deliberate: documentation_polish and release_notes are symmetric neutral tasks.",
           "At N=8 brute force is trivial; the simulator does not add speed at this scale.",
-          "The defended claim is sealed optimality evidence, not superior optimization performance."
+          "The defended claim is sealed optimality-set evidence, not superior optimization performance.",
+          "The trace shows where mathematics stops: choosing among equivalent optima needs an external criterion."
         ],
         "ising_J": [
           {
             "i": 0,
             "j": 1,
-            "value": 0.7
-          },
-          {
-            "i": 0,
-            "j": 2,
-            "value": 0.7
-          },
-          {
-            "i": 0,
-            "j": 3,
-            "value": 1.4
-          },
-          {
-            "i": 0,
-            "j": 4,
-            "value": 0.7
-          },
-          {
-            "i": 0,
-            "j": 5,
-            "value": 0.7
-          },
-          {
-            "i": 0,
-            "j": 6,
-            "value": 0.7
-          },
-          {
-            "i": 0,
-            "j": 7,
-            "value": 0.7
-          },
-          {
-            "i": 1,
-            "j": 2,
-            "value": 0.7
-          },
-          {
-            "i": 1,
-            "j": 3,
-            "value": 0.7
-          },
-          {
-            "i": 1,
-            "j": 4,
-            "value": 1.25
-          },
-          {
-            "i": 1,
-            "j": 5,
-            "value": 0.7
-          },
-          {
-            "i": 1,
-            "j": 6,
-            "value": 0.7
-          },
-          {
-            "i": 1,
-            "j": 7,
-            "value": 0.7
-          },
-          {
-            "i": 2,
-            "j": 3,
-            "value": 0.7
-          },
-          {
-            "i": 2,
-            "j": 4,
-            "value": 0.7
-          },
-          {
-            "i": 2,
-            "j": 5,
-            "value": 0.7
-          },
-          {
-            "i": 2,
-            "j": 6,
-            "value": 0.7
-          },
-          {
-            "i": 2,
-            "j": 7,
-            "value": 1.15
-          },
-          {
-            "i": 3,
-            "j": 4,
-            "value": 0.7
-          },
-          {
-            "i": 3,
-            "j": 5,
-            "value": 0.7
-          },
-          {
-            "i": 3,
-            "j": 6,
-            "value": 0.7
-          },
-          {
-            "i": 3,
-            "j": 7,
-            "value": 0.7
-          },
-          {
-            "i": 4,
-            "j": 5,
-            "value": 0.7
-          },
-          {
-            "i": 4,
-            "j": 6,
-            "value": 0.7
-          },
-          {
-            "i": 4,
-            "j": 7,
-            "value": 0.7
-          },
-          {
-            "i": 5,
-            "j": 6,
             "value": 1.1
           },
           {
-            "i": 5,
+            "i": 0,
+            "j": 2,
+            "value": 0.7
+          },
+          {
+            "i": 0,
+            "j": 3,
+            "value": 0.7
+          },
+          {
+            "i": 0,
+            "j": 4,
+            "value": 0.7
+          },
+          {
+            "i": 0,
+            "j": 5,
+            "value": 0.7
+          },
+          {
+            "i": 0,
+            "j": 6,
+            "value": 0.7
+          },
+          {
+            "i": 0,
             "j": 7,
             "value": 0.7
+          },
+          {
+            "i": 1,
+            "j": 2,
+            "value": 0.7
+          },
+          {
+            "i": 1,
+            "j": 3,
+            "value": 0.7
+          },
+          {
+            "i": 1,
+            "j": 4,
+            "value": 0.7
+          },
+          {
+            "i": 1,
+            "j": 5,
+            "value": 0.7
+          },
+          {
+            "i": 1,
+            "j": 6,
+            "value": 0.7
+          },
+          {
+            "i": 1,
+            "j": 7,
+            "value": 0.7
+          },
+          {
+            "i": 2,
+            "j": 3,
+            "value": 0.7
+          },
+          {
+            "i": 2,
+            "j": 4,
+            "value": 0.7
+          },
+          {
+            "i": 2,
+            "j": 5,
+            "value": 0.7
+          },
+          {
+            "i": 2,
+            "j": 6,
+            "value": 0.7
+          },
+          {
+            "i": 2,
+            "j": 7,
+            "value": 0.7
+          },
+          {
+            "i": 3,
+            "j": 4,
+            "value": 1.1
+          },
+          {
+            "i": 3,
+            "j": 5,
+            "value": 0.7
+          },
+          {
+            "i": 3,
+            "j": 6,
+            "value": 0.7
+          },
+          {
+            "i": 3,
+            "j": 7,
+            "value": 0.7
+          },
+          {
+            "i": 4,
+            "j": 5,
+            "value": 0.7
+          },
+          {
+            "i": 4,
+            "j": 6,
+            "value": 0.7
+          },
+          {
+            "i": 4,
+            "j": 7,
+            "value": 0.7
+          },
+          {
+            "i": 5,
+            "j": 6,
+            "value": 0.7
+          },
+          {
+            "i": 5,
+            "j": 7,
+            "value": 1.0
           },
           {
             "i": 6,
@@ -1869,12 +1884,12 @@
         "ising_h": [
           1.1,
           -0.95,
-          -0.7000000000000001,
+          -0.7500000000000001,
           0.95,
           -0.5,
-          0.15000000000000002,
+          0.0,
           0.7500000000000001,
-          -0.95
+          0.0
         ],
         "mapping_terms": [
           {
@@ -1894,10 +1909,10 @@
             "task": "api_integration"
           },
           {
-            "ada_cost": 2.6,
+            "ada_cost": 2.7,
             "ben_cost": 1.2,
-            "constant_delta": 1.9,
-            "h_delta": -0.7000000000000001,
+            "constant_delta": 1.9500000000000002,
+            "h_delta": -0.7500000000000001,
             "kind": "individual_affinity",
             "task": "ux_copy"
           },
@@ -1918,12 +1933,12 @@
             "task": "dashboard"
           },
           {
-            "ada_cost": 1.8,
-            "ben_cost": 2.1,
-            "constant_delta": 1.9500000000000002,
-            "h_delta": 0.15000000000000002,
+            "ada_cost": 2.0,
+            "ben_cost": 2.0,
+            "constant_delta": 2.0,
+            "h_delta": 0.0,
             "kind": "individual_affinity",
-            "task": "vendor_followup"
+            "task": "documentation_polish"
           },
           {
             "ada_cost": 1.2,
@@ -1934,12 +1949,12 @@
             "task": "qa_pass"
           },
           {
-            "ada_cost": 2.9,
-            "ben_cost": 1.0,
-            "constant_delta": 1.95,
-            "h_delta": -0.95,
+            "ada_cost": 2.0,
+            "ben_cost": 2.0,
+            "constant_delta": 2.0,
+            "h_delta": 0.0,
             "kind": "individual_affinity",
-            "task": "deployment_notes"
+            "task": "release_notes"
           },
           {
             "constant_delta": 2.8,
@@ -1949,36 +1964,14 @@
             "penalty": "lambda * (sum_i s_i)^2"
           },
           {
-            "J_delta": 0.7,
-            "constant_delta": 0.7,
-            "gamma": 1.4,
+            "J_delta": 0.4,
+            "constant_delta": 0.4,
+            "gamma": 0.8,
             "kind": "same_person_conflict",
             "penalty": "gamma * (1 + s_i s_j) / 2",
             "tasks": [
               "data_cleaning",
-              "model_eval"
-            ]
-          },
-          {
-            "J_delta": 0.55,
-            "constant_delta": 0.55,
-            "gamma": 1.1,
-            "kind": "same_person_conflict",
-            "penalty": "gamma * (1 + s_i s_j) / 2",
-            "tasks": [
-              "api_integration",
-              "dashboard"
-            ]
-          },
-          {
-            "J_delta": 0.45,
-            "constant_delta": 0.45,
-            "gamma": 0.9,
-            "kind": "same_person_conflict",
-            "penalty": "gamma * (1 + s_i s_j) / 2",
-            "tasks": [
-              "ux_copy",
-              "deployment_notes"
+              "api_integration"
             ]
           },
           {
@@ -1988,19 +1981,30 @@
             "kind": "same_person_conflict",
             "penalty": "gamma * (1 + s_i s_j) / 2",
             "tasks": [
-              "vendor_followup",
-              "qa_pass"
+              "model_eval",
+              "dashboard"
+            ]
+          },
+          {
+            "J_delta": 0.3,
+            "constant_delta": 0.3,
+            "gamma": 0.6,
+            "kind": "same_person_conflict",
+            "penalty": "gamma * (1 + s_i s_j) / 2",
+            "tasks": [
+              "documentation_polish",
+              "release_notes"
             ]
           }
         ],
-        "observable": "N=8 K=2 assignment Ising ground-state energy",
+        "observable": "Degenerate N=8 K=2 assignment Ising ground-state energy",
         "people": [
           "Ada",
           "Ben"
         ],
-        "physical_evidence_detail": "A small real assignment objective is mapped explicitly to an Ising Hamiltonian. Exact diagonalization of the diagonal Hamiltonian is checked against exhaustive enumeration of all 2^8 assignments. This certifies optimality only for this small function-level instance; it does not claim optimization speedup.",
+        "physical_evidence_detail": "A deliberately symmetric assignment objective is mapped to Ising and solved by exact diagonalization. Exhaustive enumeration confirms multiple equally optimal assignments. The trace certifies the optimal set for this small instance and records that final choice among optima requires an external/business criterion.",
         "physical_evidence_level": "analytic",
-        "reference_truth": "exact_brute_force_enumeration_2^8_assignments",
+        "reference_truth": "exact_brute_force_enumeration_2^8_assignments_degenerate",
         "spin_encoding": {
           "+1": "Ben",
           "-1": "Ada"
@@ -2011,14 +2015,14 @@
           "ux_copy",
           "model_eval",
           "dashboard",
-          "vendor_followup",
+          "documentation_polish",
           "qa_pass",
-          "deployment_notes"
+          "release_notes"
         ],
         "units": "objective_energy",
         "value": {
-          "brute_force_energy": 13.4,
-          "degeneracy_count": 1,
+          "brute_force_energy": 10.999999999999998,
+          "degeneracy_count": 2,
           "optimal_assignments": [
             {
               "assignees": [
@@ -2026,20 +2030,44 @@
                 "Ben",
                 "Ben",
                 "Ada",
-                "Ada",
+                "Ben",
                 "Ben",
                 "Ada",
-                "Ben"
+                "Ada"
               ],
-              "bits": 166,
-              "energy": 13.4,
+              "bits": 54,
+              "energy": 10.999999999999998,
               "spins": [
                 -1,
                 1,
                 1,
                 -1,
+                1,
+                1,
+                -1,
+                -1
+              ]
+            },
+            {
+              "assignees": [
+                "Ada",
+                "Ben",
+                "Ben",
+                "Ada",
+                "Ben",
+                "Ada",
+                "Ada",
+                "Ben"
+              ],
+              "bits": 150,
+              "energy": 10.999999999999998,
+              "spins": [
                 -1,
                 1,
+                1,
+                -1,
+                1,
+                -1,
                 -1,
                 1
               ]
@@ -2051,25 +2079,25 @@
               "Ben",
               "Ben",
               "Ada",
-              "Ada",
+              "Ben",
               "Ben",
               "Ada",
-              "Ben"
+              "Ada"
             ],
-            "bits": 166,
-            "energy": 13.4,
+            "bits": 54,
+            "energy": 10.999999999999998,
             "spins": [
               -1,
               1,
               1,
               -1,
-              -1,
+              1,
               1,
               -1,
-              1
+              -1
             ]
           },
-          "solver_energy": 13.4
+          "solver_energy": 10.999999999999998
         },
         "verification_independence": "different_method_same_runtime",
         "witness_stack": {
@@ -2080,7 +2108,7 @@
       },
       "description": "physical evidence reported by backend",
       "name": "physical_evidence",
-      "startTime": 1781727617.761274
+      "startTime": 1781727617.770198
     }
   ]
 }

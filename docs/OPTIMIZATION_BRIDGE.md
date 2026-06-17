@@ -147,3 +147,39 @@ These are recorded in the trace:
 Do not generalize this trace to larger optimization performance claims. It proves
 that CAPAS can seal an exactly verified small optimization bridge. It does not
 prove that the simulator is a better optimizer.
+
+## Degenerate Instance
+
+`trace_020` repeats the same function-level bridge with a deliberately
+degenerate assignment problem.
+
+Two tasks are symmetric:
+
+```text
+documentation_polish
+release_notes
+```
+
+Both have equal Ada/Ben cost and enter the same balance/conflict structure. The
+brute-force witness therefore returns more than one optimal assignment. CAPAS
+records `degeneracy_count` and the full `optimal_assignments` set.
+
+This is the operational meaning:
+
+```text
+if degeneracy_count > 1:
+    mathematics found an optimal set, not a unique decision
+    choosing one member requires an external/business criterion
+```
+
+The trace still has:
+
+```text
+physical_evidence_level = analytic
+verification_independence = different_method_same_runtime
+bound_scope = exact_small_instance_brute_force_verified
+```
+
+The stronger claim is not performance. The stronger claim is that CAPAS can seal
+when the optimizer's answer is a set of equivalent decisions rather than a single
+decision.

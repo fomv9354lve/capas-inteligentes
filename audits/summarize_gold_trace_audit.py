@@ -74,6 +74,7 @@ def main() -> int:
         "cross_sim_success",
         "cross_library_success",
         "combinatorial_optimization_function_level",
+        "combinatorial_optimization_degenerate_function_level",
         "no_evidence_success",
         "backend_failed",
         "rejected_by_router",

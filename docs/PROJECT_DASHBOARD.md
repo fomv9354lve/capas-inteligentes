@@ -37,11 +37,11 @@ See git log. This dashboard is updated in the same commit as state changes.
 Recent commits:
 
 ```text
-HEAD Add optimization bridge trace
+HEAD Add degenerate optimization bridge trace
+6d89780 Add optimization bridge trace
 09139ff Add witness independence axis
 d23efaa Add multi-step formal truncation bound trace
 b0ed7d2 Add non-degradable project dashboard
-1f9184a Add formal Schmidt truncation evidence trace
 ```
 
 Current validation status:
@@ -50,7 +50,7 @@ Current validation status:
 coverage_ready: True
 fine_tune_ready: False
 local RO-Crate validation: passed
-external ResearchObject RO-Crate validation: valid_with_warning for 19/19 crates
+external ResearchObject RO-Crate validation: valid_with_warning for 20/20 crates
 external warning: .py is not a recognised workflow extension
 witness independence validation: passed
 ```
@@ -67,6 +67,7 @@ ResearchObject validator recognizes a fixed workflow-extension list.
 | `cross_sim_success` | 1 | covered | independent algorithmic witness |
 | `cross_library_success` | 1 | covered | different-library same-runtime witness |
 | `combinatorial_optimization_function_level` | 1 | covered | assignment-to-Ising optimum verified by brute force |
+| `combinatorial_optimization_degenerate_function_level` | 1 | covered | assignment-to-Ising optimum set verified by brute force |
 | `formal_bound_success` | 1 | covered | formal single-cut Schmidt truncation certificate |
 | `formal_bound_composition_success` | 1 | covered | formal multi-step state truncation bound |
 | `estimated_bound_candidate` | 1 | covered | useful estimator, not formal |
@@ -77,7 +78,7 @@ ResearchObject validator recognizes a fixed workflow-extension list.
 Current evidence levels:
 
 ```text
-analytic: 11
+analytic: 12
 cross_sim: 2
 formal_bound: 2
 estimated_bound: 1
@@ -113,6 +114,10 @@ none: 3
    - explicit Ising mapping with affinity, balance, and conflict terms
    - exact diagonalization checked against brute force over 256 assignments
    - not claimed as optimization speedup
+11. Degenerate optimization bridge seed case:
+   - N=8, K=2 assignment problem with symmetric neutral tasks
+   - exact optimum set contains 2 assignments
+   - trace records that the final choice among equivalent optima needs an external criterion
 
 ## Non-Degradation Rules
 
@@ -225,7 +230,7 @@ What exists:
 - seven current levels covered:
   - `analytic_no_solver`: 10
   - `different_library_same_runtime`: 1
-  - `different_method_same_runtime`: 1
+  - `different_method_same_runtime`: 2
   - `different_algorithm_same_runtime`: 1
   - `algorithmic_certificate_exact_svd_same_runtime`: 2
   - `algorithmic_error_certificate_same_runtime`: 1
@@ -288,14 +293,20 @@ What exists:
 
 - `docs/OPTIMIZATION_BRIDGE.md`
 - `trace_019`
+- `trace_020`
 - `coverage_case=combinatorial_optimization_function_level`
+- `coverage_case=combinatorial_optimization_degenerate_function_level`
 - `physical_evidence_level=analytic`
 - `verification_independence=different_method_same_runtime`
 - `bound_scope=exact_small_instance_brute_force_verified`
 - solver energy: `13.4`
 - brute-force energy: `13.4`
 - abs error: `0.0`
-- degeneracy count: `1`
+- unique-case degeneracy count: `1`
+- degenerate-case solver energy: `10.999999999999998`
+- degenerate-case brute-force energy: `10.999999999999998`
+- degenerate-case abs error: `0.0`
+- degenerate-case degeneracy count: `2`
 
 Scope:
 
@@ -305,8 +316,7 @@ Scope:
 
 Next step:
 
-- add a second optimization instance with deliberate degeneracy
-- optionally add a larger non-analytic instance marked `none` or `cross_sim`, not `analytic`
+- add a larger non-analytic instance marked `none` or `cross_sim`, not `analytic`
 
 ### D6. Workflow Run RO-Crate Alignment
 

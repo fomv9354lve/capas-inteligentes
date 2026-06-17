@@ -377,6 +377,190 @@ def assignment_to_ising_function_level() -> dict:
     }
 
 
+def assignment_to_ising_degenerate_function_level() -> dict:
+    """Tiny assignment problem with deliberately degenerate optima.
+
+    This uses the same assignment-to-Ising grammar as
+    assignment_to_ising_function_level, but two tasks are deliberately symmetric.
+    The mathematical optimum is therefore a set, not a single assignment.
+    """
+    tasks = [
+        "data_cleaning",
+        "api_integration",
+        "ux_copy",
+        "model_eval",
+        "dashboard",
+        "documentation_polish",
+        "qa_pass",
+        "release_notes",
+    ]
+    people = ["Ada", "Ben"]
+    costs = [
+        (1.0, 3.2),  # Ada-leaning
+        (3.0, 1.1),  # Ben-leaning
+        (2.7, 1.2),  # Ben-leaning
+        (1.1, 3.0),  # Ada-leaning
+        (2.4, 1.4),  # Ben-leaning
+        (2.0, 2.0),  # neutral
+        (1.2, 2.7),  # Ada-leaning
+        (2.0, 2.0),  # neutral
+    ]
+    balance_lambda = 0.35
+    conflicts = {
+        (0, 1): 0.8,
+        (3, 4): 0.8,
+        (5, 7): 0.6,
+    }
+
+    h = np.zeros(len(tasks), dtype=float)
+    J: dict[tuple[int, int], float] = {}
+    constant = 0.0
+    mapping_terms: list[dict] = []
+
+    for idx, (ada_cost, ben_cost) in enumerate(costs):
+        constant += (ada_cost + ben_cost) / 2.0
+        h[idx] += (ben_cost - ada_cost) / 2.0
+        mapping_terms.append(
+            {
+                "kind": "individual_affinity",
+                "task": tasks[idx],
+                "ada_cost": ada_cost,
+                "ben_cost": ben_cost,
+                "constant_delta": (ada_cost + ben_cost) / 2.0,
+                "h_delta": (ben_cost - ada_cost) / 2.0,
+            }
+        )
+
+    constant += balance_lambda * len(tasks)
+    for i in range(len(tasks)):
+        for j in range(i + 1, len(tasks)):
+            J[(i, j)] = J.get((i, j), 0.0) + 2.0 * balance_lambda
+    mapping_terms.append(
+        {
+            "kind": "load_balance",
+            "penalty": "lambda * (sum_i s_i)^2",
+            "lambda": balance_lambda,
+            "constant_delta": balance_lambda * len(tasks),
+            "pairwise_J_delta": 2.0 * balance_lambda,
+        }
+    )
+
+    for (i, j), gamma in conflicts.items():
+        constant += gamma / 2.0
+        J[(i, j)] = J.get((i, j), 0.0) + gamma / 2.0
+        mapping_terms.append(
+            {
+                "kind": "same_person_conflict",
+                "tasks": [tasks[i], tasks[j]],
+                "penalty": "gamma * (1 + s_i s_j) / 2",
+                "gamma": gamma,
+                "constant_delta": gamma / 2.0,
+                "J_delta": gamma / 2.0,
+            }
+        )
+
+    def energy(spins: np.ndarray) -> float:
+        pair_energy = sum(coupling * float(spins[i] * spins[j]) for (i, j), coupling in J.items())
+        return float(constant + float(np.dot(h, spins)) + pair_energy)
+
+    n = len(tasks)
+    assignments: list[dict] = []
+    energies = []
+    for raw in range(2**n):
+        spins = np.array([1 if (raw >> i) & 1 else -1 for i in range(n)], dtype=int)
+        value = energy(spins)
+        energies.append(value)
+        assignments.append(
+            {
+                "bits": raw,
+                "spins": [int(x) for x in spins],
+                "assignees": [people[1] if x == 1 else people[0] for x in spins],
+                "energy": value,
+            }
+        )
+
+    hamiltonian = np.diag(np.array(energies, dtype=float))
+    eigvals, eigvecs = np.linalg.eigh(hamiltonian)
+    solver_energy = float(eigvals[0])
+    solver_index = int(np.argmax(np.abs(eigvecs[:, 0]) ** 2))
+    solver_assignment = assignments[solver_index]
+
+    brute_energy = float(min(energies))
+    tolerance = 1e-12
+    optimal_assignments = [
+        item for item in assignments if abs(item["energy"] - brute_energy) <= tolerance
+    ]
+    if len(optimal_assignments) < 2:
+        raise AssertionError("degenerate test instance did not produce multiple optima")
+    solver_is_brute_optimal = abs(solver_energy - brute_energy) <= tolerance and any(
+        item["bits"] == solver_assignment["bits"] for item in optimal_assignments
+    )
+    if not solver_is_brute_optimal:
+        raise AssertionError("exact diagonalization optimum did not match brute-force optimum")
+
+    J_serialized = [
+        {"i": int(i), "j": int(j), "value": float(value)}
+        for (i, j), value in sorted(J.items())
+        if abs(value) > 0.0
+    ]
+    costs_serialized = [
+        {"task": task, "Ada": float(ada_cost), "Ben": float(ben_cost)}
+        for task, (ada_cost, ben_cost) in zip(tasks, costs)
+    ]
+    conflicts_serialized = [
+        {"tasks": [tasks[i], tasks[j]], "gamma": float(gamma)}
+        for (i, j), gamma in sorted(conflicts.items())
+    ]
+
+    return {
+        "observable": "Degenerate N=8 K=2 assignment Ising ground-state energy",
+        "value": {
+            "solver_energy": solver_energy,
+            "solver_assignment": solver_assignment,
+            "brute_force_energy": brute_energy,
+            "degeneracy_count": len(optimal_assignments),
+            "optimal_assignments": optimal_assignments,
+        },
+        "expected": brute_energy,
+        "abs_error": abs(solver_energy - brute_energy),
+        "units": "objective_energy",
+        "physical_evidence_level": "analytic",
+        "physical_evidence_detail": (
+            "A deliberately symmetric assignment objective is mapped to Ising and solved by exact "
+            "diagonalization. Exhaustive enumeration confirms multiple equally optimal assignments. "
+            "The trace certifies the optimal set for this small instance and records that final choice "
+            "among optima requires an external/business criterion."
+        ),
+        "benchmark_family": "CombinatorialOptimization",
+        "reference_truth": "exact_brute_force_enumeration_2^8_assignments_degenerate",
+        "verification_independence": "different_method_same_runtime",
+        "bound_scope": "exact_small_instance_brute_force_verified",
+        "evidence_status_detail": "success_degenerate_optimum_set",
+        "tasks": tasks,
+        "people": people,
+        "costs": costs_serialized,
+        "balance_lambda": balance_lambda,
+        "conflicts": conflicts_serialized,
+        "spin_encoding": {"-1": "Ada", "+1": "Ben"},
+        "ising_h": [float(x) for x in h],
+        "ising_J": J_serialized,
+        "constant_offset": float(constant),
+        "mapping_terms": mapping_terms,
+        "degeneracy_count": len(optimal_assignments),
+        "falsification_notes": [
+            "Degeneracy is deliberate: documentation_polish and release_notes are symmetric neutral tasks.",
+            "At N=8 brute force is trivial; the simulator does not add speed at this scale.",
+            "The defended claim is sealed optimality-set evidence, not superior optimization performance.",
+            "The trace shows where mathematics stops: choosing among equivalent optima needs an external criterion.",
+        ],
+        "witness_stack": {
+            "primary": "exact diagonalization of diagonal Ising Hamiltonian",
+            "witness": "exhaustive enumeration of 2^8 assignments",
+            "runtime_relation": "same_python_runtime_different_method",
+        },
+    }
+
+
 def bell_entropy_cross_sim() -> dict:
     bell = qe.bell_state()
     value = float(qe.entanglement_entropy(bell, dims=[2, 2], keep=[0]))
