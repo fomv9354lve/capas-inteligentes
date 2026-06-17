@@ -19,6 +19,7 @@ It does not claim to invent:
 - verification against reference
 - VVUQ
 - automatic backend routing
+- metamorphic testing / oracle-free property-based testing
 
 Defensible claim:
 
@@ -37,11 +38,11 @@ See git log. This dashboard is updated in the same commit as state changes.
 Recent commits:
 
 ```text
-HEAD Add universal invariant oracle matrix
+HEAD Add metamorphic testing positioning audit
+7bbbad0 Add universal invariant oracle matrix
 ea4a37b Add universal invariant anchoring trace
 8063b71 Use CWL workflow descriptor for RO-Crate validation
 eea756d Add Xing simulation cost predictor audit
-77878a1 Add CAPAS physical evidence profile validation
 ```
 
 Current validation status:
@@ -269,6 +270,8 @@ These are hard guardrails.
     - structure mapping
     - claim scope
     - audit decision separating failed generated output from training gold
+16. Do not present D11 as a new testing paradigm. It must be positioned against
+    Metamorphic Testing and scientific-software MT.
 
 ## Debt Register
 
@@ -701,11 +704,12 @@ Done when:
 
 ### D11. Universal Invariant Anchoring
 
-Status: seed falsation matrix complete.
+Status: seed falsation matrix complete; positioned against Metamorphic Testing.
 
 What exists:
 
 - `docs/UNIVERSAL_INVARIANT_ANCHORING.md`
+- `docs/METAMORPHIC_TESTING_POSITIONING.md`
 - `trace_028`: local misses, Heisenberg energy anchor catches
 - `trace_029`: local catches, anchor not evaluated
 - `trace_030`: local catches, Heisenberg energy anchor catches too
@@ -729,6 +733,9 @@ Scope:
 - one no-anchor control
 - supports complementarity of local oracles and universal anchors
 - does not prove general superiority over PBT/RvLLM-style local properties
+- does not claim novelty over Metamorphic Testing as a testing idea
+- defensible distinction is absolute theory-known physical anchors packaged as
+  first-class evidence in sealed RO-Crate/PROV traces
 
 Next step:
 
@@ -737,6 +744,7 @@ Next step:
   invariants
 - add randomized adversarial variants with pre-registered thresholds rather
   than one hand-constructed example per cell
+- label each future D11 case as absolute-anchor, metamorphic-relation, or mixed
 
 Done when:
 

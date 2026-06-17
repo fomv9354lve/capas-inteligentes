@@ -17,10 +17,12 @@ Do not claim CAPAS invented:
 - evidence hierarchy for computational model credibility
 - quantum circuit simulation cost prediction
 - family-aware simulator threshold/runtime prediction
+- metamorphic testing / oracle-free property-based testing
 
 Those areas are already populated by SciMLBenchmarks, SciAgentGym, QMB100/PhysVEC,
-PROV, RO-Crate, Taverna/Kepler, ASME V&V/VVUQ, Xing et al. 2606.11620, and
-related scientific workflow and quantum simulation systems.
+PROV, RO-Crate, Taverna/Kepler, ASME V&V/VVUQ, Metamorphic Testing,
+Xing et al. 2606.11620, and related scientific workflow, LLM-testing, SciML,
+and quantum simulation systems.
 
 ## Defensible Claim
 
@@ -55,6 +57,7 @@ VVUQ-aware formulation:
 | SciAgentGym | yes/verified | yes | not found in paper | not found in paper | not found in paper | yes, error/recovery traces |
 | QMB100 / PhysVEC | yes/scientific verifier | yes/research workflow evidence | not found in paper | physical assertions, but no CAPAS field found | not found in paper | verifier/error-correction workflow |
 | Xing et al. 2606.11620 | simulation threshold/runtime prediction | no/performance predictor | no | no | no | no |
+| Metamorphic Testing / SciML MT | oracle-free property/relation checks | sometimes | not the core contribution | relation validity, not CAPAS field | varies | varies |
 | PROV / RO-Crate / TavernaProv | generic provenance | yes | yes | no domain field | no domain field | generic workflow status |
 | CAPAS | yes | yes | yes | yes | yes | yes |
 
@@ -144,6 +147,32 @@ Current paper-level audit result:
   evidence states.
 - CAPAS is therefore complementary only as an evidence/profile layer that can
   wrap predictions and executions, not as a rival predictor.
+
+### Metamorphic Testing
+
+Metamorphic Testing is the parent field for oracle-free property/relation
+testing. It already covers scientific software and current LLM/scientific-ML
+testing work.
+
+Relevant sources:
+
+- https://en.wikipedia.org/wiki/Metamorphic_testing
+- https://eprints.whiterose.ac.uk/id/eprint/172370/
+- https://arxiv.org/abs/2603.24774
+- https://arxiv.org/abs/2605.23965
+- https://arxiv.org/abs/2606.17529
+- Local audit: `docs/METAMORPHIC_TESTING_POSITIONING.md`
+
+Current audit result:
+
+- CAPAS must not claim novelty for invariant/property-based testing, seeded
+  scientific faults, or the pattern where local tests miss and an
+  invariant-like property catches.
+- D11's defensible angle is narrower: absolute theory-known physical anchors
+  sealed as first-class evidence in RO-Crate/PROV traces, with local-oracle
+  outcome, universal-anchor outcome, witness independence, claim scope, and
+  no-anchor controls.
+- This supports complementarity, not dominance over MT.
 
 ### PROV / RO-Crate / TavernaProv
 
