@@ -54,7 +54,7 @@ Minimum required fields when evidence is present:
 
 | Field | Meaning |
 |---|---|
-| `capas:physicalEvidenceLevel` | Strength/type of evidence, e.g. `analytic`, `cross_sim`, `experimental`, `formal_bound`, `estimated_bound`, `none`. |
+| `capas:physicalEvidenceLevel` | Strength/type of evidence, e.g. `analytic`, `cross_sim`, `experimental`, `formal_bound`, `estimated_bound`, `none`, `no_universal_anchor_control`. |
 | `capas:verificationIndependence` | Relationship between producer and witness, e.g. analytic no-solver, same runtime, different method, different library. |
 | `capas:referenceTruth` | The reference used to judge the result, if any. |
 
@@ -103,6 +103,10 @@ generated scientific artifact. The profile distinguishes:
 This does not make failed generated output training gold. Adversarial invariant
 traces should remain `reject` in the audit unless a separate blind review says
 otherwise.
+
+`no_universal_anchor_control` is an explicit control level for a locally valid
+artifact where CAPAS records that no universal anchor is claimed. It is not a
+physical-correctness level.
 
 ## Non-Claims
 

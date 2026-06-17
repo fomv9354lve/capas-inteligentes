@@ -1,0 +1,499 @@
+{
+  "activity": {
+    "capas:run:b4d1e47324474a99:activity:0:ingest": {
+      "capas:message": "workload accepted",
+      "capas:status": "ok",
+      "capas:timestamp": 1781738780.858943,
+      "prov:type": "capas:ingest"
+    },
+    "capas:run:b4d1e47324474a99:activity:1:runtime_context": {
+      "capas:message": "runtime and hardware context recorded",
+      "capas:status": "ok",
+      "capas:timestamp": 1781738780.859036,
+      "prov:type": "capas:runtime_context"
+    },
+    "capas:run:b4d1e47324474a99:activity:2:engine_provenance": {
+      "capas:message": "external engine provenance recorded",
+      "capas:status": "ok",
+      "capas:timestamp": 1781738780.859093,
+      "prov:type": "capas:engine_provenance"
+    },
+    "capas:run:b4d1e47324474a99:activity:3:cost_model": {
+      "capas:message": "dense statevector cost estimated",
+      "capas:status": "ok",
+      "capas:timestamp": 1781738780.859096,
+      "prov:type": "capas:cost_model"
+    },
+    "capas:run:b4d1e47324474a99:activity:4:route": {
+      "capas:message": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+      "capas:status": "ok",
+      "capas:timestamp": 1781738780.8590999,
+      "prov:type": "capas:route"
+    },
+    "capas:run:b4d1e47324474a99:activity:5:execute": {
+      "capas:message": "backend executed",
+      "capas:status": "ok",
+      "capas:timestamp": 1781738780.859413,
+      "prov:type": "capas:execute"
+    },
+    "capas:run:b4d1e47324474a99:activity:6:physical_evidence": {
+      "capas:message": "physical evidence reported by backend",
+      "capas:status": "ok",
+      "capas:timestamp": 1781738780.859435,
+      "prov:type": "capas:physical_evidence"
+    }
+  },
+  "agent": {
+    "capas:agent:costurero": {
+      "capas:name": "CAPAS INTELIGENTES costurero",
+      "prov:type": "prov:SoftwareAgent"
+    }
+  },
+  "bundle": "capas:run:b4d1e47324474a99",
+  "capas:traceHash": "b4d1e47324474a99ccff3fb37f486cc83c53ee34d4ee9b45553eb08e3f43a364",
+  "entity": {
+    "capas:run:b4d1e47324474a99:decision": {
+      "capas:reason": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+      "capas:route": "external_engine",
+      "prov:type": "capas:RoutingDecision"
+    },
+    "capas:run:b4d1e47324474a99:engine_module": {
+      "capas:engineId": "universal_invariant_adversarial_engines.bell_product_state_passes_local_properties_but_fails_entropy",
+      "capas:functionName": "bell_product_state_passes_local_properties_but_fails_entropy",
+      "capas:modulePath": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py",
+      "capas:moduleSha256": "0774fe824514f8b3b7ea9977848a4def92c2665ba876bbab8cbc01296be64462",
+      "prov:type": "capas:EngineModule"
+    },
+    "capas:run:b4d1e47324474a99:entity:0:ingest:metrics": {
+      "capas:eventHash": "cbbf6de8a61e4f728497ee10a8aa04ef0a291c445cf0cc9e3bae7cebc44aee96",
+      "capas:metrics": {
+        "budget": {
+          "flops_ceiling": 100000000.0,
+          "memory_budget_bytes": 536870912,
+          "safety_factor": 0.5
+        },
+        "engine": {
+          "engine_id": "universal_invariant_adversarial_engines.bell_product_state_passes_local_properties_but_fails_entropy",
+          "function_name": "bell_product_state_passes_local_properties_but_fails_entropy",
+          "kwargs_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py"
+        },
+        "kind": "dense",
+        "n_qubits": 2
+      },
+      "capas:stage": "ingest",
+      "prov:type": "capas:EventMetrics"
+    },
+    "capas:run:b4d1e47324474a99:entity:1:runtime_context:metrics": {
+      "capas:eventHash": "9b96d5b457517ed7716898879162cee869c6ddcaafd2f7ebdafa3f999dc49b93",
+      "capas:metrics": {
+        "cotengra_available": true,
+        "cotengra_version": "0.8.1",
+        "machine": "arm64",
+        "mlx_probe": "skipped_in_default_trace; use apple_silicon_thermal_routing.py for Metal/MLX device probes",
+        "numpy_available": true,
+        "numpy_version": "2.4.6",
+        "platform": "macOS-26.5.1-arm64-arm-64bit",
+        "processor": "arm",
+        "python_executable": "/Users/kreniq/physics-magnitude-lab/.pixi/envs/default/bin/python",
+        "python_version": "3.12.13",
+        "qiskit_aer_available": false,
+        "qiskit_aer_error": "ModuleNotFoundError: No module named 'qiskit_aer'",
+        "quimb_available": true,
+        "quimb_version": "1.14.0",
+        "scipy_available": true,
+        "scipy_version": "1.17.1",
+        "stim_available": true,
+        "stim_version": "1.16.0"
+      },
+      "capas:stage": "runtime_context",
+      "prov:type": "capas:EventMetrics"
+    },
+    "capas:run:b4d1e47324474a99:entity:2:engine_provenance:metrics": {
+      "capas:eventHash": "62c1a89e07313ba083949675b33e7be4bc2ebe3fcf7869bbc7d1d907d51406c0",
+      "capas:metrics": {
+        "engine_id": "universal_invariant_adversarial_engines.bell_product_state_passes_local_properties_but_fails_entropy",
+        "function_name": "bell_product_state_passes_local_properties_but_fails_entropy",
+        "kwargs": {},
+        "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py",
+        "module_sha256": "0774fe824514f8b3b7ea9977848a4def92c2665ba876bbab8cbc01296be64462"
+      },
+      "capas:stage": "engine_provenance",
+      "prov:type": "capas:EventMetrics"
+    },
+    "capas:run:b4d1e47324474a99:entity:3:cost_model:metrics": {
+      "capas:eventHash": "bb6ecb3b7fda356bbed30b84c6adbed590153f1ed9ee2313a827dfed2d49a0cc",
+      "capas:metrics": {
+        "memory_viable": true,
+        "n_qubits": 2,
+        "route": "dense",
+        "statevector_bytes": 64,
+        "usable_memory_bytes": 268435456.0
+      },
+      "capas:stage": "cost_model",
+      "prov:type": "capas:EventMetrics"
+    },
+    "capas:run:b4d1e47324474a99:entity:4:route:metrics": {
+      "capas:eventHash": "5d013a31aec17d5c5fd4ff298a23dc4e538299b3cb411555f52063ebd87d5b8a",
+      "capas:metrics": {
+        "engine_id": "universal_invariant_adversarial_engines.bell_product_state_passes_local_properties_but_fails_entropy",
+        "function_name": "bell_product_state_passes_local_properties_but_fails_entropy",
+        "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py"
+      },
+      "capas:stage": "route",
+      "prov:type": "capas:EventMetrics"
+    },
+    "capas:run:b4d1e47324474a99:entity:5:execute:metrics": {
+      "capas:eventHash": "c6ff4855fb3ee7f13891bea79a86586a6327c139a59dabe701e8e539a2611670",
+      "capas:metrics": {
+        "abs_error": 0.6931471805599453,
+        "benchmark_family": "Bell",
+        "claim_scope": "transfer seed only; shows the local-miss/universal-catch pattern for an entropy invariant, not just a Heisenberg energy invariant",
+        "expected": 0.6931471805599453,
+        "generator_error": "plausible_product_state_instead_of_bell_state",
+        "invariant_caught": true,
+        "local_oracle_caught": false,
+        "local_property_tests": {
+          "finite_entries": true,
+          "nonzero_state": true,
+          "normalized": true,
+          "valid_dimension_two_qubits": true
+        },
+        "local_property_tests_pass": true,
+        "observable": "Generated two-qubit Bell-state entropy from plausible product state",
+        "physical_evidence_detail": "Transfer case: the generated state is normalized and dimensionally valid, but the Bell-state invariant requires single-qubit entropy ln2.",
+        "physical_evidence_level": "analytic",
+        "pre_registered_success_criterion": "local_property_tests_pass is true and universal_anchor_pass is false",
+        "reference_truth": "closed_form_bell_entropy_ln2",
+        "repr": "{'engine_id': 'universal_invariant_adversarial_engines.bell_product_state_passes_local_properties_but_fails_entropy', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS I",
+        "route": "external_engine",
+        "runtime_ms": 0.2630409726407379,
+        "structure_mapping": {
+          "generator_output": "two-qubit state vector",
+          "local_oracle_relation": "generic state validity properties preserved by product state",
+          "preserved_relation": "same generated state judged by local validity and independent entanglement invariant",
+          "universal_oracle_relation": "Bell entanglement entropy invariant"
+        },
+        "type": "dict",
+        "units": "nats",
+        "universal_anchor": "S_Bell_reduced_state=ln2",
+        "universal_anchor_pass": false,
+        "value": -0.0,
+        "verification_independence": "analytic_no_solver"
+      },
+      "capas:stage": "execute",
+      "prov:type": "capas:EventMetrics"
+    },
+    "capas:run:b4d1e47324474a99:entity:6:physical_evidence:metrics": {
+      "capas:eventHash": "e43f884e20663d85b41c585183a1c9e4e790f516c435b3b208c39ed7f820d233",
+      "capas:metrics": {
+        "abs_error": 0.6931471805599453,
+        "benchmark_family": "Bell",
+        "claim_scope": "transfer seed only; shows the local-miss/universal-catch pattern for an entropy invariant, not just a Heisenberg energy invariant",
+        "evidence_hash": "aadd9121049f56d9d13397e75e573227d4353d74c0b4462c99271945c566e677",
+        "expected": 0.6931471805599453,
+        "generator_error": "plausible_product_state_instead_of_bell_state",
+        "invariant_caught": true,
+        "local_oracle_caught": false,
+        "local_property_tests": {
+          "finite_entries": true,
+          "nonzero_state": true,
+          "normalized": true,
+          "valid_dimension_two_qubits": true
+        },
+        "local_property_tests_pass": true,
+        "observable": "Generated two-qubit Bell-state entropy from plausible product state",
+        "physical_evidence_detail": "Transfer case: the generated state is normalized and dimensionally valid, but the Bell-state invariant requires single-qubit entropy ln2.",
+        "physical_evidence_level": "analytic",
+        "pre_registered_success_criterion": "local_property_tests_pass is true and universal_anchor_pass is false",
+        "reference_truth": "closed_form_bell_entropy_ln2",
+        "structure_mapping": {
+          "generator_output": "two-qubit state vector",
+          "local_oracle_relation": "generic state validity properties preserved by product state",
+          "preserved_relation": "same generated state judged by local validity and independent entanglement invariant",
+          "universal_oracle_relation": "Bell entanglement entropy invariant"
+        },
+        "units": "nats",
+        "universal_anchor": "S_Bell_reduced_state=ln2",
+        "universal_anchor_pass": false,
+        "value": -0.0,
+        "verification_independence": "analytic_no_solver"
+      },
+      "capas:stage": "physical_evidence",
+      "prov:type": "capas:EventMetrics"
+    },
+    "capas:run:b4d1e47324474a99:physical_evidence": {
+      "capas:absError": 0.6931471805599453,
+      "capas:absErrorVsExperimental": null,
+      "capas:absErrorVsFci": null,
+      "capas:actualErrorSquared": null,
+      "capas:balanceLambda": null,
+      "capas:basis": null,
+      "capas:basisOrbitals": null,
+      "capas:benchmarkFamily": "Bell",
+      "capas:bondLengthAngstrom": null,
+      "capas:boundScope": null,
+      "capas:boundSlack": null,
+      "capas:boundType": null,
+      "capas:ceilingBasisOrbitals": null,
+      "capas:ceilingBasisSolved": null,
+      "capas:certificationStatus": null,
+      "capas:chemicalAccuracyThresholdHartree": null,
+      "capas:claimScope": "transfer seed only; shows the local-miss/universal-catch pattern for an entropy invariant, not just a Heisenberg energy invariant",
+      "capas:composedStateErrorBound": null,
+      "capas:conflicts": null,
+      "capas:constantOffset": null,
+      "capas:convergencePoints": null,
+      "capas:costs": null,
+      "capas:degeneracyCount": null,
+      "capas:discardedWeight": null,
+      "capas:electronicAtomizationEnergyHartree": null,
+      "capas:evidenceHash": "aadd9121049f56d9d13397e75e573227d4353d74c0b4462c99271945c566e677",
+      "capas:evidenceStatusDetail": null,
+      "capas:expected": 0.6931471805599453,
+      "capas:experimentalAtomizationEnergyHartree": null,
+      "capas:experimentalAtomizationEnergyKcalMol": null,
+      "capas:experimentalBindingEnergyHartree": null,
+      "capas:falsificationNotes": null,
+      "capas:firstRobustBasis": null,
+      "capas:firstWithinChemicalAccuracyBasis": null,
+      "capas:formalBoundStatus": null,
+      "capas:generatorError": "plausible_product_state_instead_of_bell_state",
+      "capas:geometry": null,
+      "capas:harmonicFrequenciesCmInverse": null,
+      "capas:invariantCaught": true,
+      "capas:isingH": null,
+      "capas:isingJ": null,
+      "capas:localOracleCaught": false,
+      "capas:localPropertyTests": {
+        "finite_entries": true,
+        "nonzero_state": true,
+        "normalized": true,
+        "valid_dimension_two_qubits": true
+      },
+      "capas:localPropertyTestsPass": true,
+      "capas:mappingTerms": null,
+      "capas:modelBindingEnergyHartree": null,
+      "capas:modelErrorHartree": null,
+      "capas:monotonicNonincreasingError": null,
+      "capas:observable": "Generated two-qubit Bell-state entropy from plausible product state",
+      "capas:optimalAssignments": null,
+      "capas:people": null,
+      "capas:physicalEvidenceDetail": "Transfer case: the generated state is normalized and dimensionally valid, but the Bell-state invariant requires single-qubit entropy ln2.",
+      "capas:physicalEvidenceLevel": "analytic",
+      "capas:preRegisteredSuccessCriterion": "local_property_tests_pass is true and universal_anchor_pass is false",
+      "capas:referenceDefinitionCorrectedErrorHartree": null,
+      "capas:referenceDefinitionCorrection": null,
+      "capas:referenceDefinitionErrorHartree": null,
+      "capas:referenceDefinitionMatch": null,
+      "capas:referenceExperimentalD0CmInverse": null,
+      "capas:referenceFciTotalEnergyHartree": null,
+      "capas:referenceTruth": "closed_form_bell_entropy_ln2",
+      "capas:solverErrorHartree": null,
+      "capas:sourceLabel": null,
+      "capas:spinEncoding": null,
+      "capas:structureMapping": {
+        "generator_output": "two-qubit state vector",
+        "local_oracle_relation": "generic state validity properties preserved by product state",
+        "preserved_relation": "same generated state judged by local validity and independent entanglement invariant",
+        "universal_oracle_relation": "Bell entanglement entropy invariant"
+      },
+      "capas:tasks": null,
+      "capas:units": "nats",
+      "capas:universalAnchor": "S_Bell_reduced_state=ln2",
+      "capas:universalAnchorPass": false,
+      "capas:value": -0.0,
+      "capas:verificationIndependence": "analytic_no_solver",
+      "capas:vibrationalZpeCmInverse": null,
+      "capas:vibrationalZpeHartree": null,
+      "capas:withinChemicalAccuracy": null,
+      "capas:witnessStack": null,
+      "capas:zpeCorrectedAtomizationEnergyHartree": null,
+      "prov:type": "capas:PhysicalEvidence"
+    },
+    "capas:run:b4d1e47324474a99:result": {
+      "capas:resultHash": "9862ee6f5731cb5bb24f0ad55fa208cab14c033524202e061ac4d1ae138e0dbe",
+      "capas:summary": {
+        "abs_error": 0.6931471805599453,
+        "benchmark_family": "Bell",
+        "claim_scope": "transfer seed only; shows the local-miss/universal-catch pattern for an entropy invariant, not just a Heisenberg energy invariant",
+        "expected": 0.6931471805599453,
+        "generator_error": "plausible_product_state_instead_of_bell_state",
+        "invariant_caught": true,
+        "local_oracle_caught": false,
+        "local_property_tests": {
+          "finite_entries": true,
+          "nonzero_state": true,
+          "normalized": true,
+          "valid_dimension_two_qubits": true
+        },
+        "local_property_tests_pass": true,
+        "observable": "Generated two-qubit Bell-state entropy from plausible product state",
+        "physical_evidence_detail": "Transfer case: the generated state is normalized and dimensionally valid, but the Bell-state invariant requires single-qubit entropy ln2.",
+        "physical_evidence_level": "analytic",
+        "pre_registered_success_criterion": "local_property_tests_pass is true and universal_anchor_pass is false",
+        "reference_truth": "closed_form_bell_entropy_ln2",
+        "repr": "{'engine_id': 'universal_invariant_adversarial_engines.bell_product_state_passes_local_properties_but_fails_entropy', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS I",
+        "structure_mapping": {
+          "generator_output": "two-qubit state vector",
+          "local_oracle_relation": "generic state validity properties preserved by product state",
+          "preserved_relation": "same generated state judged by local validity and independent entanglement invariant",
+          "universal_oracle_relation": "Bell entanglement entropy invariant"
+        },
+        "type": "dict",
+        "units": "nats",
+        "universal_anchor": "S_Bell_reduced_state=ln2",
+        "universal_anchor_pass": false,
+        "value": -0.0,
+        "verification_independence": "analytic_no_solver"
+      },
+      "prov:type": "capas:Result"
+    },
+    "capas:run:b4d1e47324474a99:workload": {
+      "capas:summary": {
+        "budget": {
+          "flops_ceiling": 100000000.0,
+          "memory_budget_bytes": 536870912,
+          "safety_factor": 0.5
+        },
+        "engine": {
+          "engine_id": "universal_invariant_adversarial_engines.bell_product_state_passes_local_properties_but_fails_entropy",
+          "function_name": "bell_product_state_passes_local_properties_but_fails_entropy",
+          "kwargs_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py"
+        },
+        "kind": "dense",
+        "n_qubits": 2
+      },
+      "capas:workloadHash": "a3cede8008f26f98048c435a254d3df29ef651c223ee44c552fbef143001c9e2",
+      "prov:type": "capas:Workload"
+    }
+  },
+  "prefix": {
+    "capas": "https://example.org/capas-inteligentes#",
+    "prov": "http://www.w3.org/ns/prov#"
+  },
+  "specializationOf": {},
+  "used": {
+    "capas:run:b4d1e47324474a99:activity:0:ingest:used:capas:run:b4d1e47324474a99:workload": {
+      "prov:activity": "capas:run:b4d1e47324474a99:activity:0:ingest",
+      "prov:entity": "capas:run:b4d1e47324474a99:workload"
+    },
+    "capas:run:b4d1e47324474a99:activity:1:runtime_context:used:capas:run:b4d1e47324474a99:entity:0:ingest:metrics": {
+      "prov:activity": "capas:run:b4d1e47324474a99:activity:1:runtime_context",
+      "prov:entity": "capas:run:b4d1e47324474a99:entity:0:ingest:metrics"
+    },
+    "capas:run:b4d1e47324474a99:activity:2:engine_provenance:used:capas:run:b4d1e47324474a99:engine_module": {
+      "prov:activity": "capas:run:b4d1e47324474a99:activity:2:engine_provenance",
+      "prov:entity": "capas:run:b4d1e47324474a99:engine_module"
+    },
+    "capas:run:b4d1e47324474a99:activity:2:engine_provenance:used:capas:run:b4d1e47324474a99:entity:1:runtime_context:metrics": {
+      "prov:activity": "capas:run:b4d1e47324474a99:activity:2:engine_provenance",
+      "prov:entity": "capas:run:b4d1e47324474a99:entity:1:runtime_context:metrics"
+    },
+    "capas:run:b4d1e47324474a99:activity:3:cost_model:used:capas:run:b4d1e47324474a99:entity:2:engine_provenance:metrics": {
+      "prov:activity": "capas:run:b4d1e47324474a99:activity:3:cost_model",
+      "prov:entity": "capas:run:b4d1e47324474a99:entity:2:engine_provenance:metrics"
+    },
+    "capas:run:b4d1e47324474a99:activity:4:route:used:capas:run:b4d1e47324474a99:entity:3:cost_model:metrics": {
+      "prov:activity": "capas:run:b4d1e47324474a99:activity:4:route",
+      "prov:entity": "capas:run:b4d1e47324474a99:entity:3:cost_model:metrics"
+    },
+    "capas:run:b4d1e47324474a99:activity:5:execute:used:capas:run:b4d1e47324474a99:entity:4:route:metrics": {
+      "prov:activity": "capas:run:b4d1e47324474a99:activity:5:execute",
+      "prov:entity": "capas:run:b4d1e47324474a99:entity:4:route:metrics"
+    },
+    "capas:run:b4d1e47324474a99:activity:6:physical_evidence:used:capas:run:b4d1e47324474a99:entity:5:execute:metrics": {
+      "prov:activity": "capas:run:b4d1e47324474a99:activity:6:physical_evidence",
+      "prov:entity": "capas:run:b4d1e47324474a99:entity:5:execute:metrics"
+    }
+  },
+  "wasAssociatedWith": {
+    "capas:run:b4d1e47324474a99:activity:0:ingest:agent": {
+      "prov:activity": "capas:run:b4d1e47324474a99:activity:0:ingest",
+      "prov:agent": "capas:agent:costurero"
+    },
+    "capas:run:b4d1e47324474a99:activity:1:runtime_context:agent": {
+      "prov:activity": "capas:run:b4d1e47324474a99:activity:1:runtime_context",
+      "prov:agent": "capas:agent:costurero"
+    },
+    "capas:run:b4d1e47324474a99:activity:2:engine_provenance:agent": {
+      "prov:activity": "capas:run:b4d1e47324474a99:activity:2:engine_provenance",
+      "prov:agent": "capas:agent:costurero"
+    },
+    "capas:run:b4d1e47324474a99:activity:3:cost_model:agent": {
+      "prov:activity": "capas:run:b4d1e47324474a99:activity:3:cost_model",
+      "prov:agent": "capas:agent:costurero"
+    },
+    "capas:run:b4d1e47324474a99:activity:4:route:agent": {
+      "prov:activity": "capas:run:b4d1e47324474a99:activity:4:route",
+      "prov:agent": "capas:agent:costurero"
+    },
+    "capas:run:b4d1e47324474a99:activity:5:execute:agent": {
+      "prov:activity": "capas:run:b4d1e47324474a99:activity:5:execute",
+      "prov:agent": "capas:agent:costurero"
+    },
+    "capas:run:b4d1e47324474a99:activity:6:physical_evidence:agent": {
+      "prov:activity": "capas:run:b4d1e47324474a99:activity:6:physical_evidence",
+      "prov:agent": "capas:agent:costurero"
+    }
+  },
+  "wasAttributedTo": {
+    "capas:run:b4d1e47324474a99:result:agent": {
+      "prov:agent": "capas:agent:costurero",
+      "prov:entity": "capas:run:b4d1e47324474a99:result"
+    }
+  },
+  "wasDerivedFrom": {
+    "capas:run:b4d1e47324474a99:physical_evidence:from:capas:run:b4d1e47324474a99:result": {
+      "prov:generatedEntity": "capas:run:b4d1e47324474a99:physical_evidence",
+      "prov:usedEntity": "capas:run:b4d1e47324474a99:result"
+    },
+    "capas:run:b4d1e47324474a99:result:from:capas:run:b4d1e47324474a99:workload": {
+      "prov:generatedEntity": "capas:run:b4d1e47324474a99:result",
+      "prov:usedEntity": "capas:run:b4d1e47324474a99:workload"
+    }
+  },
+  "wasGeneratedBy": {
+    "capas:run:b4d1e47324474a99:decision:generatedBy:capas:run:b4d1e47324474a99:activity:4:route": {
+      "prov:activity": "capas:run:b4d1e47324474a99:activity:4:route",
+      "prov:entity": "capas:run:b4d1e47324474a99:decision"
+    },
+    "capas:run:b4d1e47324474a99:entity:0:ingest:metrics:generatedBy:capas:run:b4d1e47324474a99:activity:0:ingest": {
+      "prov:activity": "capas:run:b4d1e47324474a99:activity:0:ingest",
+      "prov:entity": "capas:run:b4d1e47324474a99:entity:0:ingest:metrics"
+    },
+    "capas:run:b4d1e47324474a99:entity:1:runtime_context:metrics:generatedBy:capas:run:b4d1e47324474a99:activity:1:runtime_context": {
+      "prov:activity": "capas:run:b4d1e47324474a99:activity:1:runtime_context",
+      "prov:entity": "capas:run:b4d1e47324474a99:entity:1:runtime_context:metrics"
+    },
+    "capas:run:b4d1e47324474a99:entity:2:engine_provenance:metrics:generatedBy:capas:run:b4d1e47324474a99:activity:2:engine_provenance": {
+      "prov:activity": "capas:run:b4d1e47324474a99:activity:2:engine_provenance",
+      "prov:entity": "capas:run:b4d1e47324474a99:entity:2:engine_provenance:metrics"
+    },
+    "capas:run:b4d1e47324474a99:entity:3:cost_model:metrics:generatedBy:capas:run:b4d1e47324474a99:activity:3:cost_model": {
+      "prov:activity": "capas:run:b4d1e47324474a99:activity:3:cost_model",
+      "prov:entity": "capas:run:b4d1e47324474a99:entity:3:cost_model:metrics"
+    },
+    "capas:run:b4d1e47324474a99:entity:4:route:metrics:generatedBy:capas:run:b4d1e47324474a99:activity:4:route": {
+      "prov:activity": "capas:run:b4d1e47324474a99:activity:4:route",
+      "prov:entity": "capas:run:b4d1e47324474a99:entity:4:route:metrics"
+    },
+    "capas:run:b4d1e47324474a99:entity:5:execute:metrics:generatedBy:capas:run:b4d1e47324474a99:activity:5:execute": {
+      "prov:activity": "capas:run:b4d1e47324474a99:activity:5:execute",
+      "prov:entity": "capas:run:b4d1e47324474a99:entity:5:execute:metrics"
+    },
+    "capas:run:b4d1e47324474a99:entity:6:physical_evidence:metrics:generatedBy:capas:run:b4d1e47324474a99:activity:6:physical_evidence": {
+      "prov:activity": "capas:run:b4d1e47324474a99:activity:6:physical_evidence",
+      "prov:entity": "capas:run:b4d1e47324474a99:entity:6:physical_evidence:metrics"
+    },
+    "capas:run:b4d1e47324474a99:physical_evidence:generatedBy:capas:run:b4d1e47324474a99:activity:6:physical_evidence": {
+      "prov:activity": "capas:run:b4d1e47324474a99:activity:6:physical_evidence",
+      "prov:entity": "capas:run:b4d1e47324474a99:physical_evidence"
+    },
+    "capas:run:b4d1e47324474a99:result:generatedBy:capas:run:b4d1e47324474a99:activity:5:execute": {
+      "prov:activity": "capas:run:b4d1e47324474a99:activity:5:execute",
+      "prov:entity": "capas:run:b4d1e47324474a99:result"
+    }
+  }
+}

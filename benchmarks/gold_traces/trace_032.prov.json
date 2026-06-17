@@ -1,0 +1,499 @@
+{
+  "activity": {
+    "capas:run:5b7c5bd621781d97:activity:0:ingest": {
+      "capas:message": "workload accepted",
+      "capas:status": "ok",
+      "capas:timestamp": 1781738780.860168,
+      "prov:type": "capas:ingest"
+    },
+    "capas:run:5b7c5bd621781d97:activity:1:runtime_context": {
+      "capas:message": "runtime and hardware context recorded",
+      "capas:status": "ok",
+      "capas:timestamp": 1781738780.860296,
+      "prov:type": "capas:runtime_context"
+    },
+    "capas:run:5b7c5bd621781d97:activity:2:engine_provenance": {
+      "capas:message": "external engine provenance recorded",
+      "capas:status": "ok",
+      "capas:timestamp": 1781738780.860394,
+      "prov:type": "capas:engine_provenance"
+    },
+    "capas:run:5b7c5bd621781d97:activity:3:cost_model": {
+      "capas:message": "dense statevector cost estimated",
+      "capas:status": "ok",
+      "capas:timestamp": 1781738780.860398,
+      "prov:type": "capas:cost_model"
+    },
+    "capas:run:5b7c5bd621781d97:activity:4:route": {
+      "capas:message": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+      "capas:status": "ok",
+      "capas:timestamp": 1781738780.8604019,
+      "prov:type": "capas:route"
+    },
+    "capas:run:5b7c5bd621781d97:activity:5:execute": {
+      "capas:message": "backend executed",
+      "capas:status": "ok",
+      "capas:timestamp": 1781738780.8615198,
+      "prov:type": "capas:execute"
+    },
+    "capas:run:5b7c5bd621781d97:activity:6:physical_evidence": {
+      "capas:message": "physical evidence reported by backend",
+      "capas:status": "ok",
+      "capas:timestamp": 1781738780.861543,
+      "prov:type": "capas:physical_evidence"
+    }
+  },
+  "agent": {
+    "capas:agent:costurero": {
+      "capas:name": "CAPAS INTELIGENTES costurero",
+      "prov:type": "prov:SoftwareAgent"
+    }
+  },
+  "bundle": "capas:run:5b7c5bd621781d97",
+  "capas:traceHash": "5b7c5bd621781d97a09b5e39968a77bd242fb4eaf4477ba2d1ea5d9e4218ad5c",
+  "entity": {
+    "capas:run:5b7c5bd621781d97:decision": {
+      "capas:reason": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+      "capas:route": "external_engine",
+      "prov:type": "capas:RoutingDecision"
+    },
+    "capas:run:5b7c5bd621781d97:engine_module": {
+      "capas:engineId": "universal_invariant_adversarial_engines.normalized_random_state_without_universal_anchor",
+      "capas:functionName": "normalized_random_state_without_universal_anchor",
+      "capas:modulePath": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py",
+      "capas:moduleSha256": "0774fe824514f8b3b7ea9977848a4def92c2665ba876bbab8cbc01296be64462",
+      "prov:type": "capas:EngineModule"
+    },
+    "capas:run:5b7c5bd621781d97:entity:0:ingest:metrics": {
+      "capas:eventHash": "044fc95163f7c2158e0a0e8c80664783753c7aa263184c82474c3026b8dac979",
+      "capas:metrics": {
+        "budget": {
+          "flops_ceiling": 100000000.0,
+          "memory_budget_bytes": 536870912,
+          "safety_factor": 0.5
+        },
+        "engine": {
+          "engine_id": "universal_invariant_adversarial_engines.normalized_random_state_without_universal_anchor",
+          "function_name": "normalized_random_state_without_universal_anchor",
+          "kwargs_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py"
+        },
+        "kind": "dense",
+        "n_qubits": 2
+      },
+      "capas:stage": "ingest",
+      "prov:type": "capas:EventMetrics"
+    },
+    "capas:run:5b7c5bd621781d97:entity:1:runtime_context:metrics": {
+      "capas:eventHash": "1e2a7fffad1f4b593b0526ecaec913b2e96fd8ec07301d37e5b3a917ad050101",
+      "capas:metrics": {
+        "cotengra_available": true,
+        "cotengra_version": "0.8.1",
+        "machine": "arm64",
+        "mlx_probe": "skipped_in_default_trace; use apple_silicon_thermal_routing.py for Metal/MLX device probes",
+        "numpy_available": true,
+        "numpy_version": "2.4.6",
+        "platform": "macOS-26.5.1-arm64-arm-64bit",
+        "processor": "arm",
+        "python_executable": "/Users/kreniq/physics-magnitude-lab/.pixi/envs/default/bin/python",
+        "python_version": "3.12.13",
+        "qiskit_aer_available": false,
+        "qiskit_aer_error": "ModuleNotFoundError: No module named 'qiskit_aer'",
+        "quimb_available": true,
+        "quimb_version": "1.14.0",
+        "scipy_available": true,
+        "scipy_version": "1.17.1",
+        "stim_available": true,
+        "stim_version": "1.16.0"
+      },
+      "capas:stage": "runtime_context",
+      "prov:type": "capas:EventMetrics"
+    },
+    "capas:run:5b7c5bd621781d97:entity:2:engine_provenance:metrics": {
+      "capas:eventHash": "986e914c22f9fa29d67927aeb2f2abab746564908c658742e5345147c6861e63",
+      "capas:metrics": {
+        "engine_id": "universal_invariant_adversarial_engines.normalized_random_state_without_universal_anchor",
+        "function_name": "normalized_random_state_without_universal_anchor",
+        "kwargs": {},
+        "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py",
+        "module_sha256": "0774fe824514f8b3b7ea9977848a4def92c2665ba876bbab8cbc01296be64462"
+      },
+      "capas:stage": "engine_provenance",
+      "prov:type": "capas:EventMetrics"
+    },
+    "capas:run:5b7c5bd621781d97:entity:3:cost_model:metrics": {
+      "capas:eventHash": "1c0d3a2d2e22dfc9f5db57d98636e1846d8a84ba2b6dc80a471ec47e9e40011a",
+      "capas:metrics": {
+        "memory_viable": true,
+        "n_qubits": 2,
+        "route": "dense",
+        "statevector_bytes": 64,
+        "usable_memory_bytes": 268435456.0
+      },
+      "capas:stage": "cost_model",
+      "prov:type": "capas:EventMetrics"
+    },
+    "capas:run:5b7c5bd621781d97:entity:4:route:metrics": {
+      "capas:eventHash": "82c5d6d1fc950b5c56dfbb6f1bd533600647a691d29424314cafc665e47d70de",
+      "capas:metrics": {
+        "engine_id": "universal_invariant_adversarial_engines.normalized_random_state_without_universal_anchor",
+        "function_name": "normalized_random_state_without_universal_anchor",
+        "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py"
+      },
+      "capas:stage": "route",
+      "prov:type": "capas:EventMetrics"
+    },
+    "capas:run:5b7c5bd621781d97:entity:5:execute:metrics": {
+      "capas:eventHash": "80502e19bbbfe7ec9ff8c02a00fc6965ee3525e20e5967ea20b5c9910b829a13",
+      "capas:metrics": {
+        "abs_error": "not_applicable_no_universal_anchor",
+        "benchmark_family": "NoUniversalAnchorControl",
+        "claim_scope": "no-anchor control only; shows CAPAS can seal local validity while refusing a universal-invariant claim",
+        "expected": "not_applicable_no_universal_anchor",
+        "generator_error": "none_declared",
+        "invariant_caught": false,
+        "local_oracle_caught": false,
+        "local_property_tests": {
+          "finite_entries": true,
+          "nonzero_state": true,
+          "normalized": true,
+          "valid_dimension_two_qubits": true
+        },
+        "local_property_tests_pass": true,
+        "observable": "Generated normalized two-qubit state entropy without a universal target",
+        "physical_evidence_detail": "No-anchor control: the state is locally valid, but no universal reference is claimed for this arbitrary generated state.",
+        "physical_evidence_level": "no_universal_anchor_control",
+        "pre_registered_success_criterion": "local_property_tests_pass is true and universal_anchor_pass is not_applicable_no_universal_anchor",
+        "reference_truth": "none",
+        "repr": "{'engine_id': 'universal_invariant_adversarial_engines.normalized_random_state_without_universal_anchor', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/",
+        "route": "external_engine",
+        "runtime_ms": 1.058334019035101,
+        "structure_mapping": {
+          "generator_output": "arbitrary normalized two-qubit state",
+          "local_oracle_relation": "generic state validity properties",
+          "preserved_relation": "CAPAS records absence of an anchor instead of inventing evidence",
+          "universal_oracle_relation": "none claimed"
+        },
+        "type": "dict",
+        "units": "nats",
+        "universal_anchor": "not_applicable_no_universal_anchor",
+        "universal_anchor_pass": "not_applicable_no_universal_anchor",
+        "value": 0.3100460629596791,
+        "verification_independence": "none"
+      },
+      "capas:stage": "execute",
+      "prov:type": "capas:EventMetrics"
+    },
+    "capas:run:5b7c5bd621781d97:entity:6:physical_evidence:metrics": {
+      "capas:eventHash": "54f02de609eb9b45fa405153221546cec3413ccb9dfc5983c8fabc9b886c07c1",
+      "capas:metrics": {
+        "abs_error": "not_applicable_no_universal_anchor",
+        "benchmark_family": "NoUniversalAnchorControl",
+        "claim_scope": "no-anchor control only; shows CAPAS can seal local validity while refusing a universal-invariant claim",
+        "evidence_hash": "8ad711bfec4ef63cfaaefa0c7b8ee5797b952418a8e8d78d3491c178a448b6f0",
+        "expected": "not_applicable_no_universal_anchor",
+        "generator_error": "none_declared",
+        "invariant_caught": false,
+        "local_oracle_caught": false,
+        "local_property_tests": {
+          "finite_entries": true,
+          "nonzero_state": true,
+          "normalized": true,
+          "valid_dimension_two_qubits": true
+        },
+        "local_property_tests_pass": true,
+        "observable": "Generated normalized two-qubit state entropy without a universal target",
+        "physical_evidence_detail": "No-anchor control: the state is locally valid, but no universal reference is claimed for this arbitrary generated state.",
+        "physical_evidence_level": "no_universal_anchor_control",
+        "pre_registered_success_criterion": "local_property_tests_pass is true and universal_anchor_pass is not_applicable_no_universal_anchor",
+        "reference_truth": "none",
+        "structure_mapping": {
+          "generator_output": "arbitrary normalized two-qubit state",
+          "local_oracle_relation": "generic state validity properties",
+          "preserved_relation": "CAPAS records absence of an anchor instead of inventing evidence",
+          "universal_oracle_relation": "none claimed"
+        },
+        "units": "nats",
+        "universal_anchor": "not_applicable_no_universal_anchor",
+        "universal_anchor_pass": "not_applicable_no_universal_anchor",
+        "value": 0.3100460629596791,
+        "verification_independence": "none"
+      },
+      "capas:stage": "physical_evidence",
+      "prov:type": "capas:EventMetrics"
+    },
+    "capas:run:5b7c5bd621781d97:physical_evidence": {
+      "capas:absError": "not_applicable_no_universal_anchor",
+      "capas:absErrorVsExperimental": null,
+      "capas:absErrorVsFci": null,
+      "capas:actualErrorSquared": null,
+      "capas:balanceLambda": null,
+      "capas:basis": null,
+      "capas:basisOrbitals": null,
+      "capas:benchmarkFamily": "NoUniversalAnchorControl",
+      "capas:bondLengthAngstrom": null,
+      "capas:boundScope": null,
+      "capas:boundSlack": null,
+      "capas:boundType": null,
+      "capas:ceilingBasisOrbitals": null,
+      "capas:ceilingBasisSolved": null,
+      "capas:certificationStatus": null,
+      "capas:chemicalAccuracyThresholdHartree": null,
+      "capas:claimScope": "no-anchor control only; shows CAPAS can seal local validity while refusing a universal-invariant claim",
+      "capas:composedStateErrorBound": null,
+      "capas:conflicts": null,
+      "capas:constantOffset": null,
+      "capas:convergencePoints": null,
+      "capas:costs": null,
+      "capas:degeneracyCount": null,
+      "capas:discardedWeight": null,
+      "capas:electronicAtomizationEnergyHartree": null,
+      "capas:evidenceHash": "8ad711bfec4ef63cfaaefa0c7b8ee5797b952418a8e8d78d3491c178a448b6f0",
+      "capas:evidenceStatusDetail": null,
+      "capas:expected": "not_applicable_no_universal_anchor",
+      "capas:experimentalAtomizationEnergyHartree": null,
+      "capas:experimentalAtomizationEnergyKcalMol": null,
+      "capas:experimentalBindingEnergyHartree": null,
+      "capas:falsificationNotes": null,
+      "capas:firstRobustBasis": null,
+      "capas:firstWithinChemicalAccuracyBasis": null,
+      "capas:formalBoundStatus": null,
+      "capas:generatorError": "none_declared",
+      "capas:geometry": null,
+      "capas:harmonicFrequenciesCmInverse": null,
+      "capas:invariantCaught": false,
+      "capas:isingH": null,
+      "capas:isingJ": null,
+      "capas:localOracleCaught": false,
+      "capas:localPropertyTests": {
+        "finite_entries": true,
+        "nonzero_state": true,
+        "normalized": true,
+        "valid_dimension_two_qubits": true
+      },
+      "capas:localPropertyTestsPass": true,
+      "capas:mappingTerms": null,
+      "capas:modelBindingEnergyHartree": null,
+      "capas:modelErrorHartree": null,
+      "capas:monotonicNonincreasingError": null,
+      "capas:observable": "Generated normalized two-qubit state entropy without a universal target",
+      "capas:optimalAssignments": null,
+      "capas:people": null,
+      "capas:physicalEvidenceDetail": "No-anchor control: the state is locally valid, but no universal reference is claimed for this arbitrary generated state.",
+      "capas:physicalEvidenceLevel": "no_universal_anchor_control",
+      "capas:preRegisteredSuccessCriterion": "local_property_tests_pass is true and universal_anchor_pass is not_applicable_no_universal_anchor",
+      "capas:referenceDefinitionCorrectedErrorHartree": null,
+      "capas:referenceDefinitionCorrection": null,
+      "capas:referenceDefinitionErrorHartree": null,
+      "capas:referenceDefinitionMatch": null,
+      "capas:referenceExperimentalD0CmInverse": null,
+      "capas:referenceFciTotalEnergyHartree": null,
+      "capas:referenceTruth": "none",
+      "capas:solverErrorHartree": null,
+      "capas:sourceLabel": null,
+      "capas:spinEncoding": null,
+      "capas:structureMapping": {
+        "generator_output": "arbitrary normalized two-qubit state",
+        "local_oracle_relation": "generic state validity properties",
+        "preserved_relation": "CAPAS records absence of an anchor instead of inventing evidence",
+        "universal_oracle_relation": "none claimed"
+      },
+      "capas:tasks": null,
+      "capas:units": "nats",
+      "capas:universalAnchor": "not_applicable_no_universal_anchor",
+      "capas:universalAnchorPass": "not_applicable_no_universal_anchor",
+      "capas:value": 0.3100460629596791,
+      "capas:verificationIndependence": "none",
+      "capas:vibrationalZpeCmInverse": null,
+      "capas:vibrationalZpeHartree": null,
+      "capas:withinChemicalAccuracy": null,
+      "capas:witnessStack": null,
+      "capas:zpeCorrectedAtomizationEnergyHartree": null,
+      "prov:type": "capas:PhysicalEvidence"
+    },
+    "capas:run:5b7c5bd621781d97:result": {
+      "capas:resultHash": "ff2fc9da622d62921edd61f99f8f60976ca6d356411fd034eb76bbee722e5846",
+      "capas:summary": {
+        "abs_error": "not_applicable_no_universal_anchor",
+        "benchmark_family": "NoUniversalAnchorControl",
+        "claim_scope": "no-anchor control only; shows CAPAS can seal local validity while refusing a universal-invariant claim",
+        "expected": "not_applicable_no_universal_anchor",
+        "generator_error": "none_declared",
+        "invariant_caught": false,
+        "local_oracle_caught": false,
+        "local_property_tests": {
+          "finite_entries": true,
+          "nonzero_state": true,
+          "normalized": true,
+          "valid_dimension_two_qubits": true
+        },
+        "local_property_tests_pass": true,
+        "observable": "Generated normalized two-qubit state entropy without a universal target",
+        "physical_evidence_detail": "No-anchor control: the state is locally valid, but no universal reference is claimed for this arbitrary generated state.",
+        "physical_evidence_level": "no_universal_anchor_control",
+        "pre_registered_success_criterion": "local_property_tests_pass is true and universal_anchor_pass is not_applicable_no_universal_anchor",
+        "reference_truth": "none",
+        "repr": "{'engine_id': 'universal_invariant_adversarial_engines.normalized_random_state_without_universal_anchor', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/",
+        "structure_mapping": {
+          "generator_output": "arbitrary normalized two-qubit state",
+          "local_oracle_relation": "generic state validity properties",
+          "preserved_relation": "CAPAS records absence of an anchor instead of inventing evidence",
+          "universal_oracle_relation": "none claimed"
+        },
+        "type": "dict",
+        "units": "nats",
+        "universal_anchor": "not_applicable_no_universal_anchor",
+        "universal_anchor_pass": "not_applicable_no_universal_anchor",
+        "value": 0.3100460629596791,
+        "verification_independence": "none"
+      },
+      "prov:type": "capas:Result"
+    },
+    "capas:run:5b7c5bd621781d97:workload": {
+      "capas:summary": {
+        "budget": {
+          "flops_ceiling": 100000000.0,
+          "memory_budget_bytes": 536870912,
+          "safety_factor": 0.5
+        },
+        "engine": {
+          "engine_id": "universal_invariant_adversarial_engines.normalized_random_state_without_universal_anchor",
+          "function_name": "normalized_random_state_without_universal_anchor",
+          "kwargs_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py"
+        },
+        "kind": "dense",
+        "n_qubits": 2
+      },
+      "capas:workloadHash": "d017d6967c77c722ea853a722629604ed314beb3d10e039ae248f5ce1987de19",
+      "prov:type": "capas:Workload"
+    }
+  },
+  "prefix": {
+    "capas": "https://example.org/capas-inteligentes#",
+    "prov": "http://www.w3.org/ns/prov#"
+  },
+  "specializationOf": {},
+  "used": {
+    "capas:run:5b7c5bd621781d97:activity:0:ingest:used:capas:run:5b7c5bd621781d97:workload": {
+      "prov:activity": "capas:run:5b7c5bd621781d97:activity:0:ingest",
+      "prov:entity": "capas:run:5b7c5bd621781d97:workload"
+    },
+    "capas:run:5b7c5bd621781d97:activity:1:runtime_context:used:capas:run:5b7c5bd621781d97:entity:0:ingest:metrics": {
+      "prov:activity": "capas:run:5b7c5bd621781d97:activity:1:runtime_context",
+      "prov:entity": "capas:run:5b7c5bd621781d97:entity:0:ingest:metrics"
+    },
+    "capas:run:5b7c5bd621781d97:activity:2:engine_provenance:used:capas:run:5b7c5bd621781d97:engine_module": {
+      "prov:activity": "capas:run:5b7c5bd621781d97:activity:2:engine_provenance",
+      "prov:entity": "capas:run:5b7c5bd621781d97:engine_module"
+    },
+    "capas:run:5b7c5bd621781d97:activity:2:engine_provenance:used:capas:run:5b7c5bd621781d97:entity:1:runtime_context:metrics": {
+      "prov:activity": "capas:run:5b7c5bd621781d97:activity:2:engine_provenance",
+      "prov:entity": "capas:run:5b7c5bd621781d97:entity:1:runtime_context:metrics"
+    },
+    "capas:run:5b7c5bd621781d97:activity:3:cost_model:used:capas:run:5b7c5bd621781d97:entity:2:engine_provenance:metrics": {
+      "prov:activity": "capas:run:5b7c5bd621781d97:activity:3:cost_model",
+      "prov:entity": "capas:run:5b7c5bd621781d97:entity:2:engine_provenance:metrics"
+    },
+    "capas:run:5b7c5bd621781d97:activity:4:route:used:capas:run:5b7c5bd621781d97:entity:3:cost_model:metrics": {
+      "prov:activity": "capas:run:5b7c5bd621781d97:activity:4:route",
+      "prov:entity": "capas:run:5b7c5bd621781d97:entity:3:cost_model:metrics"
+    },
+    "capas:run:5b7c5bd621781d97:activity:5:execute:used:capas:run:5b7c5bd621781d97:entity:4:route:metrics": {
+      "prov:activity": "capas:run:5b7c5bd621781d97:activity:5:execute",
+      "prov:entity": "capas:run:5b7c5bd621781d97:entity:4:route:metrics"
+    },
+    "capas:run:5b7c5bd621781d97:activity:6:physical_evidence:used:capas:run:5b7c5bd621781d97:entity:5:execute:metrics": {
+      "prov:activity": "capas:run:5b7c5bd621781d97:activity:6:physical_evidence",
+      "prov:entity": "capas:run:5b7c5bd621781d97:entity:5:execute:metrics"
+    }
+  },
+  "wasAssociatedWith": {
+    "capas:run:5b7c5bd621781d97:activity:0:ingest:agent": {
+      "prov:activity": "capas:run:5b7c5bd621781d97:activity:0:ingest",
+      "prov:agent": "capas:agent:costurero"
+    },
+    "capas:run:5b7c5bd621781d97:activity:1:runtime_context:agent": {
+      "prov:activity": "capas:run:5b7c5bd621781d97:activity:1:runtime_context",
+      "prov:agent": "capas:agent:costurero"
+    },
+    "capas:run:5b7c5bd621781d97:activity:2:engine_provenance:agent": {
+      "prov:activity": "capas:run:5b7c5bd621781d97:activity:2:engine_provenance",
+      "prov:agent": "capas:agent:costurero"
+    },
+    "capas:run:5b7c5bd621781d97:activity:3:cost_model:agent": {
+      "prov:activity": "capas:run:5b7c5bd621781d97:activity:3:cost_model",
+      "prov:agent": "capas:agent:costurero"
+    },
+    "capas:run:5b7c5bd621781d97:activity:4:route:agent": {
+      "prov:activity": "capas:run:5b7c5bd621781d97:activity:4:route",
+      "prov:agent": "capas:agent:costurero"
+    },
+    "capas:run:5b7c5bd621781d97:activity:5:execute:agent": {
+      "prov:activity": "capas:run:5b7c5bd621781d97:activity:5:execute",
+      "prov:agent": "capas:agent:costurero"
+    },
+    "capas:run:5b7c5bd621781d97:activity:6:physical_evidence:agent": {
+      "prov:activity": "capas:run:5b7c5bd621781d97:activity:6:physical_evidence",
+      "prov:agent": "capas:agent:costurero"
+    }
+  },
+  "wasAttributedTo": {
+    "capas:run:5b7c5bd621781d97:result:agent": {
+      "prov:agent": "capas:agent:costurero",
+      "prov:entity": "capas:run:5b7c5bd621781d97:result"
+    }
+  },
+  "wasDerivedFrom": {
+    "capas:run:5b7c5bd621781d97:physical_evidence:from:capas:run:5b7c5bd621781d97:result": {
+      "prov:generatedEntity": "capas:run:5b7c5bd621781d97:physical_evidence",
+      "prov:usedEntity": "capas:run:5b7c5bd621781d97:result"
+    },
+    "capas:run:5b7c5bd621781d97:result:from:capas:run:5b7c5bd621781d97:workload": {
+      "prov:generatedEntity": "capas:run:5b7c5bd621781d97:result",
+      "prov:usedEntity": "capas:run:5b7c5bd621781d97:workload"
+    }
+  },
+  "wasGeneratedBy": {
+    "capas:run:5b7c5bd621781d97:decision:generatedBy:capas:run:5b7c5bd621781d97:activity:4:route": {
+      "prov:activity": "capas:run:5b7c5bd621781d97:activity:4:route",
+      "prov:entity": "capas:run:5b7c5bd621781d97:decision"
+    },
+    "capas:run:5b7c5bd621781d97:entity:0:ingest:metrics:generatedBy:capas:run:5b7c5bd621781d97:activity:0:ingest": {
+      "prov:activity": "capas:run:5b7c5bd621781d97:activity:0:ingest",
+      "prov:entity": "capas:run:5b7c5bd621781d97:entity:0:ingest:metrics"
+    },
+    "capas:run:5b7c5bd621781d97:entity:1:runtime_context:metrics:generatedBy:capas:run:5b7c5bd621781d97:activity:1:runtime_context": {
+      "prov:activity": "capas:run:5b7c5bd621781d97:activity:1:runtime_context",
+      "prov:entity": "capas:run:5b7c5bd621781d97:entity:1:runtime_context:metrics"
+    },
+    "capas:run:5b7c5bd621781d97:entity:2:engine_provenance:metrics:generatedBy:capas:run:5b7c5bd621781d97:activity:2:engine_provenance": {
+      "prov:activity": "capas:run:5b7c5bd621781d97:activity:2:engine_provenance",
+      "prov:entity": "capas:run:5b7c5bd621781d97:entity:2:engine_provenance:metrics"
+    },
+    "capas:run:5b7c5bd621781d97:entity:3:cost_model:metrics:generatedBy:capas:run:5b7c5bd621781d97:activity:3:cost_model": {
+      "prov:activity": "capas:run:5b7c5bd621781d97:activity:3:cost_model",
+      "prov:entity": "capas:run:5b7c5bd621781d97:entity:3:cost_model:metrics"
+    },
+    "capas:run:5b7c5bd621781d97:entity:4:route:metrics:generatedBy:capas:run:5b7c5bd621781d97:activity:4:route": {
+      "prov:activity": "capas:run:5b7c5bd621781d97:activity:4:route",
+      "prov:entity": "capas:run:5b7c5bd621781d97:entity:4:route:metrics"
+    },
+    "capas:run:5b7c5bd621781d97:entity:5:execute:metrics:generatedBy:capas:run:5b7c5bd621781d97:activity:5:execute": {
+      "prov:activity": "capas:run:5b7c5bd621781d97:activity:5:execute",
+      "prov:entity": "capas:run:5b7c5bd621781d97:entity:5:execute:metrics"
+    },
+    "capas:run:5b7c5bd621781d97:entity:6:physical_evidence:metrics:generatedBy:capas:run:5b7c5bd621781d97:activity:6:physical_evidence": {
+      "prov:activity": "capas:run:5b7c5bd621781d97:activity:6:physical_evidence",
+      "prov:entity": "capas:run:5b7c5bd621781d97:entity:6:physical_evidence:metrics"
+    },
+    "capas:run:5b7c5bd621781d97:physical_evidence:generatedBy:capas:run:5b7c5bd621781d97:activity:6:physical_evidence": {
+      "prov:activity": "capas:run:5b7c5bd621781d97:activity:6:physical_evidence",
+      "prov:entity": "capas:run:5b7c5bd621781d97:physical_evidence"
+    },
+    "capas:run:5b7c5bd621781d97:result:generatedBy:capas:run:5b7c5bd621781d97:activity:5:execute": {
+      "prov:activity": "capas:run:5b7c5bd621781d97:activity:5:execute",
+      "prov:entity": "capas:run:5b7c5bd621781d97:result"
+    }
+  }
+}

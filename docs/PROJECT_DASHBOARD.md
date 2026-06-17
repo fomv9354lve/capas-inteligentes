@@ -37,11 +37,11 @@ See git log. This dashboard is updated in the same commit as state changes.
 Recent commits:
 
 ```text
-HEAD Add universal invariant anchoring trace
+HEAD Add universal invariant oracle matrix
+ea4a37b Add universal invariant anchoring trace
 8063b71 Use CWL workflow descriptor for RO-Crate validation
 eea756d Add Xing simulation cost predictor audit
 77878a1 Add CAPAS physical evidence profile validation
-0979ef9 Add PCM SotA audit
 ```
 
 Current validation status:
@@ -50,9 +50,9 @@ Current validation status:
 coverage_ready: True
 fine_tune_ready: False
 local RO-Crate validation: passed
-local CAPAS physical-evidence profile validation: passed for 28/28 crates
+local CAPAS physical-evidence profile validation: passed for 32/32 crates
 local Workflow Run Crate shape check: passed through CAPAS profile validator
-external ResearchObject RO-Crate validation: valid for 28/28 crates
+external ResearchObject RO-Crate validation: valid for 32/32 crates
 external warning: none
 witness independence validation: passed
 reproducibility environment check: passed in local physics-magnitude-lab pixi env
@@ -80,6 +80,10 @@ engine.
 | `quantum_chemistry_larger_polyatomic_electronic_vibrational` | 1 | covered | CH4/STO-3G electronic/vibrational split against atomization reference |
 | `quantum_chemistry_basis_convergence_to_experiment` | 1 | covered | H2 basis ladder converges to experiment with robust threshold crossing |
 | `universal_invariant_adversarial_failure` | 1 | covered | wrong-sign generator output passes local properties but fails analytic universal invariant |
+| `universal_invariant_local_catches_anchor_not_needed` | 1 | covered | local oracle catches before universal anchor is needed |
+| `universal_invariant_both_oracles_catch` | 1 | covered | local oracle and universal anchor both catch |
+| `universal_invariant_non_heisenberg_adversarial_failure` | 1 | covered | valid product state fails Bell entropy invariant |
+| `universal_invariant_no_anchor_control` | 1 | covered | locally valid arbitrary state with no claimed universal anchor |
 | `formal_bound_success` | 1 | covered | formal single-cut Schmidt truncation certificate |
 | `formal_bound_composition_success` | 1 | covered | formal multi-step state truncation bound |
 | `estimated_bound_candidate` | 1 | covered | useful estimator, not formal |
@@ -90,12 +94,13 @@ engine.
 Current evidence levels:
 
 ```text
-analytic: 13
+analytic: 16
 cross_sim: 2
 experimental: 7
 formal_bound: 2
 estimated_bound: 1
 none: 3
+no_universal_anchor_control: 1
 ```
 
 ## What Works
@@ -106,7 +111,7 @@ none: 3
 4. Workflow Run RO-Crate-compatible shape.
 5. External RO-Crate validation through ResearchObject `rocrateValidator`.
 6. CAPAS `PhysicalEvidence` entity in RO-Crate and PROV exports.
-7. Local CAPAS physical-evidence profile validation over all 28 crates.
+7. Local CAPAS physical-evidence profile validation over all 32 crates.
 8. Honest distinction between:
    - analytic truth
    - cross-sim witness
@@ -214,22 +219,19 @@ none: 3
      prediction is occupied SotA
    - lesson: CAPAS must not compete as a cost predictor; it can wrap such
      predictors as an evidence/profile layer
-22. Universal invariant anchoring adversarial case:
-   - artifact: `trace_028`
+22. Universal invariant anchoring matrix:
+   - artifacts: `trace_028` through `trace_032`
    - doc: `docs/UNIVERSAL_INVARIANT_ANCHORING.md`
-   - generated artifact: wrong-sign Heisenberg dimer Hamiltonian
-   - local property tests: Hermitian, trace zero, real spectrum, exchange
-     symmetry, finite entries
-   - local property result: pass
-   - universal analytic anchor: antiferromagnetic dimer `E0 = -3J/4`
-   - computed ground energy: `-0.25`
-   - expected ground energy: `-0.75`
-   - abs error: `0.5`
-   - invariant caught: `True`
-   - audit decision: `reject`, because the generated scientific output is
-     intentionally wrong and must not become fine-tune gold
-   - lesson: an analytic physics invariant can catch a generator error missed
-     by generic local property checks in this minimal case
+   - `trace_028`: local misses, Heisenberg energy anchor catches
+   - `trace_029`: local catches, anchor not needed
+   - `trace_030`: local catches, anchor catches too
+   - `trace_031`: local misses, Bell entropy anchor catches
+   - `trace_032`: local passes, no universal anchor claimed
+   - audit decision: all five are `reject`, because adversarial/control traces
+     must not become fine-tune gold
+   - lesson: the current evidence supports complementarity, not domination;
+     universal anchors add coverage in some cells and are redundant or
+     inapplicable in others
 
 ## Non-Degradation Rules
 
@@ -258,8 +260,8 @@ These are hard guardrails.
 12. Do not compare electronic `D_e`-like quantities against experimental `D0`
     without recording `reference_definition_match` and any correction.
 13. Do not treat same-model harmonic ZPE as anharmonic spectroscopy.
-14. Do not claim universal invariant anchoring is generally useful from a
-    single adversarial trace.
+14. Do not claim universal invariant anchoring is generally useful from the
+    current five-trace matrix.
 15. Any universal-invariant claim must record:
     - local oracle and result
     - universal anchor and result
@@ -296,7 +298,7 @@ Debt:
 
 Done when:
 
-- a fresh clone can regenerate the 28 traces with one documented command
+- a fresh clone can regenerate the 32 traces with one documented command
 - `physics_magnitude_lab` is installed from a pinned local path, package version,
   or declared workspace dependency
 
@@ -316,7 +318,7 @@ Current state:
 ```text
 fine_tune_ready: False
 hold: 24
-reject: 4
+reject: 8
 blank: 0
 ```
 
@@ -392,14 +394,14 @@ What exists:
 - `benchmarks/validate_witness_independence.py`
 - `trace_018` as a SciPy cross-library same-runtime witness
 - eight current levels covered:
-  - `analytic_no_solver`: 11
+  - `analytic_no_solver`: 14
   - `different_library_same_runtime`: 1
   - `different_method_same_runtime`: 2
   - `same_runtime_exact_fci_with_external_experimental_reference`: 7
   - `different_algorithm_same_runtime`: 1
   - `algorithmic_certificate_exact_svd_same_runtime`: 2
   - `algorithmic_error_certificate_same_runtime`: 1
-  - `none`: 3
+  - `none`: 4
 
 Next step:
 
@@ -699,45 +701,48 @@ Done when:
 
 ### D11. Universal Invariant Anchoring
 
-Status: seed falsation case complete.
+Status: seed falsation matrix complete.
 
 What exists:
 
 - `docs/UNIVERSAL_INVARIANT_ANCHORING.md`
-- `trace_028`
-- `coverage_case=universal_invariant_adversarial_failure`
-- `physical_evidence_level=analytic`
-- local property oracle result:
-  - `local_property_tests_pass=True`
-  - `local_oracle_caught=False`
-- universal anchor result:
-  - `universal_anchor=E0_antiferromagnetic_heisenberg_dimer=-3J/4`
-  - `value=-0.25`
-  - `expected=-0.75`
-  - `abs_error=0.5`
-  - `universal_anchor_pass=False`
-  - `invariant_caught=True`
-- audit decision: `reject`
+- `trace_028`: local misses, Heisenberg energy anchor catches
+- `trace_029`: local catches, anchor not evaluated
+- `trace_030`: local catches, Heisenberg energy anchor catches too
+- `trace_031`: local misses, Bell entropy anchor catches
+- `trace_032`: local passes, no universal anchor is claimed
+- coverage cases:
+  - `universal_invariant_adversarial_failure`
+  - `universal_invariant_local_catches_anchor_not_needed`
+  - `universal_invariant_both_oracles_catch`
+  - `universal_invariant_non_heisenberg_adversarial_failure`
+  - `universal_invariant_no_anchor_control`
+- evidence levels:
+  - `analytic`
+  - `no_universal_anchor_control`
+- audit decision: all five are `reject`
 
 Scope:
 
-- one minimal Heisenberg dimer adversarial case
-- one injected generator error: wrong coupling sign
-- proves only that this analytic invariant catches this local-oracle miss
+- minimal matrix only, not a benchmark suite
+- two invariant types: Heisenberg energy and Bell entropy
+- one no-anchor control
+- supports complementarity of local oracles and universal anchors
 - does not prove general superiority over PBT/RvLLM-style local properties
 
 Next step:
 
-- add at least one non-Heisenberg universal-invariant adversarial case, such as
-  Bell entropy `ln2` or Ising critical exponent scaling, with the same
-  pre-registered criterion
-- add a negative control where local properties catch the error too, so the
-  delta is not overstated
+- add a finite-size/scaling invariant case, such as Ising critical exponent or
+  Kibble-Zurek scaling, because current anchors are exact small-system
+  invariants
+- add randomized adversarial variants with pre-registered thresholds rather
+  than one hand-constructed example per cell
 
 Done when:
 
-- the invariant-anchor axis has multiple domains and at least one negative
-  control
+- the invariant-anchor axis has exact-value and scaling-law anchors
+- controls include local-only, redundant, no-anchor, and noisy/generator-trivial
+  cases
 - validators reject missing `claim_scope` or missing local/universal oracle
   fields for this coverage family
 

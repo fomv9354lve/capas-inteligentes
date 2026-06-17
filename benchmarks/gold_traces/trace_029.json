@@ -1,0 +1,274 @@
+{
+  "coverage_case": "universal_invariant_local_catches_anchor_not_needed",
+  "result": {
+    "engine_id": "universal_invariant_adversarial_engines.heisenberg_nonhermitian_local_catches_anchor_not_needed",
+    "function_name": "heisenberg_nonhermitian_local_catches_anchor_not_needed",
+    "kwargs": {},
+    "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py",
+    "module_sha256": "0774fe824514f8b3b7ea9977848a4def92c2665ba876bbab8cbc01296be64462",
+    "result": {
+      "abs_error": "not_evaluated_local_oracle_failed",
+      "benchmark_family": "Heisenberg",
+      "claim_scope": "negative control only; shows some generator errors are already caught by local properties and do not support a universal-anchor advantage claim",
+      "coverage_case": "universal_invariant_local_catches_anchor_not_needed",
+      "expected": -0.75,
+      "generator_error": "nonhermitian_matrix_entry",
+      "invariant_caught": false,
+      "local_oracle_caught": true,
+      "local_property_tests": {
+        "exchange_symmetric": false,
+        "finite_entries": true,
+        "hermitian": false,
+        "real_spectrum": true,
+        "trace_zero": true
+      },
+      "local_property_tests_pass": false,
+      "observable": "Generated Heisenberg dimer Hamiltonian with non-Hermitian perturbation",
+      "physical_evidence_detail": "Negative control: the local matrix oracle catches non-Hermiticity before the analytic ground-state invariant is needed.",
+      "physical_evidence_level": "analytic",
+      "pre_registered_success_criterion": "local_property_tests_pass is false and universal_anchor_pass is not_evaluated_local_oracle_failed",
+      "reference_truth": "closed_form_antiferromagnetic_singlet_ground_energy",
+      "structure_mapping": {
+        "generator_output": "Hamiltonian implementation",
+        "local_oracle_relation": "generic matrix validity properties",
+        "preserved_relation": "same generated object judged by local properties and independent physics",
+        "universal_oracle_relation": "model-specific singlet/triplet spectrum invariant"
+      },
+      "units": "energy",
+      "universal_anchor": "E0_antiferromagnetic_heisenberg_dimer=-3J/4",
+      "universal_anchor_pass": "not_evaluated_local_oracle_failed",
+      "value": "not_evaluated_local_oracle_failed",
+      "verification_independence": "analytic_no_solver"
+    }
+  },
+  "trace": {
+    "decision_reason": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+    "decision_route": "external_engine",
+    "error": null,
+    "events": [
+      {
+        "message": "workload accepted",
+        "metrics": {
+          "budget": {
+            "flops_ceiling": 100000000.0,
+            "memory_budget_bytes": 536870912,
+            "safety_factor": 0.5
+          },
+          "engine": {
+            "engine_id": "universal_invariant_adversarial_engines.heisenberg_nonhermitian_local_catches_anchor_not_needed",
+            "function_name": "heisenberg_nonhermitian_local_catches_anchor_not_needed",
+            "kwargs_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+            "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py"
+          },
+          "kind": "dense",
+          "n_qubits": 2
+        },
+        "stage": "ingest",
+        "status": "ok",
+        "timestamp": 1781738780.856009
+      },
+      {
+        "message": "runtime and hardware context recorded",
+        "metrics": {
+          "cotengra_available": true,
+          "cotengra_version": "0.8.1",
+          "machine": "arm64",
+          "mlx_probe": "skipped_in_default_trace; use apple_silicon_thermal_routing.py for Metal/MLX device probes",
+          "numpy_available": true,
+          "numpy_version": "2.4.6",
+          "platform": "macOS-26.5.1-arm64-arm-64bit",
+          "processor": "arm",
+          "python_executable": "/Users/kreniq/physics-magnitude-lab/.pixi/envs/default/bin/python",
+          "python_version": "3.12.13",
+          "qiskit_aer_available": false,
+          "qiskit_aer_error": "ModuleNotFoundError: No module named 'qiskit_aer'",
+          "quimb_available": true,
+          "quimb_version": "1.14.0",
+          "scipy_available": true,
+          "scipy_version": "1.17.1",
+          "stim_available": true,
+          "stim_version": "1.16.0"
+        },
+        "stage": "runtime_context",
+        "status": "ok",
+        "timestamp": 1781738780.8561358
+      },
+      {
+        "message": "external engine provenance recorded",
+        "metrics": {
+          "engine_id": "universal_invariant_adversarial_engines.heisenberg_nonhermitian_local_catches_anchor_not_needed",
+          "function_name": "heisenberg_nonhermitian_local_catches_anchor_not_needed",
+          "kwargs": {},
+          "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py",
+          "module_sha256": "0774fe824514f8b3b7ea9977848a4def92c2665ba876bbab8cbc01296be64462"
+        },
+        "stage": "engine_provenance",
+        "status": "ok",
+        "timestamp": 1781738780.856216
+      },
+      {
+        "message": "dense statevector cost estimated",
+        "metrics": {
+          "memory_viable": true,
+          "n_qubits": 2,
+          "route": "dense",
+          "statevector_bytes": 64,
+          "usable_memory_bytes": 268435456.0
+        },
+        "stage": "cost_model",
+        "status": "ok",
+        "timestamp": 1781738780.85622
+      },
+      {
+        "message": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+        "metrics": {
+          "engine_id": "universal_invariant_adversarial_engines.heisenberg_nonhermitian_local_catches_anchor_not_needed",
+          "function_name": "heisenberg_nonhermitian_local_catches_anchor_not_needed",
+          "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py"
+        },
+        "stage": "route",
+        "status": "ok",
+        "timestamp": 1781738780.856224
+      },
+      {
+        "message": "backend executed",
+        "metrics": {
+          "abs_error": "not_evaluated_local_oracle_failed",
+          "benchmark_family": "Heisenberg",
+          "claim_scope": "negative control only; shows some generator errors are already caught by local properties and do not support a universal-anchor advantage claim",
+          "expected": -0.75,
+          "generator_error": "nonhermitian_matrix_entry",
+          "invariant_caught": false,
+          "local_oracle_caught": true,
+          "local_property_tests": {
+            "exchange_symmetric": false,
+            "finite_entries": true,
+            "hermitian": false,
+            "real_spectrum": true,
+            "trace_zero": true
+          },
+          "local_property_tests_pass": false,
+          "observable": "Generated Heisenberg dimer Hamiltonian with non-Hermitian perturbation",
+          "physical_evidence_detail": "Negative control: the local matrix oracle catches non-Hermiticity before the analytic ground-state invariant is needed.",
+          "physical_evidence_level": "analytic",
+          "pre_registered_success_criterion": "local_property_tests_pass is false and universal_anchor_pass is not_evaluated_local_oracle_failed",
+          "reference_truth": "closed_form_antiferromagnetic_singlet_ground_energy",
+          "repr": "{'engine_id': 'universal_invariant_adversarial_engines.heisenberg_nonhermitian_local_catches_anchor_not_needed', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELI",
+          "route": "external_engine",
+          "runtime_ms": 0.4960829974152148,
+          "structure_mapping": {
+            "generator_output": "Hamiltonian implementation",
+            "local_oracle_relation": "generic matrix validity properties",
+            "preserved_relation": "same generated object judged by local properties and independent physics",
+            "universal_oracle_relation": "model-specific singlet/triplet spectrum invariant"
+          },
+          "type": "dict",
+          "units": "energy",
+          "universal_anchor": "E0_antiferromagnetic_heisenberg_dimer=-3J/4",
+          "universal_anchor_pass": "not_evaluated_local_oracle_failed",
+          "value": "not_evaluated_local_oracle_failed",
+          "verification_independence": "analytic_no_solver"
+        },
+        "stage": "execute",
+        "status": "ok",
+        "timestamp": 1781738780.8567822
+      },
+      {
+        "message": "physical evidence reported by backend",
+        "metrics": {
+          "abs_error": "not_evaluated_local_oracle_failed",
+          "benchmark_family": "Heisenberg",
+          "claim_scope": "negative control only; shows some generator errors are already caught by local properties and do not support a universal-anchor advantage claim",
+          "evidence_hash": "05512fa402c552ba21a965151718e8fb6bbc94f67a9e08274a4268c67df5a4e0",
+          "expected": -0.75,
+          "generator_error": "nonhermitian_matrix_entry",
+          "invariant_caught": false,
+          "local_oracle_caught": true,
+          "local_property_tests": {
+            "exchange_symmetric": false,
+            "finite_entries": true,
+            "hermitian": false,
+            "real_spectrum": true,
+            "trace_zero": true
+          },
+          "local_property_tests_pass": false,
+          "observable": "Generated Heisenberg dimer Hamiltonian with non-Hermitian perturbation",
+          "physical_evidence_detail": "Negative control: the local matrix oracle catches non-Hermiticity before the analytic ground-state invariant is needed.",
+          "physical_evidence_level": "analytic",
+          "pre_registered_success_criterion": "local_property_tests_pass is false and universal_anchor_pass is not_evaluated_local_oracle_failed",
+          "reference_truth": "closed_form_antiferromagnetic_singlet_ground_energy",
+          "structure_mapping": {
+            "generator_output": "Hamiltonian implementation",
+            "local_oracle_relation": "generic matrix validity properties",
+            "preserved_relation": "same generated object judged by local properties and independent physics",
+            "universal_oracle_relation": "model-specific singlet/triplet spectrum invariant"
+          },
+          "units": "energy",
+          "universal_anchor": "E0_antiferromagnetic_heisenberg_dimer=-3J/4",
+          "universal_anchor_pass": "not_evaluated_local_oracle_failed",
+          "value": "not_evaluated_local_oracle_failed",
+          "verification_independence": "analytic_no_solver"
+        },
+        "stage": "physical_evidence",
+        "status": "ok",
+        "timestamp": 1781738780.856808
+      }
+    ],
+    "hash_algorithm": "sha256(stable_json)",
+    "result_hash": "a065eebe83731f39061a957f4607313bc8eeafe5d735702f83bb9e78e5278729",
+    "result_summary": {
+      "abs_error": "not_evaluated_local_oracle_failed",
+      "benchmark_family": "Heisenberg",
+      "claim_scope": "negative control only; shows some generator errors are already caught by local properties and do not support a universal-anchor advantage claim",
+      "expected": -0.75,
+      "generator_error": "nonhermitian_matrix_entry",
+      "invariant_caught": false,
+      "local_oracle_caught": true,
+      "local_property_tests": {
+        "exchange_symmetric": false,
+        "finite_entries": true,
+        "hermitian": false,
+        "real_spectrum": true,
+        "trace_zero": true
+      },
+      "local_property_tests_pass": false,
+      "observable": "Generated Heisenberg dimer Hamiltonian with non-Hermitian perturbation",
+      "physical_evidence_detail": "Negative control: the local matrix oracle catches non-Hermiticity before the analytic ground-state invariant is needed.",
+      "physical_evidence_level": "analytic",
+      "pre_registered_success_criterion": "local_property_tests_pass is false and universal_anchor_pass is not_evaluated_local_oracle_failed",
+      "reference_truth": "closed_form_antiferromagnetic_singlet_ground_energy",
+      "repr": "{'engine_id': 'universal_invariant_adversarial_engines.heisenberg_nonhermitian_local_catches_anchor_not_needed', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELI",
+      "structure_mapping": {
+        "generator_output": "Hamiltonian implementation",
+        "local_oracle_relation": "generic matrix validity properties",
+        "preserved_relation": "same generated object judged by local properties and independent physics",
+        "universal_oracle_relation": "model-specific singlet/triplet spectrum invariant"
+      },
+      "type": "dict",
+      "units": "energy",
+      "universal_anchor": "E0_antiferromagnetic_heisenberg_dimer=-3J/4",
+      "universal_anchor_pass": "not_evaluated_local_oracle_failed",
+      "value": "not_evaluated_local_oracle_failed",
+      "verification_independence": "analytic_no_solver"
+    },
+    "trace_schema_version": "capas-runtrace-v2",
+    "workload_hash": "9e3654537d0e3b03816c2f2c2fe9b215abca8a56e1cbfd04e685b255d718f910",
+    "workload_summary": {
+      "budget": {
+        "flops_ceiling": 100000000.0,
+        "memory_budget_bytes": 536870912,
+        "safety_factor": 0.5
+      },
+      "engine": {
+        "engine_id": "universal_invariant_adversarial_engines.heisenberg_nonhermitian_local_catches_anchor_not_needed",
+        "function_name": "heisenberg_nonhermitian_local_catches_anchor_not_needed",
+        "kwargs_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py"
+      },
+      "kind": "dense",
+      "n_qubits": 2
+    }
+  },
+  "trace_hash": "883540c37a7f4d37e4c1b554c38cf3ac552c7a4f6b568354806e2516d5fe6488",
+  "trace_id": "trace_029"
+}

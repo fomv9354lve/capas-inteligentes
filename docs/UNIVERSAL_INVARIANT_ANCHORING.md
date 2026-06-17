@@ -32,9 +32,22 @@ The important relation is that the same generated artifact is judged by two
 oracles of different strength: local structural properties and an independent
 physics invariant.
 
-## Trace 028
+## Trace Matrix
 
-`trace_028` implements a deliberately adversarial generator case:
+The first seed, `trace_028`, implemented the high-value cell:
+local oracle misses, universal anchor catches.
+
+The current D11 corpus expands that into a small oracle matrix:
+
+| Trace | Coverage case | Local oracle | Universal anchor | Meaning |
+|---|---|---|---|---|
+| `trace_028` | `universal_invariant_adversarial_failure` | misses | catches | Heisenberg wrong-sign error passes local matrix checks but violates `E0 = -3J/4`. |
+| `trace_029` | `universal_invariant_local_catches_anchor_not_needed` | catches | not evaluated | Non-Hermitian Hamiltonian is caught by local matrix validity; no anchor advantage is credited. |
+| `trace_030` | `universal_invariant_both_oracles_catch` | catches | catches | Wrong coupling magnitude is caught by local parameter consistency and by the analytic energy invariant. |
+| `trace_031` | `universal_invariant_non_heisenberg_adversarial_failure` | misses | catches | Valid product state fails the Bell entropy invariant `S = ln2`; transfer beyond Heisenberg energy. |
+| `trace_032` | `universal_invariant_no_anchor_control` | misses | not applicable | Valid arbitrary state with no universal anchor; CAPAS records absence instead of inventing evidence. |
+
+## Trace 028 Seed
 
 - intended system: antiferromagnetic spin-1/2 Heisenberg dimer,
   `H = J S1.S2`,
@@ -60,6 +73,36 @@ local_property_tests_pass is true and universal_anchor_pass is false
 ```
 
 The trace satisfies that criterion.
+
+## Non-Heisenberg Transfer
+
+`trace_031` uses a different kind of invariant:
+
+- generated artifact: a normalized two-qubit product state,
+- local checks: normalized, finite, correct dimension, nonzero,
+- local result: pass,
+- universal anchor: Bell reduced-state entropy `S = ln2`,
+- computed entropy: `0.0`,
+- expected entropy: `ln2`,
+- invariant caught: true.
+
+This shows transfer from an energy invariant to an entanglement invariant. It
+does not prove generality across all physics.
+
+## Negative Controls
+
+`trace_029` and `trace_030` prevent overclaiming:
+
+- `trace_029`: local oracle catches first, so the anchor is not credited.
+- `trace_030`: local oracle and universal anchor both catch, so the coverage is
+  redundant rather than new.
+
+`trace_032` prevents evidence inflation:
+
+- local state validity passes,
+- no universal anchor is claimed,
+- `physical_evidence_level=no_universal_anchor_control`,
+- `invariant_caught=false`.
 
 ## Evidence Fields
 
@@ -96,8 +139,8 @@ universal_anchor_pass: false
 invariant_caught: true
 ```
 
-This is the useful delta. If a future case is also caught by the local oracle,
-it does not support this claim.
+This is the useful delta. Cases also caught by the local oracle do not support
+an anchor-advantage claim; they support a complementarity/redundancy claim.
 
 ## Non-Claims
 
@@ -105,13 +148,14 @@ Do not claim:
 
 - universal invariant anchoring is new as physics,
 - generic PBT is insufficient in all scientific domains,
-- this single trace proves paper-level utility,
+- this small matrix proves paper-level utility,
 - the invariant fixes the generator,
 - the failed generated result is training gold.
 
-The only demonstrated result is a minimal adversarial case where a universal
-analytic invariant catches a wrong-sign scientific generator error that generic
-local properties miss.
+The demonstrated result is a small falsation matrix where universal analytic
+invariants sometimes catch generator errors missed by local properties, while
+other cases show local sufficiency, redundant detection, or no applicable
+anchor.
 
 ## Validation
 
@@ -126,6 +170,10 @@ Expected status:
 
 ```text
 trace_028: ok (universal_invariant_adversarial_failure, present, CompletedActionStatus)
+trace_029: ok (universal_invariant_local_catches_anchor_not_needed, present, CompletedActionStatus)
+trace_030: ok (universal_invariant_both_oracles_catch, present, CompletedActionStatus)
+trace_031: ok (universal_invariant_non_heisenberg_adversarial_failure, present, CompletedActionStatus)
+trace_032: ok (universal_invariant_no_anchor_control, present, CompletedActionStatus)
 coverage_ready: True
 fine_tune_ready: False
 ```

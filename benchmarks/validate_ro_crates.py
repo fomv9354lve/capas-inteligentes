@@ -23,6 +23,10 @@ EXPECTED = {
     "trace_026": ("quantum_chemistry_larger_polyatomic_electronic_vibrational", "present", True, "CompletedActionStatus"),
     "trace_027": ("quantum_chemistry_basis_convergence_to_experiment", "present", True, "CompletedActionStatus"),
     "trace_028": ("universal_invariant_adversarial_failure", "present", True, "CompletedActionStatus"),
+    "trace_029": ("universal_invariant_local_catches_anchor_not_needed", "present", True, "CompletedActionStatus"),
+    "trace_030": ("universal_invariant_both_oracles_catch", "present", True, "CompletedActionStatus"),
+    "trace_031": ("universal_invariant_non_heisenberg_adversarial_failure", "present", True, "CompletedActionStatus"),
+    "trace_032": ("universal_invariant_no_anchor_control", "present", True, "CompletedActionStatus"),
     "trace_012": ("no_evidence_success", "none_declared", False, "CompletedActionStatus"),
     "trace_013": ("backend_failed", "not_applicable_failed", False, "FailedActionStatus"),
     "trace_014": ("rejected_by_router", "not_applicable_rejected", False, "CompletedActionStatus"),
@@ -130,15 +134,41 @@ def main() -> int:
             report_path = CRATES / "ro_crate_export_report.json"
             report = json.loads(report_path.read_text(encoding="utf-8"))
             assert report[trace_id]["coverage_case"] == coverage, "wrong coverage_case"
-            if coverage == "universal_invariant_adversarial_failure":
+            if coverage.startswith("universal_invariant_"):
                 evidence = physical_evidence_node(crate)
-                assert evidence.get("capas:localPropertyTestsPass") is True, "local property tests did not pass"
-                assert evidence.get("capas:localOracleCaught") is False, "local oracle should not catch this adversarial case"
+                assert "capas:localPropertyTestsPass" in evidence, "missing local property result"
+                assert "capas:localOracleCaught" in evidence, "missing local oracle caught result"
                 assert evidence.get("capas:universalAnchor"), "missing universal anchor"
-                assert evidence.get("capas:universalAnchorPass") is False, "universal anchor should fail this adversarial case"
-                assert evidence.get("capas:invariantCaught") is True, "invariant did not catch the adversarial case"
+                assert "capas:universalAnchorPass" in evidence, "missing universal anchor result"
+                assert "capas:invariantCaught" in evidence, "missing invariant caught result"
                 assert evidence.get("capas:preRegisteredSuccessCriterion"), "missing pre-registered success criterion"
                 assert evidence.get("capas:claimScope"), "missing claim scope"
+            if coverage == "universal_invariant_adversarial_failure":
+                assert evidence.get("capas:localPropertyTestsPass") is True, "local property tests did not pass"
+                assert evidence.get("capas:localOracleCaught") is False, "local oracle should not catch this adversarial case"
+                assert evidence.get("capas:universalAnchorPass") is False, "universal anchor should fail this adversarial case"
+                assert evidence.get("capas:invariantCaught") is True, "invariant did not catch the adversarial case"
+            elif coverage == "universal_invariant_local_catches_anchor_not_needed":
+                assert evidence.get("capas:localPropertyTestsPass") is False, "local property tests should fail"
+                assert evidence.get("capas:localOracleCaught") is True, "local oracle should catch this case"
+                assert evidence.get("capas:universalAnchorPass") == "not_evaluated_local_oracle_failed", "universal anchor should not be needed"
+                assert evidence.get("capas:invariantCaught") is False, "invariant should not be credited"
+            elif coverage == "universal_invariant_both_oracles_catch":
+                assert evidence.get("capas:localPropertyTestsPass") is False, "local property tests should fail"
+                assert evidence.get("capas:localOracleCaught") is True, "local oracle should catch this case"
+                assert evidence.get("capas:universalAnchorPass") is False, "universal anchor should fail this case"
+                assert evidence.get("capas:invariantCaught") is True, "invariant should catch this case too"
+            elif coverage == "universal_invariant_non_heisenberg_adversarial_failure":
+                assert evidence.get("capas:localPropertyTestsPass") is True, "local property tests should pass"
+                assert evidence.get("capas:localOracleCaught") is False, "local oracle should miss this case"
+                assert evidence.get("capas:universalAnchorPass") is False, "Bell entropy anchor should fail this case"
+                assert evidence.get("capas:invariantCaught") is True, "Bell entropy invariant should catch this case"
+            elif coverage == "universal_invariant_no_anchor_control":
+                assert evidence.get("capas:physicalEvidenceLevel") == "no_universal_anchor_control", "wrong no-anchor evidence level"
+                assert evidence.get("capas:localPropertyTestsPass") is True, "local property tests should pass"
+                assert evidence.get("capas:localOracleCaught") is False, "local oracle should not catch valid arbitrary state"
+                assert evidence.get("capas:universalAnchorPass") == "not_applicable_no_universal_anchor", "anchor should be not applicable"
+                assert evidence.get("capas:invariantCaught") is False, "no invariant should be credited"
             print(f"{trace_id}: ok ({coverage}, {status}, {action_status})")
         except Exception as exc:
             failures.append(f"{trace_id}: {type(exc).__name__}: {exc}")

@@ -1,0 +1,270 @@
+{
+  "coverage_case": "universal_invariant_non_heisenberg_adversarial_failure",
+  "result": {
+    "engine_id": "universal_invariant_adversarial_engines.bell_product_state_passes_local_properties_but_fails_entropy",
+    "function_name": "bell_product_state_passes_local_properties_but_fails_entropy",
+    "kwargs": {},
+    "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py",
+    "module_sha256": "0774fe824514f8b3b7ea9977848a4def92c2665ba876bbab8cbc01296be64462",
+    "result": {
+      "abs_error": 0.6931471805599453,
+      "benchmark_family": "Bell",
+      "claim_scope": "transfer seed only; shows the local-miss/universal-catch pattern for an entropy invariant, not just a Heisenberg energy invariant",
+      "coverage_case": "universal_invariant_non_heisenberg_adversarial_failure",
+      "expected": 0.6931471805599453,
+      "generator_error": "plausible_product_state_instead_of_bell_state",
+      "invariant_caught": true,
+      "local_oracle_caught": false,
+      "local_property_tests": {
+        "finite_entries": true,
+        "nonzero_state": true,
+        "normalized": true,
+        "valid_dimension_two_qubits": true
+      },
+      "local_property_tests_pass": true,
+      "observable": "Generated two-qubit Bell-state entropy from plausible product state",
+      "physical_evidence_detail": "Transfer case: the generated state is normalized and dimensionally valid, but the Bell-state invariant requires single-qubit entropy ln2.",
+      "physical_evidence_level": "analytic",
+      "pre_registered_success_criterion": "local_property_tests_pass is true and universal_anchor_pass is false",
+      "reference_truth": "closed_form_bell_entropy_ln2",
+      "structure_mapping": {
+        "generator_output": "two-qubit state vector",
+        "local_oracle_relation": "generic state validity properties preserved by product state",
+        "preserved_relation": "same generated state judged by local validity and independent entanglement invariant",
+        "universal_oracle_relation": "Bell entanglement entropy invariant"
+      },
+      "units": "nats",
+      "universal_anchor": "S_Bell_reduced_state=ln2",
+      "universal_anchor_pass": false,
+      "value": -0.0,
+      "verification_independence": "analytic_no_solver"
+    }
+  },
+  "trace": {
+    "decision_reason": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+    "decision_route": "external_engine",
+    "error": null,
+    "events": [
+      {
+        "message": "workload accepted",
+        "metrics": {
+          "budget": {
+            "flops_ceiling": 100000000.0,
+            "memory_budget_bytes": 536870912,
+            "safety_factor": 0.5
+          },
+          "engine": {
+            "engine_id": "universal_invariant_adversarial_engines.bell_product_state_passes_local_properties_but_fails_entropy",
+            "function_name": "bell_product_state_passes_local_properties_but_fails_entropy",
+            "kwargs_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+            "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py"
+          },
+          "kind": "dense",
+          "n_qubits": 2
+        },
+        "stage": "ingest",
+        "status": "ok",
+        "timestamp": 1781738780.858943
+      },
+      {
+        "message": "runtime and hardware context recorded",
+        "metrics": {
+          "cotengra_available": true,
+          "cotengra_version": "0.8.1",
+          "machine": "arm64",
+          "mlx_probe": "skipped_in_default_trace; use apple_silicon_thermal_routing.py for Metal/MLX device probes",
+          "numpy_available": true,
+          "numpy_version": "2.4.6",
+          "platform": "macOS-26.5.1-arm64-arm-64bit",
+          "processor": "arm",
+          "python_executable": "/Users/kreniq/physics-magnitude-lab/.pixi/envs/default/bin/python",
+          "python_version": "3.12.13",
+          "qiskit_aer_available": false,
+          "qiskit_aer_error": "ModuleNotFoundError: No module named 'qiskit_aer'",
+          "quimb_available": true,
+          "quimb_version": "1.14.0",
+          "scipy_available": true,
+          "scipy_version": "1.17.1",
+          "stim_available": true,
+          "stim_version": "1.16.0"
+        },
+        "stage": "runtime_context",
+        "status": "ok",
+        "timestamp": 1781738780.859036
+      },
+      {
+        "message": "external engine provenance recorded",
+        "metrics": {
+          "engine_id": "universal_invariant_adversarial_engines.bell_product_state_passes_local_properties_but_fails_entropy",
+          "function_name": "bell_product_state_passes_local_properties_but_fails_entropy",
+          "kwargs": {},
+          "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py",
+          "module_sha256": "0774fe824514f8b3b7ea9977848a4def92c2665ba876bbab8cbc01296be64462"
+        },
+        "stage": "engine_provenance",
+        "status": "ok",
+        "timestamp": 1781738780.859093
+      },
+      {
+        "message": "dense statevector cost estimated",
+        "metrics": {
+          "memory_viable": true,
+          "n_qubits": 2,
+          "route": "dense",
+          "statevector_bytes": 64,
+          "usable_memory_bytes": 268435456.0
+        },
+        "stage": "cost_model",
+        "status": "ok",
+        "timestamp": 1781738780.859096
+      },
+      {
+        "message": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+        "metrics": {
+          "engine_id": "universal_invariant_adversarial_engines.bell_product_state_passes_local_properties_but_fails_entropy",
+          "function_name": "bell_product_state_passes_local_properties_but_fails_entropy",
+          "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py"
+        },
+        "stage": "route",
+        "status": "ok",
+        "timestamp": 1781738780.8590999
+      },
+      {
+        "message": "backend executed",
+        "metrics": {
+          "abs_error": 0.6931471805599453,
+          "benchmark_family": "Bell",
+          "claim_scope": "transfer seed only; shows the local-miss/universal-catch pattern for an entropy invariant, not just a Heisenberg energy invariant",
+          "expected": 0.6931471805599453,
+          "generator_error": "plausible_product_state_instead_of_bell_state",
+          "invariant_caught": true,
+          "local_oracle_caught": false,
+          "local_property_tests": {
+            "finite_entries": true,
+            "nonzero_state": true,
+            "normalized": true,
+            "valid_dimension_two_qubits": true
+          },
+          "local_property_tests_pass": true,
+          "observable": "Generated two-qubit Bell-state entropy from plausible product state",
+          "physical_evidence_detail": "Transfer case: the generated state is normalized and dimensionally valid, but the Bell-state invariant requires single-qubit entropy ln2.",
+          "physical_evidence_level": "analytic",
+          "pre_registered_success_criterion": "local_property_tests_pass is true and universal_anchor_pass is false",
+          "reference_truth": "closed_form_bell_entropy_ln2",
+          "repr": "{'engine_id': 'universal_invariant_adversarial_engines.bell_product_state_passes_local_properties_but_fails_entropy', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS I",
+          "route": "external_engine",
+          "runtime_ms": 0.2630409726407379,
+          "structure_mapping": {
+            "generator_output": "two-qubit state vector",
+            "local_oracle_relation": "generic state validity properties preserved by product state",
+            "preserved_relation": "same generated state judged by local validity and independent entanglement invariant",
+            "universal_oracle_relation": "Bell entanglement entropy invariant"
+          },
+          "type": "dict",
+          "units": "nats",
+          "universal_anchor": "S_Bell_reduced_state=ln2",
+          "universal_anchor_pass": false,
+          "value": -0.0,
+          "verification_independence": "analytic_no_solver"
+        },
+        "stage": "execute",
+        "status": "ok",
+        "timestamp": 1781738780.859413
+      },
+      {
+        "message": "physical evidence reported by backend",
+        "metrics": {
+          "abs_error": 0.6931471805599453,
+          "benchmark_family": "Bell",
+          "claim_scope": "transfer seed only; shows the local-miss/universal-catch pattern for an entropy invariant, not just a Heisenberg energy invariant",
+          "evidence_hash": "aadd9121049f56d9d13397e75e573227d4353d74c0b4462c99271945c566e677",
+          "expected": 0.6931471805599453,
+          "generator_error": "plausible_product_state_instead_of_bell_state",
+          "invariant_caught": true,
+          "local_oracle_caught": false,
+          "local_property_tests": {
+            "finite_entries": true,
+            "nonzero_state": true,
+            "normalized": true,
+            "valid_dimension_two_qubits": true
+          },
+          "local_property_tests_pass": true,
+          "observable": "Generated two-qubit Bell-state entropy from plausible product state",
+          "physical_evidence_detail": "Transfer case: the generated state is normalized and dimensionally valid, but the Bell-state invariant requires single-qubit entropy ln2.",
+          "physical_evidence_level": "analytic",
+          "pre_registered_success_criterion": "local_property_tests_pass is true and universal_anchor_pass is false",
+          "reference_truth": "closed_form_bell_entropy_ln2",
+          "structure_mapping": {
+            "generator_output": "two-qubit state vector",
+            "local_oracle_relation": "generic state validity properties preserved by product state",
+            "preserved_relation": "same generated state judged by local validity and independent entanglement invariant",
+            "universal_oracle_relation": "Bell entanglement entropy invariant"
+          },
+          "units": "nats",
+          "universal_anchor": "S_Bell_reduced_state=ln2",
+          "universal_anchor_pass": false,
+          "value": -0.0,
+          "verification_independence": "analytic_no_solver"
+        },
+        "stage": "physical_evidence",
+        "status": "ok",
+        "timestamp": 1781738780.859435
+      }
+    ],
+    "hash_algorithm": "sha256(stable_json)",
+    "result_hash": "9862ee6f5731cb5bb24f0ad55fa208cab14c033524202e061ac4d1ae138e0dbe",
+    "result_summary": {
+      "abs_error": 0.6931471805599453,
+      "benchmark_family": "Bell",
+      "claim_scope": "transfer seed only; shows the local-miss/universal-catch pattern for an entropy invariant, not just a Heisenberg energy invariant",
+      "expected": 0.6931471805599453,
+      "generator_error": "plausible_product_state_instead_of_bell_state",
+      "invariant_caught": true,
+      "local_oracle_caught": false,
+      "local_property_tests": {
+        "finite_entries": true,
+        "nonzero_state": true,
+        "normalized": true,
+        "valid_dimension_two_qubits": true
+      },
+      "local_property_tests_pass": true,
+      "observable": "Generated two-qubit Bell-state entropy from plausible product state",
+      "physical_evidence_detail": "Transfer case: the generated state is normalized and dimensionally valid, but the Bell-state invariant requires single-qubit entropy ln2.",
+      "physical_evidence_level": "analytic",
+      "pre_registered_success_criterion": "local_property_tests_pass is true and universal_anchor_pass is false",
+      "reference_truth": "closed_form_bell_entropy_ln2",
+      "repr": "{'engine_id': 'universal_invariant_adversarial_engines.bell_product_state_passes_local_properties_but_fails_entropy', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS I",
+      "structure_mapping": {
+        "generator_output": "two-qubit state vector",
+        "local_oracle_relation": "generic state validity properties preserved by product state",
+        "preserved_relation": "same generated state judged by local validity and independent entanglement invariant",
+        "universal_oracle_relation": "Bell entanglement entropy invariant"
+      },
+      "type": "dict",
+      "units": "nats",
+      "universal_anchor": "S_Bell_reduced_state=ln2",
+      "universal_anchor_pass": false,
+      "value": -0.0,
+      "verification_independence": "analytic_no_solver"
+    },
+    "trace_schema_version": "capas-runtrace-v2",
+    "workload_hash": "a3cede8008f26f98048c435a254d3df29ef651c223ee44c552fbef143001c9e2",
+    "workload_summary": {
+      "budget": {
+        "flops_ceiling": 100000000.0,
+        "memory_budget_bytes": 536870912,
+        "safety_factor": 0.5
+      },
+      "engine": {
+        "engine_id": "universal_invariant_adversarial_engines.bell_product_state_passes_local_properties_but_fails_entropy",
+        "function_name": "bell_product_state_passes_local_properties_but_fails_entropy",
+        "kwargs_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py"
+      },
+      "kind": "dense",
+      "n_qubits": 2
+    }
+  },
+  "trace_hash": "b4d1e47324474a99ccff3fb37f486cc83c53ee34d4ee9b45553eb08e3f43a364",
+  "trace_id": "trace_031"
+}

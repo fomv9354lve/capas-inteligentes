@@ -21,6 +21,10 @@ without lying.
 | `quantum_chemistry_larger_polyatomic_electronic_vibrational` | `benchmarks/gold_traces/trace_026.json` | `benchmarks/ro_crates/trace_026/ro-crate-metadata.json` | `present` | CH4/STO-3G exact model solve with harmonic ZPE and atomization reference |
 | `quantum_chemistry_basis_convergence_to_experiment` | `benchmarks/gold_traces/trace_027.json` | `benchmarks/ro_crates/trace_027/ro-crate-metadata.json` | `present` | H2 basis ladder to experimental D0 with robust threshold crossing |
 | `universal_invariant_adversarial_failure` | `benchmarks/gold_traces/trace_028.json` | `benchmarks/ro_crates/trace_028/ro-crate-metadata.json` | `present` | Wrong-sign Heisenberg generator output passes local properties but fails analytic universal invariant |
+| `universal_invariant_local_catches_anchor_not_needed` | `benchmarks/gold_traces/trace_029.json` | `benchmarks/ro_crates/trace_029/ro-crate-metadata.json` | `present` | Non-Hermitian Hamiltonian caught by local oracle before universal anchor is needed |
+| `universal_invariant_both_oracles_catch` | `benchmarks/gold_traces/trace_030.json` | `benchmarks/ro_crates/trace_030/ro-crate-metadata.json` | `present` | Wrong coupling magnitude caught by both local parameter check and analytic invariant |
+| `universal_invariant_non_heisenberg_adversarial_failure` | `benchmarks/gold_traces/trace_031.json` | `benchmarks/ro_crates/trace_031/ro-crate-metadata.json` | `present` | Valid product state passes local checks but fails Bell entropy invariant |
+| `universal_invariant_no_anchor_control` | `benchmarks/gold_traces/trace_032.json` | `benchmarks/ro_crates/trace_032/ro-crate-metadata.json` | `present` | Valid arbitrary state with no claimed universal anchor |
 | `no_evidence_success` | `benchmarks/gold_traces/trace_012.json` | `benchmarks/ro_crates/trace_012/ro-crate-metadata.json` | `none_declared` | Successful result with no attached physical witness |
 | `backend_failed` | `benchmarks/gold_traces/trace_013.json` | `benchmarks/ro_crates/trace_013/ro-crate-metadata.json` | `not_applicable_failed` | Failed backend captured as provenance, not hidden |
 | `rejected_by_router` | `benchmarks/gold_traces/trace_014.json` | `benchmarks/ro_crates/trace_014/ro-crate-metadata.json` | `not_applicable_rejected` | Non-execution due memory/resource guard captured as provenance |
@@ -45,6 +49,10 @@ The local audit currently reports:
 - `quantum_chemistry_larger_polyatomic_electronic_vibrational`: 1
 - `quantum_chemistry_basis_convergence_to_experiment`: 1
 - `universal_invariant_adversarial_failure`: 1
+- `universal_invariant_local_catches_anchor_not_needed`: 1
+- `universal_invariant_both_oracles_catch`: 1
+- `universal_invariant_non_heisenberg_adversarial_failure`: 1
+- `universal_invariant_no_anchor_control`: 1
 - `no_evidence_success`: 1
 - `backend_failed`: 1
 - `rejected_by_router`: 1
@@ -79,6 +87,10 @@ trace_025: ok (quantum_chemistry_polyatomic_electronic_vibrational, present)
 trace_026: ok (quantum_chemistry_larger_polyatomic_electronic_vibrational, present)
 trace_027: ok (quantum_chemistry_basis_convergence_to_experiment, present)
 trace_028: ok (universal_invariant_adversarial_failure, present)
+trace_029: ok (universal_invariant_local_catches_anchor_not_needed, present)
+trace_030: ok (universal_invariant_both_oracles_catch, present)
+trace_031: ok (universal_invariant_non_heisenberg_adversarial_failure, present)
+trace_032: ok (universal_invariant_no_anchor_control, present)
 trace_012: ok (no_evidence_success, none_declared)
 trace_013: ok (backend_failed, not_applicable_failed)
 trace_014: ok (rejected_by_router, not_applicable_rejected)

@@ -1,0 +1,278 @@
+{
+  "coverage_case": "universal_invariant_both_oracles_catch",
+  "result": {
+    "engine_id": "universal_invariant_adversarial_engines.heisenberg_scaled_coupling_both_oracles_catch",
+    "function_name": "heisenberg_scaled_coupling_both_oracles_catch",
+    "kwargs": {},
+    "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py",
+    "module_sha256": "0774fe824514f8b3b7ea9977848a4def92c2665ba876bbab8cbc01296be64462",
+    "result": {
+      "abs_error": 0.375,
+      "benchmark_family": "Heisenberg",
+      "claim_scope": "redundant-control case only; shows the local oracle and universal anchor can overlap",
+      "coverage_case": "universal_invariant_both_oracles_catch",
+      "expected": -0.75,
+      "generator_error": "wrong_coupling_magnitude",
+      "invariant_caught": true,
+      "local_oracle_caught": true,
+      "local_property_tests": {
+        "declared_coupling_matches_expected": false,
+        "exchange_symmetric": true,
+        "finite_entries": true,
+        "hermitian": true,
+        "real_spectrum": true,
+        "trace_zero": true
+      },
+      "local_property_tests_pass": false,
+      "observable": "Generated Heisenberg dimer ground-state energy with scaled coupling",
+      "physical_evidence_detail": "Redundant control: a wrong coupling parameter is caught by a local parameter check and by the analytic ground-state invariant.",
+      "physical_evidence_level": "analytic",
+      "pre_registered_success_criterion": "local_property_tests_pass is false and universal_anchor_pass is false",
+      "reference_truth": "closed_form_antiferromagnetic_singlet_ground_energy",
+      "structure_mapping": {
+        "generator_output": "Hamiltonian implementation with declared coupling",
+        "local_oracle_relation": "declared parameter consistency plus generic matrix validity",
+        "preserved_relation": "same generated object judged by local parameter checks and independent physics",
+        "universal_oracle_relation": "model-specific singlet/triplet spectrum invariant"
+      },
+      "units": "energy",
+      "universal_anchor": "E0_antiferromagnetic_heisenberg_dimer=-3J/4",
+      "universal_anchor_pass": false,
+      "value": -0.375,
+      "verification_independence": "analytic_no_solver"
+    }
+  },
+  "trace": {
+    "decision_reason": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+    "decision_route": "external_engine",
+    "error": null,
+    "events": [
+      {
+        "message": "workload accepted",
+        "metrics": {
+          "budget": {
+            "flops_ceiling": 100000000.0,
+            "memory_budget_bytes": 536870912,
+            "safety_factor": 0.5
+          },
+          "engine": {
+            "engine_id": "universal_invariant_adversarial_engines.heisenberg_scaled_coupling_both_oracles_catch",
+            "function_name": "heisenberg_scaled_coupling_both_oracles_catch",
+            "kwargs_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+            "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py"
+          },
+          "kind": "dense",
+          "n_qubits": 2
+        },
+        "stage": "ingest",
+        "status": "ok",
+        "timestamp": 1781738780.85757
+      },
+      {
+        "message": "runtime and hardware context recorded",
+        "metrics": {
+          "cotengra_available": true,
+          "cotengra_version": "0.8.1",
+          "machine": "arm64",
+          "mlx_probe": "skipped_in_default_trace; use apple_silicon_thermal_routing.py for Metal/MLX device probes",
+          "numpy_available": true,
+          "numpy_version": "2.4.6",
+          "platform": "macOS-26.5.1-arm64-arm-64bit",
+          "processor": "arm",
+          "python_executable": "/Users/kreniq/physics-magnitude-lab/.pixi/envs/default/bin/python",
+          "python_version": "3.12.13",
+          "qiskit_aer_available": false,
+          "qiskit_aer_error": "ModuleNotFoundError: No module named 'qiskit_aer'",
+          "quimb_available": true,
+          "quimb_version": "1.14.0",
+          "scipy_available": true,
+          "scipy_version": "1.17.1",
+          "stim_available": true,
+          "stim_version": "1.16.0"
+        },
+        "stage": "runtime_context",
+        "status": "ok",
+        "timestamp": 1781738780.857672
+      },
+      {
+        "message": "external engine provenance recorded",
+        "metrics": {
+          "engine_id": "universal_invariant_adversarial_engines.heisenberg_scaled_coupling_both_oracles_catch",
+          "function_name": "heisenberg_scaled_coupling_both_oracles_catch",
+          "kwargs": {},
+          "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py",
+          "module_sha256": "0774fe824514f8b3b7ea9977848a4def92c2665ba876bbab8cbc01296be64462"
+        },
+        "stage": "engine_provenance",
+        "status": "ok",
+        "timestamp": 1781738780.857729
+      },
+      {
+        "message": "dense statevector cost estimated",
+        "metrics": {
+          "memory_viable": true,
+          "n_qubits": 2,
+          "route": "dense",
+          "statevector_bytes": 64,
+          "usable_memory_bytes": 268435456.0
+        },
+        "stage": "cost_model",
+        "status": "ok",
+        "timestamp": 1781738780.857733
+      },
+      {
+        "message": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+        "metrics": {
+          "engine_id": "universal_invariant_adversarial_engines.heisenberg_scaled_coupling_both_oracles_catch",
+          "function_name": "heisenberg_scaled_coupling_both_oracles_catch",
+          "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py"
+        },
+        "stage": "route",
+        "status": "ok",
+        "timestamp": 1781738780.857737
+      },
+      {
+        "message": "backend executed",
+        "metrics": {
+          "abs_error": 0.375,
+          "benchmark_family": "Heisenberg",
+          "claim_scope": "redundant-control case only; shows the local oracle and universal anchor can overlap",
+          "expected": -0.75,
+          "generator_error": "wrong_coupling_magnitude",
+          "invariant_caught": true,
+          "local_oracle_caught": true,
+          "local_property_tests": {
+            "declared_coupling_matches_expected": false,
+            "exchange_symmetric": true,
+            "finite_entries": true,
+            "hermitian": true,
+            "real_spectrum": true,
+            "trace_zero": true
+          },
+          "local_property_tests_pass": false,
+          "observable": "Generated Heisenberg dimer ground-state energy with scaled coupling",
+          "physical_evidence_detail": "Redundant control: a wrong coupling parameter is caught by a local parameter check and by the analytic ground-state invariant.",
+          "physical_evidence_level": "analytic",
+          "pre_registered_success_criterion": "local_property_tests_pass is false and universal_anchor_pass is false",
+          "reference_truth": "closed_form_antiferromagnetic_singlet_ground_energy",
+          "repr": "{'engine_id': 'universal_invariant_adversarial_engines.heisenberg_scaled_coupling_both_oracles_catch', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/int",
+          "route": "external_engine",
+          "runtime_ms": 0.4290830111131072,
+          "structure_mapping": {
+            "generator_output": "Hamiltonian implementation with declared coupling",
+            "local_oracle_relation": "declared parameter consistency plus generic matrix validity",
+            "preserved_relation": "same generated object judged by local parameter checks and independent physics",
+            "universal_oracle_relation": "model-specific singlet/triplet spectrum invariant"
+          },
+          "type": "dict",
+          "units": "energy",
+          "universal_anchor": "E0_antiferromagnetic_heisenberg_dimer=-3J/4",
+          "universal_anchor_pass": false,
+          "value": -0.375,
+          "verification_independence": "analytic_no_solver"
+        },
+        "stage": "execute",
+        "status": "ok",
+        "timestamp": 1781738780.85822
+      },
+      {
+        "message": "physical evidence reported by backend",
+        "metrics": {
+          "abs_error": 0.375,
+          "benchmark_family": "Heisenberg",
+          "claim_scope": "redundant-control case only; shows the local oracle and universal anchor can overlap",
+          "evidence_hash": "3984d9bb042bb7c388c0dc7b590c2262d849b1506d58e553ad5b6dd3753bd34f",
+          "expected": -0.75,
+          "generator_error": "wrong_coupling_magnitude",
+          "invariant_caught": true,
+          "local_oracle_caught": true,
+          "local_property_tests": {
+            "declared_coupling_matches_expected": false,
+            "exchange_symmetric": true,
+            "finite_entries": true,
+            "hermitian": true,
+            "real_spectrum": true,
+            "trace_zero": true
+          },
+          "local_property_tests_pass": false,
+          "observable": "Generated Heisenberg dimer ground-state energy with scaled coupling",
+          "physical_evidence_detail": "Redundant control: a wrong coupling parameter is caught by a local parameter check and by the analytic ground-state invariant.",
+          "physical_evidence_level": "analytic",
+          "pre_registered_success_criterion": "local_property_tests_pass is false and universal_anchor_pass is false",
+          "reference_truth": "closed_form_antiferromagnetic_singlet_ground_energy",
+          "structure_mapping": {
+            "generator_output": "Hamiltonian implementation with declared coupling",
+            "local_oracle_relation": "declared parameter consistency plus generic matrix validity",
+            "preserved_relation": "same generated object judged by local parameter checks and independent physics",
+            "universal_oracle_relation": "model-specific singlet/triplet spectrum invariant"
+          },
+          "units": "energy",
+          "universal_anchor": "E0_antiferromagnetic_heisenberg_dimer=-3J/4",
+          "universal_anchor_pass": false,
+          "value": -0.375,
+          "verification_independence": "analytic_no_solver"
+        },
+        "stage": "physical_evidence",
+        "status": "ok",
+        "timestamp": 1781738780.8582442
+      }
+    ],
+    "hash_algorithm": "sha256(stable_json)",
+    "result_hash": "c61896697d8b8965dd2422c1c903cf8a7e886751480fc7e22a5325ed3d269310",
+    "result_summary": {
+      "abs_error": 0.375,
+      "benchmark_family": "Heisenberg",
+      "claim_scope": "redundant-control case only; shows the local oracle and universal anchor can overlap",
+      "expected": -0.75,
+      "generator_error": "wrong_coupling_magnitude",
+      "invariant_caught": true,
+      "local_oracle_caught": true,
+      "local_property_tests": {
+        "declared_coupling_matches_expected": false,
+        "exchange_symmetric": true,
+        "finite_entries": true,
+        "hermitian": true,
+        "real_spectrum": true,
+        "trace_zero": true
+      },
+      "local_property_tests_pass": false,
+      "observable": "Generated Heisenberg dimer ground-state energy with scaled coupling",
+      "physical_evidence_detail": "Redundant control: a wrong coupling parameter is caught by a local parameter check and by the analytic ground-state invariant.",
+      "physical_evidence_level": "analytic",
+      "pre_registered_success_criterion": "local_property_tests_pass is false and universal_anchor_pass is false",
+      "reference_truth": "closed_form_antiferromagnetic_singlet_ground_energy",
+      "repr": "{'engine_id': 'universal_invariant_adversarial_engines.heisenberg_scaled_coupling_both_oracles_catch', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/int",
+      "structure_mapping": {
+        "generator_output": "Hamiltonian implementation with declared coupling",
+        "local_oracle_relation": "declared parameter consistency plus generic matrix validity",
+        "preserved_relation": "same generated object judged by local parameter checks and independent physics",
+        "universal_oracle_relation": "model-specific singlet/triplet spectrum invariant"
+      },
+      "type": "dict",
+      "units": "energy",
+      "universal_anchor": "E0_antiferromagnetic_heisenberg_dimer=-3J/4",
+      "universal_anchor_pass": false,
+      "value": -0.375,
+      "verification_independence": "analytic_no_solver"
+    },
+    "trace_schema_version": "capas-runtrace-v2",
+    "workload_hash": "1434fa0e4cb559bccb41ee264bb7e68d0b728788379f29b1eb720e3b5e3fc0d8",
+    "workload_summary": {
+      "budget": {
+        "flops_ceiling": 100000000.0,
+        "memory_budget_bytes": 536870912,
+        "safety_factor": 0.5
+      },
+      "engine": {
+        "engine_id": "universal_invariant_adversarial_engines.heisenberg_scaled_coupling_both_oracles_catch",
+        "function_name": "heisenberg_scaled_coupling_both_oracles_catch",
+        "kwargs_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py"
+      },
+      "kind": "dense",
+      "n_qubits": 2
+    }
+  },
+  "trace_hash": "45d02c58b55fda26cb9362eea044c21f3c69f759948d9d378c0adbe3c1747aa6",
+  "trace_id": "trace_030"
+}

@@ -16,6 +16,14 @@ ADVERSARIAL_ENGINE_PATH = ROOT / "integrations" / "universal_invariant_adversari
 OUT_DIR = ROOT / "benchmarks" / "gold_traces"
 AUDIT_CSV = ROOT / "audits" / "gold_trace_audit_template.csv"
 
+UNIVERSAL_INVARIANT_COVERAGE = {
+    "universal_invariant_adversarial_failure",
+    "universal_invariant_local_catches_anchor_not_needed",
+    "universal_invariant_both_oracles_catch",
+    "universal_invariant_non_heisenberg_adversarial_failure",
+    "universal_invariant_no_anchor_control",
+}
+
 
 TRACE_SPECS = [
     ("trace_001", "hadamard_square_returns_zero", {}, "analytic_success"),
@@ -40,6 +48,10 @@ TRACE_SPECS = [
     ("trace_026", "ch4_sto3g_electronic_vibrational_reference", {}, "quantum_chemistry_larger_polyatomic_electronic_vibrational"),
     ("trace_027", "h2_basis_convergence_to_experiment", {}, "quantum_chemistry_basis_convergence_to_experiment"),
     ("trace_028", "heisenberg_wrong_sign_passes_local_properties", {}, "universal_invariant_adversarial_failure"),
+    ("trace_029", "heisenberg_nonhermitian_local_catches_anchor_not_needed", {}, "universal_invariant_local_catches_anchor_not_needed"),
+    ("trace_030", "heisenberg_scaled_coupling_both_oracles_catch", {}, "universal_invariant_both_oracles_catch"),
+    ("trace_031", "bell_product_state_passes_local_properties_but_fails_entropy", {}, "universal_invariant_non_heisenberg_adversarial_failure"),
+    ("trace_032", "normalized_random_state_without_universal_anchor", {}, "universal_invariant_no_anchor_control"),
     ("trace_012", "unverified_variational_energy", {}, "no_evidence_success"),
     ("trace_013", "deliberately_failing_engine", {}, "backend_failed"),
     ("trace_015", "quimb_mps_estimated_bound", {"n": 60, "depth": 6, "max_bond": 8, "seed": 1}, "estimated_bound_candidate"),
@@ -49,7 +61,13 @@ TRACE_SPECS = [
 
 
 def _engine_path_for(function_name: str) -> Path:
-    if function_name == "heisenberg_wrong_sign_passes_local_properties":
+    if function_name in {
+        "heisenberg_wrong_sign_passes_local_properties",
+        "heisenberg_nonhermitian_local_catches_anchor_not_needed",
+        "heisenberg_scaled_coupling_both_oracles_catch",
+        "bell_product_state_passes_local_properties_but_fails_entropy",
+        "normalized_random_state_without_universal_anchor",
+    }:
         return ADVERSARIAL_ENGINE_PATH
     return ENGINE_PATH
 
@@ -78,11 +96,35 @@ def main() -> None:
             ),
         )
         result, trace = run_with_trace(workload, raise_on_error=False)
-        if coverage_case == "universal_invariant_adversarial_failure":
+        if coverage_case in UNIVERSAL_INVARIANT_COVERAGE:
             assert result is not None
-            assert result["result"]["local_property_tests_pass"] is True
-            assert result["result"]["universal_anchor_pass"] is False
-            assert result["result"]["invariant_caught"] is True
+            summary = result["result"]
+            assert "local_property_tests_pass" in summary
+            assert "local_oracle_caught" in summary
+            assert "universal_anchor_pass" in summary
+            assert "invariant_caught" in summary
+            assert summary["claim_scope"]
+            if coverage_case == "universal_invariant_adversarial_failure":
+                assert summary["local_property_tests_pass"] is True
+                assert summary["universal_anchor_pass"] is False
+                assert summary["invariant_caught"] is True
+            elif coverage_case == "universal_invariant_local_catches_anchor_not_needed":
+                assert summary["local_property_tests_pass"] is False
+                assert summary["local_oracle_caught"] is True
+                assert summary["universal_anchor_pass"] == "not_evaluated_local_oracle_failed"
+            elif coverage_case == "universal_invariant_both_oracles_catch":
+                assert summary["local_property_tests_pass"] is False
+                assert summary["local_oracle_caught"] is True
+                assert summary["universal_anchor_pass"] is False
+                assert summary["invariant_caught"] is True
+            elif coverage_case == "universal_invariant_non_heisenberg_adversarial_failure":
+                assert summary["local_property_tests_pass"] is True
+                assert summary["universal_anchor_pass"] is False
+                assert summary["invariant_caught"] is True
+            elif coverage_case == "universal_invariant_no_anchor_control":
+                assert summary["local_property_tests_pass"] is True
+                assert summary["universal_anchor_pass"] == "not_applicable_no_universal_anchor"
+                assert summary["invariant_caught"] is False
         elif coverage_case not in {"backend_failed", "no_evidence_success", "estimated_bound_candidate"}:
             assert result is not None
             assert result["result"]["abs_error"] < 1e-9
@@ -131,7 +173,7 @@ def main() -> None:
         abs_error = result["result"].get("abs_error")
         abs_error_text = f"{abs_error:.3e}" if isinstance(abs_error, (int, float)) else "n/a"
 
-        is_adversarial_invariant_failure = coverage_case == "universal_invariant_adversarial_failure"
+        is_universal_invariant_control = coverage_case in UNIVERSAL_INVARIANT_COVERAGE
         audit_rows.append({
             "trace_id": trace_id,
             "source_file": str(OUT_DIR / f"{trace_id}.json"),
@@ -143,8 +185,8 @@ def main() -> None:
             "output_correct": output_correct,
             "output_correct_evidence": f"{result['result']['observable']}: expected {result['result']['expected']}, abs_error={abs_error_text}",
             "reasoning_claim": result["result"]["physical_evidence_detail"],
-            "inference_blind_judge": "no" if is_adversarial_invariant_failure else "hold" if physical_level in {"analytic", "cross_sim", "estimated_bound", "formal_bound", "experimental"} else "no",
-            "inference_correct": "no" if is_adversarial_invariant_failure else "unknown" if physical_level in {"analytic", "cross_sim", "estimated_bound", "formal_bound", "experimental"} else "no",
+            "inference_blind_judge": "no" if is_universal_invariant_control else "hold" if physical_level in {"analytic", "cross_sim", "estimated_bound", "formal_bound", "experimental"} else "no",
+            "inference_correct": "no" if is_universal_invariant_control else "unknown" if physical_level in {"analytic", "cross_sim", "estimated_bound", "formal_bound", "experimental"} else "no",
             "inference_correct_evidence": "",
             "physical_evidence_level": result["result"]["physical_evidence_level"],
             "physical_evidence_detail": result["result"]["physical_evidence_detail"],
@@ -152,11 +194,11 @@ def main() -> None:
             "reference_truth": result["result"].get("reference_truth", "closed_form_quantum_identity"),
             "verification_independence": result["result"].get("verification_independence", "analytic_no_solver"),
             "coverage_case": coverage_case,
-            "risk_level": "high" if is_adversarial_invariant_failure else "low",
-            "decision": "reject" if is_adversarial_invariant_failure else "hold" if physical_level in {"analytic", "cross_sim", "estimated_bound", "formal_bound", "experimental"} else "reject",
+            "risk_level": "high" if is_universal_invariant_control else "low",
+            "decision": "reject" if is_universal_invariant_control else "hold" if physical_level in {"analytic", "cross_sim", "estimated_bound", "formal_bound", "experimental"} else "reject",
             "notes": (
-                "Adversarial generator case: local properties pass, universal analytic invariant catches wrong sign."
-                if coverage_case == "universal_invariant_adversarial_failure"
+                "Universal-invariant matrix/control trace; rejects generated output for training while preserving coverage evidence."
+                if is_universal_invariant_control
                 else
                 "Generated by traced quantum_engine invariant; needs blind inference review before accept."
                 if physical_level in {"analytic", "cross_sim"}

@@ -1,0 +1,506 @@
+{
+  "@context": [
+    "https://w3id.org/ro/crate/1.1/context",
+    "https://w3id.org/ro/terms/workflow-run/context",
+    {
+      "capas": "https://example.org/capas-inteligentes#",
+      "sha256": "https://schema.org/sha256"
+    }
+  ],
+  "@graph": [
+    {
+      "@id": "ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "about": {
+        "@id": "./"
+      },
+      "conformsTo": [
+        {
+          "@id": "https://w3id.org/ro/crate/1.1"
+        },
+        {
+          "@id": "https://w3id.org/ro/wfrun/process/0.5"
+        },
+        {
+          "@id": "https://w3id.org/ro/wfrun/workflow/0.5"
+        },
+        {
+          "@id": "https://w3id.org/workflowhub/workflow-ro-crate/1.0"
+        },
+        {
+          "@id": "https://example.org/capas-inteligentes/ro-crate/physical-evidence/0.1"
+        }
+      ]
+    },
+    {
+      "@id": "./",
+      "@type": "Dataset",
+      "capas:evidenceStatus": "present",
+      "capas:traceHash": "b4d1e47324474a99ccff3fb37f486cc83c53ee34d4ee9b45553eb08e3f43a364",
+      "capas:workflowRunCrateAlignment": "shape-compatible-with-workflow-run-crate-0.5",
+      "capas:workloadHash": "a3cede8008f26f98048c435a254d3df29ef651c223ee44c552fbef143001c9e2",
+      "conformsTo": [
+        {
+          "@id": "https://w3id.org/ro/crate/1.1"
+        },
+        {
+          "@id": "https://w3id.org/ro/wfrun/process/0.5"
+        },
+        {
+          "@id": "https://w3id.org/ro/wfrun/workflow/0.5"
+        },
+        {
+          "@id": "https://w3id.org/workflowhub/workflow-ro-crate/1.0"
+        },
+        {
+          "@id": "https://example.org/capas-inteligentes/ro-crate/physical-evidence/0.1"
+        }
+      ],
+      "datePublished": "2026-06-17T23:26:20.859435Z",
+      "description": "RO-Crate package containing a sealed RunTrace, optional PROV export, routing decision, runtime context, and CAPAS physical evidence metadata.",
+      "hasPart": [
+        {
+          "@id": "runtrace.json"
+        },
+        {
+          "@id": "workflow/capas-costurero-run.cwl"
+        },
+        {
+          "@id": "software:capas-costurero"
+        },
+        {
+          "@id": "entity:workload"
+        },
+        {
+          "@id": "trace:b4d1e47324474a99:routing-decision"
+        },
+        {
+          "@id": "trace:b4d1e47324474a99:result"
+        },
+        {
+          "@id": "runtrace.prov.json"
+        },
+        {
+          "@id": "trace:b4d1e47324474a99:physical-evidence"
+        }
+      ],
+      "mainEntity": {
+        "@id": "workflow/capas-costurero-run.cwl"
+      },
+      "mentions": {
+        "@id": "trace:b4d1e47324474a99"
+      },
+      "name": "CAPAS traced scientific computation crate"
+    },
+    {
+      "@id": "https://w3id.org/ro/wfrun/process/0.5",
+      "@type": "CreativeWork",
+      "name": "Process Run Crate",
+      "version": "0.5"
+    },
+    {
+      "@id": "https://w3id.org/ro/wfrun/workflow/0.5",
+      "@type": "CreativeWork",
+      "name": "Workflow Run Crate",
+      "version": "0.5"
+    },
+    {
+      "@id": "https://w3id.org/workflowhub/workflow-ro-crate/1.0",
+      "@type": "CreativeWork",
+      "name": "Workflow RO-Crate",
+      "version": "1.0"
+    },
+    {
+      "@id": "https://example.org/capas-inteligentes/ro-crate/physical-evidence/0.1",
+      "@type": "CreativeWork",
+      "description": "Draft profile extending Workflow Run RO-Crate-style traces with first-class physical evidence, witness independence, reference truth, and explicit success/no-evidence/failure/rejection states.",
+      "name": "CAPAS Physical Evidence Profile",
+      "version": "0.1"
+    },
+    {
+      "@id": "runtrace.json",
+      "@type": [
+        "File",
+        "DigitalDocument"
+      ],
+      "about": {
+        "@id": "trace:b4d1e47324474a99"
+      },
+      "encodingFormat": "application/json",
+      "name": "Sealed CAPAS RunTrace",
+      "sha256": "00419f6b1bcb43a22455f971733031477b84bd425867a442b33e08f563a9ce1c"
+    },
+    {
+      "@id": "trace:b4d1e47324474a99",
+      "@type": "CreateAction",
+      "actionStatus": "CompletedActionStatus",
+      "agent": {
+        "@id": "software:capas-costurero"
+      },
+      "capas:decisionReason": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+      "capas:decisionRoute": "external_engine",
+      "capas:evidenceStatus": "present",
+      "capas:hashAlgorithm": "sha256(stable_json)",
+      "capas:routingDecision": {
+        "@id": "trace:b4d1e47324474a99:routing-decision"
+      },
+      "capas:traceHash": "b4d1e47324474a99ccff3fb37f486cc83c53ee34d4ee9b45553eb08e3f43a364",
+      "capas:traceSchemaVersion": "capas-runtrace-v2",
+      "endTime": "2026-06-17T23:26:20.859435Z",
+      "instrument": {
+        "@id": "workflow/capas-costurero-run.cwl"
+      },
+      "name": "CAPAS costurero traced run",
+      "object": {
+        "@id": "entity:workload"
+      },
+      "result": {
+        "@id": "trace:b4d1e47324474a99:result"
+      },
+      "startTime": "2026-06-17T23:26:20.858943Z"
+    },
+    {
+      "@id": "workflow/capas-costurero-run.cwl",
+      "@type": [
+        "File",
+        "SoftwareSourceCode",
+        "ComputationalWorkflow"
+      ],
+      "capas:traceSchemaVersion": "capas-runtrace-v2",
+      "description": "Workflow plan that ingests a scientific workload, records runtime context, estimates routing cost, executes or skips the selected engine, and attaches CAPAS physical-evidence metadata.",
+      "input": {
+        "@id": "parameter:workload"
+      },
+      "name": "CAPAS costurero workflow",
+      "output": {
+        "@id": "parameter:result"
+      },
+      "programmingLanguage": "Python"
+    },
+    {
+      "@id": "parameter:workload",
+      "@type": "FormalParameter",
+      "additionalType": "Dataset",
+      "description": "Structured scientific workload routed by the CAPAS costurero.",
+      "name": "Scientific workload"
+    },
+    {
+      "@id": "parameter:result",
+      "@type": "FormalParameter",
+      "additionalType": "Dataset",
+      "description": "Structured result summary, skipped state, or failure state.",
+      "name": "Result summary or skipped/failure state"
+    },
+    {
+      "@id": "software:capas-costurero",
+      "@type": "SoftwareApplication",
+      "applicationCategory": "Scientific provenance and evidence tracing",
+      "name": "CAPAS INTELIGENTES costurero"
+    },
+    {
+      "@id": "entity:workload",
+      "@type": "Dataset",
+      "capas:summary": {
+        "budget": {
+          "flops_ceiling": 100000000.0,
+          "memory_budget_bytes": 536870912,
+          "safety_factor": 0.5
+        },
+        "engine": {
+          "engine_id": "universal_invariant_adversarial_engines.bell_product_state_passes_local_properties_but_fails_entropy",
+          "function_name": "bell_product_state_passes_local_properties_but_fails_entropy",
+          "kwargs_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py"
+        },
+        "kind": "dense",
+        "n_qubits": 2
+      },
+      "capas:workloadHash": "a3cede8008f26f98048c435a254d3df29ef651c223ee44c552fbef143001c9e2",
+      "exampleOfWork": {
+        "@id": "parameter:workload"
+      },
+      "name": "Workload summary"
+    },
+    {
+      "@id": "trace:b4d1e47324474a99:routing-decision",
+      "@type": "Thing",
+      "capas:reason": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+      "capas:route": "external_engine",
+      "name": "Routing decision"
+    },
+    {
+      "@id": "runtrace.prov.json",
+      "@type": [
+        "File",
+        "DigitalDocument"
+      ],
+      "encodingFormat": "application/json",
+      "name": "W3C PROV-shaped export",
+      "sha256": "86dbe163edde076e482e881098af76bfee90cfe0a86487ccd6370df38c8b5d02"
+    },
+    {
+      "@id": "trace:b4d1e47324474a99:result",
+      "@type": "Dataset",
+      "capas:physicalEvidence": {
+        "@id": "trace:b4d1e47324474a99:physical-evidence"
+      },
+      "capas:resultHash": "9862ee6f5731cb5bb24f0ad55fa208cab14c033524202e061ac4d1ae138e0dbe",
+      "capas:summary": {
+        "abs_error": 0.6931471805599453,
+        "benchmark_family": "Bell",
+        "claim_scope": "transfer seed only; shows the local-miss/universal-catch pattern for an entropy invariant, not just a Heisenberg energy invariant",
+        "expected": 0.6931471805599453,
+        "generator_error": "plausible_product_state_instead_of_bell_state",
+        "invariant_caught": true,
+        "local_oracle_caught": false,
+        "local_property_tests": {
+          "finite_entries": true,
+          "nonzero_state": true,
+          "normalized": true,
+          "valid_dimension_two_qubits": true
+        },
+        "local_property_tests_pass": true,
+        "observable": "Generated two-qubit Bell-state entropy from plausible product state",
+        "physical_evidence_detail": "Transfer case: the generated state is normalized and dimensionally valid, but the Bell-state invariant requires single-qubit entropy ln2.",
+        "physical_evidence_level": "analytic",
+        "pre_registered_success_criterion": "local_property_tests_pass is true and universal_anchor_pass is false",
+        "reference_truth": "closed_form_bell_entropy_ln2",
+        "repr": "{'engine_id': 'universal_invariant_adversarial_engines.bell_product_state_passes_local_properties_but_fails_entropy', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS I",
+        "structure_mapping": {
+          "generator_output": "two-qubit state vector",
+          "local_oracle_relation": "generic state validity properties preserved by product state",
+          "preserved_relation": "same generated state judged by local validity and independent entanglement invariant",
+          "universal_oracle_relation": "Bell entanglement entropy invariant"
+        },
+        "type": "dict",
+        "units": "nats",
+        "universal_anchor": "S_Bell_reduced_state=ln2",
+        "universal_anchor_pass": false,
+        "value": -0.0,
+        "verification_independence": "analytic_no_solver"
+      },
+      "exampleOfWork": {
+        "@id": "parameter:result"
+      },
+      "name": "Result summary"
+    },
+    {
+      "@id": "trace:b4d1e47324474a99:physical-evidence",
+      "@type": "capas:PhysicalEvidence",
+      "about": {
+        "@id": "trace:b4d1e47324474a99:result"
+      },
+      "capas:absError": 0.6931471805599453,
+      "capas:benchmarkFamily": "Bell",
+      "capas:claimScope": "transfer seed only; shows the local-miss/universal-catch pattern for an entropy invariant, not just a Heisenberg energy invariant",
+      "capas:detail": "Transfer case: the generated state is normalized and dimensionally valid, but the Bell-state invariant requires single-qubit entropy ln2.",
+      "capas:evidenceHash": "580a60ec44aa918dad3ff1ea5fe10e2c78d885612a23f4c2a1e1f656abef456b",
+      "capas:expected": 0.6931471805599453,
+      "capas:generatorError": "plausible_product_state_instead_of_bell_state",
+      "capas:invariantCaught": true,
+      "capas:localOracleCaught": false,
+      "capas:localPropertyTests": {
+        "finite_entries": true,
+        "nonzero_state": true,
+        "normalized": true,
+        "valid_dimension_two_qubits": true
+      },
+      "capas:localPropertyTestsPass": true,
+      "capas:observable": "Generated two-qubit Bell-state entropy from plausible product state",
+      "capas:physicalEvidenceLevel": "analytic",
+      "capas:preRegisteredSuccessCriterion": "local_property_tests_pass is true and universal_anchor_pass is false",
+      "capas:referenceTruth": "closed_form_bell_entropy_ln2",
+      "capas:structureMapping": {
+        "generator_output": "two-qubit state vector",
+        "local_oracle_relation": "generic state validity properties preserved by product state",
+        "preserved_relation": "same generated state judged by local validity and independent entanglement invariant",
+        "universal_oracle_relation": "Bell entanglement entropy invariant"
+      },
+      "capas:units": "nats",
+      "capas:universalAnchor": "S_Bell_reduced_state=ln2",
+      "capas:universalAnchorPass": false,
+      "capas:value": -0.0,
+      "capas:verificationIndependence": "analytic_no_solver",
+      "name": "Physical evidence attached to result"
+    },
+    {
+      "@id": "trace:b4d1e47324474a99:event:0:ingest",
+      "@type": "Action",
+      "actionStatus": "ok",
+      "capas:metrics": {
+        "budget": {
+          "flops_ceiling": 100000000.0,
+          "memory_budget_bytes": 536870912,
+          "safety_factor": 0.5
+        },
+        "engine": {
+          "engine_id": "universal_invariant_adversarial_engines.bell_product_state_passes_local_properties_but_fails_entropy",
+          "function_name": "bell_product_state_passes_local_properties_but_fails_entropy",
+          "kwargs_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py"
+        },
+        "kind": "dense",
+        "n_qubits": 2
+      },
+      "description": "workload accepted",
+      "name": "ingest",
+      "startTime": 1781738780.858943
+    },
+    {
+      "@id": "trace:b4d1e47324474a99:event:1:runtime_context",
+      "@type": "Action",
+      "actionStatus": "ok",
+      "capas:metrics": {
+        "cotengra_available": true,
+        "cotengra_version": "0.8.1",
+        "machine": "arm64",
+        "mlx_probe": "skipped_in_default_trace; use apple_silicon_thermal_routing.py for Metal/MLX device probes",
+        "numpy_available": true,
+        "numpy_version": "2.4.6",
+        "platform": "macOS-26.5.1-arm64-arm-64bit",
+        "processor": "arm",
+        "python_executable": "/Users/kreniq/physics-magnitude-lab/.pixi/envs/default/bin/python",
+        "python_version": "3.12.13",
+        "qiskit_aer_available": false,
+        "qiskit_aer_error": "ModuleNotFoundError: No module named 'qiskit_aer'",
+        "quimb_available": true,
+        "quimb_version": "1.14.0",
+        "scipy_available": true,
+        "scipy_version": "1.17.1",
+        "stim_available": true,
+        "stim_version": "1.16.0"
+      },
+      "description": "runtime and hardware context recorded",
+      "name": "runtime_context",
+      "startTime": 1781738780.859036
+    },
+    {
+      "@id": "trace:b4d1e47324474a99:event:2:engine_provenance",
+      "@type": "Action",
+      "actionStatus": "ok",
+      "capas:metrics": {
+        "engine_id": "universal_invariant_adversarial_engines.bell_product_state_passes_local_properties_but_fails_entropy",
+        "function_name": "bell_product_state_passes_local_properties_but_fails_entropy",
+        "kwargs": {},
+        "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py",
+        "module_sha256": "0774fe824514f8b3b7ea9977848a4def92c2665ba876bbab8cbc01296be64462"
+      },
+      "description": "external engine provenance recorded",
+      "name": "engine_provenance",
+      "startTime": 1781738780.859093
+    },
+    {
+      "@id": "trace:b4d1e47324474a99:event:3:cost_model",
+      "@type": "Action",
+      "actionStatus": "ok",
+      "capas:metrics": {
+        "memory_viable": true,
+        "n_qubits": 2,
+        "route": "dense",
+        "statevector_bytes": 64,
+        "usable_memory_bytes": 268435456.0
+      },
+      "description": "dense statevector cost estimated",
+      "name": "cost_model",
+      "startTime": 1781738780.859096
+    },
+    {
+      "@id": "trace:b4d1e47324474a99:event:4:route",
+      "@type": "Action",
+      "actionStatus": "ok",
+      "capas:metrics": {
+        "engine_id": "universal_invariant_adversarial_engines.bell_product_state_passes_local_properties_but_fails_entropy",
+        "function_name": "bell_product_state_passes_local_properties_but_fails_entropy",
+        "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py"
+      },
+      "description": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+      "name": "route",
+      "startTime": 1781738780.8590999
+    },
+    {
+      "@id": "trace:b4d1e47324474a99:event:5:execute",
+      "@type": "Action",
+      "actionStatus": "ok",
+      "capas:metrics": {
+        "abs_error": 0.6931471805599453,
+        "benchmark_family": "Bell",
+        "claim_scope": "transfer seed only; shows the local-miss/universal-catch pattern for an entropy invariant, not just a Heisenberg energy invariant",
+        "expected": 0.6931471805599453,
+        "generator_error": "plausible_product_state_instead_of_bell_state",
+        "invariant_caught": true,
+        "local_oracle_caught": false,
+        "local_property_tests": {
+          "finite_entries": true,
+          "nonzero_state": true,
+          "normalized": true,
+          "valid_dimension_two_qubits": true
+        },
+        "local_property_tests_pass": true,
+        "observable": "Generated two-qubit Bell-state entropy from plausible product state",
+        "physical_evidence_detail": "Transfer case: the generated state is normalized and dimensionally valid, but the Bell-state invariant requires single-qubit entropy ln2.",
+        "physical_evidence_level": "analytic",
+        "pre_registered_success_criterion": "local_property_tests_pass is true and universal_anchor_pass is false",
+        "reference_truth": "closed_form_bell_entropy_ln2",
+        "repr": "{'engine_id': 'universal_invariant_adversarial_engines.bell_product_state_passes_local_properties_but_fails_entropy', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS I",
+        "route": "external_engine",
+        "runtime_ms": 0.2630409726407379,
+        "structure_mapping": {
+          "generator_output": "two-qubit state vector",
+          "local_oracle_relation": "generic state validity properties preserved by product state",
+          "preserved_relation": "same generated state judged by local validity and independent entanglement invariant",
+          "universal_oracle_relation": "Bell entanglement entropy invariant"
+        },
+        "type": "dict",
+        "units": "nats",
+        "universal_anchor": "S_Bell_reduced_state=ln2",
+        "universal_anchor_pass": false,
+        "value": -0.0,
+        "verification_independence": "analytic_no_solver"
+      },
+      "description": "backend executed",
+      "name": "execute",
+      "startTime": 1781738780.859413
+    },
+    {
+      "@id": "trace:b4d1e47324474a99:event:6:physical_evidence",
+      "@type": "Action",
+      "actionStatus": "ok",
+      "capas:metrics": {
+        "abs_error": 0.6931471805599453,
+        "benchmark_family": "Bell",
+        "claim_scope": "transfer seed only; shows the local-miss/universal-catch pattern for an entropy invariant, not just a Heisenberg energy invariant",
+        "evidence_hash": "aadd9121049f56d9d13397e75e573227d4353d74c0b4462c99271945c566e677",
+        "expected": 0.6931471805599453,
+        "generator_error": "plausible_product_state_instead_of_bell_state",
+        "invariant_caught": true,
+        "local_oracle_caught": false,
+        "local_property_tests": {
+          "finite_entries": true,
+          "nonzero_state": true,
+          "normalized": true,
+          "valid_dimension_two_qubits": true
+        },
+        "local_property_tests_pass": true,
+        "observable": "Generated two-qubit Bell-state entropy from plausible product state",
+        "physical_evidence_detail": "Transfer case: the generated state is normalized and dimensionally valid, but the Bell-state invariant requires single-qubit entropy ln2.",
+        "physical_evidence_level": "analytic",
+        "pre_registered_success_criterion": "local_property_tests_pass is true and universal_anchor_pass is false",
+        "reference_truth": "closed_form_bell_entropy_ln2",
+        "structure_mapping": {
+          "generator_output": "two-qubit state vector",
+          "local_oracle_relation": "generic state validity properties preserved by product state",
+          "preserved_relation": "same generated state judged by local validity and independent entanglement invariant",
+          "universal_oracle_relation": "Bell entanglement entropy invariant"
+        },
+        "units": "nats",
+        "universal_anchor": "S_Bell_reduced_state=ln2",
+        "universal_anchor_pass": false,
+        "value": -0.0,
+        "verification_independence": "analytic_no_solver"
+      },
+      "description": "physical evidence reported by backend",
+      "name": "physical_evidence",
+      "startTime": 1781738780.859435
+    }
+  ]
+}

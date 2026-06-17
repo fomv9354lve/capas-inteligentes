@@ -1,0 +1,506 @@
+{
+  "@context": [
+    "https://w3id.org/ro/crate/1.1/context",
+    "https://w3id.org/ro/terms/workflow-run/context",
+    {
+      "capas": "https://example.org/capas-inteligentes#",
+      "sha256": "https://schema.org/sha256"
+    }
+  ],
+  "@graph": [
+    {
+      "@id": "ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "about": {
+        "@id": "./"
+      },
+      "conformsTo": [
+        {
+          "@id": "https://w3id.org/ro/crate/1.1"
+        },
+        {
+          "@id": "https://w3id.org/ro/wfrun/process/0.5"
+        },
+        {
+          "@id": "https://w3id.org/ro/wfrun/workflow/0.5"
+        },
+        {
+          "@id": "https://w3id.org/workflowhub/workflow-ro-crate/1.0"
+        },
+        {
+          "@id": "https://example.org/capas-inteligentes/ro-crate/physical-evidence/0.1"
+        }
+      ]
+    },
+    {
+      "@id": "./",
+      "@type": "Dataset",
+      "capas:evidenceStatus": "present",
+      "capas:traceHash": "5b7c5bd621781d97a09b5e39968a77bd242fb4eaf4477ba2d1ea5d9e4218ad5c",
+      "capas:workflowRunCrateAlignment": "shape-compatible-with-workflow-run-crate-0.5",
+      "capas:workloadHash": "d017d6967c77c722ea853a722629604ed314beb3d10e039ae248f5ce1987de19",
+      "conformsTo": [
+        {
+          "@id": "https://w3id.org/ro/crate/1.1"
+        },
+        {
+          "@id": "https://w3id.org/ro/wfrun/process/0.5"
+        },
+        {
+          "@id": "https://w3id.org/ro/wfrun/workflow/0.5"
+        },
+        {
+          "@id": "https://w3id.org/workflowhub/workflow-ro-crate/1.0"
+        },
+        {
+          "@id": "https://example.org/capas-inteligentes/ro-crate/physical-evidence/0.1"
+        }
+      ],
+      "datePublished": "2026-06-17T23:26:20.861543Z",
+      "description": "RO-Crate package containing a sealed RunTrace, optional PROV export, routing decision, runtime context, and CAPAS physical evidence metadata.",
+      "hasPart": [
+        {
+          "@id": "runtrace.json"
+        },
+        {
+          "@id": "workflow/capas-costurero-run.cwl"
+        },
+        {
+          "@id": "software:capas-costurero"
+        },
+        {
+          "@id": "entity:workload"
+        },
+        {
+          "@id": "trace:5b7c5bd621781d97:routing-decision"
+        },
+        {
+          "@id": "trace:5b7c5bd621781d97:result"
+        },
+        {
+          "@id": "runtrace.prov.json"
+        },
+        {
+          "@id": "trace:5b7c5bd621781d97:physical-evidence"
+        }
+      ],
+      "mainEntity": {
+        "@id": "workflow/capas-costurero-run.cwl"
+      },
+      "mentions": {
+        "@id": "trace:5b7c5bd621781d97"
+      },
+      "name": "CAPAS traced scientific computation crate"
+    },
+    {
+      "@id": "https://w3id.org/ro/wfrun/process/0.5",
+      "@type": "CreativeWork",
+      "name": "Process Run Crate",
+      "version": "0.5"
+    },
+    {
+      "@id": "https://w3id.org/ro/wfrun/workflow/0.5",
+      "@type": "CreativeWork",
+      "name": "Workflow Run Crate",
+      "version": "0.5"
+    },
+    {
+      "@id": "https://w3id.org/workflowhub/workflow-ro-crate/1.0",
+      "@type": "CreativeWork",
+      "name": "Workflow RO-Crate",
+      "version": "1.0"
+    },
+    {
+      "@id": "https://example.org/capas-inteligentes/ro-crate/physical-evidence/0.1",
+      "@type": "CreativeWork",
+      "description": "Draft profile extending Workflow Run RO-Crate-style traces with first-class physical evidence, witness independence, reference truth, and explicit success/no-evidence/failure/rejection states.",
+      "name": "CAPAS Physical Evidence Profile",
+      "version": "0.1"
+    },
+    {
+      "@id": "runtrace.json",
+      "@type": [
+        "File",
+        "DigitalDocument"
+      ],
+      "about": {
+        "@id": "trace:5b7c5bd621781d97"
+      },
+      "encodingFormat": "application/json",
+      "name": "Sealed CAPAS RunTrace",
+      "sha256": "c8357afd20e0632cd42cb2cd515be632bbc6f4b0fccef6b1d5096af0c28f08bb"
+    },
+    {
+      "@id": "trace:5b7c5bd621781d97",
+      "@type": "CreateAction",
+      "actionStatus": "CompletedActionStatus",
+      "agent": {
+        "@id": "software:capas-costurero"
+      },
+      "capas:decisionReason": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+      "capas:decisionRoute": "external_engine",
+      "capas:evidenceStatus": "present",
+      "capas:hashAlgorithm": "sha256(stable_json)",
+      "capas:routingDecision": {
+        "@id": "trace:5b7c5bd621781d97:routing-decision"
+      },
+      "capas:traceHash": "5b7c5bd621781d97a09b5e39968a77bd242fb4eaf4477ba2d1ea5d9e4218ad5c",
+      "capas:traceSchemaVersion": "capas-runtrace-v2",
+      "endTime": "2026-06-17T23:26:20.861543Z",
+      "instrument": {
+        "@id": "workflow/capas-costurero-run.cwl"
+      },
+      "name": "CAPAS costurero traced run",
+      "object": {
+        "@id": "entity:workload"
+      },
+      "result": {
+        "@id": "trace:5b7c5bd621781d97:result"
+      },
+      "startTime": "2026-06-17T23:26:20.860168Z"
+    },
+    {
+      "@id": "workflow/capas-costurero-run.cwl",
+      "@type": [
+        "File",
+        "SoftwareSourceCode",
+        "ComputationalWorkflow"
+      ],
+      "capas:traceSchemaVersion": "capas-runtrace-v2",
+      "description": "Workflow plan that ingests a scientific workload, records runtime context, estimates routing cost, executes or skips the selected engine, and attaches CAPAS physical-evidence metadata.",
+      "input": {
+        "@id": "parameter:workload"
+      },
+      "name": "CAPAS costurero workflow",
+      "output": {
+        "@id": "parameter:result"
+      },
+      "programmingLanguage": "Python"
+    },
+    {
+      "@id": "parameter:workload",
+      "@type": "FormalParameter",
+      "additionalType": "Dataset",
+      "description": "Structured scientific workload routed by the CAPAS costurero.",
+      "name": "Scientific workload"
+    },
+    {
+      "@id": "parameter:result",
+      "@type": "FormalParameter",
+      "additionalType": "Dataset",
+      "description": "Structured result summary, skipped state, or failure state.",
+      "name": "Result summary or skipped/failure state"
+    },
+    {
+      "@id": "software:capas-costurero",
+      "@type": "SoftwareApplication",
+      "applicationCategory": "Scientific provenance and evidence tracing",
+      "name": "CAPAS INTELIGENTES costurero"
+    },
+    {
+      "@id": "entity:workload",
+      "@type": "Dataset",
+      "capas:summary": {
+        "budget": {
+          "flops_ceiling": 100000000.0,
+          "memory_budget_bytes": 536870912,
+          "safety_factor": 0.5
+        },
+        "engine": {
+          "engine_id": "universal_invariant_adversarial_engines.normalized_random_state_without_universal_anchor",
+          "function_name": "normalized_random_state_without_universal_anchor",
+          "kwargs_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py"
+        },
+        "kind": "dense",
+        "n_qubits": 2
+      },
+      "capas:workloadHash": "d017d6967c77c722ea853a722629604ed314beb3d10e039ae248f5ce1987de19",
+      "exampleOfWork": {
+        "@id": "parameter:workload"
+      },
+      "name": "Workload summary"
+    },
+    {
+      "@id": "trace:5b7c5bd621781d97:routing-decision",
+      "@type": "Thing",
+      "capas:reason": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+      "capas:route": "external_engine",
+      "name": "Routing decision"
+    },
+    {
+      "@id": "runtrace.prov.json",
+      "@type": [
+        "File",
+        "DigitalDocument"
+      ],
+      "encodingFormat": "application/json",
+      "name": "W3C PROV-shaped export",
+      "sha256": "6dd0de97eccad3b60772789f0fb20d2d249e47ef4090efcbc691f31f37e4e417"
+    },
+    {
+      "@id": "trace:5b7c5bd621781d97:result",
+      "@type": "Dataset",
+      "capas:physicalEvidence": {
+        "@id": "trace:5b7c5bd621781d97:physical-evidence"
+      },
+      "capas:resultHash": "ff2fc9da622d62921edd61f99f8f60976ca6d356411fd034eb76bbee722e5846",
+      "capas:summary": {
+        "abs_error": "not_applicable_no_universal_anchor",
+        "benchmark_family": "NoUniversalAnchorControl",
+        "claim_scope": "no-anchor control only; shows CAPAS can seal local validity while refusing a universal-invariant claim",
+        "expected": "not_applicable_no_universal_anchor",
+        "generator_error": "none_declared",
+        "invariant_caught": false,
+        "local_oracle_caught": false,
+        "local_property_tests": {
+          "finite_entries": true,
+          "nonzero_state": true,
+          "normalized": true,
+          "valid_dimension_two_qubits": true
+        },
+        "local_property_tests_pass": true,
+        "observable": "Generated normalized two-qubit state entropy without a universal target",
+        "physical_evidence_detail": "No-anchor control: the state is locally valid, but no universal reference is claimed for this arbitrary generated state.",
+        "physical_evidence_level": "no_universal_anchor_control",
+        "pre_registered_success_criterion": "local_property_tests_pass is true and universal_anchor_pass is not_applicable_no_universal_anchor",
+        "reference_truth": "none",
+        "repr": "{'engine_id': 'universal_invariant_adversarial_engines.normalized_random_state_without_universal_anchor', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/",
+        "structure_mapping": {
+          "generator_output": "arbitrary normalized two-qubit state",
+          "local_oracle_relation": "generic state validity properties",
+          "preserved_relation": "CAPAS records absence of an anchor instead of inventing evidence",
+          "universal_oracle_relation": "none claimed"
+        },
+        "type": "dict",
+        "units": "nats",
+        "universal_anchor": "not_applicable_no_universal_anchor",
+        "universal_anchor_pass": "not_applicable_no_universal_anchor",
+        "value": 0.3100460629596791,
+        "verification_independence": "none"
+      },
+      "exampleOfWork": {
+        "@id": "parameter:result"
+      },
+      "name": "Result summary"
+    },
+    {
+      "@id": "trace:5b7c5bd621781d97:physical-evidence",
+      "@type": "capas:PhysicalEvidence",
+      "about": {
+        "@id": "trace:5b7c5bd621781d97:result"
+      },
+      "capas:absError": "not_applicable_no_universal_anchor",
+      "capas:benchmarkFamily": "NoUniversalAnchorControl",
+      "capas:claimScope": "no-anchor control only; shows CAPAS can seal local validity while refusing a universal-invariant claim",
+      "capas:detail": "No-anchor control: the state is locally valid, but no universal reference is claimed for this arbitrary generated state.",
+      "capas:evidenceHash": "b67ae32e91aeded12d6bcbf2f35180e6adff7f82347bec87e6083461716f413a",
+      "capas:expected": "not_applicable_no_universal_anchor",
+      "capas:generatorError": "none_declared",
+      "capas:invariantCaught": false,
+      "capas:localOracleCaught": false,
+      "capas:localPropertyTests": {
+        "finite_entries": true,
+        "nonzero_state": true,
+        "normalized": true,
+        "valid_dimension_two_qubits": true
+      },
+      "capas:localPropertyTestsPass": true,
+      "capas:observable": "Generated normalized two-qubit state entropy without a universal target",
+      "capas:physicalEvidenceLevel": "no_universal_anchor_control",
+      "capas:preRegisteredSuccessCriterion": "local_property_tests_pass is true and universal_anchor_pass is not_applicable_no_universal_anchor",
+      "capas:referenceTruth": "none",
+      "capas:structureMapping": {
+        "generator_output": "arbitrary normalized two-qubit state",
+        "local_oracle_relation": "generic state validity properties",
+        "preserved_relation": "CAPAS records absence of an anchor instead of inventing evidence",
+        "universal_oracle_relation": "none claimed"
+      },
+      "capas:units": "nats",
+      "capas:universalAnchor": "not_applicable_no_universal_anchor",
+      "capas:universalAnchorPass": "not_applicable_no_universal_anchor",
+      "capas:value": 0.3100460629596791,
+      "capas:verificationIndependence": "none",
+      "name": "Physical evidence attached to result"
+    },
+    {
+      "@id": "trace:5b7c5bd621781d97:event:0:ingest",
+      "@type": "Action",
+      "actionStatus": "ok",
+      "capas:metrics": {
+        "budget": {
+          "flops_ceiling": 100000000.0,
+          "memory_budget_bytes": 536870912,
+          "safety_factor": 0.5
+        },
+        "engine": {
+          "engine_id": "universal_invariant_adversarial_engines.normalized_random_state_without_universal_anchor",
+          "function_name": "normalized_random_state_without_universal_anchor",
+          "kwargs_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py"
+        },
+        "kind": "dense",
+        "n_qubits": 2
+      },
+      "description": "workload accepted",
+      "name": "ingest",
+      "startTime": 1781738780.860168
+    },
+    {
+      "@id": "trace:5b7c5bd621781d97:event:1:runtime_context",
+      "@type": "Action",
+      "actionStatus": "ok",
+      "capas:metrics": {
+        "cotengra_available": true,
+        "cotengra_version": "0.8.1",
+        "machine": "arm64",
+        "mlx_probe": "skipped_in_default_trace; use apple_silicon_thermal_routing.py for Metal/MLX device probes",
+        "numpy_available": true,
+        "numpy_version": "2.4.6",
+        "platform": "macOS-26.5.1-arm64-arm-64bit",
+        "processor": "arm",
+        "python_executable": "/Users/kreniq/physics-magnitude-lab/.pixi/envs/default/bin/python",
+        "python_version": "3.12.13",
+        "qiskit_aer_available": false,
+        "qiskit_aer_error": "ModuleNotFoundError: No module named 'qiskit_aer'",
+        "quimb_available": true,
+        "quimb_version": "1.14.0",
+        "scipy_available": true,
+        "scipy_version": "1.17.1",
+        "stim_available": true,
+        "stim_version": "1.16.0"
+      },
+      "description": "runtime and hardware context recorded",
+      "name": "runtime_context",
+      "startTime": 1781738780.860296
+    },
+    {
+      "@id": "trace:5b7c5bd621781d97:event:2:engine_provenance",
+      "@type": "Action",
+      "actionStatus": "ok",
+      "capas:metrics": {
+        "engine_id": "universal_invariant_adversarial_engines.normalized_random_state_without_universal_anchor",
+        "function_name": "normalized_random_state_without_universal_anchor",
+        "kwargs": {},
+        "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py",
+        "module_sha256": "0774fe824514f8b3b7ea9977848a4def92c2665ba876bbab8cbc01296be64462"
+      },
+      "description": "external engine provenance recorded",
+      "name": "engine_provenance",
+      "startTime": 1781738780.860394
+    },
+    {
+      "@id": "trace:5b7c5bd621781d97:event:3:cost_model",
+      "@type": "Action",
+      "actionStatus": "ok",
+      "capas:metrics": {
+        "memory_viable": true,
+        "n_qubits": 2,
+        "route": "dense",
+        "statevector_bytes": 64,
+        "usable_memory_bytes": 268435456.0
+      },
+      "description": "dense statevector cost estimated",
+      "name": "cost_model",
+      "startTime": 1781738780.860398
+    },
+    {
+      "@id": "trace:5b7c5bd621781d97:event:4:route",
+      "@type": "Action",
+      "actionStatus": "ok",
+      "capas:metrics": {
+        "engine_id": "universal_invariant_adversarial_engines.normalized_random_state_without_universal_anchor",
+        "function_name": "normalized_random_state_without_universal_anchor",
+        "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py"
+      },
+      "description": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+      "name": "route",
+      "startTime": 1781738780.8604019
+    },
+    {
+      "@id": "trace:5b7c5bd621781d97:event:5:execute",
+      "@type": "Action",
+      "actionStatus": "ok",
+      "capas:metrics": {
+        "abs_error": "not_applicable_no_universal_anchor",
+        "benchmark_family": "NoUniversalAnchorControl",
+        "claim_scope": "no-anchor control only; shows CAPAS can seal local validity while refusing a universal-invariant claim",
+        "expected": "not_applicable_no_universal_anchor",
+        "generator_error": "none_declared",
+        "invariant_caught": false,
+        "local_oracle_caught": false,
+        "local_property_tests": {
+          "finite_entries": true,
+          "nonzero_state": true,
+          "normalized": true,
+          "valid_dimension_two_qubits": true
+        },
+        "local_property_tests_pass": true,
+        "observable": "Generated normalized two-qubit state entropy without a universal target",
+        "physical_evidence_detail": "No-anchor control: the state is locally valid, but no universal reference is claimed for this arbitrary generated state.",
+        "physical_evidence_level": "no_universal_anchor_control",
+        "pre_registered_success_criterion": "local_property_tests_pass is true and universal_anchor_pass is not_applicable_no_universal_anchor",
+        "reference_truth": "none",
+        "repr": "{'engine_id': 'universal_invariant_adversarial_engines.normalized_random_state_without_universal_anchor', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/",
+        "route": "external_engine",
+        "runtime_ms": 1.058334019035101,
+        "structure_mapping": {
+          "generator_output": "arbitrary normalized two-qubit state",
+          "local_oracle_relation": "generic state validity properties",
+          "preserved_relation": "CAPAS records absence of an anchor instead of inventing evidence",
+          "universal_oracle_relation": "none claimed"
+        },
+        "type": "dict",
+        "units": "nats",
+        "universal_anchor": "not_applicable_no_universal_anchor",
+        "universal_anchor_pass": "not_applicable_no_universal_anchor",
+        "value": 0.3100460629596791,
+        "verification_independence": "none"
+      },
+      "description": "backend executed",
+      "name": "execute",
+      "startTime": 1781738780.8615198
+    },
+    {
+      "@id": "trace:5b7c5bd621781d97:event:6:physical_evidence",
+      "@type": "Action",
+      "actionStatus": "ok",
+      "capas:metrics": {
+        "abs_error": "not_applicable_no_universal_anchor",
+        "benchmark_family": "NoUniversalAnchorControl",
+        "claim_scope": "no-anchor control only; shows CAPAS can seal local validity while refusing a universal-invariant claim",
+        "evidence_hash": "8ad711bfec4ef63cfaaefa0c7b8ee5797b952418a8e8d78d3491c178a448b6f0",
+        "expected": "not_applicable_no_universal_anchor",
+        "generator_error": "none_declared",
+        "invariant_caught": false,
+        "local_oracle_caught": false,
+        "local_property_tests": {
+          "finite_entries": true,
+          "nonzero_state": true,
+          "normalized": true,
+          "valid_dimension_two_qubits": true
+        },
+        "local_property_tests_pass": true,
+        "observable": "Generated normalized two-qubit state entropy without a universal target",
+        "physical_evidence_detail": "No-anchor control: the state is locally valid, but no universal reference is claimed for this arbitrary generated state.",
+        "physical_evidence_level": "no_universal_anchor_control",
+        "pre_registered_success_criterion": "local_property_tests_pass is true and universal_anchor_pass is not_applicable_no_universal_anchor",
+        "reference_truth": "none",
+        "structure_mapping": {
+          "generator_output": "arbitrary normalized two-qubit state",
+          "local_oracle_relation": "generic state validity properties",
+          "preserved_relation": "CAPAS records absence of an anchor instead of inventing evidence",
+          "universal_oracle_relation": "none claimed"
+        },
+        "units": "nats",
+        "universal_anchor": "not_applicable_no_universal_anchor",
+        "universal_anchor_pass": "not_applicable_no_universal_anchor",
+        "value": 0.3100460629596791,
+        "verification_independence": "none"
+      },
+      "description": "physical evidence reported by backend",
+      "name": "physical_evidence",
+      "startTime": 1781738780.861543
+    }
+  ]
+}
