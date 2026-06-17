@@ -37,11 +37,11 @@ See git log. This dashboard is updated in the same commit as state changes.
 Recent commits:
 
 ```text
-HEAD Add improved-basis chemistry evidence trace
+HEAD Add larger-basis chemistry stress trace
+1de6e14 Add improved-basis chemistry evidence trace
 2178525 Add experimental chemistry evidence trace
 32d8681 Add degenerate optimization bridge trace
 6d89780 Add optimization bridge trace
-09139ff Add witness independence axis
 ```
 
 Current validation status:
@@ -50,7 +50,7 @@ Current validation status:
 coverage_ready: True
 fine_tune_ready: False
 local RO-Crate validation: passed
-external ResearchObject RO-Crate validation: valid_with_warning for 22/22 crates
+external ResearchObject RO-Crate validation: valid_with_warning for 23/23 crates
 external warning: .py is not a recognised workflow extension
 witness independence validation: passed
 ```
@@ -70,6 +70,7 @@ ResearchObject validator recognizes a fixed workflow-extension list.
 | `combinatorial_optimization_degenerate_function_level` | 1 | covered | assignment-to-Ising optimum set verified by brute force |
 | `quantum_chemistry_experimental_reference` | 1 | covered | H2/STO-3G FCI compared with measured dissociation energy |
 | `quantum_chemistry_experimental_reference_improved_basis` | 1 | covered | H2/cc-pVDZ FCI compared with measured dissociation energy |
+| `quantum_chemistry_experimental_reference_larger_basis` | 1 | covered | H2/cc-pVTZ FCI compared with measured dissociation energy |
 | `formal_bound_success` | 1 | covered | formal single-cut Schmidt truncation certificate |
 | `formal_bound_composition_success` | 1 | covered | formal multi-step state truncation bound |
 | `estimated_bound_candidate` | 1 | covered | useful estimator, not formal |
@@ -82,7 +83,7 @@ Current evidence levels:
 ```text
 analytic: 12
 cross_sim: 2
-experimental: 2
+experimental: 3
 formal_bound: 2
 estimated_bound: 1
 none: 3
@@ -137,6 +138,15 @@ none: 3
    - solver error: `0.0`
    - model error: `0.0008309583469343074`
    - within chemical accuracy: `True`
+14. Larger-basis chemistry stress case:
+   - H2/cc-pVTZ at R=0.7414 Angstrom
+   - basis orbitals: `28`
+   - model binding energy: `0.17271607159149482` Hartree
+   - measured D0 reference: `0.1640261683512219` Hartree
+   - solver error: `0.0`
+   - model error: `0.008689903240272911`
+   - within chemical accuracy: `False`
+   - lesson: larger basis alone is not a monotonic guarantee against the chosen measured reference
 
 ## Non-Degradation Rules
 
@@ -251,7 +261,7 @@ What exists:
   - `analytic_no_solver`: 10
   - `different_library_same_runtime`: 1
   - `different_method_same_runtime`: 2
-  - `same_runtime_exact_fci_with_external_experimental_reference`: 2
+  - `same_runtime_exact_fci_with_external_experimental_reference`: 3
   - `different_algorithm_same_runtime`: 1
   - `algorithmic_certificate_exact_svd_same_runtime`: 2
   - `algorithmic_error_certificate_same_runtime`: 1
@@ -348,8 +358,10 @@ What exists:
 - `docs/EXPERIMENTAL_EVIDENCE_AXIS.md`
 - `trace_021`
 - `trace_022`
+- `trace_023`
 - `coverage_case=quantum_chemistry_experimental_reference`
 - `coverage_case=quantum_chemistry_experimental_reference_improved_basis`
+- `coverage_case=quantum_chemistry_experimental_reference_larger_basis`
 - `physical_evidence_level=experimental`
 - `verification_independence=same_runtime_exact_fci_with_external_experimental_reference`
 - `bound_scope=single_molecule_minimal_basis_equilibrium_geometry`
@@ -358,6 +370,8 @@ What exists:
 - `within_chemical_accuracy=False`
 - cc-pVDZ model error: `0.0008309583469343074`
 - cc-pVDZ within chemical accuracy: `True`
+- cc-pVTZ model error: `0.008689903240272911`
+- cc-pVTZ within chemical accuracy: `False`
 
 Scope:
 

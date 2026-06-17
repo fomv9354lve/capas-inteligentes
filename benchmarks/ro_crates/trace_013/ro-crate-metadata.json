@@ -29,7 +29,7 @@
       "@id": "./",
       "@type": "Dataset",
       "capas:evidenceStatus": "not_applicable_failed",
-      "capas:traceHash": "be7234b31c5d80503a76c476f48b7fbe647e481693002f22e55661deac3f5a89",
+      "capas:traceHash": "e7ef0231d764e6257ddc05b5e84cff05c204a539b0efc6fb0f6c078f14745618",
       "capas:workflowRunCrateAlignment": "shape-compatible-with-workflow-run-ro-crate-v0",
       "capas:workloadHash": "51a485f634213c393e3084bcc91c408a02180a88b9688a7232c055f13d1b757c",
       "conformsTo": [
@@ -43,7 +43,7 @@
           "@id": "https://example.org/capas-inteligentes/ro-crate/physical-evidence/0.1"
         }
       ],
-      "datePublished": "2026-06-17T20:42:29.269797Z",
+      "datePublished": "2026-06-17T21:23:37.831744Z",
       "description": "RO-Crate package containing a sealed RunTrace, optional PROV export, routing decision, runtime context, and CAPAS physical evidence metadata.",
       "hasPart": [
         {
@@ -59,7 +59,7 @@
           "@id": "entity:workload"
         },
         {
-          "@id": "trace:be7234b31c5d8050:routing-decision"
+          "@id": "trace:e7ef0231d764e625:routing-decision"
         },
         {
           "@id": "runtrace.prov.json"
@@ -74,14 +74,14 @@
         "DigitalDocument"
       ],
       "about": {
-        "@id": "trace:be7234b31c5d8050"
+        "@id": "trace:e7ef0231d764e625"
       },
       "encodingFormat": "application/json",
       "name": "Sealed CAPAS RunTrace",
-      "sha256": "1762818179553aca89bb44a3257cb293548c44f0c72a9aa964919f6e29b43cfd"
+      "sha256": "fc37fe1a91d2df7ad783c3488b28c610055f124c52e1b3d9578bef550f2e2f71"
     },
     {
-      "@id": "trace:be7234b31c5d8050",
+      "@id": "trace:e7ef0231d764e625",
       "@type": "CreateAction",
       "actionStatus": "FailedActionStatus",
       "agent": {
@@ -93,11 +93,11 @@
       "capas:evidenceStatus": "not_applicable_failed",
       "capas:hashAlgorithm": "sha256(stable_json)",
       "capas:routingDecision": {
-        "@id": "trace:be7234b31c5d8050:routing-decision"
+        "@id": "trace:e7ef0231d764e625:routing-decision"
       },
-      "capas:traceHash": "be7234b31c5d80503a76c476f48b7fbe647e481693002f22e55661deac3f5a89",
+      "capas:traceHash": "e7ef0231d764e6257ddc05b5e84cff05c204a539b0efc6fb0f6c078f14745618",
       "capas:traceSchemaVersion": "capas-runtrace-v2",
-      "endTime": "2026-06-17T20:42:29.269797Z",
+      "endTime": "2026-06-17T21:23:37.831744Z",
       "instrument": {
         "@id": "workflow/capas-costurero-run.py"
       },
@@ -105,7 +105,7 @@
       "object": {
         "@id": "entity:workload"
       },
-      "startTime": "2026-06-17T20:42:29.269589Z"
+      "startTime": "2026-06-17T21:23:37.830735Z"
     },
     {
       "@id": "workflow/capas-costurero-run.py",
@@ -165,7 +165,7 @@
       "name": "Workload summary"
     },
     {
-      "@id": "trace:be7234b31c5d8050:routing-decision",
+      "@id": "trace:e7ef0231d764e625:routing-decision",
       "@type": "Thing",
       "capas:reason": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
       "capas:route": "external_engine",
@@ -179,10 +179,10 @@
       ],
       "encodingFormat": "application/json",
       "name": "W3C PROV-shaped export",
-      "sha256": "e598426ca7f56f732b71bc60192fe828d5a2bf28b1e1b29a120d5da9063fee7c"
+      "sha256": "24c8b98ae93c2b19fcca2691fbbbc839b3f6f87f421ccc665ff2e56e64e30660"
     },
     {
-      "@id": "trace:be7234b31c5d8050:event:0:ingest",
+      "@id": "trace:e7ef0231d764e625:event:0:ingest",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -202,10 +202,10 @@
       },
       "description": "workload accepted",
       "name": "ingest",
-      "startTime": 1781728949.269589
+      "startTime": 1781731417.8307352
     },
     {
-      "@id": "trace:be7234b31c5d8050:event:1:runtime_context",
+      "@id": "trace:e7ef0231d764e625:event:1:runtime_context",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -230,10 +230,10 @@
       },
       "description": "runtime and hardware context recorded",
       "name": "runtime_context",
-      "startTime": 1781728949.2695968
+      "startTime": 1781731417.8307688
     },
     {
-      "@id": "trace:be7234b31c5d8050:event:2:engine_provenance",
+      "@id": "trace:e7ef0231d764e625:event:2:engine_provenance",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -241,14 +241,14 @@
         "function_name": "deliberately_failing_engine",
         "kwargs": {},
         "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
-        "module_sha256": "491c00f12b5bc7ae6d5b7e9a5183d8ba89abf44320589c03d64ee280ef0ea9de"
+        "module_sha256": "026c0adea6ed83beca79d542c681f096fa3aabe4df62f7bbeadefdeba372b8de"
       },
       "description": "external engine provenance recorded",
       "name": "engine_provenance",
-      "startTime": 1781728949.269651
+      "startTime": 1781731417.830959
     },
     {
-      "@id": "trace:be7234b31c5d8050:event:3:cost_model",
+      "@id": "trace:e7ef0231d764e625:event:3:cost_model",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -260,10 +260,10 @@
       },
       "description": "dense statevector cost estimated",
       "name": "cost_model",
-      "startTime": 1781728949.269653
+      "startTime": 1781731417.83097
     },
     {
-      "@id": "trace:be7234b31c5d8050:event:4:route",
+      "@id": "trace:e7ef0231d764e625:event:4:route",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -273,10 +273,10 @@
       },
       "description": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
       "name": "route",
-      "startTime": 1781728949.269655
+      "startTime": 1781731417.8309782
     },
     {
-      "@id": "trace:be7234b31c5d8050:event:5:error",
+      "@id": "trace:e7ef0231d764e625:event:5:error",
       "@type": "Action",
       "actionStatus": "fail",
       "capas:metrics": {
@@ -284,7 +284,7 @@
       },
       "description": "intentional failure for failed-trace coverage",
       "name": "error",
-      "startTime": 1781728949.269797
+      "startTime": 1781731417.831744
     }
   ]
 }

@@ -169,6 +169,7 @@ def _physical_evidence_from_summary(summary: dict[str, Any]) -> dict[str, Any]:
         "basis",
         "geometry",
         "bond_length_angstrom",
+        "basis_orbitals",
         "abs_error_vs_fci",
         "abs_error_vs_experimental",
         "chemical_accuracy_threshold_hartree",

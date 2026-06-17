@@ -160,6 +160,7 @@ def run_trace_to_prov_json(trace: RunTrace, *, bundle_id: str | None = None) -> 
                 "capas:basis": event.metrics.get("basis"),
                 "capas:geometry": event.metrics.get("geometry"),
                 "capas:bondLengthAngstrom": event.metrics.get("bond_length_angstrom"),
+                "capas:basisOrbitals": event.metrics.get("basis_orbitals"),
                 "capas:absErrorVsFci": event.metrics.get("abs_error_vs_fci"),
                 "capas:absErrorVsExperimental": event.metrics.get("abs_error_vs_experimental"),
                 "capas:chemicalAccuracyThresholdHartree": event.metrics.get("chemical_accuracy_threshold_hartree"),

@@ -27,6 +27,18 @@ solver = PySCF FCI
 physical_evidence_level = experimental
 ```
 
+Larger-basis stress trace:
+
+```text
+trace_023
+coverage_case = quantum_chemistry_experimental_reference_larger_basis
+molecule = H2
+geometry = R(H-H) = 0.7414 Angstrom
+basis = cc-pVTZ
+solver = PySCF FCI
+physical_evidence_level = experimental
+```
+
 ## References
 
 Model reference:
@@ -73,6 +85,12 @@ For `trace_022`, the solver error is still zero for the declared model, but the
 larger cc-pVDZ basis reduces the model error against the same experimental D0
 reference. This shows the axis doing real work: the trace can distinguish an
 exact but poor model from an exact and materially better model.
+
+For `trace_023`, the basis is larger again, but the model error for this simple
+electronic binding-energy comparison gets worse than `trace_022`. This is not
+hidden. The trace records that "larger model" is not the same thing as "closer
+to the chosen measured reference" when other physical corrections and reference
+definitions are not being audited.
 
 ## Non-Degradation Rule
 
@@ -129,7 +147,12 @@ single auditable trace.
 |---|---|---:|---:|---|
 | `trace_021` | STO-3G | 0.0 | 0.040080307195131615 | false |
 | `trace_022` | cc-pVDZ | 0.0 | 0.0008309583469347491 | true |
+| `trace_023` | cc-pVTZ | 0.0 | 0.008689903240270247 | false |
 
 Do not read this as a claim that cc-pVDZ fully solves H2 spectroscopy. It only
 shows that the trace grammar preserves the improvement in model error when the
 declared model improves.
+
+Do not read `trace_023` as a solver failure. It is exact for its declared model.
+The useful fact is that CAPAS records a model/reference mismatch instead of
+forcing a monotonic "bigger basis is better" story.

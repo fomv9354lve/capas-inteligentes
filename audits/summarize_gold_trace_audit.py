@@ -77,6 +77,7 @@ def main() -> int:
         "combinatorial_optimization_degenerate_function_level",
         "quantum_chemistry_experimental_reference",
         "quantum_chemistry_experimental_reference_improved_basis",
+        "quantum_chemistry_experimental_reference_larger_basis",
         "no_evidence_success",
         "backend_failed",
         "rejected_by_router",
