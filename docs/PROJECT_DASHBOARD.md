@@ -37,11 +37,11 @@ See git log. This dashboard is updated in the same commit as state changes.
 Recent commits:
 
 ```text
-HEAD Add PCM / closest-SotA audit
+HEAD Add CAPAS physical evidence profile validation
+0979ef9 Add PCM SotA audit
 a948b44 Add reproducibility gate for evidence corpus
 c64f317 Add H2 basis convergence to experiment trace
 827d9f7 Add methane electronic vibrational chemistry trace
-65c1e5b Add electronic/vibrational chemistry protocol
 ```
 
 Current validation status:
@@ -50,6 +50,8 @@ Current validation status:
 coverage_ready: True
 fine_tune_ready: False
 local RO-Crate validation: passed
+local CAPAS physical-evidence profile validation: passed for 27/27 crates
+local Workflow Run Crate shape check: passed through CAPAS profile validator
 external ResearchObject RO-Crate validation: valid_with_warning for 27/27 crates
 external warning: .py is not a recognised workflow extension
 witness independence validation: passed
@@ -102,7 +104,8 @@ none: 3
 4. Workflow Run RO-Crate-compatible shape.
 5. External RO-Crate validation through ResearchObject `rocrateValidator`.
 6. CAPAS `PhysicalEvidence` entity in RO-Crate and PROV exports.
-7. Honest distinction between:
+7. Local CAPAS physical-evidence profile validation over all 27 crates.
+8. Honest distinction between:
    - analytic truth
    - cross-sim witness
    - formal bounded evidence
@@ -110,24 +113,24 @@ none: 3
    - no evidence
    - failed execution
    - rejected execution
-8. Formal-bound seed case:
+9. Formal-bound seed case:
    - single-cut Schmidt truncation
    - discarded weight equals squared state error
    - not claimed as global DMRG certificate
-9. Multi-step formal-bound composition seed case:
+10. Multi-step formal-bound composition seed case:
    - sequential non-renormalized Schmidt truncations
    - triangle-composed state-error bound
    - not claimed as DMRG/observable certificate
-10. Optimization bridge seed case:
+11. Optimization bridge seed case:
    - N=8, K=2 assignment problem
    - explicit Ising mapping with affinity, balance, and conflict terms
    - exact diagonalization checked against brute force over 256 assignments
    - not claimed as optimization speedup
-11. Degenerate optimization bridge seed case:
+12. Degenerate optimization bridge seed case:
    - N=8, K=2 assignment problem with symmetric neutral tasks
    - exact optimum set contains 2 assignments
    - trace records that the final choice among equivalent optima needs an external criterion
-12. Experimental chemistry evidence seed case:
+13. Experimental chemistry evidence seed case:
    - H2/STO-3G at R=0.7414 Angstrom
    - PySCF FCI total energy: `-1.137270174660904` Hartree
    - model binding energy: `0.20410647554635353` Hartree
@@ -135,7 +138,7 @@ none: 3
    - solver error: `0.0`
    - model error: `0.040080307195131615`
    - within chemical accuracy: `False`
-13. Improved-basis chemistry evidence seed case:
+14. Improved-basis chemistry evidence seed case:
    - H2/cc-pVDZ at R=0.7414 Angstrom
    - PySCF FCI total energy: `-1.1634139335373228` Hartree
    - model binding energy: `0.16485712669815622` Hartree
@@ -143,7 +146,7 @@ none: 3
    - solver error: `0.0`
    - model error: `0.0008309583469343074`
    - within chemical accuracy: `True`
-14. Larger-basis chemistry stress case:
+15. Larger-basis chemistry stress case:
    - H2/cc-pVTZ at R=0.7414 Angstrom
    - basis orbitals: `28`
    - model binding energy: `0.17271607159149482` Hartree
@@ -152,7 +155,7 @@ none: 3
    - model error: `0.008689903240272911`
    - within chemical accuracy: `False`
    - lesson: larger basis alone is not a monotonic guarantee against the chosen measured reference
-15. Reference-definition corrected chemistry case:
+16. Reference-definition corrected chemistry case:
    - H2/cc-pVTZ at R=0.7414 Angstrom
    - basis orbitals: `28`
    - model binding energy: `0.1727160715914744` Hartree
@@ -163,7 +166,7 @@ none: 3
    - corrected error: `0.0015326709489927315`
    - within chemical accuracy after definition correction: `True`
    - lesson: `trace_023` was not a solver failure; it mixed electronic De-like energy with experimental D0
-16. Polyatomic electronic/vibrational chemistry case:
+17. Polyatomic electronic/vibrational chemistry case:
    - H2O/STO-3G demo geometry
    - PySCF FCI total energy: `-75.01264711899171` Hartree
    - electronic atomization energy: `0.2753331866212392` Hartree
@@ -174,7 +177,7 @@ none: 3
    - corrected error: `0.10200295763719147`
    - within chemical accuracy: `False`
    - lesson: CAPAS can seal a polyatomic electronic/vibrational split even when the model remains poor
-17. Larger polyatomic electronic/vibrational chemistry case:
+18. Larger polyatomic electronic/vibrational chemistry case:
    - CH4/STO-3G tetrahedral demo geometry
    - PySCF FCI total energy: `-39.80599835127127` Hartree
    - electronic atomization energy: `0.7209374024057098` Hartree
@@ -185,7 +188,7 @@ none: 3
    - corrected error: `0.034658618326405266`
    - within chemical accuracy: `False`
    - lesson: adding vibrational correction can reduce the mismatch without making a poor finite-basis model chemically accurate
-18. H2 basis convergence to experiment:
+19. H2 basis convergence to experiment:
    - basis ladder: `STO-3G -> cc-pVDZ -> cc-pVTZ -> cc-pVQZ -> cc-pV5Z`
    - corrected errors: `[0.028646971371818652, 0.009825356013931502, 0.0015326709489749402, 0.0003112863147403111, 0.00002049610541435265]`
    - monotonic non-increasing error: `True`
@@ -194,7 +197,7 @@ none: 3
    - best basis: `cc-pV5Z`
    - local ceiling solved: `cc-pV5Z`, `110` orbitals
    - lesson: CAPAS can certify a robust True, not only honest False cases
-19. Closest-SotA / PCM audit:
+20. Closest-SotA / PCM audit:
    - targeted search did not identify a single dominant `PCM` project occupying
      the full CAPAS position
    - closest neighbors are Workflow Run RO-Crate, HyProv, FAIR Data Pipeline,
@@ -512,43 +515,61 @@ Next step:
 
 ### D7. Workflow Run RO-Crate Alignment
 
-Status: shape-compatible, externally RO-Crate-valid with warning.
+Status: locally shape-validated, externally RO-Crate-valid with warning,
+not externally profile-registered.
 
 What exists:
 
 - root `Dataset`
 - `ComputationalWorkflow`
 - `CreateAction`
+- `mainEntity` from root dataset to workflow
+- `mentions` from root dataset to run action
+- `instrument` from run action to workflow
 - input/output formal parameters
+- `exampleOfWork` links for workload/result parameters
 - PROV export
 - CAPAS physical evidence entity
+- official WRROC profile URIs:
+  - `https://w3id.org/ro/wfrun/process/0.5`
+  - `https://w3id.org/ro/wfrun/workflow/0.5`
+  - `https://w3id.org/workflowhub/workflow-ro-crate/1.0`
+- local CAPAS draft profile:
+  - `docs/profile/CAPAS_PHYSICAL_EVIDENCE_PROFILE.md`
+  - `docs/profile/capas-physical-evidence-context.jsonld`
+- minimal review crate pointer:
+  - `docs/profile/MINIMAL_REVIEW_CRATE.md`
 
 Debt:
 
-- no external Workflow Run RO-Crate profile-specific validator run
 - CAPAS profile URI is provisional
 - CAPAS profile is not registered
+- no external Workflow Run RO-Crate community review yet
 
 Next step:
 
-- locate or ask the Workflow Run RO-Crate community for the preferred profile
-  validation path
-- decide whether to submit/register a CAPAS physical evidence profile
+- ask the Workflow Run RO-Crate community which SPARQL/profile checks they
+  prefer for CAPAS as an extension
+- decide whether to submit/register the CAPAS physical evidence profile
 
 Done when:
 
-- validation status can distinguish:
-  - RO-Crate valid
-  - Workflow Run RO-Crate profile valid
-  - CAPAS profile registered
+- current local status can distinguish:
+  - RO-Crate valid: yes, externally `valid_with_warning`
+  - Workflow Run Crate shape-compatible: yes, local CAPAS profile validator
+  - CAPAS physical-evidence-profile valid: yes, local CAPAS profile validator
+  - CAPAS profile registered: no
 
 ### D8. PCM / Closest-SotA Audit
 
-Status: paper-level audit complete, code/API-level audit not complete.
+Status: paper-level audit complete; interop/profile packaging implemented
+locally; code/API-level audit of every neighbor not complete.
 
 What exists:
 
 - `docs/PCM_SOTA_AUDIT.md`
+- `docs/profile/CAPAS_PHYSICAL_EVIDENCE_PROFILE.md`
+- `benchmarks/validate_capas_profile.py`
 - targeted search across provenance/correctness/RO-Crate/physical-evidence
   neighbors
 - capability matrix covering Workflow Run RO-Crate, HyProv, FAIR Data Pipeline,
@@ -575,21 +596,19 @@ Debt:
 - this is not an exhaustive proof of absence
 - no code-level audit of every neighbor's repository/API
 - no external community confirmation
-- no Workflow Run RO-Crate profile-specific validation yet
+- no registered external profile URI
 
 Next step:
 
-- build one minimal CAPAS example crate for interop review
-- draft `docs/profile/` JSON-LD/context notes for CAPAS physical evidence fields
-- compare one CAPAS crate directly against Workflow Run RO-Crate expectations
+- prepare external review issue/email with:
+  - minimal crate: `benchmarks/ro_crates/trace_027/`
+  - profile draft: `docs/profile/CAPAS_PHYSICAL_EVIDENCE_PROFILE.md`
+  - local validation command: `python3 benchmarks/validate_capas_profile.py`
 
 Done when:
 
-- CAPAS can say whether it is:
-  - plain RO-Crate valid
-  - Workflow Run RO-Crate shape-compatible
-  - CAPAS physical-evidence-profile valid
-- one minimal crate is ready for external standards/community review
+- one relevant external reviewer confirms, rejects, or changes the CAPAS profile
+  shape
 
 ### D9. QMB100 / Quantum Many-Body Applicability
 

@@ -22,13 +22,19 @@ EXPECTED = {
     "trace_025": ("quantum_chemistry_polyatomic_electronic_vibrational", "present", True, "CompletedActionStatus"),
     "trace_026": ("quantum_chemistry_larger_polyatomic_electronic_vibrational", "present", True, "CompletedActionStatus"),
     "trace_027": ("quantum_chemistry_basis_convergence_to_experiment", "present", True, "CompletedActionStatus"),
-    "trace_012": ("no_evidence_success", "none_declared", True, "CompletedActionStatus"),
+    "trace_012": ("no_evidence_success", "none_declared", False, "CompletedActionStatus"),
     "trace_013": ("backend_failed", "not_applicable_failed", False, "FailedActionStatus"),
     "trace_014": ("rejected_by_router", "not_applicable_rejected", False, "CompletedActionStatus"),
     "trace_015": ("estimated_bound_candidate", "present", True, "CompletedActionStatus"),
     "trace_016": ("formal_bound_success", "present", True, "CompletedActionStatus"),
     "trace_017": ("formal_bound_composition_success", "present", True, "CompletedActionStatus"),
 }
+
+RO_CRATE = "https://w3id.org/ro/crate/1.1"
+PROCESS_RUN = "https://w3id.org/ro/wfrun/process/0.5"
+WORKFLOW_RUN = "https://w3id.org/ro/wfrun/workflow/0.5"
+WORKFLOW_RO_CRATE = "https://w3id.org/workflowhub/workflow-ro-crate/1.0"
+CAPAS_PROFILE = "https://example.org/capas-inteligentes/ro-crate/physical-evidence/0.1"
 
 
 def load_crate(trace_id: str) -> dict:
@@ -94,11 +100,11 @@ def main() -> int:
             action = create_action_node(crate)
             metadata_conforms = metadata.get("conformsTo", [])
             root_conforms = root.get("conformsTo", [])
-            assert any(item.get("@id") == "https://w3id.org/ro/crate/1.1" for item in metadata_conforms), "missing RO-Crate conformance"
-            assert any(item.get("@id") == "https://w3id.org/workflowhub/workflow-ro-crate/1.0" for item in metadata_conforms), "missing Workflow Run RO-Crate metadata conformance"
-            assert any(item.get("@id") == "https://w3id.org/ro/crate/1.1" for item in root_conforms), "missing root RO-Crate conformance"
-            assert any(item.get("@id") == "https://w3id.org/workflowhub/workflow-ro-crate/1.0" for item in root_conforms), "missing root Workflow Run RO-Crate conformance"
-            assert any(item.get("@id") == "https://example.org/capas-inteligentes/ro-crate/physical-evidence/0.1" for item in root_conforms), "missing CAPAS profile conformance"
+            for profile in (RO_CRATE, PROCESS_RUN, WORKFLOW_RUN, WORKFLOW_RO_CRATE, CAPAS_PROFILE):
+                assert any(item.get("@id") == profile for item in metadata_conforms), f"missing metadata conformance {profile}"
+                assert any(item.get("@id") == profile for item in root_conforms), f"missing root conformance {profile}"
+            assert root.get("mainEntity", {}).get("@id") == workflow.get("@id"), "root mainEntity does not point to workflow"
+            assert root.get("mentions", {}).get("@id") == action.get("@id"), "root mentions does not point to run action"
             assert root.get("capas:evidenceStatus") == status, f"wrong evidenceStatus {root.get('capas:evidenceStatus')}"
             assert has_physical_evidence(crate) is evidence_expected, "wrong PhysicalEvidence presence"
             root_parts = ids(root.get("hasPart", []))

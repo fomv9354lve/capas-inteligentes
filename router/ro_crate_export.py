@@ -12,7 +12,10 @@ from .trace import RunTrace, stable_hash
 
 RO_CRATE_CONTEXT = "https://w3id.org/ro/crate/1.1/context"
 RO_CRATE_CONFORMS_TO = "https://w3id.org/ro/crate/1.1"
-WORKFLOW_RUN_CRATE_PROFILE = "https://w3id.org/workflowhub/workflow-ro-crate/1.0"
+WORKFLOW_RUN_CONTEXT = "https://w3id.org/ro/terms/workflow-run/context"
+PROCESS_RUN_CRATE_PROFILE = "https://w3id.org/ro/wfrun/process/0.5"
+WORKFLOW_RUN_CRATE_PROFILE = "https://w3id.org/ro/wfrun/workflow/0.5"
+WORKFLOW_RO_CRATE_PROFILE = "https://w3id.org/workflowhub/workflow-ro-crate/1.0"
 CAPAS_PROFILE = "https://example.org/capas-inteligentes/ro-crate/physical-evidence/0.1"
 CAPAS_WORKFLOW_ID = "workflow/capas-costurero-run.py"
 CAPAS_SOFTWARE_ID = "software:capas-costurero"
@@ -56,7 +59,9 @@ def run_trace_to_ro_crate_metadata(
             "@type": "CreativeWork",
             "conformsTo": [
                 {"@id": RO_CRATE_CONFORMS_TO},
+                {"@id": PROCESS_RUN_CRATE_PROFILE},
                 {"@id": WORKFLOW_RUN_CRATE_PROFILE},
+                {"@id": WORKFLOW_RO_CRATE_PROFILE},
                 {"@id": CAPAS_PROFILE},
             ],
             "about": {"@id": root_id},
@@ -72,13 +77,46 @@ def run_trace_to_ro_crate_metadata(
             "hasPart": has_part,
             "conformsTo": [
                 {"@id": RO_CRATE_CONFORMS_TO},
+                {"@id": PROCESS_RUN_CRATE_PROFILE},
                 {"@id": WORKFLOW_RUN_CRATE_PROFILE},
+                {"@id": WORKFLOW_RO_CRATE_PROFILE},
                 {"@id": CAPAS_PROFILE},
             ],
+            "mainEntity": {"@id": CAPAS_WORKFLOW_ID},
+            "mentions": {"@id": trace_id},
             "datePublished": end_time,
             "capas:traceHash": trace.hash(),
             "capas:workloadHash": trace.workload_hash,
-            "capas:workflowRunCrateAlignment": "shape-compatible-with-workflow-run-ro-crate-v0",
+            "capas:workflowRunCrateAlignment": "shape-compatible-with-workflow-run-crate-0.5",
+        },
+        {
+            "@id": PROCESS_RUN_CRATE_PROFILE,
+            "@type": "CreativeWork",
+            "name": "Process Run Crate",
+            "version": "0.5",
+        },
+        {
+            "@id": WORKFLOW_RUN_CRATE_PROFILE,
+            "@type": "CreativeWork",
+            "name": "Workflow Run Crate",
+            "version": "0.5",
+        },
+        {
+            "@id": WORKFLOW_RO_CRATE_PROFILE,
+            "@type": "CreativeWork",
+            "name": "Workflow RO-Crate",
+            "version": "1.0",
+        },
+        {
+            "@id": CAPAS_PROFILE,
+            "@type": "CreativeWork",
+            "name": "CAPAS Physical Evidence Profile",
+            "version": "0.1",
+            "description": (
+                "Draft profile extending Workflow Run RO-Crate-style traces with "
+                "first-class physical evidence, witness independence, reference truth, "
+                "and explicit success/no-evidence/failure/rejection states."
+            ),
         },
         {
             "@id": trace_file,
@@ -126,13 +164,15 @@ def run_trace_to_ro_crate_metadata(
             "@id": "parameter:workload",
             "@type": "FormalParameter",
             "name": "Scientific workload",
-            "additionalType": "https://bioschemas.org/FormalParameter",
+            "description": "Structured scientific workload routed by the CAPAS costurero.",
+            "additionalType": "Dataset",
         },
         {
             "@id": "parameter:result",
             "@type": "FormalParameter",
             "name": "Result summary or skipped/failure state",
-            "additionalType": "https://bioschemas.org/FormalParameter",
+            "description": "Structured result summary, skipped state, or failure state.",
+            "additionalType": "Dataset",
         },
         {
             "@id": CAPAS_SOFTWARE_ID,
@@ -146,6 +186,7 @@ def run_trace_to_ro_crate_metadata(
             "name": "Workload summary",
             "capas:workloadHash": trace.workload_hash,
             "capas:summary": trace.workload_summary,
+            "exampleOfWork": {"@id": "parameter:workload"},
         },
         {
             "@id": decision_id,
@@ -176,6 +217,7 @@ def run_trace_to_ro_crate_metadata(
                 "name": "Result summary",
                 "capas:resultHash": trace.result_hash,
                 "capas:summary": trace.result_summary,
+                "exampleOfWork": {"@id": "parameter:result"},
             }
         )
 
@@ -187,7 +229,7 @@ def run_trace_to_ro_crate_metadata(
         if node.get("@id") == trace_id:
             node["capas:evidenceStatus"] = evidence_status
             break
-    if evidence:
+    if evidence and evidence_status == "present":
         graph.append(
             {
                 "@id": evidence_id,
@@ -289,6 +331,7 @@ def run_trace_to_ro_crate_metadata(
     return {
         "@context": [
             RO_CRATE_CONTEXT,
+            WORKFLOW_RUN_CONTEXT,
             {
                 "capas": "https://example.org/capas-inteligentes#",
                 "sha256": "https://schema.org/sha256",
@@ -395,6 +438,16 @@ def _physical_evidence_from_trace(trace: RunTrace) -> dict[str, Any]:
     for event in trace.events:
         if event.stage == "physical_evidence":
             evidence.update(event.metrics)
+    if evidence.get("physical_evidence_level") == "analytic":
+        evidence.setdefault("verification_independence", "analytic_no_solver")
+        evidence.setdefault(
+            "reference_truth",
+            {
+                "kind": "closed_form_or_exact_invariant",
+                "expected": evidence.get("expected"),
+                "detail": evidence.get("physical_evidence_detail"),
+            },
+        )
     return evidence
 
 

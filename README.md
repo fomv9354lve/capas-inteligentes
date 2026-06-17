@@ -59,8 +59,9 @@ The command runs:
 2. PROV export
 3. RO-Crate export
 4. RO-Crate validation
-5. witness independence validation
-6. audit summary
+5. CAPAS physical-evidence profile validation
+6. witness independence validation
+7. audit summary
 
 `coverage_ready=True` is expected. `fine_tune_ready=False` is also expected until
 blind inference review is completed.
@@ -79,6 +80,17 @@ it would be dishonest:
 - no-evidence success: `none_declared`
 - backend failure: `not_applicable_failed`
 - router rejection: `not_applicable_rejected`
+
+## Validate CAPAS Physical Evidence Profile
+
+```bash
+python3 benchmarks/validate_capas_profile.py
+```
+
+This checks the local CAPAS profile over Workflow Run RO-Crate-style crates:
+WRROC profile URIs, `ComputationalWorkflow`, top-level `CreateAction`, parameter
+realization, `capas:evidenceStatus`, and `capas:PhysicalEvidence` semantics.
+This is a local profile validator, not official profile registration.
 
 ## External RO-Crate Validation
 
@@ -100,6 +112,7 @@ See:
 - `docs/REPRODUCIBILITY.md`
 - `docs/SOTA_POSITIONING.md`
 - `docs/WORKFLOW_RUN_RO_CRATE_ALIGNMENT.md`
+- `docs/profile/CAPAS_PHYSICAL_EVIDENCE_PROFILE.md`
 - `docs/FORMAL_BOUND_AXIS.md`
 - `docs/WITNESS_INDEPENDENCE_AXIS.md`
 - `docs/OPTIMIZATION_BRIDGE.md`
