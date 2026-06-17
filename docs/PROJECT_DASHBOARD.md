@@ -37,11 +37,11 @@ See git log. This dashboard is updated in the same commit as state changes.
 Recent commits:
 
 ```text
-HEAD Add H2 basis convergence to experiment trace
+HEAD Add reproducibility gate for evidence corpus
+c64f317 Add H2 basis convergence to experiment trace
 827d9f7 Add methane electronic vibrational chemistry trace
 65c1e5b Add electronic/vibrational chemistry protocol
 a7447b0 Add reference-definition corrected chemistry trace
-e80a598 Add larger-basis chemistry stress trace
 ```
 
 Current validation status:
@@ -53,6 +53,7 @@ local RO-Crate validation: passed
 external ResearchObject RO-Crate validation: valid_with_warning for 27/27 crates
 external warning: .py is not a recognised workflow extension
 witness independence validation: passed
+reproducibility environment check: passed in local physics-magnitude-lab pixi env
 ```
 
 The external warning is known and currently accepted: CAPAS emits a Python
@@ -221,6 +222,43 @@ These are hard guardrails.
 12. Do not treat same-model harmonic ZPE as anharmonic spectroscopy.
 
 ## Debt Register
+
+### D0. Reproducibility / Portability
+
+Status: local reproducibility gated, portability incomplete.
+
+What exists:
+
+- `requirements-corpus.txt`
+- `scripts/check_reproducibility_env.py`
+- `docs/REPRODUCIBILITY.md`
+- corpus builder runs the environment check before generating traces
+
+Current state:
+
+```text
+local CAPAS corpus: reproducible in the physics-magnitude-lab pixi environment
+standalone CAPAS portability: not complete
+```
+
+Debt:
+
+- `physics_magnitude_lab` is a local dependency, not owned by CAPAS
+- `physics-magnitude-lab/pixi.toml` and `pixi.lock` are modified by the PySCF addition
+- no CAPAS-owned `pixi.toml` yet
+
+Done when:
+
+- a fresh clone can regenerate the 27 traces with one documented command
+- `physics_magnitude_lab` is installed from a pinned local path, package version,
+  or declared workspace dependency
+
+Validation:
+
+```bash
+python3 scripts/check_reproducibility_env.py
+python3 scripts/build_evidence_corpus.py
+```
 
 ### D1. Fine-Tune Readiness
 
@@ -635,7 +673,7 @@ Exit criteria:
 Build corpus:
 
 ```bash
-cd "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/physics_quantum/physics-magnitude-lab"
+cd /Users/kreniq/physics-magnitude-lab
 /Users/kreniq/.pixi/bin/pixi run python "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/scripts/build_evidence_corpus.py"
 ```
 

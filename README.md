@@ -37,13 +37,19 @@ rejection.
 
 ## Build The Evidence Corpus
 
-Use the Python environment that has the scientific stack available. In this
-workspace, the most reliable environment is the `physics-magnitude-lab` pixi
-environment. The current corpus also requires the quantum-chemistry loader stack
-used by `trace_021`: `pyscf`, `openfermion`, and `openfermionpyscf`.
+Use a Python environment that has the declared corpus stack available. Check it
+first:
 
 ```bash
-cd "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/physics_quantum/physics-magnitude-lab"
+python3 scripts/check_reproducibility_env.py
+```
+
+In this workspace, the most reliable environment is the local
+`physics-magnitude-lab` pixi environment because it already exposes the local
+`physics_magnitude_lab` package plus PySCF/quimb.
+
+```bash
+cd /Users/kreniq/physics-magnitude-lab
 /Users/kreniq/.pixi/bin/pixi run python "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/scripts/build_evidence_corpus.py"
 ```
 
@@ -91,6 +97,7 @@ and that validator only recognizes a fixed list of workflow file extensions.
 See:
 
 - `docs/PROJECT_DASHBOARD.md`
+- `docs/REPRODUCIBILITY.md`
 - `docs/SOTA_POSITIONING.md`
 - `docs/WORKFLOW_RUN_RO_CRATE_ALIGNMENT.md`
 - `docs/FORMAL_BOUND_AXIS.md`

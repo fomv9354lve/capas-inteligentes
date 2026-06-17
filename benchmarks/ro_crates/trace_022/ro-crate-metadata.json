@@ -29,7 +29,7 @@
       "@id": "./",
       "@type": "Dataset",
       "capas:evidenceStatus": "present",
-      "capas:traceHash": "a9c73936775e7aed04967a4c5fe478a1be3dc8827d7bcb41e7376937d64e4fac",
+      "capas:traceHash": "3c6755215769037e9c16644cc6298e67993a2de053b6b23a7f55d117b4fa3c94",
       "capas:workflowRunCrateAlignment": "shape-compatible-with-workflow-run-ro-crate-v0",
       "capas:workloadHash": "4f4a5d5c31b55d3cab4e243e39271fb837a6c65068269003156c461ec98ec94a",
       "conformsTo": [
@@ -43,7 +43,7 @@
           "@id": "https://example.org/capas-inteligentes/ro-crate/physical-evidence/0.1"
         }
       ],
-      "datePublished": "2026-06-17T22:15:08.954163Z",
+      "datePublished": "2026-06-17T22:25:00.059774Z",
       "description": "RO-Crate package containing a sealed RunTrace, optional PROV export, routing decision, runtime context, and CAPAS physical evidence metadata.",
       "hasPart": [
         {
@@ -59,16 +59,16 @@
           "@id": "entity:workload"
         },
         {
-          "@id": "trace:a9c73936775e7aed:routing-decision"
+          "@id": "trace:3c6755215769037e:routing-decision"
         },
         {
-          "@id": "trace:a9c73936775e7aed:result"
+          "@id": "trace:3c6755215769037e:result"
         },
         {
           "@id": "runtrace.prov.json"
         },
         {
-          "@id": "trace:a9c73936775e7aed:physical-evidence"
+          "@id": "trace:3c6755215769037e:physical-evidence"
         }
       ],
       "name": "CAPAS traced scientific computation crate"
@@ -80,14 +80,14 @@
         "DigitalDocument"
       ],
       "about": {
-        "@id": "trace:a9c73936775e7aed"
+        "@id": "trace:3c6755215769037e"
       },
       "encodingFormat": "application/json",
       "name": "Sealed CAPAS RunTrace",
-      "sha256": "b1f97346d535c9d8c578b4bdbf3e07fc23fa0aeb84ec64d17e0022f5832b9c40"
+      "sha256": "1901cb2182e287341b2d0c896b37f30db0f943a8c780c4dd259c1a1eae5db315"
     },
     {
-      "@id": "trace:a9c73936775e7aed",
+      "@id": "trace:3c6755215769037e",
       "@type": "CreateAction",
       "actionStatus": "CompletedActionStatus",
       "agent": {
@@ -98,11 +98,11 @@
       "capas:evidenceStatus": "present",
       "capas:hashAlgorithm": "sha256(stable_json)",
       "capas:routingDecision": {
-        "@id": "trace:a9c73936775e7aed:routing-decision"
+        "@id": "trace:3c6755215769037e:routing-decision"
       },
-      "capas:traceHash": "a9c73936775e7aed04967a4c5fe478a1be3dc8827d7bcb41e7376937d64e4fac",
+      "capas:traceHash": "3c6755215769037e9c16644cc6298e67993a2de053b6b23a7f55d117b4fa3c94",
       "capas:traceSchemaVersion": "capas-runtrace-v2",
-      "endTime": "2026-06-17T22:15:08.954163Z",
+      "endTime": "2026-06-17T22:25:00.059774Z",
       "instrument": {
         "@id": "workflow/capas-costurero-run.py"
       },
@@ -111,9 +111,9 @@
         "@id": "entity:workload"
       },
       "result": {
-        "@id": "trace:a9c73936775e7aed:result"
+        "@id": "trace:3c6755215769037e:result"
       },
-      "startTime": "2026-06-17T22:15:08.931334Z"
+      "startTime": "2026-06-17T22:25:00.032481Z"
     },
     {
       "@id": "workflow/capas-costurero-run.py",
@@ -173,7 +173,7 @@
       "name": "Workload summary"
     },
     {
-      "@id": "trace:a9c73936775e7aed:routing-decision",
+      "@id": "trace:3c6755215769037e:routing-decision",
       "@type": "Thing",
       "capas:reason": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
       "capas:route": "external_engine",
@@ -187,18 +187,18 @@
       ],
       "encodingFormat": "application/json",
       "name": "W3C PROV-shaped export",
-      "sha256": "cc452dbb7c4f1a5694734bce69d8ea816e37da103d0fa79297f55be50ff89637"
+      "sha256": "6ea28928be4491f0ba010eda1eefcc5055785bd6d81b9ac512aaa8c7dc16d672"
     },
     {
-      "@id": "trace:a9c73936775e7aed:result",
+      "@id": "trace:3c6755215769037e:result",
       "@type": "Dataset",
       "capas:physicalEvidence": {
-        "@id": "trace:a9c73936775e7aed:physical-evidence"
+        "@id": "trace:3c6755215769037e:physical-evidence"
       },
-      "capas:resultHash": "73101f0bda1a467dedde060226a0875a5ff3798abc96d1b1629d2207e9c098ee",
+      "capas:resultHash": "1ac192f3089b981f1a87c26c9c771cc5c1f922b88950305f6f377e6d6f730c72",
       "capas:summary": {
         "abs_error": 0.0,
-        "abs_error_vs_experimental": 0.0008309583469356396,
+        "abs_error_vs_experimental": 0.0008309583469343074,
         "abs_error_vs_fci": 0.0,
         "basis": "cc-pvdz",
         "benchmark_family": "QuantumChemistry",
@@ -209,7 +209,7 @@
         "expected": {
           "chemical_accuracy_threshold_hartree": 0.0015936,
           "reference_experimental_binding_energy_hartree": 0.1640261683512219,
-          "reference_fci_total_energy_hartree": -1.1634139335373237
+          "reference_fci_total_energy_hartree": -1.1634139335373224
         },
         "experimental_binding_energy_hartree": 0.1640261683512219,
         "falsification_notes": [
@@ -236,13 +236,13 @@
             ]
           }
         ],
-        "model_binding_energy_hartree": 0.16485712669815755,
-        "model_error_hartree": 0.0008309583469356396,
+        "model_binding_energy_hartree": 0.16485712669815622,
+        "model_error_hartree": 0.0008309583469343074,
         "observable": "H2 cc-pVDZ binding energy vs experimental dissociation energy",
         "physical_evidence_detail": "H2/cc-pVDZ at R=0.7414 Angstrom is solved by PySCF FCI. The solver error against the model FCI reference is zero by construction. Compared with the same measured H2 D0 reference used by trace_021, the larger basis reduces model error and is within the 1 kcal/mol chemical-accuracy threshold for this binding-energy comparison.",
         "physical_evidence_level": "experimental",
         "reference_experimental_d0_cm_inverse": 35999.582834,
-        "reference_fci_total_energy_hartree": -1.1634139335373237,
+        "reference_fci_total_energy_hartree": -1.1634139335373224,
         "reference_truth": {
           "chemical_accuracy": {
             "threshold_hartree": 0.0015936,
@@ -260,7 +260,7 @@
             "geometry": "H-H 0.7414 Angstrom",
             "kind": "exact_model_solution",
             "method": "PySCF FCI",
-            "total_energy_hartree": -1.1634139335373237
+            "total_energy_hartree": -1.1634139335373224
           }
         },
         "repr": "{'engine_id': 'physics_magnitude_quantum_engine.h2_ccpvdz_experimental_reference', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_ma",
@@ -271,10 +271,10 @@
         "value": {
           "experimental_binding_energy_hartree": 0.1640261683512219,
           "experimental_d0_cm_inverse": 35999.582834,
-          "fci_total_energy_hartree": -1.1634139335373237,
+          "fci_total_energy_hartree": -1.1634139335373224,
           "model_atom_energy_hartree": -0.49927840341958307,
-          "model_binding_energy_hartree": 0.16485712669815755,
-          "model_error_hartree": 0.0008309583469356396,
+          "model_binding_energy_hartree": 0.16485712669815622,
+          "model_error_hartree": 0.0008309583469343074,
           "solver_error_hartree": 0.0,
           "within_chemical_accuracy": true
         },
@@ -289,13 +289,13 @@
       "name": "Result summary"
     },
     {
-      "@id": "trace:a9c73936775e7aed:physical-evidence",
+      "@id": "trace:3c6755215769037e:physical-evidence",
       "@type": "capas:PhysicalEvidence",
       "about": {
-        "@id": "trace:a9c73936775e7aed:result"
+        "@id": "trace:3c6755215769037e:result"
       },
       "capas:absError": 0.0,
-      "capas:absErrorVsExperimental": 0.0008309583469356396,
+      "capas:absErrorVsExperimental": 0.0008309583469343074,
       "capas:absErrorVsFci": 0.0,
       "capas:basis": "cc-pvdz",
       "capas:benchmarkFamily": "QuantumChemistry",
@@ -303,12 +303,12 @@
       "capas:boundScope": "single_molecule_larger_basis_equilibrium_geometry",
       "capas:chemicalAccuracyThresholdHartree": 0.0015936,
       "capas:detail": "H2/cc-pVDZ at R=0.7414 Angstrom is solved by PySCF FCI. The solver error against the model FCI reference is zero by construction. Compared with the same measured H2 D0 reference used by trace_021, the larger basis reduces model error and is within the 1 kcal/mol chemical-accuracy threshold for this binding-energy comparison.",
-      "capas:evidenceHash": "784286795f476efbb6415ce7cbfbd295488cee51cdd859180caa6999966b466e",
+      "capas:evidenceHash": "35318323b64457cf37e72d2a2a88f37424463003901e582cb2704014ceedefed",
       "capas:evidenceStatusDetail": "experimental_reference_model_error_within_chemical_accuracy",
       "capas:expected": {
         "chemical_accuracy_threshold_hartree": 0.0015936,
         "reference_experimental_binding_energy_hartree": 0.1640261683512219,
-        "reference_fci_total_energy_hartree": -1.1634139335373237
+        "reference_fci_total_energy_hartree": -1.1634139335373224
       },
       "capas:experimentalBindingEnergyHartree": 0.1640261683512219,
       "capas:falsificationNotes": [
@@ -335,12 +335,12 @@
           ]
         }
       ],
-      "capas:modelBindingEnergyHartree": 0.16485712669815755,
-      "capas:modelErrorHartree": 0.0008309583469356396,
+      "capas:modelBindingEnergyHartree": 0.16485712669815622,
+      "capas:modelErrorHartree": 0.0008309583469343074,
       "capas:observable": "H2 cc-pVDZ binding energy vs experimental dissociation energy",
       "capas:physicalEvidenceLevel": "experimental",
       "capas:referenceExperimentalD0CmInverse": 35999.582834,
-      "capas:referenceFciTotalEnergyHartree": -1.1634139335373237,
+      "capas:referenceFciTotalEnergyHartree": -1.1634139335373224,
       "capas:referenceTruth": {
         "chemical_accuracy": {
           "threshold_hartree": 0.0015936,
@@ -358,7 +358,7 @@
           "geometry": "H-H 0.7414 Angstrom",
           "kind": "exact_model_solution",
           "method": "PySCF FCI",
-          "total_energy_hartree": -1.1634139335373237
+          "total_energy_hartree": -1.1634139335373224
         }
       },
       "capas:solverErrorHartree": 0.0,
@@ -367,10 +367,10 @@
       "capas:value": {
         "experimental_binding_energy_hartree": 0.1640261683512219,
         "experimental_d0_cm_inverse": 35999.582834,
-        "fci_total_energy_hartree": -1.1634139335373237,
+        "fci_total_energy_hartree": -1.1634139335373224,
         "model_atom_energy_hartree": -0.49927840341958307,
-        "model_binding_energy_hartree": 0.16485712669815755,
-        "model_error_hartree": 0.0008309583469356396,
+        "model_binding_energy_hartree": 0.16485712669815622,
+        "model_error_hartree": 0.0008309583469343074,
         "solver_error_hartree": 0.0,
         "within_chemical_accuracy": true
       },
@@ -384,7 +384,7 @@
       "name": "Physical evidence attached to result"
     },
     {
-      "@id": "trace:a9c73936775e7aed:event:0:ingest",
+      "@id": "trace:3c6755215769037e:event:0:ingest",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -404,10 +404,10 @@
       },
       "description": "workload accepted",
       "name": "ingest",
-      "startTime": 1781734508.9313338
+      "startTime": 1781735100.032481
     },
     {
-      "@id": "trace:a9c73936775e7aed:event:1:runtime_context",
+      "@id": "trace:3c6755215769037e:event:1:runtime_context",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -432,10 +432,10 @@
       },
       "description": "runtime and hardware context recorded",
       "name": "runtime_context",
-      "startTime": 1781734508.931403
+      "startTime": 1781735100.032577
     },
     {
-      "@id": "trace:a9c73936775e7aed:event:2:engine_provenance",
+      "@id": "trace:3c6755215769037e:event:2:engine_provenance",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -447,10 +447,10 @@
       },
       "description": "external engine provenance recorded",
       "name": "engine_provenance",
-      "startTime": 1781734508.931492
+      "startTime": 1781735100.0326731
     },
     {
-      "@id": "trace:a9c73936775e7aed:event:3:cost_model",
+      "@id": "trace:3c6755215769037e:event:3:cost_model",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -462,10 +462,10 @@
       },
       "description": "dense statevector cost estimated",
       "name": "cost_model",
-      "startTime": 1781734508.931495
+      "startTime": 1781735100.032676
     },
     {
-      "@id": "trace:a9c73936775e7aed:event:4:route",
+      "@id": "trace:3c6755215769037e:event:4:route",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -475,15 +475,15 @@
       },
       "description": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
       "name": "route",
-      "startTime": 1781734508.9314969
+      "startTime": 1781735100.032681
     },
     {
-      "@id": "trace:a9c73936775e7aed:event:5:execute",
+      "@id": "trace:3c6755215769037e:event:5:execute",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
         "abs_error": 0.0,
-        "abs_error_vs_experimental": 0.0008309583469356396,
+        "abs_error_vs_experimental": 0.0008309583469343074,
         "abs_error_vs_fci": 0.0,
         "basis": "cc-pvdz",
         "benchmark_family": "QuantumChemistry",
@@ -494,7 +494,7 @@
         "expected": {
           "chemical_accuracy_threshold_hartree": 0.0015936,
           "reference_experimental_binding_energy_hartree": 0.1640261683512219,
-          "reference_fci_total_energy_hartree": -1.1634139335373237
+          "reference_fci_total_energy_hartree": -1.1634139335373224
         },
         "experimental_binding_energy_hartree": 0.1640261683512219,
         "falsification_notes": [
@@ -521,13 +521,13 @@
             ]
           }
         ],
-        "model_binding_energy_hartree": 0.16485712669815755,
-        "model_error_hartree": 0.0008309583469356396,
+        "model_binding_energy_hartree": 0.16485712669815622,
+        "model_error_hartree": 0.0008309583469343074,
         "observable": "H2 cc-pVDZ binding energy vs experimental dissociation energy",
         "physical_evidence_detail": "H2/cc-pVDZ at R=0.7414 Angstrom is solved by PySCF FCI. The solver error against the model FCI reference is zero by construction. Compared with the same measured H2 D0 reference used by trace_021, the larger basis reduces model error and is within the 1 kcal/mol chemical-accuracy threshold for this binding-energy comparison.",
         "physical_evidence_level": "experimental",
         "reference_experimental_d0_cm_inverse": 35999.582834,
-        "reference_fci_total_energy_hartree": -1.1634139335373237,
+        "reference_fci_total_energy_hartree": -1.1634139335373224,
         "reference_truth": {
           "chemical_accuracy": {
             "threshold_hartree": 0.0015936,
@@ -545,12 +545,12 @@
             "geometry": "H-H 0.7414 Angstrom",
             "kind": "exact_model_solution",
             "method": "PySCF FCI",
-            "total_energy_hartree": -1.1634139335373237
+            "total_energy_hartree": -1.1634139335373224
           }
         },
         "repr": "{'engine_id': 'physics_magnitude_quantum_engine.h2_ccpvdz_experimental_reference', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_ma",
         "route": "external_engine",
-        "runtime_ms": 22.576624993234873,
+        "runtime_ms": 26.935791014693677,
         "solver_error_hartree": 0.0,
         "source_label": "PySCF FCI cc-pVDZ model solve + external H2 D0 measurement",
         "type": "dict",
@@ -558,10 +558,10 @@
         "value": {
           "experimental_binding_energy_hartree": 0.1640261683512219,
           "experimental_d0_cm_inverse": 35999.582834,
-          "fci_total_energy_hartree": -1.1634139335373237,
+          "fci_total_energy_hartree": -1.1634139335373224,
           "model_atom_energy_hartree": -0.49927840341958307,
-          "model_binding_energy_hartree": 0.16485712669815755,
-          "model_error_hartree": 0.0008309583469356396,
+          "model_binding_energy_hartree": 0.16485712669815622,
+          "model_error_hartree": 0.0008309583469343074,
           "solver_error_hartree": 0.0,
           "within_chemical_accuracy": true
         },
@@ -575,27 +575,27 @@
       },
       "description": "backend executed",
       "name": "execute",
-      "startTime": 1781734508.954138
+      "startTime": 1781735100.0597389
     },
     {
-      "@id": "trace:a9c73936775e7aed:event:6:physical_evidence",
+      "@id": "trace:3c6755215769037e:event:6:physical_evidence",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
         "abs_error": 0.0,
-        "abs_error_vs_experimental": 0.0008309583469356396,
+        "abs_error_vs_experimental": 0.0008309583469343074,
         "abs_error_vs_fci": 0.0,
         "basis": "cc-pvdz",
         "benchmark_family": "QuantumChemistry",
         "bond_length_angstrom": 0.7414,
         "bound_scope": "single_molecule_larger_basis_equilibrium_geometry",
         "chemical_accuracy_threshold_hartree": 0.0015936,
-        "evidence_hash": "65eb07a27ceb0dc45bd7ef4f163431c4e7a6bf64319c50e38e4daaf07a740170",
+        "evidence_hash": "1dafc72df22329872a259c9828ba2db2cb8ac5b462711614faf8b359c0607ef2",
         "evidence_status_detail": "experimental_reference_model_error_within_chemical_accuracy",
         "expected": {
           "chemical_accuracy_threshold_hartree": 0.0015936,
           "reference_experimental_binding_energy_hartree": 0.1640261683512219,
-          "reference_fci_total_energy_hartree": -1.1634139335373237
+          "reference_fci_total_energy_hartree": -1.1634139335373224
         },
         "experimental_binding_energy_hartree": 0.1640261683512219,
         "falsification_notes": [
@@ -622,13 +622,13 @@
             ]
           }
         ],
-        "model_binding_energy_hartree": 0.16485712669815755,
-        "model_error_hartree": 0.0008309583469356396,
+        "model_binding_energy_hartree": 0.16485712669815622,
+        "model_error_hartree": 0.0008309583469343074,
         "observable": "H2 cc-pVDZ binding energy vs experimental dissociation energy",
         "physical_evidence_detail": "H2/cc-pVDZ at R=0.7414 Angstrom is solved by PySCF FCI. The solver error against the model FCI reference is zero by construction. Compared with the same measured H2 D0 reference used by trace_021, the larger basis reduces model error and is within the 1 kcal/mol chemical-accuracy threshold for this binding-energy comparison.",
         "physical_evidence_level": "experimental",
         "reference_experimental_d0_cm_inverse": 35999.582834,
-        "reference_fci_total_energy_hartree": -1.1634139335373237,
+        "reference_fci_total_energy_hartree": -1.1634139335373224,
         "reference_truth": {
           "chemical_accuracy": {
             "threshold_hartree": 0.0015936,
@@ -646,7 +646,7 @@
             "geometry": "H-H 0.7414 Angstrom",
             "kind": "exact_model_solution",
             "method": "PySCF FCI",
-            "total_energy_hartree": -1.1634139335373237
+            "total_energy_hartree": -1.1634139335373224
           }
         },
         "solver_error_hartree": 0.0,
@@ -655,10 +655,10 @@
         "value": {
           "experimental_binding_energy_hartree": 0.1640261683512219,
           "experimental_d0_cm_inverse": 35999.582834,
-          "fci_total_energy_hartree": -1.1634139335373237,
+          "fci_total_energy_hartree": -1.1634139335373224,
           "model_atom_energy_hartree": -0.49927840341958307,
-          "model_binding_energy_hartree": 0.16485712669815755,
-          "model_error_hartree": 0.0008309583469356396,
+          "model_binding_energy_hartree": 0.16485712669815622,
+          "model_error_hartree": 0.0008309583469343074,
           "solver_error_hartree": 0.0,
           "within_chemical_accuracy": true
         },
@@ -672,7 +672,7 @@
       },
       "description": "physical evidence reported by backend",
       "name": "physical_evidence",
-      "startTime": 1781734508.9541628
+      "startTime": 1781735100.059774
     }
   ]
 }
