@@ -11,7 +11,7 @@ It does not answer whether the engine is physically correct or whether the surro
 - `output_correct`: `yes/no/unknown`. Is the numeric output correct under an independent check?
 - `inference_blind_judge`: `yes/no`. Was `inference_correct` judged without seeing `hash_gate_pass`, `engine_hash`, `decision`, or any prior "gold" label?
 - `inference_correct`: `yes/no/unknown`. Is the natural-language conclusion drawn from the output valid?
-- `physical_evidence_level`: `analytic/cross_sim/formal_bound/invariant/self_derivation/none/unknown`. What kind of evidence supports the engine/model physics for this case?
+- `physical_evidence_level`: `analytic/cross_sim/formal_bound/experimental/invariant/self_derivation/none/unknown`. What kind of evidence supports the engine/model physics for this case?
 - `physical_evidence_detail`: short citation, check name, equation, independent implementation, or reviewer note.
 - `verification_independence`: one of the levels in `docs/WITNESS_INDEPENDENCE_AXIS.md`. How independent is the witness or certificate from the producing computation?
 - `risk_level`: `low/medium/high`. How damaging would this trace be if learned incorrectly?
@@ -43,6 +43,7 @@ Physical evidence levels:
 - `analytic`: checked against an analytic solution or exact known limiting case.
 - `cross_sim`: checked against an independent implementation/simulator.
 - `formal_bound`: checked by a mathematical error bound with explicit scope. This can be strong correctness evidence without being an independent witness.
+- `experimental`: compared against a measured physical reference. This must separate solver error from model error when a simplified model/basis is used.
 - `invariant`: checked by conservation laws, dimensional analysis, symmetry, monotonicity, or other invariant tests. Useful but weaker than `analytic` or `cross_sim`.
 - `self_derivation`: derived/reviewed by the same project author without independent external check.
 - `none`: no physical validation beyond the engine producing a number.
@@ -52,6 +53,7 @@ Acceptable physical evidence for `accept`:
 - `analytic`,
 - `cross_sim`,
 - `formal_bound` when the claim is inside `bound_scope`,
+- `experimental` when the claim is about the measured discrepancy itself, not about being physically accurate,
 - or `invariant` only if the trace is low/medium risk and the invariant directly constrains the claimed result.
 
 Witness independence rules:

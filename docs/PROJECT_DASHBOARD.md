@@ -37,11 +37,11 @@ See git log. This dashboard is updated in the same commit as state changes.
 Recent commits:
 
 ```text
-HEAD Add degenerate optimization bridge trace
+HEAD Add experimental chemistry evidence trace
+32d8681 Add degenerate optimization bridge trace
 6d89780 Add optimization bridge trace
 09139ff Add witness independence axis
 d23efaa Add multi-step formal truncation bound trace
-b0ed7d2 Add non-degradable project dashboard
 ```
 
 Current validation status:
@@ -50,7 +50,7 @@ Current validation status:
 coverage_ready: True
 fine_tune_ready: False
 local RO-Crate validation: passed
-external ResearchObject RO-Crate validation: valid_with_warning for 20/20 crates
+external ResearchObject RO-Crate validation: valid_with_warning for 21/21 crates
 external warning: .py is not a recognised workflow extension
 witness independence validation: passed
 ```
@@ -68,6 +68,7 @@ ResearchObject validator recognizes a fixed workflow-extension list.
 | `cross_library_success` | 1 | covered | different-library same-runtime witness |
 | `combinatorial_optimization_function_level` | 1 | covered | assignment-to-Ising optimum verified by brute force |
 | `combinatorial_optimization_degenerate_function_level` | 1 | covered | assignment-to-Ising optimum set verified by brute force |
+| `quantum_chemistry_experimental_reference` | 1 | covered | H2/STO-3G FCI compared with measured dissociation energy |
 | `formal_bound_success` | 1 | covered | formal single-cut Schmidt truncation certificate |
 | `formal_bound_composition_success` | 1 | covered | formal multi-step state truncation bound |
 | `estimated_bound_candidate` | 1 | covered | useful estimator, not formal |
@@ -80,6 +81,7 @@ Current evidence levels:
 ```text
 analytic: 12
 cross_sim: 2
+experimental: 1
 formal_bound: 2
 estimated_bound: 1
 none: 3
@@ -118,6 +120,14 @@ none: 3
    - N=8, K=2 assignment problem with symmetric neutral tasks
    - exact optimum set contains 2 assignments
    - trace records that the final choice among equivalent optima needs an external criterion
+12. Experimental chemistry evidence seed case:
+   - H2/STO-3G at R=0.7414 Angstrom
+   - PySCF FCI total energy: `-1.137270174660904` Hartree
+   - model binding energy: `0.20410647554635353` Hartree
+   - measured D0 reference: `0.1640261683512219` Hartree
+   - solver error: `0.0`
+   - model error: `0.040080307195131615`
+   - within chemical accuracy: `False`
 
 ## Non-Degradation Rules
 
@@ -218,6 +228,7 @@ Seed fact:
 - CAPAS already records `verification_independence`
 - current levels include `analytic_no_solver`, `different_library_same_runtime`,
   `different_method_same_runtime`,
+  `same_runtime_exact_fci_with_external_experimental_reference`,
   `different_algorithm_same_runtime`,
   `algorithmic_certificate_exact_svd_same_runtime`,
   `algorithmic_error_certificate_same_runtime`, and `none`
@@ -231,6 +242,7 @@ What exists:
   - `analytic_no_solver`: 10
   - `different_library_same_runtime`: 1
   - `different_method_same_runtime`: 2
+  - `same_runtime_exact_fci_with_external_experimental_reference`: 1
   - `different_algorithm_same_runtime`: 1
   - `algorithmic_certificate_exact_svd_same_runtime`: 2
   - `algorithmic_error_certificate_same_runtime`: 1
@@ -318,7 +330,36 @@ Next step:
 
 - add a larger non-analytic instance marked `none` or `cross_sim`, not `analytic`
 
-### D6. Workflow Run RO-Crate Alignment
+### D6. Experimental Evidence Axis
+
+Status: seed case complete.
+
+What exists:
+
+- `docs/EXPERIMENTAL_EVIDENCE_AXIS.md`
+- `trace_021`
+- `coverage_case=quantum_chemistry_experimental_reference`
+- `physical_evidence_level=experimental`
+- `verification_independence=same_runtime_exact_fci_with_external_experimental_reference`
+- `bound_scope=single_molecule_minimal_basis_equilibrium_geometry`
+- `solver_error_hartree=0.0`
+- `model_error_hartree=0.040080307195131615`
+- `within_chemical_accuracy=False`
+
+Scope:
+
+- H2 only
+- STO-3G minimal basis
+- R(H-H) = 0.7414 Angstrom
+- PySCF FCI exact model solve
+- measured D0 reference from Holsch et al. 2019
+
+Next step:
+
+- add a better-basis or literature high-accuracy chemistry trace that reduces model error
+- keep solver error and model error separate
+
+### D7. Workflow Run RO-Crate Alignment
 
 Status: shape-compatible, externally RO-Crate-valid with warning.
 

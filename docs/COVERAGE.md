@@ -13,6 +13,7 @@ without lying.
 | `cross_library_success` | `benchmarks/gold_traces/trace_018.json` | `benchmarks/ro_crates/trace_018/ro-crate-metadata.json` | `present` | Result checked against a different library in the same runtime |
 | `combinatorial_optimization_function_level` | `benchmarks/gold_traces/trace_019.json` | `benchmarks/ro_crates/trace_019/ro-crate-metadata.json` | `present` | Small assignment-to-Ising optimum checked by brute force |
 | `combinatorial_optimization_degenerate_function_level` | `benchmarks/gold_traces/trace_020.json` | `benchmarks/ro_crates/trace_020/ro-crate-metadata.json` | `present` | Small assignment-to-Ising optimum set checked by brute force |
+| `quantum_chemistry_experimental_reference` | `benchmarks/gold_traces/trace_021.json` | `benchmarks/ro_crates/trace_021/ro-crate-metadata.json` | `present` | H2/STO-3G FCI compared with measured H2 dissociation energy |
 | `no_evidence_success` | `benchmarks/gold_traces/trace_012.json` | `benchmarks/ro_crates/trace_012/ro-crate-metadata.json` | `none_declared` | Successful result with no attached physical witness |
 | `backend_failed` | `benchmarks/gold_traces/trace_013.json` | `benchmarks/ro_crates/trace_013/ro-crate-metadata.json` | `not_applicable_failed` | Failed backend captured as provenance, not hidden |
 | `rejected_by_router` | `benchmarks/gold_traces/trace_014.json` | `benchmarks/ro_crates/trace_014/ro-crate-metadata.json` | `not_applicable_rejected` | Non-execution due memory/resource guard captured as provenance |
@@ -29,6 +30,7 @@ The local audit currently reports:
 - `cross_library_success`: 1
 - `combinatorial_optimization_function_level`: 1
 - `combinatorial_optimization_degenerate_function_level`: 1
+- `quantum_chemistry_experimental_reference`: 1
 - `no_evidence_success`: 1
 - `backend_failed`: 1
 - `rejected_by_router`: 1
@@ -55,6 +57,7 @@ trace_011: ok (cross_sim_success, present)
 trace_018: ok (cross_library_success, present)
 trace_019: ok (combinatorial_optimization_function_level, present)
 trace_020: ok (combinatorial_optimization_degenerate_function_level, present)
+trace_021: ok (quantum_chemistry_experimental_reference, present)
 trace_012: ok (no_evidence_success, none_declared)
 trace_013: ok (backend_failed, not_applicable_failed)
 trace_014: ok (rejected_by_router, not_applicable_rejected)

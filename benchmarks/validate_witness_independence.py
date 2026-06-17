@@ -24,6 +24,10 @@ INDEPENDENCE_LEVELS = {
         "strength": 4,
         "description": "Different computational method in the same Python/runtime process.",
     },
+    "same_runtime_exact_fci_with_external_experimental_reference": {
+        "strength": 4,
+        "description": "Exact same-runtime model solve compared with an external experimental reference.",
+    },
     "different_algorithm_same_runtime": {
         "strength": 3,
         "description": "Different algorithmic calculation in the same runtime/library family.",
@@ -47,6 +51,7 @@ REQUIRED_COVERAGE = {
     "analytic_no_solver",
     "different_library_same_runtime",
     "different_method_same_runtime",
+    "same_runtime_exact_fci_with_external_experimental_reference",
     "different_algorithm_same_runtime",
     "algorithmic_certificate_exact_svd_same_runtime",
     "algorithmic_error_certificate_same_runtime",

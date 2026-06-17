@@ -39,7 +39,8 @@ rejection.
 
 Use the Python environment that has the scientific stack available. In this
 workspace, the most reliable environment is the `physics-magnitude-lab` pixi
-environment:
+environment. The current corpus also requires the quantum-chemistry loader stack
+used by `trace_021`: `pyscf`, `openfermion`, and `openfermionpyscf`.
 
 ```bash
 cd "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/physics_quantum/physics-magnitude-lab"
@@ -95,6 +96,7 @@ See:
 - `docs/FORMAL_BOUND_AXIS.md`
 - `docs/WITNESS_INDEPENDENCE_AXIS.md`
 - `docs/OPTIMIZATION_BRIDGE.md`
+- `docs/EXPERIMENTAL_EVIDENCE_AXIS.md`
 - `docs/SCIAGENTGYM_AUDIT.md`
 - `docs/QMB100_AUDIT.md`
 - `docs/VVUQ_QUANTUM_AUDIT.md`

@@ -1,0 +1,678 @@
+{
+  "@context": [
+    "https://w3id.org/ro/crate/1.1/context",
+    {
+      "capas": "https://example.org/capas-inteligentes#",
+      "sha256": "https://schema.org/sha256"
+    }
+  ],
+  "@graph": [
+    {
+      "@id": "ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "about": {
+        "@id": "./"
+      },
+      "conformsTo": [
+        {
+          "@id": "https://w3id.org/ro/crate/1.1"
+        },
+        {
+          "@id": "https://w3id.org/workflowhub/workflow-ro-crate/1.0"
+        },
+        {
+          "@id": "https://example.org/capas-inteligentes/ro-crate/physical-evidence/0.1"
+        }
+      ]
+    },
+    {
+      "@id": "./",
+      "@type": "Dataset",
+      "capas:evidenceStatus": "present",
+      "capas:traceHash": "e5cf6fda02765022a3dedd53603ca7d99d0b4086d57dcefb980c3f70b68b67c5",
+      "capas:workflowRunCrateAlignment": "shape-compatible-with-workflow-run-ro-crate-v0",
+      "capas:workloadHash": "19dfd74ad0141de7ab7b6fbb5332c3cc229635c438e29a375c51cb06e19e58c4",
+      "conformsTo": [
+        {
+          "@id": "https://w3id.org/ro/crate/1.1"
+        },
+        {
+          "@id": "https://w3id.org/workflowhub/workflow-ro-crate/1.0"
+        },
+        {
+          "@id": "https://example.org/capas-inteligentes/ro-crate/physical-evidence/0.1"
+        }
+      ],
+      "datePublished": "2026-06-17T20:34:37.807322Z",
+      "description": "RO-Crate package containing a sealed RunTrace, optional PROV export, routing decision, runtime context, and CAPAS physical evidence metadata.",
+      "hasPart": [
+        {
+          "@id": "runtrace.json"
+        },
+        {
+          "@id": "workflow/capas-costurero-run.py"
+        },
+        {
+          "@id": "software:capas-costurero"
+        },
+        {
+          "@id": "entity:workload"
+        },
+        {
+          "@id": "trace:e5cf6fda02765022:routing-decision"
+        },
+        {
+          "@id": "trace:e5cf6fda02765022:result"
+        },
+        {
+          "@id": "runtrace.prov.json"
+        },
+        {
+          "@id": "trace:e5cf6fda02765022:physical-evidence"
+        }
+      ],
+      "name": "CAPAS traced scientific computation crate"
+    },
+    {
+      "@id": "runtrace.json",
+      "@type": [
+        "File",
+        "DigitalDocument"
+      ],
+      "about": {
+        "@id": "trace:e5cf6fda02765022"
+      },
+      "encodingFormat": "application/json",
+      "name": "Sealed CAPAS RunTrace",
+      "sha256": "692c5658c3b9bec900e930386dab4a0b9bf469aa7f5efbbc05b8943818844e22"
+    },
+    {
+      "@id": "trace:e5cf6fda02765022",
+      "@type": "CreateAction",
+      "actionStatus": "CompletedActionStatus",
+      "agent": {
+        "@id": "software:capas-costurero"
+      },
+      "capas:decisionReason": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+      "capas:decisionRoute": "external_engine",
+      "capas:evidenceStatus": "present",
+      "capas:hashAlgorithm": "sha256(stable_json)",
+      "capas:routingDecision": {
+        "@id": "trace:e5cf6fda02765022:routing-decision"
+      },
+      "capas:traceHash": "e5cf6fda02765022a3dedd53603ca7d99d0b4086d57dcefb980c3f70b68b67c5",
+      "capas:traceSchemaVersion": "capas-runtrace-v2",
+      "endTime": "2026-06-17T20:34:37.807322Z",
+      "instrument": {
+        "@id": "workflow/capas-costurero-run.py"
+      },
+      "name": "CAPAS costurero traced run",
+      "object": {
+        "@id": "entity:workload"
+      },
+      "result": {
+        "@id": "trace:e5cf6fda02765022:result"
+      },
+      "startTime": "2026-06-17T20:34:36.945242Z"
+    },
+    {
+      "@id": "workflow/capas-costurero-run.py",
+      "@type": [
+        "File",
+        "SoftwareSourceCode",
+        "ComputationalWorkflow"
+      ],
+      "capas:traceSchemaVersion": "capas-runtrace-v2",
+      "description": "Workflow plan that ingests a scientific workload, records runtime context, estimates routing cost, executes or skips the selected engine, and attaches CAPAS physical-evidence metadata.",
+      "input": {
+        "@id": "parameter:workload"
+      },
+      "name": "CAPAS costurero workflow",
+      "output": {
+        "@id": "parameter:result"
+      },
+      "programmingLanguage": "Python"
+    },
+    {
+      "@id": "parameter:workload",
+      "@type": "FormalParameter",
+      "additionalType": "https://bioschemas.org/FormalParameter",
+      "name": "Scientific workload"
+    },
+    {
+      "@id": "parameter:result",
+      "@type": "FormalParameter",
+      "additionalType": "https://bioschemas.org/FormalParameter",
+      "name": "Result summary or skipped/failure state"
+    },
+    {
+      "@id": "software:capas-costurero",
+      "@type": "SoftwareApplication",
+      "applicationCategory": "Scientific provenance and evidence tracing",
+      "name": "CAPAS INTELIGENTES costurero"
+    },
+    {
+      "@id": "entity:workload",
+      "@type": "Dataset",
+      "capas:summary": {
+        "budget": {
+          "flops_ceiling": 100000000.0,
+          "memory_budget_bytes": 536870912,
+          "safety_factor": 0.5
+        },
+        "engine": {
+          "engine_id": "physics_magnitude_quantum_engine.h2_sto3g_experimental_reference",
+          "function_name": "h2_sto3g_experimental_reference",
+          "kwargs_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
+        },
+        "kind": "dense",
+        "n_qubits": 2
+      },
+      "capas:workloadHash": "19dfd74ad0141de7ab7b6fbb5332c3cc229635c438e29a375c51cb06e19e58c4",
+      "name": "Workload summary"
+    },
+    {
+      "@id": "trace:e5cf6fda02765022:routing-decision",
+      "@type": "Thing",
+      "capas:reason": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+      "capas:route": "external_engine",
+      "name": "Routing decision"
+    },
+    {
+      "@id": "runtrace.prov.json",
+      "@type": [
+        "File",
+        "DigitalDocument"
+      ],
+      "encodingFormat": "application/json",
+      "name": "W3C PROV-shaped export",
+      "sha256": "63c956e37fce8bbed15bd583783fdaf3abf1052d05c3ec4ecd4290bc5b7bf130"
+    },
+    {
+      "@id": "trace:e5cf6fda02765022:result",
+      "@type": "Dataset",
+      "capas:physicalEvidence": {
+        "@id": "trace:e5cf6fda02765022:physical-evidence"
+      },
+      "capas:resultHash": "f8b506ba9484138022ee1be4ecf687c849a776d7c5ce174385ac657725455b5f",
+      "capas:summary": {
+        "abs_error": 0.0,
+        "abs_error_vs_experimental": 0.040080307195131615,
+        "abs_error_vs_fci": 0.0,
+        "basis": "sto-3g",
+        "benchmark_family": "QuantumChemistry",
+        "bond_length_angstrom": 0.7414,
+        "bound_scope": "single_molecule_minimal_basis_equilibrium_geometry",
+        "chemical_accuracy_threshold_hartree": 0.0015936,
+        "evidence_status_detail": "experimental_reference_model_error_reported",
+        "expected": {
+          "chemical_accuracy_threshold_hartree": 0.0015936,
+          "reference_experimental_binding_energy_hartree": 0.1640261683512219,
+          "reference_fci_total_energy_hartree": -1.137270174660904
+        },
+        "experimental_binding_energy_hartree": 0.1640261683512219,
+        "falsification_notes": [
+          "The STO-3G FCI solve is exact for the minimal-basis model, not exact for physical H2.",
+          "The model binding energy is not within chemical accuracy of the experimental D0 reference.",
+          "This is recorded as model error, not solver error.",
+          "The defended claim is error separation in a sealed trace, not competitive quantum chemistry."
+        ],
+        "geometry": [
+          {
+            "atom": "H",
+            "xyz_angstrom": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "atom": "H",
+            "xyz_angstrom": [
+              0.0,
+              0.0,
+              0.7414
+            ]
+          }
+        ],
+        "model_binding_energy_hartree": 0.20410647554635353,
+        "model_error_hartree": 0.040080307195131615,
+        "observable": "H2 STO-3G binding energy vs experimental dissociation energy",
+        "physical_evidence_detail": "H2/STO-3G at R=0.7414 Angstrom is solved by PySCF FCI. The solver error against the model FCI reference is zero by construction of the exact model solve. The model binding energy is then compared against the measured H2 dissociation energy D0(N=1)=35999.582834 cm^-1. The trace intentionally records that the minimal-basis model is not within chemical accuracy of the experimental binding reference.",
+        "physical_evidence_level": "experimental",
+        "reference_experimental_d0_cm_inverse": 35999.582834,
+        "reference_fci_total_energy_hartree": -1.137270174660904,
+        "reference_truth": {
+          "chemical_accuracy": {
+            "threshold_hartree": 0.0015936,
+            "threshold_name": "1 kcal/mol"
+          },
+          "experimental": {
+            "kind": "measured_dissociation_energy",
+            "quantity": "D0(N=1) ortho-H2",
+            "source": "H\u00f6lsch et al. 2019, arXiv:1902.09471",
+            "value_cm_inverse": 35999.582834,
+            "value_hartree": 0.1640261683512219
+          },
+          "fci": {
+            "basis": "sto-3g",
+            "geometry": "H-H 0.7414 Angstrom",
+            "kind": "exact_model_solution",
+            "method": "PySCF FCI",
+            "total_energy_hartree": -1.137270174660904
+          }
+        },
+        "repr": "{'engine_id': 'physics_magnitude_quantum_engine.h2_sto3g_experimental_reference', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_mag",
+        "solver_error_hartree": 0.0,
+        "source_label": "PySCF FCI model solve + external H2 D0 measurement",
+        "type": "dict",
+        "units": "hartree",
+        "value": {
+          "experimental_binding_energy_hartree": 0.1640261683512219,
+          "experimental_d0_cm_inverse": 35999.582834,
+          "fci_total_energy_hartree": -1.137270174660904,
+          "model_atom_energy_hartree": -0.4665818495572752,
+          "model_binding_energy_hartree": 0.20410647554635353,
+          "model_error_hartree": 0.040080307195131615,
+          "solver_error_hartree": 0.0,
+          "within_chemical_accuracy": false
+        },
+        "verification_independence": "same_runtime_exact_fci_with_external_experimental_reference",
+        "within_chemical_accuracy": false,
+        "witness_stack": {
+          "primary": "PySCF FCI exact model solve",
+          "runtime_relation": "same_runtime_model_solve_plus_external_measurement",
+          "witness": "external experimental H2 dissociation energy"
+        }
+      },
+      "name": "Result summary"
+    },
+    {
+      "@id": "trace:e5cf6fda02765022:physical-evidence",
+      "@type": "capas:PhysicalEvidence",
+      "about": {
+        "@id": "trace:e5cf6fda02765022:result"
+      },
+      "capas:absError": 0.0,
+      "capas:absErrorVsExperimental": 0.040080307195131615,
+      "capas:absErrorVsFci": 0.0,
+      "capas:basis": "sto-3g",
+      "capas:benchmarkFamily": "QuantumChemistry",
+      "capas:bondLengthAngstrom": 0.7414,
+      "capas:boundScope": "single_molecule_minimal_basis_equilibrium_geometry",
+      "capas:chemicalAccuracyThresholdHartree": 0.0015936,
+      "capas:detail": "H2/STO-3G at R=0.7414 Angstrom is solved by PySCF FCI. The solver error against the model FCI reference is zero by construction of the exact model solve. The model binding energy is then compared against the measured H2 dissociation energy D0(N=1)=35999.582834 cm^-1. The trace intentionally records that the minimal-basis model is not within chemical accuracy of the experimental binding reference.",
+      "capas:evidenceHash": "d1039a9d32bfd3ef7fa028c6f249eba8e491196f16360e27729416201f27f2bb",
+      "capas:evidenceStatusDetail": "experimental_reference_model_error_reported",
+      "capas:expected": {
+        "chemical_accuracy_threshold_hartree": 0.0015936,
+        "reference_experimental_binding_energy_hartree": 0.1640261683512219,
+        "reference_fci_total_energy_hartree": -1.137270174660904
+      },
+      "capas:experimentalBindingEnergyHartree": 0.1640261683512219,
+      "capas:falsificationNotes": [
+        "The STO-3G FCI solve is exact for the minimal-basis model, not exact for physical H2.",
+        "The model binding energy is not within chemical accuracy of the experimental D0 reference.",
+        "This is recorded as model error, not solver error.",
+        "The defended claim is error separation in a sealed trace, not competitive quantum chemistry."
+      ],
+      "capas:geometry": [
+        {
+          "atom": "H",
+          "xyz_angstrom": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "atom": "H",
+          "xyz_angstrom": [
+            0.0,
+            0.0,
+            0.7414
+          ]
+        }
+      ],
+      "capas:modelBindingEnergyHartree": 0.20410647554635353,
+      "capas:modelErrorHartree": 0.040080307195131615,
+      "capas:observable": "H2 STO-3G binding energy vs experimental dissociation energy",
+      "capas:physicalEvidenceLevel": "experimental",
+      "capas:referenceExperimentalD0CmInverse": 35999.582834,
+      "capas:referenceFciTotalEnergyHartree": -1.137270174660904,
+      "capas:referenceTruth": {
+        "chemical_accuracy": {
+          "threshold_hartree": 0.0015936,
+          "threshold_name": "1 kcal/mol"
+        },
+        "experimental": {
+          "kind": "measured_dissociation_energy",
+          "quantity": "D0(N=1) ortho-H2",
+          "source": "H\u00f6lsch et al. 2019, arXiv:1902.09471",
+          "value_cm_inverse": 35999.582834,
+          "value_hartree": 0.1640261683512219
+        },
+        "fci": {
+          "basis": "sto-3g",
+          "geometry": "H-H 0.7414 Angstrom",
+          "kind": "exact_model_solution",
+          "method": "PySCF FCI",
+          "total_energy_hartree": -1.137270174660904
+        }
+      },
+      "capas:solverErrorHartree": 0.0,
+      "capas:sourceLabel": "PySCF FCI model solve + external H2 D0 measurement",
+      "capas:units": "hartree",
+      "capas:value": {
+        "experimental_binding_energy_hartree": 0.1640261683512219,
+        "experimental_d0_cm_inverse": 35999.582834,
+        "fci_total_energy_hartree": -1.137270174660904,
+        "model_atom_energy_hartree": -0.4665818495572752,
+        "model_binding_energy_hartree": 0.20410647554635353,
+        "model_error_hartree": 0.040080307195131615,
+        "solver_error_hartree": 0.0,
+        "within_chemical_accuracy": false
+      },
+      "capas:verificationIndependence": "same_runtime_exact_fci_with_external_experimental_reference",
+      "capas:withinChemicalAccuracy": false,
+      "capas:witnessStack": {
+        "primary": "PySCF FCI exact model solve",
+        "runtime_relation": "same_runtime_model_solve_plus_external_measurement",
+        "witness": "external experimental H2 dissociation energy"
+      },
+      "name": "Physical evidence attached to result"
+    },
+    {
+      "@id": "trace:e5cf6fda02765022:event:0:ingest",
+      "@type": "Action",
+      "actionStatus": "ok",
+      "capas:metrics": {
+        "budget": {
+          "flops_ceiling": 100000000.0,
+          "memory_budget_bytes": 536870912,
+          "safety_factor": 0.5
+        },
+        "engine": {
+          "engine_id": "physics_magnitude_quantum_engine.h2_sto3g_experimental_reference",
+          "function_name": "h2_sto3g_experimental_reference",
+          "kwargs_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
+        },
+        "kind": "dense",
+        "n_qubits": 2
+      },
+      "description": "workload accepted",
+      "name": "ingest",
+      "startTime": 1781728476.9452422
+    },
+    {
+      "@id": "trace:e5cf6fda02765022:event:1:runtime_context",
+      "@type": "Action",
+      "actionStatus": "ok",
+      "capas:metrics": {
+        "cotengra_available": true,
+        "cotengra_version": "0.8.1",
+        "machine": "arm64",
+        "mlx_probe": "skipped_in_default_trace; use apple_silicon_thermal_routing.py for Metal/MLX device probes",
+        "numpy_available": true,
+        "numpy_version": "2.4.6",
+        "platform": "macOS-26.5.1-arm64-arm-64bit",
+        "processor": "arm",
+        "python_executable": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/physics_quantum/physics-magnitude-lab/.pixi/envs/default/bin/python",
+        "python_version": "3.12.13",
+        "qiskit_aer_available": true,
+        "qiskit_aer_version": "0.17.2",
+        "quimb_available": true,
+        "quimb_version": "1.14.0",
+        "scipy_available": true,
+        "scipy_version": "1.17.1",
+        "stim_available": true,
+        "stim_version": "1.16.0"
+      },
+      "description": "runtime and hardware context recorded",
+      "name": "runtime_context",
+      "startTime": 1781728476.945276
+    },
+    {
+      "@id": "trace:e5cf6fda02765022:event:2:engine_provenance",
+      "@type": "Action",
+      "actionStatus": "ok",
+      "capas:metrics": {
+        "engine_id": "physics_magnitude_quantum_engine.h2_sto3g_experimental_reference",
+        "function_name": "h2_sto3g_experimental_reference",
+        "kwargs": {},
+        "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
+        "module_sha256": "8bbd947f07a7681e4eacd429b2033f4883dee31aed1b1136b42e1d6e10b86dce"
+      },
+      "description": "external engine provenance recorded",
+      "name": "engine_provenance",
+      "startTime": 1781728476.945493
+    },
+    {
+      "@id": "trace:e5cf6fda02765022:event:3:cost_model",
+      "@type": "Action",
+      "actionStatus": "ok",
+      "capas:metrics": {
+        "memory_viable": true,
+        "n_qubits": 2,
+        "route": "dense",
+        "statevector_bytes": 64,
+        "usable_memory_bytes": 268435456.0
+      },
+      "description": "dense statevector cost estimated",
+      "name": "cost_model",
+      "startTime": 1781728476.9455009
+    },
+    {
+      "@id": "trace:e5cf6fda02765022:event:4:route",
+      "@type": "Action",
+      "actionStatus": "ok",
+      "capas:metrics": {
+        "engine_id": "physics_magnitude_quantum_engine.h2_sto3g_experimental_reference",
+        "function_name": "h2_sto3g_experimental_reference",
+        "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
+      },
+      "description": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+      "name": "route",
+      "startTime": 1781728476.945507
+    },
+    {
+      "@id": "trace:e5cf6fda02765022:event:5:execute",
+      "@type": "Action",
+      "actionStatus": "ok",
+      "capas:metrics": {
+        "abs_error": 0.0,
+        "abs_error_vs_experimental": 0.040080307195131615,
+        "abs_error_vs_fci": 0.0,
+        "basis": "sto-3g",
+        "benchmark_family": "QuantumChemistry",
+        "bond_length_angstrom": 0.7414,
+        "bound_scope": "single_molecule_minimal_basis_equilibrium_geometry",
+        "chemical_accuracy_threshold_hartree": 0.0015936,
+        "evidence_status_detail": "experimental_reference_model_error_reported",
+        "expected": {
+          "chemical_accuracy_threshold_hartree": 0.0015936,
+          "reference_experimental_binding_energy_hartree": 0.1640261683512219,
+          "reference_fci_total_energy_hartree": -1.137270174660904
+        },
+        "experimental_binding_energy_hartree": 0.1640261683512219,
+        "falsification_notes": [
+          "The STO-3G FCI solve is exact for the minimal-basis model, not exact for physical H2.",
+          "The model binding energy is not within chemical accuracy of the experimental D0 reference.",
+          "This is recorded as model error, not solver error.",
+          "The defended claim is error separation in a sealed trace, not competitive quantum chemistry."
+        ],
+        "geometry": [
+          {
+            "atom": "H",
+            "xyz_angstrom": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "atom": "H",
+            "xyz_angstrom": [
+              0.0,
+              0.0,
+              0.7414
+            ]
+          }
+        ],
+        "model_binding_energy_hartree": 0.20410647554635353,
+        "model_error_hartree": 0.040080307195131615,
+        "observable": "H2 STO-3G binding energy vs experimental dissociation energy",
+        "physical_evidence_detail": "H2/STO-3G at R=0.7414 Angstrom is solved by PySCF FCI. The solver error against the model FCI reference is zero by construction of the exact model solve. The model binding energy is then compared against the measured H2 dissociation energy D0(N=1)=35999.582834 cm^-1. The trace intentionally records that the minimal-basis model is not within chemical accuracy of the experimental binding reference.",
+        "physical_evidence_level": "experimental",
+        "reference_experimental_d0_cm_inverse": 35999.582834,
+        "reference_fci_total_energy_hartree": -1.137270174660904,
+        "reference_truth": {
+          "chemical_accuracy": {
+            "threshold_hartree": 0.0015936,
+            "threshold_name": "1 kcal/mol"
+          },
+          "experimental": {
+            "kind": "measured_dissociation_energy",
+            "quantity": "D0(N=1) ortho-H2",
+            "source": "H\u00f6lsch et al. 2019, arXiv:1902.09471",
+            "value_cm_inverse": 35999.582834,
+            "value_hartree": 0.1640261683512219
+          },
+          "fci": {
+            "basis": "sto-3g",
+            "geometry": "H-H 0.7414 Angstrom",
+            "kind": "exact_model_solution",
+            "method": "PySCF FCI",
+            "total_energy_hartree": -1.137270174660904
+          }
+        },
+        "repr": "{'engine_id': 'physics_magnitude_quantum_engine.h2_sto3g_experimental_reference', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_mag",
+        "route": "external_engine",
+        "runtime_ms": 861.5438750130124,
+        "solver_error_hartree": 0.0,
+        "source_label": "PySCF FCI model solve + external H2 D0 measurement",
+        "type": "dict",
+        "units": "hartree",
+        "value": {
+          "experimental_binding_energy_hartree": 0.1640261683512219,
+          "experimental_d0_cm_inverse": 35999.582834,
+          "fci_total_energy_hartree": -1.137270174660904,
+          "model_atom_energy_hartree": -0.4665818495572752,
+          "model_binding_energy_hartree": 0.20410647554635353,
+          "model_error_hartree": 0.040080307195131615,
+          "solver_error_hartree": 0.0,
+          "within_chemical_accuracy": false
+        },
+        "verification_independence": "same_runtime_exact_fci_with_external_experimental_reference",
+        "within_chemical_accuracy": false,
+        "witness_stack": {
+          "primary": "PySCF FCI exact model solve",
+          "runtime_relation": "same_runtime_model_solve_plus_external_measurement",
+          "witness": "external experimental H2 dissociation energy"
+        }
+      },
+      "description": "backend executed",
+      "name": "execute",
+      "startTime": 1781728477.807244
+    },
+    {
+      "@id": "trace:e5cf6fda02765022:event:6:physical_evidence",
+      "@type": "Action",
+      "actionStatus": "ok",
+      "capas:metrics": {
+        "abs_error": 0.0,
+        "abs_error_vs_experimental": 0.040080307195131615,
+        "abs_error_vs_fci": 0.0,
+        "basis": "sto-3g",
+        "benchmark_family": "QuantumChemistry",
+        "bond_length_angstrom": 0.7414,
+        "bound_scope": "single_molecule_minimal_basis_equilibrium_geometry",
+        "chemical_accuracy_threshold_hartree": 0.0015936,
+        "evidence_hash": "9815c8d4b923b7e6ba7aa3ede53fa62c316364c003d0c8b906aa15dee30d8cd5",
+        "evidence_status_detail": "experimental_reference_model_error_reported",
+        "expected": {
+          "chemical_accuracy_threshold_hartree": 0.0015936,
+          "reference_experimental_binding_energy_hartree": 0.1640261683512219,
+          "reference_fci_total_energy_hartree": -1.137270174660904
+        },
+        "experimental_binding_energy_hartree": 0.1640261683512219,
+        "falsification_notes": [
+          "The STO-3G FCI solve is exact for the minimal-basis model, not exact for physical H2.",
+          "The model binding energy is not within chemical accuracy of the experimental D0 reference.",
+          "This is recorded as model error, not solver error.",
+          "The defended claim is error separation in a sealed trace, not competitive quantum chemistry."
+        ],
+        "geometry": [
+          {
+            "atom": "H",
+            "xyz_angstrom": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "atom": "H",
+            "xyz_angstrom": [
+              0.0,
+              0.0,
+              0.7414
+            ]
+          }
+        ],
+        "model_binding_energy_hartree": 0.20410647554635353,
+        "model_error_hartree": 0.040080307195131615,
+        "observable": "H2 STO-3G binding energy vs experimental dissociation energy",
+        "physical_evidence_detail": "H2/STO-3G at R=0.7414 Angstrom is solved by PySCF FCI. The solver error against the model FCI reference is zero by construction of the exact model solve. The model binding energy is then compared against the measured H2 dissociation energy D0(N=1)=35999.582834 cm^-1. The trace intentionally records that the minimal-basis model is not within chemical accuracy of the experimental binding reference.",
+        "physical_evidence_level": "experimental",
+        "reference_experimental_d0_cm_inverse": 35999.582834,
+        "reference_fci_total_energy_hartree": -1.137270174660904,
+        "reference_truth": {
+          "chemical_accuracy": {
+            "threshold_hartree": 0.0015936,
+            "threshold_name": "1 kcal/mol"
+          },
+          "experimental": {
+            "kind": "measured_dissociation_energy",
+            "quantity": "D0(N=1) ortho-H2",
+            "source": "H\u00f6lsch et al. 2019, arXiv:1902.09471",
+            "value_cm_inverse": 35999.582834,
+            "value_hartree": 0.1640261683512219
+          },
+          "fci": {
+            "basis": "sto-3g",
+            "geometry": "H-H 0.7414 Angstrom",
+            "kind": "exact_model_solution",
+            "method": "PySCF FCI",
+            "total_energy_hartree": -1.137270174660904
+          }
+        },
+        "solver_error_hartree": 0.0,
+        "source_label": "PySCF FCI model solve + external H2 D0 measurement",
+        "units": "hartree",
+        "value": {
+          "experimental_binding_energy_hartree": 0.1640261683512219,
+          "experimental_d0_cm_inverse": 35999.582834,
+          "fci_total_energy_hartree": -1.137270174660904,
+          "model_atom_energy_hartree": -0.4665818495572752,
+          "model_binding_energy_hartree": 0.20410647554635353,
+          "model_error_hartree": 0.040080307195131615,
+          "solver_error_hartree": 0.0,
+          "within_chemical_accuracy": false
+        },
+        "verification_independence": "same_runtime_exact_fci_with_external_experimental_reference",
+        "within_chemical_accuracy": false,
+        "witness_stack": {
+          "primary": "PySCF FCI exact model solve",
+          "runtime_relation": "same_runtime_model_solve_plus_external_measurement",
+          "witness": "external experimental H2 dissociation energy"
+        }
+      },
+      "description": "physical evidence reported by backend",
+      "name": "physical_evidence",
+      "startTime": 1781728477.807322
+    }
+  ]
+}

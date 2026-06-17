@@ -43,7 +43,7 @@ def main() -> int:
     def physical_evidence_acceptable(row: dict[str, str]) -> bool:
         level = norm(row.get("physical_evidence_level", ""))
         risk = norm(row.get("risk_level", ""))
-        if level in {"analytic", "cross_sim", "formal_bound"}:
+        if level in {"analytic", "cross_sim", "formal_bound", "experimental"}:
             return True
         return level == "invariant" and risk in {"low", "medium"}
 
@@ -75,6 +75,7 @@ def main() -> int:
         "cross_library_success",
         "combinatorial_optimization_function_level",
         "combinatorial_optimization_degenerate_function_level",
+        "quantum_chemistry_experimental_reference",
         "no_evidence_success",
         "backend_failed",
         "rejected_by_router",
