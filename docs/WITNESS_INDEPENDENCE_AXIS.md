@@ -13,6 +13,7 @@ instead of collapsing them into a single "verified" label.
 |---|---:|---|---|
 | `analytic_no_solver` | 5 | Closed-form truth, no computational witness. | analytic traces |
 | `different_library_same_runtime` | 4 | Different library checks the result inside the same Python/runtime process. | `trace_018` |
+| `different_method_same_runtime` | 4 | Different computational method checks the result inside the same runtime. | `trace_019` |
 | `different_algorithm_same_runtime` | 3 | Different algorithmic calculation in the same runtime/library family. | `trace_011` |
 | `algorithmic_certificate_exact_svd_same_runtime` | 3 | Formal mathematical certificate emitted in the same runtime; strong evidence, not independent witness. | `trace_016`, `trace_017` |
 | `algorithmic_error_certificate_same_runtime` | 2 | Same-runtime non-formal error estimate. | `trace_015` |
@@ -30,6 +31,16 @@ instead of collapsing them into a single "verified" label.
 This is stronger than the NumPy-only `trace_011`, but it is still same-runtime
 evidence. It does not prove cross-BLAS, cross-runtime, or cross-hardware
 independence.
+
+`trace_019` checks a tiny assignment-to-Ising bridge:
+
+- primary value: exact diagonalization of the Ising Hamiltonian
+- witness: exhaustive enumeration of all `2^8` assignments
+- evidence level: `analytic`
+- witness independence: `different_method_same_runtime`
+
+This certifies optimality for the small instance only. It does not show an
+optimization speedup.
 
 ## Non-Degradation Rules
 

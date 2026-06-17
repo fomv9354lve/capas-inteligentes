@@ -73,6 +73,7 @@ def main() -> int:
         "analytic_success",
         "cross_sim_success",
         "cross_library_success",
+        "combinatorial_optimization_function_level",
         "no_evidence_success",
         "backend_failed",
         "rejected_by_router",

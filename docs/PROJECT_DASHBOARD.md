@@ -37,11 +37,11 @@ See git log. This dashboard is updated in the same commit as state changes.
 Recent commits:
 
 ```text
-HEAD Add witness independence axis
+HEAD Add optimization bridge trace
+09139ff Add witness independence axis
 d23efaa Add multi-step formal truncation bound trace
 b0ed7d2 Add non-degradable project dashboard
 1f9184a Add formal Schmidt truncation evidence trace
-733278e Validate RO-Crates with external ResearchObject checker
 ```
 
 Current validation status:
@@ -50,7 +50,7 @@ Current validation status:
 coverage_ready: True
 fine_tune_ready: False
 local RO-Crate validation: passed
-external ResearchObject RO-Crate validation: valid_with_warning for 18/18 crates
+external ResearchObject RO-Crate validation: valid_with_warning for 19/19 crates
 external warning: .py is not a recognised workflow extension
 witness independence validation: passed
 ```
@@ -66,6 +66,7 @@ ResearchObject validator recognizes a fixed workflow-extension list.
 | `analytic_success` | 10 | covered | closed-form truth |
 | `cross_sim_success` | 1 | covered | independent algorithmic witness |
 | `cross_library_success` | 1 | covered | different-library same-runtime witness |
+| `combinatorial_optimization_function_level` | 1 | covered | assignment-to-Ising optimum verified by brute force |
 | `formal_bound_success` | 1 | covered | formal single-cut Schmidt truncation certificate |
 | `formal_bound_composition_success` | 1 | covered | formal multi-step state truncation bound |
 | `estimated_bound_candidate` | 1 | covered | useful estimator, not formal |
@@ -76,7 +77,7 @@ ResearchObject validator recognizes a fixed workflow-extension list.
 Current evidence levels:
 
 ```text
-analytic: 10
+analytic: 11
 cross_sim: 2
 formal_bound: 2
 estimated_bound: 1
@@ -107,6 +108,11 @@ none: 3
    - sequential non-renormalized Schmidt truncations
    - triangle-composed state-error bound
    - not claimed as DMRG/observable certificate
+10. Optimization bridge seed case:
+   - N=8, K=2 assignment problem
+   - explicit Ising mapping with affinity, balance, and conflict terms
+   - exact diagonalization checked against brute force over 256 assignments
+   - not claimed as optimization speedup
 
 ## Non-Degradation Rules
 
@@ -206,6 +212,7 @@ Seed fact:
 
 - CAPAS already records `verification_independence`
 - current levels include `analytic_no_solver`, `different_library_same_runtime`,
+  `different_method_same_runtime`,
   `different_algorithm_same_runtime`,
   `algorithmic_certificate_exact_svd_same_runtime`,
   `algorithmic_error_certificate_same_runtime`, and `none`
@@ -215,9 +222,10 @@ What exists:
 - `docs/WITNESS_INDEPENDENCE_AXIS.md`
 - `benchmarks/validate_witness_independence.py`
 - `trace_018` as a SciPy cross-library same-runtime witness
-- six current levels covered:
+- seven current levels covered:
   - `analytic_no_solver`: 10
   - `different_library_same_runtime`: 1
+  - `different_method_same_runtime`: 1
   - `different_algorithm_same_runtime`: 1
   - `algorithmic_certificate_exact_svd_same_runtime`: 2
   - `algorithmic_error_certificate_same_runtime`: 1
@@ -272,7 +280,35 @@ Done when:
 - one trace records meaningful hardware context beyond library versions
 - one benchmark shows whether thermal state changes backend choice
 
-### D5. Workflow Run RO-Crate Alignment
+### D5. Optimization Bridge
+
+Status: seed case complete.
+
+What exists:
+
+- `docs/OPTIMIZATION_BRIDGE.md`
+- `trace_019`
+- `coverage_case=combinatorial_optimization_function_level`
+- `physical_evidence_level=analytic`
+- `verification_independence=different_method_same_runtime`
+- `bound_scope=exact_small_instance_brute_force_verified`
+- solver energy: `13.4`
+- brute-force energy: `13.4`
+- abs error: `0.0`
+- degeneracy count: `1`
+
+Scope:
+
+- N=8, K=2 assignment only
+- brute force over 256 assignments gives exact truth
+- no performance/speedup claim
+
+Next step:
+
+- add a second optimization instance with deliberate degeneracy
+- optionally add a larger non-analytic instance marked `none` or `cross_sim`, not `analytic`
+
+### D6. Workflow Run RO-Crate Alignment
 
 Status: shape-compatible, externally RO-Crate-valid with warning.
 

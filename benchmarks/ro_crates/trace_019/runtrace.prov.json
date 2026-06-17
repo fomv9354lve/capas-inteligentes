@@ -1,0 +1,2085 @@
+{
+  "activity": {
+    "capas:run:31af0b56c6e45e79:activity:0:ingest": {
+      "capas:message": "workload accepted",
+      "capas:status": "ok",
+      "capas:timestamp": 1781727343.127389,
+      "prov:type": "capas:ingest"
+    },
+    "capas:run:31af0b56c6e45e79:activity:1:runtime_context": {
+      "capas:message": "runtime and hardware context recorded",
+      "capas:status": "ok",
+      "capas:timestamp": 1781727343.1273952,
+      "prov:type": "capas:runtime_context"
+    },
+    "capas:run:31af0b56c6e45e79:activity:2:engine_provenance": {
+      "capas:message": "external engine provenance recorded",
+      "capas:status": "ok",
+      "capas:timestamp": 1781727343.127425,
+      "prov:type": "capas:engine_provenance"
+    },
+    "capas:run:31af0b56c6e45e79:activity:3:cost_model": {
+      "capas:message": "dense statevector cost estimated",
+      "capas:status": "ok",
+      "capas:timestamp": 1781727343.127427,
+      "prov:type": "capas:cost_model"
+    },
+    "capas:run:31af0b56c6e45e79:activity:4:route": {
+      "capas:message": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+      "capas:status": "ok",
+      "capas:timestamp": 1781727343.127428,
+      "prov:type": "capas:route"
+    },
+    "capas:run:31af0b56c6e45e79:activity:5:execute": {
+      "capas:message": "backend executed",
+      "capas:status": "ok",
+      "capas:timestamp": 1781727343.134421,
+      "prov:type": "capas:execute"
+    },
+    "capas:run:31af0b56c6e45e79:activity:6:physical_evidence": {
+      "capas:message": "physical evidence reported by backend",
+      "capas:status": "ok",
+      "capas:timestamp": 1781727343.1344798,
+      "prov:type": "capas:physical_evidence"
+    }
+  },
+  "agent": {
+    "capas:agent:costurero": {
+      "capas:name": "CAPAS INTELIGENTES costurero",
+      "prov:type": "prov:SoftwareAgent"
+    }
+  },
+  "bundle": "capas:run:31af0b56c6e45e79",
+  "capas:traceHash": "31af0b56c6e45e79553a14dc400f2bb0f52ee15b678e1aa7a2fbe0d9bf309aac",
+  "entity": {
+    "capas:run:31af0b56c6e45e79:decision": {
+      "capas:reason": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+      "capas:route": "external_engine",
+      "prov:type": "capas:RoutingDecision"
+    },
+    "capas:run:31af0b56c6e45e79:engine_module": {
+      "capas:engineId": "physics_magnitude_quantum_engine.assignment_to_ising_function_level",
+      "capas:functionName": "assignment_to_ising_function_level",
+      "capas:modulePath": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
+      "capas:moduleSha256": "2f950430e0e4b1de65b447e161a2218575ace67bd9dc2a210c320401b2be2efb",
+      "prov:type": "capas:EngineModule"
+    },
+    "capas:run:31af0b56c6e45e79:entity:0:ingest:metrics": {
+      "capas:eventHash": "46ce980db695438d26abe818d0081913f1165250f15a147fbd995fc7f7cc648c",
+      "capas:metrics": {
+        "budget": {
+          "flops_ceiling": 100000000.0,
+          "memory_budget_bytes": 536870912,
+          "safety_factor": 0.5
+        },
+        "engine": {
+          "engine_id": "physics_magnitude_quantum_engine.assignment_to_ising_function_level",
+          "function_name": "assignment_to_ising_function_level",
+          "kwargs_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
+        },
+        "kind": "dense",
+        "n_qubits": 2
+      },
+      "capas:stage": "ingest",
+      "prov:type": "capas:EventMetrics"
+    },
+    "capas:run:31af0b56c6e45e79:entity:1:runtime_context:metrics": {
+      "capas:eventHash": "5a78e9513b7655273abd6cf1faf9a09c9fc37c92514a84aa33391c65d1025171",
+      "capas:metrics": {
+        "cotengra_available": true,
+        "cotengra_version": "0.8.1",
+        "machine": "arm64",
+        "mlx_probe": "skipped_in_default_trace; use apple_silicon_thermal_routing.py for Metal/MLX device probes",
+        "numpy_available": true,
+        "numpy_version": "2.4.6",
+        "platform": "macOS-26.5.1-arm64-arm-64bit",
+        "processor": "arm",
+        "python_executable": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/physics_quantum/physics-magnitude-lab/.pixi/envs/default/bin/python",
+        "python_version": "3.12.13",
+        "qiskit_aer_available": true,
+        "qiskit_aer_version": "0.17.2",
+        "quimb_available": true,
+        "quimb_version": "1.14.0",
+        "scipy_available": true,
+        "scipy_version": "1.17.1",
+        "stim_available": true,
+        "stim_version": "1.16.0"
+      },
+      "capas:stage": "runtime_context",
+      "prov:type": "capas:EventMetrics"
+    },
+    "capas:run:31af0b56c6e45e79:entity:2:engine_provenance:metrics": {
+      "capas:eventHash": "72e571bfe863073bbac1eb7f6c8fd85662801620cc220a5eb7023d706e393d5b",
+      "capas:metrics": {
+        "engine_id": "physics_magnitude_quantum_engine.assignment_to_ising_function_level",
+        "function_name": "assignment_to_ising_function_level",
+        "kwargs": {},
+        "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py",
+        "module_sha256": "2f950430e0e4b1de65b447e161a2218575ace67bd9dc2a210c320401b2be2efb"
+      },
+      "capas:stage": "engine_provenance",
+      "prov:type": "capas:EventMetrics"
+    },
+    "capas:run:31af0b56c6e45e79:entity:3:cost_model:metrics": {
+      "capas:eventHash": "639dd79444315b48559a558dc1aa9ad231aa109da6f139ef813de89203f7c873",
+      "capas:metrics": {
+        "memory_viable": true,
+        "n_qubits": 2,
+        "route": "dense",
+        "statevector_bytes": 64,
+        "usable_memory_bytes": 268435456.0
+      },
+      "capas:stage": "cost_model",
+      "prov:type": "capas:EventMetrics"
+    },
+    "capas:run:31af0b56c6e45e79:entity:4:route:metrics": {
+      "capas:eventHash": "86c077afee2fedbfc85af42f070d05bb3dc308fcce492c4abcba671e33b007c2",
+      "capas:metrics": {
+        "engine_id": "physics_magnitude_quantum_engine.assignment_to_ising_function_level",
+        "function_name": "assignment_to_ising_function_level",
+        "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
+      },
+      "capas:stage": "route",
+      "prov:type": "capas:EventMetrics"
+    },
+    "capas:run:31af0b56c6e45e79:entity:5:execute:metrics": {
+      "capas:eventHash": "c945ebe4818fa91681ddcd3b9d2270c75c9340dd581f990127d7de9068a462d0",
+      "capas:metrics": {
+        "abs_error": 0.0,
+        "balance_lambda": 0.35,
+        "benchmark_family": "CombinatorialOptimization",
+        "bound_scope": "exact_small_instance_brute_force_verified",
+        "conflicts": [
+          {
+            "gamma": 1.4,
+            "tasks": [
+              "data_cleaning",
+              "model_eval"
+            ]
+          },
+          {
+            "gamma": 1.1,
+            "tasks": [
+              "api_integration",
+              "dashboard"
+            ]
+          },
+          {
+            "gamma": 0.9,
+            "tasks": [
+              "ux_copy",
+              "deployment_notes"
+            ]
+          },
+          {
+            "gamma": 0.8,
+            "tasks": [
+              "vendor_followup",
+              "qa_pass"
+            ]
+          }
+        ],
+        "constant_offset": 20.75,
+        "costs": [
+          {
+            "Ada": 1.0,
+            "Ben": 3.2,
+            "task": "data_cleaning"
+          },
+          {
+            "Ada": 3.0,
+            "Ben": 1.1,
+            "task": "api_integration"
+          },
+          {
+            "Ada": 2.6,
+            "Ben": 1.2,
+            "task": "ux_copy"
+          },
+          {
+            "Ada": 1.1,
+            "Ben": 3.0,
+            "task": "model_eval"
+          },
+          {
+            "Ada": 2.4,
+            "Ben": 1.4,
+            "task": "dashboard"
+          },
+          {
+            "Ada": 1.8,
+            "Ben": 2.1,
+            "task": "vendor_followup"
+          },
+          {
+            "Ada": 1.2,
+            "Ben": 2.7,
+            "task": "qa_pass"
+          },
+          {
+            "Ada": 2.9,
+            "Ben": 1.0,
+            "task": "deployment_notes"
+          }
+        ],
+        "degeneracy_count": 1,
+        "evidence_status_detail": "success",
+        "expected": 13.4,
+        "falsification_notes": [
+          "No artificial terms were added beyond affinity, load balance, and stated conflict penalties.",
+          "At N=8 brute force is trivial; the simulator does not add speed at this scale.",
+          "The defended claim is sealed optimality evidence, not superior optimization performance."
+        ],
+        "ising_J": [
+          {
+            "i": 0,
+            "j": 1,
+            "value": 0.7
+          },
+          {
+            "i": 0,
+            "j": 2,
+            "value": 0.7
+          },
+          {
+            "i": 0,
+            "j": 3,
+            "value": 1.4
+          },
+          {
+            "i": 0,
+            "j": 4,
+            "value": 0.7
+          },
+          {
+            "i": 0,
+            "j": 5,
+            "value": 0.7
+          },
+          {
+            "i": 0,
+            "j": 6,
+            "value": 0.7
+          },
+          {
+            "i": 0,
+            "j": 7,
+            "value": 0.7
+          },
+          {
+            "i": 1,
+            "j": 2,
+            "value": 0.7
+          },
+          {
+            "i": 1,
+            "j": 3,
+            "value": 0.7
+          },
+          {
+            "i": 1,
+            "j": 4,
+            "value": 1.25
+          },
+          {
+            "i": 1,
+            "j": 5,
+            "value": 0.7
+          },
+          {
+            "i": 1,
+            "j": 6,
+            "value": 0.7
+          },
+          {
+            "i": 1,
+            "j": 7,
+            "value": 0.7
+          },
+          {
+            "i": 2,
+            "j": 3,
+            "value": 0.7
+          },
+          {
+            "i": 2,
+            "j": 4,
+            "value": 0.7
+          },
+          {
+            "i": 2,
+            "j": 5,
+            "value": 0.7
+          },
+          {
+            "i": 2,
+            "j": 6,
+            "value": 0.7
+          },
+          {
+            "i": 2,
+            "j": 7,
+            "value": 1.15
+          },
+          {
+            "i": 3,
+            "j": 4,
+            "value": 0.7
+          },
+          {
+            "i": 3,
+            "j": 5,
+            "value": 0.7
+          },
+          {
+            "i": 3,
+            "j": 6,
+            "value": 0.7
+          },
+          {
+            "i": 3,
+            "j": 7,
+            "value": 0.7
+          },
+          {
+            "i": 4,
+            "j": 5,
+            "value": 0.7
+          },
+          {
+            "i": 4,
+            "j": 6,
+            "value": 0.7
+          },
+          {
+            "i": 4,
+            "j": 7,
+            "value": 0.7
+          },
+          {
+            "i": 5,
+            "j": 6,
+            "value": 1.1
+          },
+          {
+            "i": 5,
+            "j": 7,
+            "value": 0.7
+          },
+          {
+            "i": 6,
+            "j": 7,
+            "value": 0.7
+          }
+        ],
+        "ising_h": [
+          1.1,
+          -0.95,
+          -0.7000000000000001,
+          0.95,
+          -0.5,
+          0.15000000000000002,
+          0.7500000000000001,
+          -0.95
+        ],
+        "mapping_terms": [
+          {
+            "ada_cost": 1.0,
+            "ben_cost": 3.2,
+            "constant_delta": 2.1,
+            "h_delta": 1.1,
+            "kind": "individual_affinity",
+            "task": "data_cleaning"
+          },
+          {
+            "ada_cost": 3.0,
+            "ben_cost": 1.1,
+            "constant_delta": 2.05,
+            "h_delta": -0.95,
+            "kind": "individual_affinity",
+            "task": "api_integration"
+          },
+          {
+            "ada_cost": 2.6,
+            "ben_cost": 1.2,
+            "constant_delta": 1.9,
+            "h_delta": -0.7000000000000001,
+            "kind": "individual_affinity",
+            "task": "ux_copy"
+          },
+          {
+            "ada_cost": 1.1,
+            "ben_cost": 3.0,
+            "constant_delta": 2.05,
+            "h_delta": 0.95,
+            "kind": "individual_affinity",
+            "task": "model_eval"
+          },
+          {
+            "ada_cost": 2.4,
+            "ben_cost": 1.4,
+            "constant_delta": 1.9,
+            "h_delta": -0.5,
+            "kind": "individual_affinity",
+            "task": "dashboard"
+          },
+          {
+            "ada_cost": 1.8,
+            "ben_cost": 2.1,
+            "constant_delta": 1.9500000000000002,
+            "h_delta": 0.15000000000000002,
+            "kind": "individual_affinity",
+            "task": "vendor_followup"
+          },
+          {
+            "ada_cost": 1.2,
+            "ben_cost": 2.7,
+            "constant_delta": 1.9500000000000002,
+            "h_delta": 0.7500000000000001,
+            "kind": "individual_affinity",
+            "task": "qa_pass"
+          },
+          {
+            "ada_cost": 2.9,
+            "ben_cost": 1.0,
+            "constant_delta": 1.95,
+            "h_delta": -0.95,
+            "kind": "individual_affinity",
+            "task": "deployment_notes"
+          },
+          {
+            "constant_delta": 2.8,
+            "kind": "load_balance",
+            "lambda": 0.35,
+            "pairwise_J_delta": 0.7,
+            "penalty": "lambda * (sum_i s_i)^2"
+          },
+          {
+            "J_delta": 0.7,
+            "constant_delta": 0.7,
+            "gamma": 1.4,
+            "kind": "same_person_conflict",
+            "penalty": "gamma * (1 + s_i s_j) / 2",
+            "tasks": [
+              "data_cleaning",
+              "model_eval"
+            ]
+          },
+          {
+            "J_delta": 0.55,
+            "constant_delta": 0.55,
+            "gamma": 1.1,
+            "kind": "same_person_conflict",
+            "penalty": "gamma * (1 + s_i s_j) / 2",
+            "tasks": [
+              "api_integration",
+              "dashboard"
+            ]
+          },
+          {
+            "J_delta": 0.45,
+            "constant_delta": 0.45,
+            "gamma": 0.9,
+            "kind": "same_person_conflict",
+            "penalty": "gamma * (1 + s_i s_j) / 2",
+            "tasks": [
+              "ux_copy",
+              "deployment_notes"
+            ]
+          },
+          {
+            "J_delta": 0.4,
+            "constant_delta": 0.4,
+            "gamma": 0.8,
+            "kind": "same_person_conflict",
+            "penalty": "gamma * (1 + s_i s_j) / 2",
+            "tasks": [
+              "vendor_followup",
+              "qa_pass"
+            ]
+          }
+        ],
+        "observable": "N=8 K=2 assignment Ising ground-state energy",
+        "people": [
+          "Ada",
+          "Ben"
+        ],
+        "physical_evidence_detail": "A small real assignment objective is mapped explicitly to an Ising Hamiltonian. Exact diagonalization of the diagonal Hamiltonian is checked against exhaustive enumeration of all 2^8 assignments. This certifies optimality only for this small function-level instance; it does not claim optimization speedup.",
+        "physical_evidence_level": "analytic",
+        "reference_truth": "exact_brute_force_enumeration_2^8_assignments",
+        "repr": "{'engine_id': 'physics_magnitude_quantum_engine.assignment_to_ising_function_level', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_",
+        "route": "external_engine",
+        "runtime_ms": 6.8597919889725745,
+        "spin_encoding": {
+          "+1": "Ben",
+          "-1": "Ada"
+        },
+        "tasks": [
+          "data_cleaning",
+          "api_integration",
+          "ux_copy",
+          "model_eval",
+          "dashboard",
+          "vendor_followup",
+          "qa_pass",
+          "deployment_notes"
+        ],
+        "type": "dict",
+        "units": "objective_energy",
+        "value": {
+          "brute_force_energy": 13.4,
+          "degeneracy_count": 1,
+          "optimal_assignments": [
+            {
+              "assignees": [
+                "Ada",
+                "Ben",
+                "Ben",
+                "Ada",
+                "Ada",
+                "Ben",
+                "Ada",
+                "Ben"
+              ],
+              "bits": 166,
+              "energy": 13.4,
+              "spins": [
+                -1,
+                1,
+                1,
+                -1,
+                -1,
+                1,
+                -1,
+                1
+              ]
+            }
+          ],
+          "solver_assignment": {
+            "assignees": [
+              "Ada",
+              "Ben",
+              "Ben",
+              "Ada",
+              "Ada",
+              "Ben",
+              "Ada",
+              "Ben"
+            ],
+            "bits": 166,
+            "energy": 13.4,
+            "spins": [
+              -1,
+              1,
+              1,
+              -1,
+              -1,
+              1,
+              -1,
+              1
+            ]
+          },
+          "solver_energy": 13.4
+        },
+        "verification_independence": "different_method_same_runtime",
+        "witness_stack": {
+          "primary": "exact diagonalization of diagonal Ising Hamiltonian",
+          "runtime_relation": "same_python_runtime_different_method",
+          "witness": "exhaustive enumeration of 2^8 assignments"
+        }
+      },
+      "capas:stage": "execute",
+      "prov:type": "capas:EventMetrics"
+    },
+    "capas:run:31af0b56c6e45e79:entity:6:physical_evidence:metrics": {
+      "capas:eventHash": "4465e1a77fa4943e144e0c6cc6f421cfa6805c7a23189c4c999e12a7bd28601c",
+      "capas:metrics": {
+        "abs_error": 0.0,
+        "balance_lambda": 0.35,
+        "benchmark_family": "CombinatorialOptimization",
+        "bound_scope": "exact_small_instance_brute_force_verified",
+        "conflicts": [
+          {
+            "gamma": 1.4,
+            "tasks": [
+              "data_cleaning",
+              "model_eval"
+            ]
+          },
+          {
+            "gamma": 1.1,
+            "tasks": [
+              "api_integration",
+              "dashboard"
+            ]
+          },
+          {
+            "gamma": 0.9,
+            "tasks": [
+              "ux_copy",
+              "deployment_notes"
+            ]
+          },
+          {
+            "gamma": 0.8,
+            "tasks": [
+              "vendor_followup",
+              "qa_pass"
+            ]
+          }
+        ],
+        "constant_offset": 20.75,
+        "costs": [
+          {
+            "Ada": 1.0,
+            "Ben": 3.2,
+            "task": "data_cleaning"
+          },
+          {
+            "Ada": 3.0,
+            "Ben": 1.1,
+            "task": "api_integration"
+          },
+          {
+            "Ada": 2.6,
+            "Ben": 1.2,
+            "task": "ux_copy"
+          },
+          {
+            "Ada": 1.1,
+            "Ben": 3.0,
+            "task": "model_eval"
+          },
+          {
+            "Ada": 2.4,
+            "Ben": 1.4,
+            "task": "dashboard"
+          },
+          {
+            "Ada": 1.8,
+            "Ben": 2.1,
+            "task": "vendor_followup"
+          },
+          {
+            "Ada": 1.2,
+            "Ben": 2.7,
+            "task": "qa_pass"
+          },
+          {
+            "Ada": 2.9,
+            "Ben": 1.0,
+            "task": "deployment_notes"
+          }
+        ],
+        "degeneracy_count": 1,
+        "evidence_hash": "0f8ffa18e65f6f490352a5989f065978ed98e01d935f96e92eb6062675dcf4d3",
+        "evidence_status_detail": "success",
+        "expected": 13.4,
+        "falsification_notes": [
+          "No artificial terms were added beyond affinity, load balance, and stated conflict penalties.",
+          "At N=8 brute force is trivial; the simulator does not add speed at this scale.",
+          "The defended claim is sealed optimality evidence, not superior optimization performance."
+        ],
+        "ising_J": [
+          {
+            "i": 0,
+            "j": 1,
+            "value": 0.7
+          },
+          {
+            "i": 0,
+            "j": 2,
+            "value": 0.7
+          },
+          {
+            "i": 0,
+            "j": 3,
+            "value": 1.4
+          },
+          {
+            "i": 0,
+            "j": 4,
+            "value": 0.7
+          },
+          {
+            "i": 0,
+            "j": 5,
+            "value": 0.7
+          },
+          {
+            "i": 0,
+            "j": 6,
+            "value": 0.7
+          },
+          {
+            "i": 0,
+            "j": 7,
+            "value": 0.7
+          },
+          {
+            "i": 1,
+            "j": 2,
+            "value": 0.7
+          },
+          {
+            "i": 1,
+            "j": 3,
+            "value": 0.7
+          },
+          {
+            "i": 1,
+            "j": 4,
+            "value": 1.25
+          },
+          {
+            "i": 1,
+            "j": 5,
+            "value": 0.7
+          },
+          {
+            "i": 1,
+            "j": 6,
+            "value": 0.7
+          },
+          {
+            "i": 1,
+            "j": 7,
+            "value": 0.7
+          },
+          {
+            "i": 2,
+            "j": 3,
+            "value": 0.7
+          },
+          {
+            "i": 2,
+            "j": 4,
+            "value": 0.7
+          },
+          {
+            "i": 2,
+            "j": 5,
+            "value": 0.7
+          },
+          {
+            "i": 2,
+            "j": 6,
+            "value": 0.7
+          },
+          {
+            "i": 2,
+            "j": 7,
+            "value": 1.15
+          },
+          {
+            "i": 3,
+            "j": 4,
+            "value": 0.7
+          },
+          {
+            "i": 3,
+            "j": 5,
+            "value": 0.7
+          },
+          {
+            "i": 3,
+            "j": 6,
+            "value": 0.7
+          },
+          {
+            "i": 3,
+            "j": 7,
+            "value": 0.7
+          },
+          {
+            "i": 4,
+            "j": 5,
+            "value": 0.7
+          },
+          {
+            "i": 4,
+            "j": 6,
+            "value": 0.7
+          },
+          {
+            "i": 4,
+            "j": 7,
+            "value": 0.7
+          },
+          {
+            "i": 5,
+            "j": 6,
+            "value": 1.1
+          },
+          {
+            "i": 5,
+            "j": 7,
+            "value": 0.7
+          },
+          {
+            "i": 6,
+            "j": 7,
+            "value": 0.7
+          }
+        ],
+        "ising_h": [
+          1.1,
+          -0.95,
+          -0.7000000000000001,
+          0.95,
+          -0.5,
+          0.15000000000000002,
+          0.7500000000000001,
+          -0.95
+        ],
+        "mapping_terms": [
+          {
+            "ada_cost": 1.0,
+            "ben_cost": 3.2,
+            "constant_delta": 2.1,
+            "h_delta": 1.1,
+            "kind": "individual_affinity",
+            "task": "data_cleaning"
+          },
+          {
+            "ada_cost": 3.0,
+            "ben_cost": 1.1,
+            "constant_delta": 2.05,
+            "h_delta": -0.95,
+            "kind": "individual_affinity",
+            "task": "api_integration"
+          },
+          {
+            "ada_cost": 2.6,
+            "ben_cost": 1.2,
+            "constant_delta": 1.9,
+            "h_delta": -0.7000000000000001,
+            "kind": "individual_affinity",
+            "task": "ux_copy"
+          },
+          {
+            "ada_cost": 1.1,
+            "ben_cost": 3.0,
+            "constant_delta": 2.05,
+            "h_delta": 0.95,
+            "kind": "individual_affinity",
+            "task": "model_eval"
+          },
+          {
+            "ada_cost": 2.4,
+            "ben_cost": 1.4,
+            "constant_delta": 1.9,
+            "h_delta": -0.5,
+            "kind": "individual_affinity",
+            "task": "dashboard"
+          },
+          {
+            "ada_cost": 1.8,
+            "ben_cost": 2.1,
+            "constant_delta": 1.9500000000000002,
+            "h_delta": 0.15000000000000002,
+            "kind": "individual_affinity",
+            "task": "vendor_followup"
+          },
+          {
+            "ada_cost": 1.2,
+            "ben_cost": 2.7,
+            "constant_delta": 1.9500000000000002,
+            "h_delta": 0.7500000000000001,
+            "kind": "individual_affinity",
+            "task": "qa_pass"
+          },
+          {
+            "ada_cost": 2.9,
+            "ben_cost": 1.0,
+            "constant_delta": 1.95,
+            "h_delta": -0.95,
+            "kind": "individual_affinity",
+            "task": "deployment_notes"
+          },
+          {
+            "constant_delta": 2.8,
+            "kind": "load_balance",
+            "lambda": 0.35,
+            "pairwise_J_delta": 0.7,
+            "penalty": "lambda * (sum_i s_i)^2"
+          },
+          {
+            "J_delta": 0.7,
+            "constant_delta": 0.7,
+            "gamma": 1.4,
+            "kind": "same_person_conflict",
+            "penalty": "gamma * (1 + s_i s_j) / 2",
+            "tasks": [
+              "data_cleaning",
+              "model_eval"
+            ]
+          },
+          {
+            "J_delta": 0.55,
+            "constant_delta": 0.55,
+            "gamma": 1.1,
+            "kind": "same_person_conflict",
+            "penalty": "gamma * (1 + s_i s_j) / 2",
+            "tasks": [
+              "api_integration",
+              "dashboard"
+            ]
+          },
+          {
+            "J_delta": 0.45,
+            "constant_delta": 0.45,
+            "gamma": 0.9,
+            "kind": "same_person_conflict",
+            "penalty": "gamma * (1 + s_i s_j) / 2",
+            "tasks": [
+              "ux_copy",
+              "deployment_notes"
+            ]
+          },
+          {
+            "J_delta": 0.4,
+            "constant_delta": 0.4,
+            "gamma": 0.8,
+            "kind": "same_person_conflict",
+            "penalty": "gamma * (1 + s_i s_j) / 2",
+            "tasks": [
+              "vendor_followup",
+              "qa_pass"
+            ]
+          }
+        ],
+        "observable": "N=8 K=2 assignment Ising ground-state energy",
+        "people": [
+          "Ada",
+          "Ben"
+        ],
+        "physical_evidence_detail": "A small real assignment objective is mapped explicitly to an Ising Hamiltonian. Exact diagonalization of the diagonal Hamiltonian is checked against exhaustive enumeration of all 2^8 assignments. This certifies optimality only for this small function-level instance; it does not claim optimization speedup.",
+        "physical_evidence_level": "analytic",
+        "reference_truth": "exact_brute_force_enumeration_2^8_assignments",
+        "spin_encoding": {
+          "+1": "Ben",
+          "-1": "Ada"
+        },
+        "tasks": [
+          "data_cleaning",
+          "api_integration",
+          "ux_copy",
+          "model_eval",
+          "dashboard",
+          "vendor_followup",
+          "qa_pass",
+          "deployment_notes"
+        ],
+        "units": "objective_energy",
+        "value": {
+          "brute_force_energy": 13.4,
+          "degeneracy_count": 1,
+          "optimal_assignments": [
+            {
+              "assignees": [
+                "Ada",
+                "Ben",
+                "Ben",
+                "Ada",
+                "Ada",
+                "Ben",
+                "Ada",
+                "Ben"
+              ],
+              "bits": 166,
+              "energy": 13.4,
+              "spins": [
+                -1,
+                1,
+                1,
+                -1,
+                -1,
+                1,
+                -1,
+                1
+              ]
+            }
+          ],
+          "solver_assignment": {
+            "assignees": [
+              "Ada",
+              "Ben",
+              "Ben",
+              "Ada",
+              "Ada",
+              "Ben",
+              "Ada",
+              "Ben"
+            ],
+            "bits": 166,
+            "energy": 13.4,
+            "spins": [
+              -1,
+              1,
+              1,
+              -1,
+              -1,
+              1,
+              -1,
+              1
+            ]
+          },
+          "solver_energy": 13.4
+        },
+        "verification_independence": "different_method_same_runtime",
+        "witness_stack": {
+          "primary": "exact diagonalization of diagonal Ising Hamiltonian",
+          "runtime_relation": "same_python_runtime_different_method",
+          "witness": "exhaustive enumeration of 2^8 assignments"
+        }
+      },
+      "capas:stage": "physical_evidence",
+      "prov:type": "capas:EventMetrics"
+    },
+    "capas:run:31af0b56c6e45e79:physical_evidence": {
+      "capas:absError": 0.0,
+      "capas:actualErrorSquared": null,
+      "capas:balanceLambda": 0.35,
+      "capas:benchmarkFamily": "CombinatorialOptimization",
+      "capas:boundScope": "exact_small_instance_brute_force_verified",
+      "capas:boundSlack": null,
+      "capas:boundType": null,
+      "capas:certificationStatus": null,
+      "capas:composedStateErrorBound": null,
+      "capas:conflicts": [
+        {
+          "gamma": 1.4,
+          "tasks": [
+            "data_cleaning",
+            "model_eval"
+          ]
+        },
+        {
+          "gamma": 1.1,
+          "tasks": [
+            "api_integration",
+            "dashboard"
+          ]
+        },
+        {
+          "gamma": 0.9,
+          "tasks": [
+            "ux_copy",
+            "deployment_notes"
+          ]
+        },
+        {
+          "gamma": 0.8,
+          "tasks": [
+            "vendor_followup",
+            "qa_pass"
+          ]
+        }
+      ],
+      "capas:constantOffset": 20.75,
+      "capas:costs": [
+        {
+          "Ada": 1.0,
+          "Ben": 3.2,
+          "task": "data_cleaning"
+        },
+        {
+          "Ada": 3.0,
+          "Ben": 1.1,
+          "task": "api_integration"
+        },
+        {
+          "Ada": 2.6,
+          "Ben": 1.2,
+          "task": "ux_copy"
+        },
+        {
+          "Ada": 1.1,
+          "Ben": 3.0,
+          "task": "model_eval"
+        },
+        {
+          "Ada": 2.4,
+          "Ben": 1.4,
+          "task": "dashboard"
+        },
+        {
+          "Ada": 1.8,
+          "Ben": 2.1,
+          "task": "vendor_followup"
+        },
+        {
+          "Ada": 1.2,
+          "Ben": 2.7,
+          "task": "qa_pass"
+        },
+        {
+          "Ada": 2.9,
+          "Ben": 1.0,
+          "task": "deployment_notes"
+        }
+      ],
+      "capas:degeneracyCount": 1,
+      "capas:discardedWeight": null,
+      "capas:evidenceHash": "0f8ffa18e65f6f490352a5989f065978ed98e01d935f96e92eb6062675dcf4d3",
+      "capas:evidenceStatusDetail": "success",
+      "capas:expected": 13.4,
+      "capas:falsificationNotes": [
+        "No artificial terms were added beyond affinity, load balance, and stated conflict penalties.",
+        "At N=8 brute force is trivial; the simulator does not add speed at this scale.",
+        "The defended claim is sealed optimality evidence, not superior optimization performance."
+      ],
+      "capas:formalBoundStatus": null,
+      "capas:isingH": [
+        1.1,
+        -0.95,
+        -0.7000000000000001,
+        0.95,
+        -0.5,
+        0.15000000000000002,
+        0.7500000000000001,
+        -0.95
+      ],
+      "capas:isingJ": [
+        {
+          "i": 0,
+          "j": 1,
+          "value": 0.7
+        },
+        {
+          "i": 0,
+          "j": 2,
+          "value": 0.7
+        },
+        {
+          "i": 0,
+          "j": 3,
+          "value": 1.4
+        },
+        {
+          "i": 0,
+          "j": 4,
+          "value": 0.7
+        },
+        {
+          "i": 0,
+          "j": 5,
+          "value": 0.7
+        },
+        {
+          "i": 0,
+          "j": 6,
+          "value": 0.7
+        },
+        {
+          "i": 0,
+          "j": 7,
+          "value": 0.7
+        },
+        {
+          "i": 1,
+          "j": 2,
+          "value": 0.7
+        },
+        {
+          "i": 1,
+          "j": 3,
+          "value": 0.7
+        },
+        {
+          "i": 1,
+          "j": 4,
+          "value": 1.25
+        },
+        {
+          "i": 1,
+          "j": 5,
+          "value": 0.7
+        },
+        {
+          "i": 1,
+          "j": 6,
+          "value": 0.7
+        },
+        {
+          "i": 1,
+          "j": 7,
+          "value": 0.7
+        },
+        {
+          "i": 2,
+          "j": 3,
+          "value": 0.7
+        },
+        {
+          "i": 2,
+          "j": 4,
+          "value": 0.7
+        },
+        {
+          "i": 2,
+          "j": 5,
+          "value": 0.7
+        },
+        {
+          "i": 2,
+          "j": 6,
+          "value": 0.7
+        },
+        {
+          "i": 2,
+          "j": 7,
+          "value": 1.15
+        },
+        {
+          "i": 3,
+          "j": 4,
+          "value": 0.7
+        },
+        {
+          "i": 3,
+          "j": 5,
+          "value": 0.7
+        },
+        {
+          "i": 3,
+          "j": 6,
+          "value": 0.7
+        },
+        {
+          "i": 3,
+          "j": 7,
+          "value": 0.7
+        },
+        {
+          "i": 4,
+          "j": 5,
+          "value": 0.7
+        },
+        {
+          "i": 4,
+          "j": 6,
+          "value": 0.7
+        },
+        {
+          "i": 4,
+          "j": 7,
+          "value": 0.7
+        },
+        {
+          "i": 5,
+          "j": 6,
+          "value": 1.1
+        },
+        {
+          "i": 5,
+          "j": 7,
+          "value": 0.7
+        },
+        {
+          "i": 6,
+          "j": 7,
+          "value": 0.7
+        }
+      ],
+      "capas:mappingTerms": [
+        {
+          "ada_cost": 1.0,
+          "ben_cost": 3.2,
+          "constant_delta": 2.1,
+          "h_delta": 1.1,
+          "kind": "individual_affinity",
+          "task": "data_cleaning"
+        },
+        {
+          "ada_cost": 3.0,
+          "ben_cost": 1.1,
+          "constant_delta": 2.05,
+          "h_delta": -0.95,
+          "kind": "individual_affinity",
+          "task": "api_integration"
+        },
+        {
+          "ada_cost": 2.6,
+          "ben_cost": 1.2,
+          "constant_delta": 1.9,
+          "h_delta": -0.7000000000000001,
+          "kind": "individual_affinity",
+          "task": "ux_copy"
+        },
+        {
+          "ada_cost": 1.1,
+          "ben_cost": 3.0,
+          "constant_delta": 2.05,
+          "h_delta": 0.95,
+          "kind": "individual_affinity",
+          "task": "model_eval"
+        },
+        {
+          "ada_cost": 2.4,
+          "ben_cost": 1.4,
+          "constant_delta": 1.9,
+          "h_delta": -0.5,
+          "kind": "individual_affinity",
+          "task": "dashboard"
+        },
+        {
+          "ada_cost": 1.8,
+          "ben_cost": 2.1,
+          "constant_delta": 1.9500000000000002,
+          "h_delta": 0.15000000000000002,
+          "kind": "individual_affinity",
+          "task": "vendor_followup"
+        },
+        {
+          "ada_cost": 1.2,
+          "ben_cost": 2.7,
+          "constant_delta": 1.9500000000000002,
+          "h_delta": 0.7500000000000001,
+          "kind": "individual_affinity",
+          "task": "qa_pass"
+        },
+        {
+          "ada_cost": 2.9,
+          "ben_cost": 1.0,
+          "constant_delta": 1.95,
+          "h_delta": -0.95,
+          "kind": "individual_affinity",
+          "task": "deployment_notes"
+        },
+        {
+          "constant_delta": 2.8,
+          "kind": "load_balance",
+          "lambda": 0.35,
+          "pairwise_J_delta": 0.7,
+          "penalty": "lambda * (sum_i s_i)^2"
+        },
+        {
+          "J_delta": 0.7,
+          "constant_delta": 0.7,
+          "gamma": 1.4,
+          "kind": "same_person_conflict",
+          "penalty": "gamma * (1 + s_i s_j) / 2",
+          "tasks": [
+            "data_cleaning",
+            "model_eval"
+          ]
+        },
+        {
+          "J_delta": 0.55,
+          "constant_delta": 0.55,
+          "gamma": 1.1,
+          "kind": "same_person_conflict",
+          "penalty": "gamma * (1 + s_i s_j) / 2",
+          "tasks": [
+            "api_integration",
+            "dashboard"
+          ]
+        },
+        {
+          "J_delta": 0.45,
+          "constant_delta": 0.45,
+          "gamma": 0.9,
+          "kind": "same_person_conflict",
+          "penalty": "gamma * (1 + s_i s_j) / 2",
+          "tasks": [
+            "ux_copy",
+            "deployment_notes"
+          ]
+        },
+        {
+          "J_delta": 0.4,
+          "constant_delta": 0.4,
+          "gamma": 0.8,
+          "kind": "same_person_conflict",
+          "penalty": "gamma * (1 + s_i s_j) / 2",
+          "tasks": [
+            "vendor_followup",
+            "qa_pass"
+          ]
+        }
+      ],
+      "capas:observable": "N=8 K=2 assignment Ising ground-state energy",
+      "capas:optimalAssignments": null,
+      "capas:people": [
+        "Ada",
+        "Ben"
+      ],
+      "capas:physicalEvidenceDetail": "A small real assignment objective is mapped explicitly to an Ising Hamiltonian. Exact diagonalization of the diagonal Hamiltonian is checked against exhaustive enumeration of all 2^8 assignments. This certifies optimality only for this small function-level instance; it does not claim optimization speedup.",
+      "capas:physicalEvidenceLevel": "analytic",
+      "capas:referenceTruth": "exact_brute_force_enumeration_2^8_assignments",
+      "capas:sourceLabel": null,
+      "capas:spinEncoding": {
+        "+1": "Ben",
+        "-1": "Ada"
+      },
+      "capas:tasks": [
+        "data_cleaning",
+        "api_integration",
+        "ux_copy",
+        "model_eval",
+        "dashboard",
+        "vendor_followup",
+        "qa_pass",
+        "deployment_notes"
+      ],
+      "capas:units": "objective_energy",
+      "capas:value": {
+        "brute_force_energy": 13.4,
+        "degeneracy_count": 1,
+        "optimal_assignments": [
+          {
+            "assignees": [
+              "Ada",
+              "Ben",
+              "Ben",
+              "Ada",
+              "Ada",
+              "Ben",
+              "Ada",
+              "Ben"
+            ],
+            "bits": 166,
+            "energy": 13.4,
+            "spins": [
+              -1,
+              1,
+              1,
+              -1,
+              -1,
+              1,
+              -1,
+              1
+            ]
+          }
+        ],
+        "solver_assignment": {
+          "assignees": [
+            "Ada",
+            "Ben",
+            "Ben",
+            "Ada",
+            "Ada",
+            "Ben",
+            "Ada",
+            "Ben"
+          ],
+          "bits": 166,
+          "energy": 13.4,
+          "spins": [
+            -1,
+            1,
+            1,
+            -1,
+            -1,
+            1,
+            -1,
+            1
+          ]
+        },
+        "solver_energy": 13.4
+      },
+      "capas:verificationIndependence": "different_method_same_runtime",
+      "capas:witnessStack": {
+        "primary": "exact diagonalization of diagonal Ising Hamiltonian",
+        "runtime_relation": "same_python_runtime_different_method",
+        "witness": "exhaustive enumeration of 2^8 assignments"
+      },
+      "prov:type": "capas:PhysicalEvidence"
+    },
+    "capas:run:31af0b56c6e45e79:result": {
+      "capas:resultHash": "11df4e1a89a915da2c406a3352a8693990f3123d993815c12554a6e9100c70ff",
+      "capas:summary": {
+        "abs_error": 0.0,
+        "balance_lambda": 0.35,
+        "benchmark_family": "CombinatorialOptimization",
+        "bound_scope": "exact_small_instance_brute_force_verified",
+        "conflicts": [
+          {
+            "gamma": 1.4,
+            "tasks": [
+              "data_cleaning",
+              "model_eval"
+            ]
+          },
+          {
+            "gamma": 1.1,
+            "tasks": [
+              "api_integration",
+              "dashboard"
+            ]
+          },
+          {
+            "gamma": 0.9,
+            "tasks": [
+              "ux_copy",
+              "deployment_notes"
+            ]
+          },
+          {
+            "gamma": 0.8,
+            "tasks": [
+              "vendor_followup",
+              "qa_pass"
+            ]
+          }
+        ],
+        "constant_offset": 20.75,
+        "costs": [
+          {
+            "Ada": 1.0,
+            "Ben": 3.2,
+            "task": "data_cleaning"
+          },
+          {
+            "Ada": 3.0,
+            "Ben": 1.1,
+            "task": "api_integration"
+          },
+          {
+            "Ada": 2.6,
+            "Ben": 1.2,
+            "task": "ux_copy"
+          },
+          {
+            "Ada": 1.1,
+            "Ben": 3.0,
+            "task": "model_eval"
+          },
+          {
+            "Ada": 2.4,
+            "Ben": 1.4,
+            "task": "dashboard"
+          },
+          {
+            "Ada": 1.8,
+            "Ben": 2.1,
+            "task": "vendor_followup"
+          },
+          {
+            "Ada": 1.2,
+            "Ben": 2.7,
+            "task": "qa_pass"
+          },
+          {
+            "Ada": 2.9,
+            "Ben": 1.0,
+            "task": "deployment_notes"
+          }
+        ],
+        "degeneracy_count": 1,
+        "evidence_status_detail": "success",
+        "expected": 13.4,
+        "falsification_notes": [
+          "No artificial terms were added beyond affinity, load balance, and stated conflict penalties.",
+          "At N=8 brute force is trivial; the simulator does not add speed at this scale.",
+          "The defended claim is sealed optimality evidence, not superior optimization performance."
+        ],
+        "ising_J": [
+          {
+            "i": 0,
+            "j": 1,
+            "value": 0.7
+          },
+          {
+            "i": 0,
+            "j": 2,
+            "value": 0.7
+          },
+          {
+            "i": 0,
+            "j": 3,
+            "value": 1.4
+          },
+          {
+            "i": 0,
+            "j": 4,
+            "value": 0.7
+          },
+          {
+            "i": 0,
+            "j": 5,
+            "value": 0.7
+          },
+          {
+            "i": 0,
+            "j": 6,
+            "value": 0.7
+          },
+          {
+            "i": 0,
+            "j": 7,
+            "value": 0.7
+          },
+          {
+            "i": 1,
+            "j": 2,
+            "value": 0.7
+          },
+          {
+            "i": 1,
+            "j": 3,
+            "value": 0.7
+          },
+          {
+            "i": 1,
+            "j": 4,
+            "value": 1.25
+          },
+          {
+            "i": 1,
+            "j": 5,
+            "value": 0.7
+          },
+          {
+            "i": 1,
+            "j": 6,
+            "value": 0.7
+          },
+          {
+            "i": 1,
+            "j": 7,
+            "value": 0.7
+          },
+          {
+            "i": 2,
+            "j": 3,
+            "value": 0.7
+          },
+          {
+            "i": 2,
+            "j": 4,
+            "value": 0.7
+          },
+          {
+            "i": 2,
+            "j": 5,
+            "value": 0.7
+          },
+          {
+            "i": 2,
+            "j": 6,
+            "value": 0.7
+          },
+          {
+            "i": 2,
+            "j": 7,
+            "value": 1.15
+          },
+          {
+            "i": 3,
+            "j": 4,
+            "value": 0.7
+          },
+          {
+            "i": 3,
+            "j": 5,
+            "value": 0.7
+          },
+          {
+            "i": 3,
+            "j": 6,
+            "value": 0.7
+          },
+          {
+            "i": 3,
+            "j": 7,
+            "value": 0.7
+          },
+          {
+            "i": 4,
+            "j": 5,
+            "value": 0.7
+          },
+          {
+            "i": 4,
+            "j": 6,
+            "value": 0.7
+          },
+          {
+            "i": 4,
+            "j": 7,
+            "value": 0.7
+          },
+          {
+            "i": 5,
+            "j": 6,
+            "value": 1.1
+          },
+          {
+            "i": 5,
+            "j": 7,
+            "value": 0.7
+          },
+          {
+            "i": 6,
+            "j": 7,
+            "value": 0.7
+          }
+        ],
+        "ising_h": [
+          1.1,
+          -0.95,
+          -0.7000000000000001,
+          0.95,
+          -0.5,
+          0.15000000000000002,
+          0.7500000000000001,
+          -0.95
+        ],
+        "mapping_terms": [
+          {
+            "ada_cost": 1.0,
+            "ben_cost": 3.2,
+            "constant_delta": 2.1,
+            "h_delta": 1.1,
+            "kind": "individual_affinity",
+            "task": "data_cleaning"
+          },
+          {
+            "ada_cost": 3.0,
+            "ben_cost": 1.1,
+            "constant_delta": 2.05,
+            "h_delta": -0.95,
+            "kind": "individual_affinity",
+            "task": "api_integration"
+          },
+          {
+            "ada_cost": 2.6,
+            "ben_cost": 1.2,
+            "constant_delta": 1.9,
+            "h_delta": -0.7000000000000001,
+            "kind": "individual_affinity",
+            "task": "ux_copy"
+          },
+          {
+            "ada_cost": 1.1,
+            "ben_cost": 3.0,
+            "constant_delta": 2.05,
+            "h_delta": 0.95,
+            "kind": "individual_affinity",
+            "task": "model_eval"
+          },
+          {
+            "ada_cost": 2.4,
+            "ben_cost": 1.4,
+            "constant_delta": 1.9,
+            "h_delta": -0.5,
+            "kind": "individual_affinity",
+            "task": "dashboard"
+          },
+          {
+            "ada_cost": 1.8,
+            "ben_cost": 2.1,
+            "constant_delta": 1.9500000000000002,
+            "h_delta": 0.15000000000000002,
+            "kind": "individual_affinity",
+            "task": "vendor_followup"
+          },
+          {
+            "ada_cost": 1.2,
+            "ben_cost": 2.7,
+            "constant_delta": 1.9500000000000002,
+            "h_delta": 0.7500000000000001,
+            "kind": "individual_affinity",
+            "task": "qa_pass"
+          },
+          {
+            "ada_cost": 2.9,
+            "ben_cost": 1.0,
+            "constant_delta": 1.95,
+            "h_delta": -0.95,
+            "kind": "individual_affinity",
+            "task": "deployment_notes"
+          },
+          {
+            "constant_delta": 2.8,
+            "kind": "load_balance",
+            "lambda": 0.35,
+            "pairwise_J_delta": 0.7,
+            "penalty": "lambda * (sum_i s_i)^2"
+          },
+          {
+            "J_delta": 0.7,
+            "constant_delta": 0.7,
+            "gamma": 1.4,
+            "kind": "same_person_conflict",
+            "penalty": "gamma * (1 + s_i s_j) / 2",
+            "tasks": [
+              "data_cleaning",
+              "model_eval"
+            ]
+          },
+          {
+            "J_delta": 0.55,
+            "constant_delta": 0.55,
+            "gamma": 1.1,
+            "kind": "same_person_conflict",
+            "penalty": "gamma * (1 + s_i s_j) / 2",
+            "tasks": [
+              "api_integration",
+              "dashboard"
+            ]
+          },
+          {
+            "J_delta": 0.45,
+            "constant_delta": 0.45,
+            "gamma": 0.9,
+            "kind": "same_person_conflict",
+            "penalty": "gamma * (1 + s_i s_j) / 2",
+            "tasks": [
+              "ux_copy",
+              "deployment_notes"
+            ]
+          },
+          {
+            "J_delta": 0.4,
+            "constant_delta": 0.4,
+            "gamma": 0.8,
+            "kind": "same_person_conflict",
+            "penalty": "gamma * (1 + s_i s_j) / 2",
+            "tasks": [
+              "vendor_followup",
+              "qa_pass"
+            ]
+          }
+        ],
+        "observable": "N=8 K=2 assignment Ising ground-state energy",
+        "people": [
+          "Ada",
+          "Ben"
+        ],
+        "physical_evidence_detail": "A small real assignment objective is mapped explicitly to an Ising Hamiltonian. Exact diagonalization of the diagonal Hamiltonian is checked against exhaustive enumeration of all 2^8 assignments. This certifies optimality only for this small function-level instance; it does not claim optimization speedup.",
+        "physical_evidence_level": "analytic",
+        "reference_truth": "exact_brute_force_enumeration_2^8_assignments",
+        "repr": "{'engine_id': 'physics_magnitude_quantum_engine.assignment_to_ising_function_level', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_",
+        "spin_encoding": {
+          "+1": "Ben",
+          "-1": "Ada"
+        },
+        "tasks": [
+          "data_cleaning",
+          "api_integration",
+          "ux_copy",
+          "model_eval",
+          "dashboard",
+          "vendor_followup",
+          "qa_pass",
+          "deployment_notes"
+        ],
+        "type": "dict",
+        "units": "objective_energy",
+        "value": {
+          "brute_force_energy": 13.4,
+          "degeneracy_count": 1,
+          "optimal_assignments": [
+            {
+              "assignees": [
+                "Ada",
+                "Ben",
+                "Ben",
+                "Ada",
+                "Ada",
+                "Ben",
+                "Ada",
+                "Ben"
+              ],
+              "bits": 166,
+              "energy": 13.4,
+              "spins": [
+                -1,
+                1,
+                1,
+                -1,
+                -1,
+                1,
+                -1,
+                1
+              ]
+            }
+          ],
+          "solver_assignment": {
+            "assignees": [
+              "Ada",
+              "Ben",
+              "Ben",
+              "Ada",
+              "Ada",
+              "Ben",
+              "Ada",
+              "Ben"
+            ],
+            "bits": 166,
+            "energy": 13.4,
+            "spins": [
+              -1,
+              1,
+              1,
+              -1,
+              -1,
+              1,
+              -1,
+              1
+            ]
+          },
+          "solver_energy": 13.4
+        },
+        "verification_independence": "different_method_same_runtime",
+        "witness_stack": {
+          "primary": "exact diagonalization of diagonal Ising Hamiltonian",
+          "runtime_relation": "same_python_runtime_different_method",
+          "witness": "exhaustive enumeration of 2^8 assignments"
+        }
+      },
+      "prov:type": "capas:Result"
+    },
+    "capas:run:31af0b56c6e45e79:workload": {
+      "capas:summary": {
+        "budget": {
+          "flops_ceiling": 100000000.0,
+          "memory_budget_bytes": 536870912,
+          "safety_factor": 0.5
+        },
+        "engine": {
+          "engine_id": "physics_magnitude_quantum_engine.assignment_to_ising_function_level",
+          "function_name": "assignment_to_ising_function_level",
+          "kwargs_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/physics_magnitude_gold_engines.py"
+        },
+        "kind": "dense",
+        "n_qubits": 2
+      },
+      "capas:workloadHash": "afc98ab4652539ed7e42835dc38417ef3690a4ac504c9b8c95da80524ec8880f",
+      "prov:type": "capas:Workload"
+    }
+  },
+  "prefix": {
+    "capas": "https://example.org/capas-inteligentes#",
+    "prov": "http://www.w3.org/ns/prov#"
+  },
+  "specializationOf": {},
+  "used": {
+    "capas:run:31af0b56c6e45e79:activity:0:ingest:used:capas:run:31af0b56c6e45e79:workload": {
+      "prov:activity": "capas:run:31af0b56c6e45e79:activity:0:ingest",
+      "prov:entity": "capas:run:31af0b56c6e45e79:workload"
+    },
+    "capas:run:31af0b56c6e45e79:activity:1:runtime_context:used:capas:run:31af0b56c6e45e79:entity:0:ingest:metrics": {
+      "prov:activity": "capas:run:31af0b56c6e45e79:activity:1:runtime_context",
+      "prov:entity": "capas:run:31af0b56c6e45e79:entity:0:ingest:metrics"
+    },
+    "capas:run:31af0b56c6e45e79:activity:2:engine_provenance:used:capas:run:31af0b56c6e45e79:engine_module": {
+      "prov:activity": "capas:run:31af0b56c6e45e79:activity:2:engine_provenance",
+      "prov:entity": "capas:run:31af0b56c6e45e79:engine_module"
+    },
+    "capas:run:31af0b56c6e45e79:activity:2:engine_provenance:used:capas:run:31af0b56c6e45e79:entity:1:runtime_context:metrics": {
+      "prov:activity": "capas:run:31af0b56c6e45e79:activity:2:engine_provenance",
+      "prov:entity": "capas:run:31af0b56c6e45e79:entity:1:runtime_context:metrics"
+    },
+    "capas:run:31af0b56c6e45e79:activity:3:cost_model:used:capas:run:31af0b56c6e45e79:entity:2:engine_provenance:metrics": {
+      "prov:activity": "capas:run:31af0b56c6e45e79:activity:3:cost_model",
+      "prov:entity": "capas:run:31af0b56c6e45e79:entity:2:engine_provenance:metrics"
+    },
+    "capas:run:31af0b56c6e45e79:activity:4:route:used:capas:run:31af0b56c6e45e79:entity:3:cost_model:metrics": {
+      "prov:activity": "capas:run:31af0b56c6e45e79:activity:4:route",
+      "prov:entity": "capas:run:31af0b56c6e45e79:entity:3:cost_model:metrics"
+    },
+    "capas:run:31af0b56c6e45e79:activity:5:execute:used:capas:run:31af0b56c6e45e79:entity:4:route:metrics": {
+      "prov:activity": "capas:run:31af0b56c6e45e79:activity:5:execute",
+      "prov:entity": "capas:run:31af0b56c6e45e79:entity:4:route:metrics"
+    },
+    "capas:run:31af0b56c6e45e79:activity:6:physical_evidence:used:capas:run:31af0b56c6e45e79:entity:5:execute:metrics": {
+      "prov:activity": "capas:run:31af0b56c6e45e79:activity:6:physical_evidence",
+      "prov:entity": "capas:run:31af0b56c6e45e79:entity:5:execute:metrics"
+    }
+  },
+  "wasAssociatedWith": {
+    "capas:run:31af0b56c6e45e79:activity:0:ingest:agent": {
+      "prov:activity": "capas:run:31af0b56c6e45e79:activity:0:ingest",
+      "prov:agent": "capas:agent:costurero"
+    },
+    "capas:run:31af0b56c6e45e79:activity:1:runtime_context:agent": {
+      "prov:activity": "capas:run:31af0b56c6e45e79:activity:1:runtime_context",
+      "prov:agent": "capas:agent:costurero"
+    },
+    "capas:run:31af0b56c6e45e79:activity:2:engine_provenance:agent": {
+      "prov:activity": "capas:run:31af0b56c6e45e79:activity:2:engine_provenance",
+      "prov:agent": "capas:agent:costurero"
+    },
+    "capas:run:31af0b56c6e45e79:activity:3:cost_model:agent": {
+      "prov:activity": "capas:run:31af0b56c6e45e79:activity:3:cost_model",
+      "prov:agent": "capas:agent:costurero"
+    },
+    "capas:run:31af0b56c6e45e79:activity:4:route:agent": {
+      "prov:activity": "capas:run:31af0b56c6e45e79:activity:4:route",
+      "prov:agent": "capas:agent:costurero"
+    },
+    "capas:run:31af0b56c6e45e79:activity:5:execute:agent": {
+      "prov:activity": "capas:run:31af0b56c6e45e79:activity:5:execute",
+      "prov:agent": "capas:agent:costurero"
+    },
+    "capas:run:31af0b56c6e45e79:activity:6:physical_evidence:agent": {
+      "prov:activity": "capas:run:31af0b56c6e45e79:activity:6:physical_evidence",
+      "prov:agent": "capas:agent:costurero"
+    }
+  },
+  "wasAttributedTo": {
+    "capas:run:31af0b56c6e45e79:result:agent": {
+      "prov:agent": "capas:agent:costurero",
+      "prov:entity": "capas:run:31af0b56c6e45e79:result"
+    }
+  },
+  "wasDerivedFrom": {
+    "capas:run:31af0b56c6e45e79:physical_evidence:from:capas:run:31af0b56c6e45e79:result": {
+      "prov:generatedEntity": "capas:run:31af0b56c6e45e79:physical_evidence",
+      "prov:usedEntity": "capas:run:31af0b56c6e45e79:result"
+    },
+    "capas:run:31af0b56c6e45e79:result:from:capas:run:31af0b56c6e45e79:workload": {
+      "prov:generatedEntity": "capas:run:31af0b56c6e45e79:result",
+      "prov:usedEntity": "capas:run:31af0b56c6e45e79:workload"
+    }
+  },
+  "wasGeneratedBy": {
+    "capas:run:31af0b56c6e45e79:decision:generatedBy:capas:run:31af0b56c6e45e79:activity:4:route": {
+      "prov:activity": "capas:run:31af0b56c6e45e79:activity:4:route",
+      "prov:entity": "capas:run:31af0b56c6e45e79:decision"
+    },
+    "capas:run:31af0b56c6e45e79:entity:0:ingest:metrics:generatedBy:capas:run:31af0b56c6e45e79:activity:0:ingest": {
+      "prov:activity": "capas:run:31af0b56c6e45e79:activity:0:ingest",
+      "prov:entity": "capas:run:31af0b56c6e45e79:entity:0:ingest:metrics"
+    },
+    "capas:run:31af0b56c6e45e79:entity:1:runtime_context:metrics:generatedBy:capas:run:31af0b56c6e45e79:activity:1:runtime_context": {
+      "prov:activity": "capas:run:31af0b56c6e45e79:activity:1:runtime_context",
+      "prov:entity": "capas:run:31af0b56c6e45e79:entity:1:runtime_context:metrics"
+    },
+    "capas:run:31af0b56c6e45e79:entity:2:engine_provenance:metrics:generatedBy:capas:run:31af0b56c6e45e79:activity:2:engine_provenance": {
+      "prov:activity": "capas:run:31af0b56c6e45e79:activity:2:engine_provenance",
+      "prov:entity": "capas:run:31af0b56c6e45e79:entity:2:engine_provenance:metrics"
+    },
+    "capas:run:31af0b56c6e45e79:entity:3:cost_model:metrics:generatedBy:capas:run:31af0b56c6e45e79:activity:3:cost_model": {
+      "prov:activity": "capas:run:31af0b56c6e45e79:activity:3:cost_model",
+      "prov:entity": "capas:run:31af0b56c6e45e79:entity:3:cost_model:metrics"
+    },
+    "capas:run:31af0b56c6e45e79:entity:4:route:metrics:generatedBy:capas:run:31af0b56c6e45e79:activity:4:route": {
+      "prov:activity": "capas:run:31af0b56c6e45e79:activity:4:route",
+      "prov:entity": "capas:run:31af0b56c6e45e79:entity:4:route:metrics"
+    },
+    "capas:run:31af0b56c6e45e79:entity:5:execute:metrics:generatedBy:capas:run:31af0b56c6e45e79:activity:5:execute": {
+      "prov:activity": "capas:run:31af0b56c6e45e79:activity:5:execute",
+      "prov:entity": "capas:run:31af0b56c6e45e79:entity:5:execute:metrics"
+    },
+    "capas:run:31af0b56c6e45e79:entity:6:physical_evidence:metrics:generatedBy:capas:run:31af0b56c6e45e79:activity:6:physical_evidence": {
+      "prov:activity": "capas:run:31af0b56c6e45e79:activity:6:physical_evidence",
+      "prov:entity": "capas:run:31af0b56c6e45e79:entity:6:physical_evidence:metrics"
+    },
+    "capas:run:31af0b56c6e45e79:physical_evidence:generatedBy:capas:run:31af0b56c6e45e79:activity:6:physical_evidence": {
+      "prov:activity": "capas:run:31af0b56c6e45e79:activity:6:physical_evidence",
+      "prov:entity": "capas:run:31af0b56c6e45e79:physical_evidence"
+    },
+    "capas:run:31af0b56c6e45e79:result:generatedBy:capas:run:31af0b56c6e45e79:activity:5:execute": {
+      "prov:activity": "capas:run:31af0b56c6e45e79:activity:5:execute",
+      "prov:entity": "capas:run:31af0b56c6e45e79:result"
+    }
+  }
+}

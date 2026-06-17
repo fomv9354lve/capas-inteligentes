@@ -29,6 +29,7 @@ TRACE_SPECS = [
     ("trace_010", "pauli_z_ground_energy", {"field": 1.25}, "analytic_success"),
     ("trace_011", "bell_entropy_cross_sim", {}, "cross_sim_success"),
     ("trace_018", "bell_entropy_scipy_cross_library", {}, "cross_library_success"),
+    ("trace_019", "assignment_to_ising_function_level", {}, "combinatorial_optimization_function_level"),
     ("trace_012", "unverified_variational_energy", {}, "no_evidence_success"),
     ("trace_013", "deliberately_failing_engine", {}, "backend_failed"),
     ("trace_015", "quimb_mps_estimated_bound", {"n": 60, "depth": 6, "max_bond": 8, "seed": 1}, "estimated_bound_candidate"),

@@ -13,6 +13,7 @@ EXPECTED = {
     "trace_001": ("analytic_success", "present", True, "CompletedActionStatus"),
     "trace_011": ("cross_sim_success", "present", True, "CompletedActionStatus"),
     "trace_018": ("cross_library_success", "present", True, "CompletedActionStatus"),
+    "trace_019": ("combinatorial_optimization_function_level", "present", True, "CompletedActionStatus"),
     "trace_012": ("no_evidence_success", "none_declared", True, "CompletedActionStatus"),
     "trace_013": ("backend_failed", "not_applicable_failed", False, "FailedActionStatus"),
     "trace_014": ("rejected_by_router", "not_applicable_rejected", False, "CompletedActionStatus"),

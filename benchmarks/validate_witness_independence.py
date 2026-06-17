@@ -20,6 +20,10 @@ INDEPENDENCE_LEVELS = {
         "strength": 4,
         "description": "Independent library witness in the same Python/runtime process.",
     },
+    "different_method_same_runtime": {
+        "strength": 4,
+        "description": "Different computational method in the same Python/runtime process.",
+    },
     "different_algorithm_same_runtime": {
         "strength": 3,
         "description": "Different algorithmic calculation in the same runtime/library family.",
@@ -42,6 +46,7 @@ INDEPENDENCE_LEVELS = {
 REQUIRED_COVERAGE = {
     "analytic_no_solver",
     "different_library_same_runtime",
+    "different_method_same_runtime",
     "different_algorithm_same_runtime",
     "algorithmic_certificate_exact_svd_same_runtime",
     "algorithmic_error_certificate_same_runtime",

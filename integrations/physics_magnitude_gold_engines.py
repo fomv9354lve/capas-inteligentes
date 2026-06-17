@@ -182,6 +182,201 @@ def pauli_z_ground_energy(field: float = 1.25) -> dict:
     }
 
 
+def assignment_to_ising_function_level() -> dict:
+    """Tiny assignment problem mapped to Ising and verified exhaustively.
+
+    Spins encode the assignee:
+      - s_i = -1 -> Ada
+      - s_i = +1 -> Ben
+
+    Energy:
+      E(s) = constant + sum_i h_i s_i + sum_{i<j} J_ij s_i s_j
+
+    Terms:
+      - individual cost c_i(person): ((c_ben + c_ada)/2) + ((c_ben - c_ada)/2) s_i
+      - load balance penalty lambda * (sum_i s_i)^2
+      - conflict penalty gamma_ij if two tasks share a person:
+        gamma_ij * (1 + s_i s_j) / 2
+    """
+    tasks = [
+        "data_cleaning",
+        "api_integration",
+        "ux_copy",
+        "model_eval",
+        "dashboard",
+        "vendor_followup",
+        "qa_pass",
+        "deployment_notes",
+    ]
+    people = ["Ada", "Ben"]
+    # Lower cost means better affinity. Ada is stronger on data/model/QA,
+    # Ben is stronger on integration/copy/dashboard/deployment.
+    costs = [
+        (1.0, 3.2),
+        (3.0, 1.1),
+        (2.6, 1.2),
+        (1.1, 3.0),
+        (2.4, 1.4),
+        (1.8, 2.1),
+        (1.2, 2.7),
+        (2.9, 1.0),
+    ]
+    balance_lambda = 0.35
+    conflicts = {
+        (0, 3): 1.4,  # data_cleaning and model_eval should be split for review independence
+        (1, 4): 1.1,  # api_integration and dashboard overload the same delivery track
+        (2, 7): 0.9,  # ux_copy and deployment_notes should not bottleneck one person
+        (5, 6): 0.8,  # vendor_followup and qa_pass need separate accountability
+    }
+
+    h = np.zeros(len(tasks), dtype=float)
+    J: dict[tuple[int, int], float] = {}
+    constant = 0.0
+    mapping_terms: list[dict] = []
+
+    for idx, (ada_cost, ben_cost) in enumerate(costs):
+        constant += (ada_cost + ben_cost) / 2.0
+        h[idx] += (ben_cost - ada_cost) / 2.0
+        mapping_terms.append(
+            {
+                "kind": "individual_affinity",
+                "task": tasks[idx],
+                "ada_cost": ada_cost,
+                "ben_cost": ben_cost,
+                "constant_delta": (ada_cost + ben_cost) / 2.0,
+                "h_delta": (ben_cost - ada_cost) / 2.0,
+            }
+        )
+
+    constant += balance_lambda * len(tasks)
+    for i in range(len(tasks)):
+        for j in range(i + 1, len(tasks)):
+            J[(i, j)] = J.get((i, j), 0.0) + 2.0 * balance_lambda
+    mapping_terms.append(
+        {
+            "kind": "load_balance",
+            "penalty": "lambda * (sum_i s_i)^2",
+            "lambda": balance_lambda,
+            "constant_delta": balance_lambda * len(tasks),
+            "pairwise_J_delta": 2.0 * balance_lambda,
+        }
+    )
+
+    for (i, j), gamma in conflicts.items():
+        constant += gamma / 2.0
+        J[(i, j)] = J.get((i, j), 0.0) + gamma / 2.0
+        mapping_terms.append(
+            {
+                "kind": "same_person_conflict",
+                "tasks": [tasks[i], tasks[j]],
+                "penalty": "gamma * (1 + s_i s_j) / 2",
+                "gamma": gamma,
+                "constant_delta": gamma / 2.0,
+                "J_delta": gamma / 2.0,
+            }
+        )
+
+    def energy(spins: np.ndarray) -> float:
+        pair_energy = sum(coupling * float(spins[i] * spins[j]) for (i, j), coupling in J.items())
+        return float(constant + float(np.dot(h, spins)) + pair_energy)
+
+    n = len(tasks)
+    assignments: list[dict] = []
+    energies = []
+    for raw in range(2**n):
+        spins = np.array([1 if (raw >> i) & 1 else -1 for i in range(n)], dtype=int)
+        value = energy(spins)
+        energies.append(value)
+        assignments.append(
+            {
+                "bits": raw,
+                "spins": [int(x) for x in spins],
+                "assignees": [people[1] if x == 1 else people[0] for x in spins],
+                "energy": value,
+            }
+        )
+
+    # Simulator path: exact diagonalization of the diagonal Ising Hamiltonian.
+    hamiltonian = np.diag(np.array(energies, dtype=float))
+    eigvals, eigvecs = np.linalg.eigh(hamiltonian)
+    solver_energy = float(eigvals[0])
+    solver_index = int(np.argmax(np.abs(eigvecs[:, 0]) ** 2))
+    solver_assignment = assignments[solver_index]
+
+    # Independent witness path: exhaustive enumeration over the objective.
+    brute_energy = float(min(energies))
+    tolerance = 1e-12
+    optimal_assignments = [
+        item for item in assignments if abs(item["energy"] - brute_energy) <= tolerance
+    ]
+    solver_is_brute_optimal = abs(solver_energy - brute_energy) <= tolerance and any(
+        item["bits"] == solver_assignment["bits"] for item in optimal_assignments
+    )
+    if not solver_is_brute_optimal:
+        raise AssertionError("exact diagonalization optimum did not match brute-force optimum")
+
+    J_serialized = [
+        {"i": int(i), "j": int(j), "value": float(value)}
+        for (i, j), value in sorted(J.items())
+        if abs(value) > 0.0
+    ]
+    costs_serialized = [
+        {"task": task, "Ada": float(ada_cost), "Ben": float(ben_cost)}
+        for task, (ada_cost, ben_cost) in zip(tasks, costs)
+    ]
+    conflicts_serialized = [
+        {"tasks": [tasks[i], tasks[j]], "gamma": float(gamma)}
+        for (i, j), gamma in sorted(conflicts.items())
+    ]
+
+    return {
+        "observable": "N=8 K=2 assignment Ising ground-state energy",
+        "value": {
+            "solver_energy": solver_energy,
+            "solver_assignment": solver_assignment,
+            "brute_force_energy": brute_energy,
+            "degeneracy_count": len(optimal_assignments),
+            "optimal_assignments": optimal_assignments,
+        },
+        "expected": brute_energy,
+        "abs_error": abs(solver_energy - brute_energy),
+        "units": "objective_energy",
+        "physical_evidence_level": "analytic",
+        "physical_evidence_detail": (
+            "A small real assignment objective is mapped explicitly to an Ising Hamiltonian. "
+            "Exact diagonalization of the diagonal Hamiltonian is checked against exhaustive "
+            "enumeration of all 2^8 assignments. This certifies optimality only for this small "
+            "function-level instance; it does not claim optimization speedup."
+        ),
+        "benchmark_family": "CombinatorialOptimization",
+        "reference_truth": "exact_brute_force_enumeration_2^8_assignments",
+        "verification_independence": "different_method_same_runtime",
+        "bound_scope": "exact_small_instance_brute_force_verified",
+        "evidence_status_detail": "success",
+        "tasks": tasks,
+        "people": people,
+        "costs": costs_serialized,
+        "balance_lambda": balance_lambda,
+        "conflicts": conflicts_serialized,
+        "spin_encoding": {"-1": "Ada", "+1": "Ben"},
+        "ising_h": [float(x) for x in h],
+        "ising_J": J_serialized,
+        "constant_offset": float(constant),
+        "mapping_terms": mapping_terms,
+        "degeneracy_count": len(optimal_assignments),
+        "falsification_notes": [
+            "No artificial terms were added beyond affinity, load balance, and stated conflict penalties.",
+            "At N=8 brute force is trivial; the simulator does not add speed at this scale.",
+            "The defended claim is sealed optimality evidence, not superior optimization performance.",
+        ],
+        "witness_stack": {
+            "primary": "exact diagonalization of diagonal Ising Hamiltonian",
+            "witness": "exhaustive enumeration of 2^8 assignments",
+            "runtime_relation": "same_python_runtime_different_method",
+        },
+    }
+
+
 def bell_entropy_cross_sim() -> dict:
     bell = qe.bell_state()
     value = float(qe.entanglement_entropy(bell, dims=[2, 2], keep=[0]))

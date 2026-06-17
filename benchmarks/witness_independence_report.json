@@ -5,6 +5,7 @@
     "analytic_no_solver": 10,
     "different_algorithm_same_runtime": 1,
     "different_library_same_runtime": 1,
+    "different_method_same_runtime": 1,
     "none": 3
   },
   "coverage_ready": true,
@@ -30,6 +31,10 @@
       "description": "Independent library witness in the same Python/runtime process.",
       "strength": 4
     },
+    "different_method_same_runtime": {
+      "description": "Different computational method in the same Python/runtime process.",
+      "strength": 4
+    },
     "none": {
       "description": "No witness or certificate attached.",
       "strength": 0
@@ -42,6 +47,7 @@
     "analytic_no_solver",
     "different_algorithm_same_runtime",
     "different_library_same_runtime",
+    "different_method_same_runtime",
     "none"
   ],
   "schema": "capas-witness-independence-v1",
@@ -70,6 +76,9 @@
     ],
     "different_library_same_runtime": [
       "trace_018"
+    ],
+    "different_method_same_runtime": [
+      "trace_019"
     ],
     "none": [
       "trace_012",
