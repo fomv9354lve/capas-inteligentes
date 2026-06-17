@@ -15,6 +15,18 @@ solver = PySCF FCI
 physical_evidence_level = experimental
 ```
 
+Paired improved-basis trace:
+
+```text
+trace_022
+coverage_case = quantum_chemistry_experimental_reference_improved_basis
+molecule = H2
+geometry = R(H-H) = 0.7414 Angstrom
+basis = cc-pVDZ
+solver = PySCF FCI
+physical_evidence_level = experimental
+```
+
 ## References
 
 Model reference:
@@ -57,6 +69,11 @@ CAPAS records three different quantities:
 For `trace_021`, the solver error is zero for the model, while the model error is
 large. This is not a failure of the trace. It is the point of the trace.
 
+For `trace_022`, the solver error is still zero for the declared model, but the
+larger cc-pVDZ basis reduces the model error against the same experimental D0
+reference. This shows the axis doing real work: the trace can distinguish an
+exact but poor model from an exact and materially better model.
+
 ## Non-Degradation Rule
 
 Do not interpret:
@@ -90,6 +107,12 @@ The trace is valuable when it separates the blame:
 single_molecule_minimal_basis_equilibrium_geometry
 ```
 
+`trace_022` is scoped to:
+
+```text
+single_molecule_larger_basis_equilibrium_geometry
+```
+
 It does not claim:
 
 - competitive quantum chemistry,
@@ -99,3 +122,14 @@ It does not claim:
 
 It claims only that CAPAS can seal the solver/model/experiment separation in a
 single auditable trace.
+
+## Current Pair
+
+| Trace | Basis | Solver error (Ha) | Model error vs D0 (Ha) | Within 1 kcal/mol |
+|---|---|---:|---:|---|
+| `trace_021` | STO-3G | 0.0 | 0.040080307195131615 | false |
+| `trace_022` | cc-pVDZ | 0.0 | 0.0008309583469347491 | true |
+
+Do not read this as a claim that cc-pVDZ fully solves H2 spectroscopy. It only
+shows that the trace grammar preserves the improvement in model error when the
+declared model improves.

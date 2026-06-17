@@ -16,6 +16,7 @@ EXPECTED = {
     "trace_019": ("combinatorial_optimization_function_level", "present", True, "CompletedActionStatus"),
     "trace_020": ("combinatorial_optimization_degenerate_function_level", "present", True, "CompletedActionStatus"),
     "trace_021": ("quantum_chemistry_experimental_reference", "present", True, "CompletedActionStatus"),
+    "trace_022": ("quantum_chemistry_experimental_reference_improved_basis", "present", True, "CompletedActionStatus"),
     "trace_012": ("no_evidence_success", "none_declared", True, "CompletedActionStatus"),
     "trace_013": ("backend_failed", "not_applicable_failed", False, "FailedActionStatus"),
     "trace_014": ("rejected_by_router", "not_applicable_rejected", False, "CompletedActionStatus"),

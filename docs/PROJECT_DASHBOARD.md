@@ -37,11 +37,11 @@ See git log. This dashboard is updated in the same commit as state changes.
 Recent commits:
 
 ```text
-HEAD Add experimental chemistry evidence trace
+HEAD Add improved-basis chemistry evidence trace
+2178525 Add experimental chemistry evidence trace
 32d8681 Add degenerate optimization bridge trace
 6d89780 Add optimization bridge trace
 09139ff Add witness independence axis
-d23efaa Add multi-step formal truncation bound trace
 ```
 
 Current validation status:
@@ -50,7 +50,7 @@ Current validation status:
 coverage_ready: True
 fine_tune_ready: False
 local RO-Crate validation: passed
-external ResearchObject RO-Crate validation: valid_with_warning for 21/21 crates
+external ResearchObject RO-Crate validation: valid_with_warning for 22/22 crates
 external warning: .py is not a recognised workflow extension
 witness independence validation: passed
 ```
@@ -69,6 +69,7 @@ ResearchObject validator recognizes a fixed workflow-extension list.
 | `combinatorial_optimization_function_level` | 1 | covered | assignment-to-Ising optimum verified by brute force |
 | `combinatorial_optimization_degenerate_function_level` | 1 | covered | assignment-to-Ising optimum set verified by brute force |
 | `quantum_chemistry_experimental_reference` | 1 | covered | H2/STO-3G FCI compared with measured dissociation energy |
+| `quantum_chemistry_experimental_reference_improved_basis` | 1 | covered | H2/cc-pVDZ FCI compared with measured dissociation energy |
 | `formal_bound_success` | 1 | covered | formal single-cut Schmidt truncation certificate |
 | `formal_bound_composition_success` | 1 | covered | formal multi-step state truncation bound |
 | `estimated_bound_candidate` | 1 | covered | useful estimator, not formal |
@@ -81,7 +82,7 @@ Current evidence levels:
 ```text
 analytic: 12
 cross_sim: 2
-experimental: 1
+experimental: 2
 formal_bound: 2
 estimated_bound: 1
 none: 3
@@ -128,6 +129,14 @@ none: 3
    - solver error: `0.0`
    - model error: `0.040080307195131615`
    - within chemical accuracy: `False`
+13. Improved-basis chemistry evidence seed case:
+   - H2/cc-pVDZ at R=0.7414 Angstrom
+   - PySCF FCI total energy: `-1.1634139335373228` Hartree
+   - model binding energy: `0.16485712669815622` Hartree
+   - measured D0 reference: `0.1640261683512219` Hartree
+   - solver error: `0.0`
+   - model error: `0.0008309583469343074`
+   - within chemical accuracy: `True`
 
 ## Non-Degradation Rules
 
@@ -238,11 +247,11 @@ What exists:
 - `docs/WITNESS_INDEPENDENCE_AXIS.md`
 - `benchmarks/validate_witness_independence.py`
 - `trace_018` as a SciPy cross-library same-runtime witness
-- seven current levels covered:
+- eight current levels covered:
   - `analytic_no_solver`: 10
   - `different_library_same_runtime`: 1
   - `different_method_same_runtime`: 2
-  - `same_runtime_exact_fci_with_external_experimental_reference`: 1
+  - `same_runtime_exact_fci_with_external_experimental_reference`: 2
   - `different_algorithm_same_runtime`: 1
   - `algorithmic_certificate_exact_svd_same_runtime`: 2
   - `algorithmic_error_certificate_same_runtime`: 1
@@ -338,13 +347,17 @@ What exists:
 
 - `docs/EXPERIMENTAL_EVIDENCE_AXIS.md`
 - `trace_021`
+- `trace_022`
 - `coverage_case=quantum_chemistry_experimental_reference`
+- `coverage_case=quantum_chemistry_experimental_reference_improved_basis`
 - `physical_evidence_level=experimental`
 - `verification_independence=same_runtime_exact_fci_with_external_experimental_reference`
 - `bound_scope=single_molecule_minimal_basis_equilibrium_geometry`
 - `solver_error_hartree=0.0`
 - `model_error_hartree=0.040080307195131615`
 - `within_chemical_accuracy=False`
+- cc-pVDZ model error: `0.0008309583469343074`
+- cc-pVDZ within chemical accuracy: `True`
 
 Scope:
 
@@ -356,7 +369,6 @@ Scope:
 
 Next step:
 
-- add a better-basis or literature high-accuracy chemistry trace that reduces model error
 - keep solver error and model error separate
 
 ### D7. Workflow Run RO-Crate Alignment

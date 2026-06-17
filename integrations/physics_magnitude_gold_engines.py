@@ -692,6 +692,129 @@ def h2_sto3g_experimental_reference() -> dict:
     }
 
 
+def h2_ccpvdz_experimental_reference() -> dict:
+    """H2/cc-pVDZ exact model solve compared with measured dissociation energy.
+
+    This is the paired trace for h2_sto3g_experimental_reference. The solver is
+    still exact FCI for the declared model, but the basis is larger. The expected
+    behavior is lower model error against the same experimental D0 reference.
+    """
+    from pyscf import fci, gto, scf
+
+    bond_length_angstrom = 0.7414
+    basis = "cc-pvdz"
+    molecule = gto.M(
+        atom=f"H 0 0 0; H 0 0 {bond_length_angstrom}",
+        basis=basis,
+        unit="Angstrom",
+        charge=0,
+        spin=0,
+        verbose=0,
+    )
+    mf = scf.RHF(molecule).run(verbose=0)
+    cisolver = fci.FCI(molecule, mf.mo_coeff)
+    fci_total_energy, _ = cisolver.kernel()
+    fci_total_energy = float(fci_total_energy)
+
+    atom = gto.M(
+        atom="H 0 0 0",
+        basis=basis,
+        unit="Angstrom",
+        charge=0,
+        spin=1,
+        verbose=0,
+    )
+    atom_mf = scf.UHF(atom).run(verbose=0)
+    model_atom_energy = float(atom_mf.e_tot)
+    model_binding_energy = float(2.0 * model_atom_energy - fci_total_energy)
+
+    experimental_d0_cm_inverse = 35999.582834
+    hartree_per_cm_inverse = 1.0 / 219474.6313705
+    experimental_binding_energy = float(experimental_d0_cm_inverse * hartree_per_cm_inverse)
+    chemical_accuracy_threshold = 0.0015936
+
+    solver_error_hartree = 0.0
+    model_error_hartree = abs(model_binding_energy - experimental_binding_energy)
+    within_chemical_accuracy = bool(model_error_hartree < chemical_accuracy_threshold)
+
+    return {
+        "observable": "H2 cc-pVDZ binding energy vs experimental dissociation energy",
+        "value": {
+            "fci_total_energy_hartree": fci_total_energy,
+            "model_atom_energy_hartree": model_atom_energy,
+            "model_binding_energy_hartree": model_binding_energy,
+            "experimental_binding_energy_hartree": experimental_binding_energy,
+            "experimental_d0_cm_inverse": experimental_d0_cm_inverse,
+            "solver_error_hartree": solver_error_hartree,
+            "model_error_hartree": model_error_hartree,
+            "within_chemical_accuracy": within_chemical_accuracy,
+        },
+        "expected": {
+            "reference_fci_total_energy_hartree": fci_total_energy,
+            "reference_experimental_binding_energy_hartree": experimental_binding_energy,
+            "chemical_accuracy_threshold_hartree": chemical_accuracy_threshold,
+        },
+        "abs_error": solver_error_hartree,
+        "abs_error_vs_fci": solver_error_hartree,
+        "abs_error_vs_experimental": model_error_hartree,
+        "chemical_accuracy_threshold_hartree": chemical_accuracy_threshold,
+        "within_chemical_accuracy": within_chemical_accuracy,
+        "units": "hartree",
+        "physical_evidence_level": "experimental",
+        "physical_evidence_detail": (
+            "H2/cc-pVDZ at R=0.7414 Angstrom is solved by PySCF FCI. The solver error against "
+            "the model FCI reference is zero by construction. Compared with the same measured "
+            "H2 D0 reference used by trace_021, the larger basis reduces model error and is "
+            "within the 1 kcal/mol chemical-accuracy threshold for this binding-energy comparison."
+        ),
+        "benchmark_family": "QuantumChemistry",
+        "reference_truth": {
+            "fci": {
+                "kind": "exact_model_solution",
+                "method": "PySCF FCI",
+                "basis": basis,
+                "geometry": f"H-H {bond_length_angstrom} Angstrom",
+                "total_energy_hartree": fci_total_energy,
+            },
+            "experimental": {
+                "kind": "measured_dissociation_energy",
+                "quantity": "D0(N=1) ortho-H2",
+                "value_cm_inverse": experimental_d0_cm_inverse,
+                "value_hartree": experimental_binding_energy,
+                "source": "Hölsch et al. 2019, arXiv:1902.09471",
+            },
+            "chemical_accuracy": {
+                "threshold_hartree": chemical_accuracy_threshold,
+                "threshold_name": "1 kcal/mol",
+            },
+        },
+        "verification_independence": "same_runtime_exact_fci_with_external_experimental_reference",
+        "bound_scope": "single_molecule_larger_basis_equilibrium_geometry",
+        "evidence_status_detail": "experimental_reference_model_error_within_chemical_accuracy",
+        "basis": basis,
+        "geometry": [{"atom": "H", "xyz_angstrom": [0.0, 0.0, 0.0]}, {"atom": "H", "xyz_angstrom": [0.0, 0.0, bond_length_angstrom]}],
+        "bond_length_angstrom": bond_length_angstrom,
+        "solver_error_hartree": solver_error_hartree,
+        "model_error_hartree": model_error_hartree,
+        "model_binding_energy_hartree": model_binding_energy,
+        "experimental_binding_energy_hartree": experimental_binding_energy,
+        "reference_fci_total_energy_hartree": fci_total_energy,
+        "reference_experimental_d0_cm_inverse": experimental_d0_cm_inverse,
+        "source_label": "PySCF FCI cc-pVDZ model solve + external H2 D0 measurement",
+        "falsification_notes": [
+            "The cc-pVDZ FCI solve is exact for the declared finite-basis model, not exact for full physical H2.",
+            "The larger basis reduces model error relative to STO-3G for this binding-energy comparison.",
+            "Within chemical accuracy here means the model binding energy is close to the chosen D0 reference; it does not include a full spectroscopic correction audit.",
+            "The defended claim is solver/model/experiment separation across model quality levels, not competitive quantum chemistry.",
+        ],
+        "witness_stack": {
+            "primary": "PySCF FCI exact cc-pVDZ model solve",
+            "witness": "external experimental H2 dissociation energy",
+            "runtime_relation": "same_runtime_model_solve_plus_external_measurement",
+        },
+    }
+
+
 def bell_entropy_cross_sim() -> dict:
     bell = qe.bell_state()
     value = float(qe.entanglement_entropy(bell, dims=[2, 2], keep=[0]))
