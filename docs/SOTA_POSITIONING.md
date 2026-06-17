@@ -15,10 +15,12 @@ Do not claim CAPAS invented:
 - RO-Crate or PROV packaging
 - verification, validation, and uncertainty quantification (VVUQ)
 - evidence hierarchy for computational model credibility
+- quantum circuit simulation cost prediction
+- family-aware simulator threshold/runtime prediction
 
 Those areas are already populated by SciMLBenchmarks, SciAgentGym, QMB100/PhysVEC,
-PROV, RO-Crate, Taverna/Kepler, ASME V&V/VVUQ, and related scientific workflow
-systems.
+PROV, RO-Crate, Taverna/Kepler, ASME V&V/VVUQ, Xing et al. 2606.11620, and
+related scientific workflow and quantum simulation systems.
 
 ## Defensible Claim
 
@@ -52,6 +54,7 @@ VVUQ-aware formulation:
 | SciMLBenchmarks | yes | partial/output-centric | no/unclear | no | partial/reference-method discussion | failures handled in benchmark docs |
 | SciAgentGym | yes/verified | yes | not found in paper | not found in paper | not found in paper | yes, error/recovery traces |
 | QMB100 / PhysVEC | yes/scientific verifier | yes/research workflow evidence | not found in paper | physical assertions, but no CAPAS field found | not found in paper | verifier/error-correction workflow |
+| Xing et al. 2606.11620 | simulation threshold/runtime prediction | no/performance predictor | no | no | no | no |
 | PROV / RO-Crate / TavernaProv | generic provenance | yes | yes | no domain field | no domain field | generic workflow status |
 | CAPAS | yes | yes | yes | yes | yes | yes |
 
@@ -119,6 +122,29 @@ Current paper-level audit result:
 - CAPAS is best positioned as a packaging/profile layer that could complement
   QMB100/PhysVEC, not as a competing benchmark.
 
+### Xing et al. 2606.11620
+
+Xing et al. are direct SotA for the predictive routing/cost-model side of
+quantum circuit simulation. Their model predicts the tensor-network
+approximation threshold needed to reach target fidelity and the expected
+wall-clock runtime from OpenQASM and execution context.
+
+Relevant source:
+
+- https://arxiv.org/abs/2606.11620
+- Local paper-level audit: `docs/XING_2606_11620_AUDIT.md`
+
+Current paper-level audit result:
+
+- Xing et al. occupy family-aware simulator threshold/runtime prediction.
+- CAPAS must not claim novelty for OpenQASM-to-cost prediction, algorithm-family
+  cost modeling, or replacement of trial-and-error tensor threshold selection.
+- The paper does not show per-run RO-Crate/PROV evidence artifacts, physical
+  evidence entities, witness independence, reference truth, or failed/rejected
+  evidence states.
+- CAPAS is therefore complementary only as an evidence/profile layer that can
+  wrap predictions and executions, not as a rival predictor.
+
 ### PROV / RO-Crate / TavernaProv
 
 Workflow provenance and research-object packaging already exist. CAPAS should
@@ -168,8 +194,9 @@ Generated artifacts:
 
 ## Final Position
 
-CAPAS is not a new provenance standard, not a new benchmark suite, and not a new
-scientific workflow engine.
+CAPAS is not a new provenance standard, not a new benchmark suite, not a new
+scientific workflow engine, and not a new quantum simulation cost-prediction
+model.
 
 CAPAS is an evidence profile and costurero over existing standards and VVUQ
 vocabulary:

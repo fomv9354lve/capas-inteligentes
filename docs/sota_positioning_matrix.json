@@ -3,6 +3,7 @@
   "sources": {
     "SciMLBenchmarks": "https://github.com/SciML/SciMLBenchmarks.jl",
     "SciAgentGym": "https://arxiv.org/abs/2602.12984",
+    "Xing_2606_11620": "https://arxiv.org/abs/2606.11620",
     "RO-Crate": "https://arxiv.org/abs/2108.06503",
     "Workflow Run RO-Crate": "https://arxiv.org/abs/2312.07852"
   },
@@ -22,6 +23,14 @@
       "physical_evidence_level": "not_found_in_paper",
       "verification_independence": "not_found_in_paper",
       "failed_rejected_evidence_status": "error_recovery_traces"
+    },
+    "Xing_2606_11620": {
+      "reference_error": "simulation_threshold_and_runtime_prediction",
+      "structured_trace": "no_performance_predictor",
+      "prov_ro_crate": "no",
+      "physical_evidence_level": "no",
+      "verification_independence": "no",
+      "failed_rejected_evidence_status": "no"
     },
     "PROV_ROCrate_TavernaProv": {
       "reference_error": "generic_not_domain_specific",
@@ -46,7 +55,9 @@
     "new golden trace system",
     "new provenance standard",
     "new workflow provenance system",
-    "new reference-error benchmark framework"
+    "new reference-error benchmark framework",
+    "new quantum simulation cost predictor",
+    "new family-aware tensor-network threshold selector"
   ],
-  "falsation_condition": "Revise CAPAS positioning if SciAgentGym or another public system provides per-trace first-class physical evidence entities, analytic/cross_sim/none/failed/rejected taxonomy, witness-independence metadata, reference-truth metadata, and RO-Crate/PROV export with those fields."
+  "falsation_condition": "Revise CAPAS positioning if SciAgentGym, Xing et al. 2606.11620, or another public system provides per-trace first-class physical evidence entities, analytic/cross_sim/none/failed/rejected taxonomy, witness-independence metadata, reference-truth metadata, and RO-Crate/PROV export with those fields."
 }

@@ -205,6 +205,13 @@ none: 3
    - lesson: CAPAS must not claim provenance, workflow tracing, golden traces,
      or reference-error benchmarking as new; its defensible position is a
      physical-evidence profile over existing trace/provenance systems
+21. Xing et al. 2606.11620 audit:
+   - artifact: `docs/XING_2606_11620_AUDIT.md`
+   - source: https://arxiv.org/abs/2606.11620
+   - finding: family-aware quantum circuit simulation threshold/runtime
+     prediction is occupied SotA
+   - lesson: CAPAS must not compete as a cost predictor; it can wrap such
+     predictors as an evidence/profile layer
 
 ## Non-Degradation Rules
 
@@ -214,23 +221,25 @@ These are hard guardrails.
 2. Do not call quimb `CircuitMPS.fidelity_estimate()` a formal certificate.
 3. Do not claim CAPAS invented provenance, RO-Crate, PROV, golden traces, VVUQ,
    or workflow tracing.
-4. Do not mark `fine_tune_ready=True` without blind inference review.
-5. Do not remove failed/rejected/no-evidence coverage cases.
-6. Do not treat same-runtime certificates as independent witnesses.
-7. Do not claim DMRG global error bounds until the assumptions and accumulation
+4. Do not claim CAPAS invented family-aware simulation cost prediction,
+   OpenQASM-to-runtime prediction, or tensor-network threshold selection.
+5. Do not mark `fine_tune_ready=True` without blind inference review.
+6. Do not remove failed/rejected/no-evidence coverage cases.
+7. Do not treat same-runtime certificates as independent witnesses.
+8. Do not claim DMRG global error bounds until the assumptions and accumulation
    rule are explicit and tested.
-8. Do not claim official CAPAS profile registration until a profile URI is
+9. Do not claim official CAPAS profile registration until a profile URI is
    actually registered externally.
-9. Do not treat external RO-Crate `valid_with_warning` as warning-free
+10. Do not treat external RO-Crate `valid_with_warning` as warning-free
    validation.
-10. Any new evidence level must include:
+11. Any new evidence level must include:
     - scope
     - witness independence
     - failure mode
     - validation command
-11. Do not compare electronic `D_e`-like quantities against experimental `D0`
+12. Do not compare electronic `D_e`-like quantities against experimental `D0`
     without recording `reference_definition_match` and any correction.
-12. Do not treat same-model harmonic ZPE as anharmonic spectroscopy.
+13. Do not treat same-model harmonic ZPE as anharmonic spectroscopy.
 
 ## Debt Register
 
