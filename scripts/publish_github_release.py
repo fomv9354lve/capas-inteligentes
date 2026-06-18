@@ -24,6 +24,17 @@ def _release_generated_paths(version: str) -> set[str]:
     return {
         f"outputs/github_release_plan_{version}.json",
         f"outputs/release_notes_{version}.md",
+        "outputs/capas_claim_gate_ui.html",
+        "outputs/capas_product_demo_report.json",
+        "outputs/capas_product_demo_report.md",
+        "outputs/external_claim_accept_decision.json",
+        "outputs/external_claim_hold_decision.json",
+        "outputs/external_claim_rewrite_decision.json",
+        "outputs/external_input_schema_report.json",
+        "outputs/external_user_validation_report.json",
+        "outputs/fresh_clone_install_report.json",
+        "outputs/profile_registration_readiness_report.json",
+        "outputs/release_readiness_report.json",
     }
 
 
