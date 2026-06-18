@@ -20,6 +20,25 @@ def _run(command: list[str], check: bool = False) -> tuple[int, str]:
     return proc.returncode, output
 
 
+def _release_generated_paths(version: str) -> set[str]:
+    return {
+        f"outputs/github_release_plan_{version}.json",
+        f"outputs/release_notes_{version}.md",
+    }
+
+
+def _filtered_status(version: str) -> tuple[int, str]:
+    code, output = _run(["git", "status", "--short"])
+    ignored = _release_generated_paths(version)
+    lines = []
+    for line in output.splitlines():
+        parts = line.split(maxsplit=1)
+        path = parts[1] if len(parts) == 2 else line[3:] if len(line) > 3 else line
+        if path not in ignored:
+            lines.append(line)
+    return code, "\n".join(lines)
+
+
 def _release_notes(version: str) -> str:
     return f"""# {RELEASE_TITLE}
 
@@ -81,7 +100,7 @@ def _write_release_files(version: str, execute: bool) -> dict[str, object]:
     remote_code, remote_output = _run(["git", "remote", "-v"])
     auth_code, auth_output = _run(["gh", "auth", "status"])
     tag_code, tag_output = _run(["git", "tag", "--list", version])
-    status_code, status_output = _run(["git", "status", "--short"])
+    status_code, status_output = _filtered_status(version)
     branch_code, branch_output = _run(["git", "branch", "--show-current"])
 
     plan = {
@@ -141,7 +160,7 @@ def _execute_release(version: str, plan: dict[str, object]) -> None:
         raise RuntimeError("release preflight is not ready; inspect outputs/github_release_plan_v0.1.0.json")
 
     _run([sys.executable, "benchmarks/verify_external_mvp_readiness.py"], check=True)
-    status_code, status_output = _run(["git", "status", "--short"])
+    status_code, status_output = _filtered_status(version)
     if status_code or status_output.strip():
         raise RuntimeError(f"worktree changed during preflight:\n{status_output}")
 
