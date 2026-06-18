@@ -71,6 +71,9 @@ witness independence validation: passed
 evidence claim type validation: passed
 box 3 SotA status: broad claim-safety/provenance space is taken; narrow
   evidence-type checking for scientific computation claims survives
+regional research atlas: 122 raw source records gathered across China,
+  Cono Sur, and an adversarial global/SotA baseline; typed evidence gate
+  remains the narrow surviving wedge
 reproducibility environment check: passed in local physics-magnitude-lab pixi env
 ```
 
@@ -218,6 +221,14 @@ scaling_law_anchor: 6
    - ZPE-corrected atomization energy: `0.66731838906969` Hartree
    - tabulated atomization reference: `0.6326597707432847` Hartree
    - corrected error: `0.034658618326405266`
+19. Regional research atlas:
+   - China-focused sources: `37`
+   - Cono Sur / regional working sources: `35`
+   - adversarial global/SotA baseline sources: `50`
+   - total raw source records: `122`
+   - conclusion: do not claim scientific traces, provenance, workflows,
+     validation, routing, or general claim verification; the surviving wedge is
+     typed claim-to-evidence gating for scientific computation traces
    - within chemical accuracy: `False`
    - lesson: adding vibrational correction can reduce the mismatch without making a poor finite-basis model chemically accurate
 19. H2 basis convergence to experiment:
