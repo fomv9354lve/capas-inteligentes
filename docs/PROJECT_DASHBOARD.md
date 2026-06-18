@@ -50,11 +50,11 @@ See git log. This dashboard is updated in the same commit as state changes.
 Recent commits:
 
 ```text
-Latest: Add evidence type system sketch and claim checker (see git log for hash)
+Latest: Add box 3 boil-the-ocean SotA audit (see git log for hash)
+b60ef3d Add evidence type system claim checker
 50de930 Add D11 scripted-agent scaling adversarial trace
 b08757b Add D11 randomized scaling variants and anchor modes
 5d6b4c2 Add D11 simulation-generated scaling anchor
-44a1742 Add D11 scaling law anchor traces
 ```
 
 Current validation status:
@@ -69,6 +69,8 @@ external ResearchObject RO-Crate validation: valid for 38/38 crates
 external warning: none
 witness independence validation: passed
 evidence claim type validation: passed
+box 3 SotA status: broad claim-safety/provenance space is taken; narrow
+  evidence-type checking for scientific computation claims survives
 reproducibility environment check: passed in local physics-magnitude-lab pixi env
 ```
 
