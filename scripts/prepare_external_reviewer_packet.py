@@ -16,6 +16,9 @@ FILES = [
     ("external_claim_accept.json", ROOT / "examples" / "external_claim_accept.json"),
     ("external_claim_rewrite.json", ROOT / "examples" / "external_claim_rewrite.json"),
     ("external_claim_hold.json", ROOT / "examples" / "external_claim_hold.json"),
+    ("external_claim_invalid.json", ROOT / "examples" / "external_claim_invalid.json"),
+    ("capas_claim_payload.schema.json", ROOT / "docs" / "schema" / "capas_claim_payload.schema.json"),
+    ("external_input_schema_report.json", ROOT / "outputs" / "external_input_schema_report.json"),
     ("external_claim_rewrite_decision.json", ROOT / "outputs" / "external_claim_rewrite_decision.json"),
     ("capas_claim_gate_ui.html", ROOT / "outputs" / "capas_claim_gate_ui.html"),
 ]
@@ -35,6 +38,8 @@ Please run:
 ```bash
 python -m pip install -e .
 capas demo
+capas schema
+capas check-input --input examples/external_claim_rewrite.json
 capas decide --input examples/external_claim_rewrite.json
 capas ui
 ```

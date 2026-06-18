@@ -1,0 +1,79 @@
+{
+  "$id": "https://capas.local/schema/capas_claim_payload.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "claim": {
+      "additionalProperties": true,
+      "properties": {
+        "id": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "text": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "claim_transition",
+            "exact_model_solution",
+            "physical_accuracy",
+            "universal_anchor_claim"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "type",
+        "text"
+      ],
+      "type": "object"
+    },
+    "evidence": {
+      "additionalProperties": true,
+      "description": "Evidence fields are claim-type dependent; unsupported or missing evidence yields HOLD.",
+      "properties": {
+        "abs_error": {
+          "type": "number"
+        },
+        "anchor_mode": {
+          "type": "string"
+        },
+        "current_claim": {
+          "type": "string"
+        },
+        "local_property_tests_pass": {
+          "type": "boolean"
+        },
+        "physical_evidence_level": {
+          "type": "string"
+        },
+        "reference_truth": {},
+        "tolerance": {
+          "type": "number"
+        },
+        "universal_anchor_pass": {
+          "type": "boolean"
+        },
+        "upgrade_evidence_present": {
+          "type": "boolean"
+        },
+        "verification_independence": {
+          "type": "string"
+        },
+        "within_chemical_accuracy": {
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "required": [
+    "claim",
+    "evidence"
+  ],
+  "title": "CAPAS external claim/evidence payload",
+  "type": "object"
+}

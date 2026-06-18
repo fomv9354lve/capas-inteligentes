@@ -26,6 +26,9 @@ jobs:
       - name: Fresh clone install smoke
         run: python benchmarks/verify_fresh_clone_install.py
 
+      - name: External input schema
+        run: python benchmarks/verify_external_input_schema.py
+
       - name: External MVP readiness packets
         run: python benchmarks/verify_external_mvp_readiness.py
 

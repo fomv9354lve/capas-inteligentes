@@ -61,10 +61,11 @@ python benchmarks/verify_capas_product_demo.py
 
 `capas.py validate` runs the core product gates:
 
-1. evidence claim gate,
-2. universal anchor matrix,
-3. CAPAS physical-evidence profile,
-4. RO-Crate coverage validation.
+1. external input schema,
+2. evidence claim gate,
+3. universal anchor matrix,
+4. CAPAS physical-evidence profile,
+5. RO-Crate coverage validation.
 
 `verify_capas_product_demo.py` is the product acceptance test. It fails if the
 demo does not expose the four claim decisions, the D11 matrix, the motor-backed
@@ -83,13 +84,18 @@ claim scope.
 ## Decide External Input
 
 ```bash
+capas schema
+capas check-input --input examples/external_claim_accept.json
+capas check-input --input examples/external_claim_invalid.json
 capas decide --input examples/external_claim_accept.json
 capas decide --input examples/external_claim_rewrite.json
 capas decide --input examples/external_claim_hold.json
 ```
 
 The external JSON surface supports the MVP claim types documented in
-`docs/EXTERNAL_MVP_LAUNCH_PLAN.md`. Unsupported or under-specified claims return
+`docs/EXTERNAL_MVP_LAUNCH_PLAN.md` and published in
+`docs/schema/capas_claim_payload.schema.json`. Structurally invalid payloads
+return `HOLD` with `schema_errors`; unsupported or under-specified claims return
 `HOLD` instead of being guessed.
 
 ## Local UI
@@ -121,10 +127,10 @@ The strongest honest product statement is:
 The current product is a local CLI/MVP. The next product step is not a larger
 claim; it is a stronger interface:
 
-1. JSON input schema for new external traces.
+1. Schema expansion after external reviewer feedback.
 2. A stable claim-rule registry.
 3. A packaged RO-Crate profile URI.
-4. A small web UI for reviewing `ACCEPT` / `REWRITE` / `REJECT` / `HOLD`.
+4. A hosted or packaged web UI for reviewing `ACCEPT` / `REWRITE` / `REJECT` / `HOLD`.
 5. External user validation from a scientific-computation practitioner.
 
 The external launch checklist lives in `docs/EXTERNAL_MVP_LAUNCH_PLAN.md`.

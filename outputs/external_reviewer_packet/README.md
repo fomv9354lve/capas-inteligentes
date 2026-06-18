@@ -48,10 +48,17 @@ capas inspect trace_039
 Decide an external claim/evidence JSON:
 
 ```bash
+capas schema
+capas check-input --input examples/external_claim_accept.json
 capas decide --input examples/external_claim_accept.json
 capas decide --input examples/external_claim_rewrite.json
 capas decide --input examples/external_claim_hold.json
 ```
+
+The published MVP input contract is
+`docs/schema/capas_claim_payload.schema.json`. `check-input` validates the
+payload shape; `decide` then checks whether the supplied evidence licenses the
+claim, needs a rewrite, contradicts it, or must hold.
 
 Generate the static local UI:
 

@@ -24,9 +24,11 @@ OUT_DIR = ROOT / "outputs"
 CLAIM_REPORT = ROOT / "benchmarks" / "evidence_claim_validation_report.json"
 ANCHOR_REPORT = ROOT / "benchmarks" / "universal_anchor_matrix_report.json"
 TRACE_DIR = ROOT / "benchmarks" / "gold_traces"
+EXTERNAL_CLAIM_SCHEMA_PATH = ROOT / "docs" / "schema" / "capas_claim_payload.schema.json"
 
 
 VALIDATION_COMMANDS = [
+    ("external input schema", ["benchmarks/verify_external_input_schema.py"]),
     ("claim gate", ["benchmarks/validate_evidence_claims.py"]),
     ("universal anchor matrix", ["benchmarks/validate_universal_anchor_matrix.py"]),
     ("CAPAS profile", ["benchmarks/validate_capas_profile.py"]),
@@ -47,6 +49,93 @@ REQUIRED_DECISION_FIELDS = {
     "universal_anchor_claim": ["anchor_mode", "local_property_tests_pass", "universal_anchor_pass"],
     "claim_transition": ["upgrade_evidence_present"],
 }
+
+
+def external_claim_payload_schema() -> dict[str, Any]:
+    claim_types = sorted(REQUIRED_DECISION_FIELDS)
+    return {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://capas.local/schema/capas_claim_payload.schema.json",
+        "title": "CAPAS external claim/evidence payload",
+        "type": "object",
+        "additionalProperties": True,
+        "required": ["claim", "evidence"],
+        "properties": {
+            "claim": {
+                "type": "object",
+                "additionalProperties": True,
+                "required": ["id", "type", "text"],
+                "properties": {
+                    "id": {"type": "string", "minLength": 1},
+                    "type": {"type": "string", "enum": claim_types},
+                    "text": {"type": "string", "minLength": 1},
+                },
+            },
+            "evidence": {
+                "type": "object",
+                "additionalProperties": True,
+                "description": "Evidence fields are claim-type dependent; unsupported or missing evidence yields HOLD.",
+                "properties": {
+                    "abs_error": {"type": "number"},
+                    "tolerance": {"type": "number"},
+                    "within_chemical_accuracy": {"type": "boolean"},
+                    "anchor_mode": {"type": "string"},
+                    "local_property_tests_pass": {"type": "boolean"},
+                    "universal_anchor_pass": {"type": "boolean"},
+                    "upgrade_evidence_present": {"type": "boolean"},
+                    "physical_evidence_level": {"type": "string"},
+                    "verification_independence": {"type": "string"},
+                    "reference_truth": {},
+                    "current_claim": {"type": "string"},
+                },
+            },
+        },
+    }
+
+
+def validate_external_payload(payload: dict[str, Any]) -> list[str]:
+    errors: list[str] = []
+    if not isinstance(payload, dict):
+        return ["payload must be a JSON object"]
+    claim = payload.get("claim")
+    evidence = payload.get("evidence")
+    if not isinstance(claim, dict):
+        errors.append("claim must be an object")
+        claim = {}
+    if not isinstance(evidence, dict):
+        errors.append("evidence must be an object")
+        evidence = {}
+
+    for field in ("id", "type", "text"):
+        value = claim.get(field)
+        if not isinstance(value, str) or not value.strip():
+            errors.append(f"claim.{field} must be a non-empty string")
+
+    claim_type = claim.get("type")
+    if isinstance(claim_type, str) and claim_type not in REQUIRED_DECISION_FIELDS:
+        errors.append(
+            "claim.type must be one of: "
+            + ", ".join(sorted(REQUIRED_DECISION_FIELDS))
+        )
+
+    numeric_fields = ["abs_error", "tolerance"]
+    for field in numeric_fields:
+        if field in evidence and not isinstance(evidence[field], (int, float)):
+            errors.append(f"evidence.{field} must be a number")
+
+    bool_fields = [
+        "within_chemical_accuracy",
+        "local_property_tests_pass",
+        "universal_anchor_pass",
+        "upgrade_evidence_present",
+    ]
+    for field in bool_fields:
+        if field in evidence and not isinstance(evidence[field], bool):
+            errors.append(f"evidence.{field} must be a boolean")
+
+    if "anchor_mode" in evidence and not isinstance(evidence["anchor_mode"], str):
+        errors.append("evidence.anchor_mode must be a string")
+    return errors
 
 
 def _load_json(path: Path) -> dict[str, Any]:
@@ -147,8 +236,23 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
     inferred heuristically.
     """
 
-    claim = payload.get("claim", {})
-    evidence = payload.get("evidence", {})
+    schema_errors = validate_external_payload(payload)
+    claim = payload.get("claim", {}) if isinstance(payload, dict) else {}
+    evidence = payload.get("evidence", {}) if isinstance(payload, dict) else {}
+    if schema_errors:
+        return {
+            "input_claim": claim if isinstance(claim, dict) else {},
+            "verdict": "HOLD",
+            "reason": "input payload failed CAPAS schema validation",
+            "licensed_claim": claim.get("text") if isinstance(claim, dict) else None,
+            "rewrite": None,
+            "missing_fields": [],
+            "required_fields": [],
+            "schema_errors": schema_errors,
+            "fine_tune_ready": False,
+            "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        }
+
     claim_type = claim.get("type")
     required = REQUIRED_DECISION_FIELDS.get(str(claim_type))
     missing = [
@@ -217,6 +321,7 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
         "rewrite": rewrite,
         "missing_fields": missing,
         "required_fields": required or [],
+        "schema_errors": [],
         "fine_tune_ready": False,
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
     }
@@ -454,6 +559,36 @@ def cmd_decide(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_schema(args: argparse.Namespace) -> int:
+    schema = external_claim_payload_schema()
+    if args.output:
+        _write_json(Path(args.output), schema)
+        print(f"wrote {args.output}")
+    else:
+        print(json.dumps(schema, indent=2, sort_keys=True))
+    return 0
+
+
+def cmd_check_input(args: argparse.Namespace) -> int:
+    payload = _load_json(Path(args.input))
+    errors = validate_external_payload(payload)
+    result = {
+        "input": args.input,
+        "valid": not errors,
+        "errors": errors,
+        "schema": "docs/schema/capas_claim_payload.schema.json",
+    }
+    if args.json:
+        print(json.dumps(result, indent=2, sort_keys=True))
+    elif errors:
+        print(f"INVALID: {args.input}")
+        for error in errors:
+            print(f"- {error}")
+    else:
+        print(f"VALID: {args.input}")
+    return 0 if not errors else 1
+
+
 def cmd_ui(args: argparse.Namespace) -> int:
     sample = _sample_external_claim()
     path = Path(args.output) if args.output else OUT_DIR / "capas_claim_gate_ui.html"
@@ -492,6 +627,15 @@ def main(argv: list[str] | None = None) -> int:
     decide.add_argument("--output", help="optional path for decision JSON")
     decide.add_argument("--json", action="store_true", help="print JSON even when --output is supplied")
     decide.set_defaults(func=cmd_decide)
+
+    schema = subparsers.add_parser("schema", help="print or write the external claim/evidence JSON schema")
+    schema.add_argument("--output", help="optional schema output path")
+    schema.set_defaults(func=cmd_schema)
+
+    check_input = subparsers.add_parser("check-input", help="validate an external claim/evidence JSON file")
+    check_input.add_argument("--input", required=True, help="path to claim/evidence JSON")
+    check_input.add_argument("--json", action="store_true", help="print machine-readable validation result")
+    check_input.set_defaults(func=cmd_check_input)
 
     ui = subparsers.add_parser("ui", help="write a static local claim-gate UI")
     ui.add_argument("--output", help="optional HTML output path")

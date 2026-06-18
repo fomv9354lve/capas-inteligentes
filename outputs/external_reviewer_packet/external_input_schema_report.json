@@ -1,0 +1,89 @@
+{
+  "checks": [
+    {
+      "check": "published_schema_matches_cli_schema",
+      "detail": "docs/schema/capas_claim_payload.schema.json",
+      "passed": true
+    },
+    {
+      "check": "valid_example:external_claim_accept.json",
+      "cli": {
+        "command": "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3 capas.py check-input --input examples/external_claim_accept.json",
+        "passed": true,
+        "returncode": 0,
+        "stderr_tail": "",
+        "stdout_tail": "VALID: examples/external_claim_accept.json\n"
+      },
+      "errors": [],
+      "passed": true
+    },
+    {
+      "check": "valid_example:external_claim_rewrite.json",
+      "cli": {
+        "command": "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3 capas.py check-input --input examples/external_claim_rewrite.json",
+        "passed": true,
+        "returncode": 0,
+        "stderr_tail": "",
+        "stdout_tail": "VALID: examples/external_claim_rewrite.json\n"
+      },
+      "errors": [],
+      "passed": true
+    },
+    {
+      "check": "valid_example:external_claim_hold.json",
+      "cli": {
+        "command": "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3 capas.py check-input --input examples/external_claim_hold.json",
+        "passed": true,
+        "returncode": 0,
+        "stderr_tail": "",
+        "stdout_tail": "VALID: examples/external_claim_hold.json\n"
+      },
+      "errors": [],
+      "passed": true
+    },
+    {
+      "check": "invalid_example:external_claim_invalid.json",
+      "cli": {
+        "command": "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3 capas.py check-input --input examples/external_claim_invalid.json",
+        "passed": false,
+        "returncode": 1,
+        "stderr_tail": "",
+        "stdout_tail": "INVALID: examples/external_claim_invalid.json\n- evidence must be an object\n- claim.id must be a non-empty string\n- claim.type must be one of: claim_transition, exact_model_solution, physical_accuracy, universal_anchor_claim\n"
+      },
+      "decision": {
+        "fine_tune_ready": false,
+        "input_claim": {
+          "id": "",
+          "text": "This payload is structurally invalid because the claim id is empty.",
+          "type": "unsupported_claim_type"
+        },
+        "licensed_claim": "This payload is structurally invalid because the claim id is empty.",
+        "missing_fields": [],
+        "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "reason": "input payload failed CAPAS schema validation",
+        "required_fields": [],
+        "rewrite": null,
+        "schema_errors": [
+          "evidence must be an object",
+          "claim.id must be a non-empty string",
+          "claim.type must be one of: claim_transition, exact_model_solution, physical_accuracy, universal_anchor_claim"
+        ],
+        "verdict": "HOLD"
+      },
+      "errors": [
+        "evidence must be an object",
+        "claim.id must be a non-empty string",
+        "claim.type must be one of: claim_transition, exact_model_solution, physical_accuracy, universal_anchor_claim"
+      ],
+      "passed": true
+    }
+  ],
+  "external_input_schema_ready": true,
+  "invalid_example": "examples/external_claim_invalid.json",
+  "schema": "docs/schema/capas_claim_payload.schema.json",
+  "valid_examples": [
+    "examples/external_claim_accept.json",
+    "examples/external_claim_rewrite.json",
+    "examples/external_claim_hold.json"
+  ]
+}

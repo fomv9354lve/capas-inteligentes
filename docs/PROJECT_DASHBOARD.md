@@ -110,9 +110,12 @@ Universal anchor matrix validation: passed; D11 licenses
 Product demo validation: passed; outputs/capas_product_demo_report.md/json
   demonstrate ACCEPT/REWRITE/REJECT/HOLD, D11 complementarity, trace_039
   motor-backed positive control, and fine_tune_ready=False
+External input schema validation: passed; docs/schema/capas_claim_payload.schema.json
+  matches the CLI schema, valid examples pass `capas check-input`, and the
+  invalid example fails structurally while `decide` returns HOLD with schema_errors
 Fresh clone install smoke: passed locally via
-  benchmarks/verify_fresh_clone_install.py; scope is local git clone plus
-  editable install in a temporary venv with system site packages,
+  benchmarks/verify_fresh_clone_install.py; scope is local clean source-tree
+  copy plus editable install in a temporary venv with system site packages,
   --no-deps, and --no-build-isolation, not a published-artifact or
   blank-machine dependency-resolution proof
 External MVP launch path: docs/EXTERNAL_MVP_LAUNCH_PLAN.md documents fresh-clone
@@ -196,8 +199,11 @@ scaling_law_anchor: 7
    - `capas validate`
    - `capas inspect trace_039`
    - `capas decide --input examples/external_claim_accept.json`
+   - `capas schema`
+   - `capas check-input --input examples/external_claim_accept.json`
    - `capas ui`
    - `python3 benchmarks/verify_capas_product_demo.py`
+   - `python3 benchmarks/verify_external_input_schema.py`
    - `python3 benchmarks/verify_fresh_clone_install.py`
    - `python3 scripts/prepare_external_reviewer_packet.py`
    - `python3 scripts/prepare_profile_registration_packet.py`

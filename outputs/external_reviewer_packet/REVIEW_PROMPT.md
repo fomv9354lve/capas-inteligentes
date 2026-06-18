@@ -12,6 +12,8 @@ Please run:
 ```bash
 python -m pip install -e .
 capas demo
+capas schema
+capas check-input --input examples/external_claim_rewrite.json
 capas decide --input examples/external_claim_rewrite.json
 capas ui
 ```

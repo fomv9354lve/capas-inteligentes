@@ -10,7 +10,7 @@ account, external user, or standards-community action.
 | Requirement | Current status | Evidence | Remaining work |
 |---|---|---|---|
 | Clean package install | Implemented and locally fresh-clone smoke-tested | `pyproject.toml`, entrypoint `capas`, `benchmarks/verify_fresh_clone_install.py` | Test from GitHub clone and released artifact after publication |
-| Comfortable external input | Implemented for small JSON claim/evidence files | `capas.py decide`, `examples/external_claim_*.json` | Expand rule registry and publish JSON schema |
+| Comfortable external input | Implemented with examples, schema, and schema check command | `capas.py decide`, `capas.py check-input`, `docs/schema/capas_claim_payload.schema.json`, `benchmarks/verify_external_input_schema.py` | Expand rule registry after external reviewer feedback |
 | UI | Implemented as static local HTML | `capas.py ui` writes `outputs/capas_claim_gate_ui.html` | Replace static demo with hosted or packaged app if needed |
 | External user validation | Not complete | no external feedback artifact yet | Send minimal packet to one scientific-computation practitioner |
 | Continuous integration | Implemented in repo | `.github/workflows/ci.yml` | Requires GitHub remote/actions to run externally |
@@ -23,6 +23,7 @@ Current readiness artifacts:
 - `outputs/profile_registration_packet/manifest.json`
 - `outputs/release_readiness_report.json`
 - `outputs/fresh_clone_install_report.json`
+- `outputs/external_input_schema_report.json`
 
 Current release readiness result:
 
@@ -48,8 +49,9 @@ Local fresh-clone smoke test:
 python benchmarks/verify_fresh_clone_install.py
 ```
 
-Scope: this clones the current local repository into a temporary directory,
-installs the package in a temporary venv with system site packages and
+Scope: this copies the current source tree into a temporary checkout without
+`.git`, build outputs, caches, or installed metadata, installs the package in a
+temporary venv with system site packages and
 `--no-deps --no-build-isolation`, then runs the venv-local `capas demo`,
 `capas decide`, and `capas validate`. It proves the package entrypoint and root
 discovery work outside this working tree. It does not prove dependency
@@ -66,9 +68,18 @@ capas
 Example:
 
 ```bash
+capas schema
+capas check-input --input examples/external_claim_accept.json
+capas check-input --input examples/external_claim_invalid.json
 capas decide --input examples/external_claim_accept.json
 capas decide --input examples/external_claim_rewrite.json
 capas decide --input examples/external_claim_hold.json
+```
+
+Published MVP schema:
+
+```text
+docs/schema/capas_claim_payload.schema.json
 ```
 
 Minimal external payload shape:
@@ -96,6 +107,10 @@ Supported MVP claim types:
 - `claim_transition`
 
 Unsupported claim types return `HOLD` rather than being guessed.
+Structurally invalid payloads also return `HOLD`, but with `schema_errors`
+instead of a claim decision. Missing evidence required for a particular claim
+type is not a schema error; it is a claim-evidence insufficiency that the gate
+reports as `HOLD`.
 
 ## UI
 
@@ -121,11 +136,13 @@ Send a reviewer:
 2. `outputs/capas_product_demo_report.md`
 3. `examples/external_claim_accept.json`
 4. `examples/external_claim_rewrite.json`
-5. command:
+5. `docs/schema/capas_claim_payload.schema.json`
+6. command:
 
 ```bash
 python -m pip install -e .
 capas demo
+capas check-input --input examples/external_claim_rewrite.json
 capas decide --input examples/external_claim_rewrite.json
 ```
 
