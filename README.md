@@ -31,6 +31,7 @@ For reviewers and potential users:
 - Technical note: `docs/CAPAS_TECHNICAL_NOTE.md`
 - Request for feedback: `docs/REQUEST_FOR_FEEDBACK.md`
 - QMB100 / PhysVEC one-pager: `docs/CAPAS_ONE_PAGER_QMB100.md`
+- Global SotA / market audit: `docs/GLOBAL_SOTA_MARKET_AUDIT.md`
 - Current release: `https://github.com/fomv9354lve/capas-inteligentes/releases/tag/v0.1.1`
 - Public feedback issue: `https://github.com/fomv9354lve/capas-inteligentes/issues/1`
 
