@@ -30,6 +30,7 @@ EXTERNAL_CLAIM_SCHEMA_PATH = ROOT / "docs" / "schema" / "capas_claim_payload.sch
 VALIDATION_COMMANDS = [
     ("external input schema", ["benchmarks/verify_external_input_schema.py"]),
     ("claim gate UI", ["benchmarks/verify_claim_gate_ui.py"]),
+    ("external user validation packet", ["benchmarks/verify_external_user_validation.py"]),
     ("claim gate", ["benchmarks/validate_evidence_claims.py"]),
     ("universal anchor matrix", ["benchmarks/validate_universal_anchor_matrix.py"]),
     ("CAPAS profile", ["benchmarks/validate_capas_profile.py"]),

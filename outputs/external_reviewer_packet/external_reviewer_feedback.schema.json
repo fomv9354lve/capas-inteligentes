@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://capas.local/schema/external_reviewer_feedback.schema.json",
+  "title": "CAPAS external reviewer feedback",
+  "type": "object",
+  "required": [
+    "reviewer",
+    "review_context",
+    "commands_run",
+    "answers",
+    "decision",
+    "follow_up_required"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "reviewer": {
+      "type": "object",
+      "required": ["name_or_handle", "role_or_domain", "independence"],
+      "additionalProperties": true,
+      "properties": {
+        "name_or_handle": {"type": "string", "minLength": 1},
+        "role_or_domain": {"type": "string", "minLength": 1},
+        "independence": {
+          "type": "string",
+          "enum": ["external_independent", "external_known", "internal", "unknown"]
+        }
+      }
+    },
+    "review_context": {
+      "type": "object",
+      "required": ["date", "artifact_commit", "packet_manifest"],
+      "additionalProperties": true,
+      "properties": {
+        "date": {"type": "string", "minLength": 1},
+        "artifact_commit": {"type": "string", "minLength": 7},
+        "packet_manifest": {"type": "string", "minLength": 1}
+      }
+    },
+    "commands_run": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["command", "result"],
+        "additionalProperties": true,
+        "properties": {
+          "command": {"type": "string", "minLength": 1},
+          "result": {"type": "string", "enum": ["passed", "failed", "not_run"]}
+        }
+      }
+    },
+    "answers": {
+      "type": "object",
+      "required": [
+        "helps_audit_scientific_outputs",
+        "missing_field_or_category",
+        "rewrite_hold_vs_binary",
+        "adoption_blocker"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "helps_audit_scientific_outputs": {
+          "type": "string",
+          "enum": ["yes", "no", "unclear"]
+        },
+        "missing_field_or_category": {"type": "string"},
+        "rewrite_hold_vs_binary": {"type": "string"},
+        "adoption_blocker": {"type": "string"}
+      }
+    },
+    "decision": {
+      "type": "string",
+      "enum": ["confirms_utility", "requests_schema_change", "rejects_utility", "inconclusive"]
+    },
+    "follow_up_required": {
+      "type": "array",
+      "items": {"type": "string"}
+    }
+  }
+}

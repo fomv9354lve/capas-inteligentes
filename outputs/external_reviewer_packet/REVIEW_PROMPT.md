@@ -27,3 +27,12 @@ Then answer:
 
 Please do not evaluate CAPAS as a simulator. Evaluate it as an evidence-typed
 claim gate over computation traces.
+
+Please return feedback using:
+
+```text
+external_reviewer_feedback_template.json
+```
+
+External validation is not complete until that template is replaced by real
+reviewer feedback and passes `python benchmarks/verify_external_user_validation.py`.

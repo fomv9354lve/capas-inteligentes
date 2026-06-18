@@ -1,0 +1,40 @@
+{
+  "reviewer": {
+    "name_or_handle": "PENDING_EXTERNAL_REVIEWER",
+    "role_or_domain": "scientific-computation practitioner",
+    "independence": "unknown"
+  },
+  "review_context": {
+    "date": "YYYY-MM-DD",
+    "artifact_commit": "PENDING_COMMIT",
+    "packet_manifest": "outputs/external_reviewer_packet/manifest.json"
+  },
+  "commands_run": [
+    {
+      "command": "python -m pip install -e .",
+      "result": "not_run"
+    },
+    {
+      "command": "capas demo",
+      "result": "not_run"
+    },
+    {
+      "command": "capas check-input --input examples/external_claim_rewrite.json",
+      "result": "not_run"
+    },
+    {
+      "command": "capas decide --input examples/external_claim_rewrite.json",
+      "result": "not_run"
+    }
+  ],
+  "answers": {
+    "helps_audit_scientific_outputs": "unclear",
+    "missing_field_or_category": "PENDING",
+    "rewrite_hold_vs_binary": "PENDING",
+    "adoption_blocker": "PENDING"
+  },
+  "decision": "inconclusive",
+  "follow_up_required": [
+    "replace this template with feedback from an external reviewer"
+  ]
+}

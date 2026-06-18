@@ -12,7 +12,7 @@ account, external user, or standards-community action.
 | Clean package install | Implemented and locally fresh-clone smoke-tested | `pyproject.toml`, entrypoint `capas`, `benchmarks/verify_fresh_clone_install.py` | Test from GitHub clone and released artifact after publication |
 | Comfortable external input | Implemented with examples, schema, and schema check command | `capas.py decide`, `capas.py check-input`, `docs/schema/capas_claim_payload.schema.json`, `benchmarks/verify_external_input_schema.py` | Expand rule registry after external reviewer feedback |
 | UI | Implemented as schema-aware static local HTML | `capas.py ui`, `benchmarks/verify_claim_gate_ui.py`, `outputs/capas_claim_gate_ui.html` | Replace static demo with hosted or packaged app if needed |
-| External user validation | Not complete | no external feedback artifact yet | Send minimal packet to one scientific-computation practitioner |
+| External user validation | Not complete; feedback template and verifier ready | `examples/external_reviewer_feedback_template.json`, `benchmarks/verify_external_user_validation.py`, `outputs/external_user_validation_report.json` | Send minimal packet to one scientific-computation practitioner and store returned feedback in `outputs/external_validation/` |
 | Continuous integration | Implemented in repo | `.github/workflows/ci.yml` | Requires GitHub remote/actions to run externally |
 | GitHub/release publication | Not complete | release checklist below | Push to GitHub and tag release |
 | Formal RO-Crate profile registration | Not complete | local CAPAS profile docs exist | Submit/register profile URI with RO-Crate/Profile registry process |
@@ -25,6 +25,7 @@ Current readiness artifacts:
 - `outputs/fresh_clone_install_report.json`
 - `outputs/external_input_schema_report.json`
 - `outputs/claim_gate_ui_report.json`
+- `outputs/external_user_validation_report.json`
 - `outputs/github_release_plan_v0.1.0.json`
 - `outputs/release_notes_v0.1.0.md`
 
@@ -157,7 +158,24 @@ Ask only two questions:
 2. Which required field or decision category is missing for your workflow?
 
 External validation is not complete until this feedback changes the schema or
-confirms that the schema solves a real audit problem.
+confirms that the schema solves a real audit problem. Returned feedback should
+use:
+
+```text
+examples/external_reviewer_feedback_template.json
+```
+
+Store completed feedback as JSON in:
+
+```text
+outputs/external_validation/
+```
+
+Then run:
+
+```bash
+python benchmarks/verify_external_user_validation.py
+```
 
 ## GitHub Release Checklist
 

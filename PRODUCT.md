@@ -119,6 +119,16 @@ GitHub. Real publication requires `--execute` plus a configured remote, valid
 `gh auth`, a clean worktree, pushed tag, passing GitHub Actions, and a GitHub
 release URL.
 
+## External Reviewer Feedback
+
+```bash
+python benchmarks/verify_external_user_validation.py
+```
+
+The reviewer packet includes `external_reviewer_feedback_template.json`.
+Validation remains incomplete until an external scientific-computation reviewer
+returns non-placeholder feedback stored under `outputs/external_validation/`.
+
 ## Current Demonstrated State
 
 Current versioned evidence supports:

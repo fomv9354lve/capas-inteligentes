@@ -79,6 +79,15 @@ python3 scripts/publish_github_release.py
 Publication still requires a GitHub remote, valid `gh auth`, a pushed tag, a
 passing external CI run, and a GitHub release URL.
 
+Prepare/check external reviewer feedback:
+
+```bash
+python3 benchmarks/verify_external_user_validation.py
+```
+
+The feedback template is `examples/external_reviewer_feedback_template.json`.
+Completed external feedback belongs under `outputs/external_validation/`.
+
 ## What It Produces
 
 The corpus builder emits:

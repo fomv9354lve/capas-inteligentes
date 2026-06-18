@@ -22,6 +22,9 @@ FILES = [
     ("external_claim_rewrite_decision.json", ROOT / "outputs" / "external_claim_rewrite_decision.json"),
     ("capas_claim_gate_ui.html", ROOT / "outputs" / "capas_claim_gate_ui.html"),
     ("claim_gate_ui_report.json", ROOT / "outputs" / "claim_gate_ui_report.json"),
+    ("external_reviewer_feedback.schema.json", ROOT / "docs" / "schema" / "external_reviewer_feedback.schema.json"),
+    ("external_reviewer_feedback_template.json", ROOT / "examples" / "external_reviewer_feedback_template.json"),
+    ("external_user_validation_report.json", ROOT / "outputs" / "external_user_validation_report.json"),
 ]
 
 
@@ -54,6 +57,15 @@ Then answer:
 
 Please do not evaluate CAPAS as a simulator. Evaluate it as an evidence-typed
 claim gate over computation traces.
+
+Please return feedback using:
+
+```text
+external_reviewer_feedback_template.json
+```
+
+External validation is not complete until that template is replaced by real
+reviewer feedback and passes `python benchmarks/verify_external_user_validation.py`.
 """
 
 
