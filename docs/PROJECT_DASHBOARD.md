@@ -74,6 +74,9 @@ box 3 SotA status: broad claim-safety/provenance space is taken; narrow
 regional research atlas: 122 raw source records gathered across China,
   Cono Sur, and an adversarial global/SotA baseline; typed evidence gate
   remains the narrow surviving wedge
+integration map: regional/SotA sources converted from "taken/not taken" audit
+  into construction material for CAPAS; next experiments are China Rietveld
+  evidence gate and Cono Sur AMCA validation claim gate
 reproducibility environment check: passed in local physics-magnitude-lab pixi env
 ```
 
@@ -229,6 +232,12 @@ scaling_law_anchor: 6
    - conclusion: do not claim scientific traces, provenance, workflows,
      validation, routing, or general claim verification; the surviving wedge is
      typed claim-to-evidence gating for scientific computation traces
+20. Integration map:
+   - turns PROV/RO-Crate, VVUQ, workflow systems, fact-checking, China AI4S,
+     and Cono Sur simulation literature into explicit CAPAS inputs
+   - defines `R1` China Rietveld evidence gate
+   - defines `R2` Cono Sur AMCA validation claim gate
+   - defines regional claim matrix candidates for the evidence type checker
    - within chemical accuracy: `False`
    - lesson: adding vibrational correction can reduce the mismatch without making a poor finite-basis model chemically accurate
 19. H2 basis convergence to experiment:
