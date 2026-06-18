@@ -107,6 +107,17 @@ capas ui
 This writes `outputs/capas_claim_gate_ui.html`, a static review surface for the
 same rule gate used by `capas decide`.
 
+## Release Dry-Run
+
+```bash
+python scripts/publish_github_release.py
+```
+
+This writes release notes and a GitHub publication plan without mutating git or
+GitHub. Real publication requires `--execute` plus a configured remote, valid
+`gh auth`, a clean worktree, pushed tag, passing GitHub Actions, and a GitHub
+release URL.
+
 ## Current Demonstrated State
 
 Current versioned evidence supports:

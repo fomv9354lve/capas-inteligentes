@@ -1,7 +1,7 @@
 {
   "failed": 3,
   "non_degradation": "GitHub publication is not complete until remote, auth, tag, CI run, and release artifact exist externally.",
-  "passed": 19,
+  "passed": 22,
   "release_ready": false,
   "results": [
     {
@@ -71,6 +71,18 @@
       "path": "outputs/external_input_schema_report.json"
     },
     {
+      "check": "github_release_plan",
+      "detail": "exists",
+      "passed": true,
+      "path": "outputs/github_release_plan_v0.1.0.json"
+    },
+    {
+      "check": "release_notes",
+      "detail": "exists",
+      "passed": true,
+      "path": "outputs/release_notes_v0.1.0.md"
+    },
+    {
       "check": "demo_report",
       "detail": "exists",
       "passed": true,
@@ -98,6 +110,12 @@
       "check": "external_input_schema",
       "command": "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3 benchmarks/verify_external_input_schema.py",
       "detail": "published_schema_matches_cli_schema: ok\nvalid_example:external_claim_accept.json: ok\nvalid_example:external_claim_rewrite.json: ok\nvalid_example:external_claim_hold.json: ok\ninvalid_example:external_claim_invalid.json: ok\nexternal_input_schema_ready: True\nreport written to <CAPAS_ROOT>/outputs/external_input_schema_report.json",
+      "passed": true
+    },
+    {
+      "check": "github_release_dry_run",
+      "command": "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3 scripts/publish_github_release.py",
+      "detail": "release dry-run written for v0.1.0\nready_to_execute: False\nplan: outputs/github_release_plan_v0.1.0.json\nnotes: outputs/release_notes_v0.1.0.md",
       "passed": true
     },
     {

@@ -24,6 +24,8 @@ Current readiness artifacts:
 - `outputs/release_readiness_report.json`
 - `outputs/fresh_clone_install_report.json`
 - `outputs/external_input_schema_report.json`
+- `outputs/github_release_plan_v0.1.0.json`
+- `outputs/release_notes_v0.1.0.md`
 
 Current release readiness result:
 
@@ -156,6 +158,17 @@ confirms that the schema solves a real audit problem.
 
 ## GitHub Release Checklist
 
+Prepare release notes and a non-mutating publication plan:
+
+```bash
+python scripts/publish_github_release.py
+```
+
+The command above is a dry-run. It writes:
+
+- `outputs/github_release_plan_v0.1.0.json`
+- `outputs/release_notes_v0.1.0.md`
+
 Check local release readiness:
 
 ```bash
@@ -166,11 +179,10 @@ The check is expected to fail until GitHub remote/auth/tag/release exist.
 
 1. Push repository to GitHub.
 2. Confirm GitHub Actions passes `CAPAS CI`.
-3. Tag:
+3. Execute publication only after `git remote -v` and `gh auth status` are valid:
 
 ```bash
-git tag v0.1.0
-git push origin v0.1.0
+python scripts/publish_github_release.py --execute
 ```
 
 4. Release title:

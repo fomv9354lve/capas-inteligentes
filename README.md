@@ -66,6 +66,15 @@ Generate the static local UI:
 capas ui
 ```
 
+Prepare a non-mutating GitHub release plan:
+
+```bash
+python3 scripts/publish_github_release.py
+```
+
+Publication still requires a GitHub remote, valid `gh auth`, a pushed tag, a
+passing external CI run, and a GitHub release URL.
+
 ## What It Produces
 
 The corpus builder emits:
