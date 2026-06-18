@@ -36,7 +36,7 @@
       "@id": "./",
       "@type": "Dataset",
       "capas:evidenceStatus": "present",
-      "capas:traceHash": "ea223d83dfcc3ab5ad0bd8661619d6349f7e17b734dedcdd0ffd3a407cab7a07",
+      "capas:traceHash": "100f554c3807575fca663199ebe452998d49346cb2881f047c0c941826928fcd",
       "capas:workflowRunCrateAlignment": "shape-compatible-with-workflow-run-crate-0.5",
       "capas:workloadHash": "c63ddbdd0093ba322c64a901597a4d85256d7126283264a443e9ddcc2362f9f2",
       "conformsTo": [
@@ -56,7 +56,7 @@
           "@id": "https://example.org/capas-inteligentes/ro-crate/physical-evidence/0.1"
         }
       ],
-      "datePublished": "2026-06-18T02:51:48.795936Z",
+      "datePublished": "2026-06-18T03:02:47.948791Z",
       "description": "RO-Crate package containing a sealed RunTrace, optional PROV export, routing decision, runtime context, and CAPAS physical evidence metadata.",
       "hasPart": [
         {
@@ -72,23 +72,23 @@
           "@id": "entity:workload"
         },
         {
-          "@id": "trace:ea223d83dfcc3ab5:routing-decision"
+          "@id": "trace:100f554c3807575f:routing-decision"
         },
         {
-          "@id": "trace:ea223d83dfcc3ab5:result"
+          "@id": "trace:100f554c3807575f:result"
         },
         {
           "@id": "runtrace.prov.json"
         },
         {
-          "@id": "trace:ea223d83dfcc3ab5:physical-evidence"
+          "@id": "trace:100f554c3807575f:physical-evidence"
         }
       ],
       "mainEntity": {
         "@id": "workflow/capas-costurero-run.cwl"
       },
       "mentions": {
-        "@id": "trace:ea223d83dfcc3ab5"
+        "@id": "trace:100f554c3807575f"
       },
       "name": "CAPAS traced scientific computation crate"
     },
@@ -124,14 +124,14 @@
         "DigitalDocument"
       ],
       "about": {
-        "@id": "trace:ea223d83dfcc3ab5"
+        "@id": "trace:100f554c3807575f"
       },
       "encodingFormat": "application/json",
       "name": "Sealed CAPAS RunTrace",
-      "sha256": "c98dc3531a23133c0e3f2923c357035e7df2e4132182fc43dcb9e980067d1295"
+      "sha256": "00821cc78bb94690d367ff5c796383a6948c9b8538916e06b5143c825176f667"
     },
     {
-      "@id": "trace:ea223d83dfcc3ab5",
+      "@id": "trace:100f554c3807575f",
       "@type": "CreateAction",
       "actionStatus": "CompletedActionStatus",
       "agent": {
@@ -142,11 +142,11 @@
       "capas:evidenceStatus": "present",
       "capas:hashAlgorithm": "sha256(stable_json)",
       "capas:routingDecision": {
-        "@id": "trace:ea223d83dfcc3ab5:routing-decision"
+        "@id": "trace:100f554c3807575f:routing-decision"
       },
-      "capas:traceHash": "ea223d83dfcc3ab5ad0bd8661619d6349f7e17b734dedcdd0ffd3a407cab7a07",
+      "capas:traceHash": "100f554c3807575fca663199ebe452998d49346cb2881f047c0c941826928fcd",
       "capas:traceSchemaVersion": "capas-runtrace-v2",
-      "endTime": "2026-06-18T02:51:48.795936Z",
+      "endTime": "2026-06-18T03:02:47.948791Z",
       "instrument": {
         "@id": "workflow/capas-costurero-run.cwl"
       },
@@ -155,9 +155,9 @@
         "@id": "entity:workload"
       },
       "result": {
-        "@id": "trace:ea223d83dfcc3ab5:result"
+        "@id": "trace:100f554c3807575f:result"
       },
-      "startTime": "2026-06-18T02:51:48.448299Z"
+      "startTime": "2026-06-18T03:02:47.584289Z"
     },
     {
       "@id": "workflow/capas-costurero-run.cwl",
@@ -222,7 +222,7 @@
       "name": "Workload summary"
     },
     {
-      "@id": "trace:ea223d83dfcc3ab5:routing-decision",
+      "@id": "trace:100f554c3807575f:routing-decision",
       "@type": "Thing",
       "capas:reason": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
       "capas:route": "external_engine",
@@ -236,30 +236,30 @@
       ],
       "encodingFormat": "application/json",
       "name": "W3C PROV-shaped export",
-      "sha256": "08b02193f316b92c57c9a2820cc4b001f0ef85446aa364b42fca5e8a7724f2ce"
+      "sha256": "34a05cbdc27c00c56c15a83715bb9830cbd59e02165b3e7d3e924f5041327355"
     },
     {
-      "@id": "trace:ea223d83dfcc3ab5:result",
+      "@id": "trace:100f554c3807575f:result",
       "@type": "Dataset",
       "capas:physicalEvidence": {
-        "@id": "trace:ea223d83dfcc3ab5:physical-evidence"
+        "@id": "trace:100f554c3807575f:physical-evidence"
       },
-      "capas:resultHash": "77c8377e7b57b7c1a7b112fb98990b74dc1eef0b4d11161834fbdab90feb9412",
+      "capas:resultHash": "57c5722f15eb1ade054ba79d9b3e3294a10a2907d3ffa65e449729b9394e14eb",
       "capas:summary": {
         "abs_error": 0.0,
-        "abs_error_vs_experimental": 0.034658618326320334,
+        "abs_error_vs_experimental": 0.034658618326533275,
         "abs_error_vs_fci": 0.0,
         "basis": "sto-3g",
         "basis_orbitals": 9,
         "benchmark_family": "QuantumChemistry",
         "bound_scope": "single_molecule_polyatomic_minimal_basis_electronic_vibrational_split",
         "chemical_accuracy_threshold_hartree": 0.0015936,
-        "electronic_atomization_energy_hartree": 0.7209374024056245,
+        "electronic_atomization_energy_hartree": 0.7209374024058377,
         "evidence_status_detail": "experimental_larger_polyatomic_reference_definition_corrected_model_still_poor",
         "expected": {
           "chemical_accuracy_threshold_hartree": 0.0015936,
           "reference_experimental_atomization_energy_hartree": 0.6326597707432847,
-          "reference_fci_total_energy_hartree": -39.805998351271185
+          "reference_fci_total_energy_hartree": -39.8059983512714
         },
         "experimental_atomization_energy_hartree": 0.6326597707432847,
         "experimental_atomization_energy_kcal_mol": 397.0,
@@ -313,43 +313,43 @@
           }
         ],
         "harmonic_frequencies_cm_inverse": [
-          1689.8745762073581,
-          1689.8745762074286,
-          1689.8745762074293,
-          1908.0111834277059,
-          1908.0111834277093,
-          3470.156201716282,
-          3726.7413585172094,
-          3726.741358517229,
-          3726.74135851723
+          1689.8745762073736,
+          1689.8745762074425,
+          1689.874576207449,
+          1908.0111834277152,
+          1908.011183427717,
+          3470.1562017162933,
+          3726.74135851722,
+          3726.741358517238,
+          3726.741358517242
         ],
-        "model_error_hartree": 0.034658618326320334,
+        "model_error_hartree": 0.034658618326533275,
         "observable": "CH4/STO-3G FCI atomization energy with model-harmonic ZPE correction",
         "physical_evidence_detail": "CH4/STO-3G is solved by PySCF FCI for the declared finite-basis electronic model. A same-model harmonic ZPE is subtracted from the electronic atomization energy. The trace records a larger polyatomic case where exact model solution does not imply experimental chemical accuracy.",
         "physical_evidence_level": "experimental",
-        "reference_definition_corrected_error_hartree": 0.034658618326320334,
+        "reference_definition_corrected_error_hartree": 0.034658618326533275,
         "reference_definition_correction": {
           "correction": "D0_model ~= De_model - ZPE_harmonic(model)",
           "harmonic_frequencies_cm_inverse": [
-            1689.8745762073581,
-            1689.8745762074286,
-            1689.8745762074293,
-            1908.0111834277059,
-            1908.0111834277093,
-            3470.156201716282,
-            3726.7413585172094,
-            3726.741358517229,
-            3726.74135851723
+            1689.8745762073736,
+            1689.8745762074425,
+            1689.874576207449,
+            1908.0111834277152,
+            1908.011183427717,
+            3470.1562017162933,
+            3726.74135851722,
+            3726.741358517238,
+            3726.741358517242
           ],
           "quality": "same_model_harmonic_vibrational_correction_not_anharmonic_spectroscopy",
           "raw_computed_quantity": "clamped-nuclei electronic atomization energy",
           "target_reference": "D0-like atomization energy with vibrational ground state",
-          "zpe_cm_inverse": 11768.013186372791,
-          "zpe_hartree": 0.05361901333601945
+          "zpe_cm_inverse": 11768.013186372846,
+          "zpe_hartree": 0.0536190133360197
         },
-        "reference_definition_error_hartree": 0.08827763166233982,
+        "reference_definition_error_hartree": 0.08827763166255298,
         "reference_definition_match": "corrected_model_harmonic_electronic_atomization_minus_ZPE_to_match_D0_atomization",
-        "reference_fci_total_energy_hartree": -39.805998351271185,
+        "reference_fci_total_energy_hartree": -39.8059983512714,
         "reference_truth": {
           "chemical_accuracy": {
             "threshold_hartree": 0.0015936,
@@ -373,23 +373,23 @@
             "geometry": "CH4 tetrahedral STO-3G demo geometry, C-H about 1.089 Angstrom",
             "kind": "exact_model_solution",
             "method": "PySCF FCI",
-            "total_energy_hartree": -39.805998351271185
+            "total_energy_hartree": -39.8059983512714
           },
           "vibrational": {
             "frequencies_cm_inverse": [
-              1689.8745762073581,
-              1689.8745762074286,
-              1689.8745762074293,
-              1908.0111834277059,
-              1908.0111834277093,
-              3470.156201716282,
-              3726.7413585172094,
-              3726.741358517229,
-              3726.74135851723
+              1689.8745762073736,
+              1689.8745762074425,
+              1689.874576207449,
+              1908.0111834277152,
+              1908.011183427717,
+              3470.1562017162933,
+              3726.74135851722,
+              3726.741358517238,
+              3726.741358517242
             ],
             "kind": "same_model_harmonic_zpe",
-            "zpe_cm_inverse": 11768.013186372791,
-            "zpe_hartree": 0.05361901333601945
+            "zpe_cm_inverse": 11768.013186372846,
+            "zpe_hartree": 0.0536190133360197
           }
         },
         "repr": "{'engine_id': 'physics_magnitude_gold_engines.ch4_sto3g_electronic_vibrational_reference', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/ph",
@@ -400,24 +400,24 @@
         "value": {
           "basis_orbitals": 9,
           "c_atom_energy_hartree": -37.21873355063646,
-          "electronic_atomization_energy_hartree": 0.7209374024056245,
+          "electronic_atomization_energy_hartree": 0.7209374024058377,
           "experimental_atomization_energy_hartree": 0.6326597707432847,
           "experimental_atomization_energy_kcal_mol": 397.0,
-          "fci_total_energy_hartree": -39.805998351271185,
+          "fci_total_energy_hartree": -39.8059983512714,
           "h_atom_energy_hartree": -0.4665818495572752,
           "harmonic_frequencies_cm_inverse": [
-            1689.8745762073581,
-            1689.8745762074286,
-            1689.8745762074293,
-            1908.0111834277059,
-            1908.0111834277093,
-            3470.156201716282,
-            3726.7413585172094,
-            3726.741358517229,
-            3726.74135851723
+            1689.8745762073736,
+            1689.8745762074425,
+            1689.874576207449,
+            1908.0111834277152,
+            1908.011183427717,
+            3470.1562017162933,
+            3726.74135851722,
+            3726.741358517238,
+            3726.741358517242
           ],
-          "reference_definition_corrected_error_hartree": 0.034658618326320334,
-          "reference_definition_error_hartree": 0.08827763166233982,
+          "reference_definition_corrected_error_hartree": 0.034658618326533275,
+          "reference_definition_error_hartree": 0.08827763166255298,
           "solver_error_hartree": 0.0,
           "successive_ch_bde_kcal_mol": [
             105.0,
@@ -425,21 +425,21 @@
             101.0,
             81.0
           ],
-          "vibrational_zpe_cm_inverse": 11768.013186372791,
-          "vibrational_zpe_hartree": 0.05361901333601945,
+          "vibrational_zpe_cm_inverse": 11768.013186372846,
+          "vibrational_zpe_hartree": 0.0536190133360197,
           "within_chemical_accuracy": false,
-          "zpe_corrected_atomization_energy_hartree": 0.6673183890696051
+          "zpe_corrected_atomization_energy_hartree": 0.667318389069818
         },
         "verification_independence": "same_runtime_exact_fci_with_external_experimental_reference",
-        "vibrational_zpe_cm_inverse": 11768.013186372791,
-        "vibrational_zpe_hartree": 0.05361901333601945,
+        "vibrational_zpe_cm_inverse": 11768.013186372846,
+        "vibrational_zpe_hartree": 0.0536190133360197,
         "within_chemical_accuracy": false,
         "witness_stack": {
           "primary": "PySCF FCI exact CH4/STO-3G electronic model solve",
           "runtime_relation": "same_runtime_model_solve_plus_external_measurement_and_reference_correction",
           "witness": "external tabulated successive methane C-H dissociation values plus same-model harmonic ZPE"
         },
-        "zpe_corrected_atomization_energy_hartree": 0.6673183890696051
+        "zpe_corrected_atomization_energy_hartree": 0.667318389069818
       },
       "exampleOfWork": {
         "@id": "parameter:result"
@@ -447,13 +447,13 @@
       "name": "Result summary"
     },
     {
-      "@id": "trace:ea223d83dfcc3ab5:physical-evidence",
+      "@id": "trace:100f554c3807575f:physical-evidence",
       "@type": "capas:PhysicalEvidence",
       "about": {
-        "@id": "trace:ea223d83dfcc3ab5:result"
+        "@id": "trace:100f554c3807575f:result"
       },
       "capas:absError": 0.0,
-      "capas:absErrorVsExperimental": 0.034658618326320334,
+      "capas:absErrorVsExperimental": 0.034658618326533275,
       "capas:absErrorVsFci": 0.0,
       "capas:basis": "sto-3g",
       "capas:basisOrbitals": 9,
@@ -461,13 +461,13 @@
       "capas:boundScope": "single_molecule_polyatomic_minimal_basis_electronic_vibrational_split",
       "capas:chemicalAccuracyThresholdHartree": 0.0015936,
       "capas:detail": "CH4/STO-3G is solved by PySCF FCI for the declared finite-basis electronic model. A same-model harmonic ZPE is subtracted from the electronic atomization energy. The trace records a larger polyatomic case where exact model solution does not imply experimental chemical accuracy.",
-      "capas:electronicAtomizationEnergyHartree": 0.7209374024056245,
-      "capas:evidenceHash": "2c7be7837168266a74a9672d02d9c7b264316da869877a4e2e4f5ef91c15b10d",
+      "capas:electronicAtomizationEnergyHartree": 0.7209374024058377,
+      "capas:evidenceHash": "d6d6d91e76a8b8118f7f0a1a9061a1b3b0420fe9b9d6eb08850d2c9fbd3161e0",
       "capas:evidenceStatusDetail": "experimental_larger_polyatomic_reference_definition_corrected_model_still_poor",
       "capas:expected": {
         "chemical_accuracy_threshold_hartree": 0.0015936,
         "reference_experimental_atomization_energy_hartree": 0.6326597707432847,
-        "reference_fci_total_energy_hartree": -39.805998351271185
+        "reference_fci_total_energy_hartree": -39.8059983512714
       },
       "capas:experimentalAtomizationEnergyHartree": 0.6326597707432847,
       "capas:experimentalAtomizationEnergyKcalMol": 397.0,
@@ -521,42 +521,42 @@
         }
       ],
       "capas:harmonicFrequenciesCmInverse": [
-        1689.8745762073581,
-        1689.8745762074286,
-        1689.8745762074293,
-        1908.0111834277059,
-        1908.0111834277093,
-        3470.156201716282,
-        3726.7413585172094,
-        3726.741358517229,
-        3726.74135851723
+        1689.8745762073736,
+        1689.8745762074425,
+        1689.874576207449,
+        1908.0111834277152,
+        1908.011183427717,
+        3470.1562017162933,
+        3726.74135851722,
+        3726.741358517238,
+        3726.741358517242
       ],
-      "capas:modelErrorHartree": 0.034658618326320334,
+      "capas:modelErrorHartree": 0.034658618326533275,
       "capas:observable": "CH4/STO-3G FCI atomization energy with model-harmonic ZPE correction",
       "capas:physicalEvidenceLevel": "experimental",
-      "capas:referenceDefinitionCorrectedErrorHartree": 0.034658618326320334,
+      "capas:referenceDefinitionCorrectedErrorHartree": 0.034658618326533275,
       "capas:referenceDefinitionCorrection": {
         "correction": "D0_model ~= De_model - ZPE_harmonic(model)",
         "harmonic_frequencies_cm_inverse": [
-          1689.8745762073581,
-          1689.8745762074286,
-          1689.8745762074293,
-          1908.0111834277059,
-          1908.0111834277093,
-          3470.156201716282,
-          3726.7413585172094,
-          3726.741358517229,
-          3726.74135851723
+          1689.8745762073736,
+          1689.8745762074425,
+          1689.874576207449,
+          1908.0111834277152,
+          1908.011183427717,
+          3470.1562017162933,
+          3726.74135851722,
+          3726.741358517238,
+          3726.741358517242
         ],
         "quality": "same_model_harmonic_vibrational_correction_not_anharmonic_spectroscopy",
         "raw_computed_quantity": "clamped-nuclei electronic atomization energy",
         "target_reference": "D0-like atomization energy with vibrational ground state",
-        "zpe_cm_inverse": 11768.013186372791,
-        "zpe_hartree": 0.05361901333601945
+        "zpe_cm_inverse": 11768.013186372846,
+        "zpe_hartree": 0.0536190133360197
       },
-      "capas:referenceDefinitionErrorHartree": 0.08827763166233982,
+      "capas:referenceDefinitionErrorHartree": 0.08827763166255298,
       "capas:referenceDefinitionMatch": "corrected_model_harmonic_electronic_atomization_minus_ZPE_to_match_D0_atomization",
-      "capas:referenceFciTotalEnergyHartree": -39.805998351271185,
+      "capas:referenceFciTotalEnergyHartree": -39.8059983512714,
       "capas:referenceTruth": {
         "chemical_accuracy": {
           "threshold_hartree": 0.0015936,
@@ -580,23 +580,23 @@
           "geometry": "CH4 tetrahedral STO-3G demo geometry, C-H about 1.089 Angstrom",
           "kind": "exact_model_solution",
           "method": "PySCF FCI",
-          "total_energy_hartree": -39.805998351271185
+          "total_energy_hartree": -39.8059983512714
         },
         "vibrational": {
           "frequencies_cm_inverse": [
-            1689.8745762073581,
-            1689.8745762074286,
-            1689.8745762074293,
-            1908.0111834277059,
-            1908.0111834277093,
-            3470.156201716282,
-            3726.7413585172094,
-            3726.741358517229,
-            3726.74135851723
+            1689.8745762073736,
+            1689.8745762074425,
+            1689.874576207449,
+            1908.0111834277152,
+            1908.011183427717,
+            3470.1562017162933,
+            3726.74135851722,
+            3726.741358517238,
+            3726.741358517242
           ],
           "kind": "same_model_harmonic_zpe",
-          "zpe_cm_inverse": 11768.013186372791,
-          "zpe_hartree": 0.05361901333601945
+          "zpe_cm_inverse": 11768.013186372846,
+          "zpe_hartree": 0.0536190133360197
         }
       },
       "capas:solverErrorHartree": 0.0,
@@ -605,24 +605,24 @@
       "capas:value": {
         "basis_orbitals": 9,
         "c_atom_energy_hartree": -37.21873355063646,
-        "electronic_atomization_energy_hartree": 0.7209374024056245,
+        "electronic_atomization_energy_hartree": 0.7209374024058377,
         "experimental_atomization_energy_hartree": 0.6326597707432847,
         "experimental_atomization_energy_kcal_mol": 397.0,
-        "fci_total_energy_hartree": -39.805998351271185,
+        "fci_total_energy_hartree": -39.8059983512714,
         "h_atom_energy_hartree": -0.4665818495572752,
         "harmonic_frequencies_cm_inverse": [
-          1689.8745762073581,
-          1689.8745762074286,
-          1689.8745762074293,
-          1908.0111834277059,
-          1908.0111834277093,
-          3470.156201716282,
-          3726.7413585172094,
-          3726.741358517229,
-          3726.74135851723
+          1689.8745762073736,
+          1689.8745762074425,
+          1689.874576207449,
+          1908.0111834277152,
+          1908.011183427717,
+          3470.1562017162933,
+          3726.74135851722,
+          3726.741358517238,
+          3726.741358517242
         ],
-        "reference_definition_corrected_error_hartree": 0.034658618326320334,
-        "reference_definition_error_hartree": 0.08827763166233982,
+        "reference_definition_corrected_error_hartree": 0.034658618326533275,
+        "reference_definition_error_hartree": 0.08827763166255298,
         "solver_error_hartree": 0.0,
         "successive_ch_bde_kcal_mol": [
           105.0,
@@ -630,25 +630,25 @@
           101.0,
           81.0
         ],
-        "vibrational_zpe_cm_inverse": 11768.013186372791,
-        "vibrational_zpe_hartree": 0.05361901333601945,
+        "vibrational_zpe_cm_inverse": 11768.013186372846,
+        "vibrational_zpe_hartree": 0.0536190133360197,
         "within_chemical_accuracy": false,
-        "zpe_corrected_atomization_energy_hartree": 0.6673183890696051
+        "zpe_corrected_atomization_energy_hartree": 0.667318389069818
       },
       "capas:verificationIndependence": "same_runtime_exact_fci_with_external_experimental_reference",
-      "capas:vibrationalZpeCmInverse": 11768.013186372791,
-      "capas:vibrationalZpeHartree": 0.05361901333601945,
+      "capas:vibrationalZpeCmInverse": 11768.013186372846,
+      "capas:vibrationalZpeHartree": 0.0536190133360197,
       "capas:withinChemicalAccuracy": false,
       "capas:witnessStack": {
         "primary": "PySCF FCI exact CH4/STO-3G electronic model solve",
         "runtime_relation": "same_runtime_model_solve_plus_external_measurement_and_reference_correction",
         "witness": "external tabulated successive methane C-H dissociation values plus same-model harmonic ZPE"
       },
-      "capas:zpeCorrectedAtomizationEnergyHartree": 0.6673183890696051,
+      "capas:zpeCorrectedAtomizationEnergyHartree": 0.667318389069818,
       "name": "Physical evidence attached to result"
     },
     {
-      "@id": "trace:ea223d83dfcc3ab5:event:0:ingest",
+      "@id": "trace:100f554c3807575f:event:0:ingest",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -668,10 +668,10 @@
       },
       "description": "workload accepted",
       "name": "ingest",
-      "startTime": 1781751108.448299
+      "startTime": 1781751767.584289
     },
     {
-      "@id": "trace:ea223d83dfcc3ab5:event:1:runtime_context",
+      "@id": "trace:100f554c3807575f:event:1:runtime_context",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -696,10 +696,10 @@
       },
       "description": "runtime and hardware context recorded",
       "name": "runtime_context",
-      "startTime": 1781751108.448405
+      "startTime": 1781751767.584426
     },
     {
-      "@id": "trace:ea223d83dfcc3ab5:event:2:engine_provenance",
+      "@id": "trace:100f554c3807575f:event:2:engine_provenance",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -711,10 +711,10 @@
       },
       "description": "external engine provenance recorded",
       "name": "engine_provenance",
-      "startTime": 1781751108.448533
+      "startTime": 1781751767.584594
     },
     {
-      "@id": "trace:ea223d83dfcc3ab5:event:3:cost_model",
+      "@id": "trace:100f554c3807575f:event:3:cost_model",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -726,10 +726,10 @@
       },
       "description": "dense statevector cost estimated",
       "name": "cost_model",
-      "startTime": 1781751108.448537
+      "startTime": 1781751767.5846
     },
     {
-      "@id": "trace:ea223d83dfcc3ab5:event:4:route",
+      "@id": "trace:100f554c3807575f:event:4:route",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -739,27 +739,27 @@
       },
       "description": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
       "name": "route",
-      "startTime": 1781751108.448541
+      "startTime": 1781751767.5846038
     },
     {
-      "@id": "trace:ea223d83dfcc3ab5:event:5:execute",
+      "@id": "trace:100f554c3807575f:event:5:execute",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
         "abs_error": 0.0,
-        "abs_error_vs_experimental": 0.034658618326320334,
+        "abs_error_vs_experimental": 0.034658618326533275,
         "abs_error_vs_fci": 0.0,
         "basis": "sto-3g",
         "basis_orbitals": 9,
         "benchmark_family": "QuantumChemistry",
         "bound_scope": "single_molecule_polyatomic_minimal_basis_electronic_vibrational_split",
         "chemical_accuracy_threshold_hartree": 0.0015936,
-        "electronic_atomization_energy_hartree": 0.7209374024056245,
+        "electronic_atomization_energy_hartree": 0.7209374024058377,
         "evidence_status_detail": "experimental_larger_polyatomic_reference_definition_corrected_model_still_poor",
         "expected": {
           "chemical_accuracy_threshold_hartree": 0.0015936,
           "reference_experimental_atomization_energy_hartree": 0.6326597707432847,
-          "reference_fci_total_energy_hartree": -39.805998351271185
+          "reference_fci_total_energy_hartree": -39.8059983512714
         },
         "experimental_atomization_energy_hartree": 0.6326597707432847,
         "experimental_atomization_energy_kcal_mol": 397.0,
@@ -813,43 +813,43 @@
           }
         ],
         "harmonic_frequencies_cm_inverse": [
-          1689.8745762073581,
-          1689.8745762074286,
-          1689.8745762074293,
-          1908.0111834277059,
-          1908.0111834277093,
-          3470.156201716282,
-          3726.7413585172094,
-          3726.741358517229,
-          3726.74135851723
+          1689.8745762073736,
+          1689.8745762074425,
+          1689.874576207449,
+          1908.0111834277152,
+          1908.011183427717,
+          3470.1562017162933,
+          3726.74135851722,
+          3726.741358517238,
+          3726.741358517242
         ],
-        "model_error_hartree": 0.034658618326320334,
+        "model_error_hartree": 0.034658618326533275,
         "observable": "CH4/STO-3G FCI atomization energy with model-harmonic ZPE correction",
         "physical_evidence_detail": "CH4/STO-3G is solved by PySCF FCI for the declared finite-basis electronic model. A same-model harmonic ZPE is subtracted from the electronic atomization energy. The trace records a larger polyatomic case where exact model solution does not imply experimental chemical accuracy.",
         "physical_evidence_level": "experimental",
-        "reference_definition_corrected_error_hartree": 0.034658618326320334,
+        "reference_definition_corrected_error_hartree": 0.034658618326533275,
         "reference_definition_correction": {
           "correction": "D0_model ~= De_model - ZPE_harmonic(model)",
           "harmonic_frequencies_cm_inverse": [
-            1689.8745762073581,
-            1689.8745762074286,
-            1689.8745762074293,
-            1908.0111834277059,
-            1908.0111834277093,
-            3470.156201716282,
-            3726.7413585172094,
-            3726.741358517229,
-            3726.74135851723
+            1689.8745762073736,
+            1689.8745762074425,
+            1689.874576207449,
+            1908.0111834277152,
+            1908.011183427717,
+            3470.1562017162933,
+            3726.74135851722,
+            3726.741358517238,
+            3726.741358517242
           ],
           "quality": "same_model_harmonic_vibrational_correction_not_anharmonic_spectroscopy",
           "raw_computed_quantity": "clamped-nuclei electronic atomization energy",
           "target_reference": "D0-like atomization energy with vibrational ground state",
-          "zpe_cm_inverse": 11768.013186372791,
-          "zpe_hartree": 0.05361901333601945
+          "zpe_cm_inverse": 11768.013186372846,
+          "zpe_hartree": 0.0536190133360197
         },
-        "reference_definition_error_hartree": 0.08827763166233982,
+        "reference_definition_error_hartree": 0.08827763166255298,
         "reference_definition_match": "corrected_model_harmonic_electronic_atomization_minus_ZPE_to_match_D0_atomization",
-        "reference_fci_total_energy_hartree": -39.805998351271185,
+        "reference_fci_total_energy_hartree": -39.8059983512714,
         "reference_truth": {
           "chemical_accuracy": {
             "threshold_hartree": 0.0015936,
@@ -873,28 +873,28 @@
             "geometry": "CH4 tetrahedral STO-3G demo geometry, C-H about 1.089 Angstrom",
             "kind": "exact_model_solution",
             "method": "PySCF FCI",
-            "total_energy_hartree": -39.805998351271185
+            "total_energy_hartree": -39.8059983512714
           },
           "vibrational": {
             "frequencies_cm_inverse": [
-              1689.8745762073581,
-              1689.8745762074286,
-              1689.8745762074293,
-              1908.0111834277059,
-              1908.0111834277093,
-              3470.156201716282,
-              3726.7413585172094,
-              3726.741358517229,
-              3726.74135851723
+              1689.8745762073736,
+              1689.8745762074425,
+              1689.874576207449,
+              1908.0111834277152,
+              1908.011183427717,
+              3470.1562017162933,
+              3726.74135851722,
+              3726.741358517238,
+              3726.741358517242
             ],
             "kind": "same_model_harmonic_zpe",
-            "zpe_cm_inverse": 11768.013186372791,
-            "zpe_hartree": 0.05361901333601945
+            "zpe_cm_inverse": 11768.013186372846,
+            "zpe_hartree": 0.0536190133360197
           }
         },
         "repr": "{'engine_id': 'physics_magnitude_gold_engines.ch4_sto3g_electronic_vibrational_reference', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/ph",
         "route": "external_engine",
-        "runtime_ms": 347.15099999448285,
+        "runtime_ms": 363.8579580001533,
         "solver_error_hartree": 0.0,
         "source_label": "PySCF FCI CH4/STO-3G model solve + harmonic ZPE + tabulated successive C-H dissociation references",
         "type": "dict",
@@ -902,24 +902,24 @@
         "value": {
           "basis_orbitals": 9,
           "c_atom_energy_hartree": -37.21873355063646,
-          "electronic_atomization_energy_hartree": 0.7209374024056245,
+          "electronic_atomization_energy_hartree": 0.7209374024058377,
           "experimental_atomization_energy_hartree": 0.6326597707432847,
           "experimental_atomization_energy_kcal_mol": 397.0,
-          "fci_total_energy_hartree": -39.805998351271185,
+          "fci_total_energy_hartree": -39.8059983512714,
           "h_atom_energy_hartree": -0.4665818495572752,
           "harmonic_frequencies_cm_inverse": [
-            1689.8745762073581,
-            1689.8745762074286,
-            1689.8745762074293,
-            1908.0111834277059,
-            1908.0111834277093,
-            3470.156201716282,
-            3726.7413585172094,
-            3726.741358517229,
-            3726.74135851723
+            1689.8745762073736,
+            1689.8745762074425,
+            1689.874576207449,
+            1908.0111834277152,
+            1908.011183427717,
+            3470.1562017162933,
+            3726.74135851722,
+            3726.741358517238,
+            3726.741358517242
           ],
-          "reference_definition_corrected_error_hartree": 0.034658618326320334,
-          "reference_definition_error_hartree": 0.08827763166233982,
+          "reference_definition_corrected_error_hartree": 0.034658618326533275,
+          "reference_definition_error_hartree": 0.08827763166255298,
           "solver_error_hartree": 0.0,
           "successive_ch_bde_kcal_mol": [
             105.0,
@@ -927,46 +927,46 @@
             101.0,
             81.0
           ],
-          "vibrational_zpe_cm_inverse": 11768.013186372791,
-          "vibrational_zpe_hartree": 0.05361901333601945,
+          "vibrational_zpe_cm_inverse": 11768.013186372846,
+          "vibrational_zpe_hartree": 0.0536190133360197,
           "within_chemical_accuracy": false,
-          "zpe_corrected_atomization_energy_hartree": 0.6673183890696051
+          "zpe_corrected_atomization_energy_hartree": 0.667318389069818
         },
         "verification_independence": "same_runtime_exact_fci_with_external_experimental_reference",
-        "vibrational_zpe_cm_inverse": 11768.013186372791,
-        "vibrational_zpe_hartree": 0.05361901333601945,
+        "vibrational_zpe_cm_inverse": 11768.013186372846,
+        "vibrational_zpe_hartree": 0.0536190133360197,
         "within_chemical_accuracy": false,
         "witness_stack": {
           "primary": "PySCF FCI exact CH4/STO-3G electronic model solve",
           "runtime_relation": "same_runtime_model_solve_plus_external_measurement_and_reference_correction",
           "witness": "external tabulated successive methane C-H dissociation values plus same-model harmonic ZPE"
         },
-        "zpe_corrected_atomization_energy_hartree": 0.6673183890696051
+        "zpe_corrected_atomization_energy_hartree": 0.667318389069818
       },
       "description": "backend executed",
       "name": "execute",
-      "startTime": 1781751108.795864
+      "startTime": 1781751767.94869
     },
     {
-      "@id": "trace:ea223d83dfcc3ab5:event:6:physical_evidence",
+      "@id": "trace:100f554c3807575f:event:6:physical_evidence",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
         "abs_error": 0.0,
-        "abs_error_vs_experimental": 0.034658618326320334,
+        "abs_error_vs_experimental": 0.034658618326533275,
         "abs_error_vs_fci": 0.0,
         "basis": "sto-3g",
         "basis_orbitals": 9,
         "benchmark_family": "QuantumChemistry",
         "bound_scope": "single_molecule_polyatomic_minimal_basis_electronic_vibrational_split",
         "chemical_accuracy_threshold_hartree": 0.0015936,
-        "electronic_atomization_energy_hartree": 0.7209374024056245,
-        "evidence_hash": "5996562379a4f651bd8d07186225b3f3baee5b311d8f9409ac38fb8fc8965418",
+        "electronic_atomization_energy_hartree": 0.7209374024058377,
+        "evidence_hash": "8025f86d5cebe01bc292eca0156bcd6119135d38df112930cf1cb84b5c8bb518",
         "evidence_status_detail": "experimental_larger_polyatomic_reference_definition_corrected_model_still_poor",
         "expected": {
           "chemical_accuracy_threshold_hartree": 0.0015936,
           "reference_experimental_atomization_energy_hartree": 0.6326597707432847,
-          "reference_fci_total_energy_hartree": -39.805998351271185
+          "reference_fci_total_energy_hartree": -39.8059983512714
         },
         "experimental_atomization_energy_hartree": 0.6326597707432847,
         "experimental_atomization_energy_kcal_mol": 397.0,
@@ -1020,43 +1020,43 @@
           }
         ],
         "harmonic_frequencies_cm_inverse": [
-          1689.8745762073581,
-          1689.8745762074286,
-          1689.8745762074293,
-          1908.0111834277059,
-          1908.0111834277093,
-          3470.156201716282,
-          3726.7413585172094,
-          3726.741358517229,
-          3726.74135851723
+          1689.8745762073736,
+          1689.8745762074425,
+          1689.874576207449,
+          1908.0111834277152,
+          1908.011183427717,
+          3470.1562017162933,
+          3726.74135851722,
+          3726.741358517238,
+          3726.741358517242
         ],
-        "model_error_hartree": 0.034658618326320334,
+        "model_error_hartree": 0.034658618326533275,
         "observable": "CH4/STO-3G FCI atomization energy with model-harmonic ZPE correction",
         "physical_evidence_detail": "CH4/STO-3G is solved by PySCF FCI for the declared finite-basis electronic model. A same-model harmonic ZPE is subtracted from the electronic atomization energy. The trace records a larger polyatomic case where exact model solution does not imply experimental chemical accuracy.",
         "physical_evidence_level": "experimental",
-        "reference_definition_corrected_error_hartree": 0.034658618326320334,
+        "reference_definition_corrected_error_hartree": 0.034658618326533275,
         "reference_definition_correction": {
           "correction": "D0_model ~= De_model - ZPE_harmonic(model)",
           "harmonic_frequencies_cm_inverse": [
-            1689.8745762073581,
-            1689.8745762074286,
-            1689.8745762074293,
-            1908.0111834277059,
-            1908.0111834277093,
-            3470.156201716282,
-            3726.7413585172094,
-            3726.741358517229,
-            3726.74135851723
+            1689.8745762073736,
+            1689.8745762074425,
+            1689.874576207449,
+            1908.0111834277152,
+            1908.011183427717,
+            3470.1562017162933,
+            3726.74135851722,
+            3726.741358517238,
+            3726.741358517242
           ],
           "quality": "same_model_harmonic_vibrational_correction_not_anharmonic_spectroscopy",
           "raw_computed_quantity": "clamped-nuclei electronic atomization energy",
           "target_reference": "D0-like atomization energy with vibrational ground state",
-          "zpe_cm_inverse": 11768.013186372791,
-          "zpe_hartree": 0.05361901333601945
+          "zpe_cm_inverse": 11768.013186372846,
+          "zpe_hartree": 0.0536190133360197
         },
-        "reference_definition_error_hartree": 0.08827763166233982,
+        "reference_definition_error_hartree": 0.08827763166255298,
         "reference_definition_match": "corrected_model_harmonic_electronic_atomization_minus_ZPE_to_match_D0_atomization",
-        "reference_fci_total_energy_hartree": -39.805998351271185,
+        "reference_fci_total_energy_hartree": -39.8059983512714,
         "reference_truth": {
           "chemical_accuracy": {
             "threshold_hartree": 0.0015936,
@@ -1080,23 +1080,23 @@
             "geometry": "CH4 tetrahedral STO-3G demo geometry, C-H about 1.089 Angstrom",
             "kind": "exact_model_solution",
             "method": "PySCF FCI",
-            "total_energy_hartree": -39.805998351271185
+            "total_energy_hartree": -39.8059983512714
           },
           "vibrational": {
             "frequencies_cm_inverse": [
-              1689.8745762073581,
-              1689.8745762074286,
-              1689.8745762074293,
-              1908.0111834277059,
-              1908.0111834277093,
-              3470.156201716282,
-              3726.7413585172094,
-              3726.741358517229,
-              3726.74135851723
+              1689.8745762073736,
+              1689.8745762074425,
+              1689.874576207449,
+              1908.0111834277152,
+              1908.011183427717,
+              3470.1562017162933,
+              3726.74135851722,
+              3726.741358517238,
+              3726.741358517242
             ],
             "kind": "same_model_harmonic_zpe",
-            "zpe_cm_inverse": 11768.013186372791,
-            "zpe_hartree": 0.05361901333601945
+            "zpe_cm_inverse": 11768.013186372846,
+            "zpe_hartree": 0.0536190133360197
           }
         },
         "solver_error_hartree": 0.0,
@@ -1105,24 +1105,24 @@
         "value": {
           "basis_orbitals": 9,
           "c_atom_energy_hartree": -37.21873355063646,
-          "electronic_atomization_energy_hartree": 0.7209374024056245,
+          "electronic_atomization_energy_hartree": 0.7209374024058377,
           "experimental_atomization_energy_hartree": 0.6326597707432847,
           "experimental_atomization_energy_kcal_mol": 397.0,
-          "fci_total_energy_hartree": -39.805998351271185,
+          "fci_total_energy_hartree": -39.8059983512714,
           "h_atom_energy_hartree": -0.4665818495572752,
           "harmonic_frequencies_cm_inverse": [
-            1689.8745762073581,
-            1689.8745762074286,
-            1689.8745762074293,
-            1908.0111834277059,
-            1908.0111834277093,
-            3470.156201716282,
-            3726.7413585172094,
-            3726.741358517229,
-            3726.74135851723
+            1689.8745762073736,
+            1689.8745762074425,
+            1689.874576207449,
+            1908.0111834277152,
+            1908.011183427717,
+            3470.1562017162933,
+            3726.74135851722,
+            3726.741358517238,
+            3726.741358517242
           ],
-          "reference_definition_corrected_error_hartree": 0.034658618326320334,
-          "reference_definition_error_hartree": 0.08827763166233982,
+          "reference_definition_corrected_error_hartree": 0.034658618326533275,
+          "reference_definition_error_hartree": 0.08827763166255298,
           "solver_error_hartree": 0.0,
           "successive_ch_bde_kcal_mol": [
             105.0,
@@ -1130,25 +1130,25 @@
             101.0,
             81.0
           ],
-          "vibrational_zpe_cm_inverse": 11768.013186372791,
-          "vibrational_zpe_hartree": 0.05361901333601945,
+          "vibrational_zpe_cm_inverse": 11768.013186372846,
+          "vibrational_zpe_hartree": 0.0536190133360197,
           "within_chemical_accuracy": false,
-          "zpe_corrected_atomization_energy_hartree": 0.6673183890696051
+          "zpe_corrected_atomization_energy_hartree": 0.667318389069818
         },
         "verification_independence": "same_runtime_exact_fci_with_external_experimental_reference",
-        "vibrational_zpe_cm_inverse": 11768.013186372791,
-        "vibrational_zpe_hartree": 0.05361901333601945,
+        "vibrational_zpe_cm_inverse": 11768.013186372846,
+        "vibrational_zpe_hartree": 0.0536190133360197,
         "within_chemical_accuracy": false,
         "witness_stack": {
           "primary": "PySCF FCI exact CH4/STO-3G electronic model solve",
           "runtime_relation": "same_runtime_model_solve_plus_external_measurement_and_reference_correction",
           "witness": "external tabulated successive methane C-H dissociation values plus same-model harmonic ZPE"
         },
-        "zpe_corrected_atomization_energy_hartree": 0.6673183890696051
+        "zpe_corrected_atomization_energy_hartree": 0.667318389069818
       },
       "description": "physical evidence reported by backend",
       "name": "physical_evidence",
-      "startTime": 1781751108.795936
+      "startTime": 1781751767.948791
     }
   ]
 }

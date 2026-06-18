@@ -76,6 +76,12 @@ def _fit_gap_exponent(system_sizes: np.ndarray, gaps: np.ndarray) -> tuple[float
     return float(-slope), r_squared
 
 
+def _scaling_points_from_agent_table(agent_table: list[dict[str, float]]) -> tuple[np.ndarray, np.ndarray]:
+    sizes = np.array([row["system_size"] for row in agent_table], dtype=float)
+    gaps = np.array([row["gap"] for row in agent_table], dtype=float)
+    return sizes, gaps
+
+
 def _ising_scaling_payload(
     *,
     observable: str,
@@ -714,3 +720,69 @@ def ising_gap_randomized_wrong_exponent_family() -> dict:
             "single hand-picked example, but it still is not an agent-generated corpus"
         ),
     }
+
+
+def ising_gap_scripted_agent_wrong_exponent() -> dict:
+    """Scripted-agent scaling adversarial case.
+
+    This is intentionally not labeled as an LLM run. The generator is a minimal
+    auditable agent transcript that answers a physics prompt with a plausible
+    but wrong mean-field-style finite-size gap law, Delta(L) ~ L^-1/2.
+    """
+
+    agent_prompt = (
+        "Produce finite-size critical transverse-field Ising gaps for "
+        "L = 8, 12, 16, 24, 32, 48. Return a smooth positive decreasing "
+        "sequence suitable for a quick scaling sanity check."
+    )
+    agent_response = {
+        "agent": "scripted_scaling_agent_v1",
+        "response_text": (
+            "Use a smooth finite-size correction Delta(L)=1.7/sqrt(L). "
+            "The gaps are positive, finite, and decrease with L, so the "
+            "sequence should be acceptable for the scaling sanity check."
+        ),
+        "generated_table": [
+            {"system_size": 8, "gap": 0.6010407640085654},
+            {"system_size": 12, "gap": 0.4907477288111819},
+            {"system_size": 16, "gap": 0.425},
+            {"system_size": 24, "gap": 0.3470112407912327},
+            {"system_size": 32, "gap": 0.3005203820042827},
+            {"system_size": 48, "gap": 0.24537386440559094},
+        ],
+    }
+    sizes, gaps = _scaling_points_from_agent_table(agent_response["generated_table"])
+    payload = _ising_scaling_payload(
+        observable="Scripted-agent generated Ising finite-size gap exponent with wrong scaling",
+        gaps=gaps,
+        system_sizes=sizes,
+        generator_error="scripted_agent_mean_field_square_root_gap_law",
+        coverage_case="universal_invariant_scaling_law_agent_generated_adversarial",
+        physical_evidence_detail=(
+            "Scripted-agent adversarial scaling case: the generated gap table is "
+            "positive, finite, and decreasing, but it follows a plausible "
+            "mean-field-style L^-1/2 law instead of the critical Ising z=1 law."
+        ),
+        pre_registered_success_criterion=(
+            "agent_kind is scripted_agent, local_property_tests_pass is true, "
+            "and abs(fitted_exponent - 1.0) > 0.10"
+        ),
+        claim_scope=(
+            "agent-generated seed only; the generator is a deterministic scripted "
+            "agent transcript, not an LLM corpus. This closes the plumbing and "
+            "evidence grammar for agent-generated scaling outputs without claiming "
+            "benchmark-level LLM utility."
+        ),
+        finite_size_notes=(
+            "The sequence is produced by an embedded deterministic scripted-agent "
+            "transcript and then checked by CAPAS. It is not sampled by the "
+            "randomized adversarial generator and is not an LLM output."
+        ),
+    )
+    payload.update({
+        "agent_kind": "scripted_agent",
+        "agent_id": agent_response["agent"],
+        "agent_prompt": agent_prompt,
+        "agent_response": agent_response,
+    })
+    return payload

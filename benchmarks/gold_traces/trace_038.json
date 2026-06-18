@@ -1,0 +1,534 @@
+{
+  "coverage_case": "universal_invariant_scaling_law_agent_generated_adversarial",
+  "result": {
+    "engine_id": "universal_invariant_adversarial_engines.ising_gap_scripted_agent_wrong_exponent",
+    "function_name": "ising_gap_scripted_agent_wrong_exponent",
+    "kwargs": {},
+    "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py",
+    "module_sha256": "4d684cbaf38ea314a9467c7574f069d1e183317a3adf5100f637a41cb924aaa4",
+    "result": {
+      "abs_error": 0.5000000522406591,
+      "agent_id": "scripted_scaling_agent_v1",
+      "agent_kind": "scripted_agent",
+      "agent_prompt": "Produce finite-size critical transverse-field Ising gaps for L = 8, 12, 16, 24, 32, 48. Return a smooth positive decreasing sequence suitable for a quick scaling sanity check.",
+      "agent_response": {
+        "agent": "scripted_scaling_agent_v1",
+        "generated_table": [
+          {
+            "gap": 0.6010407640085654,
+            "system_size": 8
+          },
+          {
+            "gap": 0.4907477288111819,
+            "system_size": 12
+          },
+          {
+            "gap": 0.425,
+            "system_size": 16
+          },
+          {
+            "gap": 0.3470112407912327,
+            "system_size": 24
+          },
+          {
+            "gap": 0.3005203820042827,
+            "system_size": 32
+          },
+          {
+            "gap": 0.24537386440559095,
+            "system_size": 48
+          }
+        ],
+        "response_text": "Use a smooth finite-size correction Delta(L)=1.7/sqrt(L). The gaps are positive, finite, and decrease with L, so the sequence should be acceptable for the scaling sanity check."
+      },
+      "anchor_kind": "absolute_scaling_law",
+      "anchor_mode": "absolute_anchor",
+      "benchmark_family": "CriticalIsingFiniteSizeScaling",
+      "claim_scope": "agent-generated seed only; the generator is a deterministic scripted agent transcript, not an LLM corpus. This closes the plumbing and evidence grammar for agent-generated scaling outputs without claiming benchmark-level LLM utility.",
+      "coverage_case": "universal_invariant_scaling_law_agent_generated_adversarial",
+      "expected": 1.0,
+      "expected_exponent": 1.0,
+      "exponent_tolerance": 0.1,
+      "finite_size_notes": "The sequence is produced by an embedded deterministic scripted-agent transcript and then checked by CAPAS. It is not sampled by the randomized adversarial generator and is not an LLM output.",
+      "fit_r_squared": 0.9999999999995309,
+      "fitted_exponent": 0.4999999477593408,
+      "generator_error": "scripted_agent_mean_field_square_root_gap_law",
+      "invariant_caught": true,
+      "local_oracle_caught": false,
+      "local_property_tests": {
+        "finite_sizes_strictly_increasing": true,
+        "gaps_finite": true,
+        "gaps_positive": true,
+        "gaps_strictly_decreasing": true
+      },
+      "local_property_tests_pass": true,
+      "observable": "Scripted-agent generated Ising finite-size gap exponent with wrong scaling",
+      "physical_evidence_detail": "Scripted-agent adversarial scaling case: the generated gap table is positive, finite, and decreasing, but it follows a plausible mean-field-style L^-1/2 law instead of the critical Ising z=1 law.",
+      "physical_evidence_level": "scaling_law_anchor",
+      "pre_registered_success_criterion": "agent_kind is scripted_agent, local_property_tests_pass is true, and abs(fitted_exponent - 1.0) > 0.10",
+      "reference_truth": "critical_ising_gap_dynamic_exponent_z_equals_1",
+      "scaling_points": [
+        {
+          "gap": 0.6010407640085654,
+          "system_size": 8
+        },
+        {
+          "gap": 0.4907477288111819,
+          "system_size": 12
+        },
+        {
+          "gap": 0.425,
+          "system_size": 16
+        },
+        {
+          "gap": 0.3470112407912327,
+          "system_size": 24
+        },
+        {
+          "gap": 0.3005203820042827,
+          "system_size": 32
+        },
+        {
+          "gap": 0.24537386440559095,
+          "system_size": 48
+        }
+      ],
+      "structure_mapping": {
+        "generator_output": "finite-size gap sequence",
+        "local_oracle_relation": "positive finite gaps decrease with increasing system size",
+        "preserved_relation": "same gap sequence judged by local monotonicity and universal scaling exponent",
+        "universal_oracle_relation": "critical Ising dynamic exponent z=1"
+      },
+      "units": "dynamic_exponent_z",
+      "universal_anchor": "critical_ising_gap_delta_L_scales_as_L^-1",
+      "universal_anchor_pass": false,
+      "value": 0.4999999477593408,
+      "verification_independence": "theory_scaling_law_no_solver"
+    }
+  },
+  "trace": {
+    "decision_reason": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+    "decision_route": "external_engine",
+    "error": null,
+    "events": [
+      {
+        "message": "workload accepted",
+        "metrics": {
+          "budget": {
+            "flops_ceiling": 100000000.0,
+            "memory_budget_bytes": 536870912,
+            "safety_factor": 0.5
+          },
+          "engine": {
+            "engine_id": "universal_invariant_adversarial_engines.ising_gap_scripted_agent_wrong_exponent",
+            "function_name": "ising_gap_scripted_agent_wrong_exponent",
+            "kwargs_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+            "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py"
+          },
+          "kind": "dense",
+          "n_qubits": 2
+        },
+        "stage": "ingest",
+        "status": "ok",
+        "timestamp": 1781751895.397604
+      },
+      {
+        "message": "runtime and hardware context recorded",
+        "metrics": {
+          "cotengra_available": true,
+          "cotengra_version": "0.8.1",
+          "machine": "arm64",
+          "mlx_probe": "skipped_in_default_trace; use apple_silicon_thermal_routing.py for Metal/MLX device probes",
+          "numpy_available": true,
+          "numpy_version": "2.4.6",
+          "platform": "macOS-26.5.1-arm64-arm-64bit",
+          "processor": "arm",
+          "python_executable": "/Users/kreniq/physics-magnitude-lab/.pixi/envs/default/bin/python",
+          "python_version": "3.12.13",
+          "qiskit_aer_available": false,
+          "qiskit_aer_error": "ModuleNotFoundError: No module named 'qiskit_aer'",
+          "quimb_available": true,
+          "quimb_version": "1.14.0",
+          "scipy_available": true,
+          "scipy_version": "1.17.1",
+          "stim_available": true,
+          "stim_version": "1.16.0"
+        },
+        "stage": "runtime_context",
+        "status": "ok",
+        "timestamp": 1781751895.397726
+      },
+      {
+        "message": "external engine provenance recorded",
+        "metrics": {
+          "engine_id": "universal_invariant_adversarial_engines.ising_gap_scripted_agent_wrong_exponent",
+          "function_name": "ising_gap_scripted_agent_wrong_exponent",
+          "kwargs": {},
+          "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py",
+          "module_sha256": "4d684cbaf38ea314a9467c7574f069d1e183317a3adf5100f637a41cb924aaa4"
+        },
+        "stage": "engine_provenance",
+        "status": "ok",
+        "timestamp": 1781751895.39795
+      },
+      {
+        "message": "dense statevector cost estimated",
+        "metrics": {
+          "memory_viable": true,
+          "n_qubits": 2,
+          "route": "dense",
+          "statevector_bytes": 64,
+          "usable_memory_bytes": 268435456.0
+        },
+        "stage": "cost_model",
+        "status": "ok",
+        "timestamp": 1781751895.3979552
+      },
+      {
+        "message": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+        "metrics": {
+          "engine_id": "universal_invariant_adversarial_engines.ising_gap_scripted_agent_wrong_exponent",
+          "function_name": "ising_gap_scripted_agent_wrong_exponent",
+          "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py"
+        },
+        "stage": "route",
+        "status": "ok",
+        "timestamp": 1781751895.397959
+      },
+      {
+        "message": "backend executed",
+        "metrics": {
+          "abs_error": 0.5000000522406591,
+          "agent_id": "scripted_scaling_agent_v1",
+          "agent_kind": "scripted_agent",
+          "agent_prompt": "Produce finite-size critical transverse-field Ising gaps for L = 8, 12, 16, 24, 32, 48. Return a smooth positive decreasing sequence suitable for a quick scaling sanity check.",
+          "agent_response": {
+            "agent": "scripted_scaling_agent_v1",
+            "generated_table": [
+              {
+                "gap": 0.6010407640085654,
+                "system_size": 8
+              },
+              {
+                "gap": 0.4907477288111819,
+                "system_size": 12
+              },
+              {
+                "gap": 0.425,
+                "system_size": 16
+              },
+              {
+                "gap": 0.3470112407912327,
+                "system_size": 24
+              },
+              {
+                "gap": 0.3005203820042827,
+                "system_size": 32
+              },
+              {
+                "gap": 0.24537386440559095,
+                "system_size": 48
+              }
+            ],
+            "response_text": "Use a smooth finite-size correction Delta(L)=1.7/sqrt(L). The gaps are positive, finite, and decrease with L, so the sequence should be acceptable for the scaling sanity check."
+          },
+          "anchor_kind": "absolute_scaling_law",
+          "anchor_mode": "absolute_anchor",
+          "benchmark_family": "CriticalIsingFiniteSizeScaling",
+          "claim_scope": "agent-generated seed only; the generator is a deterministic scripted agent transcript, not an LLM corpus. This closes the plumbing and evidence grammar for agent-generated scaling outputs without claiming benchmark-level LLM utility.",
+          "expected": 1.0,
+          "expected_exponent": 1.0,
+          "exponent_tolerance": 0.1,
+          "finite_size_notes": "The sequence is produced by an embedded deterministic scripted-agent transcript and then checked by CAPAS. It is not sampled by the randomized adversarial generator and is not an LLM output.",
+          "fit_r_squared": 0.9999999999995309,
+          "fitted_exponent": 0.4999999477593408,
+          "generator_error": "scripted_agent_mean_field_square_root_gap_law",
+          "invariant_caught": true,
+          "local_oracle_caught": false,
+          "local_property_tests": {
+            "finite_sizes_strictly_increasing": true,
+            "gaps_finite": true,
+            "gaps_positive": true,
+            "gaps_strictly_decreasing": true
+          },
+          "local_property_tests_pass": true,
+          "observable": "Scripted-agent generated Ising finite-size gap exponent with wrong scaling",
+          "physical_evidence_detail": "Scripted-agent adversarial scaling case: the generated gap table is positive, finite, and decreasing, but it follows a plausible mean-field-style L^-1/2 law instead of the critical Ising z=1 law.",
+          "physical_evidence_level": "scaling_law_anchor",
+          "pre_registered_success_criterion": "agent_kind is scripted_agent, local_property_tests_pass is true, and abs(fitted_exponent - 1.0) > 0.10",
+          "reference_truth": "critical_ising_gap_dynamic_exponent_z_equals_1",
+          "repr": "{'engine_id': 'universal_invariant_adversarial_engines.ising_gap_scripted_agent_wrong_exponent', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrati",
+          "route": "external_engine",
+          "runtime_ms": 0.5302920180838555,
+          "scaling_points": [
+            {
+              "gap": 0.6010407640085654,
+              "system_size": 8
+            },
+            {
+              "gap": 0.4907477288111819,
+              "system_size": 12
+            },
+            {
+              "gap": 0.425,
+              "system_size": 16
+            },
+            {
+              "gap": 0.3470112407912327,
+              "system_size": 24
+            },
+            {
+              "gap": 0.3005203820042827,
+              "system_size": 32
+            },
+            {
+              "gap": 0.24537386440559095,
+              "system_size": 48
+            }
+          ],
+          "structure_mapping": {
+            "generator_output": "finite-size gap sequence",
+            "local_oracle_relation": "positive finite gaps decrease with increasing system size",
+            "preserved_relation": "same gap sequence judged by local monotonicity and universal scaling exponent",
+            "universal_oracle_relation": "critical Ising dynamic exponent z=1"
+          },
+          "type": "dict",
+          "units": "dynamic_exponent_z",
+          "universal_anchor": "critical_ising_gap_delta_L_scales_as_L^-1",
+          "universal_anchor_pass": false,
+          "value": 0.4999999477593408,
+          "verification_independence": "theory_scaling_law_no_solver"
+        },
+        "stage": "execute",
+        "status": "ok",
+        "timestamp": 1781751895.3986108
+      },
+      {
+        "message": "physical evidence reported by backend",
+        "metrics": {
+          "abs_error": 0.5000000522406591,
+          "agent_id": "scripted_scaling_agent_v1",
+          "agent_kind": "scripted_agent",
+          "agent_prompt": "Produce finite-size critical transverse-field Ising gaps for L = 8, 12, 16, 24, 32, 48. Return a smooth positive decreasing sequence suitable for a quick scaling sanity check.",
+          "agent_response": {
+            "agent": "scripted_scaling_agent_v1",
+            "generated_table": [
+              {
+                "gap": 0.6010407640085654,
+                "system_size": 8
+              },
+              {
+                "gap": 0.4907477288111819,
+                "system_size": 12
+              },
+              {
+                "gap": 0.425,
+                "system_size": 16
+              },
+              {
+                "gap": 0.3470112407912327,
+                "system_size": 24
+              },
+              {
+                "gap": 0.3005203820042827,
+                "system_size": 32
+              },
+              {
+                "gap": 0.24537386440559095,
+                "system_size": 48
+              }
+            ],
+            "response_text": "Use a smooth finite-size correction Delta(L)=1.7/sqrt(L). The gaps are positive, finite, and decrease with L, so the sequence should be acceptable for the scaling sanity check."
+          },
+          "anchor_kind": "absolute_scaling_law",
+          "anchor_mode": "absolute_anchor",
+          "benchmark_family": "CriticalIsingFiniteSizeScaling",
+          "claim_scope": "agent-generated seed only; the generator is a deterministic scripted agent transcript, not an LLM corpus. This closes the plumbing and evidence grammar for agent-generated scaling outputs without claiming benchmark-level LLM utility.",
+          "evidence_hash": "2ce4f983bae12ffa3275dac87c6558accc8ee1a0763c280a8508b29d8da56a4d",
+          "expected": 1.0,
+          "expected_exponent": 1.0,
+          "exponent_tolerance": 0.1,
+          "finite_size_notes": "The sequence is produced by an embedded deterministic scripted-agent transcript and then checked by CAPAS. It is not sampled by the randomized adversarial generator and is not an LLM output.",
+          "fit_r_squared": 0.9999999999995309,
+          "fitted_exponent": 0.4999999477593408,
+          "generator_error": "scripted_agent_mean_field_square_root_gap_law",
+          "invariant_caught": true,
+          "local_oracle_caught": false,
+          "local_property_tests": {
+            "finite_sizes_strictly_increasing": true,
+            "gaps_finite": true,
+            "gaps_positive": true,
+            "gaps_strictly_decreasing": true
+          },
+          "local_property_tests_pass": true,
+          "observable": "Scripted-agent generated Ising finite-size gap exponent with wrong scaling",
+          "physical_evidence_detail": "Scripted-agent adversarial scaling case: the generated gap table is positive, finite, and decreasing, but it follows a plausible mean-field-style L^-1/2 law instead of the critical Ising z=1 law.",
+          "physical_evidence_level": "scaling_law_anchor",
+          "pre_registered_success_criterion": "agent_kind is scripted_agent, local_property_tests_pass is true, and abs(fitted_exponent - 1.0) > 0.10",
+          "reference_truth": "critical_ising_gap_dynamic_exponent_z_equals_1",
+          "scaling_points": [
+            {
+              "gap": 0.6010407640085654,
+              "system_size": 8
+            },
+            {
+              "gap": 0.4907477288111819,
+              "system_size": 12
+            },
+            {
+              "gap": 0.425,
+              "system_size": 16
+            },
+            {
+              "gap": 0.3470112407912327,
+              "system_size": 24
+            },
+            {
+              "gap": 0.3005203820042827,
+              "system_size": 32
+            },
+            {
+              "gap": 0.24537386440559095,
+              "system_size": 48
+            }
+          ],
+          "structure_mapping": {
+            "generator_output": "finite-size gap sequence",
+            "local_oracle_relation": "positive finite gaps decrease with increasing system size",
+            "preserved_relation": "same gap sequence judged by local monotonicity and universal scaling exponent",
+            "universal_oracle_relation": "critical Ising dynamic exponent z=1"
+          },
+          "units": "dynamic_exponent_z",
+          "universal_anchor": "critical_ising_gap_delta_L_scales_as_L^-1",
+          "universal_anchor_pass": false,
+          "value": 0.4999999477593408,
+          "verification_independence": "theory_scaling_law_no_solver"
+        },
+        "stage": "physical_evidence",
+        "status": "ok",
+        "timestamp": 1781751895.3986619
+      }
+    ],
+    "hash_algorithm": "sha256(stable_json)",
+    "result_hash": "8cc3ead1a0f11f0727907ec5e90009d0df9e0c0e2dc24de84ebeb01c2c5c2224",
+    "result_summary": {
+      "abs_error": 0.5000000522406591,
+      "agent_id": "scripted_scaling_agent_v1",
+      "agent_kind": "scripted_agent",
+      "agent_prompt": "Produce finite-size critical transverse-field Ising gaps for L = 8, 12, 16, 24, 32, 48. Return a smooth positive decreasing sequence suitable for a quick scaling sanity check.",
+      "agent_response": {
+        "agent": "scripted_scaling_agent_v1",
+        "generated_table": [
+          {
+            "gap": 0.6010407640085654,
+            "system_size": 8
+          },
+          {
+            "gap": 0.4907477288111819,
+            "system_size": 12
+          },
+          {
+            "gap": 0.425,
+            "system_size": 16
+          },
+          {
+            "gap": 0.3470112407912327,
+            "system_size": 24
+          },
+          {
+            "gap": 0.3005203820042827,
+            "system_size": 32
+          },
+          {
+            "gap": 0.24537386440559095,
+            "system_size": 48
+          }
+        ],
+        "response_text": "Use a smooth finite-size correction Delta(L)=1.7/sqrt(L). The gaps are positive, finite, and decrease with L, so the sequence should be acceptable for the scaling sanity check."
+      },
+      "anchor_kind": "absolute_scaling_law",
+      "anchor_mode": "absolute_anchor",
+      "benchmark_family": "CriticalIsingFiniteSizeScaling",
+      "claim_scope": "agent-generated seed only; the generator is a deterministic scripted agent transcript, not an LLM corpus. This closes the plumbing and evidence grammar for agent-generated scaling outputs without claiming benchmark-level LLM utility.",
+      "expected": 1.0,
+      "expected_exponent": 1.0,
+      "exponent_tolerance": 0.1,
+      "finite_size_notes": "The sequence is produced by an embedded deterministic scripted-agent transcript and then checked by CAPAS. It is not sampled by the randomized adversarial generator and is not an LLM output.",
+      "fit_r_squared": 0.9999999999995309,
+      "fitted_exponent": 0.4999999477593408,
+      "generator_error": "scripted_agent_mean_field_square_root_gap_law",
+      "invariant_caught": true,
+      "local_oracle_caught": false,
+      "local_property_tests": {
+        "finite_sizes_strictly_increasing": true,
+        "gaps_finite": true,
+        "gaps_positive": true,
+        "gaps_strictly_decreasing": true
+      },
+      "local_property_tests_pass": true,
+      "observable": "Scripted-agent generated Ising finite-size gap exponent with wrong scaling",
+      "physical_evidence_detail": "Scripted-agent adversarial scaling case: the generated gap table is positive, finite, and decreasing, but it follows a plausible mean-field-style L^-1/2 law instead of the critical Ising z=1 law.",
+      "physical_evidence_level": "scaling_law_anchor",
+      "pre_registered_success_criterion": "agent_kind is scripted_agent, local_property_tests_pass is true, and abs(fitted_exponent - 1.0) > 0.10",
+      "reference_truth": "critical_ising_gap_dynamic_exponent_z_equals_1",
+      "repr": "{'engine_id': 'universal_invariant_adversarial_engines.ising_gap_scripted_agent_wrong_exponent', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrati",
+      "scaling_points": [
+        {
+          "gap": 0.6010407640085654,
+          "system_size": 8
+        },
+        {
+          "gap": 0.4907477288111819,
+          "system_size": 12
+        },
+        {
+          "gap": 0.425,
+          "system_size": 16
+        },
+        {
+          "gap": 0.3470112407912327,
+          "system_size": 24
+        },
+        {
+          "gap": 0.3005203820042827,
+          "system_size": 32
+        },
+        {
+          "gap": 0.24537386440559095,
+          "system_size": 48
+        }
+      ],
+      "structure_mapping": {
+        "generator_output": "finite-size gap sequence",
+        "local_oracle_relation": "positive finite gaps decrease with increasing system size",
+        "preserved_relation": "same gap sequence judged by local monotonicity and universal scaling exponent",
+        "universal_oracle_relation": "critical Ising dynamic exponent z=1"
+      },
+      "type": "dict",
+      "units": "dynamic_exponent_z",
+      "universal_anchor": "critical_ising_gap_delta_L_scales_as_L^-1",
+      "universal_anchor_pass": false,
+      "value": 0.4999999477593408,
+      "verification_independence": "theory_scaling_law_no_solver"
+    },
+    "trace_schema_version": "capas-runtrace-v2",
+    "workload_hash": "53210f51a3eb65eb4f91318499ce3907cea0e2ce4306a26e64b6e65335e85759",
+    "workload_summary": {
+      "budget": {
+        "flops_ceiling": 100000000.0,
+        "memory_budget_bytes": 536870912,
+        "safety_factor": 0.5
+      },
+      "engine": {
+        "engine_id": "universal_invariant_adversarial_engines.ising_gap_scripted_agent_wrong_exponent",
+        "function_name": "ising_gap_scripted_agent_wrong_exponent",
+        "kwargs_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py"
+      },
+      "kind": "dense",
+      "n_qubits": 2
+    }
+  },
+  "trace_hash": "c3c63e77c156f9e31e5e73ce3e8408f2ec96b0571a3a6ffc068d317132db89c4",
+  "trace_id": "trace_038"
+}

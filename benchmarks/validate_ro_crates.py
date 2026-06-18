@@ -32,6 +32,7 @@ EXPECTED = {
     "trace_035": ("universal_invariant_scaling_law_local_catches", "present", True, "CompletedActionStatus"),
     "trace_036": ("universal_invariant_scaling_law_simulation_generated", "present", True, "CompletedActionStatus"),
     "trace_037": ("universal_invariant_scaling_law_randomized_adversarial", "present", True, "CompletedActionStatus"),
+    "trace_038": ("universal_invariant_scaling_law_agent_generated_adversarial", "present", True, "CompletedActionStatus"),
     "trace_012": ("no_evidence_success", "none_declared", False, "CompletedActionStatus"),
     "trace_013": ("backend_failed", "not_applicable_failed", False, "FailedActionStatus"),
     "trace_014": ("rejected_by_router", "not_applicable_rejected", False, "CompletedActionStatus"),
@@ -223,6 +224,18 @@ def main() -> int:
                 assert len(evidence.get("capas:randomizedVariants", [])) == 8, "missing randomized variants"
                 assert evidence.get("capas:minAbsError") > evidence.get("capas:exponentTolerance"), "all variants should exceed tolerance"
                 assert evidence.get("capas:randomSeed") == 20260617, "wrong randomized seed"
+            elif coverage == "universal_invariant_scaling_law_agent_generated_adversarial":
+                assert evidence.get("capas:physicalEvidenceLevel") == "scaling_law_anchor", "wrong scaling evidence level"
+                assert evidence.get("capas:anchorKind") == "absolute_scaling_law", "wrong anchor kind"
+                assert evidence.get("capas:anchorMode") == "absolute_anchor", "wrong anchor mode"
+                assert evidence.get("capas:agentKind") == "scripted_agent", "wrong agent kind"
+                assert evidence.get("capas:agentId") == "scripted_scaling_agent_v1", "wrong agent id"
+                assert evidence.get("capas:agentPrompt"), "missing agent prompt"
+                assert evidence.get("capas:agentResponse"), "missing agent response"
+                assert evidence.get("capas:localPropertyTestsPass") is True, "agent local scaling checks should pass"
+                assert evidence.get("capas:universalAnchorPass") is False, "agent scaling anchor should fail"
+                assert evidence.get("capas:invariantCaught") is True, "agent scaling invariant should catch"
+                assert evidence.get("capas:absError") > evidence.get("capas:exponentTolerance"), "agent exponent error should exceed tolerance"
             print(f"{trace_id}: ok ({coverage}, {status}, {action_status})")
         except Exception as exc:
             failures.append(f"{trace_id}: {type(exc).__name__}: {exc}")

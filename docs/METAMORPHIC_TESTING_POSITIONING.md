@@ -120,7 +120,7 @@ The current matrix does not demonstrate:
 
 ## Scaling-Law Seed Status
 
-`trace_033` through `trace_037` add an Ising finite-size scaling seed:
+`trace_033` through `trace_038` add an Ising finite-size scaling seed:
 
 - expected exponent: `z = 1`,
 - preregistered tolerance: `|z_fit - 1| <= 0.10`,
@@ -133,16 +133,19 @@ The current matrix does not demonstrate:
 - `trace_037`: seeded randomized adversarial family with eight plausible
   decreasing sequences; all fitted exponents miss `z=1` beyond the
   preregistered tolerance.
+- `trace_038`: deterministic scripted-agent transcript that emits a plausible
+  `L^-1/2` table; local checks pass and the absolute scaling anchor catches it.
 
 This closes the first "not only exact small-system values" debt and adds one
 non-synthetic simulation-generated scaling sequence plus one randomized
-adversarial seed. It still does not prove benchmark-level utility on real agent
-outputs.
+adversarial seed plus one scripted-agent seed. It still does not prove
+benchmark-level utility on LLM-agent outputs.
 
 ## Next Non-Degradable Step
 
-Replace the remaining hand-authored scaling sequence with at least one real
-agent-generated sequence, still carrying:
+The remaining hardening path is to replace the scripted-agent seed with a real
+LLM-agent failure corpus if a generator source is explicitly available, still
+carrying:
 
 - preregistered tolerance,
 - finite-size/error bars,
@@ -152,6 +155,5 @@ agent-generated sequence, still carrying:
 - explicit `anchor_mode` statement: `absolute_anchor`,
   `metamorphic_relation`, `mixed`, or `none`.
 
-Done when D11 includes a scaling-law anchor over real agent-generated data. The
-randomized adversarial seed is now present, but it is not a substitute for an
-agent-generated failure corpus.
+The current D11 closure uses an embedded scripted agent, not an LLM. Do not
+claim LLM-agent utility until a real LLM-generated failure corpus is present.

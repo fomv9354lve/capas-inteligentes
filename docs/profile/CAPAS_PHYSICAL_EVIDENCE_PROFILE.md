@@ -88,6 +88,10 @@ Common optional fields:
 | `capas:randomizedVariants` | Per-variant evidence records for randomized adversarial/control cases. |
 | `capas:minAbsError` | Minimum absolute error across variants, when an aggregate trace is used. |
 | `capas:maxAbsError` | Maximum absolute error across variants, when an aggregate trace is used. |
+| `capas:agentKind` | Kind of generator that produced the candidate artifact, e.g. `scripted_agent`; do not infer LLM generation unless recorded. |
+| `capas:agentId` | Identifier of the generator/agent that produced the candidate artifact. |
+| `capas:agentPrompt` | Prompt or task statement given to the generator, when recorded. |
+| `capas:agentResponse` | Structured generator response or transcript, when recorded. |
 | `capas:structureMapping` | Relationship-preserving map between generator artifact, local oracle, and universal oracle. |
 | `capas:preRegisteredSuccessCriterion` | Criterion declared before interpreting the trace. |
 | `capas:claimScope` | Narrow scope of what the trace supports. |

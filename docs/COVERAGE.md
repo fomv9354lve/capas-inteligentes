@@ -30,6 +30,7 @@ without lying.
 | `universal_invariant_scaling_law_local_catches` | `benchmarks/gold_traces/trace_035.json` | `benchmarks/ro_crates/trace_035/ro-crate-metadata.json` | `present` | Constant gap sequence rejected by local monotonicity before exponent anchor is credited |
 | `universal_invariant_scaling_law_simulation_generated` | `benchmarks/gold_traces/trace_036.json` | `benchmarks/ro_crates/trace_036/ro-crate-metadata.json` | `present` | Exact-diagonalization TFIM gaps fit `z=0.917`, within preregistered tolerance |
 | `universal_invariant_scaling_law_randomized_adversarial` | `benchmarks/gold_traces/trace_037.json` | `benchmarks/ro_crates/trace_037/ro-crate-metadata.json` | `present` | Eight randomized plausible decreasing Ising gap sequences all miss `z=1` beyond preregistered tolerance |
+| `universal_invariant_scaling_law_agent_generated_adversarial` | `benchmarks/gold_traces/trace_038.json` | `benchmarks/ro_crates/trace_038/ro-crate-metadata.json` | `present` | Scripted-agent plausible decreasing Ising gaps fit `z=0.5`, violating the `z=1` anchor |
 | `no_evidence_success` | `benchmarks/gold_traces/trace_012.json` | `benchmarks/ro_crates/trace_012/ro-crate-metadata.json` | `none_declared` | Successful result with no attached physical witness |
 | `backend_failed` | `benchmarks/gold_traces/trace_013.json` | `benchmarks/ro_crates/trace_013/ro-crate-metadata.json` | `not_applicable_failed` | Failed backend captured as provenance, not hidden |
 | `rejected_by_router` | `benchmarks/gold_traces/trace_014.json` | `benchmarks/ro_crates/trace_014/ro-crate-metadata.json` | `not_applicable_rejected` | Non-execution due memory/resource guard captured as provenance |
@@ -63,6 +64,7 @@ The local audit currently reports:
 - `universal_invariant_scaling_law_local_catches`: 1
 - `universal_invariant_scaling_law_simulation_generated`: 1
 - `universal_invariant_scaling_law_randomized_adversarial`: 1
+- `universal_invariant_scaling_law_agent_generated_adversarial`: 1
 - `no_evidence_success`: 1
 - `backend_failed`: 1
 - `rejected_by_router`: 1
@@ -106,6 +108,7 @@ trace_034: ok (universal_invariant_scaling_law_positive_control, present)
 trace_035: ok (universal_invariant_scaling_law_local_catches, present)
 trace_036: ok (universal_invariant_scaling_law_simulation_generated, present)
 trace_037: ok (universal_invariant_scaling_law_randomized_adversarial, present)
+trace_038: ok (universal_invariant_scaling_law_agent_generated_adversarial, present)
 trace_012: ok (no_evidence_success, none_declared)
 trace_013: ok (backend_failed, not_applicable_failed)
 trace_014: ok (rejected_by_router, not_applicable_rejected)
