@@ -1,7 +1,7 @@
 {
   "failed": 3,
   "non_degradation": "GitHub publication is not complete until remote, auth, tag, CI run, and release artifact exist externally.",
-  "passed": 14,
+  "passed": 15,
   "release_ready": false,
   "results": [
     {
@@ -69,6 +69,12 @@
       "detail": "exists",
       "passed": true,
       "path": "outputs/profile_registration_packet/manifest.json"
+    },
+    {
+      "check": "fresh_clone_install_smoke",
+      "command": "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3 benchmarks/verify_fresh_clone_install.py",
+      "detail": "git clone --quiet <CAPAS_ROOT> <TMP_CAPAS_FRESH_CLONE>/repo: ok\n/Library/Frameworks/Python.framework/Versions/3.14/bin/python3 -m venv --system-site-packages <TMP_CAPAS_FRESH_CLONE>/venv: ok\n<TMP_CAPAS_FRESH_CLONE>/venv/bin/python -m pip install --no-deps --no-build-isolation -e .: ok\n<TMP_CAPAS_FRESH_CLONE>/venv/bin/capas demo: ok\n<TMP_CAPAS_FRESH_CLONE>/venv/bin/capas decide --input examples/external_claim_rewrite.json: ok\n<TMP_CAPAS_FRESH_CLONE>/venv/bin/capas validate: ok\nfresh_clone_install_smoke: True\nreport written to <CAPAS_ROOT>/outputs/fresh_clone_install_report.json",
+      "passed": true
     },
     {
       "check": "product_demo_acceptance",

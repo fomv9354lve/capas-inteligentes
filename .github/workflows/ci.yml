@@ -23,6 +23,9 @@ jobs:
       - name: Product demo acceptance
         run: python benchmarks/verify_capas_product_demo.py
 
+      - name: Fresh clone install smoke
+        run: python benchmarks/verify_fresh_clone_install.py
+
       - name: External MVP readiness packets
         run: python benchmarks/verify_external_mvp_readiness.py
 

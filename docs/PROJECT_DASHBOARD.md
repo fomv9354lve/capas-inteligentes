@@ -110,6 +110,11 @@ Universal anchor matrix validation: passed; D11 licenses
 Product demo validation: passed; outputs/capas_product_demo_report.md/json
   demonstrate ACCEPT/REWRITE/REJECT/HOLD, D11 complementarity, trace_039
   motor-backed positive control, and fine_tune_ready=False
+Fresh clone install smoke: passed locally via
+  benchmarks/verify_fresh_clone_install.py; scope is local git clone plus
+  editable install in a temporary venv with system site packages,
+  --no-deps, and --no-build-isolation, not a published-artifact or
+  blank-machine dependency-resolution proof
 External MVP launch path: docs/EXTERNAL_MVP_LAUNCH_PLAN.md documents fresh-clone
   install, external input examples, user validation packet, GitHub release
   checklist, and RO-Crate profile registration path
@@ -193,6 +198,7 @@ scaling_law_anchor: 7
    - `capas decide --input examples/external_claim_accept.json`
    - `capas ui`
    - `python3 benchmarks/verify_capas_product_demo.py`
+   - `python3 benchmarks/verify_fresh_clone_install.py`
    - `python3 scripts/prepare_external_reviewer_packet.py`
    - `python3 scripts/prepare_profile_registration_packet.py`
    - `python3 scripts/check_release_readiness.py`

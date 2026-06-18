@@ -49,6 +49,7 @@ def main() -> int:
         })
 
     commands = [
+        ("fresh_clone_install_smoke", [sys.executable, "benchmarks/verify_fresh_clone_install.py"]),
         ("product_demo_acceptance", [sys.executable, "benchmarks/verify_capas_product_demo.py"]),
         ("product_validate", ["capas", "validate"]),
         ("wheel_build_no_isolation", [sys.executable, "-m", "build", "--wheel", "--no-isolation"]),

@@ -1,0 +1,48 @@
+{
+  "fresh_clone_install_smoke": true,
+  "results": [
+    {
+      "command": "git clone --quiet <CAPAS_ROOT> <TMP_CAPAS_FRESH_CLONE>/repo",
+      "passed": true,
+      "returncode": 0,
+      "stderr_tail": "",
+      "stdout_tail": ""
+    },
+    {
+      "command": "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3 -m venv --system-site-packages <TMP_CAPAS_FRESH_CLONE>/venv",
+      "passed": true,
+      "returncode": 0,
+      "stderr_tail": "",
+      "stdout_tail": ""
+    },
+    {
+      "command": "<TMP_CAPAS_FRESH_CLONE>/venv/bin/python -m pip install --no-deps --no-build-isolation -e .",
+      "passed": true,
+      "returncode": 0,
+      "stderr_tail": "WARNING: The directory '/Users/kreniq/Library/Caches/pip' or its parent directory is not owned or is not writable by the current user. The cache has been disabled. Check the permissions and owner of that directory. If executing pip with sudo, you should use sudo's -H flag.\n",
+      "stdout_tail": "Obtaining file://<TMP_CAPAS_FRESH_CLONE>/repo\n  Checking if build backend supports build_editable: started\n  Checking if build backend supports build_editable: finished with status 'done'\n  Preparing editable metadata (pyproject.toml): started\n  Preparing editable metadata (pyproject.toml): finished with status 'done'\nBuilding wheels for collected packages: capas-claim-gate\n  Building editable for capas-claim-gate (pyproject.toml): started\n  Building editable for capas-claim-gate (pyproject.toml): finished with status 'done'\n  Created wheel for capas-claim-gate: filename=capas_claim_gate-0.1.0-0.editable-py3-none-any.whl size=<wheel-size> sha256=<wheel-hash>\n  Stored in directory: <PIP_EPHEM_WHEEL_CACHE>\nSuccessfully built capas-claim-gate\nInstalling collected packages: capas-claim-gate\n  Attempting uninstall: capas-claim-gate\n    Found existing installation: capas-claim-gate 0.1.0\n    Not uninstalling capas-claim-gate at /Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages, outside environment <TMP_CAPAS_FRESH_CLONE>/venv\n    Can't uninstall 'capas-claim-gate'. No files were found to uninstall.\nSuccessfully installed capas-claim-gate-0.1.0\n"
+    },
+    {
+      "command": "<TMP_CAPAS_FRESH_CLONE>/venv/bin/capas demo",
+      "passed": true,
+      "returncode": 0,
+      "stderr_tail": "",
+      "stdout_tail": "CAPAS product demo: PASS\nclaim checks: 69/69\nD11 licensed claim: complementarity_not_dominance\nwrote <TMP_CAPAS_FRESH_CLONE>/repo/outputs/capas_product_demo_report.json\nwrote <TMP_CAPAS_FRESH_CLONE>/repo/outputs/capas_product_demo_report.md\n"
+    },
+    {
+      "command": "<TMP_CAPAS_FRESH_CLONE>/venv/bin/capas decide --input examples/external_claim_rewrite.json",
+      "passed": true,
+      "returncode": 0,
+      "stderr_tail": "",
+      "stdout_tail": "{\n  \"fine_tune_ready\": false,\n  \"input_claim\": {\n    \"id\": \"external_scaling_anchor_rewrite\",\n    \"text\": \"Local monotonicity proves the generated scaling result is physically correct.\",\n    \"type\": \"universal_anchor_claim\"\n  },\n  \"licensed_claim\": \"local plausibility only; universal physical correctness is not licensed\",\n  \"missing_fields\": [],\n  \"non_claim\": \"This decision is rule-based over supplied evidence fields, not an LLM judgment.\",\n  \"reason\": \"local checks pass, but the universal anchor fails\",\n  \"required_fields\": [\n    \"anchor_mode\",\n    \"local_property_tests_pass\",\n    \"universal_anchor_pass\"\n  ],\n  \"rewrite\": \"local plausibility only; universal physical correctness is not licensed\",\n  \"verdict\": \"REWRITE\"\n}\n"
+    },
+    {
+      "command": "<TMP_CAPAS_FRESH_CLONE>/venv/bin/capas validate",
+      "passed": true,
+      "returncode": 0,
+      "stderr_tail": "",
+      "stdout_tail": "ionStatus)\ntrace_026: ok (quantum_chemistry_larger_polyatomic_electronic_vibrational, present, CompletedActionStatus)\ntrace_027: ok (quantum_chemistry_basis_convergence_to_experiment, present, CompletedActionStatus)\ntrace_028: ok (universal_invariant_adversarial_failure, present, CompletedActionStatus)\ntrace_029: ok (universal_invariant_local_catches_anchor_not_needed, present, CompletedActionStatus)\ntrace_030: ok (universal_invariant_both_oracles_catch, present, CompletedActionStatus)\ntrace_031: ok (universal_invariant_non_heisenberg_adversarial_failure, present, CompletedActionStatus)\ntrace_032: ok (universal_invariant_no_anchor_control, present, CompletedActionStatus)\ntrace_033: ok (universal_invariant_scaling_law_adversarial_failure, present, CompletedActionStatus)\ntrace_034: ok (universal_invariant_scaling_law_positive_control, present, CompletedActionStatus)\ntrace_035: ok (universal_invariant_scaling_law_local_catches, present, CompletedActionStatus)\ntrace_036: ok (universal_invariant_scaling_law_simulation_generated, present, CompletedActionStatus)\ntrace_037: ok (universal_invariant_scaling_law_randomized_adversarial, present, CompletedActionStatus)\ntrace_038: ok (universal_invariant_scaling_law_agent_generated_adversarial, present, CompletedActionStatus)\ntrace_039: ok (claim_transition_bounded_agent_scientific_reasoning, present, CompletedActionStatus)\ntrace_012: ok (no_evidence_success, none_declared, CompletedActionStatus)\ntrace_013: ok (backend_failed, not_applicable_failed, FailedActionStatus)\ntrace_014: ok (rejected_by_router, not_applicable_rejected, CompletedActionStatus)\ntrace_015: ok (estimated_bound_candidate, present, CompletedActionStatus)\ntrace_016: ok (formal_bound_success, present, CompletedActionStatus)\ntrace_017: ok (formal_bound_composition_success, present, CompletedActionStatus)\nvalidate_ro_crates passed\n\n=== claim gate ===\n\n=== universal anchor matrix ===\n\n=== CAPAS profile ===\n\n=== RO-Crate coverage ===\n\nCAPAS product validation passed\n"
+    }
+  ],
+  "scope": "Local git clone plus editable install in a temporary venv using system site packages, --no-deps, and --no-build-isolation. This proves package entrypoint/root discovery outside the working tree; it does not prove PyPI dependency resolution from a blank machine."
+}

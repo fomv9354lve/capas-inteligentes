@@ -9,7 +9,7 @@ account, external user, or standards-community action.
 
 | Requirement | Current status | Evidence | Remaining work |
 |---|---|---|---|
-| Clean package install | Implemented for local/editable install | `pyproject.toml`, entrypoint `capas` | Test on a fresh clone outside this workspace |
+| Clean package install | Implemented and locally fresh-clone smoke-tested | `pyproject.toml`, entrypoint `capas`, `benchmarks/verify_fresh_clone_install.py` | Test from GitHub clone and released artifact after publication |
 | Comfortable external input | Implemented for small JSON claim/evidence files | `capas.py decide`, `examples/external_claim_*.json` | Expand rule registry and publish JSON schema |
 | UI | Implemented as static local HTML | `capas.py ui` writes `outputs/capas_claim_gate_ui.html` | Replace static demo with hosted or packaged app if needed |
 | External user validation | Not complete | no external feedback artifact yet | Send minimal packet to one scientific-computation practitioner |
@@ -22,6 +22,7 @@ Current readiness artifacts:
 - `outputs/external_reviewer_packet/manifest.json`
 - `outputs/profile_registration_packet/manifest.json`
 - `outputs/release_readiness_report.json`
+- `outputs/fresh_clone_install_report.json`
 
 Current release readiness result:
 
@@ -40,6 +41,19 @@ capas demo
 capas validate
 capas inspect trace_039
 ```
+
+Local fresh-clone smoke test:
+
+```bash
+python benchmarks/verify_fresh_clone_install.py
+```
+
+Scope: this clones the current local repository into a temporary directory,
+installs the package in a temporary venv with system site packages and
+`--no-deps --no-build-isolation`, then runs the venv-local `capas demo`,
+`capas decide`, and `capas validate`. It proves the package entrypoint and root
+discovery work outside this working tree. It does not prove dependency
+resolution from a blank machine or a published GitHub/PyPI artifact.
 
 The package exposes one console script:
 
