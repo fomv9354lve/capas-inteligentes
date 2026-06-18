@@ -47,14 +47,14 @@ https://github.com/fomv9354lve/capas-inteligentes/releases/tag/v0.1.0
 
 A CAPAS trace can record:
 
-- `physicalEvidenceLevel`: e.g. `analytic`, `cross_sim`, `experimental`,
-  `formal_bound`, `estimated_bound`, `scaling_law_anchor`, `none`
-- `verificationIndependence`: relationship between producer and witness
-- `referenceTruth`: analytic, experimental, benchmark, or declared reference
-- `absError` / `boundScope`: error or scope of a bound
 - `evidenceStatus`: `present`, `none_declared`,
   `not_applicable_failed`, `not_applicable_rejected`
+- `verificationIndependence`: relationship between producer and witness
 - claim verdict: `ACCEPT`, `REWRITE`, `REJECT`, or `HOLD`
+- `physicalEvidenceLevel`: e.g. `analytic`, `cross_sim`, `experimental`,
+  `formal_bound`, `estimated_bound`, `scaling_law_anchor`, `none`
+- `referenceTruth`: analytic, experimental, benchmark, or declared reference
+- `absError` / `boundScope`: error or scope of a bound
 
 Example distinction:
 
@@ -68,7 +68,11 @@ This prevents a trace from licensing a stronger claim than its evidence supports
 ## Why QMB100 / PhysVEC Is the Closest Use Case
 
 QMB100 / PhysVEC targets verifiable and self-correcting AI physicists for
-quantum many-body simulations. That is the closest use case CAPAS has found:
+quantum many-body simulations. Its paper already includes programming
+verification, scientific verification, and physical assertions based on
+limiting-case, symmetry, and analytical tests.
+
+That is why it is the closest use case CAPAS has found:
 
 - AI-generated scientific computation,
 - programming correctness,
@@ -76,9 +80,19 @@ quantum many-body simulations. That is the closest use case CAPAS has found:
 - human-auditable evidence,
 - task-level benchmark outputs.
 
-CAPAS is not a competing verifier. The question is whether evidence produced by
-a system like PhysVEC should also be packaged as a portable evidence object that
-records how the result was verified and what claim it supports.
+CAPAS is not a competing verifier. It does not claim that PhysVEC lacks
+reference truth or physical assertions. The narrower question is whether
+evidence produced by a system like PhysVEC should also be packaged as a portable
+evidence object that records:
+
+- whether the witness is independent of the producer,
+- whether the trace succeeded, failed, was rejected, or has no evidence,
+- whether the result licenses the proposed claim or only a weaker rewrite.
+
+This also matches a limitation stated by the PhysVEC work: verification still
+depends on manually built rubrics/physical assertions and current LLM agents may
+not reliably correct deeper scientific errors. CAPAS treats that limitation as
+metadata to record, not as a problem hidden behind a binary pass/fail.
 
 ## Concrete Validation Question
 
@@ -88,13 +102,19 @@ result?
 In particular, are these fields useful or already covered by current artifacts?
 
 ```text
-physicalEvidenceLevel
 verificationIndependence
+evidenceStatus
+claim verdict: ACCEPT / REWRITE / REJECT / HOLD
+```
+
+Secondary fields, which PhysVEC may already cover partially through its
+assertion taxonomy but CAPAS would type and export explicitly:
+
+```text
+physicalEvidenceLevel
 referenceTruth
 absError
 boundScope
-evidenceStatus
-claim verdict: ACCEPT / REWRITE / REJECT / HOLD
 ```
 
 ## What Would Count as Useful Feedback
