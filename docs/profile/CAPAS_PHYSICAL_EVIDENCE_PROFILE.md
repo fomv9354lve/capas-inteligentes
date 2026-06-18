@@ -75,13 +75,19 @@ Common optional fields:
 | `capas:universalAnchorPass` | Whether the generated result satisfies the universal anchor. |
 | `capas:invariantCaught` | Whether the universal anchor caught an error missed by the local oracle. |
 | `capas:generatorError` | Declared injected or diagnosed generator error, when applicable. |
-| `capas:anchorKind` | Anchor class, e.g. `absolute_value`, `absolute_scaling_law`, `metamorphic_relation`, or `mixed`. |
+| `capas:anchorKind` | Domain-specific anchor class, e.g. `absolute_value`, `absolute_scaling_law`, `metamorphic_relation`, or `mixed`. |
+| `capas:anchorMode` | Structural verification mode: `absolute_anchor`, `metamorphic_relation`, `mixed`, or `none`. |
 | `capas:scalingPoints` | Finite-size or finite-parameter points used for a scaling-law fit. |
 | `capas:fittedExponent` | Fitted scaling exponent. |
 | `capas:expectedExponent` | Expected universal scaling exponent. |
 | `capas:exponentTolerance` | Preregistered tolerance for the exponent check. |
 | `capas:fitRSquared` | Fit quality for the scaling relation. |
 | `capas:finiteSizeNotes` | Scope and caveats for finite-size/scaling evidence. |
+| `capas:randomSeed` | Deterministic seed for randomized adversarial/control generation. |
+| `capas:variantCount` | Number of generated variants in an aggregate randomized trace. |
+| `capas:randomizedVariants` | Per-variant evidence records for randomized adversarial/control cases. |
+| `capas:minAbsError` | Minimum absolute error across variants, when an aggregate trace is used. |
+| `capas:maxAbsError` | Maximum absolute error across variants, when an aggregate trace is used. |
 | `capas:structureMapping` | Relationship-preserving map between generator artifact, local oracle, and universal oracle. |
 | `capas:preRegisteredSuccessCriterion` | Criterion declared before interpreting the trace. |
 | `capas:claimScope` | Narrow scope of what the trace supports. |

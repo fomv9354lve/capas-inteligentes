@@ -50,6 +50,7 @@ The current D11 corpus expands that into a small oracle matrix:
 | `trace_034` | `universal_invariant_scaling_law_positive_control` | misses | passes | Noisy positive decreasing Ising gaps fit `z=1.004`, inside the preregistered tolerance. |
 | `trace_035` | `universal_invariant_scaling_law_local_catches` | catches | not evaluated | Constant gaps fail local monotonicity, so the scaling anchor is not credited. |
 | `trace_036` | `universal_invariant_scaling_law_simulation_generated` | misses | passes | Exact-diagonalization TFIM open-chain gaps fit `z=0.917`, inside the preregistered tolerance. |
+| `trace_037` | `universal_invariant_scaling_law_randomized_adversarial` | misses | catches | Eight randomized plausible decreasing Ising gap variants all miss `z=1` beyond the preregistered tolerance. |
 
 ## Trace 028 Seed
 
@@ -110,7 +111,7 @@ does not prove generality across all physics.
 
 ## Scaling-Law Anchor
 
-`trace_033` through `trace_036` add a finite-size scaling anchor:
+`trace_033` through `trace_037` add a finite-size scaling anchor:
 
 - expected universal exponent: critical Ising gap dynamic exponent `z = 1`,
 - preregistered tolerance: `|z_fit - 1| <= 0.10`,
@@ -128,11 +129,15 @@ Results:
 - `trace_036`: exact diagonalization of the critical transverse-field Ising
   open chain for `L=4..9` produces finite-size gaps that fit `z=0.917`, passing
   the same preregistered tolerance.
+- `trace_037`: eight seeded randomized adversarial sequences pass the local
+  positive/decreasing checks, but every fitted exponent misses `z=1` by more
+  than the preregistered `0.10` tolerance.
 
 This moves D11 beyond exact small-system values and beyond hand-authored
 scaling points. It still does not demonstrate utility on real agent outputs:
-`trace_036` is a simulation-generated finite-size seed, not an LLM-generated
-failure corpus or a precision critical-phenomena benchmark.
+`trace_036` is a simulation-generated finite-size seed and `trace_037` is a
+seeded randomized adversarial family, not an LLM-generated failure corpus or a
+precision critical-phenomena benchmark.
 
 ## Evidence Fields
 
@@ -145,6 +150,9 @@ The CAPAS `PhysicalEvidence` object records:
 - `capas:universalAnchorPass`,
 - `capas:invariantCaught`,
 - `capas:generatorError`,
+- `capas:anchorMode`,
+- `capas:randomSeed`,
+- `capas:variantCount`,
 - `capas:structureMapping`,
 - `capas:preRegisteredSuccessCriterion`,
 - `capas:claimScope`.
@@ -208,6 +216,7 @@ trace_033: ok (universal_invariant_scaling_law_adversarial_failure, present, Com
 trace_034: ok (universal_invariant_scaling_law_positive_control, present, CompletedActionStatus)
 trace_035: ok (universal_invariant_scaling_law_local_catches, present, CompletedActionStatus)
 trace_036: ok (universal_invariant_scaling_law_simulation_generated, present, CompletedActionStatus)
+trace_037: ok (universal_invariant_scaling_law_randomized_adversarial, present, CompletedActionStatus)
 coverage_ready: True
 fine_tune_ready: False
 ```

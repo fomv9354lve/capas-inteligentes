@@ -26,6 +26,7 @@ UNIVERSAL_INVARIANT_COVERAGE = {
     "universal_invariant_scaling_law_positive_control",
     "universal_invariant_scaling_law_local_catches",
     "universal_invariant_scaling_law_simulation_generated",
+    "universal_invariant_scaling_law_randomized_adversarial",
 }
 
 
@@ -60,6 +61,7 @@ TRACE_SPECS = [
     ("trace_034", "ising_gap_correct_exponent_noisy_passes_scaling_anchor", {}, "universal_invariant_scaling_law_positive_control"),
     ("trace_035", "ising_gap_constant_sequence_local_catches_before_scaling", {}, "universal_invariant_scaling_law_local_catches"),
     ("trace_036", "ising_gap_exact_diagonalization_scaling_anchor", {}, "universal_invariant_scaling_law_simulation_generated"),
+    ("trace_037", "ising_gap_randomized_wrong_exponent_family", {}, "universal_invariant_scaling_law_randomized_adversarial"),
     ("trace_012", "unverified_variational_energy", {}, "no_evidence_success"),
     ("trace_013", "deliberately_failing_engine", {}, "backend_failed"),
     ("trace_015", "quimb_mps_estimated_bound", {"n": 60, "depth": 6, "max_bond": 8, "seed": 1}, "estimated_bound_candidate"),
@@ -79,6 +81,7 @@ def _engine_path_for(function_name: str) -> Path:
         "ising_gap_correct_exponent_noisy_passes_scaling_anchor",
         "ising_gap_constant_sequence_local_catches_before_scaling",
         "ising_gap_exact_diagonalization_scaling_anchor",
+        "ising_gap_randomized_wrong_exponent_family",
     }:
         return ADVERSARIAL_ENGINE_PATH
     return ENGINE_PATH
@@ -116,51 +119,70 @@ def main() -> None:
             assert "universal_anchor_pass" in summary
             assert "invariant_caught" in summary
             assert summary["claim_scope"]
+            assert summary["anchor_mode"] in {"absolute_anchor", "none"}
             if coverage_case == "universal_invariant_adversarial_failure":
+                assert summary["anchor_mode"] == "absolute_anchor"
                 assert summary["local_property_tests_pass"] is True
                 assert summary["universal_anchor_pass"] is False
                 assert summary["invariant_caught"] is True
             elif coverage_case == "universal_invariant_local_catches_anchor_not_needed":
+                assert summary["anchor_mode"] == "absolute_anchor"
                 assert summary["local_property_tests_pass"] is False
                 assert summary["local_oracle_caught"] is True
                 assert summary["universal_anchor_pass"] == "not_evaluated_local_oracle_failed"
             elif coverage_case == "universal_invariant_both_oracles_catch":
+                assert summary["anchor_mode"] == "absolute_anchor"
                 assert summary["local_property_tests_pass"] is False
                 assert summary["local_oracle_caught"] is True
                 assert summary["universal_anchor_pass"] is False
                 assert summary["invariant_caught"] is True
             elif coverage_case == "universal_invariant_non_heisenberg_adversarial_failure":
+                assert summary["anchor_mode"] == "absolute_anchor"
                 assert summary["local_property_tests_pass"] is True
                 assert summary["universal_anchor_pass"] is False
                 assert summary["invariant_caught"] is True
             elif coverage_case == "universal_invariant_no_anchor_control":
+                assert summary["anchor_mode"] == "none"
                 assert summary["local_property_tests_pass"] is True
                 assert summary["universal_anchor_pass"] == "not_applicable_no_universal_anchor"
                 assert summary["invariant_caught"] is False
             elif coverage_case == "universal_invariant_scaling_law_adversarial_failure":
                 assert summary["anchor_kind"] == "absolute_scaling_law"
+                assert summary["anchor_mode"] == "absolute_anchor"
                 assert summary["local_property_tests_pass"] is True
                 assert summary["universal_anchor_pass"] is False
                 assert summary["invariant_caught"] is True
                 assert summary["abs_error"] > summary["exponent_tolerance"]
             elif coverage_case == "universal_invariant_scaling_law_positive_control":
                 assert summary["anchor_kind"] == "absolute_scaling_law"
+                assert summary["anchor_mode"] == "absolute_anchor"
                 assert summary["local_property_tests_pass"] is True
                 assert summary["universal_anchor_pass"] is True
                 assert summary["invariant_caught"] is False
                 assert summary["abs_error"] <= summary["exponent_tolerance"]
             elif coverage_case == "universal_invariant_scaling_law_local_catches":
                 assert summary["anchor_kind"] == "absolute_scaling_law"
+                assert summary["anchor_mode"] == "absolute_anchor"
                 assert summary["local_property_tests_pass"] is False
                 assert summary["local_oracle_caught"] is True
                 assert summary["universal_anchor_pass"] == "not_evaluated_local_oracle_failed"
             elif coverage_case == "universal_invariant_scaling_law_simulation_generated":
                 assert summary["anchor_kind"] == "absolute_scaling_law"
+                assert summary["anchor_mode"] == "absolute_anchor"
                 assert summary["local_property_tests_pass"] is True
                 assert summary["universal_anchor_pass"] is True
                 assert summary["invariant_caught"] is False
                 assert summary["abs_error"] <= summary["exponent_tolerance"]
                 assert "Exact diagonalization" in summary["finite_size_notes"]
+            elif coverage_case == "universal_invariant_scaling_law_randomized_adversarial":
+                assert summary["anchor_kind"] == "absolute_scaling_law"
+                assert summary["anchor_mode"] == "absolute_anchor"
+                assert summary["local_property_tests_pass"] is True
+                assert summary["universal_anchor_pass"] is False
+                assert summary["invariant_caught"] is True
+                assert summary["variant_count"] == 8
+                assert len(summary["randomized_variants"]) == 8
+                assert summary["min_abs_error"] > summary["exponent_tolerance"]
         elif coverage_case not in {"backend_failed", "no_evidence_success", "estimated_bound_candidate"}:
             assert result is not None
             assert result["result"]["abs_error"] < 1e-9

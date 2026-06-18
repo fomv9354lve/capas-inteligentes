@@ -36,7 +36,7 @@
       "@id": "./",
       "@type": "Dataset",
       "capas:evidenceStatus": "present",
-      "capas:traceHash": "327f55e1c45faf5d04b4265b08077263f01a029c761ecf688171df400d04436f",
+      "capas:traceHash": "d47b7f4b9a4198065d0472b6eafeaf8550b320743875f689b2810262d914cf86",
       "capas:workflowRunCrateAlignment": "shape-compatible-with-workflow-run-crate-0.5",
       "capas:workloadHash": "9e3654537d0e3b03816c2f2c2fe9b215abca8a56e1cbfd04e685b255d718f910",
       "conformsTo": [
@@ -56,7 +56,7 @@
           "@id": "https://example.org/capas-inteligentes/ro-crate/physical-evidence/0.1"
         }
       ],
-      "datePublished": "2026-06-18T02:40:43.322953Z",
+      "datePublished": "2026-06-18T02:53:18.846217Z",
       "description": "RO-Crate package containing a sealed RunTrace, optional PROV export, routing decision, runtime context, and CAPAS physical evidence metadata.",
       "hasPart": [
         {
@@ -72,23 +72,23 @@
           "@id": "entity:workload"
         },
         {
-          "@id": "trace:327f55e1c45faf5d:routing-decision"
+          "@id": "trace:d47b7f4b9a419806:routing-decision"
         },
         {
-          "@id": "trace:327f55e1c45faf5d:result"
+          "@id": "trace:d47b7f4b9a419806:result"
         },
         {
           "@id": "runtrace.prov.json"
         },
         {
-          "@id": "trace:327f55e1c45faf5d:physical-evidence"
+          "@id": "trace:d47b7f4b9a419806:physical-evidence"
         }
       ],
       "mainEntity": {
         "@id": "workflow/capas-costurero-run.cwl"
       },
       "mentions": {
-        "@id": "trace:327f55e1c45faf5d"
+        "@id": "trace:d47b7f4b9a419806"
       },
       "name": "CAPAS traced scientific computation crate"
     },
@@ -124,14 +124,14 @@
         "DigitalDocument"
       ],
       "about": {
-        "@id": "trace:327f55e1c45faf5d"
+        "@id": "trace:d47b7f4b9a419806"
       },
       "encodingFormat": "application/json",
       "name": "Sealed CAPAS RunTrace",
-      "sha256": "abfa2caf4b7c6bcce9d71bef6c6cbcb796d4d000806c90e543b2c1c64fb91797"
+      "sha256": "28a29279086fbd41bbc7b052563c5aba5d789decd2c1773093221c78190a64e0"
     },
     {
-      "@id": "trace:327f55e1c45faf5d",
+      "@id": "trace:d47b7f4b9a419806",
       "@type": "CreateAction",
       "actionStatus": "CompletedActionStatus",
       "agent": {
@@ -142,11 +142,11 @@
       "capas:evidenceStatus": "present",
       "capas:hashAlgorithm": "sha256(stable_json)",
       "capas:routingDecision": {
-        "@id": "trace:327f55e1c45faf5d:routing-decision"
+        "@id": "trace:d47b7f4b9a419806:routing-decision"
       },
-      "capas:traceHash": "327f55e1c45faf5d04b4265b08077263f01a029c761ecf688171df400d04436f",
+      "capas:traceHash": "d47b7f4b9a4198065d0472b6eafeaf8550b320743875f689b2810262d914cf86",
       "capas:traceSchemaVersion": "capas-runtrace-v2",
-      "endTime": "2026-06-18T02:40:43.322953Z",
+      "endTime": "2026-06-18T02:53:18.846217Z",
       "instrument": {
         "@id": "workflow/capas-costurero-run.cwl"
       },
@@ -155,9 +155,9 @@
         "@id": "entity:workload"
       },
       "result": {
-        "@id": "trace:327f55e1c45faf5d:result"
+        "@id": "trace:d47b7f4b9a419806:result"
       },
-      "startTime": "2026-06-18T02:40:43.321706Z"
+      "startTime": "2026-06-18T02:53:18.845156Z"
     },
     {
       "@id": "workflow/capas-costurero-run.cwl",
@@ -222,7 +222,7 @@
       "name": "Workload summary"
     },
     {
-      "@id": "trace:327f55e1c45faf5d:routing-decision",
+      "@id": "trace:d47b7f4b9a419806:routing-decision",
       "@type": "Thing",
       "capas:reason": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
       "capas:route": "external_engine",
@@ -236,17 +236,18 @@
       ],
       "encodingFormat": "application/json",
       "name": "W3C PROV-shaped export",
-      "sha256": "4f339866763e3235eb72feff3207c5d4c3c109d1e51c2c1bfdfd08ee0250083c"
+      "sha256": "4dec04ec73c3d21d81e13b3ba7ef5c8b3ba7c486f45074a1f411c0085ccc5dfc"
     },
     {
-      "@id": "trace:327f55e1c45faf5d:result",
+      "@id": "trace:d47b7f4b9a419806:result",
       "@type": "Dataset",
       "capas:physicalEvidence": {
-        "@id": "trace:327f55e1c45faf5d:physical-evidence"
+        "@id": "trace:d47b7f4b9a419806:physical-evidence"
       },
-      "capas:resultHash": "a065eebe83731f39061a957f4607313bc8eeafe5d735702f83bb9e78e5278729",
+      "capas:resultHash": "99d0f8c15b16311105afc3e88d1b47fcf6f9f8d6e86319a4a01acbf1c0b41a85",
       "capas:summary": {
         "abs_error": "not_evaluated_local_oracle_failed",
+        "anchor_mode": "absolute_anchor",
         "benchmark_family": "Heisenberg",
         "claim_scope": "negative control only; shows some generator errors are already caught by local properties and do not support a universal-anchor advantage claim",
         "expected": -0.75,
@@ -286,16 +287,17 @@
       "name": "Result summary"
     },
     {
-      "@id": "trace:327f55e1c45faf5d:physical-evidence",
+      "@id": "trace:d47b7f4b9a419806:physical-evidence",
       "@type": "capas:PhysicalEvidence",
       "about": {
-        "@id": "trace:327f55e1c45faf5d:result"
+        "@id": "trace:d47b7f4b9a419806:result"
       },
       "capas:absError": "not_evaluated_local_oracle_failed",
+      "capas:anchorMode": "absolute_anchor",
       "capas:benchmarkFamily": "Heisenberg",
       "capas:claimScope": "negative control only; shows some generator errors are already caught by local properties and do not support a universal-anchor advantage claim",
       "capas:detail": "Negative control: the local matrix oracle catches non-Hermiticity before the analytic ground-state invariant is needed.",
-      "capas:evidenceHash": "07a3efb39eb6cfb8c049056cffd059722ffa381bbbd3d7c559af26ebeae744c1",
+      "capas:evidenceHash": "8e4d053b0919287ce27484edb6a1afbd7d0a3db2f3dd3ad992c886f6e5fa9af3",
       "capas:expected": -0.75,
       "capas:generatorError": "nonhermitian_matrix_entry",
       "capas:invariantCaught": false,
@@ -326,7 +328,7 @@
       "name": "Physical evidence attached to result"
     },
     {
-      "@id": "trace:327f55e1c45faf5d:event:0:ingest",
+      "@id": "trace:d47b7f4b9a419806:event:0:ingest",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -346,10 +348,10 @@
       },
       "description": "workload accepted",
       "name": "ingest",
-      "startTime": 1781750443.321706
+      "startTime": 1781751198.8451562
     },
     {
-      "@id": "trace:327f55e1c45faf5d:event:1:runtime_context",
+      "@id": "trace:d47b7f4b9a419806:event:1:runtime_context",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -374,10 +376,10 @@
       },
       "description": "runtime and hardware context recorded",
       "name": "runtime_context",
-      "startTime": 1781750443.321883
+      "startTime": 1781751198.845282
     },
     {
-      "@id": "trace:327f55e1c45faf5d:event:2:engine_provenance",
+      "@id": "trace:d47b7f4b9a419806:event:2:engine_provenance",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -385,14 +387,14 @@
         "function_name": "heisenberg_nonhermitian_local_catches_anchor_not_needed",
         "kwargs": {},
         "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py",
-        "module_sha256": "5bc6e658ae1251e88464871efc12d3a3599ef2d4408d2792229b894a7ed3a097"
+        "module_sha256": "13acd36c76f09100e4c4c5aeb100e032b4dc61ca321edf55d9096105661cb153"
       },
       "description": "external engine provenance recorded",
       "name": "engine_provenance",
-      "startTime": 1781750443.322016
+      "startTime": 1781751198.845363
     },
     {
-      "@id": "trace:327f55e1c45faf5d:event:3:cost_model",
+      "@id": "trace:d47b7f4b9a419806:event:3:cost_model",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -404,10 +406,10 @@
       },
       "description": "dense statevector cost estimated",
       "name": "cost_model",
-      "startTime": 1781750443.322022
+      "startTime": 1781751198.8453681
     },
     {
-      "@id": "trace:327f55e1c45faf5d:event:4:route",
+      "@id": "trace:d47b7f4b9a419806:event:4:route",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -417,14 +419,15 @@
       },
       "description": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
       "name": "route",
-      "startTime": 1781750443.322028
+      "startTime": 1781751198.8453708
     },
     {
-      "@id": "trace:327f55e1c45faf5d:event:5:execute",
+      "@id": "trace:d47b7f4b9a419806:event:5:execute",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
         "abs_error": "not_evaluated_local_oracle_failed",
+        "anchor_mode": "absolute_anchor",
         "benchmark_family": "Heisenberg",
         "claim_scope": "negative control only; shows some generator errors are already caught by local properties and do not support a universal-anchor advantage claim",
         "expected": -0.75,
@@ -446,7 +449,7 @@
         "reference_truth": "closed_form_antiferromagnetic_singlet_ground_energy",
         "repr": "{'engine_id': 'universal_invariant_adversarial_engines.heisenberg_nonhermitian_local_catches_anchor_not_needed', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELI",
         "route": "external_engine",
-        "runtime_ms": 0.7986249984242022,
+        "runtime_ms": 0.7624590070918202,
         "structure_mapping": {
           "generator_output": "Hamiltonian implementation",
           "local_oracle_relation": "generic matrix validity properties",
@@ -462,17 +465,18 @@
       },
       "description": "backend executed",
       "name": "execute",
-      "startTime": 1781750443.322916
+      "startTime": 1781751198.8461921
     },
     {
-      "@id": "trace:327f55e1c45faf5d:event:6:physical_evidence",
+      "@id": "trace:d47b7f4b9a419806:event:6:physical_evidence",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
         "abs_error": "not_evaluated_local_oracle_failed",
+        "anchor_mode": "absolute_anchor",
         "benchmark_family": "Heisenberg",
         "claim_scope": "negative control only; shows some generator errors are already caught by local properties and do not support a universal-anchor advantage claim",
-        "evidence_hash": "05512fa402c552ba21a965151718e8fb6bbc94f67a9e08274a4268c67df5a4e0",
+        "evidence_hash": "4df3dfb7969623ec8b81b35f6c35cd32fa18f5ce24685e54a84c9a020776c322",
         "expected": -0.75,
         "generator_error": "nonhermitian_matrix_entry",
         "invariant_caught": false,
@@ -504,7 +508,7 @@
       },
       "description": "physical evidence reported by backend",
       "name": "physical_evidence",
-      "startTime": 1781750443.322953
+      "startTime": 1781751198.846217
     }
   ]
 }

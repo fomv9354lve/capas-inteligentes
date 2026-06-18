@@ -127,6 +127,7 @@ def _ising_scaling_payload(
         "invariant_caught": invariant_caught,
         "generator_error": generator_error,
         "anchor_kind": "absolute_scaling_law",
+        "anchor_mode": "absolute_anchor",
         "scaling_points": [
             {"system_size": int(size), "gap": float(gap)}
             for size, gap in zip(sizes, gaps, strict=True)
@@ -196,6 +197,7 @@ def _matrix_adversarial_payload(
         "universal_anchor_pass": universal_anchor_pass,
         "invariant_caught": invariant_caught,
         "generator_error": generator_error,
+        "anchor_mode": "absolute_anchor",
         "structure_mapping": {
             "generator_output": "Hamiltonian implementation",
             "local_oracle_relation": "generic matrix validity properties",
@@ -248,6 +250,7 @@ def heisenberg_wrong_sign_passes_local_properties(j_coupling: float = 1.0) -> di
         "universal_anchor_pass": universal_anchor_pass,
         "invariant_caught": bool(local_tests_pass and not universal_anchor_pass),
         "generator_error": "wrong_coupling_sign",
+        "anchor_mode": "absolute_anchor",
         "structure_mapping": {
             "generator_output": "Hamiltonian implementation",
             "local_oracle_relation": "generic matrix properties preserved by sign flip",
@@ -325,6 +328,7 @@ def heisenberg_scaled_coupling_both_oracles_catch(j_coupling: float = 1.0) -> di
         "universal_anchor_pass": universal_anchor_pass,
         "invariant_caught": bool(not universal_anchor_pass),
         "generator_error": "wrong_coupling_magnitude",
+        "anchor_mode": "absolute_anchor",
         "structure_mapping": {
             "generator_output": "Hamiltonian implementation with declared coupling",
             "local_oracle_relation": "declared parameter consistency plus generic matrix validity",
@@ -372,6 +376,7 @@ def bell_product_state_passes_local_properties_but_fails_entropy() -> dict:
         "universal_anchor_pass": universal_anchor_pass,
         "invariant_caught": bool(local_tests_pass and not universal_anchor_pass),
         "generator_error": "plausible_product_state_instead_of_bell_state",
+        "anchor_mode": "absolute_anchor",
         "structure_mapping": {
             "generator_output": "two-qubit state vector",
             "local_oracle_relation": "generic state validity properties preserved by product state",
@@ -419,6 +424,7 @@ def normalized_random_state_without_universal_anchor(seed: int = 32) -> dict:
         "universal_anchor_pass": "not_applicable_no_universal_anchor",
         "invariant_caught": False,
         "generator_error": "none_declared",
+        "anchor_mode": "none",
         "structure_mapping": {
             "generator_output": "arbitrary normalized two-qubit state",
             "local_oracle_relation": "generic state validity properties",
@@ -477,6 +483,43 @@ def _critical_tfim_open_chain_gap(n_sites: int) -> float:
 
 def _critical_tfim_open_chain_gap_sequence(system_sizes: np.ndarray) -> np.ndarray:
     return np.array([_critical_tfim_open_chain_gap(int(size)) for size in system_sizes], dtype=float)
+
+
+def _randomized_wrong_exponent_variants(
+    *,
+    seed: int,
+    variant_count: int,
+    system_sizes: np.ndarray,
+) -> list[dict]:
+    rng = np.random.default_rng(seed)
+    variants = []
+    for index in range(variant_count):
+        target_exponent = float(rng.uniform(0.35, 0.72))
+        amplitude = float(rng.uniform(1.2, 2.8))
+        jitter = rng.uniform(-0.015, 0.015, size=len(system_sizes))
+        gaps = amplitude * np.power(system_sizes, -target_exponent) * (1.0 + jitter)
+        # Enforce the local monotonicity oracle without changing the exponent
+        # class: sorted positive points still fit far from z=1.
+        gaps = np.minimum.accumulate(gaps)
+        gaps = gaps - np.linspace(0.0, 1e-6, len(gaps))
+        local_tests = _scaling_local_property_tests(system_sizes, gaps)
+        fitted_exponent, r_squared = _fit_gap_exponent(system_sizes, gaps)
+        abs_error = abs(fitted_exponent - 1.0)
+        variants.append({
+            "variant_index": index,
+            "target_exponent": target_exponent,
+            "fitted_exponent": fitted_exponent,
+            "abs_error": abs_error,
+            "fit_r_squared": r_squared,
+            "local_property_tests": local_tests,
+            "local_property_tests_pass": all(local_tests.values()),
+            "universal_anchor_pass": bool(abs_error <= 0.10),
+            "scaling_points": [
+                {"system_size": int(size), "gap": float(gap)}
+                for size, gap in zip(system_sizes, gaps, strict=True)
+            ],
+        })
+    return variants
 
 
 def ising_gap_wrong_exponent_passes_local_monotonicity() -> dict:
@@ -583,3 +626,91 @@ def ising_gap_exact_diagonalization_scaling_anchor() -> dict:
             "critical-phenomena benchmark."
         ),
     )
+
+
+def ising_gap_randomized_wrong_exponent_family() -> dict:
+    """Randomized adversarial scaling family with preregistered thresholds."""
+
+    sizes = np.array([8, 12, 16, 24, 32, 48], dtype=float)
+    random_seed = 20260617
+    variant_count = 8
+    exponent_tolerance = 0.10
+    variants = _randomized_wrong_exponent_variants(
+        seed=random_seed,
+        variant_count=variant_count,
+        system_sizes=sizes,
+    )
+    local_pass_count = sum(variant["local_property_tests_pass"] for variant in variants)
+    anchor_fail_count = sum(not variant["universal_anchor_pass"] for variant in variants)
+    min_abs_error = min(variant["abs_error"] for variant in variants)
+    max_abs_error = max(variant["abs_error"] for variant in variants)
+    fitted_exponents = [variant["fitted_exponent"] for variant in variants]
+    all_local_pass = local_pass_count == variant_count
+    all_anchor_fail = anchor_fail_count == variant_count
+
+    return {
+        "observable": "Randomized generated Ising finite-size gap exponents with wrong scaling",
+        "value": {
+            "variant_count": variant_count,
+            "local_pass_count": local_pass_count,
+            "anchor_fail_count": anchor_fail_count,
+            "fitted_exponents": fitted_exponents,
+        },
+        "expected": "all randomized variants violate z=1 by more than preregistered tolerance",
+        "abs_error": min_abs_error,
+        "units": "dynamic_exponent_z_min_abs_error",
+        "physical_evidence_level": "scaling_law_anchor",
+        "physical_evidence_detail": (
+            "Randomized adversarial scaling family: all generated finite-size gap "
+            "sequences are positive, finite, and decreasing, but every fitted exponent "
+            "falls outside the preregistered z=1 +/-0.10 tolerance."
+        ),
+        "benchmark_family": "CriticalIsingFiniteSizeScaling",
+        "reference_truth": "critical_ising_gap_dynamic_exponent_z_equals_1",
+        "verification_independence": "theory_scaling_law_no_solver",
+        "coverage_case": "universal_invariant_scaling_law_randomized_adversarial",
+        "local_property_tests": {
+            "all_variants_local_pass": all_local_pass,
+            "variant_count": variant_count,
+            "local_pass_count": local_pass_count,
+        },
+        "local_property_tests_pass": all_local_pass,
+        "local_oracle_caught": False,
+        "universal_anchor": "critical_ising_gap_delta_L_scales_as_L^-1",
+        "universal_anchor_pass": bool(not all_anchor_fail),
+        "invariant_caught": bool(all_local_pass and all_anchor_fail),
+        "generator_error": "randomized_wrong_dynamic_exponents",
+        "anchor_kind": "absolute_scaling_law",
+        "anchor_mode": "absolute_anchor",
+        "scaling_points": variants[0]["scaling_points"],
+        "fitted_exponent": float(np.mean(fitted_exponents)),
+        "expected_exponent": 1.0,
+        "exponent_tolerance": exponent_tolerance,
+        "fit_r_squared": min(variant["fit_r_squared"] for variant in variants),
+        "finite_size_notes": (
+            "Deterministic randomized adversarial family generated with seed 20260617. "
+            "Each variant samples an exponent in [0.35, 0.72], then applies small "
+            "jitter while preserving positive decreasing gaps. The preregistered "
+            "criterion requires all variants to pass local monotonicity and fail the "
+            "z=1 +/-0.10 universal anchor."
+        ),
+        "random_seed": random_seed,
+        "variant_count": variant_count,
+        "randomized_variants": variants,
+        "min_abs_error": min_abs_error,
+        "max_abs_error": max_abs_error,
+        "structure_mapping": {
+            "generator_output": "randomized family of finite-size gap sequences",
+            "local_oracle_relation": "each variant has positive finite gaps decreasing with system size",
+            "universal_oracle_relation": "critical Ising dynamic exponent z=1",
+            "preserved_relation": "each generated sequence is judged by local monotonicity and universal scaling exponent",
+        },
+        "pre_registered_success_criterion": (
+            "variant_count is 8, every variant has local_property_tests_pass true, "
+            "and every variant has abs(fitted_exponent - 1.0) > 0.10"
+        ),
+        "claim_scope": (
+            "randomized adversarial seed only; shows the scaling-law anchor is not a "
+            "single hand-picked example, but it still is not an agent-generated corpus"
+        ),
+    }

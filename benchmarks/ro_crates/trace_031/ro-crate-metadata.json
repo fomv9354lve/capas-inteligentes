@@ -36,7 +36,7 @@
       "@id": "./",
       "@type": "Dataset",
       "capas:evidenceStatus": "present",
-      "capas:traceHash": "28e31689f441756504648d69f6d3938a8f820f50a6b28db58952fdc65f988464",
+      "capas:traceHash": "a282c26bacd3875f10f80ff2cd3bf92872bef1f7b2dd4db8b41f165ce1f14353",
       "capas:workflowRunCrateAlignment": "shape-compatible-with-workflow-run-crate-0.5",
       "capas:workloadHash": "a3cede8008f26f98048c435a254d3df29ef651c223ee44c552fbef143001c9e2",
       "conformsTo": [
@@ -56,7 +56,7 @@
           "@id": "https://example.org/capas-inteligentes/ro-crate/physical-evidence/0.1"
         }
       ],
-      "datePublished": "2026-06-18T02:40:43.327334Z",
+      "datePublished": "2026-06-18T02:53:18.849206Z",
       "description": "RO-Crate package containing a sealed RunTrace, optional PROV export, routing decision, runtime context, and CAPAS physical evidence metadata.",
       "hasPart": [
         {
@@ -72,23 +72,23 @@
           "@id": "entity:workload"
         },
         {
-          "@id": "trace:28e31689f4417565:routing-decision"
+          "@id": "trace:a282c26bacd3875f:routing-decision"
         },
         {
-          "@id": "trace:28e31689f4417565:result"
+          "@id": "trace:a282c26bacd3875f:result"
         },
         {
           "@id": "runtrace.prov.json"
         },
         {
-          "@id": "trace:28e31689f4417565:physical-evidence"
+          "@id": "trace:a282c26bacd3875f:physical-evidence"
         }
       ],
       "mainEntity": {
         "@id": "workflow/capas-costurero-run.cwl"
       },
       "mentions": {
-        "@id": "trace:28e31689f4417565"
+        "@id": "trace:a282c26bacd3875f"
       },
       "name": "CAPAS traced scientific computation crate"
     },
@@ -124,14 +124,14 @@
         "DigitalDocument"
       ],
       "about": {
-        "@id": "trace:28e31689f4417565"
+        "@id": "trace:a282c26bacd3875f"
       },
       "encodingFormat": "application/json",
       "name": "Sealed CAPAS RunTrace",
-      "sha256": "d39ca3682882278e25dc3e67cbaff87cbadbd8e0d4d015f1851c1c7dc362e1b5"
+      "sha256": "87d9f5192af43808baa5fd3bdf019883296817c0d0a6a699d31a59ac33ec4d1f"
     },
     {
-      "@id": "trace:28e31689f4417565",
+      "@id": "trace:a282c26bacd3875f",
       "@type": "CreateAction",
       "actionStatus": "CompletedActionStatus",
       "agent": {
@@ -142,11 +142,11 @@
       "capas:evidenceStatus": "present",
       "capas:hashAlgorithm": "sha256(stable_json)",
       "capas:routingDecision": {
-        "@id": "trace:28e31689f4417565:routing-decision"
+        "@id": "trace:a282c26bacd3875f:routing-decision"
       },
-      "capas:traceHash": "28e31689f441756504648d69f6d3938a8f820f50a6b28db58952fdc65f988464",
+      "capas:traceHash": "a282c26bacd3875f10f80ff2cd3bf92872bef1f7b2dd4db8b41f165ce1f14353",
       "capas:traceSchemaVersion": "capas-runtrace-v2",
-      "endTime": "2026-06-18T02:40:43.327334Z",
+      "endTime": "2026-06-18T02:53:18.849206Z",
       "instrument": {
         "@id": "workflow/capas-costurero-run.cwl"
       },
@@ -155,9 +155,9 @@
         "@id": "entity:workload"
       },
       "result": {
-        "@id": "trace:28e31689f4417565:result"
+        "@id": "trace:a282c26bacd3875f:result"
       },
-      "startTime": "2026-06-18T02:40:43.326297Z"
+      "startTime": "2026-06-18T02:53:18.848532Z"
     },
     {
       "@id": "workflow/capas-costurero-run.cwl",
@@ -222,7 +222,7 @@
       "name": "Workload summary"
     },
     {
-      "@id": "trace:28e31689f4417565:routing-decision",
+      "@id": "trace:a282c26bacd3875f:routing-decision",
       "@type": "Thing",
       "capas:reason": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
       "capas:route": "external_engine",
@@ -236,17 +236,18 @@
       ],
       "encodingFormat": "application/json",
       "name": "W3C PROV-shaped export",
-      "sha256": "d0f2ee6ceed1706f6f54f243d9020aff07b07715c62838b7754fcce440b1fc02"
+      "sha256": "a23a4ff4ae5bc7c68e95fbd1520f2cce2a1c0125ee912c8a687632a1c6df48dd"
     },
     {
-      "@id": "trace:28e31689f4417565:result",
+      "@id": "trace:a282c26bacd3875f:result",
       "@type": "Dataset",
       "capas:physicalEvidence": {
-        "@id": "trace:28e31689f4417565:physical-evidence"
+        "@id": "trace:a282c26bacd3875f:physical-evidence"
       },
-      "capas:resultHash": "9862ee6f5731cb5bb24f0ad55fa208cab14c033524202e061ac4d1ae138e0dbe",
+      "capas:resultHash": "f64caa4e46ccd39c53c9ee154dc59f99cb1a508a7aa672719e03cf1b023e40b9",
       "capas:summary": {
         "abs_error": 0.6931471805599453,
+        "anchor_mode": "absolute_anchor",
         "benchmark_family": "Bell",
         "claim_scope": "transfer seed only; shows the local-miss/universal-catch pattern for an entropy invariant, not just a Heisenberg energy invariant",
         "expected": 0.6931471805599453,
@@ -285,16 +286,17 @@
       "name": "Result summary"
     },
     {
-      "@id": "trace:28e31689f4417565:physical-evidence",
+      "@id": "trace:a282c26bacd3875f:physical-evidence",
       "@type": "capas:PhysicalEvidence",
       "about": {
-        "@id": "trace:28e31689f4417565:result"
+        "@id": "trace:a282c26bacd3875f:result"
       },
       "capas:absError": 0.6931471805599453,
+      "capas:anchorMode": "absolute_anchor",
       "capas:benchmarkFamily": "Bell",
       "capas:claimScope": "transfer seed only; shows the local-miss/universal-catch pattern for an entropy invariant, not just a Heisenberg energy invariant",
       "capas:detail": "Transfer case: the generated state is normalized and dimensionally valid, but the Bell-state invariant requires single-qubit entropy ln2.",
-      "capas:evidenceHash": "580a60ec44aa918dad3ff1ea5fe10e2c78d885612a23f4c2a1e1f656abef456b",
+      "capas:evidenceHash": "b1b32adac1894d72e02b32ab6d244cf84872cc1855dc198315401e96a068979b",
       "capas:expected": 0.6931471805599453,
       "capas:generatorError": "plausible_product_state_instead_of_bell_state",
       "capas:invariantCaught": true,
@@ -324,7 +326,7 @@
       "name": "Physical evidence attached to result"
     },
     {
-      "@id": "trace:28e31689f4417565:event:0:ingest",
+      "@id": "trace:a282c26bacd3875f:event:0:ingest",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -344,10 +346,10 @@
       },
       "description": "workload accepted",
       "name": "ingest",
-      "startTime": 1781750443.326297
+      "startTime": 1781751198.848532
     },
     {
-      "@id": "trace:28e31689f4417565:event:1:runtime_context",
+      "@id": "trace:a282c26bacd3875f:event:1:runtime_context",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -372,10 +374,10 @@
       },
       "description": "runtime and hardware context recorded",
       "name": "runtime_context",
-      "startTime": 1781750443.3264399
+      "startTime": 1781751198.848623
     },
     {
-      "@id": "trace:28e31689f4417565:event:2:engine_provenance",
+      "@id": "trace:a282c26bacd3875f:event:2:engine_provenance",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -383,14 +385,14 @@
         "function_name": "bell_product_state_passes_local_properties_but_fails_entropy",
         "kwargs": {},
         "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py",
-        "module_sha256": "5bc6e658ae1251e88464871efc12d3a3599ef2d4408d2792229b894a7ed3a097"
+        "module_sha256": "13acd36c76f09100e4c4c5aeb100e032b4dc61ca321edf55d9096105661cb153"
       },
       "description": "external engine provenance recorded",
       "name": "engine_provenance",
-      "startTime": 1781750443.326536
+      "startTime": 1781751198.8486888
     },
     {
-      "@id": "trace:28e31689f4417565:event:3:cost_model",
+      "@id": "trace:a282c26bacd3875f:event:3:cost_model",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -402,10 +404,10 @@
       },
       "description": "dense statevector cost estimated",
       "name": "cost_model",
-      "startTime": 1781750443.326541
+      "startTime": 1781751198.848692
     },
     {
-      "@id": "trace:28e31689f4417565:event:4:route",
+      "@id": "trace:a282c26bacd3875f:event:4:route",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -415,14 +417,15 @@
       },
       "description": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
       "name": "route",
-      "startTime": 1781750443.326546
+      "startTime": 1781751198.848695
     },
     {
-      "@id": "trace:28e31689f4417565:event:5:execute",
+      "@id": "trace:a282c26bacd3875f:event:5:execute",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
         "abs_error": 0.6931471805599453,
+        "anchor_mode": "absolute_anchor",
         "benchmark_family": "Bell",
         "claim_scope": "transfer seed only; shows the local-miss/universal-catch pattern for an entropy invariant, not just a Heisenberg energy invariant",
         "expected": 0.6931471805599453,
@@ -443,7 +446,7 @@
         "reference_truth": "closed_form_bell_entropy_ln2",
         "repr": "{'engine_id': 'universal_invariant_adversarial_engines.bell_product_state_passes_local_properties_but_fails_entropy', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS I",
         "route": "external_engine",
-        "runtime_ms": 0.6791669875383377,
+        "runtime_ms": 0.43312498019076884,
         "structure_mapping": {
           "generator_output": "two-qubit state vector",
           "local_oracle_relation": "generic state validity properties preserved by product state",
@@ -459,17 +462,18 @@
       },
       "description": "backend executed",
       "name": "execute",
-      "startTime": 1781750443.327301
+      "startTime": 1781751198.849182
     },
     {
-      "@id": "trace:28e31689f4417565:event:6:physical_evidence",
+      "@id": "trace:a282c26bacd3875f:event:6:physical_evidence",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
         "abs_error": 0.6931471805599453,
+        "anchor_mode": "absolute_anchor",
         "benchmark_family": "Bell",
         "claim_scope": "transfer seed only; shows the local-miss/universal-catch pattern for an entropy invariant, not just a Heisenberg energy invariant",
-        "evidence_hash": "aadd9121049f56d9d13397e75e573227d4353d74c0b4462c99271945c566e677",
+        "evidence_hash": "39c7ec31a80c806b10eaa50a1d1cd9f58b017d46eeb065bad71ffb9a1aea0ee5",
         "expected": 0.6931471805599453,
         "generator_error": "plausible_product_state_instead_of_bell_state",
         "invariant_caught": true,
@@ -500,7 +504,7 @@
       },
       "description": "physical evidence reported by backend",
       "name": "physical_evidence",
-      "startTime": 1781750443.327334
+      "startTime": 1781751198.849206
     }
   ]
 }

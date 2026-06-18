@@ -36,7 +36,7 @@
       "@id": "./",
       "@type": "Dataset",
       "capas:evidenceStatus": "present",
-      "capas:traceHash": "c9a78ee92d100d40b08792f5b0db277b2e72157c010b8c79757f57fd826d25c4",
+      "capas:traceHash": "75e65d13255770701586e0dfb1fd39aa2f250af30ccda8dabdcc4dbab8bb1199",
       "capas:workflowRunCrateAlignment": "shape-compatible-with-workflow-run-crate-0.5",
       "capas:workloadHash": "6da16ea2f4a06c93c1596115359a188dfce117cb01e0ce0f5ab81a9dc6bd98e7",
       "conformsTo": [
@@ -56,7 +56,7 @@
           "@id": "https://example.org/capas-inteligentes/ro-crate/physical-evidence/0.1"
         }
       ],
-      "datePublished": "2026-06-18T02:40:43.335094Z",
+      "datePublished": "2026-06-18T02:53:18.853487Z",
       "description": "RO-Crate package containing a sealed RunTrace, optional PROV export, routing decision, runtime context, and CAPAS physical evidence metadata.",
       "hasPart": [
         {
@@ -72,23 +72,23 @@
           "@id": "entity:workload"
         },
         {
-          "@id": "trace:c9a78ee92d100d40:routing-decision"
+          "@id": "trace:75e65d1325577070:routing-decision"
         },
         {
-          "@id": "trace:c9a78ee92d100d40:result"
+          "@id": "trace:75e65d1325577070:result"
         },
         {
           "@id": "runtrace.prov.json"
         },
         {
-          "@id": "trace:c9a78ee92d100d40:physical-evidence"
+          "@id": "trace:75e65d1325577070:physical-evidence"
         }
       ],
       "mainEntity": {
         "@id": "workflow/capas-costurero-run.cwl"
       },
       "mentions": {
-        "@id": "trace:c9a78ee92d100d40"
+        "@id": "trace:75e65d1325577070"
       },
       "name": "CAPAS traced scientific computation crate"
     },
@@ -124,14 +124,14 @@
         "DigitalDocument"
       ],
       "about": {
-        "@id": "trace:c9a78ee92d100d40"
+        "@id": "trace:75e65d1325577070"
       },
       "encodingFormat": "application/json",
       "name": "Sealed CAPAS RunTrace",
-      "sha256": "0bcb57b03c0129236b6d90776021d5ec130d8d26f756301d784057a1cb46aa43"
+      "sha256": "7245c851246d06b090cf80a2ca88fefd0dd249ad8425747abf10e48344119045"
     },
     {
-      "@id": "trace:c9a78ee92d100d40",
+      "@id": "trace:75e65d1325577070",
       "@type": "CreateAction",
       "actionStatus": "CompletedActionStatus",
       "agent": {
@@ -142,11 +142,11 @@
       "capas:evidenceStatus": "present",
       "capas:hashAlgorithm": "sha256(stable_json)",
       "capas:routingDecision": {
-        "@id": "trace:c9a78ee92d100d40:routing-decision"
+        "@id": "trace:75e65d1325577070:routing-decision"
       },
-      "capas:traceHash": "c9a78ee92d100d40b08792f5b0db277b2e72157c010b8c79757f57fd826d25c4",
+      "capas:traceHash": "75e65d13255770701586e0dfb1fd39aa2f250af30ccda8dabdcc4dbab8bb1199",
       "capas:traceSchemaVersion": "capas-runtrace-v2",
-      "endTime": "2026-06-18T02:40:43.335094Z",
+      "endTime": "2026-06-18T02:53:18.853487Z",
       "instrument": {
         "@id": "workflow/capas-costurero-run.cwl"
       },
@@ -155,9 +155,9 @@
         "@id": "entity:workload"
       },
       "result": {
-        "@id": "trace:c9a78ee92d100d40:result"
+        "@id": "trace:75e65d1325577070:result"
       },
-      "startTime": "2026-06-18T02:40:43.334044Z"
+      "startTime": "2026-06-18T02:53:18.852861Z"
     },
     {
       "@id": "workflow/capas-costurero-run.cwl",
@@ -222,7 +222,7 @@
       "name": "Workload summary"
     },
     {
-      "@id": "trace:c9a78ee92d100d40:routing-decision",
+      "@id": "trace:75e65d1325577070:routing-decision",
       "@type": "Thing",
       "capas:reason": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
       "capas:route": "external_engine",
@@ -236,18 +236,19 @@
       ],
       "encodingFormat": "application/json",
       "name": "W3C PROV-shaped export",
-      "sha256": "32bb90302e26a1b3a7becad13371af1eb751bde401cd9ef77a92456704f17980"
+      "sha256": "870e272804591ad7787c3c0dcc877e484b5b7cacf97051196fb52680bd0f37ad"
     },
     {
-      "@id": "trace:c9a78ee92d100d40:result",
+      "@id": "trace:75e65d1325577070:result",
       "@type": "Dataset",
       "capas:physicalEvidence": {
-        "@id": "trace:c9a78ee92d100d40:physical-evidence"
+        "@id": "trace:75e65d1325577070:physical-evidence"
       },
-      "capas:resultHash": "c39072373fea71c327884d13cbd5d226cbb561503d17c77e9e95f24669539944",
+      "capas:resultHash": "dd3aef8ba8e5ef8886421a3f94935e942e2332a85dd9ef270d0890cd51451008",
       "capas:summary": {
         "abs_error": 0.004290755899226006,
         "anchor_kind": "absolute_scaling_law",
+        "anchor_mode": "absolute_anchor",
         "benchmark_family": "CriticalIsingFiniteSizeScaling",
         "claim_scope": "positive scaling-law control only; shows CAPAS can seal a noisy sequence that satisfies the preregistered universal exponent tolerance",
         "expected": 1.0,
@@ -317,17 +318,18 @@
       "name": "Result summary"
     },
     {
-      "@id": "trace:c9a78ee92d100d40:physical-evidence",
+      "@id": "trace:75e65d1325577070:physical-evidence",
       "@type": "capas:PhysicalEvidence",
       "about": {
-        "@id": "trace:c9a78ee92d100d40:result"
+        "@id": "trace:75e65d1325577070:result"
       },
       "capas:absError": 0.004290755899226006,
       "capas:anchorKind": "absolute_scaling_law",
+      "capas:anchorMode": "absolute_anchor",
       "capas:benchmarkFamily": "CriticalIsingFiniteSizeScaling",
       "capas:claimScope": "positive scaling-law control only; shows CAPAS can seal a noisy sequence that satisfies the preregistered universal exponent tolerance",
       "capas:detail": "Positive scaling-law control: finite-size gaps include small deterministic noise but fit the critical Ising exponent z=1 within the preregistered tolerance.",
-      "capas:evidenceHash": "6a089d9b5d006f0e943b8730447e9197c05f1059e8d64473d60f6efa69a9963b",
+      "capas:evidenceHash": "cf74b59249511ec5a18c497e69a51084ddc0cfe7f2846e0ec939b43c0034a0e8",
       "capas:expected": 1.0,
       "capas:expectedExponent": 1.0,
       "capas:exponentTolerance": 0.1,
@@ -388,7 +390,7 @@
       "name": "Physical evidence attached to result"
     },
     {
-      "@id": "trace:c9a78ee92d100d40:event:0:ingest",
+      "@id": "trace:75e65d1325577070:event:0:ingest",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -408,10 +410,10 @@
       },
       "description": "workload accepted",
       "name": "ingest",
-      "startTime": 1781750443.334044
+      "startTime": 1781751198.852861
     },
     {
-      "@id": "trace:c9a78ee92d100d40:event:1:runtime_context",
+      "@id": "trace:75e65d1325577070:event:1:runtime_context",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -436,10 +438,10 @@
       },
       "description": "runtime and hardware context recorded",
       "name": "runtime_context",
-      "startTime": 1781750443.334204
+      "startTime": 1781751198.8529458
     },
     {
-      "@id": "trace:c9a78ee92d100d40:event:2:engine_provenance",
+      "@id": "trace:75e65d1325577070:event:2:engine_provenance",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -447,14 +449,14 @@
         "function_name": "ising_gap_correct_exponent_noisy_passes_scaling_anchor",
         "kwargs": {},
         "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py",
-        "module_sha256": "5bc6e658ae1251e88464871efc12d3a3599ef2d4408d2792229b894a7ed3a097"
+        "module_sha256": "13acd36c76f09100e4c4c5aeb100e032b4dc61ca321edf55d9096105661cb153"
       },
       "description": "external engine provenance recorded",
       "name": "engine_provenance",
-      "startTime": 1781750443.334311
+      "startTime": 1781751198.853009
     },
     {
-      "@id": "trace:c9a78ee92d100d40:event:3:cost_model",
+      "@id": "trace:75e65d1325577070:event:3:cost_model",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -466,10 +468,10 @@
       },
       "description": "dense statevector cost estimated",
       "name": "cost_model",
-      "startTime": 1781750443.334317
+      "startTime": 1781751198.853013
     },
     {
-      "@id": "trace:c9a78ee92d100d40:event:4:route",
+      "@id": "trace:75e65d1325577070:event:4:route",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -479,15 +481,16 @@
       },
       "description": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
       "name": "route",
-      "startTime": 1781750443.334322
+      "startTime": 1781751198.8530161
     },
     {
-      "@id": "trace:c9a78ee92d100d40:event:5:execute",
+      "@id": "trace:75e65d1325577070:event:5:execute",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
         "abs_error": 0.004290755899226006,
         "anchor_kind": "absolute_scaling_law",
+        "anchor_mode": "absolute_anchor",
         "benchmark_family": "CriticalIsingFiniteSizeScaling",
         "claim_scope": "positive scaling-law control only; shows CAPAS can seal a noisy sequence that satisfies the preregistered universal exponent tolerance",
         "expected": 1.0,
@@ -513,7 +516,7 @@
         "reference_truth": "critical_ising_gap_dynamic_exponent_z_equals_1",
         "repr": "{'engine_id': 'universal_invariant_adversarial_engines.ising_gap_correct_exponent_noisy_passes_scaling_anchor', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIG",
         "route": "external_engine",
-        "runtime_ms": 0.6112499977461994,
+        "runtime_ms": 0.35783302155323327,
         "scaling_points": [
           {
             "gap": 0.3974114706791088,
@@ -555,18 +558,19 @@
       },
       "description": "backend executed",
       "name": "execute",
-      "startTime": 1781750443.335045
+      "startTime": 1781751198.853451
     },
     {
-      "@id": "trace:c9a78ee92d100d40:event:6:physical_evidence",
+      "@id": "trace:75e65d1325577070:event:6:physical_evidence",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
         "abs_error": 0.004290755899226006,
         "anchor_kind": "absolute_scaling_law",
+        "anchor_mode": "absolute_anchor",
         "benchmark_family": "CriticalIsingFiniteSizeScaling",
         "claim_scope": "positive scaling-law control only; shows CAPAS can seal a noisy sequence that satisfies the preregistered universal exponent tolerance",
-        "evidence_hash": "ff845d0523e48df816f4ec8f16887cee8e386a5fa41768505b9fbe4bc076bc25",
+        "evidence_hash": "25dacf99309afd2e517139c5648e3c2985ae8f3b6db4f8d0f4cd36e1f00cdd77",
         "expected": 1.0,
         "expected_exponent": 1.0,
         "exponent_tolerance": 0.1,
@@ -628,7 +632,7 @@
       },
       "description": "physical evidence reported by backend",
       "name": "physical_evidence",
-      "startTime": 1781750443.335094
+      "startTime": 1781751198.853487
     }
   ]
 }

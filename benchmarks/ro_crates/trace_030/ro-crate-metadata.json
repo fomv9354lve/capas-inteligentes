@@ -36,7 +36,7 @@
       "@id": "./",
       "@type": "Dataset",
       "capas:evidenceStatus": "present",
-      "capas:traceHash": "ed8dc6a2b00923b6de76b3a4db54ffa5068521e65cd0ae54be48b10a8d37ec8f",
+      "capas:traceHash": "b0ea48d3beef71a5524366203ed7410ff68add8d9fdbebc62a11c4fff9b338ba",
       "capas:workflowRunCrateAlignment": "shape-compatible-with-workflow-run-crate-0.5",
       "capas:workloadHash": "1434fa0e4cb559bccb41ee264bb7e68d0b728788379f29b1eb720e3b5e3fc0d8",
       "conformsTo": [
@@ -56,7 +56,7 @@
           "@id": "https://example.org/capas-inteligentes/ro-crate/physical-evidence/0.1"
         }
       ],
-      "datePublished": "2026-06-18T02:40:43.325234Z",
+      "datePublished": "2026-06-18T02:53:18.847830Z",
       "description": "RO-Crate package containing a sealed RunTrace, optional PROV export, routing decision, runtime context, and CAPAS physical evidence metadata.",
       "hasPart": [
         {
@@ -72,23 +72,23 @@
           "@id": "entity:workload"
         },
         {
-          "@id": "trace:ed8dc6a2b00923b6:routing-decision"
+          "@id": "trace:b0ea48d3beef71a5:routing-decision"
         },
         {
-          "@id": "trace:ed8dc6a2b00923b6:result"
+          "@id": "trace:b0ea48d3beef71a5:result"
         },
         {
           "@id": "runtrace.prov.json"
         },
         {
-          "@id": "trace:ed8dc6a2b00923b6:physical-evidence"
+          "@id": "trace:b0ea48d3beef71a5:physical-evidence"
         }
       ],
       "mainEntity": {
         "@id": "workflow/capas-costurero-run.cwl"
       },
       "mentions": {
-        "@id": "trace:ed8dc6a2b00923b6"
+        "@id": "trace:b0ea48d3beef71a5"
       },
       "name": "CAPAS traced scientific computation crate"
     },
@@ -124,14 +124,14 @@
         "DigitalDocument"
       ],
       "about": {
-        "@id": "trace:ed8dc6a2b00923b6"
+        "@id": "trace:b0ea48d3beef71a5"
       },
       "encodingFormat": "application/json",
       "name": "Sealed CAPAS RunTrace",
-      "sha256": "617e453d3555b7caea66af9ce3f345f7db1f4114fbfd718df3b9d62e523a543c"
+      "sha256": "371ca9ffe27370e8ac9a81c9875fe7cb679721e922c9a777622f4869be6ecf5a"
     },
     {
-      "@id": "trace:ed8dc6a2b00923b6",
+      "@id": "trace:b0ea48d3beef71a5",
       "@type": "CreateAction",
       "actionStatus": "CompletedActionStatus",
       "agent": {
@@ -142,11 +142,11 @@
       "capas:evidenceStatus": "present",
       "capas:hashAlgorithm": "sha256(stable_json)",
       "capas:routingDecision": {
-        "@id": "trace:ed8dc6a2b00923b6:routing-decision"
+        "@id": "trace:b0ea48d3beef71a5:routing-decision"
       },
-      "capas:traceHash": "ed8dc6a2b00923b6de76b3a4db54ffa5068521e65cd0ae54be48b10a8d37ec8f",
+      "capas:traceHash": "b0ea48d3beef71a5524366203ed7410ff68add8d9fdbebc62a11c4fff9b338ba",
       "capas:traceSchemaVersion": "capas-runtrace-v2",
-      "endTime": "2026-06-18T02:40:43.325234Z",
+      "endTime": "2026-06-18T02:53:18.847830Z",
       "instrument": {
         "@id": "workflow/capas-costurero-run.cwl"
       },
@@ -155,9 +155,9 @@
         "@id": "entity:workload"
       },
       "result": {
-        "@id": "trace:ed8dc6a2b00923b6:result"
+        "@id": "trace:b0ea48d3beef71a5:result"
       },
-      "startTime": "2026-06-18T02:40:43.324078Z"
+      "startTime": "2026-06-18T02:53:18.846948Z"
     },
     {
       "@id": "workflow/capas-costurero-run.cwl",
@@ -222,7 +222,7 @@
       "name": "Workload summary"
     },
     {
-      "@id": "trace:ed8dc6a2b00923b6:routing-decision",
+      "@id": "trace:b0ea48d3beef71a5:routing-decision",
       "@type": "Thing",
       "capas:reason": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
       "capas:route": "external_engine",
@@ -236,17 +236,18 @@
       ],
       "encodingFormat": "application/json",
       "name": "W3C PROV-shaped export",
-      "sha256": "d86ce1ebcbf5bbf8b212225f6b8ad794af24fa8256178f1556573ddcf39202fa"
+      "sha256": "8c0d62d4153b588c1313ad2a4b61f2a44277457bab200211768e279ba40f6ea0"
     },
     {
-      "@id": "trace:ed8dc6a2b00923b6:result",
+      "@id": "trace:b0ea48d3beef71a5:result",
       "@type": "Dataset",
       "capas:physicalEvidence": {
-        "@id": "trace:ed8dc6a2b00923b6:physical-evidence"
+        "@id": "trace:b0ea48d3beef71a5:physical-evidence"
       },
-      "capas:resultHash": "c61896697d8b8965dd2422c1c903cf8a7e886751480fc7e22a5325ed3d269310",
+      "capas:resultHash": "b8ad2520750f68abad0cbf0b06210f3b0d71268a082f16317aee4f9d3f916ef5",
       "capas:summary": {
         "abs_error": 0.375,
+        "anchor_mode": "absolute_anchor",
         "benchmark_family": "Heisenberg",
         "claim_scope": "redundant-control case only; shows the local oracle and universal anchor can overlap",
         "expected": -0.75,
@@ -287,16 +288,17 @@
       "name": "Result summary"
     },
     {
-      "@id": "trace:ed8dc6a2b00923b6:physical-evidence",
+      "@id": "trace:b0ea48d3beef71a5:physical-evidence",
       "@type": "capas:PhysicalEvidence",
       "about": {
-        "@id": "trace:ed8dc6a2b00923b6:result"
+        "@id": "trace:b0ea48d3beef71a5:result"
       },
       "capas:absError": 0.375,
+      "capas:anchorMode": "absolute_anchor",
       "capas:benchmarkFamily": "Heisenberg",
       "capas:claimScope": "redundant-control case only; shows the local oracle and universal anchor can overlap",
       "capas:detail": "Redundant control: a wrong coupling parameter is caught by a local parameter check and by the analytic ground-state invariant.",
-      "capas:evidenceHash": "c392dab720d7a948a7c450a43dc9042cc4c744d7784db2a4e8009efad2122b74",
+      "capas:evidenceHash": "60a300457b6c26e4ae1f84254ea256aea73951082125b56970dbe087d18d7ce3",
       "capas:expected": -0.75,
       "capas:generatorError": "wrong_coupling_magnitude",
       "capas:invariantCaught": true,
@@ -328,7 +330,7 @@
       "name": "Physical evidence attached to result"
     },
     {
-      "@id": "trace:ed8dc6a2b00923b6:event:0:ingest",
+      "@id": "trace:b0ea48d3beef71a5:event:0:ingest",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -348,10 +350,10 @@
       },
       "description": "workload accepted",
       "name": "ingest",
-      "startTime": 1781750443.324078
+      "startTime": 1781751198.8469481
     },
     {
-      "@id": "trace:ed8dc6a2b00923b6:event:1:runtime_context",
+      "@id": "trace:b0ea48d3beef71a5:event:1:runtime_context",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -376,10 +378,10 @@
       },
       "description": "runtime and hardware context recorded",
       "name": "runtime_context",
-      "startTime": 1781750443.32423
+      "startTime": 1781751198.847044
     },
     {
-      "@id": "trace:ed8dc6a2b00923b6:event:2:engine_provenance",
+      "@id": "trace:b0ea48d3beef71a5:event:2:engine_provenance",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -387,14 +389,14 @@
         "function_name": "heisenberg_scaled_coupling_both_oracles_catch",
         "kwargs": {},
         "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py",
-        "module_sha256": "5bc6e658ae1251e88464871efc12d3a3599ef2d4408d2792229b894a7ed3a097"
+        "module_sha256": "13acd36c76f09100e4c4c5aeb100e032b4dc61ca321edf55d9096105661cb153"
       },
       "description": "external engine provenance recorded",
       "name": "engine_provenance",
-      "startTime": 1781750443.324343
+      "startTime": 1781751198.847113
     },
     {
-      "@id": "trace:ed8dc6a2b00923b6:event:3:cost_model",
+      "@id": "trace:b0ea48d3beef71a5:event:3:cost_model",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -406,10 +408,10 @@
       },
       "description": "dense statevector cost estimated",
       "name": "cost_model",
-      "startTime": 1781750443.324349
+      "startTime": 1781751198.847116
     },
     {
-      "@id": "trace:ed8dc6a2b00923b6:event:4:route",
+      "@id": "trace:b0ea48d3beef71a5:event:4:route",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -419,14 +421,15 @@
       },
       "description": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
       "name": "route",
-      "startTime": 1781750443.324354
+      "startTime": 1781751198.847119
     },
     {
-      "@id": "trace:ed8dc6a2b00923b6:event:5:execute",
+      "@id": "trace:b0ea48d3beef71a5:event:5:execute",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
         "abs_error": 0.375,
+        "anchor_mode": "absolute_anchor",
         "benchmark_family": "Heisenberg",
         "claim_scope": "redundant-control case only; shows the local oracle and universal anchor can overlap",
         "expected": -0.75,
@@ -449,7 +452,7 @@
         "reference_truth": "closed_form_antiferromagnetic_singlet_ground_energy",
         "repr": "{'engine_id': 'universal_invariant_adversarial_engines.heisenberg_scaled_coupling_both_oracles_catch', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/int",
         "route": "external_engine",
-        "runtime_ms": 0.7609580061398447,
+        "runtime_ms": 0.632707990007475,
         "structure_mapping": {
           "generator_output": "Hamiltonian implementation with declared coupling",
           "local_oracle_relation": "declared parameter consistency plus generic matrix validity",
@@ -465,17 +468,18 @@
       },
       "description": "backend executed",
       "name": "execute",
-      "startTime": 1781750443.3251991
+      "startTime": 1781751198.847806
     },
     {
-      "@id": "trace:ed8dc6a2b00923b6:event:6:physical_evidence",
+      "@id": "trace:b0ea48d3beef71a5:event:6:physical_evidence",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
         "abs_error": 0.375,
+        "anchor_mode": "absolute_anchor",
         "benchmark_family": "Heisenberg",
         "claim_scope": "redundant-control case only; shows the local oracle and universal anchor can overlap",
-        "evidence_hash": "3984d9bb042bb7c388c0dc7b590c2262d849b1506d58e553ad5b6dd3753bd34f",
+        "evidence_hash": "4bf37b8770d4b7bc296621cb7e8d864be3831b8d2145f91427046b288b008c5d",
         "expected": -0.75,
         "generator_error": "wrong_coupling_magnitude",
         "invariant_caught": true,
@@ -508,7 +512,7 @@
       },
       "description": "physical evidence reported by backend",
       "name": "physical_evidence",
-      "startTime": 1781750443.325234
+      "startTime": 1781751198.84783
     }
   ]
 }

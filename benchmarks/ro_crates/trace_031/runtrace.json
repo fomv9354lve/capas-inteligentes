@@ -5,9 +5,10 @@
     "function_name": "bell_product_state_passes_local_properties_but_fails_entropy",
     "kwargs": {},
     "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py",
-    "module_sha256": "5bc6e658ae1251e88464871efc12d3a3599ef2d4408d2792229b894a7ed3a097",
+    "module_sha256": "13acd36c76f09100e4c4c5aeb100e032b4dc61ca321edf55d9096105661cb153",
     "result": {
       "abs_error": 0.6931471805599453,
+      "anchor_mode": "absolute_anchor",
       "benchmark_family": "Bell",
       "claim_scope": "transfer seed only; shows the local-miss/universal-catch pattern for an entropy invariant, not just a Heisenberg energy invariant",
       "coverage_case": "universal_invariant_non_heisenberg_adversarial_failure",
@@ -64,7 +65,7 @@
         },
         "stage": "ingest",
         "status": "ok",
-        "timestamp": 1781750443.326297
+        "timestamp": 1781751198.848532
       },
       {
         "message": "runtime and hardware context recorded",
@@ -90,7 +91,7 @@
         },
         "stage": "runtime_context",
         "status": "ok",
-        "timestamp": 1781750443.3264399
+        "timestamp": 1781751198.848623
       },
       {
         "message": "external engine provenance recorded",
@@ -99,11 +100,11 @@
           "function_name": "bell_product_state_passes_local_properties_but_fails_entropy",
           "kwargs": {},
           "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py",
-          "module_sha256": "5bc6e658ae1251e88464871efc12d3a3599ef2d4408d2792229b894a7ed3a097"
+          "module_sha256": "13acd36c76f09100e4c4c5aeb100e032b4dc61ca321edf55d9096105661cb153"
         },
         "stage": "engine_provenance",
         "status": "ok",
-        "timestamp": 1781750443.326536
+        "timestamp": 1781751198.8486888
       },
       {
         "message": "dense statevector cost estimated",
@@ -116,7 +117,7 @@
         },
         "stage": "cost_model",
         "status": "ok",
-        "timestamp": 1781750443.326541
+        "timestamp": 1781751198.848692
       },
       {
         "message": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
@@ -127,12 +128,13 @@
         },
         "stage": "route",
         "status": "ok",
-        "timestamp": 1781750443.326546
+        "timestamp": 1781751198.848695
       },
       {
         "message": "backend executed",
         "metrics": {
           "abs_error": 0.6931471805599453,
+          "anchor_mode": "absolute_anchor",
           "benchmark_family": "Bell",
           "claim_scope": "transfer seed only; shows the local-miss/universal-catch pattern for an entropy invariant, not just a Heisenberg energy invariant",
           "expected": 0.6931471805599453,
@@ -153,7 +155,7 @@
           "reference_truth": "closed_form_bell_entropy_ln2",
           "repr": "{'engine_id': 'universal_invariant_adversarial_engines.bell_product_state_passes_local_properties_but_fails_entropy', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS I",
           "route": "external_engine",
-          "runtime_ms": 0.6791669875383377,
+          "runtime_ms": 0.43312498019076884,
           "structure_mapping": {
             "generator_output": "two-qubit state vector",
             "local_oracle_relation": "generic state validity properties preserved by product state",
@@ -169,15 +171,16 @@
         },
         "stage": "execute",
         "status": "ok",
-        "timestamp": 1781750443.327301
+        "timestamp": 1781751198.849182
       },
       {
         "message": "physical evidence reported by backend",
         "metrics": {
           "abs_error": 0.6931471805599453,
+          "anchor_mode": "absolute_anchor",
           "benchmark_family": "Bell",
           "claim_scope": "transfer seed only; shows the local-miss/universal-catch pattern for an entropy invariant, not just a Heisenberg energy invariant",
-          "evidence_hash": "aadd9121049f56d9d13397e75e573227d4353d74c0b4462c99271945c566e677",
+          "evidence_hash": "39c7ec31a80c806b10eaa50a1d1cd9f58b017d46eeb065bad71ffb9a1aea0ee5",
           "expected": 0.6931471805599453,
           "generator_error": "plausible_product_state_instead_of_bell_state",
           "invariant_caught": true,
@@ -208,13 +211,14 @@
         },
         "stage": "physical_evidence",
         "status": "ok",
-        "timestamp": 1781750443.327334
+        "timestamp": 1781751198.849206
       }
     ],
     "hash_algorithm": "sha256(stable_json)",
-    "result_hash": "9862ee6f5731cb5bb24f0ad55fa208cab14c033524202e061ac4d1ae138e0dbe",
+    "result_hash": "f64caa4e46ccd39c53c9ee154dc59f99cb1a508a7aa672719e03cf1b023e40b9",
     "result_summary": {
       "abs_error": 0.6931471805599453,
+      "anchor_mode": "absolute_anchor",
       "benchmark_family": "Bell",
       "claim_scope": "transfer seed only; shows the local-miss/universal-catch pattern for an entropy invariant, not just a Heisenberg energy invariant",
       "expected": 0.6931471805599453,
@@ -265,6 +269,6 @@
       "n_qubits": 2
     }
   },
-  "trace_hash": "28e31689f441756504648d69f6d3938a8f820f50a6b28db58952fdc65f988464",
+  "trace_hash": "a282c26bacd3875f10f80ff2cd3bf92872bef1f7b2dd4db8b41f165ce1f14353",
   "trace_id": "trace_031"
 }

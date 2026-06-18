@@ -31,6 +31,7 @@ EXPECTED = {
     "trace_034": ("universal_invariant_scaling_law_positive_control", "present", True, "CompletedActionStatus"),
     "trace_035": ("universal_invariant_scaling_law_local_catches", "present", True, "CompletedActionStatus"),
     "trace_036": ("universal_invariant_scaling_law_simulation_generated", "present", True, "CompletedActionStatus"),
+    "trace_037": ("universal_invariant_scaling_law_randomized_adversarial", "present", True, "CompletedActionStatus"),
     "trace_012": ("no_evidence_success", "none_declared", False, "CompletedActionStatus"),
     "trace_013": ("backend_failed", "not_applicable_failed", False, "FailedActionStatus"),
     "trace_014": ("rejected_by_router", "not_applicable_rejected", False, "CompletedActionStatus"),
@@ -145,6 +146,7 @@ def main() -> int:
                 assert evidence.get("capas:universalAnchor"), "missing universal anchor"
                 assert "capas:universalAnchorPass" in evidence, "missing universal anchor result"
                 assert "capas:invariantCaught" in evidence, "missing invariant caught result"
+                assert "capas:anchorMode" in evidence, "missing anchor mode"
                 assert evidence.get("capas:preRegisteredSuccessCriterion"), "missing pre-registered success criterion"
                 assert evidence.get("capas:claimScope"), "missing claim scope"
             if coverage == "universal_invariant_adversarial_failure":
@@ -169,6 +171,7 @@ def main() -> int:
                 assert evidence.get("capas:invariantCaught") is True, "Bell entropy invariant should catch this case"
             elif coverage == "universal_invariant_no_anchor_control":
                 assert evidence.get("capas:physicalEvidenceLevel") == "no_universal_anchor_control", "wrong no-anchor evidence level"
+                assert evidence.get("capas:anchorMode") == "none", "wrong no-anchor mode"
                 assert evidence.get("capas:localPropertyTestsPass") is True, "local property tests should pass"
                 assert evidence.get("capas:localOracleCaught") is False, "local oracle should not catch valid arbitrary state"
                 assert evidence.get("capas:universalAnchorPass") == "not_applicable_no_universal_anchor", "anchor should be not applicable"
@@ -176,6 +179,7 @@ def main() -> int:
             elif coverage == "universal_invariant_scaling_law_adversarial_failure":
                 assert evidence.get("capas:physicalEvidenceLevel") == "scaling_law_anchor", "wrong scaling evidence level"
                 assert evidence.get("capas:anchorKind") == "absolute_scaling_law", "wrong anchor kind"
+                assert evidence.get("capas:anchorMode") == "absolute_anchor", "wrong anchor mode"
                 assert evidence.get("capas:localPropertyTestsPass") is True, "local scaling checks should pass"
                 assert evidence.get("capas:universalAnchorPass") is False, "scaling anchor should fail"
                 assert evidence.get("capas:invariantCaught") is True, "scaling invariant should catch"
@@ -184,6 +188,7 @@ def main() -> int:
             elif coverage == "universal_invariant_scaling_law_positive_control":
                 assert evidence.get("capas:physicalEvidenceLevel") == "scaling_law_anchor", "wrong scaling evidence level"
                 assert evidence.get("capas:anchorKind") == "absolute_scaling_law", "wrong anchor kind"
+                assert evidence.get("capas:anchorMode") == "absolute_anchor", "wrong anchor mode"
                 assert evidence.get("capas:localPropertyTestsPass") is True, "local scaling checks should pass"
                 assert evidence.get("capas:universalAnchorPass") is True, "scaling anchor should pass"
                 assert evidence.get("capas:invariantCaught") is False, "positive control should not be caught"
@@ -192,6 +197,7 @@ def main() -> int:
             elif coverage == "universal_invariant_scaling_law_local_catches":
                 assert evidence.get("capas:physicalEvidenceLevel") == "scaling_law_anchor", "wrong scaling evidence level"
                 assert evidence.get("capas:anchorKind") == "absolute_scaling_law", "wrong anchor kind"
+                assert evidence.get("capas:anchorMode") == "absolute_anchor", "wrong anchor mode"
                 assert evidence.get("capas:localPropertyTestsPass") is False, "local scaling checks should fail"
                 assert evidence.get("capas:localOracleCaught") is True, "local oracle should catch constant sequence"
                 assert evidence.get("capas:universalAnchorPass") == "not_evaluated_local_oracle_failed", "scaling anchor should not be credited"
@@ -199,12 +205,24 @@ def main() -> int:
             elif coverage == "universal_invariant_scaling_law_simulation_generated":
                 assert evidence.get("capas:physicalEvidenceLevel") == "scaling_law_anchor", "wrong scaling evidence level"
                 assert evidence.get("capas:anchorKind") == "absolute_scaling_law", "wrong anchor kind"
+                assert evidence.get("capas:anchorMode") == "absolute_anchor", "wrong anchor mode"
                 assert evidence.get("capas:localPropertyTestsPass") is True, "local scaling checks should pass"
                 assert evidence.get("capas:universalAnchorPass") is True, "simulation-generated scaling anchor should pass"
                 assert evidence.get("capas:invariantCaught") is False, "positive simulation control should not be caught"
                 assert evidence.get("capas:absError") <= evidence.get("capas:exponentTolerance"), "exponent error should be within tolerance"
                 assert len(evidence.get("capas:scalingPoints", [])) >= 5, "missing simulation scaling points"
                 assert "Exact diagonalization" in evidence.get("capas:finiteSizeNotes", ""), "missing simulation provenance note"
+            elif coverage == "universal_invariant_scaling_law_randomized_adversarial":
+                assert evidence.get("capas:physicalEvidenceLevel") == "scaling_law_anchor", "wrong scaling evidence level"
+                assert evidence.get("capas:anchorKind") == "absolute_scaling_law", "wrong anchor kind"
+                assert evidence.get("capas:anchorMode") == "absolute_anchor", "wrong anchor mode"
+                assert evidence.get("capas:localPropertyTestsPass") is True, "randomized local scaling checks should pass"
+                assert evidence.get("capas:universalAnchorPass") is False, "randomized scaling anchor should fail"
+                assert evidence.get("capas:invariantCaught") is True, "randomized scaling invariant should catch"
+                assert evidence.get("capas:variantCount") == 8, "wrong randomized variant count"
+                assert len(evidence.get("capas:randomizedVariants", [])) == 8, "missing randomized variants"
+                assert evidence.get("capas:minAbsError") > evidence.get("capas:exponentTolerance"), "all variants should exceed tolerance"
+                assert evidence.get("capas:randomSeed") == 20260617, "wrong randomized seed"
             print(f"{trace_id}: ok ({coverage}, {status}, {action_status})")
         except Exception as exc:
             failures.append(f"{trace_id}: {type(exc).__name__}: {exc}")

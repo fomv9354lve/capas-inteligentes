@@ -1,0 +1,2026 @@
+{
+  "@context": [
+    "https://w3id.org/ro/crate/1.1/context",
+    "https://w3id.org/ro/terms/workflow-run/context",
+    {
+      "capas": "https://example.org/capas-inteligentes#",
+      "sha256": "https://schema.org/sha256"
+    }
+  ],
+  "@graph": [
+    {
+      "@id": "ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "about": {
+        "@id": "./"
+      },
+      "conformsTo": [
+        {
+          "@id": "https://w3id.org/ro/crate/1.1"
+        },
+        {
+          "@id": "https://w3id.org/ro/wfrun/process/0.5"
+        },
+        {
+          "@id": "https://w3id.org/ro/wfrun/workflow/0.5"
+        },
+        {
+          "@id": "https://w3id.org/workflowhub/workflow-ro-crate/1.0"
+        },
+        {
+          "@id": "https://example.org/capas-inteligentes/ro-crate/physical-evidence/0.1"
+        }
+      ]
+    },
+    {
+      "@id": "./",
+      "@type": "Dataset",
+      "capas:evidenceStatus": "present",
+      "capas:traceHash": "ce4552d3e8b2ef1427dab8116de91af7b5aa2b9072ff840e6c1497332376142f",
+      "capas:workflowRunCrateAlignment": "shape-compatible-with-workflow-run-crate-0.5",
+      "capas:workloadHash": "095bb368d152dd1606d0e98ec037430ec0b7321229491c955e4c0344dfa944d7",
+      "conformsTo": [
+        {
+          "@id": "https://w3id.org/ro/crate/1.1"
+        },
+        {
+          "@id": "https://w3id.org/ro/wfrun/process/0.5"
+        },
+        {
+          "@id": "https://w3id.org/ro/wfrun/workflow/0.5"
+        },
+        {
+          "@id": "https://w3id.org/workflowhub/workflow-ro-crate/1.0"
+        },
+        {
+          "@id": "https://example.org/capas-inteligentes/ro-crate/physical-evidence/0.1"
+        }
+      ],
+      "datePublished": "2026-06-18T02:53:19.068636Z",
+      "description": "RO-Crate package containing a sealed RunTrace, optional PROV export, routing decision, runtime context, and CAPAS physical evidence metadata.",
+      "hasPart": [
+        {
+          "@id": "runtrace.json"
+        },
+        {
+          "@id": "workflow/capas-costurero-run.cwl"
+        },
+        {
+          "@id": "software:capas-costurero"
+        },
+        {
+          "@id": "entity:workload"
+        },
+        {
+          "@id": "trace:ce4552d3e8b2ef14:routing-decision"
+        },
+        {
+          "@id": "trace:ce4552d3e8b2ef14:result"
+        },
+        {
+          "@id": "runtrace.prov.json"
+        },
+        {
+          "@id": "trace:ce4552d3e8b2ef14:physical-evidence"
+        }
+      ],
+      "mainEntity": {
+        "@id": "workflow/capas-costurero-run.cwl"
+      },
+      "mentions": {
+        "@id": "trace:ce4552d3e8b2ef14"
+      },
+      "name": "CAPAS traced scientific computation crate"
+    },
+    {
+      "@id": "https://w3id.org/ro/wfrun/process/0.5",
+      "@type": "CreativeWork",
+      "name": "Process Run Crate",
+      "version": "0.5"
+    },
+    {
+      "@id": "https://w3id.org/ro/wfrun/workflow/0.5",
+      "@type": "CreativeWork",
+      "name": "Workflow Run Crate",
+      "version": "0.5"
+    },
+    {
+      "@id": "https://w3id.org/workflowhub/workflow-ro-crate/1.0",
+      "@type": "CreativeWork",
+      "name": "Workflow RO-Crate",
+      "version": "1.0"
+    },
+    {
+      "@id": "https://example.org/capas-inteligentes/ro-crate/physical-evidence/0.1",
+      "@type": "CreativeWork",
+      "description": "Draft profile extending Workflow Run RO-Crate-style traces with first-class physical evidence, witness independence, reference truth, and explicit success/no-evidence/failure/rejection states.",
+      "name": "CAPAS Physical Evidence Profile",
+      "version": "0.1"
+    },
+    {
+      "@id": "runtrace.json",
+      "@type": [
+        "File",
+        "DigitalDocument"
+      ],
+      "about": {
+        "@id": "trace:ce4552d3e8b2ef14"
+      },
+      "encodingFormat": "application/json",
+      "name": "Sealed CAPAS RunTrace",
+      "sha256": "76566ad6e910435b6035d014534ac317e179c5a0894eeeba0bdca8a15f72d9e3"
+    },
+    {
+      "@id": "trace:ce4552d3e8b2ef14",
+      "@type": "CreateAction",
+      "actionStatus": "CompletedActionStatus",
+      "agent": {
+        "@id": "software:capas-costurero"
+      },
+      "capas:decisionReason": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+      "capas:decisionRoute": "external_engine",
+      "capas:evidenceStatus": "present",
+      "capas:hashAlgorithm": "sha256(stable_json)",
+      "capas:routingDecision": {
+        "@id": "trace:ce4552d3e8b2ef14:routing-decision"
+      },
+      "capas:traceHash": "ce4552d3e8b2ef1427dab8116de91af7b5aa2b9072ff840e6c1497332376142f",
+      "capas:traceSchemaVersion": "capas-runtrace-v2",
+      "endTime": "2026-06-18T02:53:19.068636Z",
+      "instrument": {
+        "@id": "workflow/capas-costurero-run.cwl"
+      },
+      "name": "CAPAS costurero traced run",
+      "object": {
+        "@id": "entity:workload"
+      },
+      "result": {
+        "@id": "trace:ce4552d3e8b2ef14:result"
+      },
+      "startTime": "2026-06-18T02:53:19.066490Z"
+    },
+    {
+      "@id": "workflow/capas-costurero-run.cwl",
+      "@type": [
+        "File",
+        "SoftwareSourceCode",
+        "ComputationalWorkflow"
+      ],
+      "capas:traceSchemaVersion": "capas-runtrace-v2",
+      "description": "Workflow plan that ingests a scientific workload, records runtime context, estimates routing cost, executes or skips the selected engine, and attaches CAPAS physical-evidence metadata.",
+      "input": {
+        "@id": "parameter:workload"
+      },
+      "name": "CAPAS costurero workflow",
+      "output": {
+        "@id": "parameter:result"
+      },
+      "programmingLanguage": "Python"
+    },
+    {
+      "@id": "parameter:workload",
+      "@type": "FormalParameter",
+      "additionalType": "Dataset",
+      "description": "Structured scientific workload routed by the CAPAS costurero.",
+      "name": "Scientific workload"
+    },
+    {
+      "@id": "parameter:result",
+      "@type": "FormalParameter",
+      "additionalType": "Dataset",
+      "description": "Structured result summary, skipped state, or failure state.",
+      "name": "Result summary or skipped/failure state"
+    },
+    {
+      "@id": "software:capas-costurero",
+      "@type": "SoftwareApplication",
+      "applicationCategory": "Scientific provenance and evidence tracing",
+      "name": "CAPAS INTELIGENTES costurero"
+    },
+    {
+      "@id": "entity:workload",
+      "@type": "Dataset",
+      "capas:summary": {
+        "budget": {
+          "flops_ceiling": 100000000.0,
+          "memory_budget_bytes": 536870912,
+          "safety_factor": 0.5
+        },
+        "engine": {
+          "engine_id": "universal_invariant_adversarial_engines.ising_gap_randomized_wrong_exponent_family",
+          "function_name": "ising_gap_randomized_wrong_exponent_family",
+          "kwargs_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py"
+        },
+        "kind": "dense",
+        "n_qubits": 2
+      },
+      "capas:workloadHash": "095bb368d152dd1606d0e98ec037430ec0b7321229491c955e4c0344dfa944d7",
+      "exampleOfWork": {
+        "@id": "parameter:workload"
+      },
+      "name": "Workload summary"
+    },
+    {
+      "@id": "trace:ce4552d3e8b2ef14:routing-decision",
+      "@type": "Thing",
+      "capas:reason": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+      "capas:route": "external_engine",
+      "name": "Routing decision"
+    },
+    {
+      "@id": "runtrace.prov.json",
+      "@type": [
+        "File",
+        "DigitalDocument"
+      ],
+      "encodingFormat": "application/json",
+      "name": "W3C PROV-shaped export",
+      "sha256": "3c55c1b5e4753677188a13fdfe53df390b101b17b8ed297308d98ccb78265b14"
+    },
+    {
+      "@id": "trace:ce4552d3e8b2ef14:result",
+      "@type": "Dataset",
+      "capas:physicalEvidence": {
+        "@id": "trace:ce4552d3e8b2ef14:physical-evidence"
+      },
+      "capas:resultHash": "f1e32f246e1c51d777163d1c5650d2383db1e27a68e5d47d3cf131e9e272b5a5",
+      "capas:summary": {
+        "abs_error": 0.31524892345517164,
+        "anchor_kind": "absolute_scaling_law",
+        "anchor_mode": "absolute_anchor",
+        "benchmark_family": "CriticalIsingFiniteSizeScaling",
+        "claim_scope": "randomized adversarial seed only; shows the scaling-law anchor is not a single hand-picked example, but it still is not an agent-generated corpus",
+        "expected": "all randomized variants violate z=1 by more than preregistered tolerance",
+        "expected_exponent": 1.0,
+        "exponent_tolerance": 0.1,
+        "finite_size_notes": "Deterministic randomized adversarial family generated with seed 20260617. Each variant samples an exponent in [0.35, 0.72], then applies small jitter while preserving positive decreasing gaps. The preregistered criterion requires all variants to pass local monotonicity and fail the z=1 +/-0.10 universal anchor.",
+        "fit_r_squared": 0.9989398786323902,
+        "fitted_exponent": 0.5241370314429799,
+        "generator_error": "randomized_wrong_dynamic_exponents",
+        "invariant_caught": true,
+        "local_oracle_caught": false,
+        "local_property_tests": {
+          "all_variants_local_pass": true,
+          "local_pass_count": 8,
+          "variant_count": 8
+        },
+        "local_property_tests_pass": true,
+        "max_abs_error": 0.6314228932510721,
+        "min_abs_error": 0.31524892345517164,
+        "observable": "Randomized generated Ising finite-size gap exponents with wrong scaling",
+        "physical_evidence_detail": "Randomized adversarial scaling family: all generated finite-size gap sequences are positive, finite, and decreasing, but every fitted exponent falls outside the preregistered z=1 +/-0.10 tolerance.",
+        "physical_evidence_level": "scaling_law_anchor",
+        "pre_registered_success_criterion": "variant_count is 8, every variant has local_property_tests_pass true, and every variant has abs(fitted_exponent - 1.0) > 0.10",
+        "random_seed": 20260617,
+        "randomized_variants": [
+          {
+            "abs_error": 0.5944024448774284,
+            "fit_r_squared": 0.9989398786323902,
+            "fitted_exponent": 0.40559755512257156,
+            "local_property_tests": {
+              "finite_sizes_strictly_increasing": true,
+              "gaps_finite": true,
+              "gaps_positive": true,
+              "gaps_strictly_decreasing": true
+            },
+            "local_property_tests_pass": true,
+            "scaling_points": [
+              {
+                "gap": 0.7283279466658754,
+                "system_size": 8
+              },
+              {
+                "gap": 0.6042473711288093,
+                "system_size": 12
+              },
+              {
+                "gap": 0.5391983496525817,
+                "system_size": 16
+              },
+              {
+                "gap": 0.45811519902024667,
+                "system_size": 24
+              },
+              {
+                "gap": 0.4122716863984793,
+                "system_size": 32
+              },
+              {
+                "gap": 0.34903913778740203,
+                "system_size": 48
+              }
+            ],
+            "target_exponent": 0.4151262896912945,
+            "universal_anchor_pass": false,
+            "variant_index": 0
+          },
+          {
+            "abs_error": 0.31524892345517164,
+            "fit_r_squared": 0.9996744535782053,
+            "fitted_exponent": 0.6847510765448284,
+            "local_property_tests": {
+              "finite_sizes_strictly_increasing": true,
+              "gaps_finite": true,
+              "gaps_positive": true,
+              "gaps_strictly_decreasing": true
+            },
+            "local_property_tests_pass": true,
+            "scaling_points": [
+              {
+                "gap": 0.6070002866519526,
+                "system_size": 8
+              },
+              {
+                "gap": 0.46401711399645373,
+                "system_size": 12
+              },
+              {
+                "gap": 0.3765423822795373,
+                "system_size": 16
+              },
+              {
+                "gap": 0.2905442523604829,
+                "system_size": 24
+              },
+              {
+                "gap": 0.23336541883196107,
+                "system_size": 32
+              },
+              {
+                "gap": 0.17876166724295756,
+                "system_size": 48
+              }
+            ],
+            "target_exponent": 0.6836735196187972,
+            "universal_anchor_pass": false,
+            "variant_index": 1
+          },
+          {
+            "abs_error": 0.5149534736487382,
+            "fit_r_squared": 0.9994478554214199,
+            "fitted_exponent": 0.4850465263512618,
+            "local_property_tests": {
+              "finite_sizes_strictly_increasing": true,
+              "gaps_finite": true,
+              "gaps_positive": true,
+              "gaps_strictly_decreasing": true
+            },
+            "local_property_tests_pass": true,
+            "scaling_points": [
+              {
+                "gap": 0.8907508043449076,
+                "system_size": 8
+              },
+              {
+                "gap": 0.7301478320013048,
+                "system_size": 12
+              },
+              {
+                "gap": 0.626670557667302,
+                "system_size": 16
+              },
+              {
+                "gap": 0.5212473948708035,
+                "system_size": 24
+              },
+              {
+                "gap": 0.457827752346172,
+                "system_size": 32
+              },
+              {
+                "gap": 0.3706403017456698,
+                "system_size": 48
+              }
+            ],
+            "target_exponent": 0.48170014089863544,
+            "universal_anchor_pass": false,
+            "variant_index": 2
+          },
+          {
+            "abs_error": 0.5296236575328179,
+            "fit_r_squared": 0.9990783068043095,
+            "fitted_exponent": 0.47037634246718213,
+            "local_property_tests": {
+              "finite_sizes_strictly_increasing": true,
+              "gaps_finite": true,
+              "gaps_positive": true,
+              "gaps_strictly_decreasing": true
+            },
+            "local_property_tests_pass": true,
+            "scaling_points": [
+              {
+                "gap": 0.7410324474611708,
+                "system_size": 8
+              },
+              {
+                "gap": 0.6239204011019033,
+                "system_size": 12
+              },
+              {
+                "gap": 0.5347758366905134,
+                "system_size": 16
+              },
+              {
+                "gap": 0.4508578618532431,
+                "system_size": 24
+              },
+              {
+                "gap": 0.3863765482904937,
+                "system_size": 32
+              },
+              {
+                "gap": 0.3206927731912778,
+                "system_size": 48
+              }
+            ],
+            "target_exponent": 0.47831453426727477,
+            "universal_anchor_pass": false,
+            "variant_index": 3
+          },
+          {
+            "abs_error": 0.356133657173085,
+            "fit_r_squared": 0.9998809796491172,
+            "fitted_exponent": 0.643866342826915,
+            "local_property_tests": {
+              "finite_sizes_strictly_increasing": true,
+              "gaps_finite": true,
+              "gaps_positive": true,
+              "gaps_strictly_decreasing": true
+            },
+            "local_property_tests_pass": true,
+            "scaling_points": [
+              {
+                "gap": 0.7264775288881549,
+                "system_size": 8
+              },
+              {
+                "gap": 0.558608819015917,
+                "system_size": 12
+              },
+              {
+                "gap": 0.4663587583599732,
+                "system_size": 16
+              },
+              {
+                "gap": 0.3562914391026783,
+                "system_size": 24
+              },
+              {
+                "gap": 0.2954318444630811,
+                "system_size": 32
+              },
+              {
+                "gap": 0.23030408222772644,
+                "system_size": 48
+              }
+            ],
+            "target_exponent": 0.6446139408143803,
+            "universal_anchor_pass": false,
+            "variant_index": 4
+          },
+          {
+            "abs_error": 0.6314228932510721,
+            "fit_r_squared": 0.9999274094777072,
+            "fitted_exponent": 0.3685771067489278,
+            "local_property_tests": {
+              "finite_sizes_strictly_increasing": true,
+              "gaps_finite": true,
+              "gaps_positive": true,
+              "gaps_strictly_decreasing": true
+            },
+            "local_property_tests_pass": true,
+            "scaling_points": [
+              {
+                "gap": 1.1022318311441,
+                "system_size": 8
+              },
+              {
+                "gap": 0.9467159789731644,
+                "system_size": 12
+              },
+              {
+                "gap": 0.8486353819457839,
+                "system_size": 16
+              },
+              {
+                "gap": 0.7339150815163719,
+                "system_size": 24
+              },
+              {
+                "gap": 0.6594471983972569,
+                "system_size": 32
+              },
+              {
+                "gap": 0.5689459652583152,
+                "system_size": 48
+              }
+            ],
+            "target_exponent": 0.3690306874603834,
+            "universal_anchor_pass": false,
+            "variant_index": 5
+          },
+          {
+            "abs_error": 0.4322048284468728,
+            "fit_r_squared": 0.9995803357461663,
+            "fitted_exponent": 0.5677951715531272,
+            "local_property_tests": {
+              "finite_sizes_strictly_increasing": true,
+              "gaps_finite": true,
+              "gaps_positive": true,
+              "gaps_strictly_decreasing": true
+            },
+            "local_property_tests_pass": true,
+            "scaling_points": [
+              {
+                "gap": 0.5047809589357132,
+                "system_size": 8
+              },
+              {
+                "gap": 0.4079129323193674,
+                "system_size": 12
+              },
+              {
+                "gap": 0.3451409827920481,
+                "system_size": 16
+              },
+              {
+                "gap": 0.27047625095098093,
+                "system_size": 24
+              },
+              {
+                "gap": 0.23305087555585546,
+                "system_size": 32
+              },
+              {
+                "gap": 0.18335391517189004,
+                "system_size": 48
+              }
+            ],
+            "target_exponent": 0.5690471395259492,
+            "universal_anchor_pass": false,
+            "variant_index": 6
+          },
+          {
+            "abs_error": 0.43291387007097404,
+            "fit_r_squared": 0.9995291820996188,
+            "fitted_exponent": 0.567086129929026,
+            "local_property_tests": {
+              "finite_sizes_strictly_increasing": true,
+              "gaps_finite": true,
+              "gaps_positive": true,
+              "gaps_strictly_decreasing": true
+            },
+            "local_property_tests_pass": true,
+            "scaling_points": [
+              {
+                "gap": 0.3701719368007469,
+                "system_size": 8
+              },
+              {
+                "gap": 0.29825036922373127,
+                "system_size": 12
+              },
+              {
+                "gap": 0.24834823876962184,
+                "system_size": 16
+              },
+              {
+                "gap": 0.200213078492124,
+                "system_size": 24
+              },
+              {
+                "gap": 0.16773891751702266,
+                "system_size": 32
+              },
+              {
+                "gap": 0.13498700272513126,
+                "system_size": 48
+              }
+            ],
+            "target_exponent": 0.5662647368414155,
+            "universal_anchor_pass": false,
+            "variant_index": 7
+          }
+        ],
+        "reference_truth": "critical_ising_gap_dynamic_exponent_z_equals_1",
+        "repr": "{'engine_id': 'universal_invariant_adversarial_engines.ising_gap_randomized_wrong_exponent_family', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integr",
+        "scaling_points": [
+          {
+            "gap": 0.7283279466658754,
+            "system_size": 8
+          },
+          {
+            "gap": 0.6042473711288093,
+            "system_size": 12
+          },
+          {
+            "gap": 0.5391983496525817,
+            "system_size": 16
+          },
+          {
+            "gap": 0.45811519902024667,
+            "system_size": 24
+          },
+          {
+            "gap": 0.4122716863984793,
+            "system_size": 32
+          },
+          {
+            "gap": 0.34903913778740203,
+            "system_size": 48
+          }
+        ],
+        "structure_mapping": {
+          "generator_output": "randomized family of finite-size gap sequences",
+          "local_oracle_relation": "each variant has positive finite gaps decreasing with system size",
+          "preserved_relation": "each generated sequence is judged by local monotonicity and universal scaling exponent",
+          "universal_oracle_relation": "critical Ising dynamic exponent z=1"
+        },
+        "type": "dict",
+        "units": "dynamic_exponent_z_min_abs_error",
+        "universal_anchor": "critical_ising_gap_delta_L_scales_as_L^-1",
+        "universal_anchor_pass": false,
+        "value": {
+          "anchor_fail_count": 8,
+          "fitted_exponents": [
+            0.40559755512257156,
+            0.6847510765448284,
+            0.4850465263512618,
+            0.47037634246718213,
+            0.643866342826915,
+            0.3685771067489278,
+            0.5677951715531272,
+            0.567086129929026
+          ],
+          "local_pass_count": 8,
+          "variant_count": 8
+        },
+        "variant_count": 8,
+        "verification_independence": "theory_scaling_law_no_solver"
+      },
+      "exampleOfWork": {
+        "@id": "parameter:result"
+      },
+      "name": "Result summary"
+    },
+    {
+      "@id": "trace:ce4552d3e8b2ef14:physical-evidence",
+      "@type": "capas:PhysicalEvidence",
+      "about": {
+        "@id": "trace:ce4552d3e8b2ef14:result"
+      },
+      "capas:absError": 0.31524892345517164,
+      "capas:anchorKind": "absolute_scaling_law",
+      "capas:anchorMode": "absolute_anchor",
+      "capas:benchmarkFamily": "CriticalIsingFiniteSizeScaling",
+      "capas:claimScope": "randomized adversarial seed only; shows the scaling-law anchor is not a single hand-picked example, but it still is not an agent-generated corpus",
+      "capas:detail": "Randomized adversarial scaling family: all generated finite-size gap sequences are positive, finite, and decreasing, but every fitted exponent falls outside the preregistered z=1 +/-0.10 tolerance.",
+      "capas:evidenceHash": "9c8493bf759ceff9dd5cb2708693094e0935015e60b1f47db0f8a2d223e617e5",
+      "capas:expected": "all randomized variants violate z=1 by more than preregistered tolerance",
+      "capas:expectedExponent": 1.0,
+      "capas:exponentTolerance": 0.1,
+      "capas:finiteSizeNotes": "Deterministic randomized adversarial family generated with seed 20260617. Each variant samples an exponent in [0.35, 0.72], then applies small jitter while preserving positive decreasing gaps. The preregistered criterion requires all variants to pass local monotonicity and fail the z=1 +/-0.10 universal anchor.",
+      "capas:fitRSquared": 0.9989398786323902,
+      "capas:fittedExponent": 0.5241370314429799,
+      "capas:generatorError": "randomized_wrong_dynamic_exponents",
+      "capas:invariantCaught": true,
+      "capas:localOracleCaught": false,
+      "capas:localPropertyTests": {
+        "all_variants_local_pass": true,
+        "local_pass_count": 8,
+        "variant_count": 8
+      },
+      "capas:localPropertyTestsPass": true,
+      "capas:maxAbsError": 0.6314228932510721,
+      "capas:minAbsError": 0.31524892345517164,
+      "capas:observable": "Randomized generated Ising finite-size gap exponents with wrong scaling",
+      "capas:physicalEvidenceLevel": "scaling_law_anchor",
+      "capas:preRegisteredSuccessCriterion": "variant_count is 8, every variant has local_property_tests_pass true, and every variant has abs(fitted_exponent - 1.0) > 0.10",
+      "capas:randomSeed": 20260617,
+      "capas:randomizedVariants": [
+        {
+          "abs_error": 0.5944024448774284,
+          "fit_r_squared": 0.9989398786323902,
+          "fitted_exponent": 0.40559755512257156,
+          "local_property_tests": {
+            "finite_sizes_strictly_increasing": true,
+            "gaps_finite": true,
+            "gaps_positive": true,
+            "gaps_strictly_decreasing": true
+          },
+          "local_property_tests_pass": true,
+          "scaling_points": [
+            {
+              "gap": 0.7283279466658754,
+              "system_size": 8
+            },
+            {
+              "gap": 0.6042473711288093,
+              "system_size": 12
+            },
+            {
+              "gap": 0.5391983496525817,
+              "system_size": 16
+            },
+            {
+              "gap": 0.45811519902024667,
+              "system_size": 24
+            },
+            {
+              "gap": 0.4122716863984793,
+              "system_size": 32
+            },
+            {
+              "gap": 0.34903913778740203,
+              "system_size": 48
+            }
+          ],
+          "target_exponent": 0.4151262896912945,
+          "universal_anchor_pass": false,
+          "variant_index": 0
+        },
+        {
+          "abs_error": 0.31524892345517164,
+          "fit_r_squared": 0.9996744535782053,
+          "fitted_exponent": 0.6847510765448284,
+          "local_property_tests": {
+            "finite_sizes_strictly_increasing": true,
+            "gaps_finite": true,
+            "gaps_positive": true,
+            "gaps_strictly_decreasing": true
+          },
+          "local_property_tests_pass": true,
+          "scaling_points": [
+            {
+              "gap": 0.6070002866519526,
+              "system_size": 8
+            },
+            {
+              "gap": 0.46401711399645373,
+              "system_size": 12
+            },
+            {
+              "gap": 0.3765423822795373,
+              "system_size": 16
+            },
+            {
+              "gap": 0.2905442523604829,
+              "system_size": 24
+            },
+            {
+              "gap": 0.23336541883196107,
+              "system_size": 32
+            },
+            {
+              "gap": 0.17876166724295756,
+              "system_size": 48
+            }
+          ],
+          "target_exponent": 0.6836735196187972,
+          "universal_anchor_pass": false,
+          "variant_index": 1
+        },
+        {
+          "abs_error": 0.5149534736487382,
+          "fit_r_squared": 0.9994478554214199,
+          "fitted_exponent": 0.4850465263512618,
+          "local_property_tests": {
+            "finite_sizes_strictly_increasing": true,
+            "gaps_finite": true,
+            "gaps_positive": true,
+            "gaps_strictly_decreasing": true
+          },
+          "local_property_tests_pass": true,
+          "scaling_points": [
+            {
+              "gap": 0.8907508043449076,
+              "system_size": 8
+            },
+            {
+              "gap": 0.7301478320013048,
+              "system_size": 12
+            },
+            {
+              "gap": 0.626670557667302,
+              "system_size": 16
+            },
+            {
+              "gap": 0.5212473948708035,
+              "system_size": 24
+            },
+            {
+              "gap": 0.457827752346172,
+              "system_size": 32
+            },
+            {
+              "gap": 0.3706403017456698,
+              "system_size": 48
+            }
+          ],
+          "target_exponent": 0.48170014089863544,
+          "universal_anchor_pass": false,
+          "variant_index": 2
+        },
+        {
+          "abs_error": 0.5296236575328179,
+          "fit_r_squared": 0.9990783068043095,
+          "fitted_exponent": 0.47037634246718213,
+          "local_property_tests": {
+            "finite_sizes_strictly_increasing": true,
+            "gaps_finite": true,
+            "gaps_positive": true,
+            "gaps_strictly_decreasing": true
+          },
+          "local_property_tests_pass": true,
+          "scaling_points": [
+            {
+              "gap": 0.7410324474611708,
+              "system_size": 8
+            },
+            {
+              "gap": 0.6239204011019033,
+              "system_size": 12
+            },
+            {
+              "gap": 0.5347758366905134,
+              "system_size": 16
+            },
+            {
+              "gap": 0.4508578618532431,
+              "system_size": 24
+            },
+            {
+              "gap": 0.3863765482904937,
+              "system_size": 32
+            },
+            {
+              "gap": 0.3206927731912778,
+              "system_size": 48
+            }
+          ],
+          "target_exponent": 0.47831453426727477,
+          "universal_anchor_pass": false,
+          "variant_index": 3
+        },
+        {
+          "abs_error": 0.356133657173085,
+          "fit_r_squared": 0.9998809796491172,
+          "fitted_exponent": 0.643866342826915,
+          "local_property_tests": {
+            "finite_sizes_strictly_increasing": true,
+            "gaps_finite": true,
+            "gaps_positive": true,
+            "gaps_strictly_decreasing": true
+          },
+          "local_property_tests_pass": true,
+          "scaling_points": [
+            {
+              "gap": 0.7264775288881549,
+              "system_size": 8
+            },
+            {
+              "gap": 0.558608819015917,
+              "system_size": 12
+            },
+            {
+              "gap": 0.4663587583599732,
+              "system_size": 16
+            },
+            {
+              "gap": 0.3562914391026783,
+              "system_size": 24
+            },
+            {
+              "gap": 0.2954318444630811,
+              "system_size": 32
+            },
+            {
+              "gap": 0.23030408222772644,
+              "system_size": 48
+            }
+          ],
+          "target_exponent": 0.6446139408143803,
+          "universal_anchor_pass": false,
+          "variant_index": 4
+        },
+        {
+          "abs_error": 0.6314228932510721,
+          "fit_r_squared": 0.9999274094777072,
+          "fitted_exponent": 0.3685771067489278,
+          "local_property_tests": {
+            "finite_sizes_strictly_increasing": true,
+            "gaps_finite": true,
+            "gaps_positive": true,
+            "gaps_strictly_decreasing": true
+          },
+          "local_property_tests_pass": true,
+          "scaling_points": [
+            {
+              "gap": 1.1022318311441,
+              "system_size": 8
+            },
+            {
+              "gap": 0.9467159789731644,
+              "system_size": 12
+            },
+            {
+              "gap": 0.8486353819457839,
+              "system_size": 16
+            },
+            {
+              "gap": 0.7339150815163719,
+              "system_size": 24
+            },
+            {
+              "gap": 0.6594471983972569,
+              "system_size": 32
+            },
+            {
+              "gap": 0.5689459652583152,
+              "system_size": 48
+            }
+          ],
+          "target_exponent": 0.3690306874603834,
+          "universal_anchor_pass": false,
+          "variant_index": 5
+        },
+        {
+          "abs_error": 0.4322048284468728,
+          "fit_r_squared": 0.9995803357461663,
+          "fitted_exponent": 0.5677951715531272,
+          "local_property_tests": {
+            "finite_sizes_strictly_increasing": true,
+            "gaps_finite": true,
+            "gaps_positive": true,
+            "gaps_strictly_decreasing": true
+          },
+          "local_property_tests_pass": true,
+          "scaling_points": [
+            {
+              "gap": 0.5047809589357132,
+              "system_size": 8
+            },
+            {
+              "gap": 0.4079129323193674,
+              "system_size": 12
+            },
+            {
+              "gap": 0.3451409827920481,
+              "system_size": 16
+            },
+            {
+              "gap": 0.27047625095098093,
+              "system_size": 24
+            },
+            {
+              "gap": 0.23305087555585546,
+              "system_size": 32
+            },
+            {
+              "gap": 0.18335391517189004,
+              "system_size": 48
+            }
+          ],
+          "target_exponent": 0.5690471395259492,
+          "universal_anchor_pass": false,
+          "variant_index": 6
+        },
+        {
+          "abs_error": 0.43291387007097404,
+          "fit_r_squared": 0.9995291820996188,
+          "fitted_exponent": 0.567086129929026,
+          "local_property_tests": {
+            "finite_sizes_strictly_increasing": true,
+            "gaps_finite": true,
+            "gaps_positive": true,
+            "gaps_strictly_decreasing": true
+          },
+          "local_property_tests_pass": true,
+          "scaling_points": [
+            {
+              "gap": 0.3701719368007469,
+              "system_size": 8
+            },
+            {
+              "gap": 0.29825036922373127,
+              "system_size": 12
+            },
+            {
+              "gap": 0.24834823876962184,
+              "system_size": 16
+            },
+            {
+              "gap": 0.200213078492124,
+              "system_size": 24
+            },
+            {
+              "gap": 0.16773891751702266,
+              "system_size": 32
+            },
+            {
+              "gap": 0.13498700272513126,
+              "system_size": 48
+            }
+          ],
+          "target_exponent": 0.5662647368414155,
+          "universal_anchor_pass": false,
+          "variant_index": 7
+        }
+      ],
+      "capas:referenceTruth": "critical_ising_gap_dynamic_exponent_z_equals_1",
+      "capas:scalingPoints": [
+        {
+          "gap": 0.7283279466658754,
+          "system_size": 8
+        },
+        {
+          "gap": 0.6042473711288093,
+          "system_size": 12
+        },
+        {
+          "gap": 0.5391983496525817,
+          "system_size": 16
+        },
+        {
+          "gap": 0.45811519902024667,
+          "system_size": 24
+        },
+        {
+          "gap": 0.4122716863984793,
+          "system_size": 32
+        },
+        {
+          "gap": 0.34903913778740203,
+          "system_size": 48
+        }
+      ],
+      "capas:structureMapping": {
+        "generator_output": "randomized family of finite-size gap sequences",
+        "local_oracle_relation": "each variant has positive finite gaps decreasing with system size",
+        "preserved_relation": "each generated sequence is judged by local monotonicity and universal scaling exponent",
+        "universal_oracle_relation": "critical Ising dynamic exponent z=1"
+      },
+      "capas:units": "dynamic_exponent_z_min_abs_error",
+      "capas:universalAnchor": "critical_ising_gap_delta_L_scales_as_L^-1",
+      "capas:universalAnchorPass": false,
+      "capas:value": {
+        "anchor_fail_count": 8,
+        "fitted_exponents": [
+          0.40559755512257156,
+          0.6847510765448284,
+          0.4850465263512618,
+          0.47037634246718213,
+          0.643866342826915,
+          0.3685771067489278,
+          0.5677951715531272,
+          0.567086129929026
+        ],
+        "local_pass_count": 8,
+        "variant_count": 8
+      },
+      "capas:variantCount": 8,
+      "capas:verificationIndependence": "theory_scaling_law_no_solver",
+      "name": "Physical evidence attached to result"
+    },
+    {
+      "@id": "trace:ce4552d3e8b2ef14:event:0:ingest",
+      "@type": "Action",
+      "actionStatus": "ok",
+      "capas:metrics": {
+        "budget": {
+          "flops_ceiling": 100000000.0,
+          "memory_budget_bytes": 536870912,
+          "safety_factor": 0.5
+        },
+        "engine": {
+          "engine_id": "universal_invariant_adversarial_engines.ising_gap_randomized_wrong_exponent_family",
+          "function_name": "ising_gap_randomized_wrong_exponent_family",
+          "kwargs_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py"
+        },
+        "kind": "dense",
+        "n_qubits": 2
+      },
+      "description": "workload accepted",
+      "name": "ingest",
+      "startTime": 1781751199.0664902
+    },
+    {
+      "@id": "trace:ce4552d3e8b2ef14:event:1:runtime_context",
+      "@type": "Action",
+      "actionStatus": "ok",
+      "capas:metrics": {
+        "cotengra_available": true,
+        "cotengra_version": "0.8.1",
+        "machine": "arm64",
+        "mlx_probe": "skipped_in_default_trace; use apple_silicon_thermal_routing.py for Metal/MLX device probes",
+        "numpy_available": true,
+        "numpy_version": "2.4.6",
+        "platform": "macOS-26.5.1-arm64-arm-64bit",
+        "processor": "arm",
+        "python_executable": "/Users/kreniq/physics-magnitude-lab/.pixi/envs/default/bin/python",
+        "python_version": "3.12.13",
+        "qiskit_aer_available": false,
+        "qiskit_aer_error": "ModuleNotFoundError: No module named 'qiskit_aer'",
+        "quimb_available": true,
+        "quimb_version": "1.14.0",
+        "scipy_available": true,
+        "scipy_version": "1.17.1",
+        "stim_available": true,
+        "stim_version": "1.16.0"
+      },
+      "description": "runtime and hardware context recorded",
+      "name": "runtime_context",
+      "startTime": 1781751199.066627
+    },
+    {
+      "@id": "trace:ce4552d3e8b2ef14:event:2:engine_provenance",
+      "@type": "Action",
+      "actionStatus": "ok",
+      "capas:metrics": {
+        "engine_id": "universal_invariant_adversarial_engines.ising_gap_randomized_wrong_exponent_family",
+        "function_name": "ising_gap_randomized_wrong_exponent_family",
+        "kwargs": {},
+        "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py",
+        "module_sha256": "13acd36c76f09100e4c4c5aeb100e032b4dc61ca321edf55d9096105661cb153"
+      },
+      "description": "external engine provenance recorded",
+      "name": "engine_provenance",
+      "startTime": 1781751199.066699
+    },
+    {
+      "@id": "trace:ce4552d3e8b2ef14:event:3:cost_model",
+      "@type": "Action",
+      "actionStatus": "ok",
+      "capas:metrics": {
+        "memory_viable": true,
+        "n_qubits": 2,
+        "route": "dense",
+        "statevector_bytes": 64,
+        "usable_memory_bytes": 268435456.0
+      },
+      "description": "dense statevector cost estimated",
+      "name": "cost_model",
+      "startTime": 1781751199.0667038
+    },
+    {
+      "@id": "trace:ce4552d3e8b2ef14:event:4:route",
+      "@type": "Action",
+      "actionStatus": "ok",
+      "capas:metrics": {
+        "engine_id": "universal_invariant_adversarial_engines.ising_gap_randomized_wrong_exponent_family",
+        "function_name": "ising_gap_randomized_wrong_exponent_family",
+        "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py"
+      },
+      "description": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+      "name": "route",
+      "startTime": 1781751199.066709
+    },
+    {
+      "@id": "trace:ce4552d3e8b2ef14:event:5:execute",
+      "@type": "Action",
+      "actionStatus": "ok",
+      "capas:metrics": {
+        "abs_error": 0.31524892345517164,
+        "anchor_kind": "absolute_scaling_law",
+        "anchor_mode": "absolute_anchor",
+        "benchmark_family": "CriticalIsingFiniteSizeScaling",
+        "claim_scope": "randomized adversarial seed only; shows the scaling-law anchor is not a single hand-picked example, but it still is not an agent-generated corpus",
+        "expected": "all randomized variants violate z=1 by more than preregistered tolerance",
+        "expected_exponent": 1.0,
+        "exponent_tolerance": 0.1,
+        "finite_size_notes": "Deterministic randomized adversarial family generated with seed 20260617. Each variant samples an exponent in [0.35, 0.72], then applies small jitter while preserving positive decreasing gaps. The preregistered criterion requires all variants to pass local monotonicity and fail the z=1 +/-0.10 universal anchor.",
+        "fit_r_squared": 0.9989398786323902,
+        "fitted_exponent": 0.5241370314429799,
+        "generator_error": "randomized_wrong_dynamic_exponents",
+        "invariant_caught": true,
+        "local_oracle_caught": false,
+        "local_property_tests": {
+          "all_variants_local_pass": true,
+          "local_pass_count": 8,
+          "variant_count": 8
+        },
+        "local_property_tests_pass": true,
+        "max_abs_error": 0.6314228932510721,
+        "min_abs_error": 0.31524892345517164,
+        "observable": "Randomized generated Ising finite-size gap exponents with wrong scaling",
+        "physical_evidence_detail": "Randomized adversarial scaling family: all generated finite-size gap sequences are positive, finite, and decreasing, but every fitted exponent falls outside the preregistered z=1 +/-0.10 tolerance.",
+        "physical_evidence_level": "scaling_law_anchor",
+        "pre_registered_success_criterion": "variant_count is 8, every variant has local_property_tests_pass true, and every variant has abs(fitted_exponent - 1.0) > 0.10",
+        "random_seed": 20260617,
+        "randomized_variants": [
+          {
+            "abs_error": 0.5944024448774284,
+            "fit_r_squared": 0.9989398786323902,
+            "fitted_exponent": 0.40559755512257156,
+            "local_property_tests": {
+              "finite_sizes_strictly_increasing": true,
+              "gaps_finite": true,
+              "gaps_positive": true,
+              "gaps_strictly_decreasing": true
+            },
+            "local_property_tests_pass": true,
+            "scaling_points": [
+              {
+                "gap": 0.7283279466658754,
+                "system_size": 8
+              },
+              {
+                "gap": 0.6042473711288093,
+                "system_size": 12
+              },
+              {
+                "gap": 0.5391983496525817,
+                "system_size": 16
+              },
+              {
+                "gap": 0.45811519902024667,
+                "system_size": 24
+              },
+              {
+                "gap": 0.4122716863984793,
+                "system_size": 32
+              },
+              {
+                "gap": 0.34903913778740203,
+                "system_size": 48
+              }
+            ],
+            "target_exponent": 0.4151262896912945,
+            "universal_anchor_pass": false,
+            "variant_index": 0
+          },
+          {
+            "abs_error": 0.31524892345517164,
+            "fit_r_squared": 0.9996744535782053,
+            "fitted_exponent": 0.6847510765448284,
+            "local_property_tests": {
+              "finite_sizes_strictly_increasing": true,
+              "gaps_finite": true,
+              "gaps_positive": true,
+              "gaps_strictly_decreasing": true
+            },
+            "local_property_tests_pass": true,
+            "scaling_points": [
+              {
+                "gap": 0.6070002866519526,
+                "system_size": 8
+              },
+              {
+                "gap": 0.46401711399645373,
+                "system_size": 12
+              },
+              {
+                "gap": 0.3765423822795373,
+                "system_size": 16
+              },
+              {
+                "gap": 0.2905442523604829,
+                "system_size": 24
+              },
+              {
+                "gap": 0.23336541883196107,
+                "system_size": 32
+              },
+              {
+                "gap": 0.17876166724295756,
+                "system_size": 48
+              }
+            ],
+            "target_exponent": 0.6836735196187972,
+            "universal_anchor_pass": false,
+            "variant_index": 1
+          },
+          {
+            "abs_error": 0.5149534736487382,
+            "fit_r_squared": 0.9994478554214199,
+            "fitted_exponent": 0.4850465263512618,
+            "local_property_tests": {
+              "finite_sizes_strictly_increasing": true,
+              "gaps_finite": true,
+              "gaps_positive": true,
+              "gaps_strictly_decreasing": true
+            },
+            "local_property_tests_pass": true,
+            "scaling_points": [
+              {
+                "gap": 0.8907508043449076,
+                "system_size": 8
+              },
+              {
+                "gap": 0.7301478320013048,
+                "system_size": 12
+              },
+              {
+                "gap": 0.626670557667302,
+                "system_size": 16
+              },
+              {
+                "gap": 0.5212473948708035,
+                "system_size": 24
+              },
+              {
+                "gap": 0.457827752346172,
+                "system_size": 32
+              },
+              {
+                "gap": 0.3706403017456698,
+                "system_size": 48
+              }
+            ],
+            "target_exponent": 0.48170014089863544,
+            "universal_anchor_pass": false,
+            "variant_index": 2
+          },
+          {
+            "abs_error": 0.5296236575328179,
+            "fit_r_squared": 0.9990783068043095,
+            "fitted_exponent": 0.47037634246718213,
+            "local_property_tests": {
+              "finite_sizes_strictly_increasing": true,
+              "gaps_finite": true,
+              "gaps_positive": true,
+              "gaps_strictly_decreasing": true
+            },
+            "local_property_tests_pass": true,
+            "scaling_points": [
+              {
+                "gap": 0.7410324474611708,
+                "system_size": 8
+              },
+              {
+                "gap": 0.6239204011019033,
+                "system_size": 12
+              },
+              {
+                "gap": 0.5347758366905134,
+                "system_size": 16
+              },
+              {
+                "gap": 0.4508578618532431,
+                "system_size": 24
+              },
+              {
+                "gap": 0.3863765482904937,
+                "system_size": 32
+              },
+              {
+                "gap": 0.3206927731912778,
+                "system_size": 48
+              }
+            ],
+            "target_exponent": 0.47831453426727477,
+            "universal_anchor_pass": false,
+            "variant_index": 3
+          },
+          {
+            "abs_error": 0.356133657173085,
+            "fit_r_squared": 0.9998809796491172,
+            "fitted_exponent": 0.643866342826915,
+            "local_property_tests": {
+              "finite_sizes_strictly_increasing": true,
+              "gaps_finite": true,
+              "gaps_positive": true,
+              "gaps_strictly_decreasing": true
+            },
+            "local_property_tests_pass": true,
+            "scaling_points": [
+              {
+                "gap": 0.7264775288881549,
+                "system_size": 8
+              },
+              {
+                "gap": 0.558608819015917,
+                "system_size": 12
+              },
+              {
+                "gap": 0.4663587583599732,
+                "system_size": 16
+              },
+              {
+                "gap": 0.3562914391026783,
+                "system_size": 24
+              },
+              {
+                "gap": 0.2954318444630811,
+                "system_size": 32
+              },
+              {
+                "gap": 0.23030408222772644,
+                "system_size": 48
+              }
+            ],
+            "target_exponent": 0.6446139408143803,
+            "universal_anchor_pass": false,
+            "variant_index": 4
+          },
+          {
+            "abs_error": 0.6314228932510721,
+            "fit_r_squared": 0.9999274094777072,
+            "fitted_exponent": 0.3685771067489278,
+            "local_property_tests": {
+              "finite_sizes_strictly_increasing": true,
+              "gaps_finite": true,
+              "gaps_positive": true,
+              "gaps_strictly_decreasing": true
+            },
+            "local_property_tests_pass": true,
+            "scaling_points": [
+              {
+                "gap": 1.1022318311441,
+                "system_size": 8
+              },
+              {
+                "gap": 0.9467159789731644,
+                "system_size": 12
+              },
+              {
+                "gap": 0.8486353819457839,
+                "system_size": 16
+              },
+              {
+                "gap": 0.7339150815163719,
+                "system_size": 24
+              },
+              {
+                "gap": 0.6594471983972569,
+                "system_size": 32
+              },
+              {
+                "gap": 0.5689459652583152,
+                "system_size": 48
+              }
+            ],
+            "target_exponent": 0.3690306874603834,
+            "universal_anchor_pass": false,
+            "variant_index": 5
+          },
+          {
+            "abs_error": 0.4322048284468728,
+            "fit_r_squared": 0.9995803357461663,
+            "fitted_exponent": 0.5677951715531272,
+            "local_property_tests": {
+              "finite_sizes_strictly_increasing": true,
+              "gaps_finite": true,
+              "gaps_positive": true,
+              "gaps_strictly_decreasing": true
+            },
+            "local_property_tests_pass": true,
+            "scaling_points": [
+              {
+                "gap": 0.5047809589357132,
+                "system_size": 8
+              },
+              {
+                "gap": 0.4079129323193674,
+                "system_size": 12
+              },
+              {
+                "gap": 0.3451409827920481,
+                "system_size": 16
+              },
+              {
+                "gap": 0.27047625095098093,
+                "system_size": 24
+              },
+              {
+                "gap": 0.23305087555585546,
+                "system_size": 32
+              },
+              {
+                "gap": 0.18335391517189004,
+                "system_size": 48
+              }
+            ],
+            "target_exponent": 0.5690471395259492,
+            "universal_anchor_pass": false,
+            "variant_index": 6
+          },
+          {
+            "abs_error": 0.43291387007097404,
+            "fit_r_squared": 0.9995291820996188,
+            "fitted_exponent": 0.567086129929026,
+            "local_property_tests": {
+              "finite_sizes_strictly_increasing": true,
+              "gaps_finite": true,
+              "gaps_positive": true,
+              "gaps_strictly_decreasing": true
+            },
+            "local_property_tests_pass": true,
+            "scaling_points": [
+              {
+                "gap": 0.3701719368007469,
+                "system_size": 8
+              },
+              {
+                "gap": 0.29825036922373127,
+                "system_size": 12
+              },
+              {
+                "gap": 0.24834823876962184,
+                "system_size": 16
+              },
+              {
+                "gap": 0.200213078492124,
+                "system_size": 24
+              },
+              {
+                "gap": 0.16773891751702266,
+                "system_size": 32
+              },
+              {
+                "gap": 0.13498700272513126,
+                "system_size": 48
+              }
+            ],
+            "target_exponent": 0.5662647368414155,
+            "universal_anchor_pass": false,
+            "variant_index": 7
+          }
+        ],
+        "reference_truth": "critical_ising_gap_dynamic_exponent_z_equals_1",
+        "repr": "{'engine_id': 'universal_invariant_adversarial_engines.ising_gap_randomized_wrong_exponent_family', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integr",
+        "route": "external_engine",
+        "runtime_ms": 1.527874992461875,
+        "scaling_points": [
+          {
+            "gap": 0.7283279466658754,
+            "system_size": 8
+          },
+          {
+            "gap": 0.6042473711288093,
+            "system_size": 12
+          },
+          {
+            "gap": 0.5391983496525817,
+            "system_size": 16
+          },
+          {
+            "gap": 0.45811519902024667,
+            "system_size": 24
+          },
+          {
+            "gap": 0.4122716863984793,
+            "system_size": 32
+          },
+          {
+            "gap": 0.34903913778740203,
+            "system_size": 48
+          }
+        ],
+        "structure_mapping": {
+          "generator_output": "randomized family of finite-size gap sequences",
+          "local_oracle_relation": "each variant has positive finite gaps decreasing with system size",
+          "preserved_relation": "each generated sequence is judged by local monotonicity and universal scaling exponent",
+          "universal_oracle_relation": "critical Ising dynamic exponent z=1"
+        },
+        "type": "dict",
+        "units": "dynamic_exponent_z_min_abs_error",
+        "universal_anchor": "critical_ising_gap_delta_L_scales_as_L^-1",
+        "universal_anchor_pass": false,
+        "value": {
+          "anchor_fail_count": 8,
+          "fitted_exponents": [
+            0.40559755512257156,
+            0.6847510765448284,
+            0.4850465263512618,
+            0.47037634246718213,
+            0.643866342826915,
+            0.3685771067489278,
+            0.5677951715531272,
+            0.567086129929026
+          ],
+          "local_pass_count": 8,
+          "variant_count": 8
+        },
+        "variant_count": 8,
+        "verification_independence": "theory_scaling_law_no_solver"
+      },
+      "description": "backend executed",
+      "name": "execute",
+      "startTime": 1781751199.068511
+    },
+    {
+      "@id": "trace:ce4552d3e8b2ef14:event:6:physical_evidence",
+      "@type": "Action",
+      "actionStatus": "ok",
+      "capas:metrics": {
+        "abs_error": 0.31524892345517164,
+        "anchor_kind": "absolute_scaling_law",
+        "anchor_mode": "absolute_anchor",
+        "benchmark_family": "CriticalIsingFiniteSizeScaling",
+        "claim_scope": "randomized adversarial seed only; shows the scaling-law anchor is not a single hand-picked example, but it still is not an agent-generated corpus",
+        "evidence_hash": "329704d587a07c28f4dd7a1af6075d3e2574e13e2fe88e29bb05a80cbedf595a",
+        "expected": "all randomized variants violate z=1 by more than preregistered tolerance",
+        "expected_exponent": 1.0,
+        "exponent_tolerance": 0.1,
+        "finite_size_notes": "Deterministic randomized adversarial family generated with seed 20260617. Each variant samples an exponent in [0.35, 0.72], then applies small jitter while preserving positive decreasing gaps. The preregistered criterion requires all variants to pass local monotonicity and fail the z=1 +/-0.10 universal anchor.",
+        "fit_r_squared": 0.9989398786323902,
+        "fitted_exponent": 0.5241370314429799,
+        "generator_error": "randomized_wrong_dynamic_exponents",
+        "invariant_caught": true,
+        "local_oracle_caught": false,
+        "local_property_tests": {
+          "all_variants_local_pass": true,
+          "local_pass_count": 8,
+          "variant_count": 8
+        },
+        "local_property_tests_pass": true,
+        "max_abs_error": 0.6314228932510721,
+        "min_abs_error": 0.31524892345517164,
+        "observable": "Randomized generated Ising finite-size gap exponents with wrong scaling",
+        "physical_evidence_detail": "Randomized adversarial scaling family: all generated finite-size gap sequences are positive, finite, and decreasing, but every fitted exponent falls outside the preregistered z=1 +/-0.10 tolerance.",
+        "physical_evidence_level": "scaling_law_anchor",
+        "pre_registered_success_criterion": "variant_count is 8, every variant has local_property_tests_pass true, and every variant has abs(fitted_exponent - 1.0) > 0.10",
+        "random_seed": 20260617,
+        "randomized_variants": [
+          {
+            "abs_error": 0.5944024448774284,
+            "fit_r_squared": 0.9989398786323902,
+            "fitted_exponent": 0.40559755512257156,
+            "local_property_tests": {
+              "finite_sizes_strictly_increasing": true,
+              "gaps_finite": true,
+              "gaps_positive": true,
+              "gaps_strictly_decreasing": true
+            },
+            "local_property_tests_pass": true,
+            "scaling_points": [
+              {
+                "gap": 0.7283279466658754,
+                "system_size": 8
+              },
+              {
+                "gap": 0.6042473711288093,
+                "system_size": 12
+              },
+              {
+                "gap": 0.5391983496525817,
+                "system_size": 16
+              },
+              {
+                "gap": 0.45811519902024667,
+                "system_size": 24
+              },
+              {
+                "gap": 0.4122716863984793,
+                "system_size": 32
+              },
+              {
+                "gap": 0.34903913778740203,
+                "system_size": 48
+              }
+            ],
+            "target_exponent": 0.4151262896912945,
+            "universal_anchor_pass": false,
+            "variant_index": 0
+          },
+          {
+            "abs_error": 0.31524892345517164,
+            "fit_r_squared": 0.9996744535782053,
+            "fitted_exponent": 0.6847510765448284,
+            "local_property_tests": {
+              "finite_sizes_strictly_increasing": true,
+              "gaps_finite": true,
+              "gaps_positive": true,
+              "gaps_strictly_decreasing": true
+            },
+            "local_property_tests_pass": true,
+            "scaling_points": [
+              {
+                "gap": 0.6070002866519526,
+                "system_size": 8
+              },
+              {
+                "gap": 0.46401711399645373,
+                "system_size": 12
+              },
+              {
+                "gap": 0.3765423822795373,
+                "system_size": 16
+              },
+              {
+                "gap": 0.2905442523604829,
+                "system_size": 24
+              },
+              {
+                "gap": 0.23336541883196107,
+                "system_size": 32
+              },
+              {
+                "gap": 0.17876166724295756,
+                "system_size": 48
+              }
+            ],
+            "target_exponent": 0.6836735196187972,
+            "universal_anchor_pass": false,
+            "variant_index": 1
+          },
+          {
+            "abs_error": 0.5149534736487382,
+            "fit_r_squared": 0.9994478554214199,
+            "fitted_exponent": 0.4850465263512618,
+            "local_property_tests": {
+              "finite_sizes_strictly_increasing": true,
+              "gaps_finite": true,
+              "gaps_positive": true,
+              "gaps_strictly_decreasing": true
+            },
+            "local_property_tests_pass": true,
+            "scaling_points": [
+              {
+                "gap": 0.8907508043449076,
+                "system_size": 8
+              },
+              {
+                "gap": 0.7301478320013048,
+                "system_size": 12
+              },
+              {
+                "gap": 0.626670557667302,
+                "system_size": 16
+              },
+              {
+                "gap": 0.5212473948708035,
+                "system_size": 24
+              },
+              {
+                "gap": 0.457827752346172,
+                "system_size": 32
+              },
+              {
+                "gap": 0.3706403017456698,
+                "system_size": 48
+              }
+            ],
+            "target_exponent": 0.48170014089863544,
+            "universal_anchor_pass": false,
+            "variant_index": 2
+          },
+          {
+            "abs_error": 0.5296236575328179,
+            "fit_r_squared": 0.9990783068043095,
+            "fitted_exponent": 0.47037634246718213,
+            "local_property_tests": {
+              "finite_sizes_strictly_increasing": true,
+              "gaps_finite": true,
+              "gaps_positive": true,
+              "gaps_strictly_decreasing": true
+            },
+            "local_property_tests_pass": true,
+            "scaling_points": [
+              {
+                "gap": 0.7410324474611708,
+                "system_size": 8
+              },
+              {
+                "gap": 0.6239204011019033,
+                "system_size": 12
+              },
+              {
+                "gap": 0.5347758366905134,
+                "system_size": 16
+              },
+              {
+                "gap": 0.4508578618532431,
+                "system_size": 24
+              },
+              {
+                "gap": 0.3863765482904937,
+                "system_size": 32
+              },
+              {
+                "gap": 0.3206927731912778,
+                "system_size": 48
+              }
+            ],
+            "target_exponent": 0.47831453426727477,
+            "universal_anchor_pass": false,
+            "variant_index": 3
+          },
+          {
+            "abs_error": 0.356133657173085,
+            "fit_r_squared": 0.9998809796491172,
+            "fitted_exponent": 0.643866342826915,
+            "local_property_tests": {
+              "finite_sizes_strictly_increasing": true,
+              "gaps_finite": true,
+              "gaps_positive": true,
+              "gaps_strictly_decreasing": true
+            },
+            "local_property_tests_pass": true,
+            "scaling_points": [
+              {
+                "gap": 0.7264775288881549,
+                "system_size": 8
+              },
+              {
+                "gap": 0.558608819015917,
+                "system_size": 12
+              },
+              {
+                "gap": 0.4663587583599732,
+                "system_size": 16
+              },
+              {
+                "gap": 0.3562914391026783,
+                "system_size": 24
+              },
+              {
+                "gap": 0.2954318444630811,
+                "system_size": 32
+              },
+              {
+                "gap": 0.23030408222772644,
+                "system_size": 48
+              }
+            ],
+            "target_exponent": 0.6446139408143803,
+            "universal_anchor_pass": false,
+            "variant_index": 4
+          },
+          {
+            "abs_error": 0.6314228932510721,
+            "fit_r_squared": 0.9999274094777072,
+            "fitted_exponent": 0.3685771067489278,
+            "local_property_tests": {
+              "finite_sizes_strictly_increasing": true,
+              "gaps_finite": true,
+              "gaps_positive": true,
+              "gaps_strictly_decreasing": true
+            },
+            "local_property_tests_pass": true,
+            "scaling_points": [
+              {
+                "gap": 1.1022318311441,
+                "system_size": 8
+              },
+              {
+                "gap": 0.9467159789731644,
+                "system_size": 12
+              },
+              {
+                "gap": 0.8486353819457839,
+                "system_size": 16
+              },
+              {
+                "gap": 0.7339150815163719,
+                "system_size": 24
+              },
+              {
+                "gap": 0.6594471983972569,
+                "system_size": 32
+              },
+              {
+                "gap": 0.5689459652583152,
+                "system_size": 48
+              }
+            ],
+            "target_exponent": 0.3690306874603834,
+            "universal_anchor_pass": false,
+            "variant_index": 5
+          },
+          {
+            "abs_error": 0.4322048284468728,
+            "fit_r_squared": 0.9995803357461663,
+            "fitted_exponent": 0.5677951715531272,
+            "local_property_tests": {
+              "finite_sizes_strictly_increasing": true,
+              "gaps_finite": true,
+              "gaps_positive": true,
+              "gaps_strictly_decreasing": true
+            },
+            "local_property_tests_pass": true,
+            "scaling_points": [
+              {
+                "gap": 0.5047809589357132,
+                "system_size": 8
+              },
+              {
+                "gap": 0.4079129323193674,
+                "system_size": 12
+              },
+              {
+                "gap": 0.3451409827920481,
+                "system_size": 16
+              },
+              {
+                "gap": 0.27047625095098093,
+                "system_size": 24
+              },
+              {
+                "gap": 0.23305087555585546,
+                "system_size": 32
+              },
+              {
+                "gap": 0.18335391517189004,
+                "system_size": 48
+              }
+            ],
+            "target_exponent": 0.5690471395259492,
+            "universal_anchor_pass": false,
+            "variant_index": 6
+          },
+          {
+            "abs_error": 0.43291387007097404,
+            "fit_r_squared": 0.9995291820996188,
+            "fitted_exponent": 0.567086129929026,
+            "local_property_tests": {
+              "finite_sizes_strictly_increasing": true,
+              "gaps_finite": true,
+              "gaps_positive": true,
+              "gaps_strictly_decreasing": true
+            },
+            "local_property_tests_pass": true,
+            "scaling_points": [
+              {
+                "gap": 0.3701719368007469,
+                "system_size": 8
+              },
+              {
+                "gap": 0.29825036922373127,
+                "system_size": 12
+              },
+              {
+                "gap": 0.24834823876962184,
+                "system_size": 16
+              },
+              {
+                "gap": 0.200213078492124,
+                "system_size": 24
+              },
+              {
+                "gap": 0.16773891751702266,
+                "system_size": 32
+              },
+              {
+                "gap": 0.13498700272513126,
+                "system_size": 48
+              }
+            ],
+            "target_exponent": 0.5662647368414155,
+            "universal_anchor_pass": false,
+            "variant_index": 7
+          }
+        ],
+        "reference_truth": "critical_ising_gap_dynamic_exponent_z_equals_1",
+        "scaling_points": [
+          {
+            "gap": 0.7283279466658754,
+            "system_size": 8
+          },
+          {
+            "gap": 0.6042473711288093,
+            "system_size": 12
+          },
+          {
+            "gap": 0.5391983496525817,
+            "system_size": 16
+          },
+          {
+            "gap": 0.45811519902024667,
+            "system_size": 24
+          },
+          {
+            "gap": 0.4122716863984793,
+            "system_size": 32
+          },
+          {
+            "gap": 0.34903913778740203,
+            "system_size": 48
+          }
+        ],
+        "structure_mapping": {
+          "generator_output": "randomized family of finite-size gap sequences",
+          "local_oracle_relation": "each variant has positive finite gaps decreasing with system size",
+          "preserved_relation": "each generated sequence is judged by local monotonicity and universal scaling exponent",
+          "universal_oracle_relation": "critical Ising dynamic exponent z=1"
+        },
+        "units": "dynamic_exponent_z_min_abs_error",
+        "universal_anchor": "critical_ising_gap_delta_L_scales_as_L^-1",
+        "universal_anchor_pass": false,
+        "value": {
+          "anchor_fail_count": 8,
+          "fitted_exponents": [
+            0.40559755512257156,
+            0.6847510765448284,
+            0.4850465263512618,
+            0.47037634246718213,
+            0.643866342826915,
+            0.3685771067489278,
+            0.5677951715531272,
+            0.567086129929026
+          ],
+          "local_pass_count": 8,
+          "variant_count": 8
+        },
+        "variant_count": 8,
+        "verification_independence": "theory_scaling_law_no_solver"
+      },
+      "description": "physical evidence reported by backend",
+      "name": "physical_evidence",
+      "startTime": 1781751199.068636
+    }
+  ]
+}

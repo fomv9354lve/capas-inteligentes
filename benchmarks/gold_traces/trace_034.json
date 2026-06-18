@@ -5,10 +5,11 @@
     "function_name": "ising_gap_correct_exponent_noisy_passes_scaling_anchor",
     "kwargs": {},
     "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py",
-    "module_sha256": "5bc6e658ae1251e88464871efc12d3a3599ef2d4408d2792229b894a7ed3a097",
+    "module_sha256": "13acd36c76f09100e4c4c5aeb100e032b4dc61ca321edf55d9096105661cb153",
     "result": {
       "abs_error": 0.004290755899226006,
       "anchor_kind": "absolute_scaling_law",
+      "anchor_mode": "absolute_anchor",
       "benchmark_family": "CriticalIsingFiniteSizeScaling",
       "claim_scope": "positive scaling-law control only; shows CAPAS can seal a noisy sequence that satisfies the preregistered universal exponent tolerance",
       "coverage_case": "universal_invariant_scaling_law_positive_control",
@@ -96,7 +97,7 @@
         },
         "stage": "ingest",
         "status": "ok",
-        "timestamp": 1781750443.334044
+        "timestamp": 1781751198.852861
       },
       {
         "message": "runtime and hardware context recorded",
@@ -122,7 +123,7 @@
         },
         "stage": "runtime_context",
         "status": "ok",
-        "timestamp": 1781750443.334204
+        "timestamp": 1781751198.8529458
       },
       {
         "message": "external engine provenance recorded",
@@ -131,11 +132,11 @@
           "function_name": "ising_gap_correct_exponent_noisy_passes_scaling_anchor",
           "kwargs": {},
           "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py",
-          "module_sha256": "5bc6e658ae1251e88464871efc12d3a3599ef2d4408d2792229b894a7ed3a097"
+          "module_sha256": "13acd36c76f09100e4c4c5aeb100e032b4dc61ca321edf55d9096105661cb153"
         },
         "stage": "engine_provenance",
         "status": "ok",
-        "timestamp": 1781750443.334311
+        "timestamp": 1781751198.853009
       },
       {
         "message": "dense statevector cost estimated",
@@ -148,7 +149,7 @@
         },
         "stage": "cost_model",
         "status": "ok",
-        "timestamp": 1781750443.334317
+        "timestamp": 1781751198.853013
       },
       {
         "message": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
@@ -159,13 +160,14 @@
         },
         "stage": "route",
         "status": "ok",
-        "timestamp": 1781750443.334322
+        "timestamp": 1781751198.8530161
       },
       {
         "message": "backend executed",
         "metrics": {
           "abs_error": 0.004290755899226006,
           "anchor_kind": "absolute_scaling_law",
+          "anchor_mode": "absolute_anchor",
           "benchmark_family": "CriticalIsingFiniteSizeScaling",
           "claim_scope": "positive scaling-law control only; shows CAPAS can seal a noisy sequence that satisfies the preregistered universal exponent tolerance",
           "expected": 1.0,
@@ -191,7 +193,7 @@
           "reference_truth": "critical_ising_gap_dynamic_exponent_z_equals_1",
           "repr": "{'engine_id': 'universal_invariant_adversarial_engines.ising_gap_correct_exponent_noisy_passes_scaling_anchor', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIG",
           "route": "external_engine",
-          "runtime_ms": 0.6112499977461994,
+          "runtime_ms": 0.35783302155323327,
           "scaling_points": [
             {
               "gap": 0.3974114706791088,
@@ -233,16 +235,17 @@
         },
         "stage": "execute",
         "status": "ok",
-        "timestamp": 1781750443.335045
+        "timestamp": 1781751198.853451
       },
       {
         "message": "physical evidence reported by backend",
         "metrics": {
           "abs_error": 0.004290755899226006,
           "anchor_kind": "absolute_scaling_law",
+          "anchor_mode": "absolute_anchor",
           "benchmark_family": "CriticalIsingFiniteSizeScaling",
           "claim_scope": "positive scaling-law control only; shows CAPAS can seal a noisy sequence that satisfies the preregistered universal exponent tolerance",
-          "evidence_hash": "ff845d0523e48df816f4ec8f16887cee8e386a5fa41768505b9fbe4bc076bc25",
+          "evidence_hash": "25dacf99309afd2e517139c5648e3c2985ae8f3b6db4f8d0f4cd36e1f00cdd77",
           "expected": 1.0,
           "expected_exponent": 1.0,
           "exponent_tolerance": 0.1,
@@ -304,14 +307,15 @@
         },
         "stage": "physical_evidence",
         "status": "ok",
-        "timestamp": 1781750443.335094
+        "timestamp": 1781751198.853487
       }
     ],
     "hash_algorithm": "sha256(stable_json)",
-    "result_hash": "c39072373fea71c327884d13cbd5d226cbb561503d17c77e9e95f24669539944",
+    "result_hash": "dd3aef8ba8e5ef8886421a3f94935e942e2332a85dd9ef270d0890cd51451008",
     "result_summary": {
       "abs_error": 0.004290755899226006,
       "anchor_kind": "absolute_scaling_law",
+      "anchor_mode": "absolute_anchor",
       "benchmark_family": "CriticalIsingFiniteSizeScaling",
       "claim_scope": "positive scaling-law control only; shows CAPAS can seal a noisy sequence that satisfies the preregistered universal exponent tolerance",
       "expected": 1.0,
@@ -393,6 +397,6 @@
       "n_qubits": 2
     }
   },
-  "trace_hash": "c9a78ee92d100d40b08792f5b0db277b2e72157c010b8c79757f57fd826d25c4",
+  "trace_hash": "75e65d13255770701586e0dfb1fd39aa2f250af30ccda8dabdcc4dbab8bb1199",
   "trace_id": "trace_034"
 }

@@ -36,7 +36,7 @@
       "@id": "./",
       "@type": "Dataset",
       "capas:evidenceStatus": "present",
-      "capas:traceHash": "4fe45ce1415a7270df4824711254aeed5f77a20f8273e099fef6f4759ae4dbc0",
+      "capas:traceHash": "790b1b6b6e0bcab750dcff3b13bf349a714c58368166bedc99ef7d658768f2a2",
       "capas:workflowRunCrateAlignment": "shape-compatible-with-workflow-run-crate-0.5",
       "capas:workloadHash": "d017d6967c77c722ea853a722629604ed314beb3d10e039ae248f5ce1987de19",
       "conformsTo": [
@@ -56,7 +56,7 @@
           "@id": "https://example.org/capas-inteligentes/ro-crate/physical-evidence/0.1"
         }
       ],
-      "datePublished": "2026-06-18T02:40:43.330581Z",
+      "datePublished": "2026-06-18T02:53:18.850517Z",
       "description": "RO-Crate package containing a sealed RunTrace, optional PROV export, routing decision, runtime context, and CAPAS physical evidence metadata.",
       "hasPart": [
         {
@@ -72,23 +72,23 @@
           "@id": "entity:workload"
         },
         {
-          "@id": "trace:4fe45ce1415a7270:routing-decision"
+          "@id": "trace:790b1b6b6e0bcab7:routing-decision"
         },
         {
-          "@id": "trace:4fe45ce1415a7270:result"
+          "@id": "trace:790b1b6b6e0bcab7:result"
         },
         {
           "@id": "runtrace.prov.json"
         },
         {
-          "@id": "trace:4fe45ce1415a7270:physical-evidence"
+          "@id": "trace:790b1b6b6e0bcab7:physical-evidence"
         }
       ],
       "mainEntity": {
         "@id": "workflow/capas-costurero-run.cwl"
       },
       "mentions": {
-        "@id": "trace:4fe45ce1415a7270"
+        "@id": "trace:790b1b6b6e0bcab7"
       },
       "name": "CAPAS traced scientific computation crate"
     },
@@ -124,14 +124,14 @@
         "DigitalDocument"
       ],
       "about": {
-        "@id": "trace:4fe45ce1415a7270"
+        "@id": "trace:790b1b6b6e0bcab7"
       },
       "encodingFormat": "application/json",
       "name": "Sealed CAPAS RunTrace",
-      "sha256": "c6126d6712860d8045c0bdb40e3bfa01d474033eb91ece422ca03fc0d030f1c6"
+      "sha256": "ca5d75e661f6472d9e31cc47b5f8f357492f75dacc722855eb4e7010c4e37184"
     },
     {
-      "@id": "trace:4fe45ce1415a7270",
+      "@id": "trace:790b1b6b6e0bcab7",
       "@type": "CreateAction",
       "actionStatus": "CompletedActionStatus",
       "agent": {
@@ -142,11 +142,11 @@
       "capas:evidenceStatus": "present",
       "capas:hashAlgorithm": "sha256(stable_json)",
       "capas:routingDecision": {
-        "@id": "trace:4fe45ce1415a7270:routing-decision"
+        "@id": "trace:790b1b6b6e0bcab7:routing-decision"
       },
-      "capas:traceHash": "4fe45ce1415a7270df4824711254aeed5f77a20f8273e099fef6f4759ae4dbc0",
+      "capas:traceHash": "790b1b6b6e0bcab750dcff3b13bf349a714c58368166bedc99ef7d658768f2a2",
       "capas:traceSchemaVersion": "capas-runtrace-v2",
-      "endTime": "2026-06-18T02:40:43.330581Z",
+      "endTime": "2026-06-18T02:53:18.850517Z",
       "instrument": {
         "@id": "workflow/capas-costurero-run.cwl"
       },
@@ -155,9 +155,9 @@
         "@id": "entity:workload"
       },
       "result": {
-        "@id": "trace:4fe45ce1415a7270:result"
+        "@id": "trace:790b1b6b6e0bcab7:result"
       },
-      "startTime": "2026-06-18T02:40:43.329431Z"
+      "startTime": "2026-06-18T02:53:18.849868Z"
     },
     {
       "@id": "workflow/capas-costurero-run.cwl",
@@ -222,7 +222,7 @@
       "name": "Workload summary"
     },
     {
-      "@id": "trace:4fe45ce1415a7270:routing-decision",
+      "@id": "trace:790b1b6b6e0bcab7:routing-decision",
       "@type": "Thing",
       "capas:reason": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
       "capas:route": "external_engine",
@@ -236,17 +236,18 @@
       ],
       "encodingFormat": "application/json",
       "name": "W3C PROV-shaped export",
-      "sha256": "55cb2709da0756f30115cfcd44808119ba6d711b84dd45cf3ce23fded9893de6"
+      "sha256": "ec2f16c2a6407793671c3b391b712fa6660266167aa94eb9f9c520383163a89a"
     },
     {
-      "@id": "trace:4fe45ce1415a7270:result",
+      "@id": "trace:790b1b6b6e0bcab7:result",
       "@type": "Dataset",
       "capas:physicalEvidence": {
-        "@id": "trace:4fe45ce1415a7270:physical-evidence"
+        "@id": "trace:790b1b6b6e0bcab7:physical-evidence"
       },
-      "capas:resultHash": "ff2fc9da622d62921edd61f99f8f60976ca6d356411fd034eb76bbee722e5846",
+      "capas:resultHash": "0c6ab4772d93056db29afc009e163fad7899cee8fba7c1c991300a7aa4d17a57",
       "capas:summary": {
         "abs_error": "not_applicable_no_universal_anchor",
+        "anchor_mode": "none",
         "benchmark_family": "NoUniversalAnchorControl",
         "claim_scope": "no-anchor control only; shows CAPAS can seal local validity while refusing a universal-invariant claim",
         "expected": "not_applicable_no_universal_anchor",
@@ -285,16 +286,17 @@
       "name": "Result summary"
     },
     {
-      "@id": "trace:4fe45ce1415a7270:physical-evidence",
+      "@id": "trace:790b1b6b6e0bcab7:physical-evidence",
       "@type": "capas:PhysicalEvidence",
       "about": {
-        "@id": "trace:4fe45ce1415a7270:result"
+        "@id": "trace:790b1b6b6e0bcab7:result"
       },
       "capas:absError": "not_applicable_no_universal_anchor",
+      "capas:anchorMode": "none",
       "capas:benchmarkFamily": "NoUniversalAnchorControl",
       "capas:claimScope": "no-anchor control only; shows CAPAS can seal local validity while refusing a universal-invariant claim",
       "capas:detail": "No-anchor control: the state is locally valid, but no universal reference is claimed for this arbitrary generated state.",
-      "capas:evidenceHash": "b67ae32e91aeded12d6bcbf2f35180e6adff7f82347bec87e6083461716f413a",
+      "capas:evidenceHash": "76861b3cae9570a87275e68a4e310b4f72f4f4739eb5ffd2edb7b34399ab307b",
       "capas:expected": "not_applicable_no_universal_anchor",
       "capas:generatorError": "none_declared",
       "capas:invariantCaught": false,
@@ -324,7 +326,7 @@
       "name": "Physical evidence attached to result"
     },
     {
-      "@id": "trace:4fe45ce1415a7270:event:0:ingest",
+      "@id": "trace:790b1b6b6e0bcab7:event:0:ingest",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -344,10 +346,10 @@
       },
       "description": "workload accepted",
       "name": "ingest",
-      "startTime": 1781750443.329431
+      "startTime": 1781751198.849868
     },
     {
-      "@id": "trace:4fe45ce1415a7270:event:1:runtime_context",
+      "@id": "trace:790b1b6b6e0bcab7:event:1:runtime_context",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -372,10 +374,10 @@
       },
       "description": "runtime and hardware context recorded",
       "name": "runtime_context",
-      "startTime": 1781750443.3295932
+      "startTime": 1781751198.849956
     },
     {
-      "@id": "trace:4fe45ce1415a7270:event:2:engine_provenance",
+      "@id": "trace:790b1b6b6e0bcab7:event:2:engine_provenance",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -383,14 +385,14 @@
         "function_name": "normalized_random_state_without_universal_anchor",
         "kwargs": {},
         "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py",
-        "module_sha256": "5bc6e658ae1251e88464871efc12d3a3599ef2d4408d2792229b894a7ed3a097"
+        "module_sha256": "13acd36c76f09100e4c4c5aeb100e032b4dc61ca321edf55d9096105661cb153"
       },
       "description": "external engine provenance recorded",
       "name": "engine_provenance",
-      "startTime": 1781750443.329728
+      "startTime": 1781751198.8500202
     },
     {
-      "@id": "trace:4fe45ce1415a7270:event:3:cost_model",
+      "@id": "trace:790b1b6b6e0bcab7:event:3:cost_model",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -402,10 +404,10 @@
       },
       "description": "dense statevector cost estimated",
       "name": "cost_model",
-      "startTime": 1781750443.3297338
+      "startTime": 1781751198.8500228
     },
     {
-      "@id": "trace:4fe45ce1415a7270:event:4:route",
+      "@id": "trace:790b1b6b6e0bcab7:event:4:route",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -415,14 +417,15 @@
       },
       "description": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
       "name": "route",
-      "startTime": 1781750443.329739
+      "startTime": 1781751198.850026
     },
     {
-      "@id": "trace:4fe45ce1415a7270:event:5:execute",
+      "@id": "trace:790b1b6b6e0bcab7:event:5:execute",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
         "abs_error": "not_applicable_no_universal_anchor",
+        "anchor_mode": "none",
         "benchmark_family": "NoUniversalAnchorControl",
         "claim_scope": "no-anchor control only; shows CAPAS can seal local validity while refusing a universal-invariant claim",
         "expected": "not_applicable_no_universal_anchor",
@@ -443,7 +446,7 @@
         "reference_truth": "none",
         "repr": "{'engine_id': 'universal_invariant_adversarial_engines.normalized_random_state_without_universal_anchor', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/",
         "route": "external_engine",
-        "runtime_ms": 0.7195830112323165,
+        "runtime_ms": 0.41375000728294253,
         "structure_mapping": {
           "generator_output": "arbitrary normalized two-qubit state",
           "local_oracle_relation": "generic state validity properties",
@@ -459,17 +462,18 @@
       },
       "description": "backend executed",
       "name": "execute",
-      "startTime": 1781750443.330545
+      "startTime": 1781751198.850492
     },
     {
-      "@id": "trace:4fe45ce1415a7270:event:6:physical_evidence",
+      "@id": "trace:790b1b6b6e0bcab7:event:6:physical_evidence",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
         "abs_error": "not_applicable_no_universal_anchor",
+        "anchor_mode": "none",
         "benchmark_family": "NoUniversalAnchorControl",
         "claim_scope": "no-anchor control only; shows CAPAS can seal local validity while refusing a universal-invariant claim",
-        "evidence_hash": "8ad711bfec4ef63cfaaefa0c7b8ee5797b952418a8e8d78d3491c178a448b6f0",
+        "evidence_hash": "eb3d2d8df634b72b082394347d4184671a6130e764c6f3cb2de3a2a3ae6e2897",
         "expected": "not_applicable_no_universal_anchor",
         "generator_error": "none_declared",
         "invariant_caught": false,
@@ -500,7 +504,7 @@
       },
       "description": "physical evidence reported by backend",
       "name": "physical_evidence",
-      "startTime": 1781750443.330581
+      "startTime": 1781751198.850517
     }
   ]
 }

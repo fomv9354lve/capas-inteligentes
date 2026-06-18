@@ -120,7 +120,7 @@ The current matrix does not demonstrate:
 
 ## Scaling-Law Seed Status
 
-`trace_033` through `trace_036` add an Ising finite-size scaling seed:
+`trace_033` through `trace_037` add an Ising finite-size scaling seed:
 
 - expected exponent: `z = 1`,
 - preregistered tolerance: `|z_fit - 1| <= 0.10`,
@@ -130,10 +130,14 @@ The current matrix does not demonstrate:
 - `trace_034`: hand-authored noisy positive control with `z=1.004`,
 - `trace_035`: hand-authored constant-sequence local failure,
 - `trace_036`: exact-diagonalization TFIM open-chain sequence with `z=0.917`.
+- `trace_037`: seeded randomized adversarial family with eight plausible
+  decreasing sequences; all fitted exponents miss `z=1` beyond the
+  preregistered tolerance.
 
 This closes the first "not only exact small-system values" debt and adds one
-non-synthetic simulation-generated scaling sequence. It still does not prove
-benchmark-level utility on real agent outputs.
+non-synthetic simulation-generated scaling sequence plus one randomized
+adversarial seed. It still does not prove benchmark-level utility on real agent
+outputs.
 
 ## Next Non-Degradable Step
 
@@ -145,9 +149,9 @@ agent-generated sequence, still carrying:
 - local oracle result,
 - universal scaling-anchor result,
 - noisy/generator-trivial negative control,
-- explicit statement whether the result is absolute-value anchoring,
-  metamorphic-relation anchoring, or both.
+- explicit `anchor_mode` statement: `absolute_anchor`,
+  `metamorphic_relation`, `mixed`, or `none`.
 
-Done when D11 includes a scaling-law anchor over real agent-generated data or a
-larger randomized adversarial set whose thresholds were declared before
-measurement.
+Done when D11 includes a scaling-law anchor over real agent-generated data. The
+randomized adversarial seed is now present, but it is not a substitute for an
+agent-generated failure corpus.
