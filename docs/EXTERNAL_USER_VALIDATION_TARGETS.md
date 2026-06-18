@@ -2,6 +2,12 @@
 
 Status: target list for external utility validation.
 
+Focused SotA check:
+
+```text
+docs/EXTERNAL_USER_VALIDATION_SOTA.md
+```
+
 This document is for closing the MVP requirement:
 
 ```text
