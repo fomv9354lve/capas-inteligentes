@@ -1,0 +1,95 @@
+{
+  "claim_examples": [
+    {
+      "actual_verdict": "ACCEPT",
+      "claim_id": "claim_transition_gate",
+      "expected_verdict": "ACCEPT",
+      "passed": true,
+      "reason": "upgrade evidence is present, so the attempted stronger claim is licensed within declared scope",
+      "trace_id": "trace_039"
+    },
+    {
+      "actual_verdict": "REWRITE",
+      "claim_id": "gpt3_implies_agi_or_reliable_reasoner",
+      "expected_verdict": "REWRITE",
+      "passed": true,
+      "reason": "few-shot NLP benchmark gains do not license AGI or reliable general reasoning",
+      "trace_id": "debunk10_gpt3_fewshot"
+    },
+    {
+      "actual_verdict": "REJECT",
+      "claim_id": "room_temp_superconductor_established",
+      "expected_verdict": "REJECT",
+      "passed": true,
+      "reason": "claim is not licensed because the record is retracted or lacks independent replication",
+      "trace_id": "debunk10_retracted_superconductor"
+    },
+    {
+      "actual_verdict": "HOLD",
+      "claim_id": "matches_experiment",
+      "expected_verdict": "HOLD",
+      "passed": true,
+      "reason": "cannot judge experimental match; missing ['reference_definition_match']",
+      "trace_id": "regional_cono_sur_ambiguous_experiment"
+    }
+  ],
+  "claim_gate_summary": {
+    "checks": 69,
+    "claim_transition_checks": 10,
+    "debunk_10_more_checks": 19,
+    "debunk_10_more_overclaims": 10,
+    "failed": 0,
+    "fine_tune_ready_implication": "none; this validates claim typing, not training readiness",
+    "passed": 69,
+    "regional_claims": 47,
+    "regional_real_checks": 8,
+    "regional_synthetic_checks": 12,
+    "us_uk_canonical_checks": 10
+  },
+  "claim_verdict_counts": {
+    "ACCEPT": 31,
+    "HOLD": 2,
+    "REJECT": 8,
+    "REWRITE": 28
+  },
+  "demo_verdict": "PASS",
+  "fine_tune_ready": false,
+  "motor_backed_trace": {
+    "anchor_mode": "absolute_anchor",
+    "attempted_claim": "bounded_reliable_scientific_reasoning_in_declared_task_family",
+    "claim_scope": "bounded scientific-computation task family only; this licenses an agent-with-physics-anchor reliability claim for critical Ising finite-size scaling seeds, not AGI or broad reliable reasoning",
+    "coverage_case": "claim_transition_bounded_agent_scientific_reasoning",
+    "current_claim": "few_shot_or_local_benchmark_gain",
+    "local_property_tests_pass": true,
+    "physical_evidence_level": "scaling_law_anchor",
+    "trace_id": "trace_039",
+    "universal_anchor_pass": true,
+    "upgrade_evidence_present": true,
+    "verification_independence": "theory_scaling_law_no_solver"
+  },
+  "non_claims": [
+    "does not prove AGI or broad reliable LLM reasoning",
+    "does not replace Metamorphic Testing or local/property checks",
+    "does not make fine-tune data ready without blind inference review",
+    "does not certify physical truth when evidence is none/estimated/failed"
+  ],
+  "product_claim": "CAPAS turns scientific computation traces into evidence-typed claim decisions: ACCEPT, REWRITE, REJECT, or HOLD.",
+  "product_name": "CAPAS Claim Gate",
+  "universal_anchor_matrix": {
+    "allowed_claim": "Across the current D11 traces, absolute universal anchors add coverage in some locally plausible failures, while local checks remain sufficient or redundant in other cells. The evidence licenses complementarity, not dominance.",
+    "cell_counts": {
+      "both_catch": 1,
+      "both_pass": 3,
+      "local_catch_anchor_not_needed": 2,
+      "local_miss_anchor_catch": 5,
+      "no_anchor_control": 1
+    },
+    "forbidden_claims": [
+      "universal anchors dominate local/property/metamorphic testing",
+      "local tests imply universal physical correctness",
+      "D11 proves benchmark-level LLM-agent utility"
+    ],
+    "licensed_claim": "complementarity_not_dominance",
+    "matrix_status": "passed"
+  }
+}

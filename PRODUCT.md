@@ -1,106 +1,101 @@
-# Complexity Router Product
+# CAPAS Claim Gate
 
-This project is a practical complexity router for quantum-adjacent workloads.
-It is not a claim of new physics and it does not break the exponential wall.
+CAPAS is a productized evidence gate for scientific-computation claims.
+
+It takes sealed computation traces and produces claim decisions:
+
+- `ACCEPT`: the trace licenses the claim as written.
+- `REWRITE`: the trace supports a narrower claim, not the submitted overclaim.
+- `REJECT`: the trace contradicts the claim or lacks required evidence.
+- `HOLD`: the trace is missing the fields needed to judge the claim.
 
 ## Product Claim
 
-The router prevents avoidable bad execution choices:
-
-- Clifford circuits route to `stim` before any dense statevector memory guard.
-- Dense statevector routes are protected by a memory budget and safety factor.
-- Tensor contractions route through `cotengra` only when both peak memory and estimated FLOPs fit policy.
-- Non-viable workloads fail clearly with `QPU_REQUIRED`, `TENSOR_REQUIRED`, or `TENSOR_TOO_SLOW`.
+CAPAS turns scientific computation traces into evidence-typed claim decisions,
+while preserving provenance, physical evidence level, witness independence,
+failure/rejection states, and explicit claim scope.
 
 ## Non-Claims
 
-- No global interception of CPU operations.
-- No "0 overhead" lazy layer.
-- No claim that provenance/hash gates prove physical correctness.
-- No claim that low-magic simulation solves generic QAOA/QFT/Trotter circuits after decomposition.
-- No use of the Esfera/Espiral metaphor as a routing decision engine.
+CAPAS does not claim to:
 
-## Public API
+- prove AGI or broad reliable LLM reasoning,
+- replace Metamorphic Testing, VVUQ, RO-Crate, PROV, or workflow provenance,
+- certify physical truth when the evidence level is `none`, `estimated`, failed,
+  or rejected,
+- make fine-tune data ready without blind inference review,
+- outperform scientific simulators or routers.
 
-```python
-from router import CostBudget, TensorSpec, Workload, route, execute, run_with_trace
-
-budget = CostBudget(memory_budget_bytes=2 * 1024**3, safety_factor=0.5)
-workload = Workload(
-    kind="circuit",
-    n_qubits=3,
-    circuit=[("H", (0,)), ("CNOT", (0, 1)), ("CNOT", (1, 2))],
-    budget=budget,
-)
-
-decision = route(workload)
-result = execute(workload, decision, shots=64)
-
-result, trace = run_with_trace(workload, shots=64)
-```
-
-`run_with_trace` is the integration layer: it preserves the path from
-workload -> cost model -> route decision -> backend execution -> result hash.
-The trace proves provenance of the computational path, not physical truth.
-
-## Validation Commands
+## One-Command Demo
 
 ```bash
-python3 benchmarks/verify_cost_model.py
-python3 benchmarks/verify_route.py
-python3 benchmarks/verify_product.py
-python3 benchmarks/verify_pipeline_trace.py
-python3 benchmarks/verify_external_engine_trace.py
-python3 benchmarks/verify_heisenberg_engine_sweep.py
-python3 benchmarks/run_all.py
+python3 capas.py demo
 ```
 
-Expected state:
+This writes:
 
-- `verify_*` scripts pass.
-- `run_all.py` reports the bypass/lazy global failures; those failures are intentional evidence that a universal interception layer is not productized.
+- `outputs/capas_product_demo_report.json`
+- `outputs/capas_product_demo_report.md`
 
-## Current Backends
+The demo proves the product surface by reading the versioned evidence reports
+and showing:
 
-- `stim`: executes Clifford circuits.
-- `dense`: executes small supported op-list circuits with NumPy.
-- `tensor`: executes explicit tensor contractions with `cotengra`.
-- `external_engine`: executes an explicit `EngineSpec` by module path and function name, recording the engine file hash in the trace.
+- all claim-gate checks pass,
+- the product emits examples of `ACCEPT`, `REWRITE`, `REJECT`, and `HOLD`,
+- D11 universal-anchor evidence licenses complementarity, not dominance,
+- `trace_039` is a motor-backed positive control,
+- `fine_tune_ready` remains `False`.
 
-`quimb` is optional. It is not required because it can fail in Python 3.14 due to `numba` caching/import behavior.
+## Product Validation
 
-## Real Engine Trace
-
-The external-engine path has been verified with:
-
-```text
-physics_quantum/real_heisenberg_ladder.py::ground_state_energy
+```bash
+python3 capas.py validate
+python3 benchmarks/verify_capas_product_demo.py
 ```
 
-The sweep `n_rungs=1..4` records the engine file hash, result hash, and trace
-hash for each run. Evidence levels:
+`capas.py validate` runs the core product gates:
 
-- `n_rungs=1`: analytic (`E0 = -3/4 J`),
-- `n_rungs=2..4`: cross-sim against an independent dense NumPy Hamiltonian.
+1. evidence claim gate,
+2. universal anchor matrix,
+3. CAPAS physical-evidence profile,
+4. RO-Crate coverage validation.
 
-## Trace Contract
+`verify_capas_product_demo.py` is the product acceptance test. It fails if the
+demo does not expose the four claim decisions, the D11 matrix, the motor-backed
+trace, or the `fine_tune_ready=False` safety state.
 
-Every traced run records:
+## Inspect a Trace
 
-- workload hash and summary,
-- cost-model metrics,
-- route and reason,
-- execution status,
-- result summary and result hash when executable,
-- external engine module hash when an `EngineSpec` is used,
-- explicit skipped status when the route is non-executable.
+```bash
+python3 capas.py inspect trace_039
+```
 
-The trace is for provenance and debugging. It does not certify physical
-correctness; use the audit templates in `audits/` for that layer.
+This prints the product-relevant evidence summary for a trace: coverage case,
+evidence level, witness independence, anchor mode, local/universal checks, and
+claim scope.
 
-## Next Product Work
+## Current Demonstrated State
 
-1. Add a JSON workload loader for CLI use.
-2. Add wall-time calibration for `CostBudget.flops_ceiling`.
-3. Add richer circuit adapters only when backed by tests.
-4. Add a low-magic backend only after finding real workloads that live in the low-magic regime.
+Current versioned evidence supports:
+
+- 39 RO-Crate/PROV trace packages,
+- 69/69 claim-gate checks passing,
+- 39/39 CAPAS profile checks passing,
+- D11 matrix passing with claim `complementarity_not_dominance`,
+- motor-backed `trace_039` accepting only a bounded scientific-reasoning claim.
+
+The strongest honest product statement is:
+
+> CAPAS prevents scientific computation traces from licensing claims larger
+> than their evidence type supports.
+
+## What Would Make It a Larger Product
+
+The current product is a local CLI/MVP. The next product step is not a larger
+claim; it is a stronger interface:
+
+1. JSON input schema for new external traces.
+2. A stable claim-rule registry.
+3. A packaged RO-Crate profile URI.
+4. A small web UI for reviewing `ACCEPT` / `REWRITE` / `REJECT` / `HOLD`.
+5. External user validation from a scientific-computation practitioner.

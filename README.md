@@ -1,12 +1,43 @@
 # CAPAS INTELIGENTES
 
-CAPAS is a small evidence-tracing prototype for scientific computation.
+CAPAS is a small evidence-typed claim gate for scientific computation.
 
 It is not a new provenance standard, benchmark suite, workflow engine, or VVUQ
 methodology. CAPAS is a profile/costurero over existing standards:
 
 > RO-Crate/PROV packaging + sealed route/result trace + VVUQ-style physical
 > evidence + witness independence + honest no-evidence/failure/rejection states.
+
+## Product Demo
+
+Run the product surface:
+
+```bash
+python3 capas.py demo
+python3 benchmarks/verify_capas_product_demo.py
+```
+
+The demo writes:
+
+- `outputs/capas_product_demo_report.json`
+- `outputs/capas_product_demo_report.md`
+
+It demonstrates the current product contract: CAPAS reads sealed scientific
+computation traces and emits evidence-typed claim decisions
+(`ACCEPT`, `REWRITE`, `REJECT`, `HOLD`) without marking the corpus as
+fine-tune-ready.
+
+Run the core product validators:
+
+```bash
+python3 capas.py validate
+```
+
+Inspect a trace:
+
+```bash
+python3 capas.py inspect trace_039
+```
 
 ## What It Produces
 
@@ -65,7 +96,9 @@ The command runs:
 4. RO-Crate validation
 5. CAPAS physical-evidence profile validation
 6. witness independence validation
-7. audit summary
+7. evidence claim validation
+8. universal anchor matrix validation
+9. audit summary
 
 `coverage_ready=True` is expected. `fine_tune_ready=False` is also expected until
 blind inference review is completed.
