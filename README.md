@@ -64,7 +64,11 @@ Generate the static local UI:
 
 ```bash
 capas ui
+python3 benchmarks/verify_claim_gate_ui.py
 ```
+
+The UI exposes ACCEPT, REWRITE, HOLD, and INVALID samples. Structurally invalid
+payloads are shown as `HOLD` with `schema_errors`, matching `capas decide`.
 
 Prepare a non-mutating GitHub release plan:
 

@@ -105,7 +105,8 @@ capas ui
 ```
 
 This writes `outputs/capas_claim_gate_ui.html`, a static review surface for the
-same rule gate used by `capas decide`.
+same rule gate used by `capas decide`. It includes ACCEPT, REWRITE, HOLD, and
+INVALID samples and surfaces invalid payloads as `HOLD` with `schema_errors`.
 
 ## Release Dry-Run
 

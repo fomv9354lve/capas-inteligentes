@@ -21,6 +21,7 @@ FILES = [
     ("external_input_schema_report.json", ROOT / "outputs" / "external_input_schema_report.json"),
     ("external_claim_rewrite_decision.json", ROOT / "outputs" / "external_claim_rewrite_decision.json"),
     ("capas_claim_gate_ui.html", ROOT / "outputs" / "capas_claim_gate_ui.html"),
+    ("claim_gate_ui_report.json", ROOT / "outputs" / "claim_gate_ui_report.json"),
 ]
 
 

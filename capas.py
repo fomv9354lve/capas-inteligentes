@@ -29,6 +29,7 @@ EXTERNAL_CLAIM_SCHEMA_PATH = ROOT / "docs" / "schema" / "capas_claim_payload.sch
 
 VALIDATION_COMMANDS = [
     ("external input schema", ["benchmarks/verify_external_input_schema.py"]),
+    ("claim gate UI", ["benchmarks/verify_claim_gate_ui.py"]),
     ("claim gate", ["benchmarks/validate_evidence_claims.py"]),
     ("universal anchor matrix", ["benchmarks/validate_universal_anchor_matrix.py"]),
     ("CAPAS profile", ["benchmarks/validate_capas_profile.py"]),
@@ -411,7 +412,47 @@ def _sample_external_claim() -> dict[str, Any]:
     }
 
 
+def _ui_samples() -> dict[str, dict[str, Any]]:
+    return {
+        "ACCEPT": _sample_external_claim(),
+        "REWRITE": {
+            "claim": {
+                "id": "sample_scaling_claim_rewrite",
+                "type": "universal_anchor_claim",
+                "text": "Local monotonicity proves universal physical correctness.",
+            },
+            "evidence": {
+                "anchor_mode": "absolute_anchor",
+                "local_property_tests_pass": True,
+                "universal_anchor_pass": False,
+                "physical_evidence_level": "scaling_law_anchor",
+                "verification_independence": "theory_scaling_law_no_solver",
+            },
+        },
+        "HOLD": {
+            "claim": {
+                "id": "sample_experiment_hold",
+                "type": "physical_accuracy",
+                "text": "The simulation matches experiment.",
+            },
+            "evidence": {
+                "physical_evidence_level": "experimental",
+                "reference_truth": "external experimental reference supplied without tolerance verdict",
+            },
+        },
+        "INVALID": {
+            "claim": {
+                "id": "",
+                "type": "unsupported_claim_type",
+                "text": "This payload is structurally invalid because the claim id is empty.",
+            },
+            "evidence": "not an object",
+        },
+    }
+
+
 def _render_ui(sample: dict[str, Any]) -> str:
+    samples = _ui_samples()
     sample_json = json.dumps(sample, indent=2, sort_keys=True)
     return f"""<!doctype html>
 <html lang="en">
@@ -425,18 +466,24 @@ def _render_ui(sample: dict[str, Any]) -> str:
     pre {{ background: #f5f5f5; padding: 16px; overflow: auto; }}
     button {{ padding: 8px 12px; margin: 8px 8px 8px 0; }}
     .grid {{ display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }}
+    .toolbar {{ display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0; }}
     @media (max-width: 800px) {{ .grid {{ grid-template-columns: 1fr; }} }}
   </style>
 </head>
 <body>
   <h1>CAPAS Claim Gate</h1>
-  <p>Paste a claim/evidence JSON object. This static UI mirrors the small external rule gate in <code>capas.py decide</code>.</p>
+  <p>Paste a claim/evidence JSON object. This static UI mirrors the external rule gate in <code>capas.py decide</code> and exposes schema errors as <code>HOLD</code>, not guesses.</p>
   <div class="grid">
     <section>
       <h2>Input</h2>
       <textarea id="input">{sample_json}</textarea>
-      <button onclick="decide()">Decide</button>
-      <button onclick="resetSample()">Reset sample</button>
+      <div class="toolbar">
+        <button onclick="decide()">Decide</button>
+        <button onclick="loadSample('ACCEPT')">ACCEPT sample</button>
+        <button onclick="loadSample('REWRITE')">REWRITE sample</button>
+        <button onclick="loadSample('HOLD')">HOLD sample</button>
+        <button onclick="loadSample('INVALID')">INVALID sample</button>
+      </div>
     </section>
     <section>
       <h2>Decision</h2>
@@ -445,15 +492,70 @@ def _render_ui(sample: dict[str, Any]) -> str:
   </div>
   <script>
     const sample = {json.dumps(sample)};
+    const samples = {json.dumps(samples)};
     const required = {{
       exact_model_solution: ["abs_error", "tolerance"],
       physical_accuracy: ["within_chemical_accuracy"],
       universal_anchor_claim: ["anchor_mode", "local_property_tests_pass", "universal_anchor_pass"],
       claim_transition: ["upgrade_evidence_present"]
     }};
+    const claimTypes = Object.keys(required).sort();
+    function validatePayload(payload) {{
+      const errors = [];
+      if (payload === null || typeof payload !== "object" || Array.isArray(payload)) {{
+        return ["payload must be a JSON object"];
+      }}
+      const claim = payload.claim;
+      const evidence = payload.evidence;
+      if (claim === null || typeof claim !== "object" || Array.isArray(claim)) {{
+        errors.push("claim must be an object");
+      }}
+      if (evidence === null || typeof evidence !== "object" || Array.isArray(evidence)) {{
+        errors.push("evidence must be an object");
+      }}
+      const safeClaim = claim && typeof claim === "object" && !Array.isArray(claim) ? claim : {{}};
+      for (const field of ["id", "type", "text"]) {{
+        if (typeof safeClaim[field] !== "string" || safeClaim[field].trim() === "") {{
+          errors.push(`claim.${{field}} must be a non-empty string`);
+        }}
+      }}
+      if (typeof safeClaim.type === "string" && !required[safeClaim.type]) {{
+        errors.push(`claim.type must be one of: ${{claimTypes.join(", ")}}`);
+      }}
+      const safeEvidence = evidence && typeof evidence === "object" && !Array.isArray(evidence) ? evidence : {{}};
+      for (const field of ["abs_error", "tolerance"]) {{
+        if (Object.prototype.hasOwnProperty.call(safeEvidence, field) && typeof safeEvidence[field] !== "number") {{
+          errors.push(`evidence.${{field}} must be a number`);
+        }}
+      }}
+      for (const field of ["within_chemical_accuracy", "local_property_tests_pass", "universal_anchor_pass", "upgrade_evidence_present"]) {{
+        if (Object.prototype.hasOwnProperty.call(safeEvidence, field) && typeof safeEvidence[field] !== "boolean") {{
+          errors.push(`evidence.${{field}} must be a boolean`);
+        }}
+      }}
+      if (Object.prototype.hasOwnProperty.call(safeEvidence, "anchor_mode") && typeof safeEvidence.anchor_mode !== "string") {{
+        errors.push("evidence.anchor_mode must be a string");
+      }}
+      return errors;
+    }}
     function rule(payload) {{
-      const claim = payload.claim || {{}};
-      const evidence = payload.evidence || {{}};
+      const schemaErrors = validatePayload(payload);
+      const claim = payload && typeof payload.claim === "object" && !Array.isArray(payload.claim) ? payload.claim : {{}};
+      const evidence = payload && typeof payload.evidence === "object" && !Array.isArray(payload.evidence) ? payload.evidence : {{}};
+      if (schemaErrors.length) {{
+        return {{
+          input_claim: claim,
+          verdict: "HOLD",
+          reason: "input payload failed CAPAS schema validation",
+          licensed_claim: claim.text,
+          rewrite: null,
+          missing_fields: [],
+          required_fields: [],
+          schema_errors: schemaErrors,
+          fine_tune_ready: false,
+          non_claim: "This decision is rule-based over supplied evidence fields, not an LLM judgment."
+        }};
+      }}
       const fields = required[claim.type];
       let missing = [];
       if (fields) {{
@@ -467,6 +569,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
         rewrite: null,
         missing_fields: missing,
         required_fields: fields || [],
+        schema_errors: [],
         fine_tune_ready: false,
         non_claim: "This decision is rule-based over supplied evidence fields, not an LLM judgment."
       }};
@@ -519,6 +622,10 @@ def _render_ui(sample: dict[str, Any]) -> str:
     }}
     function resetSample() {{
       document.getElementById("input").value = JSON.stringify(sample, null, 2);
+      decide();
+    }}
+    function loadSample(name) {{
+      document.getElementById("input").value = JSON.stringify(samples[name], null, 2);
       decide();
     }}
     decide();

@@ -23,6 +23,7 @@ CHECKS = [
     ("invalid_example", ROOT / "examples" / "external_claim_invalid.json"),
     ("external_claim_schema", ROOT / "docs" / "schema" / "capas_claim_payload.schema.json"),
     ("external_input_schema_report", ROOT / "outputs" / "external_input_schema_report.json"),
+    ("claim_gate_ui_report", ROOT / "outputs" / "claim_gate_ui_report.json"),
     ("github_release_plan", ROOT / "outputs" / "github_release_plan_v0.1.0.json"),
     ("release_notes", ROOT / "outputs" / "release_notes_v0.1.0.md"),
     ("demo_report", ROOT / "outputs" / "capas_product_demo_report.md"),
@@ -56,6 +57,7 @@ def main() -> int:
     commands = [
         ("fresh_clone_install_smoke", [sys.executable, "benchmarks/verify_fresh_clone_install.py"]),
         ("external_input_schema", [sys.executable, "benchmarks/verify_external_input_schema.py"]),
+        ("claim_gate_ui", [sys.executable, "benchmarks/verify_claim_gate_ui.py"]),
         ("github_release_dry_run", [sys.executable, "scripts/publish_github_release.py"]),
         ("product_demo_acceptance", [sys.executable, "benchmarks/verify_capas_product_demo.py"]),
         ("product_validate", ["capas", "validate"]),

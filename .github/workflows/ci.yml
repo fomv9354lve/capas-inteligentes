@@ -29,6 +29,9 @@ jobs:
       - name: External input schema
         run: python benchmarks/verify_external_input_schema.py
 
+      - name: Claim gate UI
+        run: python benchmarks/verify_claim_gate_ui.py
+
       - name: External MVP readiness packets
         run: python benchmarks/verify_external_mvp_readiness.py
 

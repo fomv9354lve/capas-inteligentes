@@ -67,6 +67,7 @@ product_demo_ready: True
 package_install_ready: local editable install implemented
 external_input_ready: JSON claim/evidence input implemented for MVP claim types
 local_ui_ready: static HTML UI generator implemented
+ui_contract_ready: static UI exposes schema_errors and ACCEPT/REWRITE/HOLD/INVALID samples
 ci_ready: GitHub Actions workflow present, pending external GitHub run
 product surface: capas demo / validate / inspect / decide / ui
 local RO-Crate validation: passed
@@ -113,6 +114,8 @@ Product demo validation: passed; outputs/capas_product_demo_report.md/json
 External input schema validation: passed; docs/schema/capas_claim_payload.schema.json
   matches the CLI schema, valid examples pass `capas check-input`, and the
   invalid example fails structurally while `decide` returns HOLD with schema_errors
+Claim gate UI validation: passed; generated static HTML exposes schema-aware
+  validation, ACCEPT/REWRITE/HOLD/INVALID samples, and the non-LLM-judge warning
 Fresh clone install smoke: passed locally via
   benchmarks/verify_fresh_clone_install.py; scope is local clean source-tree
   copy plus editable install in a temporary venv with system site packages,
@@ -203,6 +206,7 @@ scaling_law_anchor: 7
    - `capas schema`
    - `capas check-input --input examples/external_claim_accept.json`
    - `capas ui`
+   - `python3 benchmarks/verify_claim_gate_ui.py`
    - `python3 benchmarks/verify_capas_product_demo.py`
    - `python3 benchmarks/verify_external_input_schema.py`
    - `python3 benchmarks/verify_fresh_clone_install.py`
