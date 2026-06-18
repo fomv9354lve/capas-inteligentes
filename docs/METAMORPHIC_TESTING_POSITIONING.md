@@ -108,6 +108,34 @@ The current D11 matrix demonstrates that CAPAS can seal:
 That supports complementarity between local oracles and universal anchors, not
 dominance.
 
+The executable matrix validator is:
+
+```bash
+python3 benchmarks/validate_universal_anchor_matrix.py
+```
+
+Current measured cells:
+
+| Cell | Count | Traces | Meaning |
+|---|---:|---|---|
+| `local_miss_anchor_catch` | 5 | `trace_028`, `trace_031`, `trace_033`, `trace_037`, `trace_038` | Universal anchor adds coverage missed by local checks |
+| `local_catch_anchor_not_needed` | 2 | `trace_029`, `trace_035` | Local oracle is sufficient; anchor is not credited |
+| `both_catch` | 1 | `trace_030` | Local oracle and universal anchor overlap |
+| `both_pass` | 3 | `trace_034`, `trace_036`, `trace_039` | Positive controls pass both gates |
+| `no_anchor_control` | 1 | `trace_032` | CAPAS records absence of a universal anchor |
+
+Licensed claim:
+
+> Absolute universal anchors complement local/property/metamorphic checks in
+> the current D11 trace set. They add marginal detection in some locally
+> plausible failures, but they do not dominate local checks and do not replace
+> Metamorphic Testing.
+
+Forbidden claim:
+
+> Universal anchors are generally superior to local/property/metamorphic
+> testing.
+
 ## What It Does Not Demonstrate
 
 The current matrix does not demonstrate:
@@ -135,6 +163,9 @@ The current matrix does not demonstrate:
   preregistered tolerance.
 - `trace_038`: deterministic scripted-agent transcript that emits a plausible
   `L^-1/2` table; local checks pass and the absolute scaling anchor catches it.
+- `trace_039`: motor-backed scripted exact-diagonalization TFIM sequence that
+  passes both local checks and the absolute `z=1` scaling anchor, licensing only
+  a bounded positive transition control.
 
 This closes the first "not only exact small-system values" debt and adds one
 non-synthetic simulation-generated scaling sequence plus one randomized

@@ -1,0 +1,212 @@
+{
+  "allowed_claim": "Across the current D11 traces, absolute universal anchors add coverage in some locally plausible failures, while local checks remain sufficient or redundant in other cells. The evidence licenses complementarity, not dominance.",
+  "cell_counts": {
+    "both_catch": 1,
+    "both_pass": 3,
+    "local_catch_anchor_not_needed": 2,
+    "local_miss_anchor_catch": 5,
+    "no_anchor_control": 1
+  },
+  "cells": {
+    "both_catch": [
+      "trace_030"
+    ],
+    "both_pass": [
+      "trace_034",
+      "trace_036",
+      "trace_039"
+    ],
+    "local_catch_anchor_not_needed": [
+      "trace_029",
+      "trace_035"
+    ],
+    "local_miss_anchor_catch": [
+      "trace_028",
+      "trace_031",
+      "trace_033",
+      "trace_037",
+      "trace_038"
+    ],
+    "no_anchor_control": [
+      "trace_032"
+    ]
+  },
+  "forbidden_claims": [
+    "universal anchors dominate local/property/metamorphic testing",
+    "local tests imply universal physical correctness",
+    "D11 proves benchmark-level LLM-agent utility"
+  ],
+  "licensed_claim": "complementarity_not_dominance",
+  "local_sufficient_control_count": 2,
+  "marginal_anchor_detection_count": 5,
+  "matrix_status": "passed",
+  "missing_cells": [],
+  "no_anchor_control_count": 1,
+  "positive_control_count": 3,
+  "redundant_detection_control_count": 1,
+  "required_cells": [
+    "both_catch",
+    "both_pass",
+    "local_catch_anchor_not_needed",
+    "local_miss_anchor_catch",
+    "no_anchor_control"
+  ],
+  "trace_rows": [
+    {
+      "agent_kind": "not_agent_trace",
+      "anchor_mode": "absolute_anchor",
+      "benchmark_family": "Heisenberg",
+      "cell": "local_miss_anchor_catch",
+      "claim_scope": "minimal falsation case only; shows an analytic physical invariant can catch a generator error missed by local property tests",
+      "coverage_case": "universal_invariant_adversarial_failure",
+      "invariant_caught": true,
+      "local_oracle_caught": false,
+      "local_property_tests_pass": true,
+      "trace_id": "trace_028",
+      "universal_anchor_pass": false
+    },
+    {
+      "agent_kind": "not_agent_trace",
+      "anchor_mode": "absolute_anchor",
+      "benchmark_family": "Heisenberg",
+      "cell": "local_catch_anchor_not_needed",
+      "claim_scope": "negative control only; shows some generator errors are already caught by local properties and do not support a universal-anchor advantage claim",
+      "coverage_case": "universal_invariant_local_catches_anchor_not_needed",
+      "invariant_caught": false,
+      "local_oracle_caught": true,
+      "local_property_tests_pass": false,
+      "trace_id": "trace_029",
+      "universal_anchor_pass": "not_evaluated_local_oracle_failed"
+    },
+    {
+      "agent_kind": "not_agent_trace",
+      "anchor_mode": "absolute_anchor",
+      "benchmark_family": "Heisenberg",
+      "cell": "both_catch",
+      "claim_scope": "redundant-control case only; shows the local oracle and universal anchor can overlap",
+      "coverage_case": "universal_invariant_both_oracles_catch",
+      "invariant_caught": true,
+      "local_oracle_caught": true,
+      "local_property_tests_pass": false,
+      "trace_id": "trace_030",
+      "universal_anchor_pass": false
+    },
+    {
+      "agent_kind": "not_agent_trace",
+      "anchor_mode": "absolute_anchor",
+      "benchmark_family": "Bell",
+      "cell": "local_miss_anchor_catch",
+      "claim_scope": "transfer seed only; shows the local-miss/universal-catch pattern for an entropy invariant, not just a Heisenberg energy invariant",
+      "coverage_case": "universal_invariant_non_heisenberg_adversarial_failure",
+      "invariant_caught": true,
+      "local_oracle_caught": false,
+      "local_property_tests_pass": true,
+      "trace_id": "trace_031",
+      "universal_anchor_pass": false
+    },
+    {
+      "agent_kind": "not_agent_trace",
+      "anchor_mode": "none",
+      "benchmark_family": "NoUniversalAnchorControl",
+      "cell": "no_anchor_control",
+      "claim_scope": "no-anchor control only; shows CAPAS can seal local validity while refusing a universal-invariant claim",
+      "coverage_case": "universal_invariant_no_anchor_control",
+      "invariant_caught": false,
+      "local_oracle_caught": false,
+      "local_property_tests_pass": true,
+      "trace_id": "trace_032",
+      "universal_anchor_pass": "not_applicable_no_universal_anchor"
+    },
+    {
+      "agent_kind": "not_agent_trace",
+      "anchor_mode": "absolute_anchor",
+      "benchmark_family": "CriticalIsingFiniteSizeScaling",
+      "cell": "local_miss_anchor_catch",
+      "claim_scope": "scaling-law seed only; shows a universal exponent anchor can catch a plausible monotone finite-size sequence missed by local checks",
+      "coverage_case": "universal_invariant_scaling_law_adversarial_failure",
+      "invariant_caught": true,
+      "local_oracle_caught": false,
+      "local_property_tests_pass": true,
+      "trace_id": "trace_033",
+      "universal_anchor_pass": false
+    },
+    {
+      "agent_kind": "not_agent_trace",
+      "anchor_mode": "absolute_anchor",
+      "benchmark_family": "CriticalIsingFiniteSizeScaling",
+      "cell": "both_pass",
+      "claim_scope": "positive scaling-law control only; shows CAPAS can seal a noisy sequence that satisfies the preregistered universal exponent tolerance",
+      "coverage_case": "universal_invariant_scaling_law_positive_control",
+      "invariant_caught": false,
+      "local_oracle_caught": false,
+      "local_property_tests_pass": true,
+      "trace_id": "trace_034",
+      "universal_anchor_pass": true
+    },
+    {
+      "agent_kind": "not_agent_trace",
+      "anchor_mode": "absolute_anchor",
+      "benchmark_family": "CriticalIsingFiniteSizeScaling",
+      "cell": "local_catch_anchor_not_needed",
+      "claim_scope": "negative scaling-law control only; local monotonicity is sufficient and the universal exponent anchor is not credited",
+      "coverage_case": "universal_invariant_scaling_law_local_catches",
+      "invariant_caught": false,
+      "local_oracle_caught": true,
+      "local_property_tests_pass": false,
+      "trace_id": "trace_035",
+      "universal_anchor_pass": "not_evaluated_local_oracle_failed"
+    },
+    {
+      "agent_kind": "not_agent_trace",
+      "anchor_mode": "absolute_anchor",
+      "benchmark_family": "CriticalIsingFiniteSizeScaling",
+      "cell": "both_pass",
+      "claim_scope": "non-synthetic scaling-law seed only; shows CAPAS can seal a sequence generated by an explicit finite-size Hamiltonian simulation, not just hand-authored scaling points",
+      "coverage_case": "universal_invariant_scaling_law_simulation_generated",
+      "invariant_caught": false,
+      "local_oracle_caught": false,
+      "local_property_tests_pass": true,
+      "trace_id": "trace_036",
+      "universal_anchor_pass": true
+    },
+    {
+      "agent_kind": "not_agent_trace",
+      "anchor_mode": "absolute_anchor",
+      "benchmark_family": "CriticalIsingFiniteSizeScaling",
+      "cell": "local_miss_anchor_catch",
+      "claim_scope": "randomized adversarial seed only; shows the scaling-law anchor is not a single hand-picked example, but it still is not an agent-generated corpus",
+      "coverage_case": "universal_invariant_scaling_law_randomized_adversarial",
+      "invariant_caught": true,
+      "local_oracle_caught": false,
+      "local_property_tests_pass": true,
+      "trace_id": "trace_037",
+      "universal_anchor_pass": false
+    },
+    {
+      "agent_kind": "scripted_agent",
+      "anchor_mode": "absolute_anchor",
+      "benchmark_family": "CriticalIsingFiniteSizeScaling",
+      "cell": "local_miss_anchor_catch",
+      "claim_scope": "agent-generated seed only; the generator is a deterministic scripted agent transcript, not an LLM corpus. This closes the plumbing and evidence grammar for agent-generated scaling outputs without claiming benchmark-level LLM utility.",
+      "coverage_case": "universal_invariant_scaling_law_agent_generated_adversarial",
+      "invariant_caught": true,
+      "local_oracle_caught": false,
+      "local_property_tests_pass": true,
+      "trace_id": "trace_038",
+      "universal_anchor_pass": false
+    },
+    {
+      "agent_kind": "scripted_agent_with_motor_backend",
+      "anchor_mode": "absolute_anchor",
+      "benchmark_family": "CriticalIsingFiniteSizeScaling",
+      "cell": "both_pass",
+      "claim_scope": "bounded scientific-computation task family only; this licenses an agent-with-physics-anchor reliability claim for critical Ising finite-size scaling seeds, not AGI or broad reliable reasoning",
+      "coverage_case": "claim_transition_bounded_agent_scientific_reasoning",
+      "invariant_caught": false,
+      "local_oracle_caught": false,
+      "local_property_tests_pass": true,
+      "trace_id": "trace_039",
+      "universal_anchor_pass": true
+    }
+  ]
+}
