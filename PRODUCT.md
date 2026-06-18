@@ -28,8 +28,14 @@ CAPAS does not claim to:
 
 ## One-Command Demo
 
+Install:
+
 ```bash
-python3 capas.py demo
+python -m pip install -e .
+```
+
+```bash
+capas demo
 ```
 
 This writes:
@@ -49,8 +55,8 @@ and showing:
 ## Product Validation
 
 ```bash
-python3 capas.py validate
-python3 benchmarks/verify_capas_product_demo.py
+capas validate
+python benchmarks/verify_capas_product_demo.py
 ```
 
 `capas.py validate` runs the core product gates:
@@ -67,12 +73,33 @@ trace, or the `fine_tune_ready=False` safety state.
 ## Inspect a Trace
 
 ```bash
-python3 capas.py inspect trace_039
+capas inspect trace_039
 ```
 
 This prints the product-relevant evidence summary for a trace: coverage case,
 evidence level, witness independence, anchor mode, local/universal checks, and
 claim scope.
+
+## Decide External Input
+
+```bash
+capas decide --input examples/external_claim_accept.json
+capas decide --input examples/external_claim_rewrite.json
+capas decide --input examples/external_claim_hold.json
+```
+
+The external JSON surface supports the MVP claim types documented in
+`docs/EXTERNAL_MVP_LAUNCH_PLAN.md`. Unsupported or under-specified claims return
+`HOLD` instead of being guessed.
+
+## Local UI
+
+```bash
+capas ui
+```
+
+This writes `outputs/capas_claim_gate_ui.html`, a static review surface for the
+same rule gate used by `capas decide`.
 
 ## Current Demonstrated State
 
@@ -99,3 +126,5 @@ claim; it is a stronger interface:
 3. A packaged RO-Crate profile URI.
 4. A small web UI for reviewing `ACCEPT` / `REWRITE` / `REJECT` / `HOLD`.
 5. External user validation from a scientific-computation practitioner.
+
+The external launch checklist lives in `docs/EXTERNAL_MVP_LAUNCH_PLAN.md`.

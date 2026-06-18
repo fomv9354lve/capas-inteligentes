@@ -1,0 +1,30 @@
+name: CAPAS CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  product-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install package
+        run: python -m pip install -e .
+
+      - name: Product demo acceptance
+        run: python benchmarks/verify_capas_product_demo.py
+
+      - name: Product validators
+        run: python capas.py validate
+
+      - name: Entry point smoke test
+        run: capas inspect trace_039

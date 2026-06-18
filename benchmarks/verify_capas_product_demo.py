@@ -9,12 +9,30 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 REPORT = ROOT / "outputs" / "capas_product_demo_report.json"
 MARKDOWN = ROOT / "outputs" / "capas_product_demo_report.md"
+UI = ROOT / "outputs" / "capas_claim_gate_ui.html"
+ACCEPT_DECISION = ROOT / "outputs" / "external_claim_accept_decision.json"
+REWRITE_DECISION = ROOT / "outputs" / "external_claim_rewrite_decision.json"
+HOLD_DECISION = ROOT / "outputs" / "external_claim_hold_decision.json"
+
+
+def _run(*args: str) -> None:
+    proc = subprocess.run([sys.executable, *args], cwd=ROOT)
+    if proc.returncode != 0:
+        raise SystemExit(proc.returncode)
+
+
+def _run_entrypoint(*args: str) -> None:
+    proc = subprocess.run(["capas", *args], cwd=ROOT)
+    if proc.returncode != 0:
+        raise SystemExit(proc.returncode)
+
+
+def _load(path: Path) -> dict:
+    return json.loads(path.read_text(encoding="utf-8"))
 
 
 def main() -> int:
-    proc = subprocess.run([sys.executable, "capas.py", "demo"], cwd=ROOT)
-    if proc.returncode != 0:
-        return proc.returncode
+    _run_entrypoint("demo")
 
     if not REPORT.exists():
         raise AssertionError(f"missing {REPORT}")
@@ -52,6 +70,38 @@ def main() -> int:
     assert "CAPAS Product Demo Report" in text
     assert "complementarity_not_dominance" in text
     assert "fine_tune_ready: `False`" in text
+
+    _run_entrypoint(
+        "decide",
+        "--input",
+        "examples/external_claim_accept.json",
+        "--output",
+        str(ACCEPT_DECISION),
+    )
+    _run_entrypoint(
+        "decide",
+        "--input",
+        "examples/external_claim_rewrite.json",
+        "--output",
+        str(REWRITE_DECISION),
+    )
+    _run_entrypoint(
+        "decide",
+        "--input",
+        "examples/external_claim_hold.json",
+        "--output",
+        str(HOLD_DECISION),
+    )
+    assert _load(ACCEPT_DECISION)["verdict"] == "ACCEPT"
+    assert _load(REWRITE_DECISION)["verdict"] == "REWRITE"
+    assert _load(HOLD_DECISION)["verdict"] == "HOLD"
+
+    _run_entrypoint("inspect", "trace_039")
+    _run_entrypoint("ui")
+    assert UI.exists()
+    ui_text = UI.read_text(encoding="utf-8")
+    assert "CAPAS Claim Gate" in ui_text
+    assert "universal_anchor_claim" in ui_text
 
     print("verify_capas_product_demo passed")
     return 0

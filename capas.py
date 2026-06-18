@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import subprocess
 import sys
 from collections import Counter
@@ -9,7 +10,16 @@ from pathlib import Path
 from typing import Any
 
 
-ROOT = Path(__file__).resolve().parent
+def _discover_root() -> Path:
+    if os.environ.get("CAPAS_ROOT"):
+        return Path(os.environ["CAPAS_ROOT"]).resolve()
+    cwd = Path.cwd().resolve()
+    if (cwd / "benchmarks" / "evidence_claim_validation_report.json").exists():
+        return cwd
+    return Path(__file__).resolve().parent
+
+
+ROOT = _discover_root()
 OUT_DIR = ROOT / "outputs"
 CLAIM_REPORT = ROOT / "benchmarks" / "evidence_claim_validation_report.json"
 ANCHOR_REPORT = ROOT / "benchmarks" / "universal_anchor_matrix_report.json"
@@ -31,9 +41,21 @@ EXAMPLE_KEYS = [
     ("HOLD", "regional_cono_sur_ambiguous_experiment", "matches_experiment"),
 ]
 
+REQUIRED_DECISION_FIELDS = {
+    "exact_model_solution": ["abs_error", "tolerance"],
+    "physical_accuracy": ["within_chemical_accuracy"],
+    "universal_anchor_claim": ["anchor_mode", "local_property_tests_pass", "universal_anchor_pass"],
+    "claim_transition": ["upgrade_evidence_present"],
+}
+
 
 def _load_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def _write_json(path: Path, payload: dict[str, Any]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(payload, indent=2, sort_keys=True), encoding="utf-8")
 
 
 def _claim_checks(report: dict[str, Any]) -> list[dict[str, Any]]:
@@ -117,6 +139,89 @@ def build_demo_report() -> dict[str, Any]:
     }
 
 
+def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
+    """Decide a user-supplied claim against explicit evidence fields.
+
+    This is intentionally small and transparent. It is the external product
+    surface, not a hidden judge: unsupported claim types HOLD instead of being
+    inferred heuristically.
+    """
+
+    claim = payload.get("claim", {})
+    evidence = payload.get("evidence", {})
+    claim_type = claim.get("type")
+    required = REQUIRED_DECISION_FIELDS.get(str(claim_type))
+    missing = [
+        field
+        for field in (required or [])
+        if field not in evidence or evidence.get(field) in {None, "unknown"}
+    ]
+
+    verdict = "HOLD"
+    reason = "unsupported claim type or missing evidence"
+    licensed_claim = claim.get("text")
+    rewrite = None
+
+    if required is None:
+        reason = f"unsupported claim type {claim_type!r}; no rule was applied"
+    elif missing:
+        reason = f"missing required evidence fields: {missing}"
+    elif claim_type == "exact_model_solution":
+        abs_error = float(evidence["abs_error"])
+        tolerance = float(evidence["tolerance"])
+        if abs_error <= tolerance:
+            verdict = "ACCEPT"
+            reason = f"abs_error {abs_error} <= tolerance {tolerance}"
+        else:
+            verdict = "REJECT"
+            reason = f"abs_error {abs_error} > tolerance {tolerance}"
+    elif claim_type == "physical_accuracy":
+        if evidence["within_chemical_accuracy"] is True:
+            verdict = "ACCEPT"
+            reason = "within_chemical_accuracy is true"
+        else:
+            verdict = "REJECT"
+            reason = "within_chemical_accuracy is false"
+    elif claim_type == "universal_anchor_claim":
+        local_pass = evidence["local_property_tests_pass"] is True
+        anchor_pass = evidence["universal_anchor_pass"] is True
+        if evidence["anchor_mode"] != "absolute_anchor":
+            verdict = "HOLD"
+            reason = "claim requires an absolute_anchor, but evidence has another anchor mode"
+        elif local_pass and anchor_pass:
+            verdict = "ACCEPT"
+            reason = "local checks and universal anchor both pass"
+        elif local_pass and not anchor_pass:
+            verdict = "REWRITE"
+            reason = "local checks pass, but the universal anchor fails"
+            rewrite = "local plausibility only; universal physical correctness is not licensed"
+            licensed_claim = rewrite
+        else:
+            verdict = "REJECT"
+            reason = "local checks fail before the universal-anchor claim is licensed"
+    elif claim_type == "claim_transition":
+        if evidence["upgrade_evidence_present"] is True:
+            verdict = "ACCEPT"
+            reason = "upgrade evidence is explicitly present"
+        else:
+            verdict = "REWRITE"
+            reason = "upgrade evidence is absent; stronger claim is not licensed"
+            rewrite = evidence.get("current_claim", "weaker current claim only")
+            licensed_claim = rewrite
+
+    return {
+        "input_claim": claim,
+        "verdict": verdict,
+        "reason": reason,
+        "licensed_claim": licensed_claim,
+        "rewrite": rewrite,
+        "missing_fields": missing,
+        "required_fields": required or [],
+        "fine_tune_ready": False,
+        "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+    }
+
+
 def _render_markdown(report: dict[str, Any]) -> str:
     examples = "\n".join(
         "- `{actual_verdict}` `{trace_id}::{claim_id}`: {reason}".format(**check)
@@ -184,6 +289,140 @@ Forbidden claims:
 """
 
 
+def _sample_external_claim() -> dict[str, Any]:
+    return {
+        "claim": {
+            "id": "sample_scaling_claim",
+            "type": "universal_anchor_claim",
+            "text": "The generated scaling result is physically consistent with the universal z=1 anchor.",
+        },
+        "evidence": {
+            "anchor_mode": "absolute_anchor",
+            "local_property_tests_pass": True,
+            "universal_anchor_pass": True,
+            "physical_evidence_level": "scaling_law_anchor",
+            "verification_independence": "theory_scaling_law_no_solver",
+        },
+    }
+
+
+def _render_ui(sample: dict[str, Any]) -> str:
+    sample_json = json.dumps(sample, indent=2, sort_keys=True)
+    return f"""<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CAPAS Claim Gate</title>
+  <style>
+    body {{ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; margin: 32px; max-width: 1120px; }}
+    textarea {{ width: 100%; min-height: 360px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; }}
+    pre {{ background: #f5f5f5; padding: 16px; overflow: auto; }}
+    button {{ padding: 8px 12px; margin: 8px 8px 8px 0; }}
+    .grid {{ display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }}
+    @media (max-width: 800px) {{ .grid {{ grid-template-columns: 1fr; }} }}
+  </style>
+</head>
+<body>
+  <h1>CAPAS Claim Gate</h1>
+  <p>Paste a claim/evidence JSON object. This static UI mirrors the small external rule gate in <code>capas.py decide</code>.</p>
+  <div class="grid">
+    <section>
+      <h2>Input</h2>
+      <textarea id="input">{sample_json}</textarea>
+      <button onclick="decide()">Decide</button>
+      <button onclick="resetSample()">Reset sample</button>
+    </section>
+    <section>
+      <h2>Decision</h2>
+      <pre id="output"></pre>
+    </section>
+  </div>
+  <script>
+    const sample = {json.dumps(sample)};
+    const required = {{
+      exact_model_solution: ["abs_error", "tolerance"],
+      physical_accuracy: ["within_chemical_accuracy"],
+      universal_anchor_claim: ["anchor_mode", "local_property_tests_pass", "universal_anchor_pass"],
+      claim_transition: ["upgrade_evidence_present"]
+    }};
+    function rule(payload) {{
+      const claim = payload.claim || {{}};
+      const evidence = payload.evidence || {{}};
+      const fields = required[claim.type];
+      let missing = [];
+      if (fields) {{
+        missing = fields.filter((field) => evidence[field] === undefined || evidence[field] === null || evidence[field] === "unknown");
+      }}
+      let result = {{
+        input_claim: claim,
+        verdict: "HOLD",
+        reason: "unsupported claim type or missing evidence",
+        licensed_claim: claim.text,
+        rewrite: null,
+        missing_fields: missing,
+        required_fields: fields || [],
+        fine_tune_ready: false,
+        non_claim: "This decision is rule-based over supplied evidence fields, not an LLM judgment."
+      }};
+      if (!fields) {{
+        result.reason = `unsupported claim type ${{claim.type}}; no rule was applied`;
+      }} else if (missing.length) {{
+        result.reason = `missing required evidence fields: ${{missing.join(", ")}}`;
+      }} else if (claim.type === "exact_model_solution") {{
+        result.verdict = Number(evidence.abs_error) <= Number(evidence.tolerance) ? "ACCEPT" : "REJECT";
+        result.reason = `abs_error ${{evidence.abs_error}} vs tolerance ${{evidence.tolerance}}`;
+      }} else if (claim.type === "physical_accuracy") {{
+        result.verdict = evidence.within_chemical_accuracy === true ? "ACCEPT" : "REJECT";
+        result.reason = `within_chemical_accuracy is ${{evidence.within_chemical_accuracy}}`;
+      }} else if (claim.type === "universal_anchor_claim") {{
+        if (evidence.anchor_mode !== "absolute_anchor") {{
+          result.verdict = "HOLD";
+          result.reason = "claim requires an absolute_anchor, but evidence has another anchor mode";
+        }} else if (evidence.local_property_tests_pass === true && evidence.universal_anchor_pass === true) {{
+          result.verdict = "ACCEPT";
+          result.reason = "local checks and universal anchor both pass";
+        }} else if (evidence.local_property_tests_pass === true && evidence.universal_anchor_pass !== true) {{
+          result.verdict = "REWRITE";
+          result.reason = "local checks pass, but the universal anchor fails";
+          result.rewrite = "local plausibility only; universal physical correctness is not licensed";
+          result.licensed_claim = result.rewrite;
+        }} else {{
+          result.verdict = "REJECT";
+          result.reason = "local checks fail before the universal-anchor claim is licensed";
+        }}
+      }} else if (claim.type === "claim_transition") {{
+        if (evidence.upgrade_evidence_present === true) {{
+          result.verdict = "ACCEPT";
+          result.reason = "upgrade evidence is explicitly present";
+        }} else {{
+          result.verdict = "REWRITE";
+          result.reason = "upgrade evidence is absent; stronger claim is not licensed";
+          result.rewrite = evidence.current_claim || "weaker current claim only";
+          result.licensed_claim = result.rewrite;
+        }}
+      }}
+      return result;
+    }}
+    function decide() {{
+      try {{
+        const payload = JSON.parse(document.getElementById("input").value);
+        document.getElementById("output").textContent = JSON.stringify(rule(payload), null, 2);
+      }} catch (error) {{
+        document.getElementById("output").textContent = String(error);
+      }}
+    }}
+    function resetSample() {{
+      document.getElementById("input").value = JSON.stringify(sample, null, 2);
+      decide();
+    }}
+    decide();
+  </script>
+</body>
+</html>
+"""
+
+
 def cmd_demo(args: argparse.Namespace) -> int:
     report = build_demo_report()
     OUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -199,6 +438,28 @@ def cmd_demo(args: argparse.Namespace) -> int:
         print(f"D11 licensed claim: {report['universal_anchor_matrix']['licensed_claim']}")
         print(f"wrote {json_path}")
         print(f"wrote {md_path}")
+    return 0
+
+
+def cmd_decide(args: argparse.Namespace) -> int:
+    payload = _load_json(Path(args.input))
+    decision = decide_external_claim(payload)
+    if args.output:
+        _write_json(Path(args.output), decision)
+    if args.json or not args.output:
+        print(json.dumps(decision, indent=2, sort_keys=True))
+    else:
+        print(f"{decision['verdict']}: {decision['reason']}")
+        print(f"wrote {args.output}")
+    return 0
+
+
+def cmd_ui(args: argparse.Namespace) -> int:
+    sample = _sample_external_claim()
+    path = Path(args.output) if args.output else OUT_DIR / "capas_claim_gate_ui.html"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(_render_ui(sample), encoding="utf-8")
+    print(f"wrote {path}")
     return 0
 
 
@@ -225,6 +486,16 @@ def main(argv: list[str] | None = None) -> int:
     demo = subparsers.add_parser("demo", help="write and print the product demo report")
     demo.add_argument("--json", action="store_true", help="print the full JSON report")
     demo.set_defaults(func=cmd_demo)
+
+    decide = subparsers.add_parser("decide", help="decide an external claim/evidence JSON file")
+    decide.add_argument("--input", required=True, help="path to claim/evidence JSON")
+    decide.add_argument("--output", help="optional path for decision JSON")
+    decide.add_argument("--json", action="store_true", help="print JSON even when --output is supplied")
+    decide.set_defaults(func=cmd_decide)
+
+    ui = subparsers.add_parser("ui", help="write a static local claim-gate UI")
+    ui.add_argument("--output", help="optional HTML output path")
+    ui.set_defaults(func=cmd_ui)
 
     validate = subparsers.add_parser("validate", help="run product validation gates")
     validate.set_defaults(func=cmd_validate)

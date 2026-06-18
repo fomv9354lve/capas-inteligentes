@@ -10,10 +10,16 @@ methodology. CAPAS is a profile/costurero over existing standards:
 
 ## Product Demo
 
+Install the local package entrypoint:
+
+```bash
+python -m pip install -e .
+```
+
 Run the product surface:
 
 ```bash
-python3 capas.py demo
+capas demo
 python3 benchmarks/verify_capas_product_demo.py
 ```
 
@@ -30,13 +36,27 @@ fine-tune-ready.
 Run the core product validators:
 
 ```bash
-python3 capas.py validate
+capas validate
 ```
 
 Inspect a trace:
 
 ```bash
-python3 capas.py inspect trace_039
+capas inspect trace_039
+```
+
+Decide an external claim/evidence JSON:
+
+```bash
+capas decide --input examples/external_claim_accept.json
+capas decide --input examples/external_claim_rewrite.json
+capas decide --input examples/external_claim_hold.json
+```
+
+Generate the static local UI:
+
+```bash
+capas ui
 ```
 
 ## What It Produces
@@ -161,6 +181,7 @@ See:
 - `docs/QMB100_AUDIT.md`
 - `docs/VVUQ_QUANTUM_AUDIT.md`
 - `docs/COVERAGE.md`
+- `docs/EXTERNAL_MVP_LAUNCH_PLAN.md`
 
 Short defensible claim:
 
