@@ -202,7 +202,8 @@ Current state:
 ```text
 profile_registration_packet_ready: expected true locally
 formal_profile_registered: false
-profile_status: local_draft_not_registered
+profile_status: external_review_requested_not_registered
+external_review_request_url: https://github.com/ResearchObject/workflow-run-crate/issues/103
 ```
 
 Formal registration is not complete until the RO-Crate / Workflow Run RO-Crate

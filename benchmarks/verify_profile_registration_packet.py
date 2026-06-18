@@ -43,6 +43,11 @@ REQUIRED_PACKET_FILES = [
     "REGISTRATION_REQUEST.md",
 ]
 
+NOT_REGISTERED_PROFILE_STATUSES = {
+    "local_draft_not_registered",
+    "external_review_requested_not_registered",
+}
+
 
 def _load_json(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
@@ -62,7 +67,7 @@ def main() -> int:
     metadata = _load_json(REQUIRED_FILES["registration_metadata"]) if REQUIRED_FILES["registration_metadata"].exists() else {}
     results.append({
         "check": "profile_status_is_not_registered",
-        "passed": metadata.get("profile_status") == "local_draft_not_registered",
+        "passed": metadata.get("profile_status") in NOT_REGISTERED_PROFILE_STATUSES,
         "detail": metadata.get("profile_status"),
     })
     results.append({

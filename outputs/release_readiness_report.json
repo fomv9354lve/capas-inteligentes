@@ -1,8 +1,8 @@
 {
-  "failed": 1,
+  "failed": 0,
   "non_degradation": "GitHub publication is not complete until remote, auth, tag, CI run, and release artifact exist externally.",
-  "passed": 32,
-  "release_ready": false,
+  "passed": 33,
+  "release_ready": true,
   "results": [
     {
       "check": "package_manifest",
@@ -199,8 +199,8 @@
     {
       "check": "github_cli_authenticated",
       "command": "gh auth status",
-      "detail": "github.com\n  X Failed to log in to github.com account fomv9354lve (default)\n  - Active account: true\n  - The token in default is invalid.\n  - To re-authenticate, run: gh auth login -h github.com\n  - To forget about this account, run: gh auth logout -h github.com -u fomv9354lve",
-      "passed": false
+      "detail": "github.com\n  \u2713 Logged in to github.com account fomv9354lve (keyring)\n  - Active account: true\n  - Git operations protocol: https\n  - Token: gho_************************************\n  - Token scopes: 'gist', 'read:org', 'repo', 'workflow'",
+      "passed": true
     }
   ]
 }

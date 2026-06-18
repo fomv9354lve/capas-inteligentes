@@ -18,6 +18,11 @@ EXPECTED_RELEASE_BLOCKERS = {
     "github_cli_authenticated",
 }
 
+NOT_REGISTERED_PROFILE_STATUSES = {
+    "local_draft_not_registered",
+    "external_review_requested_not_registered",
+}
+
 
 def _run_allow_fail(command: list[str]) -> None:
     subprocess.run(command, cwd=ROOT, check=False)
@@ -43,7 +48,7 @@ def main() -> int:
     assert profile["status"] == "ready"
     assert not profile["missing"]
     assert profile["formal_registration_complete"] is False
-    assert profile["profile_status"] == "local_draft_not_registered"
+    assert profile["profile_status"] in NOT_REGISTERED_PROFILE_STATUSES
     assert profile_readiness["profile_registration_packet_ready"] is True
     assert profile_readiness["formal_profile_registered"] is False
     failed_checks = {

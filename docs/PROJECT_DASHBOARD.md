@@ -129,9 +129,11 @@ External readiness packets: reviewer packet ready, profile registration packet
   GitHub release dry-run plan and release notes generated; release_ready=False
   because git remote, v0.1.0 tag, and valid GitHub CLI authentication are
   missing
-RO-Crate profile registration readiness: local packet complete with
-  profile_status=local_draft_not_registered and formal_profile_registered=False;
-  this is submission readiness, not official registration
+RO-Crate profile registration readiness: packet complete and external review
+  requested at https://github.com/ResearchObject/workflow-run-crate/issues/103
+  with profile_status=external_review_requested_not_registered and
+  formal_profile_registered=False; this is review submission, not official
+  registration
 External user validation packet: feedback schema/template/verifier ready;
   external_user_validation_complete=False until real reviewer feedback is stored
   under outputs/external_validation/

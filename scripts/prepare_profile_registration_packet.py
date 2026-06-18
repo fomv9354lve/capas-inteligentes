@@ -83,6 +83,8 @@ registration.
 
 def main() -> int:
     OUT.mkdir(parents=True, exist_ok=True)
+    metadata_path = ROOT / "docs" / "profile" / "capas-profile-registration.json"
+    metadata = json.loads(metadata_path.read_text(encoding="utf-8")) if metadata_path.exists() else {}
     copied = []
     missing = []
     for label, src in FILES:
@@ -99,10 +101,11 @@ def main() -> int:
     manifest = {
         "packet": "profile_registration_packet",
         "status": "ready" if not missing else "incomplete",
-        "profile_status": "local_draft_not_registered",
+        "profile_status": metadata.get("profile_status", "local_draft_not_registered"),
         "formal_registration_complete": False,
         "profile_name": "CAPAS Physical Evidence Profile",
         "draft_profile_uri": PROFILE_URI,
+        "external_review_request_url": metadata.get("external_review_request_url"),
         "base_profiles": [
             "https://w3id.org/ro/crate/1.1",
             "https://w3id.org/ro/wfrun/process/0.5",
