@@ -71,12 +71,186 @@
       "passed": true,
       "reason": "absolute scaling-law anchor catches a locally plausible violation",
       "trace_id": "trace_038"
+    },
+    {
+      "actual_verdict": "ACCEPT",
+      "claim_id": "simulation_ran",
+      "expected_verdict": "ACCEPT",
+      "passed": true,
+      "reason": "method and provenance record a successful simulation run",
+      "trace_id": "regional_cono_sur_simulation_run"
+    },
+    {
+      "actual_verdict": "ACCEPT",
+      "claim_id": "model_validated_for_case",
+      "expected_verdict": "ACCEPT",
+      "passed": true,
+      "reason": "single-case validation scope is explicit and supported by experimental match",
+      "trace_id": "regional_cono_sur_single_case_validated"
+    },
+    {
+      "actual_verdict": "REWRITE",
+      "claim_id": "model_validated_for_domain",
+      "expected_verdict": "REWRITE",
+      "passed": true,
+      "reason": "evidence licenses model_validated_for_case, not model_validated_for_domain",
+      "trace_id": "regional_cono_sur_single_case_validated"
+    },
+    {
+      "actual_verdict": "HOLD",
+      "claim_id": "matches_experiment",
+      "expected_verdict": "HOLD",
+      "passed": true,
+      "reason": "cannot judge experimental match; missing ['reference_definition_match']",
+      "trace_id": "regional_cono_sur_ambiguous_experiment"
+    },
+    {
+      "actual_verdict": "ACCEPT",
+      "claim_id": "fit_improved",
+      "expected_verdict": "ACCEPT",
+      "passed": true,
+      "reason": "refinement residual decreased",
+      "trace_id": "regional_china_rietveld_fit"
+    },
+    {
+      "actual_verdict": "REWRITE",
+      "claim_id": "structure_validated",
+      "expected_verdict": "REWRITE",
+      "passed": true,
+      "reason": "refinement evidence may license fit_improved or structure_plausible, not structure_validated",
+      "trace_id": "regional_china_rietveld_fit"
+    },
+    {
+      "actual_verdict": "ACCEPT",
+      "claim_id": "structure_plausible",
+      "expected_verdict": "ACCEPT",
+      "passed": true,
+      "reason": "fit improved and physical constraints pass",
+      "trace_id": "regional_china_rietveld_plausible"
+    },
+    {
+      "actual_verdict": "REWRITE",
+      "claim_id": "structure_validated",
+      "expected_verdict": "REWRITE",
+      "passed": true,
+      "reason": "refinement evidence may license fit_improved or structure_plausible, not structure_validated",
+      "trace_id": "regional_china_rietveld_plausible"
+    },
+    {
+      "actual_verdict": "ACCEPT",
+      "claim_id": "runtime_predicted",
+      "expected_verdict": "ACCEPT",
+      "passed": true,
+      "reason": "runtime prediction error is within declared tolerance",
+      "trace_id": "regional_uncuyo_runtime_prediction"
+    },
+    {
+      "actual_verdict": "REWRITE",
+      "claim_id": "scientific_result_validated_from_runtime",
+      "expected_verdict": "REWRITE",
+      "passed": true,
+      "reason": "runtime evidence licenses runtime_predicted, not scientific_result_validated",
+      "trace_id": "regional_uncuyo_runtime_prediction"
+    },
+    {
+      "actual_verdict": "ACCEPT",
+      "claim_id": "uq_interval_supports_claim",
+      "expected_verdict": "ACCEPT",
+      "passed": true,
+      "reason": "claimed value lies inside the declared uncertainty interval",
+      "trace_id": "regional_uq_interval_case"
+    },
+    {
+      "actual_verdict": "REJECT",
+      "claim_id": "uq_interval_supports_claim",
+      "expected_verdict": "REJECT",
+      "passed": true,
+      "reason": "claimed value lies outside the declared uncertainty interval",
+      "trace_id": "regional_uq_interval_miss"
     }
   ],
+  "regional_claim_matrix": {
+    "fit_improved": {
+      "minimum_fields": [
+        "residual_before",
+        "residual_after"
+      ],
+      "source_cluster": "China Rietveld refinement agents"
+    },
+    "matches_experiment": {
+      "minimum_fields": [
+        "reference_type",
+        "reference_definition_match",
+        "abs_error_vs_reference",
+        "reference_tolerance"
+      ],
+      "source_cluster": "CONICET/AMCA validation against experiment"
+    },
+    "model_validated_for_case": {
+      "minimum_fields": [
+        "matches_experiment",
+        "validation_scope"
+      ],
+      "source_cluster": "single-case regional validation"
+    },
+    "model_validated_for_domain": {
+      "minimum_fields": [
+        "validation_cases>=3",
+        "uq_or_sensitivity",
+        "validation_scope=domain"
+      ],
+      "source_cluster": "VVUQ/domain validation"
+    },
+    "numerical_solution_converged": {
+      "minimum_fields": [
+        "residual_norm",
+        "residual_tolerance",
+        "convergence_status"
+      ],
+      "source_cluster": "AMCA/CIMEC numerical simulation"
+    },
+    "runtime_predicted": {
+      "minimum_fields": [
+        "runtime_prediction_error",
+        "runtime_error_tolerance"
+      ],
+      "source_cluster": "UNCuyo scientific workflow runtime prediction"
+    },
+    "simulation_ran": {
+      "minimum_fields": [
+        "evidence_status",
+        "method",
+        "provenance_recorded"
+      ],
+      "source_cluster": "Cono Sur simulation proceedings"
+    },
+    "structure_plausible": {
+      "minimum_fields": [
+        "fit_improved",
+        "physical_constraints_pass"
+      ],
+      "source_cluster": "China Rietveld refinement agents"
+    },
+    "structure_validated": {
+      "minimum_fields": [
+        "held_out_validation or independent_structure_reference"
+      ],
+      "source_cluster": "China Rietveld refinement agents"
+    },
+    "uq_interval_supports_claim": {
+      "minimum_fields": [
+        "uq_interval",
+        "claimed_value"
+      ],
+      "source_cluster": "regional UQ model"
+    }
+  },
   "summary": {
-    "checks": 9,
+    "checks": 21,
     "failed": 0,
     "fine_tune_ready_implication": "none; this validates claim typing, not training readiness",
-    "passed": 9
+    "passed": 21,
+    "regional_claims": 10,
+    "regional_synthetic_checks": 12
   }
 }

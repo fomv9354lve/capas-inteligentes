@@ -69,6 +69,8 @@ external ResearchObject RO-Crate validation: valid for 38/38 crates
 external warning: none
 witness independence validation: passed
 evidence claim type validation: passed
+regional claim/evidence gate validation: passed, 21/21 checks total with
+  12 regional synthetic checks covering ACCEPT/REJECT/REWRITE/HOLD
 box 3 SotA status: broad claim-safety/provenance space is taken; narrow
   evidence-type checking for scientific computation claims survives
 regional research atlas: 122 raw source records gathered across China,
@@ -238,6 +240,15 @@ scaling_law_anchor: 6
    - defines `R1` China Rietveld evidence gate
    - defines `R2` Cono Sur AMCA validation claim gate
    - defines regional claim matrix candidates for the evidence type checker
+21. Regional claim/evidence gate:
+   - extends `benchmarks/validate_evidence_claims.py` from 9 to 21 checks
+   - adds synthetic regional checks derived from China Rietveld, Cono Sur
+     simulation validation, UNCuyo workflow runtime prediction, and regional UQ
+   - supports `ACCEPT`, `REJECT`, `REWRITE`, and `HOLD`
+   - rejects/downgrades overclaims such as:
+     `single_case_validation => domain_validation`,
+     `fit_improved => structure_validated`, and
+     `runtime_predicted => scientific_result_validated`
    - within chemical accuracy: `False`
    - lesson: adding vibrational correction can reduce the mismatch without making a poor finite-basis model chemically accurate
 19. H2 basis convergence to experiment:
