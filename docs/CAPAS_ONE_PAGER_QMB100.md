@@ -54,7 +54,8 @@ A CAPAS trace can record:
 - `physicalEvidenceLevel`: e.g. `analytic`, `cross_sim`, `experimental`,
   `formal_bound`, `estimated_bound`, `scaling_law_anchor`, `none`
 - `referenceTruth`: analytic, experimental, benchmark, or declared reference
-- `absError` / `boundScope`: error or scope of a bound
+- `absError` / `boundScope`: error or the exact scope where a bound applies
+  (for example a local state-truncation bound versus a global observable claim)
 
 Example distinction:
 
@@ -91,8 +92,14 @@ evidence object that records:
 
 This also matches a limitation stated by the PhysVEC work: verification still
 depends on manually built rubrics/physical assertions and current LLM agents may
-not reliably correct deeper scientific errors. CAPAS treats that limitation as
-metadata to record, not as a problem hidden behind a binary pass/fail.
+fail to correct underlying errors such as subtle inaccuracies in Hamiltonian
+construction. CAPAS treats that limitation as metadata to record, not as a
+problem hidden behind a binary pass/fail.
+
+There is also a path-vs-result distinction. PhysVEC evidence can certify whether
+the final output satisfies the target reference or assertion. CAPAS asks whether
+the correction path should also be sealed: why a correction was justified, what
+witness supported it, and what claim the resulting trace is allowed to license.
 
 ## Concrete Validation Question
 
