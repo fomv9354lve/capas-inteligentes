@@ -1,5 +1,8 @@
 # CAPAS INTELIGENTES
 
+[![CAPAS CI](https://github.com/fomv9354lve/capas-inteligentes/actions/workflows/ci.yml/badge.svg)](https://github.com/fomv9354lve/capas-inteligentes/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/fomv9354lve/capas-inteligentes)](https://github.com/fomv9354lve/capas-inteligentes/releases/tag/v0.1.0)
+
 CAPAS is a small evidence-typed claim gate for scientific computation.
 
 It is not a new provenance standard, benchmark suite, workflow engine, or VVUQ
@@ -7,6 +10,40 @@ methodology. CAPAS is a profile/costurero over existing standards:
 
 > RO-Crate/PROV packaging + sealed route/result trace + VVUQ-style physical
 > evidence + witness independence + honest no-evidence/failure/rejection states.
+
+## Who This Is For
+
+CAPAS is for people auditing AI-generated scientific-computation outputs:
+
+- AI-for-science agent benchmark builders,
+- scientific workflow provenance / RO-Crate users,
+- quantum many-body verification and benchmark users,
+- teams deciding whether a computation supports a strong claim, a weaker
+  rewrite, rejection, or hold.
+
+CAPAS is not for users who only need a faster simulator or generic workflow
+lineage.
+
+## Try In 60 Seconds
+
+```bash
+python -m pip install -e .
+capas decide --input examples/external_claim_rewrite.json
+capas inspect trace_039
+capas validate
+```
+
+Expected behavior:
+
+- `decide` returns `REWRITE` when local checks pass but a universal anchor fails.
+- `inspect trace_039` shows a motor-backed claim-transition trace.
+- `validate` runs the product gates and profile/RO-Crate checks.
+
+Release assets:
+
+```text
+https://github.com/fomv9354lve/capas-inteligentes/releases/tag/v0.1.0
+```
 
 ## Product Demo
 
@@ -76,8 +113,14 @@ Prepare a non-mutating GitHub release plan:
 python3 scripts/publish_github_release.py
 ```
 
-Publication still requires a GitHub remote, valid `gh auth`, a pushed tag, a
-passing external CI run, and a GitHub release URL.
+Publishing a new release still requires a GitHub remote, valid `gh auth`, a
+pushed tag, a passing external CI run, and a GitHub release URL.
+
+The public v0.1.0 release is available at:
+
+```text
+https://github.com/fomv9354lve/capas-inteligentes/releases/tag/v0.1.0
+```
 
 Prepare/check external reviewer feedback:
 
