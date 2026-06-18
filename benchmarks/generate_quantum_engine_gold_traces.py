@@ -25,6 +25,7 @@ UNIVERSAL_INVARIANT_COVERAGE = {
     "universal_invariant_scaling_law_adversarial_failure",
     "universal_invariant_scaling_law_positive_control",
     "universal_invariant_scaling_law_local_catches",
+    "universal_invariant_scaling_law_simulation_generated",
 }
 
 
@@ -58,6 +59,7 @@ TRACE_SPECS = [
     ("trace_033", "ising_gap_wrong_exponent_passes_local_monotonicity", {}, "universal_invariant_scaling_law_adversarial_failure"),
     ("trace_034", "ising_gap_correct_exponent_noisy_passes_scaling_anchor", {}, "universal_invariant_scaling_law_positive_control"),
     ("trace_035", "ising_gap_constant_sequence_local_catches_before_scaling", {}, "universal_invariant_scaling_law_local_catches"),
+    ("trace_036", "ising_gap_exact_diagonalization_scaling_anchor", {}, "universal_invariant_scaling_law_simulation_generated"),
     ("trace_012", "unverified_variational_energy", {}, "no_evidence_success"),
     ("trace_013", "deliberately_failing_engine", {}, "backend_failed"),
     ("trace_015", "quimb_mps_estimated_bound", {"n": 60, "depth": 6, "max_bond": 8, "seed": 1}, "estimated_bound_candidate"),
@@ -76,6 +78,7 @@ def _engine_path_for(function_name: str) -> Path:
         "ising_gap_wrong_exponent_passes_local_monotonicity",
         "ising_gap_correct_exponent_noisy_passes_scaling_anchor",
         "ising_gap_constant_sequence_local_catches_before_scaling",
+        "ising_gap_exact_diagonalization_scaling_anchor",
     }:
         return ADVERSARIAL_ENGINE_PATH
     return ENGINE_PATH
@@ -151,6 +154,13 @@ def main() -> None:
                 assert summary["local_property_tests_pass"] is False
                 assert summary["local_oracle_caught"] is True
                 assert summary["universal_anchor_pass"] == "not_evaluated_local_oracle_failed"
+            elif coverage_case == "universal_invariant_scaling_law_simulation_generated":
+                assert summary["anchor_kind"] == "absolute_scaling_law"
+                assert summary["local_property_tests_pass"] is True
+                assert summary["universal_anchor_pass"] is True
+                assert summary["invariant_caught"] is False
+                assert summary["abs_error"] <= summary["exponent_tolerance"]
+                assert "Exact diagonalization" in summary["finite_size_notes"]
         elif coverage_case not in {"backend_failed", "no_evidence_success", "estimated_bound_candidate"}:
             assert result is not None
             assert result["result"]["abs_error"] < 1e-9
@@ -196,7 +206,10 @@ def main() -> None:
         ) else "no"
         if physical_level in {"none", "estimated_bound"}:
             output_correct = "unknown"
-        if coverage_case == "universal_invariant_scaling_law_positive_control":
+        if coverage_case in {
+            "universal_invariant_scaling_law_positive_control",
+            "universal_invariant_scaling_law_simulation_generated",
+        }:
             output_correct = "yes"
         elif coverage_case in UNIVERSAL_INVARIANT_COVERAGE:
             output_correct = "no"

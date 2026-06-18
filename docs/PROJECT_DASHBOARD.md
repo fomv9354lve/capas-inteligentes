@@ -38,11 +38,11 @@ See git log. This dashboard is updated in the same commit as state changes.
 Recent commits:
 
 ```text
-HEAD Add metamorphic testing positioning audit
+Latest: Add D11 simulation-generated scaling anchor (see git log for hash)
+44a1742 Add D11 scaling law anchor traces
+90e4a59 Add metamorphic testing positioning audit
 7bbbad0 Add universal invariant oracle matrix
 ea4a37b Add universal invariant anchoring trace
-8063b71 Use CWL workflow descriptor for RO-Crate validation
-eea756d Add Xing simulation cost predictor audit
 ```
 
 Current validation status:
@@ -51,9 +51,9 @@ Current validation status:
 coverage_ready: True
 fine_tune_ready: False
 local RO-Crate validation: passed
-local CAPAS physical-evidence profile validation: passed for 35/35 crates
+local CAPAS physical-evidence profile validation: passed for 36/36 crates
 local Workflow Run Crate shape check: passed through CAPAS profile validator
-external ResearchObject RO-Crate validation: valid for 35/35 crates
+external ResearchObject RO-Crate validation: valid for 36/36 crates
 external warning: none
 witness independence validation: passed
 reproducibility environment check: passed in local physics-magnitude-lab pixi env
@@ -88,6 +88,7 @@ engine.
 | `universal_invariant_scaling_law_adversarial_failure` | 1 | covered | plausible decreasing Ising gaps violate universal exponent |
 | `universal_invariant_scaling_law_positive_control` | 1 | covered | noisy Ising gaps satisfy universal exponent tolerance |
 | `universal_invariant_scaling_law_local_catches` | 1 | covered | constant gaps rejected locally before scaling anchor is credited |
+| `universal_invariant_scaling_law_simulation_generated` | 1 | covered | exact diagonalization TFIM gaps satisfy universal exponent tolerance |
 | `formal_bound_success` | 1 | covered | formal single-cut Schmidt truncation certificate |
 | `formal_bound_composition_success` | 1 | covered | formal multi-step state truncation bound |
 | `estimated_bound_candidate` | 1 | covered | useful estimator, not formal |
@@ -105,7 +106,7 @@ formal_bound: 2
 estimated_bound: 1
 none: 3
 no_universal_anchor_control: 1
-scaling_law_anchor: 3
+scaling_law_anchor: 4
 ```
 
 ## What Works
@@ -116,7 +117,7 @@ scaling_law_anchor: 3
 4. Workflow Run RO-Crate-compatible shape.
 5. External RO-Crate validation through ResearchObject `rocrateValidator`.
 6. CAPAS `PhysicalEvidence` entity in RO-Crate and PROV exports.
-7. Local CAPAS physical-evidence profile validation over all 35 crates.
+7. Local CAPAS physical-evidence profile validation over all 36 crates.
 8. Honest distinction between:
    - analytic truth
    - cross-sim witness
@@ -225,7 +226,7 @@ scaling_law_anchor: 3
    - lesson: CAPAS must not compete as a cost predictor; it can wrap such
      predictors as an evidence/profile layer
 22. Universal invariant anchoring matrix:
-   - artifacts: `trace_028` through `trace_032`
+   - artifacts: `trace_028` through `trace_036`
    - doc: `docs/UNIVERSAL_INVARIANT_ANCHORING.md`
    - `trace_028`: local misses, Heisenberg energy anchor catches
    - `trace_029`: local catches, anchor not needed
@@ -235,7 +236,8 @@ scaling_law_anchor: 3
    - `trace_033`: local misses, Ising scaling-law anchor catches wrong exponent
    - `trace_034`: local misses, Ising scaling-law positive control passes tolerance
    - `trace_035`: local catches constant gaps before scaling anchor is credited
-   - audit decision: all eight are `reject`, because adversarial/control traces
+   - `trace_036`: simulation-generated TFIM gaps pass scaling-law anchor
+   - audit decision: all nine are `reject`, because adversarial/control traces
      must not become fine-tune gold
    - lesson: the current evidence supports complementarity, not domination;
      universal anchors add coverage in some cells and are redundant or
@@ -308,7 +310,7 @@ Debt:
 
 Done when:
 
-- a fresh clone can regenerate the 35 traces with one documented command
+- a fresh clone can regenerate the 36 traces with one documented command
 - `physics_magnitude_lab` is installed from a pinned local path, package version,
   or declared workspace dependency
 
@@ -328,7 +330,7 @@ Current state:
 ```text
 fine_tune_ready: False
 hold: 24
-reject: 11
+reject: 12
 blank: 0
 ```
 
@@ -712,8 +714,8 @@ Done when:
 
 ### D11. Universal Invariant Anchoring
 
-Status: seed falsation matrix plus scaling-law anchor complete; positioned
-against Metamorphic Testing.
+Status: seed falsation matrix plus synthetic and simulation-generated
+scaling-law anchors complete; positioned against Metamorphic Testing.
 
 What exists:
 
@@ -727,6 +729,7 @@ What exists:
 - `trace_033`: local passes, Ising scaling-law anchor catches wrong exponent
 - `trace_034`: local passes, Ising scaling-law anchor passes noisy positive control
 - `trace_035`: local catches constant gaps before scaling anchor is credited
+- `trace_036`: exact-diagonalization TFIM gaps pass the scaling-law anchor
 - coverage cases:
   - `universal_invariant_adversarial_failure`
   - `universal_invariant_local_catches_anchor_not_needed`
@@ -736,15 +739,17 @@ What exists:
   - `universal_invariant_scaling_law_adversarial_failure`
   - `universal_invariant_scaling_law_positive_control`
   - `universal_invariant_scaling_law_local_catches`
+  - `universal_invariant_scaling_law_simulation_generated`
 - evidence levels:
   - `analytic`
   - `no_universal_anchor_control`
   - `scaling_law_anchor`
-- audit decision: all eight D11 traces are `reject`
+- audit decision: all nine D11 traces are `reject`
 
 Scope:
 
-- minimal matrix plus synthetic scaling-law seed, not a benchmark suite
+- minimal matrix plus synthetic and simulation-generated scaling-law seeds,
+  not a benchmark suite
 - three invariant types: Heisenberg energy, Bell entropy, and Ising gap scaling
 - one no-anchor control
 - supports complementarity of local oracles and universal anchors
@@ -758,15 +763,14 @@ Next step:
 - add randomized adversarial variants with pre-registered thresholds rather
   than one hand-constructed example per cell
 - label each future D11 case as absolute-anchor, metamorphic-relation, or mixed
-- replace synthetic scaling data with at least one real agent-generated or
-  simulation-generated sequence
+- replace synthetic scaling data with at least one real agent-generated sequence
 
-Done when:
+Next closure criteria:
 
-- the invariant-anchor axis has exact-value and scaling-law anchors over at
-  least one non-synthetic generated workload
-- controls include local-only, redundant, no-anchor, and noisy/generator-trivial
-  cases
+- at least one scaling-law adversarial case comes from real agent-generated
+  output or randomized generation rather than a hand-authored sequence
+- controls continue to include local-only, redundant, no-anchor,
+  noisy/generator-trivial, and simulation-generated cases
 - validators reject missing `claim_scope` or missing local/universal oracle
   fields for this coverage family
 

@@ -36,7 +36,7 @@
       "@id": "./",
       "@type": "Dataset",
       "capas:evidenceStatus": "not_applicable_rejected",
-      "capas:traceHash": "1c58887234f95e0d6a3de6a8fe36280f8f0e930f40107cb6ff7441fc5c4aecd6",
+      "capas:traceHash": "4bc66db4db18fea1ef1d68f44d2419ae6d36015b28dc7a76b303a61e4812a21b",
       "capas:workflowRunCrateAlignment": "shape-compatible-with-workflow-run-crate-0.5",
       "capas:workloadHash": "f88e2ad357171326cc090d4f5721a3ff4ff5bfba123dd554b119bc94f83fd70e",
       "conformsTo": [
@@ -56,7 +56,7 @@
           "@id": "https://example.org/capas-inteligentes/ro-crate/physical-evidence/0.1"
         }
       ],
-      "datePublished": "2026-06-18T02:29:44.754844Z",
+      "datePublished": "2026-06-18T02:40:44.023672Z",
       "description": "RO-Crate package containing a sealed RunTrace, optional PROV export, routing decision, runtime context, and CAPAS physical evidence metadata.",
       "hasPart": [
         {
@@ -72,7 +72,7 @@
           "@id": "entity:workload"
         },
         {
-          "@id": "trace:1c58887234f95e0d:routing-decision"
+          "@id": "trace:4bc66db4db18fea1:routing-decision"
         },
         {
           "@id": "runtrace.prov.json"
@@ -82,7 +82,7 @@
         "@id": "workflow/capas-costurero-run.cwl"
       },
       "mentions": {
-        "@id": "trace:1c58887234f95e0d"
+        "@id": "trace:4bc66db4db18fea1"
       },
       "name": "CAPAS traced scientific computation crate"
     },
@@ -118,14 +118,14 @@
         "DigitalDocument"
       ],
       "about": {
-        "@id": "trace:1c58887234f95e0d"
+        "@id": "trace:4bc66db4db18fea1"
       },
       "encodingFormat": "application/json",
       "name": "Sealed CAPAS RunTrace",
-      "sha256": "03ab0593f498dcb16671c0fcb374bc4331529b40ec3493d02f84d44f9a3acf9f"
+      "sha256": "3d983cf2e81457e1c12dd63d13572ab17e43120d9f103301bf4861ce0b090b8c"
     },
     {
-      "@id": "trace:1c58887234f95e0d",
+      "@id": "trace:4bc66db4db18fea1",
       "@type": "CreateAction",
       "actionStatus": "CompletedActionStatus",
       "agent": {
@@ -136,11 +136,11 @@
       "capas:evidenceStatus": "not_applicable_rejected",
       "capas:hashAlgorithm": "sha256(stable_json)",
       "capas:routingDecision": {
-        "@id": "trace:1c58887234f95e0d:routing-decision"
+        "@id": "trace:4bc66db4db18fea1:routing-decision"
       },
-      "capas:traceHash": "1c58887234f95e0d6a3de6a8fe36280f8f0e930f40107cb6ff7441fc5c4aecd6",
+      "capas:traceHash": "4bc66db4db18fea1ef1d68f44d2419ae6d36015b28dc7a76b303a61e4812a21b",
       "capas:traceSchemaVersion": "capas-runtrace-v2",
-      "endTime": "2026-06-18T02:29:44.754844Z",
+      "endTime": "2026-06-18T02:40:44.023672Z",
       "instrument": {
         "@id": "workflow/capas-costurero-run.cwl"
       },
@@ -148,7 +148,7 @@
       "object": {
         "@id": "entity:workload"
       },
-      "startTime": "2026-06-18T02:29:44.754641Z"
+      "startTime": "2026-06-18T02:40:44.023566Z"
     },
     {
       "@id": "workflow/capas-costurero-run.cwl",
@@ -207,7 +207,7 @@
       "name": "Workload summary"
     },
     {
-      "@id": "trace:1c58887234f95e0d:routing-decision",
+      "@id": "trace:4bc66db4db18fea1:routing-decision",
       "@type": "Thing",
       "capas:reason": "dense statevector exceeds memory budget",
       "capas:route": "QPU_REQUIRED",
@@ -221,10 +221,10 @@
       ],
       "encodingFormat": "application/json",
       "name": "W3C PROV-shaped export",
-      "sha256": "91ba3f5683d35f36cbdc6913211837ba2572f2a5aeaa1385a0aaad1a835346c3"
+      "sha256": "91fb0e053b72fecf949d585190396960401e69a7a2ce83ae067e301f18b2d657"
     },
     {
-      "@id": "trace:1c58887234f95e0d:event:0:ingest",
+      "@id": "trace:4bc66db4db18fea1:event:0:ingest",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -238,10 +238,10 @@
       },
       "description": "workload accepted",
       "name": "ingest",
-      "startTime": 1781749784.7546408
+      "startTime": 1781750444.023566
     },
     {
-      "@id": "trace:1c58887234f95e0d:event:1:runtime_context",
+      "@id": "trace:4bc66db4db18fea1:event:1:runtime_context",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -266,10 +266,10 @@
       },
       "description": "runtime and hardware context recorded",
       "name": "runtime_context",
-      "startTime": 1781749784.754817
+      "startTime": 1781750444.023655
     },
     {
-      "@id": "trace:1c58887234f95e0d:event:2:cost_model",
+      "@id": "trace:4bc66db4db18fea1:event:2:cost_model",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -281,10 +281,10 @@
       },
       "description": "dense statevector cost estimated",
       "name": "cost_model",
-      "startTime": 1781749784.7548249
+      "startTime": 1781750444.023659
     },
     {
-      "@id": "trace:1c58887234f95e0d:event:3:route",
+      "@id": "trace:4bc66db4db18fea1:event:3:route",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -296,10 +296,10 @@
       },
       "description": "dense statevector exceeds memory budget",
       "name": "route",
-      "startTime": 1781749784.754842
+      "startTime": 1781750444.02367
     },
     {
-      "@id": "trace:1c58887234f95e0d:event:4:execute",
+      "@id": "trace:4bc66db4db18fea1:event:4:execute",
       "@type": "Action",
       "actionStatus": "skipped",
       "capas:metrics": {
@@ -307,7 +307,7 @@
       },
       "description": "route is not executable",
       "name": "execute",
-      "startTime": 1781749784.754844
+      "startTime": 1781750444.023672
     }
   ]
 }

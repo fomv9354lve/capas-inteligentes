@@ -115,25 +115,30 @@ The current matrix does not demonstrate:
 - general superiority over MT,
 - general superiority over local PBT/RvLLM-style checks,
 - scalability to arbitrary scientific agents,
-- effectiveness on scaling laws or finite-size noisy data,
+- benchmark-level effectiveness on real agent outputs,
 - novelty over scientific software MT as a testing idea.
 
 ## Scaling-Law Seed Status
 
-`trace_033` through `trace_035` add a synthetic Ising finite-size scaling seed:
+`trace_033` through `trace_036` add an Ising finite-size scaling seed:
 
 - expected exponent: `z = 1`,
 - preregistered tolerance: `|z_fit - 1| <= 0.10`,
 - local oracle: positive finite gaps strictly decrease with size,
-- anchor kind: `absolute_scaling_law`.
+- anchor kind: `absolute_scaling_law`,
+- `trace_033`: hand-authored adversarial sequence with wrong exponent `z=0.5`,
+- `trace_034`: hand-authored noisy positive control with `z=1.004`,
+- `trace_035`: hand-authored constant-sequence local failure,
+- `trace_036`: exact-diagonalization TFIM open-chain sequence with `z=0.917`.
 
-This closes the first "not only exact small-system values" debt, but it remains
-synthetic.
+This closes the first "not only exact small-system values" debt and adds one
+non-synthetic simulation-generated scaling sequence. It still does not prove
+benchmark-level utility on real agent outputs.
 
 ## Next Non-Degradable Step
 
-Replace the synthetic scaling sequence with at least one real generated sequence
-from an agent or simulation, still carrying:
+Replace the remaining hand-authored scaling sequence with at least one real
+agent-generated sequence, still carrying:
 
 - preregistered tolerance,
 - finite-size/error bars,
@@ -143,4 +148,6 @@ from an agent or simulation, still carrying:
 - explicit statement whether the result is absolute-value anchoring,
   metamorphic-relation anchoring, or both.
 
-Done when D11 includes a scaling-law anchor over non-synthetic generated data.
+Done when D11 includes a scaling-law anchor over real agent-generated data or a
+larger randomized adversarial set whose thresholds were declared before
+measurement.

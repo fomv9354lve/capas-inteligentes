@@ -30,6 +30,7 @@ EXPECTED = {
     "trace_033": ("universal_invariant_scaling_law_adversarial_failure", "present", True, "CompletedActionStatus"),
     "trace_034": ("universal_invariant_scaling_law_positive_control", "present", True, "CompletedActionStatus"),
     "trace_035": ("universal_invariant_scaling_law_local_catches", "present", True, "CompletedActionStatus"),
+    "trace_036": ("universal_invariant_scaling_law_simulation_generated", "present", True, "CompletedActionStatus"),
     "trace_012": ("no_evidence_success", "none_declared", False, "CompletedActionStatus"),
     "trace_013": ("backend_failed", "not_applicable_failed", False, "FailedActionStatus"),
     "trace_014": ("rejected_by_router", "not_applicable_rejected", False, "CompletedActionStatus"),
@@ -195,6 +196,15 @@ def main() -> int:
                 assert evidence.get("capas:localOracleCaught") is True, "local oracle should catch constant sequence"
                 assert evidence.get("capas:universalAnchorPass") == "not_evaluated_local_oracle_failed", "scaling anchor should not be credited"
                 assert evidence.get("capas:invariantCaught") is False, "invariant should not be credited"
+            elif coverage == "universal_invariant_scaling_law_simulation_generated":
+                assert evidence.get("capas:physicalEvidenceLevel") == "scaling_law_anchor", "wrong scaling evidence level"
+                assert evidence.get("capas:anchorKind") == "absolute_scaling_law", "wrong anchor kind"
+                assert evidence.get("capas:localPropertyTestsPass") is True, "local scaling checks should pass"
+                assert evidence.get("capas:universalAnchorPass") is True, "simulation-generated scaling anchor should pass"
+                assert evidence.get("capas:invariantCaught") is False, "positive simulation control should not be caught"
+                assert evidence.get("capas:absError") <= evidence.get("capas:exponentTolerance"), "exponent error should be within tolerance"
+                assert len(evidence.get("capas:scalingPoints", [])) >= 5, "missing simulation scaling points"
+                assert "Exact diagonalization" in evidence.get("capas:finiteSizeNotes", ""), "missing simulation provenance note"
             print(f"{trace_id}: ok ({coverage}, {status}, {action_status})")
         except Exception as exc:
             failures.append(f"{trace_id}: {type(exc).__name__}: {exc}")
