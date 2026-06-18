@@ -36,7 +36,7 @@
       "@id": "./",
       "@type": "Dataset",
       "capas:evidenceStatus": "not_applicable_failed",
-      "capas:traceHash": "04912bbd58ebd9cd5f42760fb96b7803747b742bb8229cec0536f64a1b2b8e53",
+      "capas:traceHash": "fa85f5a079653c0e5cdac5125d6370e9b6e3f31bfe3c1620e0bf65a8c83e31ef",
       "capas:workflowRunCrateAlignment": "shape-compatible-with-workflow-run-crate-0.5",
       "capas:workloadHash": "9f363fc60770a642e371647abee1a8823f5b56b99580bfbae7c8551ce331a720",
       "conformsTo": [
@@ -56,7 +56,7 @@
           "@id": "https://example.org/capas-inteligentes/ro-crate/physical-evidence/0.1"
         }
       ],
-      "datePublished": "2026-06-17T23:26:20.865043Z",
+      "datePublished": "2026-06-18T02:29:44.092081Z",
       "description": "RO-Crate package containing a sealed RunTrace, optional PROV export, routing decision, runtime context, and CAPAS physical evidence metadata.",
       "hasPart": [
         {
@@ -72,7 +72,7 @@
           "@id": "entity:workload"
         },
         {
-          "@id": "trace:04912bbd58ebd9cd:routing-decision"
+          "@id": "trace:fa85f5a079653c0e:routing-decision"
         },
         {
           "@id": "runtrace.prov.json"
@@ -82,7 +82,7 @@
         "@id": "workflow/capas-costurero-run.cwl"
       },
       "mentions": {
-        "@id": "trace:04912bbd58ebd9cd"
+        "@id": "trace:fa85f5a079653c0e"
       },
       "name": "CAPAS traced scientific computation crate"
     },
@@ -118,14 +118,14 @@
         "DigitalDocument"
       ],
       "about": {
-        "@id": "trace:04912bbd58ebd9cd"
+        "@id": "trace:fa85f5a079653c0e"
       },
       "encodingFormat": "application/json",
       "name": "Sealed CAPAS RunTrace",
-      "sha256": "e001dadb653c169ed2b03a9d83e252f647010596724d04fb0e4e49208599084e"
+      "sha256": "75e170142592790a7e76596b9472779d90cb7a2052e20eace0d42a9917ef37c1"
     },
     {
-      "@id": "trace:04912bbd58ebd9cd",
+      "@id": "trace:fa85f5a079653c0e",
       "@type": "CreateAction",
       "actionStatus": "FailedActionStatus",
       "agent": {
@@ -137,11 +137,11 @@
       "capas:evidenceStatus": "not_applicable_failed",
       "capas:hashAlgorithm": "sha256(stable_json)",
       "capas:routingDecision": {
-        "@id": "trace:04912bbd58ebd9cd:routing-decision"
+        "@id": "trace:fa85f5a079653c0e:routing-decision"
       },
-      "capas:traceHash": "04912bbd58ebd9cd5f42760fb96b7803747b742bb8229cec0536f64a1b2b8e53",
+      "capas:traceHash": "fa85f5a079653c0e5cdac5125d6370e9b6e3f31bfe3c1620e0bf65a8c83e31ef",
       "capas:traceSchemaVersion": "capas-runtrace-v2",
-      "endTime": "2026-06-17T23:26:20.865043Z",
+      "endTime": "2026-06-18T02:29:44.092081Z",
       "instrument": {
         "@id": "workflow/capas-costurero-run.cwl"
       },
@@ -149,7 +149,7 @@
       "object": {
         "@id": "entity:workload"
       },
-      "startTime": "2026-06-17T23:26:20.864393Z"
+      "startTime": "2026-06-18T02:29:44.091215Z"
     },
     {
       "@id": "workflow/capas-costurero-run.cwl",
@@ -214,7 +214,7 @@
       "name": "Workload summary"
     },
     {
-      "@id": "trace:04912bbd58ebd9cd:routing-decision",
+      "@id": "trace:fa85f5a079653c0e:routing-decision",
       "@type": "Thing",
       "capas:reason": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
       "capas:route": "external_engine",
@@ -228,10 +228,10 @@
       ],
       "encodingFormat": "application/json",
       "name": "W3C PROV-shaped export",
-      "sha256": "ee51645c202db352d630934a35707cdafc195ddaa8f136040a8d2e86ae4e18f5"
+      "sha256": "1c24e77fd1c72ba78e6214c573a3bb9d87a1cf4238faac66f36d34db090032d3"
     },
     {
-      "@id": "trace:04912bbd58ebd9cd:event:0:ingest",
+      "@id": "trace:fa85f5a079653c0e:event:0:ingest",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -251,10 +251,10 @@
       },
       "description": "workload accepted",
       "name": "ingest",
-      "startTime": 1781738780.864393
+      "startTime": 1781749784.0912151
     },
     {
-      "@id": "trace:04912bbd58ebd9cd:event:1:runtime_context",
+      "@id": "trace:fa85f5a079653c0e:event:1:runtime_context",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -279,10 +279,10 @@
       },
       "description": "runtime and hardware context recorded",
       "name": "runtime_context",
-      "startTime": 1781738780.864488
+      "startTime": 1781749784.091338
     },
     {
-      "@id": "trace:04912bbd58ebd9cd:event:2:engine_provenance",
+      "@id": "trace:fa85f5a079653c0e:event:2:engine_provenance",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -294,10 +294,10 @@
       },
       "description": "external engine provenance recorded",
       "name": "engine_provenance",
-      "startTime": 1781738780.864684
+      "startTime": 1781749784.0916
     },
     {
-      "@id": "trace:04912bbd58ebd9cd:event:3:cost_model",
+      "@id": "trace:fa85f5a079653c0e:event:3:cost_model",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -309,10 +309,10 @@
       },
       "description": "dense statevector cost estimated",
       "name": "cost_model",
-      "startTime": 1781738780.8646882
+      "startTime": 1781749784.091604
     },
     {
-      "@id": "trace:04912bbd58ebd9cd:event:4:route",
+      "@id": "trace:fa85f5a079653c0e:event:4:route",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -322,10 +322,10 @@
       },
       "description": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
       "name": "route",
-      "startTime": 1781738780.864691
+      "startTime": 1781749784.091609
     },
     {
-      "@id": "trace:04912bbd58ebd9cd:event:5:error",
+      "@id": "trace:fa85f5a079653c0e:event:5:error",
       "@type": "Action",
       "actionStatus": "fail",
       "capas:metrics": {
@@ -333,7 +333,7 @@
       },
       "description": "intentional failure for failed-trace coverage",
       "name": "error",
-      "startTime": 1781738780.865043
+      "startTime": 1781749784.0920808
     }
   ]
 }

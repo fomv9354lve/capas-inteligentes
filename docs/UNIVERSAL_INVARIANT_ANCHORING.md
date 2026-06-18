@@ -46,6 +46,9 @@ The current D11 corpus expands that into a small oracle matrix:
 | `trace_030` | `universal_invariant_both_oracles_catch` | catches | catches | Wrong coupling magnitude is caught by local parameter consistency and by the analytic energy invariant. |
 | `trace_031` | `universal_invariant_non_heisenberg_adversarial_failure` | misses | catches | Valid product state fails the Bell entropy invariant `S = ln2`; transfer beyond Heisenberg energy. |
 | `trace_032` | `universal_invariant_no_anchor_control` | misses | not applicable | Valid arbitrary state with no universal anchor; CAPAS records absence instead of inventing evidence. |
+| `trace_033` | `universal_invariant_scaling_law_adversarial_failure` | misses | catches | Positive decreasing Ising gap sequence fits `z=0.5`, violating the scaling anchor `z=1`. |
+| `trace_034` | `universal_invariant_scaling_law_positive_control` | misses | passes | Noisy positive decreasing Ising gaps fit `z=1.004`, inside the preregistered tolerance. |
+| `trace_035` | `universal_invariant_scaling_law_local_catches` | catches | not evaluated | Constant gaps fail local monotonicity, so the scaling anchor is not credited. |
 
 ## Trace 028 Seed
 
@@ -103,6 +106,28 @@ does not prove generality across all physics.
 - no universal anchor is claimed,
 - `physical_evidence_level=no_universal_anchor_control`,
 - `invariant_caught=false`.
+
+## Scaling-Law Anchor
+
+`trace_033` through `trace_035` add a finite-size scaling anchor:
+
+- expected universal exponent: critical Ising gap dynamic exponent `z = 1`,
+- preregistered tolerance: `|z_fit - 1| <= 0.10`,
+- local oracle: positive finite gaps strictly decrease with system size,
+- anchor kind: `absolute_scaling_law`.
+
+Results:
+
+- `trace_033`: local oracle passes, but `z_fit = 0.5`, so the scaling anchor
+  catches the wrong exponent.
+- `trace_034`: local oracle passes and `z_fit = 1.0042907558992258`, so the
+  scaling anchor passes despite small deterministic noise.
+- `trace_035`: local oracle catches a constant sequence before exponent fitting
+  is credited.
+
+This moves D11 beyond exact small-system values, but it is still a synthetic
+finite-size scaling seed. It does not yet demonstrate utility on real agent
+outputs or noisy simulation data.
 
 ## Evidence Fields
 
@@ -174,6 +199,9 @@ trace_029: ok (universal_invariant_local_catches_anchor_not_needed, present, Com
 trace_030: ok (universal_invariant_both_oracles_catch, present, CompletedActionStatus)
 trace_031: ok (universal_invariant_non_heisenberg_adversarial_failure, present, CompletedActionStatus)
 trace_032: ok (universal_invariant_no_anchor_control, present, CompletedActionStatus)
+trace_033: ok (universal_invariant_scaling_law_adversarial_failure, present, CompletedActionStatus)
+trace_034: ok (universal_invariant_scaling_law_positive_control, present, CompletedActionStatus)
+trace_035: ok (universal_invariant_scaling_law_local_catches, present, CompletedActionStatus)
 coverage_ready: True
 fine_tune_ready: False
 ```

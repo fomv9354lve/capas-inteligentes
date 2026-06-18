@@ -56,6 +56,98 @@ def _bell_entropy(state: np.ndarray) -> float:
     return float(-np.sum(eigs * np.log(eigs)))
 
 
+def _scaling_local_property_tests(system_sizes: np.ndarray, gaps: np.ndarray) -> dict[str, bool]:
+    return {
+        "finite_sizes_strictly_increasing": bool(np.all(np.diff(system_sizes) > 0)),
+        "gaps_positive": bool(np.all(gaps > 0.0)),
+        "gaps_finite": bool(np.all(np.isfinite(gaps))),
+        "gaps_strictly_decreasing": bool(np.all(np.diff(gaps) < 0.0)),
+    }
+
+
+def _fit_gap_exponent(system_sizes: np.ndarray, gaps: np.ndarray) -> tuple[float, float]:
+    x = np.log(system_sizes)
+    y = np.log(gaps)
+    slope, intercept = np.polyfit(x, y, 1)
+    predicted = slope * x + intercept
+    residual = y - predicted
+    total = y - np.mean(y)
+    r_squared = 1.0 - float(np.sum(residual**2) / np.sum(total**2))
+    return float(-slope), r_squared
+
+
+def _ising_scaling_payload(
+    *,
+    observable: str,
+    gaps: np.ndarray,
+    generator_error: str,
+    coverage_case: str,
+    physical_evidence_detail: str,
+    pre_registered_success_criterion: str,
+    claim_scope: str,
+) -> dict:
+    sizes = np.array([8, 12, 16, 24, 32, 48], dtype=float)
+    expected_exponent = 1.0
+    exponent_tolerance = 0.10
+    local_tests = _scaling_local_property_tests(sizes, gaps)
+    local_tests_pass = all(local_tests.values())
+    if local_tests_pass:
+        fitted_exponent, r_squared = _fit_gap_exponent(sizes, gaps)
+        abs_error: float | str = abs(fitted_exponent - expected_exponent)
+        universal_anchor_pass: bool | str = bool(abs_error <= exponent_tolerance)
+        invariant_caught: bool | str = bool(not universal_anchor_pass)
+        value: float | str = fitted_exponent
+    else:
+        fitted_exponent = "not_evaluated_local_oracle_failed"
+        r_squared = "not_evaluated_local_oracle_failed"
+        abs_error = "not_evaluated_local_oracle_failed"
+        universal_anchor_pass = "not_evaluated_local_oracle_failed"
+        invariant_caught = False
+        value = "not_evaluated_local_oracle_failed"
+
+    return {
+        "observable": observable,
+        "value": value,
+        "expected": expected_exponent,
+        "abs_error": abs_error,
+        "units": "dynamic_exponent_z",
+        "physical_evidence_level": "scaling_law_anchor",
+        "physical_evidence_detail": physical_evidence_detail,
+        "benchmark_family": "CriticalIsingFiniteSizeScaling",
+        "reference_truth": "critical_ising_gap_dynamic_exponent_z_equals_1",
+        "verification_independence": "theory_scaling_law_no_solver",
+        "coverage_case": coverage_case,
+        "local_property_tests": local_tests,
+        "local_property_tests_pass": local_tests_pass,
+        "local_oracle_caught": bool(not local_tests_pass),
+        "universal_anchor": "critical_ising_gap_delta_L_scales_as_L^-1",
+        "universal_anchor_pass": universal_anchor_pass,
+        "invariant_caught": invariant_caught,
+        "generator_error": generator_error,
+        "anchor_kind": "absolute_scaling_law",
+        "scaling_points": [
+            {"system_size": int(size), "gap": float(gap)}
+            for size, gap in zip(sizes, gaps, strict=True)
+        ],
+        "fitted_exponent": fitted_exponent,
+        "expected_exponent": expected_exponent,
+        "exponent_tolerance": exponent_tolerance,
+        "fit_r_squared": r_squared,
+        "finite_size_notes": (
+            "Synthetic finite-size scaling trace. The preregistered decision is based "
+            "on the fitted exponent z within +/-0.10 of the Ising critical value z=1."
+        ),
+        "structure_mapping": {
+            "generator_output": "finite-size gap sequence",
+            "local_oracle_relation": "positive finite gaps decrease with increasing system size",
+            "universal_oracle_relation": "critical Ising dynamic exponent z=1",
+            "preserved_relation": "same gap sequence judged by local monotonicity and universal scaling exponent",
+        },
+        "pre_registered_success_criterion": pre_registered_success_criterion,
+        "claim_scope": claim_scope,
+    }
+
+
 def _matrix_adversarial_payload(
     *,
     observable: str,
@@ -338,3 +430,75 @@ def normalized_random_state_without_universal_anchor(seed: int = 32) -> dict:
             "no-anchor control only; shows CAPAS can seal local validity while refusing a universal-invariant claim"
         ),
     }
+
+
+def ising_gap_wrong_exponent_passes_local_monotonicity() -> dict:
+    """Scaling-law adversarial case: plausible monotone gaps with wrong exponent."""
+
+    sizes = np.array([8, 12, 16, 24, 32, 48], dtype=float)
+    gaps = 2.0 / np.sqrt(sizes)
+    return _ising_scaling_payload(
+        observable="Generated Ising critical finite-size gap exponent with wrong scaling",
+        gaps=gaps,
+        generator_error="wrong_dynamic_exponent_half_instead_of_one",
+        coverage_case="universal_invariant_scaling_law_adversarial_failure",
+        physical_evidence_detail=(
+            "Scaling-law adversarial case: gaps are positive and strictly decreasing, "
+            "but fit z≈0.5 instead of the critical Ising value z=1."
+        ),
+        pre_registered_success_criterion=(
+            "local_property_tests_pass is true and abs(fitted_exponent - 1.0) > 0.10"
+        ),
+        claim_scope=(
+            "scaling-law seed only; shows a universal exponent anchor can catch a "
+            "plausible monotone finite-size sequence missed by local checks"
+        ),
+    )
+
+
+def ising_gap_correct_exponent_noisy_passes_scaling_anchor() -> dict:
+    """Positive scaling-law control: noisy but correct exponent within tolerance."""
+
+    sizes = np.array([8, 12, 16, 24, 32, 48], dtype=float)
+    noise = np.array([1.012, 0.993, 1.007, 0.996, 1.004, 0.998], dtype=float)
+    gaps = np.pi * noise / sizes
+    return _ising_scaling_payload(
+        observable="Generated Ising critical finite-size gap exponent with small noise",
+        gaps=gaps,
+        generator_error="none_declared_noisy_scaling_control",
+        coverage_case="universal_invariant_scaling_law_positive_control",
+        physical_evidence_detail=(
+            "Positive scaling-law control: finite-size gaps include small deterministic "
+            "noise but fit the critical Ising exponent z=1 within the preregistered tolerance."
+        ),
+        pre_registered_success_criterion=(
+            "local_property_tests_pass is true and abs(fitted_exponent - 1.0) <= 0.10"
+        ),
+        claim_scope=(
+            "positive scaling-law control only; shows CAPAS can seal a noisy sequence "
+            "that satisfies the preregistered universal exponent tolerance"
+        ),
+    )
+
+
+def ising_gap_constant_sequence_local_catches_before_scaling() -> dict:
+    """Generator-trivial negative control: local monotonicity rejects first."""
+
+    gaps = np.full(6, 0.25, dtype=float)
+    return _ising_scaling_payload(
+        observable="Generated Ising critical finite-size gap exponent from constant sequence",
+        gaps=gaps,
+        generator_error="constant_gap_sequence",
+        coverage_case="universal_invariant_scaling_law_local_catches",
+        physical_evidence_detail=(
+            "Generator-trivial negative control: constant gaps are positive and finite "
+            "but fail the local decreasing-gap oracle before exponent fitting is credited."
+        ),
+        pre_registered_success_criterion=(
+            "local_property_tests_pass is false and universal_anchor_pass is not_evaluated_local_oracle_failed"
+        ),
+        claim_scope=(
+            "negative scaling-law control only; local monotonicity is sufficient and "
+            "the universal exponent anchor is not credited"
+        ),
+    )

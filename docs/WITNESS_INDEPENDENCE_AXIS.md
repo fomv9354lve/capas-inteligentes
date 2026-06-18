@@ -12,6 +12,7 @@ instead of collapsing them into a single "verified" label.
 | Level | Strength | Meaning | Current coverage |
 |---|---:|---|---|
 | `analytic_no_solver` | 5 | Closed-form truth, no computational witness. | analytic traces |
+| `theory_scaling_law_no_solver` | 5 | Theory-known scaling law or universal exponent; no computational witness, but fit/tolerance applies. | `trace_033`, `trace_034`, `trace_035` |
 | `different_library_same_runtime` | 4 | Different library checks the result inside the same Python/runtime process. | `trace_018` |
 | `different_method_same_runtime` | 4 | Different computational method checks the result inside the same runtime. | `trace_019` |
 | `same_runtime_exact_fci_with_external_experimental_reference` | 4 | Same-runtime exact model solve compared with external measured reference. | `trace_021` |
@@ -54,6 +55,9 @@ optimization speedup.
 4. Any new `verification_independence` value must be added to
    `benchmarks/validate_witness_independence.py` and covered by at least one
    trace or listed as explicit debt.
+5. Do not collapse `theory_scaling_law_no_solver` into `analytic_no_solver`:
+   scaling-law evidence needs finite-size points, fit method, and a
+   preregistered tolerance.
 
 ## Open Debt
 

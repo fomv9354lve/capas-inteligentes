@@ -118,10 +118,22 @@ The current matrix does not demonstrate:
 - effectiveness on scaling laws or finite-size noisy data,
 - novelty over scientific software MT as a testing idea.
 
+## Scaling-Law Seed Status
+
+`trace_033` through `trace_035` add a synthetic Ising finite-size scaling seed:
+
+- expected exponent: `z = 1`,
+- preregistered tolerance: `|z_fit - 1| <= 0.10`,
+- local oracle: positive finite gaps strictly decrease with size,
+- anchor kind: `absolute_scaling_law`.
+
+This closes the first "not only exact small-system values" debt, but it remains
+synthetic.
+
 ## Next Non-Degradable Step
 
-Add a scaling-law anchor, such as Ising critical exponent or Kibble-Zurek
-scaling, with:
+Replace the synthetic scaling sequence with at least one real generated sequence
+from an agent or simulation, still carrying:
 
 - preregistered tolerance,
 - finite-size/error bars,
@@ -131,4 +143,4 @@ scaling, with:
 - explicit statement whether the result is absolute-value anchoring,
   metamorphic-relation anchoring, or both.
 
-Done when D11 is no longer only exact small-system invariants.
+Done when D11 includes a scaling-law anchor over non-synthetic generated data.

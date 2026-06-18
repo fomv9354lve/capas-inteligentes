@@ -27,6 +27,9 @@ EXPECTED = {
     "trace_030": ("universal_invariant_both_oracles_catch", "present", True, "CompletedActionStatus"),
     "trace_031": ("universal_invariant_non_heisenberg_adversarial_failure", "present", True, "CompletedActionStatus"),
     "trace_032": ("universal_invariant_no_anchor_control", "present", True, "CompletedActionStatus"),
+    "trace_033": ("universal_invariant_scaling_law_adversarial_failure", "present", True, "CompletedActionStatus"),
+    "trace_034": ("universal_invariant_scaling_law_positive_control", "present", True, "CompletedActionStatus"),
+    "trace_035": ("universal_invariant_scaling_law_local_catches", "present", True, "CompletedActionStatus"),
     "trace_012": ("no_evidence_success", "none_declared", False, "CompletedActionStatus"),
     "trace_013": ("backend_failed", "not_applicable_failed", False, "FailedActionStatus"),
     "trace_014": ("rejected_by_router", "not_applicable_rejected", False, "CompletedActionStatus"),
@@ -169,6 +172,29 @@ def main() -> int:
                 assert evidence.get("capas:localOracleCaught") is False, "local oracle should not catch valid arbitrary state"
                 assert evidence.get("capas:universalAnchorPass") == "not_applicable_no_universal_anchor", "anchor should be not applicable"
                 assert evidence.get("capas:invariantCaught") is False, "no invariant should be credited"
+            elif coverage == "universal_invariant_scaling_law_adversarial_failure":
+                assert evidence.get("capas:physicalEvidenceLevel") == "scaling_law_anchor", "wrong scaling evidence level"
+                assert evidence.get("capas:anchorKind") == "absolute_scaling_law", "wrong anchor kind"
+                assert evidence.get("capas:localPropertyTestsPass") is True, "local scaling checks should pass"
+                assert evidence.get("capas:universalAnchorPass") is False, "scaling anchor should fail"
+                assert evidence.get("capas:invariantCaught") is True, "scaling invariant should catch"
+                assert evidence.get("capas:absError") > evidence.get("capas:exponentTolerance"), "exponent error should exceed tolerance"
+                assert len(evidence.get("capas:scalingPoints", [])) >= 5, "missing scaling points"
+            elif coverage == "universal_invariant_scaling_law_positive_control":
+                assert evidence.get("capas:physicalEvidenceLevel") == "scaling_law_anchor", "wrong scaling evidence level"
+                assert evidence.get("capas:anchorKind") == "absolute_scaling_law", "wrong anchor kind"
+                assert evidence.get("capas:localPropertyTestsPass") is True, "local scaling checks should pass"
+                assert evidence.get("capas:universalAnchorPass") is True, "scaling anchor should pass"
+                assert evidence.get("capas:invariantCaught") is False, "positive control should not be caught"
+                assert evidence.get("capas:absError") <= evidence.get("capas:exponentTolerance"), "exponent error should be within tolerance"
+                assert len(evidence.get("capas:scalingPoints", [])) >= 5, "missing scaling points"
+            elif coverage == "universal_invariant_scaling_law_local_catches":
+                assert evidence.get("capas:physicalEvidenceLevel") == "scaling_law_anchor", "wrong scaling evidence level"
+                assert evidence.get("capas:anchorKind") == "absolute_scaling_law", "wrong anchor kind"
+                assert evidence.get("capas:localPropertyTestsPass") is False, "local scaling checks should fail"
+                assert evidence.get("capas:localOracleCaught") is True, "local oracle should catch constant sequence"
+                assert evidence.get("capas:universalAnchorPass") == "not_evaluated_local_oracle_failed", "scaling anchor should not be credited"
+                assert evidence.get("capas:invariantCaught") is False, "invariant should not be credited"
             print(f"{trace_id}: ok ({coverage}, {status}, {action_status})")
         except Exception as exc:
             failures.append(f"{trace_id}: {type(exc).__name__}: {exc}")

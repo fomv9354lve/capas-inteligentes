@@ -51,9 +51,9 @@ Current validation status:
 coverage_ready: True
 fine_tune_ready: False
 local RO-Crate validation: passed
-local CAPAS physical-evidence profile validation: passed for 32/32 crates
+local CAPAS physical-evidence profile validation: passed for 35/35 crates
 local Workflow Run Crate shape check: passed through CAPAS profile validator
-external ResearchObject RO-Crate validation: valid for 32/32 crates
+external ResearchObject RO-Crate validation: valid for 35/35 crates
 external warning: none
 witness independence validation: passed
 reproducibility environment check: passed in local physics-magnitude-lab pixi env
@@ -85,6 +85,9 @@ engine.
 | `universal_invariant_both_oracles_catch` | 1 | covered | local oracle and universal anchor both catch |
 | `universal_invariant_non_heisenberg_adversarial_failure` | 1 | covered | valid product state fails Bell entropy invariant |
 | `universal_invariant_no_anchor_control` | 1 | covered | locally valid arbitrary state with no claimed universal anchor |
+| `universal_invariant_scaling_law_adversarial_failure` | 1 | covered | plausible decreasing Ising gaps violate universal exponent |
+| `universal_invariant_scaling_law_positive_control` | 1 | covered | noisy Ising gaps satisfy universal exponent tolerance |
+| `universal_invariant_scaling_law_local_catches` | 1 | covered | constant gaps rejected locally before scaling anchor is credited |
 | `formal_bound_success` | 1 | covered | formal single-cut Schmidt truncation certificate |
 | `formal_bound_composition_success` | 1 | covered | formal multi-step state truncation bound |
 | `estimated_bound_candidate` | 1 | covered | useful estimator, not formal |
@@ -102,6 +105,7 @@ formal_bound: 2
 estimated_bound: 1
 none: 3
 no_universal_anchor_control: 1
+scaling_law_anchor: 3
 ```
 
 ## What Works
@@ -112,7 +116,7 @@ no_universal_anchor_control: 1
 4. Workflow Run RO-Crate-compatible shape.
 5. External RO-Crate validation through ResearchObject `rocrateValidator`.
 6. CAPAS `PhysicalEvidence` entity in RO-Crate and PROV exports.
-7. Local CAPAS physical-evidence profile validation over all 32 crates.
+7. Local CAPAS physical-evidence profile validation over all 35 crates.
 8. Honest distinction between:
    - analytic truth
    - cross-sim witness
@@ -228,7 +232,10 @@ no_universal_anchor_control: 1
    - `trace_030`: local catches, anchor catches too
    - `trace_031`: local misses, Bell entropy anchor catches
    - `trace_032`: local passes, no universal anchor claimed
-   - audit decision: all five are `reject`, because adversarial/control traces
+   - `trace_033`: local misses, Ising scaling-law anchor catches wrong exponent
+   - `trace_034`: local misses, Ising scaling-law positive control passes tolerance
+   - `trace_035`: local catches constant gaps before scaling anchor is credited
+   - audit decision: all eight are `reject`, because adversarial/control traces
      must not become fine-tune gold
    - lesson: the current evidence supports complementarity, not domination;
      universal anchors add coverage in some cells and are redundant or
@@ -262,7 +269,7 @@ These are hard guardrails.
     without recording `reference_definition_match` and any correction.
 13. Do not treat same-model harmonic ZPE as anharmonic spectroscopy.
 14. Do not claim universal invariant anchoring is generally useful from the
-    current five-trace matrix.
+    current eight-trace matrix.
 15. Any universal-invariant claim must record:
     - local oracle and result
     - universal anchor and result
@@ -301,7 +308,7 @@ Debt:
 
 Done when:
 
-- a fresh clone can regenerate the 32 traces with one documented command
+- a fresh clone can regenerate the 35 traces with one documented command
 - `physics_magnitude_lab` is installed from a pinned local path, package version,
   or declared workspace dependency
 
@@ -321,7 +328,7 @@ Current state:
 ```text
 fine_tune_ready: False
 hold: 24
-reject: 8
+reject: 11
 blank: 0
 ```
 
@@ -405,6 +412,7 @@ What exists:
   - `algorithmic_certificate_exact_svd_same_runtime`: 2
   - `algorithmic_error_certificate_same_runtime`: 1
   - `none`: 4
+  - `theory_scaling_law_no_solver`: 3
 
 Next step:
 
@@ -704,7 +712,8 @@ Done when:
 
 ### D11. Universal Invariant Anchoring
 
-Status: seed falsation matrix complete; positioned against Metamorphic Testing.
+Status: seed falsation matrix plus scaling-law anchor complete; positioned
+against Metamorphic Testing.
 
 What exists:
 
@@ -715,21 +724,28 @@ What exists:
 - `trace_030`: local catches, Heisenberg energy anchor catches too
 - `trace_031`: local misses, Bell entropy anchor catches
 - `trace_032`: local passes, no universal anchor is claimed
+- `trace_033`: local passes, Ising scaling-law anchor catches wrong exponent
+- `trace_034`: local passes, Ising scaling-law anchor passes noisy positive control
+- `trace_035`: local catches constant gaps before scaling anchor is credited
 - coverage cases:
   - `universal_invariant_adversarial_failure`
   - `universal_invariant_local_catches_anchor_not_needed`
   - `universal_invariant_both_oracles_catch`
   - `universal_invariant_non_heisenberg_adversarial_failure`
   - `universal_invariant_no_anchor_control`
+  - `universal_invariant_scaling_law_adversarial_failure`
+  - `universal_invariant_scaling_law_positive_control`
+  - `universal_invariant_scaling_law_local_catches`
 - evidence levels:
   - `analytic`
   - `no_universal_anchor_control`
-- audit decision: all five are `reject`
+  - `scaling_law_anchor`
+- audit decision: all eight D11 traces are `reject`
 
 Scope:
 
-- minimal matrix only, not a benchmark suite
-- two invariant types: Heisenberg energy and Bell entropy
+- minimal matrix plus synthetic scaling-law seed, not a benchmark suite
+- three invariant types: Heisenberg energy, Bell entropy, and Ising gap scaling
 - one no-anchor control
 - supports complementarity of local oracles and universal anchors
 - does not prove general superiority over PBT/RvLLM-style local properties
@@ -739,16 +755,16 @@ Scope:
 
 Next step:
 
-- add a finite-size/scaling invariant case, such as Ising critical exponent or
-  Kibble-Zurek scaling, because current anchors are exact small-system
-  invariants
 - add randomized adversarial variants with pre-registered thresholds rather
   than one hand-constructed example per cell
 - label each future D11 case as absolute-anchor, metamorphic-relation, or mixed
+- replace synthetic scaling data with at least one real agent-generated or
+  simulation-generated sequence
 
 Done when:
 
-- the invariant-anchor axis has exact-value and scaling-law anchors
+- the invariant-anchor axis has exact-value and scaling-law anchors over at
+  least one non-synthetic generated workload
 - controls include local-only, redundant, no-anchor, and noisy/generator-trivial
   cases
 - validators reject missing `claim_scope` or missing local/universal oracle

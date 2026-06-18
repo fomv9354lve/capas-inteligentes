@@ -36,7 +36,7 @@
       "@id": "./",
       "@type": "Dataset",
       "capas:evidenceStatus": "present",
-      "capas:traceHash": "2de652845e4bb1614c4e33c09c1980bd61aac1d799da57cffd6b32891e5743fd",
+      "capas:traceHash": "08c7487e70632381a76b1e9e99c70830e7c0bf3e3cebb420935f2a954c30ba19",
       "capas:workflowRunCrateAlignment": "shape-compatible-with-workflow-run-crate-0.5",
       "capas:workloadHash": "3ad2124a327c45b61d643712396322e36e919840fee861b20d6c75f6c4da9405",
       "conformsTo": [
@@ -56,7 +56,7 @@
           "@id": "https://example.org/capas-inteligentes/ro-crate/physical-evidence/0.1"
         }
       ],
-      "datePublished": "2026-06-17T23:25:02.220319Z",
+      "datePublished": "2026-06-18T02:27:51.353025Z",
       "description": "RO-Crate package containing a sealed RunTrace, optional PROV export, routing decision, runtime context, and CAPAS physical evidence metadata.",
       "hasPart": [
         {
@@ -72,23 +72,23 @@
           "@id": "entity:workload"
         },
         {
-          "@id": "trace:2de652845e4bb161:routing-decision"
+          "@id": "trace:08c7487e70632381:routing-decision"
         },
         {
-          "@id": "trace:2de652845e4bb161:result"
+          "@id": "trace:08c7487e70632381:result"
         },
         {
           "@id": "runtrace.prov.json"
         },
         {
-          "@id": "trace:2de652845e4bb161:physical-evidence"
+          "@id": "trace:08c7487e70632381:physical-evidence"
         }
       ],
       "mainEntity": {
         "@id": "workflow/capas-costurero-run.cwl"
       },
       "mentions": {
-        "@id": "trace:2de652845e4bb161"
+        "@id": "trace:08c7487e70632381"
       },
       "name": "CAPAS traced scientific computation crate"
     },
@@ -124,14 +124,14 @@
         "DigitalDocument"
       ],
       "about": {
-        "@id": "trace:2de652845e4bb161"
+        "@id": "trace:08c7487e70632381"
       },
       "encodingFormat": "application/json",
       "name": "Sealed CAPAS RunTrace",
-      "sha256": "0f7948f52cf1f4d52d7bbd4e69a92f1297d5cb1ab84a7facdd149e20b1d627b0"
+      "sha256": "3548f80b89ab08fdf37f6948f6637d6a46c250367435c286e1dd6299d53d5d69"
     },
     {
-      "@id": "trace:2de652845e4bb161",
+      "@id": "trace:08c7487e70632381",
       "@type": "CreateAction",
       "actionStatus": "CompletedActionStatus",
       "agent": {
@@ -142,11 +142,11 @@
       "capas:evidenceStatus": "present",
       "capas:hashAlgorithm": "sha256(stable_json)",
       "capas:routingDecision": {
-        "@id": "trace:2de652845e4bb161:routing-decision"
+        "@id": "trace:08c7487e70632381:routing-decision"
       },
-      "capas:traceHash": "2de652845e4bb1614c4e33c09c1980bd61aac1d799da57cffd6b32891e5743fd",
+      "capas:traceHash": "08c7487e70632381a76b1e9e99c70830e7c0bf3e3cebb420935f2a954c30ba19",
       "capas:traceSchemaVersion": "capas-runtrace-v2",
-      "endTime": "2026-06-17T23:25:02.220319Z",
+      "endTime": "2026-06-18T02:27:51.353025Z",
       "instrument": {
         "@id": "workflow/capas-costurero-run.cwl"
       },
@@ -155,9 +155,9 @@
         "@id": "entity:workload"
       },
       "result": {
-        "@id": "trace:2de652845e4bb161:result"
+        "@id": "trace:08c7487e70632381:result"
       },
-      "startTime": "2026-06-17T23:25:01.948312Z"
+      "startTime": "2026-06-18T02:27:51.158707Z"
     },
     {
       "@id": "workflow/capas-costurero-run.cwl",
@@ -222,7 +222,7 @@
       "name": "Workload summary"
     },
     {
-      "@id": "trace:2de652845e4bb161:routing-decision",
+      "@id": "trace:08c7487e70632381:routing-decision",
       "@type": "Thing",
       "capas:reason": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
       "capas:route": "external_engine",
@@ -236,18 +236,18 @@
       ],
       "encodingFormat": "application/json",
       "name": "W3C PROV-shaped export",
-      "sha256": "ba58b799c803c496bf7584844358654af31e4b9c03a4be6808b31ab318c39472"
+      "sha256": "1de95bad1a2aa02a5cdecb5afc97d3490cab7696c98eb7df8de1f4753d2ad1cf"
     },
     {
-      "@id": "trace:2de652845e4bb161:result",
+      "@id": "trace:08c7487e70632381:result",
       "@type": "Dataset",
       "capas:physicalEvidence": {
-        "@id": "trace:2de652845e4bb161:physical-evidence"
+        "@id": "trace:08c7487e70632381:physical-evidence"
       },
-      "capas:resultHash": "80685221ccdbf4b4c1a39f84c80229ffad550211420eea3ef20de2c497569910",
+      "capas:resultHash": "6b2e18407d0fe11f48c9b2106bb584b355ce387ee2e41c83472dc116274a3c50",
       "capas:summary": {
         "abs_error": 0.0,
-        "abs_error_vs_experimental": 0.0015326709489776047,
+        "abs_error_vs_experimental": 0.0015326709489767165,
         "abs_error_vs_fci": 0.0,
         "basis": "cc-pvtz",
         "basis_orbitals": 28,
@@ -259,7 +259,7 @@
         "expected": {
           "chemical_accuracy_threshold_hartree": 0.0015936,
           "reference_experimental_de_corrected_hartree": 0.1742487425404671,
-          "reference_fci_total_energy_hartree": -1.172335694195175
+          "reference_fci_total_energy_hartree": -1.172335694195176
         },
         "experimental_binding_energy_hartree": 0.1742487425404671,
         "falsification_notes": [
@@ -287,29 +287,29 @@
           }
         ],
         "harmonic_frequencies_cm_inverse": [
-          4487.191403684354
+          4487.191403684353
         ],
-        "model_binding_energy_hartree": 0.1727160715914895,
-        "model_error_hartree": 0.0015326709489776047,
+        "model_binding_energy_hartree": 0.17271607159149038,
+        "model_error_hartree": 0.0015326709489767165,
         "observable": "H2 cc-pVTZ electronic binding energy vs ZPE-corrected experimental D_e reference",
         "physical_evidence_detail": "H2/cc-pVTZ electronic binding energy is compared to a D_e-like reference rather than raw D0. The D_e reference is formed by adding the same-model harmonic ZPE to measured D0. This records reference-definition correction: electronic D_e-like quantity versus D0-with-vibration was the mismatch in trace_023.",
         "physical_evidence_level": "experimental",
-        "reference_definition_corrected_error_hartree": 0.0015326709489776047,
+        "reference_definition_corrected_error_hartree": 0.0015326709489767165,
         "reference_definition_correction": {
           "computed_quantity": "clamped-nuclei electronic binding energy",
           "correction": "D_e ~= D0 + ZPE_harmonic(model)",
           "harmonic_frequencies_cm_inverse": [
-            4487.191403684354
+            4487.191403684353
           ],
           "quality": "same_model_harmonic_vibrational_correction_not_full_spectroscopic_audit",
           "raw_reference": "D0 includes vibrational zero-point energy",
-          "zpe_cm_inverse": 2243.595701842177,
-          "zpe_hartree": 0.010222574189245194
+          "zpe_cm_inverse": 2243.5957018421764,
+          "zpe_hartree": 0.010222574189245192
         },
-        "reference_definition_error_hartree": 0.008689903240267582,
+        "reference_definition_error_hartree": 0.00868990324026847,
         "reference_definition_match": "corrected_model_harmonic_D0_plus_ZPE_to_match_electronic_De",
         "reference_experimental_d0_cm_inverse": 35999.582834,
-        "reference_fci_total_energy_hartree": -1.172335694195175,
+        "reference_fci_total_energy_hartree": -1.172335694195176,
         "reference_truth": {
           "chemical_accuracy": {
             "threshold_hartree": 0.0015936,
@@ -319,7 +319,7 @@
             "corrected_quantity": "model-harmonic D_e = D0 + ZPE_harmonic(model)",
             "corrected_value_hartree": 0.1742487425404671,
             "harmonic_frequencies_cm_inverse": [
-              4487.191403684354
+              4487.191403684353
             ],
             "kind": "measured_dissociation_energy_with_reference_definition_correction",
             "raw_quantity": "D0(N=1) ortho-H2",
@@ -327,15 +327,15 @@
             "raw_value_hartree": 0.1640261683512219,
             "source": "D0: H\u00f6lsch et al. 2019, arXiv:1902.09471; ZPE: PySCF harmonic analysis from the declared cc-pVTZ electronic model",
             "zpe_quantity": "same-model harmonic zero-point vibrational energy",
-            "zpe_value_cm_inverse": 2243.595701842177,
-            "zpe_value_hartree": 0.010222574189245194
+            "zpe_value_cm_inverse": 2243.5957018421764,
+            "zpe_value_hartree": 0.010222574189245192
           },
           "fci": {
             "basis": "cc-pvtz",
             "geometry": "H-H 0.7414 Angstrom",
             "kind": "exact_model_solution",
             "method": "PySCF FCI",
-            "total_energy_hartree": -1.172335694195175
+            "total_energy_hartree": -1.172335694195176
           }
         },
         "repr": "{'engine_id': 'physics_magnitude_gold_engines.h2_ccpvtz_reference_definition_corrected', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/phys",
@@ -347,22 +347,22 @@
           "basis_orbitals": 28,
           "experimental_d0_hartree": 0.1640261683512219,
           "experimental_de_corrected_hartree": 0.1742487425404671,
-          "fci_total_energy_hartree": -1.172335694195175,
+          "fci_total_energy_hartree": -1.172335694195176,
           "harmonic_frequencies_cm_inverse": [
-            4487.191403684354
+            4487.191403684353
           ],
           "model_atom_energy_hartree": -0.49980981130184277,
-          "model_binding_energy_hartree": 0.1727160715914895,
-          "reference_definition_corrected_error_hartree": 0.0015326709489776047,
+          "model_binding_energy_hartree": 0.17271607159149038,
+          "reference_definition_corrected_error_hartree": 0.0015326709489767165,
           "solver_error_hartree": 0.0,
-          "uncorrected_reference_error_hartree": 0.008689903240267582,
+          "uncorrected_reference_error_hartree": 0.00868990324026847,
           "within_chemical_accuracy": true,
-          "zpe_cm_inverse": 2243.595701842177,
-          "zpe_hartree": 0.010222574189245194
+          "zpe_cm_inverse": 2243.5957018421764,
+          "zpe_hartree": 0.010222574189245192
         },
         "verification_independence": "same_runtime_exact_fci_with_external_experimental_reference",
-        "vibrational_zpe_cm_inverse": 2243.595701842177,
-        "vibrational_zpe_hartree": 0.010222574189245194,
+        "vibrational_zpe_cm_inverse": 2243.5957018421764,
+        "vibrational_zpe_hartree": 0.010222574189245192,
         "within_chemical_accuracy": true,
         "witness_stack": {
           "primary": "PySCF FCI exact cc-pVTZ model solve",
@@ -376,13 +376,13 @@
       "name": "Result summary"
     },
     {
-      "@id": "trace:2de652845e4bb161:physical-evidence",
+      "@id": "trace:08c7487e70632381:physical-evidence",
       "@type": "capas:PhysicalEvidence",
       "about": {
-        "@id": "trace:2de652845e4bb161:result"
+        "@id": "trace:08c7487e70632381:result"
       },
       "capas:absError": 0.0,
-      "capas:absErrorVsExperimental": 0.0015326709489776047,
+      "capas:absErrorVsExperimental": 0.0015326709489767165,
       "capas:absErrorVsFci": 0.0,
       "capas:basis": "cc-pvtz",
       "capas:basisOrbitals": 28,
@@ -391,12 +391,12 @@
       "capas:boundScope": "single_molecule_larger_basis_reference_definition_corrected",
       "capas:chemicalAccuracyThresholdHartree": 0.0015936,
       "capas:detail": "H2/cc-pVTZ electronic binding energy is compared to a D_e-like reference rather than raw D0. The D_e reference is formed by adding the same-model harmonic ZPE to measured D0. This records reference-definition correction: electronic D_e-like quantity versus D0-with-vibration was the mismatch in trace_023.",
-      "capas:evidenceHash": "d9e7c2e28b142f5209bfef5e7c631d5817a885d34fbd708a41523d08c64f4b58",
+      "capas:evidenceHash": "76c2c33822a14a1dadb1f9963c7a553e339df8267fd8ab753d176b13942a9363",
       "capas:evidenceStatusDetail": "experimental_reference_definition_corrected_approximate_zpe",
       "capas:expected": {
         "chemical_accuracy_threshold_hartree": 0.0015936,
         "reference_experimental_de_corrected_hartree": 0.1742487425404671,
-        "reference_fci_total_energy_hartree": -1.172335694195175
+        "reference_fci_total_energy_hartree": -1.172335694195176
       },
       "capas:experimentalBindingEnergyHartree": 0.1742487425404671,
       "capas:falsificationNotes": [
@@ -424,28 +424,28 @@
         }
       ],
       "capas:harmonicFrequenciesCmInverse": [
-        4487.191403684354
+        4487.191403684353
       ],
-      "capas:modelBindingEnergyHartree": 0.1727160715914895,
-      "capas:modelErrorHartree": 0.0015326709489776047,
+      "capas:modelBindingEnergyHartree": 0.17271607159149038,
+      "capas:modelErrorHartree": 0.0015326709489767165,
       "capas:observable": "H2 cc-pVTZ electronic binding energy vs ZPE-corrected experimental D_e reference",
       "capas:physicalEvidenceLevel": "experimental",
-      "capas:referenceDefinitionCorrectedErrorHartree": 0.0015326709489776047,
+      "capas:referenceDefinitionCorrectedErrorHartree": 0.0015326709489767165,
       "capas:referenceDefinitionCorrection": {
         "computed_quantity": "clamped-nuclei electronic binding energy",
         "correction": "D_e ~= D0 + ZPE_harmonic(model)",
         "harmonic_frequencies_cm_inverse": [
-          4487.191403684354
+          4487.191403684353
         ],
         "quality": "same_model_harmonic_vibrational_correction_not_full_spectroscopic_audit",
         "raw_reference": "D0 includes vibrational zero-point energy",
-        "zpe_cm_inverse": 2243.595701842177,
-        "zpe_hartree": 0.010222574189245194
+        "zpe_cm_inverse": 2243.5957018421764,
+        "zpe_hartree": 0.010222574189245192
       },
-      "capas:referenceDefinitionErrorHartree": 0.008689903240267582,
+      "capas:referenceDefinitionErrorHartree": 0.00868990324026847,
       "capas:referenceDefinitionMatch": "corrected_model_harmonic_D0_plus_ZPE_to_match_electronic_De",
       "capas:referenceExperimentalD0CmInverse": 35999.582834,
-      "capas:referenceFciTotalEnergyHartree": -1.172335694195175,
+      "capas:referenceFciTotalEnergyHartree": -1.172335694195176,
       "capas:referenceTruth": {
         "chemical_accuracy": {
           "threshold_hartree": 0.0015936,
@@ -455,7 +455,7 @@
           "corrected_quantity": "model-harmonic D_e = D0 + ZPE_harmonic(model)",
           "corrected_value_hartree": 0.1742487425404671,
           "harmonic_frequencies_cm_inverse": [
-            4487.191403684354
+            4487.191403684353
           ],
           "kind": "measured_dissociation_energy_with_reference_definition_correction",
           "raw_quantity": "D0(N=1) ortho-H2",
@@ -463,15 +463,15 @@
           "raw_value_hartree": 0.1640261683512219,
           "source": "D0: H\u00f6lsch et al. 2019, arXiv:1902.09471; ZPE: PySCF harmonic analysis from the declared cc-pVTZ electronic model",
           "zpe_quantity": "same-model harmonic zero-point vibrational energy",
-          "zpe_value_cm_inverse": 2243.595701842177,
-          "zpe_value_hartree": 0.010222574189245194
+          "zpe_value_cm_inverse": 2243.5957018421764,
+          "zpe_value_hartree": 0.010222574189245192
         },
         "fci": {
           "basis": "cc-pvtz",
           "geometry": "H-H 0.7414 Angstrom",
           "kind": "exact_model_solution",
           "method": "PySCF FCI",
-          "total_energy_hartree": -1.172335694195175
+          "total_energy_hartree": -1.172335694195176
         }
       },
       "capas:solverErrorHartree": 0.0,
@@ -481,22 +481,22 @@
         "basis_orbitals": 28,
         "experimental_d0_hartree": 0.1640261683512219,
         "experimental_de_corrected_hartree": 0.1742487425404671,
-        "fci_total_energy_hartree": -1.172335694195175,
+        "fci_total_energy_hartree": -1.172335694195176,
         "harmonic_frequencies_cm_inverse": [
-          4487.191403684354
+          4487.191403684353
         ],
         "model_atom_energy_hartree": -0.49980981130184277,
-        "model_binding_energy_hartree": 0.1727160715914895,
-        "reference_definition_corrected_error_hartree": 0.0015326709489776047,
+        "model_binding_energy_hartree": 0.17271607159149038,
+        "reference_definition_corrected_error_hartree": 0.0015326709489767165,
         "solver_error_hartree": 0.0,
-        "uncorrected_reference_error_hartree": 0.008689903240267582,
+        "uncorrected_reference_error_hartree": 0.00868990324026847,
         "within_chemical_accuracy": true,
-        "zpe_cm_inverse": 2243.595701842177,
-        "zpe_hartree": 0.010222574189245194
+        "zpe_cm_inverse": 2243.5957018421764,
+        "zpe_hartree": 0.010222574189245192
       },
       "capas:verificationIndependence": "same_runtime_exact_fci_with_external_experimental_reference",
-      "capas:vibrationalZpeCmInverse": 2243.595701842177,
-      "capas:vibrationalZpeHartree": 0.010222574189245194,
+      "capas:vibrationalZpeCmInverse": 2243.5957018421764,
+      "capas:vibrationalZpeHartree": 0.010222574189245192,
       "capas:withinChemicalAccuracy": true,
       "capas:witnessStack": {
         "primary": "PySCF FCI exact cc-pVTZ model solve",
@@ -506,7 +506,7 @@
       "name": "Physical evidence attached to result"
     },
     {
-      "@id": "trace:2de652845e4bb161:event:0:ingest",
+      "@id": "trace:08c7487e70632381:event:0:ingest",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -526,10 +526,10 @@
       },
       "description": "workload accepted",
       "name": "ingest",
-      "startTime": 1781738701.948312
+      "startTime": 1781749671.158707
     },
     {
-      "@id": "trace:2de652845e4bb161:event:1:runtime_context",
+      "@id": "trace:08c7487e70632381:event:1:runtime_context",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -554,10 +554,10 @@
       },
       "description": "runtime and hardware context recorded",
       "name": "runtime_context",
-      "startTime": 1781738701.948431
+      "startTime": 1781749671.158805
     },
     {
-      "@id": "trace:2de652845e4bb161:event:2:engine_provenance",
+      "@id": "trace:08c7487e70632381:event:2:engine_provenance",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -569,10 +569,10 @@
       },
       "description": "external engine provenance recorded",
       "name": "engine_provenance",
-      "startTime": 1781738701.948538
+      "startTime": 1781749671.158916
     },
     {
-      "@id": "trace:2de652845e4bb161:event:3:cost_model",
+      "@id": "trace:08c7487e70632381:event:3:cost_model",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -584,10 +584,10 @@
       },
       "description": "dense statevector cost estimated",
       "name": "cost_model",
-      "startTime": 1781738701.9485419
+      "startTime": 1781749671.15892
     },
     {
-      "@id": "trace:2de652845e4bb161:event:4:route",
+      "@id": "trace:08c7487e70632381:event:4:route",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
@@ -597,15 +597,15 @@
       },
       "description": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
       "name": "route",
-      "startTime": 1781738701.948545
+      "startTime": 1781749671.158923
     },
     {
-      "@id": "trace:2de652845e4bb161:event:5:execute",
+      "@id": "trace:08c7487e70632381:event:5:execute",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
         "abs_error": 0.0,
-        "abs_error_vs_experimental": 0.0015326709489776047,
+        "abs_error_vs_experimental": 0.0015326709489767165,
         "abs_error_vs_fci": 0.0,
         "basis": "cc-pvtz",
         "basis_orbitals": 28,
@@ -617,7 +617,7 @@
         "expected": {
           "chemical_accuracy_threshold_hartree": 0.0015936,
           "reference_experimental_de_corrected_hartree": 0.1742487425404671,
-          "reference_fci_total_energy_hartree": -1.172335694195175
+          "reference_fci_total_energy_hartree": -1.172335694195176
         },
         "experimental_binding_energy_hartree": 0.1742487425404671,
         "falsification_notes": [
@@ -645,29 +645,29 @@
           }
         ],
         "harmonic_frequencies_cm_inverse": [
-          4487.191403684354
+          4487.191403684353
         ],
-        "model_binding_energy_hartree": 0.1727160715914895,
-        "model_error_hartree": 0.0015326709489776047,
+        "model_binding_energy_hartree": 0.17271607159149038,
+        "model_error_hartree": 0.0015326709489767165,
         "observable": "H2 cc-pVTZ electronic binding energy vs ZPE-corrected experimental D_e reference",
         "physical_evidence_detail": "H2/cc-pVTZ electronic binding energy is compared to a D_e-like reference rather than raw D0. The D_e reference is formed by adding the same-model harmonic ZPE to measured D0. This records reference-definition correction: electronic D_e-like quantity versus D0-with-vibration was the mismatch in trace_023.",
         "physical_evidence_level": "experimental",
-        "reference_definition_corrected_error_hartree": 0.0015326709489776047,
+        "reference_definition_corrected_error_hartree": 0.0015326709489767165,
         "reference_definition_correction": {
           "computed_quantity": "clamped-nuclei electronic binding energy",
           "correction": "D_e ~= D0 + ZPE_harmonic(model)",
           "harmonic_frequencies_cm_inverse": [
-            4487.191403684354
+            4487.191403684353
           ],
           "quality": "same_model_harmonic_vibrational_correction_not_full_spectroscopic_audit",
           "raw_reference": "D0 includes vibrational zero-point energy",
-          "zpe_cm_inverse": 2243.595701842177,
-          "zpe_hartree": 0.010222574189245194
+          "zpe_cm_inverse": 2243.5957018421764,
+          "zpe_hartree": 0.010222574189245192
         },
-        "reference_definition_error_hartree": 0.008689903240267582,
+        "reference_definition_error_hartree": 0.00868990324026847,
         "reference_definition_match": "corrected_model_harmonic_D0_plus_ZPE_to_match_electronic_De",
         "reference_experimental_d0_cm_inverse": 35999.582834,
-        "reference_fci_total_energy_hartree": -1.172335694195175,
+        "reference_fci_total_energy_hartree": -1.172335694195176,
         "reference_truth": {
           "chemical_accuracy": {
             "threshold_hartree": 0.0015936,
@@ -677,7 +677,7 @@
             "corrected_quantity": "model-harmonic D_e = D0 + ZPE_harmonic(model)",
             "corrected_value_hartree": 0.1742487425404671,
             "harmonic_frequencies_cm_inverse": [
-              4487.191403684354
+              4487.191403684353
             ],
             "kind": "measured_dissociation_energy_with_reference_definition_correction",
             "raw_quantity": "D0(N=1) ortho-H2",
@@ -685,20 +685,20 @@
             "raw_value_hartree": 0.1640261683512219,
             "source": "D0: H\u00f6lsch et al. 2019, arXiv:1902.09471; ZPE: PySCF harmonic analysis from the declared cc-pVTZ electronic model",
             "zpe_quantity": "same-model harmonic zero-point vibrational energy",
-            "zpe_value_cm_inverse": 2243.595701842177,
-            "zpe_value_hartree": 0.010222574189245194
+            "zpe_value_cm_inverse": 2243.5957018421764,
+            "zpe_value_hartree": 0.010222574189245192
           },
           "fci": {
             "basis": "cc-pvtz",
             "geometry": "H-H 0.7414 Angstrom",
             "kind": "exact_model_solution",
             "method": "PySCF FCI",
-            "total_energy_hartree": -1.172335694195175
+            "total_energy_hartree": -1.172335694195176
           }
         },
         "repr": "{'engine_id': 'physics_magnitude_gold_engines.h2_ccpvtz_reference_definition_corrected', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/phys",
         "route": "external_engine",
-        "runtime_ms": 271.5624579868745,
+        "runtime_ms": 193.94500000635162,
         "solver_error_hartree": 0.0,
         "source_label": "PySCF FCI cc-pVTZ model solve + D0 experimental reference corrected by PySCF harmonic ZPE",
         "type": "dict",
@@ -707,22 +707,22 @@
           "basis_orbitals": 28,
           "experimental_d0_hartree": 0.1640261683512219,
           "experimental_de_corrected_hartree": 0.1742487425404671,
-          "fci_total_energy_hartree": -1.172335694195175,
+          "fci_total_energy_hartree": -1.172335694195176,
           "harmonic_frequencies_cm_inverse": [
-            4487.191403684354
+            4487.191403684353
           ],
           "model_atom_energy_hartree": -0.49980981130184277,
-          "model_binding_energy_hartree": 0.1727160715914895,
-          "reference_definition_corrected_error_hartree": 0.0015326709489776047,
+          "model_binding_energy_hartree": 0.17271607159149038,
+          "reference_definition_corrected_error_hartree": 0.0015326709489767165,
           "solver_error_hartree": 0.0,
-          "uncorrected_reference_error_hartree": 0.008689903240267582,
+          "uncorrected_reference_error_hartree": 0.00868990324026847,
           "within_chemical_accuracy": true,
-          "zpe_cm_inverse": 2243.595701842177,
-          "zpe_hartree": 0.010222574189245194
+          "zpe_cm_inverse": 2243.5957018421764,
+          "zpe_hartree": 0.010222574189245192
         },
         "verification_independence": "same_runtime_exact_fci_with_external_experimental_reference",
-        "vibrational_zpe_cm_inverse": 2243.595701842177,
-        "vibrational_zpe_hartree": 0.010222574189245194,
+        "vibrational_zpe_cm_inverse": 2243.5957018421764,
+        "vibrational_zpe_hartree": 0.010222574189245192,
         "within_chemical_accuracy": true,
         "witness_stack": {
           "primary": "PySCF FCI exact cc-pVTZ model solve",
@@ -732,15 +732,15 @@
       },
       "description": "backend executed",
       "name": "execute",
-      "startTime": 1781738702.220258
+      "startTime": 1781749671.352983
     },
     {
-      "@id": "trace:2de652845e4bb161:event:6:physical_evidence",
+      "@id": "trace:08c7487e70632381:event:6:physical_evidence",
       "@type": "Action",
       "actionStatus": "ok",
       "capas:metrics": {
         "abs_error": 0.0,
-        "abs_error_vs_experimental": 0.0015326709489776047,
+        "abs_error_vs_experimental": 0.0015326709489767165,
         "abs_error_vs_fci": 0.0,
         "basis": "cc-pvtz",
         "basis_orbitals": 28,
@@ -748,12 +748,12 @@
         "bond_length_angstrom": 0.7414,
         "bound_scope": "single_molecule_larger_basis_reference_definition_corrected",
         "chemical_accuracy_threshold_hartree": 0.0015936,
-        "evidence_hash": "fbe165662aa68ef5575c0435475aa30c7fd220892cf7a11a961dc720c1f74f83",
+        "evidence_hash": "055ad111a8b417fbba23faf49c77bb7ee791bbf5f09ccf5bfae55847dc872f5b",
         "evidence_status_detail": "experimental_reference_definition_corrected_approximate_zpe",
         "expected": {
           "chemical_accuracy_threshold_hartree": 0.0015936,
           "reference_experimental_de_corrected_hartree": 0.1742487425404671,
-          "reference_fci_total_energy_hartree": -1.172335694195175
+          "reference_fci_total_energy_hartree": -1.172335694195176
         },
         "experimental_binding_energy_hartree": 0.1742487425404671,
         "falsification_notes": [
@@ -781,29 +781,29 @@
           }
         ],
         "harmonic_frequencies_cm_inverse": [
-          4487.191403684354
+          4487.191403684353
         ],
-        "model_binding_energy_hartree": 0.1727160715914895,
-        "model_error_hartree": 0.0015326709489776047,
+        "model_binding_energy_hartree": 0.17271607159149038,
+        "model_error_hartree": 0.0015326709489767165,
         "observable": "H2 cc-pVTZ electronic binding energy vs ZPE-corrected experimental D_e reference",
         "physical_evidence_detail": "H2/cc-pVTZ electronic binding energy is compared to a D_e-like reference rather than raw D0. The D_e reference is formed by adding the same-model harmonic ZPE to measured D0. This records reference-definition correction: electronic D_e-like quantity versus D0-with-vibration was the mismatch in trace_023.",
         "physical_evidence_level": "experimental",
-        "reference_definition_corrected_error_hartree": 0.0015326709489776047,
+        "reference_definition_corrected_error_hartree": 0.0015326709489767165,
         "reference_definition_correction": {
           "computed_quantity": "clamped-nuclei electronic binding energy",
           "correction": "D_e ~= D0 + ZPE_harmonic(model)",
           "harmonic_frequencies_cm_inverse": [
-            4487.191403684354
+            4487.191403684353
           ],
           "quality": "same_model_harmonic_vibrational_correction_not_full_spectroscopic_audit",
           "raw_reference": "D0 includes vibrational zero-point energy",
-          "zpe_cm_inverse": 2243.595701842177,
-          "zpe_hartree": 0.010222574189245194
+          "zpe_cm_inverse": 2243.5957018421764,
+          "zpe_hartree": 0.010222574189245192
         },
-        "reference_definition_error_hartree": 0.008689903240267582,
+        "reference_definition_error_hartree": 0.00868990324026847,
         "reference_definition_match": "corrected_model_harmonic_D0_plus_ZPE_to_match_electronic_De",
         "reference_experimental_d0_cm_inverse": 35999.582834,
-        "reference_fci_total_energy_hartree": -1.172335694195175,
+        "reference_fci_total_energy_hartree": -1.172335694195176,
         "reference_truth": {
           "chemical_accuracy": {
             "threshold_hartree": 0.0015936,
@@ -813,7 +813,7 @@
             "corrected_quantity": "model-harmonic D_e = D0 + ZPE_harmonic(model)",
             "corrected_value_hartree": 0.1742487425404671,
             "harmonic_frequencies_cm_inverse": [
-              4487.191403684354
+              4487.191403684353
             ],
             "kind": "measured_dissociation_energy_with_reference_definition_correction",
             "raw_quantity": "D0(N=1) ortho-H2",
@@ -821,15 +821,15 @@
             "raw_value_hartree": 0.1640261683512219,
             "source": "D0: H\u00f6lsch et al. 2019, arXiv:1902.09471; ZPE: PySCF harmonic analysis from the declared cc-pVTZ electronic model",
             "zpe_quantity": "same-model harmonic zero-point vibrational energy",
-            "zpe_value_cm_inverse": 2243.595701842177,
-            "zpe_value_hartree": 0.010222574189245194
+            "zpe_value_cm_inverse": 2243.5957018421764,
+            "zpe_value_hartree": 0.010222574189245192
           },
           "fci": {
             "basis": "cc-pvtz",
             "geometry": "H-H 0.7414 Angstrom",
             "kind": "exact_model_solution",
             "method": "PySCF FCI",
-            "total_energy_hartree": -1.172335694195175
+            "total_energy_hartree": -1.172335694195176
           }
         },
         "solver_error_hartree": 0.0,
@@ -839,22 +839,22 @@
           "basis_orbitals": 28,
           "experimental_d0_hartree": 0.1640261683512219,
           "experimental_de_corrected_hartree": 0.1742487425404671,
-          "fci_total_energy_hartree": -1.172335694195175,
+          "fci_total_energy_hartree": -1.172335694195176,
           "harmonic_frequencies_cm_inverse": [
-            4487.191403684354
+            4487.191403684353
           ],
           "model_atom_energy_hartree": -0.49980981130184277,
-          "model_binding_energy_hartree": 0.1727160715914895,
-          "reference_definition_corrected_error_hartree": 0.0015326709489776047,
+          "model_binding_energy_hartree": 0.17271607159149038,
+          "reference_definition_corrected_error_hartree": 0.0015326709489767165,
           "solver_error_hartree": 0.0,
-          "uncorrected_reference_error_hartree": 0.008689903240267582,
+          "uncorrected_reference_error_hartree": 0.00868990324026847,
           "within_chemical_accuracy": true,
-          "zpe_cm_inverse": 2243.595701842177,
-          "zpe_hartree": 0.010222574189245194
+          "zpe_cm_inverse": 2243.5957018421764,
+          "zpe_hartree": 0.010222574189245192
         },
         "verification_independence": "same_runtime_exact_fci_with_external_experimental_reference",
-        "vibrational_zpe_cm_inverse": 2243.595701842177,
-        "vibrational_zpe_hartree": 0.010222574189245194,
+        "vibrational_zpe_cm_inverse": 2243.5957018421764,
+        "vibrational_zpe_hartree": 0.010222574189245192,
         "within_chemical_accuracy": true,
         "witness_stack": {
           "primary": "PySCF FCI exact cc-pVTZ model solve",
@@ -864,7 +864,7 @@
       },
       "description": "physical evidence reported by backend",
       "name": "physical_evidence",
-      "startTime": 1781738702.220319
+      "startTime": 1781749671.353025
     }
   ]
 }

@@ -54,7 +54,7 @@ Minimum required fields when evidence is present:
 
 | Field | Meaning |
 |---|---|
-| `capas:physicalEvidenceLevel` | Strength/type of evidence, e.g. `analytic`, `cross_sim`, `experimental`, `formal_bound`, `estimated_bound`, `none`, `no_universal_anchor_control`. |
+| `capas:physicalEvidenceLevel` | Strength/type of evidence, e.g. `analytic`, `cross_sim`, `experimental`, `formal_bound`, `estimated_bound`, `scaling_law_anchor`, `none`, `no_universal_anchor_control`. |
 | `capas:verificationIndependence` | Relationship between producer and witness, e.g. analytic no-solver, same runtime, different method, different library. |
 | `capas:referenceTruth` | The reference used to judge the result, if any. |
 
@@ -75,6 +75,13 @@ Common optional fields:
 | `capas:universalAnchorPass` | Whether the generated result satisfies the universal anchor. |
 | `capas:invariantCaught` | Whether the universal anchor caught an error missed by the local oracle. |
 | `capas:generatorError` | Declared injected or diagnosed generator error, when applicable. |
+| `capas:anchorKind` | Anchor class, e.g. `absolute_value`, `absolute_scaling_law`, `metamorphic_relation`, or `mixed`. |
+| `capas:scalingPoints` | Finite-size or finite-parameter points used for a scaling-law fit. |
+| `capas:fittedExponent` | Fitted scaling exponent. |
+| `capas:expectedExponent` | Expected universal scaling exponent. |
+| `capas:exponentTolerance` | Preregistered tolerance for the exponent check. |
+| `capas:fitRSquared` | Fit quality for the scaling relation. |
+| `capas:finiteSizeNotes` | Scope and caveats for finite-size/scaling evidence. |
 | `capas:structureMapping` | Relationship-preserving map between generator artifact, local oracle, and universal oracle. |
 | `capas:preRegisteredSuccessCriterion` | Criterion declared before interpreting the trace. |
 | `capas:claimScope` | Narrow scope of what the trace supports. |
@@ -107,6 +114,10 @@ otherwise.
 `no_universal_anchor_control` is an explicit control level for a locally valid
 artifact where CAPAS records that no universal anchor is claimed. It is not a
 physical-correctness level.
+
+`scaling_law_anchor` is an explicit level for universal scaling checks. It is
+not the same as a closed-form exact value: it must include finite-size points, a
+fit method or fitted exponent, and a preregistered tolerance.
 
 ## Non-Claims
 

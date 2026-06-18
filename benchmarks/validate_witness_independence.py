@@ -16,6 +16,10 @@ INDEPENDENCE_LEVELS = {
         "strength": 5,
         "description": "Closed-form reference; no computational witness required.",
     },
+    "theory_scaling_law_no_solver": {
+        "strength": 5,
+        "description": "Theory-known scaling law or universal exponent; no computational witness required, but finite-size fit/tolerance applies.",
+    },
     "different_library_same_runtime": {
         "strength": 4,
         "description": "Independent library witness in the same Python/runtime process.",
@@ -49,6 +53,7 @@ INDEPENDENCE_LEVELS = {
 
 REQUIRED_COVERAGE = {
     "analytic_no_solver",
+    "theory_scaling_law_no_solver",
     "different_library_same_runtime",
     "different_method_same_runtime",
     "same_runtime_exact_fci_with_external_experimental_reference",
