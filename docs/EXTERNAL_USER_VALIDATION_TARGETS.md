@@ -8,6 +8,12 @@ Focused SotA check:
 docs/EXTERNAL_USER_VALIDATION_SOTA.md
 ```
 
+QMB100 / PhysVEC one-pager:
+
+```text
+docs/CAPAS_ONE_PAGER_QMB100.md
+```
+
 This document is for closing the MVP requirement:
 
 ```text
