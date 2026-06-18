@@ -20,6 +20,7 @@ account, external user, or standards-community action.
 Current readiness artifacts:
 
 - `outputs/external_reviewer_packet/manifest.json`
+- `docs/EXTERNAL_USER_VALIDATION_TARGETS.md`
 - `outputs/profile_registration_packet/manifest.json`
 - `outputs/profile_registration_readiness_report.json`
 - `outputs/release_readiness_report.json`
@@ -130,6 +131,12 @@ HOLD, and INVALID samples and reports structurally invalid input as `HOLD` with
 `schema_errors`.
 
 ## External User Validation Packet
+
+Target list and acceptance rule:
+
+```text
+docs/EXTERNAL_USER_VALIDATION_TARGETS.md
+```
 
 Generate/update the packet:
 
