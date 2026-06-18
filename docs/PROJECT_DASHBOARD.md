@@ -1,6 +1,6 @@
 # CAPAS Project Dashboard
 
-Last updated: 2026-06-17
+Last updated: 2026-06-18
 
 This dashboard is the non-degradable control surface for CAPAS. If future work
 changes a claim, a coverage case, or a validation status, update this file in the
@@ -125,9 +125,13 @@ External MVP launch path: docs/EXTERNAL_MVP_LAUNCH_PLAN.md documents fresh-clone
   install, external input examples, user validation packet, GitHub release
   checklist, and RO-Crate profile registration path
 External readiness packets: reviewer packet ready, profile registration packet
-  ready, release readiness report generated; GitHub release dry-run plan and
-  release notes generated; release_ready=False because git remote, v0.1.0 tag,
-  and valid GitHub CLI authentication are missing
+  ready with a dedicated readiness gate, release readiness report generated;
+  GitHub release dry-run plan and release notes generated; release_ready=False
+  because git remote, v0.1.0 tag, and valid GitHub CLI authentication are
+  missing
+RO-Crate profile registration readiness: local packet complete with
+  profile_status=local_draft_not_registered and formal_profile_registered=False;
+  this is submission readiness, not official registration
 External user validation packet: feedback schema/template/verifier ready;
   external_user_validation_complete=False until real reviewer feedback is stored
   under outputs/external_validation/
@@ -216,6 +220,7 @@ scaling_law_anchor: 7
    - `python3 benchmarks/verify_fresh_clone_install.py`
    - `python3 scripts/prepare_external_reviewer_packet.py`
    - `python3 scripts/prepare_profile_registration_packet.py`
+   - `python3 benchmarks/verify_profile_registration_packet.py`
    - `python3 scripts/publish_github_release.py`
    - `python3 scripts/check_release_readiness.py`
 1. Sealed RunTrace generation.

@@ -32,6 +32,7 @@ CHECKS = [
     ("demo_report", ROOT / "outputs" / "capas_product_demo_report.md"),
     ("reviewer_packet_manifest", ROOT / "outputs" / "external_reviewer_packet" / "manifest.json"),
     ("profile_registration_manifest", ROOT / "outputs" / "profile_registration_packet" / "manifest.json"),
+    ("profile_registration_readiness_report", ROOT / "outputs" / "profile_registration_readiness_report.json"),
 ]
 
 
@@ -62,6 +63,7 @@ def main() -> int:
         ("external_input_schema", [sys.executable, "benchmarks/verify_external_input_schema.py"]),
         ("claim_gate_ui", [sys.executable, "benchmarks/verify_claim_gate_ui.py"]),
         ("external_user_validation_packet", [sys.executable, "benchmarks/verify_external_user_validation.py"]),
+        ("profile_registration_packet", [sys.executable, "benchmarks/verify_profile_registration_packet.py"]),
         ("github_release_dry_run", [sys.executable, "scripts/publish_github_release.py"]),
         ("product_demo_acceptance", [sys.executable, "benchmarks/verify_capas_product_demo.py"]),
         ("product_validate", ["capas", "validate"]),

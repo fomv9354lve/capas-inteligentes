@@ -1,0 +1,97 @@
+{
+  "failed": 0,
+  "formal_profile_registered": false,
+  "non_degradation": "This readiness gate proves only that a registration packet is locally complete. It does not prove formal RO-Crate profile registration.",
+  "passed": 14,
+  "profile_registration_packet_ready": true,
+  "results": [
+    {
+      "check": "profile_doc",
+      "detail": "exists",
+      "passed": true,
+      "path": "docs/profile/CAPAS_PHYSICAL_EVIDENCE_PROFILE.md"
+    },
+    {
+      "check": "jsonld_context",
+      "detail": "exists",
+      "passed": true,
+      "path": "docs/profile/capas-physical-evidence-context.jsonld"
+    },
+    {
+      "check": "registration_metadata",
+      "detail": "exists",
+      "passed": true,
+      "path": "docs/profile/capas-profile-registration.json"
+    },
+    {
+      "check": "issue_template",
+      "detail": "exists",
+      "passed": true,
+      "path": "docs/profile/RO_CRATE_PROFILE_REGISTRATION_ISSUE.md"
+    },
+    {
+      "check": "alignment_doc",
+      "detail": "exists",
+      "passed": true,
+      "path": "docs/WORKFLOW_RUN_RO_CRATE_ALIGNMENT.md"
+    },
+    {
+      "check": "example_crate",
+      "detail": "exists",
+      "passed": true,
+      "path": "benchmarks/ro_crates/trace_039/ro-crate-metadata.json"
+    },
+    {
+      "check": "local_validator",
+      "detail": "exists",
+      "passed": true,
+      "path": "benchmarks/validate_capas_profile.py"
+    },
+    {
+      "check": "packet_manifest",
+      "detail": "exists",
+      "passed": true,
+      "path": "outputs/profile_registration_packet/manifest.json"
+    },
+    {
+      "check": "profile_status_is_not_registered",
+      "detail": "local_draft_not_registered",
+      "passed": true
+    },
+    {
+      "check": "registration_completion_rule_external",
+      "detail": "Formal registration is complete only when an external RO-Crate/Workflow Run RO-Crate community process, registry, or stable profile URI accepts the profile.",
+      "passed": true
+    },
+    {
+      "check": "context_has_capas_evidence_terms",
+      "detail": {
+        "missing_terms": []
+      },
+      "passed": true
+    },
+    {
+      "check": "packet_manifest_ready",
+      "detail": {
+        "missing": [],
+        "status": "ready"
+      },
+      "passed": true
+    },
+    {
+      "check": "packet_contains_registration_artifacts",
+      "detail": {
+        "missing_packet_files": []
+      },
+      "passed": true
+    },
+    {
+      "check": "packet_declares_not_formally_registered",
+      "detail": {
+        "formal_registration_complete": false,
+        "profile_status": "local_draft_not_registered"
+      },
+      "passed": true
+    }
+  ]
+}

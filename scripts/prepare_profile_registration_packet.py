@@ -13,6 +13,8 @@ PROFILE_URI = "https://example.org/capas-inteligentes/ro-crate/physical-evidence
 FILES = [
     ("CAPAS_PHYSICAL_EVIDENCE_PROFILE.md", ROOT / "docs" / "profile" / "CAPAS_PHYSICAL_EVIDENCE_PROFILE.md"),
     ("capas-physical-evidence-context.jsonld", ROOT / "docs" / "profile" / "capas-physical-evidence-context.jsonld"),
+    ("capas-profile-registration.json", ROOT / "docs" / "profile" / "capas-profile-registration.json"),
+    ("RO_CRATE_PROFILE_REGISTRATION_ISSUE.md", ROOT / "docs" / "profile" / "RO_CRATE_PROFILE_REGISTRATION_ISSUE.md"),
     ("WORKFLOW_RUN_RO_CRATE_ALIGNMENT.md", ROOT / "docs" / "WORKFLOW_RUN_RO_CRATE_ALIGNMENT.md"),
     ("trace_039-ro-crate-metadata.json", ROOT / "benchmarks" / "ro_crates" / "trace_039" / "ro-crate-metadata.json"),
     ("validate_capas_profile.py", ROOT / "benchmarks" / "validate_capas_profile.py"),
@@ -66,6 +68,16 @@ Included example:
 Local validator:
 
 - `validate_capas_profile.py`
+
+Registration metadata and issue template:
+
+- `capas-profile-registration.json`
+- `RO_CRATE_PROFILE_REGISTRATION_ISSUE.md`
+
+Important:
+
+This packet is a draft submission aid. It is not evidence of formal
+registration.
 """
 
 
@@ -87,6 +99,8 @@ def main() -> int:
     manifest = {
         "packet": "profile_registration_packet",
         "status": "ready" if not missing else "incomplete",
+        "profile_status": "local_draft_not_registered",
+        "formal_registration_complete": False,
         "profile_name": "CAPAS Physical Evidence Profile",
         "draft_profile_uri": PROFILE_URI,
         "base_profiles": [
@@ -100,6 +114,11 @@ def main() -> int:
         "completion_rule": (
             "Formal registration is complete only when an external registry, "
             "community process, or stable profile URI accepts the profile."
+        ),
+        "next_external_action": (
+            "Open RO_CRATE_PROFILE_REGISTRATION_ISSUE.md with the Workflow Run "
+            "RO-Crate / RO-Crate community and update formal_registration_complete "
+            "only after external acceptance."
         ),
     }
     (OUT / "manifest.json").write_text(json.dumps(manifest, indent=2, sort_keys=True), encoding="utf-8")

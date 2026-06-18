@@ -15,12 +15,13 @@ account, external user, or standards-community action.
 | External user validation | Not complete; feedback template and verifier ready | `examples/external_reviewer_feedback_template.json`, `benchmarks/verify_external_user_validation.py`, `outputs/external_user_validation_report.json` | Send minimal packet to one scientific-computation practitioner and store returned feedback in `outputs/external_validation/` |
 | Continuous integration | Implemented in repo | `.github/workflows/ci.yml` | Requires GitHub remote/actions to run externally |
 | GitHub/release publication | Not complete | release checklist below | Push to GitHub and tag release |
-| Formal RO-Crate profile registration | Not complete | local CAPAS profile docs exist | Submit/register profile URI with RO-Crate/Profile registry process |
+| Formal RO-Crate profile registration | Not complete; local registration packet readiness gate implemented | `benchmarks/verify_profile_registration_packet.py`, `outputs/profile_registration_packet/manifest.json`, `outputs/profile_registration_readiness_report.json` | Submit/register profile URI with RO-Crate/Profile registry process |
 
 Current readiness artifacts:
 
 - `outputs/external_reviewer_packet/manifest.json`
 - `outputs/profile_registration_packet/manifest.json`
+- `outputs/profile_registration_readiness_report.json`
 - `outputs/release_readiness_report.json`
 - `outputs/fresh_clone_install_report.json`
 - `outputs/external_input_schema_report.json`
@@ -176,6 +177,37 @@ Then run:
 ```bash
 python benchmarks/verify_external_user_validation.py
 ```
+
+## RO-Crate Profile Registration Packet
+
+Generate/update the local profile packet:
+
+```bash
+python scripts/prepare_profile_registration_packet.py
+python benchmarks/verify_profile_registration_packet.py
+```
+
+The packet includes:
+
+- `docs/profile/CAPAS_PHYSICAL_EVIDENCE_PROFILE.md`
+- `docs/profile/capas-physical-evidence-context.jsonld`
+- `docs/profile/capas-profile-registration.json`
+- `docs/profile/RO_CRATE_PROFILE_REGISTRATION_ISSUE.md`
+- `docs/WORKFLOW_RUN_RO_CRATE_ALIGNMENT.md`
+- `benchmarks/ro_crates/trace_039/ro-crate-metadata.json`
+- `benchmarks/validate_capas_profile.py`
+
+Current state:
+
+```text
+profile_registration_packet_ready: expected true locally
+formal_profile_registered: false
+profile_status: local_draft_not_registered
+```
+
+Formal registration is not complete until the RO-Crate / Workflow Run RO-Crate
+community, registry process, or a stable external profile URI accepts the
+profile. The local packet is only a submission and review artifact.
 
 ## GitHub Release Checklist
 

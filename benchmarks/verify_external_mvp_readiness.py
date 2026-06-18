@@ -9,6 +9,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 REVIEWER_MANIFEST = ROOT / "outputs" / "external_reviewer_packet" / "manifest.json"
 PROFILE_MANIFEST = ROOT / "outputs" / "profile_registration_packet" / "manifest.json"
+PROFILE_READINESS = ROOT / "outputs" / "profile_registration_readiness_report.json"
 RELEASE_REPORT = ROOT / "outputs" / "release_readiness_report.json"
 
 EXPECTED_RELEASE_BLOCKERS = {
@@ -29,16 +30,22 @@ def _load(path: Path) -> dict:
 def main() -> int:
     _run_allow_fail([sys.executable, "scripts/prepare_external_reviewer_packet.py"])
     _run_allow_fail([sys.executable, "scripts/prepare_profile_registration_packet.py"])
+    _run_allow_fail([sys.executable, "benchmarks/verify_profile_registration_packet.py"])
     _run_allow_fail([sys.executable, "scripts/check_release_readiness.py"])
 
     reviewer = _load(REVIEWER_MANIFEST)
     profile = _load(PROFILE_MANIFEST)
+    profile_readiness = _load(PROFILE_READINESS)
     release = _load(RELEASE_REPORT)
 
     assert reviewer["status"] == "ready"
     assert not reviewer["missing"]
     assert profile["status"] == "ready"
     assert not profile["missing"]
+    assert profile["formal_registration_complete"] is False
+    assert profile["profile_status"] == "local_draft_not_registered"
+    assert profile_readiness["profile_registration_packet_ready"] is True
+    assert profile_readiness["formal_profile_registered"] is False
     failed_checks = {
         item["check"]
         for item in release["results"]

@@ -45,3 +45,13 @@ Included example:
 Local validator:
 
 - `validate_capas_profile.py`
+
+Registration metadata and issue template:
+
+- `capas-profile-registration.json`
+- `RO_CRATE_PROFILE_REGISTRATION_ISSUE.md`
+
+Important:
+
+This packet is a draft submission aid. It is not evidence of formal
+registration.
