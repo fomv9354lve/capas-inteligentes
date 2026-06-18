@@ -76,6 +76,9 @@ R2 real Cono Sur gate validation: passed, 25/25 checks total with 4 real
   Morvan hydraulic-jump simulation
 R1 real China Rietveld gate validation: passed, 29/29 checks total with 4 real
   China/Rietveld checks from Rongzai and AgentBuild
+US/UK canonical falsifiable gate validation: passed, 39/39 checks total with
+  10 canonical checks across clinical trials, vaccine efficacy, gravitational
+  waves, AlphaFold/CASP14, and NASA DART
 box 3 SotA status: broad claim-safety/provenance space is taken; narrow
   evidence-type checking for scientific computation claims survives
 regional research atlas: 122 raw source records gathered across China,
@@ -274,6 +277,16 @@ scaling_law_anchor: 6
    - accepts that AgentBuild records a scientist-authored contract and
      rubric-driven judge
    - keeps contract/workflow failure separate from physical validation failure
+24. US/UK canonical falsifiable claim gate:
+   - adds real-source checks from RECOVERY/dexamethasone, BNT162b2, LIGO
+     GW150914, AlphaFold/CASP14, and NASA DART
+   - accepts exact falsifiable claims licensed by randomized controls, placebo
+     controls, false-alarm/noise controls, blind benchmarks, and pre/post
+     orbital measurements
+   - rewrites broader overclaims such as:
+     `benefits_all_subgroups`, `prevents_all_transmission`,
+     `precise_population_rate`, `solves_full_protein_folding`, and
+     `solves_planetary_defense`
    - within chemical accuracy: `False`
    - lesson: adding vibrational correction can reduce the mismatch without making a poor finite-basis model chemically accurate
 19. H2 basis convergence to experiment:

@@ -231,6 +231,86 @@
       "passed": true,
       "reason": "frontier is framed as workflow/contract failure, not physical invalidity",
       "trace_id": "regional_c36_agentbuild_rietveld"
+    },
+    {
+      "actual_verdict": "ACCEPT",
+      "claim_id": "rct_primary_endpoint_supported",
+      "expected_verdict": "ACCEPT",
+      "passed": true,
+      "reason": "randomized trial has control group, primary endpoint, and CI excluding null",
+      "trace_id": "usuk_recovery_dexamethasone"
+    },
+    {
+      "actual_verdict": "REWRITE",
+      "claim_id": "treatment_benefits_all_subgroups",
+      "expected_verdict": "REWRITE",
+      "passed": true,
+      "reason": "evidence supports only responsive subgroup(s); not all subgroups: ['no_respiratory_support']",
+      "trace_id": "usuk_recovery_dexamethasone"
+    },
+    {
+      "actual_verdict": "ACCEPT",
+      "claim_id": "vaccine_efficacy_trial_supported",
+      "expected_verdict": "ACCEPT",
+      "passed": true,
+      "reason": "observer-blind placebo trial supports vaccine efficacy within the trial endpoint",
+      "trace_id": "us_biontech_pfizer_bnt162b2"
+    },
+    {
+      "actual_verdict": "REWRITE",
+      "claim_id": "vaccine_prevents_all_infection_or_transmission",
+      "expected_verdict": "REWRITE",
+      "passed": true,
+      "reason": "trial endpoint licenses symptomatic-disease efficacy, not sterilizing immunity or transmission blocking",
+      "trace_id": "us_biontech_pfizer_bnt162b2"
+    },
+    {
+      "actual_verdict": "ACCEPT",
+      "claim_id": "gravitational_wave_detection_supported",
+      "expected_verdict": "ACCEPT",
+      "passed": true,
+      "reason": "two-detector matched-filter detection clears false-alarm and noise-control thresholds",
+      "trace_id": "usuk_ligo_gw150914"
+    },
+    {
+      "actual_verdict": "REWRITE",
+      "claim_id": "gravitational_wave_population_rate_precise",
+      "expected_verdict": "REWRITE",
+      "passed": true,
+      "reason": "single-event evidence licenses detection/source claims, not a precise population rate",
+      "trace_id": "usuk_ligo_gw150914"
+    },
+    {
+      "actual_verdict": "ACCEPT",
+      "claim_id": "alphafold_casp14_accuracy_supported",
+      "expected_verdict": "ACCEPT",
+      "passed": true,
+      "reason": "blind CASP14 benchmark supports near-experimental structure accuracy for many targets",
+      "trace_id": "uk_alphafold_casp14"
+    },
+    {
+      "actual_verdict": "REWRITE",
+      "claim_id": "alphafold_solves_full_protein_folding",
+      "expected_verdict": "REWRITE",
+      "passed": true,
+      "reason": "CASP14 supports structure-prediction accuracy, not full folding mechanism or all protein contexts",
+      "trace_id": "uk_alphafold_casp14"
+    },
+    {
+      "actual_verdict": "ACCEPT",
+      "claim_id": "dart_orbit_change_supported",
+      "expected_verdict": "ACCEPT",
+      "passed": true,
+      "reason": "controlled impact has pre/post orbit measurements and independent agreement",
+      "trace_id": "us_dart_dimorphos"
+    },
+    {
+      "actual_verdict": "REWRITE",
+      "claim_id": "dart_solves_planetary_defense",
+      "expected_verdict": "REWRITE",
+      "passed": true,
+      "reason": "DART licenses kinetic-impact deflection for one controlled binary-asteroid case, not planetary-defense solved",
+      "trace_id": "us_dart_dimorphos"
     }
   ],
   "regional_claim_matrix": {
@@ -242,12 +322,42 @@
       ],
       "source_cluster": "Rongzai Rietveld refinement agent"
     },
+    "alphafold_casp14_accuracy_supported": {
+      "minimum_fields": [
+        "benchmark=CASP14",
+        "blind_benchmark",
+        "median_backbone_rmsd95_angstrom"
+      ],
+      "source_cluster": "AlphaFold CASP14 blind benchmark"
+    },
+    "alphafold_solves_full_protein_folding": {
+      "minimum_fields": [
+        "mechanistic_folding_evidence",
+        "all_contexts_validation"
+      ],
+      "source_cluster": "AlphaFold overclaim control"
+    },
     "contract_failure_not_physical_failure": {
       "minimum_fields": [
         "frontier_case_status",
         "physical_validation_status"
       ],
       "source_cluster": "AgentBuild Rietveld refinement"
+    },
+    "dart_orbit_change_supported": {
+      "minimum_fields": [
+        "controlled_impact",
+        "pre_post_orbit_measured",
+        "independent_measurement_methods_agree"
+      ],
+      "source_cluster": "NASA DART controlled impact"
+    },
+    "dart_solves_planetary_defense": {
+      "minimum_fields": [
+        "hazardous_asteroid_generalization",
+        "multiple_target_classes"
+      ],
+      "source_cluster": "DART overclaim control"
     },
     "experimental_validation_dominates_practice": {
       "minimum_fields": [
@@ -262,6 +372,21 @@
         "residual_after"
       ],
       "source_cluster": "China Rietveld refinement agents"
+    },
+    "gravitational_wave_detection_supported": {
+      "minimum_fields": [
+        "detectors",
+        "matched_filter_snr",
+        "false_alarm_years",
+        "noise_controls_pass"
+      ],
+      "source_cluster": "LIGO gravitational-wave detection"
+    },
+    "gravitational_wave_population_rate_precise": {
+      "minimum_fields": [
+        "population_rate_credible_interval"
+      ],
+      "source_cluster": "LIGO population inference"
     },
     "matches_experiment": {
       "minimum_fields": [
@@ -302,6 +427,15 @@
         "observables"
       ],
       "source_cluster": "Romagnoli/Portapila/Morvan hydraulic jump simulation"
+    },
+    "rct_primary_endpoint_supported": {
+      "minimum_fields": [
+        "study_design",
+        "control_group",
+        "primary_endpoint_met",
+        "effect_ci_excludes_null"
+      ],
+      "source_cluster": "US/UK top-tier randomized clinical trial"
     },
     "runtime_predicted": {
       "minimum_fields": [
@@ -345,12 +479,34 @@
       ],
       "source_cluster": "China Rietveld refinement agents"
     },
+    "treatment_benefits_all_subgroups": {
+      "minimum_fields": [
+        "subgroup_effects"
+      ],
+      "source_cluster": "US/UK top-tier randomized clinical trial"
+    },
     "uq_interval_supports_claim": {
       "minimum_fields": [
         "uq_interval",
         "claimed_value"
       ],
       "source_cluster": "regional UQ model"
+    },
+    "vaccine_efficacy_trial_supported": {
+      "minimum_fields": [
+        "observer_blind",
+        "vaccine_cases",
+        "placebo_cases",
+        "vaccine_efficacy_percent"
+      ],
+      "source_cluster": "top-tier vaccine efficacy trial"
+    },
+    "vaccine_prevents_all_infection_or_transmission": {
+      "minimum_fields": [
+        "endpoint",
+        "transmission_or_asymptomatic_evidence"
+      ],
+      "source_cluster": "top-tier vaccine efficacy trial"
     },
     "validation_taxonomy_observed": {
       "minimum_fields": [
@@ -362,12 +518,13 @@
     }
   },
   "summary": {
-    "checks": 29,
+    "checks": 39,
     "failed": 0,
     "fine_tune_ready_implication": "none; this validates claim typing, not training readiness",
-    "passed": 29,
-    "regional_claims": 17,
+    "passed": 39,
+    "regional_claims": 27,
     "regional_real_checks": 8,
-    "regional_synthetic_checks": 12
+    "regional_synthetic_checks": 12,
+    "us_uk_canonical_checks": 10
   }
 }

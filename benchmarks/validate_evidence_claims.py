@@ -358,6 +358,124 @@ def contract_failure_not_physical_failure(trace: TraceResult) -> tuple[str, str]
     )
 
 
+def rct_primary_endpoint_supported(trace: TraceResult) -> tuple[str, str]:
+    return verdict(
+        trace.get("study_design") in {"randomized_controlled_trial", "randomized_placebo_trial"}
+        and trace.get("control_group") in {"usual_care", "placebo"}
+        and trace.get("primary_endpoint_met") is True
+        and trace.get("effect_ci_excludes_null") is True,
+        "randomized trial has control group, primary endpoint, and CI excluding null",
+        "trace does not license the RCT primary endpoint claim",
+    )
+
+
+def treatment_benefits_all_subgroups(trace: TraceResult) -> tuple[str, str]:
+    subgroups = trace.get("subgroup_effects") or {}
+    failed = [
+        name
+        for name, payload in subgroups.items()
+        if payload.get("ci_excludes_null") is not True or payload.get("direction") != "benefit"
+    ]
+    if failed:
+        return (
+            "REWRITE",
+            f"evidence supports only responsive subgroup(s); not all subgroups: {failed}",
+        )
+    return verdict(bool(subgroups), "all recorded subgroups show benefit", "no subgroup evidence")
+
+
+def vaccine_efficacy_trial_supported(trace: TraceResult) -> tuple[str, str]:
+    return verdict(
+        trace.get("study_design") == "randomized_placebo_trial"
+        and trace.get("observer_blind") is True
+        and trace.get("vaccine_cases", 10**9) < trace.get("placebo_cases", -1)
+        and trace.get("vaccine_efficacy_percent", 0.0) >= trace.get("efficacy_threshold_percent", 0.0),
+        "observer-blind placebo trial supports vaccine efficacy within the trial endpoint",
+        "trace does not license the vaccine efficacy trial claim",
+    )
+
+
+def vaccine_prevents_all_infection_or_transmission(trace: TraceResult) -> tuple[str, str]:
+    if trace.get("study_design") == "randomized_placebo_trial":
+        return (
+            "REWRITE",
+            "trial endpoint licenses symptomatic-disease efficacy, not sterilizing immunity or transmission blocking",
+        )
+    return "HOLD", "no vaccine trial evidence available"
+
+
+def gravitational_wave_detection_supported(trace: TraceResult) -> tuple[str, str]:
+    return verdict(
+        trace.get("detectors") == 2
+        and trace.get("matched_filter_snr", 0) >= 8
+        and trace.get("false_alarm_years", 0) >= trace.get("false_alarm_year_threshold", 0)
+        and trace.get("noise_controls_pass") is True,
+        "two-detector matched-filter detection clears false-alarm and noise-control thresholds",
+        "trace does not license a gravitational-wave detection claim",
+    )
+
+
+def gravitational_wave_population_rate_precise(trace: TraceResult) -> tuple[str, str]:
+    interval = trace.get("population_rate_credible_interval")
+    if interval:
+        lo, hi = interval
+        if lo > 0 and hi / lo > 10:
+            return (
+                "REWRITE",
+                "single-event evidence licenses detection/source claims, not a precise population rate",
+            )
+    return verdict(
+        bool(interval),
+        "population rate interval is recorded and not too broad",
+        "no population-rate evidence is recorded",
+    )
+
+
+def alphafold_casp14_accuracy_supported(trace: TraceResult) -> tuple[str, str]:
+    return verdict(
+        trace.get("benchmark") == "CASP14"
+        and trace.get("blind_benchmark") is True
+        and trace.get("median_backbone_rmsd95_angstrom", 10**9)
+        <= trace.get("rmsd95_threshold_angstrom", 10**9)
+        and trace.get("confidence_intervals_reported") is True,
+        "blind CASP14 benchmark supports near-experimental structure accuracy for many targets",
+        "trace does not license the AlphaFold CASP14 accuracy claim",
+    )
+
+
+def alphafold_solves_full_protein_folding(trace: TraceResult) -> tuple[str, str]:
+    if trace.get("benchmark") == "CASP14":
+        return (
+            "REWRITE",
+            "CASP14 supports structure-prediction accuracy, not full folding mechanism or all protein contexts",
+        )
+    return "HOLD", "no AlphaFold benchmark evidence available"
+
+
+def dart_orbit_change_supported(trace: TraceResult) -> tuple[str, str]:
+    delta = trace.get("orbital_period_change_minutes")
+    sigma = trace.get("orbital_period_change_sigma_minutes")
+    return verdict(
+        trace.get("controlled_impact") is True
+        and trace.get("pre_post_orbit_measured") is True
+        and trace.get("independent_measurement_methods_agree") is True
+        and delta is not None
+        and sigma is not None
+        and abs(delta) > 5 * sigma,
+        "controlled impact has pre/post orbit measurements and independent agreement",
+        "trace does not license an asteroid-orbit-change claim",
+    )
+
+
+def dart_solves_planetary_defense(trace: TraceResult) -> tuple[str, str]:
+    if trace.get("controlled_impact") is True:
+        return (
+            "REWRITE",
+            "DART licenses kinetic-impact deflection for one controlled binary-asteroid case, not planetary-defense solved",
+        )
+    return "HOLD", "no DART controlled-impact evidence available"
+
+
 CLAIM_RULES: dict[str, Rule] = {
     "exact_model_solution": exact_model_solution,
     "physically_accurate_chemistry": physically_accurate_chemistry,
@@ -386,6 +504,16 @@ CLAIM_RULES: dict[str, Rule] = {
     "rwp_improvement_implies_structure_validated": rwp_improvement_implies_structure_validated,
     "scientist_contract_recorded": scientist_contract_recorded,
     "contract_failure_not_physical_failure": contract_failure_not_physical_failure,
+    "rct_primary_endpoint_supported": rct_primary_endpoint_supported,
+    "treatment_benefits_all_subgroups": treatment_benefits_all_subgroups,
+    "vaccine_efficacy_trial_supported": vaccine_efficacy_trial_supported,
+    "vaccine_prevents_all_infection_or_transmission": vaccine_prevents_all_infection_or_transmission,
+    "gravitational_wave_detection_supported": gravitational_wave_detection_supported,
+    "gravitational_wave_population_rate_precise": gravitational_wave_population_rate_precise,
+    "alphafold_casp14_accuracy_supported": alphafold_casp14_accuracy_supported,
+    "alphafold_solves_full_protein_folding": alphafold_solves_full_protein_folding,
+    "dart_orbit_change_supported": dart_orbit_change_supported,
+    "dart_solves_planetary_defense": dart_solves_planetary_defense,
 }
 
 
@@ -595,6 +723,109 @@ REGIONAL_REAL_EXAMPLES: list[tuple[str, str, str]] = [
 ]
 
 
+US_UK_REAL_TRACES: dict[str, TraceResult] = {
+    "usuk_recovery_dexamethasone": {
+        "source_type": "top_tier_clinical_trial",
+        "source_url": "https://pubmed.ncbi.nlm.nih.gov/32678530/",
+        "title": "Dexamethasone in Hospitalized Patients with Covid-19",
+        "region_anchor": "UK RECOVERY Collaborative Group",
+        "study_design": "randomized_controlled_trial",
+        "control_group": "usual_care",
+        "primary_endpoint": "28_day_mortality",
+        "primary_endpoint_met": True,
+        "effect_ci_excludes_null": True,
+        "overall_rate_ratio": 0.83,
+        "overall_ci": [0.75, 0.93],
+        "subgroup_effects": {
+            "invasive_mechanical_ventilation": {
+                "rate_ratio": 0.64,
+                "ci": [0.51, 0.81],
+                "ci_excludes_null": True,
+                "direction": "benefit",
+            },
+            "oxygen_without_invasive_ventilation": {
+                "rate_ratio": 0.82,
+                "ci": [0.72, 0.94],
+                "ci_excludes_null": True,
+                "direction": "benefit",
+            },
+            "no_respiratory_support": {
+                "rate_ratio": 1.19,
+                "ci": [0.92, 1.55],
+                "ci_excludes_null": False,
+                "direction": "no_benefit",
+            },
+        },
+    },
+    "us_biontech_pfizer_bnt162b2": {
+        "source_type": "top_tier_vaccine_trial",
+        "source_url": "https://www.nejm.org/doi/full/10.1056/NEJMoa2034577",
+        "title": "Safety and Efficacy of the BNT162b2 mRNA Covid-19 Vaccine",
+        "region_anchor": "US/Germany trial, UK first authorization context",
+        "study_design": "randomized_placebo_trial",
+        "observer_blind": True,
+        "endpoint": "symptomatic_covid_after_second_dose",
+        "vaccine_cases": 8,
+        "placebo_cases": 162,
+        "vaccine_efficacy_percent": 95.0,
+        "efficacy_threshold_percent": 50.0,
+    },
+    "usuk_ligo_gw150914": {
+        "source_type": "top_tier_astrophysics_detection",
+        "source_url": "https://arxiv.org/abs/1602.03837",
+        "title": "Observation of Gravitational Waves from a Binary Black Hole Merger",
+        "region_anchor": "US LIGO with UK collaboration participation",
+        "detectors": 2,
+        "matched_filter_snr": 24,
+        "false_alarm_years": 203000,
+        "false_alarm_year_threshold": 100,
+        "noise_controls_pass": True,
+        "population_rate_credible_interval": [2, 600],
+    },
+    "uk_alphafold_casp14": {
+        "source_type": "top_tier_ai_biology_benchmark",
+        "source_url": "https://www.nature.com/articles/s41586-021-03819-2",
+        "title": "Highly accurate protein structure prediction with AlphaFold",
+        "region_anchor": "UK DeepMind",
+        "benchmark": "CASP14",
+        "blind_benchmark": True,
+        "median_backbone_rmsd95_angstrom": 0.96,
+        "rmsd95_threshold_angstrom": 1.5,
+        "confidence_intervals_reported": True,
+        "scope": "single_chain_structure_prediction_many_targets",
+    },
+    "us_dart_dimorphos": {
+        "source_type": "top_tier_planetary_defense_experiment",
+        "source_url": "https://www.nature.com/articles/s41586-023-05805-2",
+        "title": "Orbital period change of Dimorphos due to the DART kinetic impact",
+        "region_anchor": "US NASA DART",
+        "controlled_impact": True,
+        "pre_post_orbit_measured": True,
+        "independent_measurement_methods_agree": True,
+        "orbital_period_change_minutes": -33.0,
+        "orbital_period_change_sigma_minutes": 1.0,
+    },
+}
+
+
+US_UK_EXAMPLES: list[tuple[str, str, str]] = [
+    ("usuk_recovery_dexamethasone", "rct_primary_endpoint_supported", "ACCEPT"),
+    ("usuk_recovery_dexamethasone", "treatment_benefits_all_subgroups", "REWRITE"),
+    ("us_biontech_pfizer_bnt162b2", "vaccine_efficacy_trial_supported", "ACCEPT"),
+    (
+        "us_biontech_pfizer_bnt162b2",
+        "vaccine_prevents_all_infection_or_transmission",
+        "REWRITE",
+    ),
+    ("usuk_ligo_gw150914", "gravitational_wave_detection_supported", "ACCEPT"),
+    ("usuk_ligo_gw150914", "gravitational_wave_population_rate_precise", "REWRITE"),
+    ("uk_alphafold_casp14", "alphafold_casp14_accuracy_supported", "ACCEPT"),
+    ("uk_alphafold_casp14", "alphafold_solves_full_protein_folding", "REWRITE"),
+    ("us_dart_dimorphos", "dart_orbit_change_supported", "ACCEPT"),
+    ("us_dart_dimorphos", "dart_solves_planetary_defense", "REWRITE"),
+]
+
+
 REGIONAL_CLAIM_MATRIX: dict[str, dict[str, Any]] = {
     "simulation_ran": {
         "minimum_fields": ["evidence_status", "method", "provenance_recorded"],
@@ -669,6 +900,46 @@ REGIONAL_CLAIM_MATRIX: dict[str, dict[str, Any]] = {
         "minimum_fields": ["frontier_case_status", "physical_validation_status"],
         "source_cluster": "AgentBuild Rietveld refinement",
     },
+    "rct_primary_endpoint_supported": {
+        "minimum_fields": ["study_design", "control_group", "primary_endpoint_met", "effect_ci_excludes_null"],
+        "source_cluster": "US/UK top-tier randomized clinical trial",
+    },
+    "treatment_benefits_all_subgroups": {
+        "minimum_fields": ["subgroup_effects"],
+        "source_cluster": "US/UK top-tier randomized clinical trial",
+    },
+    "vaccine_efficacy_trial_supported": {
+        "minimum_fields": ["observer_blind", "vaccine_cases", "placebo_cases", "vaccine_efficacy_percent"],
+        "source_cluster": "top-tier vaccine efficacy trial",
+    },
+    "vaccine_prevents_all_infection_or_transmission": {
+        "minimum_fields": ["endpoint", "transmission_or_asymptomatic_evidence"],
+        "source_cluster": "top-tier vaccine efficacy trial",
+    },
+    "gravitational_wave_detection_supported": {
+        "minimum_fields": ["detectors", "matched_filter_snr", "false_alarm_years", "noise_controls_pass"],
+        "source_cluster": "LIGO gravitational-wave detection",
+    },
+    "gravitational_wave_population_rate_precise": {
+        "minimum_fields": ["population_rate_credible_interval"],
+        "source_cluster": "LIGO population inference",
+    },
+    "alphafold_casp14_accuracy_supported": {
+        "minimum_fields": ["benchmark=CASP14", "blind_benchmark", "median_backbone_rmsd95_angstrom"],
+        "source_cluster": "AlphaFold CASP14 blind benchmark",
+    },
+    "alphafold_solves_full_protein_folding": {
+        "minimum_fields": ["mechanistic_folding_evidence", "all_contexts_validation"],
+        "source_cluster": "AlphaFold overclaim control",
+    },
+    "dart_orbit_change_supported": {
+        "minimum_fields": ["controlled_impact", "pre_post_orbit_measured", "independent_measurement_methods_agree"],
+        "source_cluster": "NASA DART controlled impact",
+    },
+    "dart_solves_planetary_defense": {
+        "minimum_fields": ["hazardous_asteroid_generalization", "multiple_target_classes"],
+        "source_cluster": "DART overclaim control",
+    },
 }
 
 
@@ -710,6 +981,18 @@ def run_checks() -> list[ClaimCheck]:
                 reason=reason,
             )
         )
+    for trace_id, claim_id, expected in US_UK_EXAMPLES:
+        actual, reason = CLAIM_RULES[claim_id](US_UK_REAL_TRACES[trace_id])
+        checks.append(
+            ClaimCheck(
+                trace_id=trace_id,
+                claim_id=claim_id,
+                expected_verdict=expected,
+                actual_verdict=actual,
+                passed=actual == expected,
+                reason=reason,
+            )
+        )
     return checks
 
 
@@ -723,6 +1006,7 @@ def main() -> None:
             "failed": len(failed),
             "regional_synthetic_checks": len(REGIONAL_EXAMPLES),
             "regional_real_checks": len(REGIONAL_REAL_EXAMPLES),
+            "us_uk_canonical_checks": len(US_UK_EXAMPLES),
             "regional_claims": len(REGIONAL_CLAIM_MATRIX),
             "fine_tune_ready_implication": "none; this validates claim typing, not training readiness",
         },
