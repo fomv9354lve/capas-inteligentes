@@ -167,9 +167,48 @@
       "passed": true,
       "reason": "claimed value lies outside the declared uncertainty interval",
       "trace_id": "regional_uq_interval_miss"
+    },
+    {
+      "actual_verdict": "ACCEPT",
+      "claim_id": "validation_taxonomy_observed",
+      "expected_verdict": "ACCEPT",
+      "passed": true,
+      "reason": "regional source records an observed validation taxonomy over surveyed papers",
+      "trace_id": "regional_s01_godoy_dardatti_validation_survey"
+    },
+    {
+      "actual_verdict": "REJECT",
+      "claim_id": "experimental_validation_dominates_practice",
+      "expected_verdict": "REJECT",
+      "passed": true,
+      "reason": "experimental validation appears in 9/104 surveyed papers, so dominance is not licensed",
+      "trace_id": "regional_s01_godoy_dardatti_validation_survey"
+    },
+    {
+      "actual_verdict": "ACCEPT",
+      "claim_id": "qualitative_experimental_agreement_reported",
+      "expected_verdict": "ACCEPT",
+      "passed": true,
+      "reason": "source reports qualitative agreement with experiment for declared observables",
+      "trace_id": "regional_s03_romagnoli_hydraulic_jump"
+    },
+    {
+      "actual_verdict": "HOLD",
+      "claim_id": "matches_experiment",
+      "expected_verdict": "HOLD",
+      "passed": true,
+      "reason": "cannot judge experimental match; missing ['reference_definition_match', 'abs_error_vs_reference', 'reference_tolerance']",
+      "trace_id": "regional_s03_romagnoli_hydraulic_jump"
     }
   ],
   "regional_claim_matrix": {
+    "experimental_validation_dominates_practice": {
+      "minimum_fields": [
+        "surveyed_articles",
+        "validation_counts.experimental"
+      ],
+      "source_cluster": "Godoy/Dardatti regional validation survey"
+    },
     "fit_improved": {
       "minimum_fields": [
         "residual_before",
@@ -209,6 +248,14 @@
       ],
       "source_cluster": "AMCA/CIMEC numerical simulation"
     },
+    "qualitative_experimental_agreement_reported": {
+      "minimum_fields": [
+        "reference_type=experiment",
+        "agreement_claim_type=qualitative",
+        "observables"
+      ],
+      "source_cluster": "Romagnoli/Portapila/Morvan hydraulic jump simulation"
+    },
     "runtime_predicted": {
       "minimum_fields": [
         "runtime_prediction_error",
@@ -243,14 +290,23 @@
         "claimed_value"
       ],
       "source_cluster": "regional UQ model"
+    },
+    "validation_taxonomy_observed": {
+      "minimum_fields": [
+        "source_type",
+        "surveyed_articles",
+        "validation_categories"
+      ],
+      "source_cluster": "Godoy/Dardatti regional validation survey"
     }
   },
   "summary": {
-    "checks": 21,
+    "checks": 25,
     "failed": 0,
     "fine_tune_ready_implication": "none; this validates claim typing, not training readiness",
-    "passed": 21,
-    "regional_claims": 10,
+    "passed": 25,
+    "regional_claims": 13,
+    "regional_real_checks": 4,
     "regional_synthetic_checks": 12
   }
 }

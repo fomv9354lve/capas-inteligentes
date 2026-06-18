@@ -282,6 +282,40 @@ def uq_interval_supports_claim(trace: TraceResult) -> tuple[str, str]:
     )
 
 
+def validation_taxonomy_observed(trace: TraceResult) -> tuple[str, str]:
+    categories = trace.get("validation_categories") or []
+    return verdict(
+        trace.get("source_type") == "regional_validation_survey"
+        and trace.get("surveyed_articles", 0) > 0
+        and len(categories) >= 4,
+        "regional source records an observed validation taxonomy over surveyed papers",
+        "trace does not record a validation taxonomy over surveyed papers",
+    )
+
+
+def experimental_validation_dominates_practice(trace: TraceResult) -> tuple[str, str]:
+    counts = trace.get("validation_counts") or {}
+    experimental = counts.get("experimental")
+    total = trace.get("surveyed_articles")
+    if experimental is None or total is None:
+        return "HOLD", "cannot judge dominance without experimental count and total"
+    return verdict(
+        experimental / total > 0.5,
+        "experimental validation appears in more than half of surveyed papers",
+        f"experimental validation appears in {experimental}/{total} surveyed papers, so dominance is not licensed",
+    )
+
+
+def qualitative_experimental_agreement_reported(trace: TraceResult) -> tuple[str, str]:
+    return verdict(
+        trace.get("reference_type") == "experiment"
+        and trace.get("agreement_claim_type") == "qualitative"
+        and bool(trace.get("observables")),
+        "source reports qualitative agreement with experiment for declared observables",
+        "trace does not record a qualitative experimental-agreement claim",
+    )
+
+
 CLAIM_RULES: dict[str, Rule] = {
     "exact_model_solution": exact_model_solution,
     "physically_accurate_chemistry": physically_accurate_chemistry,
@@ -303,6 +337,9 @@ CLAIM_RULES: dict[str, Rule] = {
     "runtime_predicted": runtime_predicted,
     "scientific_result_validated_from_runtime": scientific_result_validated_from_runtime,
     "uq_interval_supports_claim": uq_interval_supports_claim,
+    "validation_taxonomy_observed": validation_taxonomy_observed,
+    "experimental_validation_dominates_practice": experimental_validation_dominates_practice,
+    "qualitative_experimental_agreement_reported": qualitative_experimental_agreement_reported,
 }
 
 
@@ -390,6 +427,44 @@ REGIONAL_SYNTHETIC_TRACES: dict[str, TraceResult] = {
 }
 
 
+REGIONAL_REAL_TRACES: dict[str, TraceResult] = {
+    "regional_s01_godoy_dardatti_validation_survey": {
+        "source_type": "regional_validation_survey",
+        "source_url": "https://cimec.org.ar/ojs/index.php/mc/article/view/1854",
+        "title": "Validacion de Modelos en Mecanica Computacional",
+        "authors": ["Luis A. Godoy", "Patricia M. Dardatti"],
+        "surveyed_articles": 104,
+        "validation_counts": {
+            "experimental": 9,
+            "analytic": 33,
+            "other_authors_or_methods": 40,
+            "commercial_packages": 5,
+            "benchmarks": 1,
+            "algorithm_efficiency": 13,
+        },
+        "validation_categories": [
+            "experimental",
+            "analytic",
+            "other_authors_or_methods",
+            "commercial_packages",
+            "benchmarks",
+            "algorithm_efficiency",
+        ],
+    },
+    "regional_s03_romagnoli_hydraulic_jump": {
+        "source_type": "regional_simulation_paper",
+        "source_url": "https://cimec.org.ar/ojs/index.php/mc/article/view/2826",
+        "title": "Simulacion Computacional del Resalto Hidraulico",
+        "authors": ["Marta Romagnoli", "Margarita Portapila", "Herve Morvan"],
+        "method": "2d_rans_k_epsilon_vof",
+        "reference_type": "experiment",
+        "agreement_claim_type": "qualitative",
+        "observables": ["longitudinal_mean_velocity_U", "turbulent_kinetic_energy_k"],
+        "reference_definition_match": "unknown",
+    },
+}
+
+
 REGIONAL_EXAMPLES: list[tuple[str, str, str]] = [
     ("regional_cono_sur_simulation_run", "simulation_ran", "ACCEPT"),
     ("regional_cono_sur_single_case_validated", "model_validated_for_case", "ACCEPT"),
@@ -407,6 +482,26 @@ REGIONAL_EXAMPLES: list[tuple[str, str, str]] = [
     ),
     ("regional_uq_interval_case", "uq_interval_supports_claim", "ACCEPT"),
     ("regional_uq_interval_miss", "uq_interval_supports_claim", "REJECT"),
+]
+
+
+REGIONAL_REAL_EXAMPLES: list[tuple[str, str, str]] = [
+    (
+        "regional_s01_godoy_dardatti_validation_survey",
+        "validation_taxonomy_observed",
+        "ACCEPT",
+    ),
+    (
+        "regional_s01_godoy_dardatti_validation_survey",
+        "experimental_validation_dominates_practice",
+        "REJECT",
+    ),
+    (
+        "regional_s03_romagnoli_hydraulic_jump",
+        "qualitative_experimental_agreement_reported",
+        "ACCEPT",
+    ),
+    ("regional_s03_romagnoli_hydraulic_jump", "matches_experiment", "HOLD"),
 ]
 
 
@@ -456,6 +551,18 @@ REGIONAL_CLAIM_MATRIX: dict[str, dict[str, Any]] = {
         "minimum_fields": ["uq_interval", "claimed_value"],
         "source_cluster": "regional UQ model",
     },
+    "validation_taxonomy_observed": {
+        "minimum_fields": ["source_type", "surveyed_articles", "validation_categories"],
+        "source_cluster": "Godoy/Dardatti regional validation survey",
+    },
+    "experimental_validation_dominates_practice": {
+        "minimum_fields": ["surveyed_articles", "validation_counts.experimental"],
+        "source_cluster": "Godoy/Dardatti regional validation survey",
+    },
+    "qualitative_experimental_agreement_reported": {
+        "minimum_fields": ["reference_type=experiment", "agreement_claim_type=qualitative", "observables"],
+        "source_cluster": "Romagnoli/Portapila/Morvan hydraulic jump simulation",
+    },
 }
 
 
@@ -485,6 +592,18 @@ def run_checks() -> list[ClaimCheck]:
                 reason=reason,
             )
         )
+    for trace_id, claim_id, expected in REGIONAL_REAL_EXAMPLES:
+        actual, reason = CLAIM_RULES[claim_id](REGIONAL_REAL_TRACES[trace_id])
+        checks.append(
+            ClaimCheck(
+                trace_id=trace_id,
+                claim_id=claim_id,
+                expected_verdict=expected,
+                actual_verdict=actual,
+                passed=actual == expected,
+                reason=reason,
+            )
+        )
     return checks
 
 
@@ -497,6 +616,7 @@ def main() -> None:
             "passed": len(checks) - len(failed),
             "failed": len(failed),
             "regional_synthetic_checks": len(REGIONAL_EXAMPLES),
+            "regional_real_checks": len(REGIONAL_REAL_EXAMPLES),
             "regional_claims": len(REGIONAL_CLAIM_MATRIX),
             "fine_tune_ready_implication": "none; this validates claim typing, not training readiness",
         },

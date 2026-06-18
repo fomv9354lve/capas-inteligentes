@@ -71,6 +71,9 @@ witness independence validation: passed
 evidence claim type validation: passed
 regional claim/evidence gate validation: passed, 21/21 checks total with
   12 regional synthetic checks covering ACCEPT/REJECT/REWRITE/HOLD
+R2 real Cono Sur gate validation: passed, 25/25 checks total with 4 real
+  regional checks from Godoy/Dardatti validation survey and Romagnoli/Portapila/
+  Morvan hydraulic-jump simulation
 box 3 SotA status: broad claim-safety/provenance space is taken; narrow
   evidence-type checking for scientific computation claims survives
 regional research atlas: 122 raw source records gathered across China,
@@ -249,6 +252,17 @@ scaling_law_anchor: 6
      `single_case_validation => domain_validation`,
      `fit_improved => structure_validated`, and
      `runtime_predicted => scientific_result_validated`
+22. R2 real Cono Sur claim gate:
+   - adds real-source checks from Godoy/Dardatti `Validacion de Modelos en
+     Mecanica Computacional`
+   - adds real-source checks from Romagnoli/Portapila/Morvan `Simulacion
+     Computacional del Resalto Hidraulico`
+   - accepts the weak claim that a validation taxonomy was observed
+   - rejects the overclaim that experimental validation dominates the surveyed
+     computational-mechanics practice
+   - accepts the weak claim that qualitative experimental agreement is reported
+   - holds the stronger `matches_experiment` claim until numeric tolerance/error
+     evidence is extracted
    - within chemical accuracy: `False`
    - lesson: adding vibrational correction can reduce the mismatch without making a poor finite-basis model chemically accurate
 19. H2 basis convergence to experiment:
