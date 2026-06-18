@@ -316,6 +316,48 @@ def qualitative_experimental_agreement_reported(trace: TraceResult) -> tuple[str
     )
 
 
+def agent_refinement_beats_specialist_rwp(trace: TraceResult) -> tuple[str, str]:
+    wins = trace.get("agent_rwp_wins")
+    total = trace.get("samples")
+    return verdict(
+        trace.get("source_type") == "rietveld_agent_evaluation"
+        and isinstance(wins, int)
+        and isinstance(total, int)
+        and wins > 0,
+        f"agent reports lower Rwp than specialists on {wins}/{total} samples",
+        "trace does not record a lower-Rwp comparison against specialists",
+    )
+
+
+def rwp_improvement_implies_structure_validated(trace: TraceResult) -> tuple[str, str]:
+    fit, reason = agent_refinement_beats_specialist_rwp(trace)
+    if fit == "ACCEPT":
+        return (
+            "REWRITE",
+            "lower Rwp licenses a fit-quality claim, not independent structure validation",
+        )
+    return fit, f"structure validation cannot be inferred: {reason}"
+
+
+def scientist_contract_recorded(trace: TraceResult) -> tuple[str, str]:
+    return verdict(
+        trace.get("source_type") == "scientific_agent_build_contract"
+        and trace.get("scientist_authored_contract") is True
+        and trace.get("rubric_driven_judge") is True,
+        "source records a scientist-authored contract and rubric-driven judge",
+        "trace does not record a scientist-authored contract and judge",
+    )
+
+
+def contract_failure_not_physical_failure(trace: TraceResult) -> tuple[str, str]:
+    return verdict(
+        trace.get("frontier_case_status") == "contract_failure"
+        and trace.get("physical_validation_status") == "not_established",
+        "frontier is framed as workflow/contract failure, not physical invalidity",
+        "trace does not separate contract failure from physical validation failure",
+    )
+
+
 CLAIM_RULES: dict[str, Rule] = {
     "exact_model_solution": exact_model_solution,
     "physically_accurate_chemistry": physically_accurate_chemistry,
@@ -340,6 +382,10 @@ CLAIM_RULES: dict[str, Rule] = {
     "validation_taxonomy_observed": validation_taxonomy_observed,
     "experimental_validation_dominates_practice": experimental_validation_dominates_practice,
     "qualitative_experimental_agreement_reported": qualitative_experimental_agreement_reported,
+    "agent_refinement_beats_specialist_rwp": agent_refinement_beats_specialist_rwp,
+    "rwp_improvement_implies_structure_validated": rwp_improvement_implies_structure_validated,
+    "scientist_contract_recorded": scientist_contract_recorded,
+    "contract_failure_not_physical_failure": contract_failure_not_physical_failure,
 }
 
 
@@ -462,6 +508,30 @@ REGIONAL_REAL_TRACES: dict[str, TraceResult] = {
         "observables": ["longitudinal_mean_velocity_U", "turbulent_kinetic_energy_k"],
         "reference_definition_match": "unknown",
     },
+    "regional_c35_rongzai_rietveld_agent": {
+        "source_type": "rietveld_agent_evaluation",
+        "source_url": "https://arxiv.org/abs/2605.13911",
+        "title": "Rongzai agent: A Large Language Model-Based Autonomous Assistant for Rietveld Refinement of Neutron Diffraction Data",
+        "method": "llm_agent_gsas_ii_rietveld_refinement",
+        "samples": 5,
+        "agent_rwp_wins": 3,
+        "rwp_pairs_agent_vs_specialist": [
+            [2.88, 4.42],
+            [5.06, 5.40],
+            [7.60, 9.00],
+        ],
+        "independent_structure_reference": False,
+        "held_out_validation": False,
+    },
+    "regional_c36_agentbuild_rietveld": {
+        "source_type": "scientific_agent_build_contract",
+        "source_url": "https://arxiv.org/abs/2606.12834",
+        "title": "Fantastic Scientific Agents and How to Build Them: AgentBuild for Rietveld Refinement",
+        "scientist_authored_contract": True,
+        "rubric_driven_judge": True,
+        "frontier_case_status": "contract_failure",
+        "physical_validation_status": "not_established",
+    },
 }
 
 
@@ -502,6 +572,26 @@ REGIONAL_REAL_EXAMPLES: list[tuple[str, str, str]] = [
         "ACCEPT",
     ),
     ("regional_s03_romagnoli_hydraulic_jump", "matches_experiment", "HOLD"),
+    (
+        "regional_c35_rongzai_rietveld_agent",
+        "agent_refinement_beats_specialist_rwp",
+        "ACCEPT",
+    ),
+    (
+        "regional_c35_rongzai_rietveld_agent",
+        "rwp_improvement_implies_structure_validated",
+        "REWRITE",
+    ),
+    (
+        "regional_c36_agentbuild_rietveld",
+        "scientist_contract_recorded",
+        "ACCEPT",
+    ),
+    (
+        "regional_c36_agentbuild_rietveld",
+        "contract_failure_not_physical_failure",
+        "ACCEPT",
+    ),
 ]
 
 
@@ -562,6 +652,22 @@ REGIONAL_CLAIM_MATRIX: dict[str, dict[str, Any]] = {
     "qualitative_experimental_agreement_reported": {
         "minimum_fields": ["reference_type=experiment", "agreement_claim_type=qualitative", "observables"],
         "source_cluster": "Romagnoli/Portapila/Morvan hydraulic jump simulation",
+    },
+    "agent_refinement_beats_specialist_rwp": {
+        "minimum_fields": ["samples", "agent_rwp_wins", "rwp_pairs_agent_vs_specialist"],
+        "source_cluster": "Rongzai Rietveld refinement agent",
+    },
+    "rwp_improvement_implies_structure_validated": {
+        "minimum_fields": ["agent_refinement_beats_specialist_rwp", "independent_structure_reference"],
+        "source_cluster": "Rongzai Rietveld refinement agent",
+    },
+    "scientist_contract_recorded": {
+        "minimum_fields": ["scientist_authored_contract", "rubric_driven_judge"],
+        "source_cluster": "AgentBuild Rietveld refinement",
+    },
+    "contract_failure_not_physical_failure": {
+        "minimum_fields": ["frontier_case_status", "physical_validation_status"],
+        "source_cluster": "AgentBuild Rietveld refinement",
     },
 }
 

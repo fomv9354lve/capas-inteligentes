@@ -74,6 +74,8 @@ regional claim/evidence gate validation: passed, 21/21 checks total with
 R2 real Cono Sur gate validation: passed, 25/25 checks total with 4 real
   regional checks from Godoy/Dardatti validation survey and Romagnoli/Portapila/
   Morvan hydraulic-jump simulation
+R1 real China Rietveld gate validation: passed, 29/29 checks total with 4 real
+  China/Rietveld checks from Rongzai and AgentBuild
 box 3 SotA status: broad claim-safety/provenance space is taken; narrow
   evidence-type checking for scientific computation claims survives
 regional research atlas: 122 raw source records gathered across China,
@@ -263,6 +265,15 @@ scaling_law_anchor: 6
    - accepts the weak claim that qualitative experimental agreement is reported
    - holds the stronger `matches_experiment` claim until numeric tolerance/error
      evidence is extracted
+23. R1 real China Rietveld claim gate:
+   - adds real-source checks from Rongzai Rietveld refinement agent
+   - adds real-source checks from AgentBuild for Rietveld refinement
+   - accepts the weak claim that an agent reports lower Rwp than specialists on
+     3/5 samples
+   - rewrites the overclaim `lower_rwp => structure_validated`
+   - accepts that AgentBuild records a scientist-authored contract and
+     rubric-driven judge
+   - keeps contract/workflow failure separate from physical validation failure
    - within chemical accuracy: `False`
    - lesson: adding vibrational correction can reduce the mismatch without making a poor finite-basis model chemically accurate
 19. H2 basis convergence to experiment:

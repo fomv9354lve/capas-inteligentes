@@ -199,9 +199,56 @@
       "passed": true,
       "reason": "cannot judge experimental match; missing ['reference_definition_match', 'abs_error_vs_reference', 'reference_tolerance']",
       "trace_id": "regional_s03_romagnoli_hydraulic_jump"
+    },
+    {
+      "actual_verdict": "ACCEPT",
+      "claim_id": "agent_refinement_beats_specialist_rwp",
+      "expected_verdict": "ACCEPT",
+      "passed": true,
+      "reason": "agent reports lower Rwp than specialists on 3/5 samples",
+      "trace_id": "regional_c35_rongzai_rietveld_agent"
+    },
+    {
+      "actual_verdict": "REWRITE",
+      "claim_id": "rwp_improvement_implies_structure_validated",
+      "expected_verdict": "REWRITE",
+      "passed": true,
+      "reason": "lower Rwp licenses a fit-quality claim, not independent structure validation",
+      "trace_id": "regional_c35_rongzai_rietveld_agent"
+    },
+    {
+      "actual_verdict": "ACCEPT",
+      "claim_id": "scientist_contract_recorded",
+      "expected_verdict": "ACCEPT",
+      "passed": true,
+      "reason": "source records a scientist-authored contract and rubric-driven judge",
+      "trace_id": "regional_c36_agentbuild_rietveld"
+    },
+    {
+      "actual_verdict": "ACCEPT",
+      "claim_id": "contract_failure_not_physical_failure",
+      "expected_verdict": "ACCEPT",
+      "passed": true,
+      "reason": "frontier is framed as workflow/contract failure, not physical invalidity",
+      "trace_id": "regional_c36_agentbuild_rietveld"
     }
   ],
   "regional_claim_matrix": {
+    "agent_refinement_beats_specialist_rwp": {
+      "minimum_fields": [
+        "samples",
+        "agent_rwp_wins",
+        "rwp_pairs_agent_vs_specialist"
+      ],
+      "source_cluster": "Rongzai Rietveld refinement agent"
+    },
+    "contract_failure_not_physical_failure": {
+      "minimum_fields": [
+        "frontier_case_status",
+        "physical_validation_status"
+      ],
+      "source_cluster": "AgentBuild Rietveld refinement"
+    },
     "experimental_validation_dominates_practice": {
       "minimum_fields": [
         "surveyed_articles",
@@ -263,6 +310,20 @@
       ],
       "source_cluster": "UNCuyo scientific workflow runtime prediction"
     },
+    "rwp_improvement_implies_structure_validated": {
+      "minimum_fields": [
+        "agent_refinement_beats_specialist_rwp",
+        "independent_structure_reference"
+      ],
+      "source_cluster": "Rongzai Rietveld refinement agent"
+    },
+    "scientist_contract_recorded": {
+      "minimum_fields": [
+        "scientist_authored_contract",
+        "rubric_driven_judge"
+      ],
+      "source_cluster": "AgentBuild Rietveld refinement"
+    },
     "simulation_ran": {
       "minimum_fields": [
         "evidence_status",
@@ -301,12 +362,12 @@
     }
   },
   "summary": {
-    "checks": 25,
+    "checks": 29,
     "failed": 0,
     "fine_tune_ready_implication": "none; this validates claim typing, not training readiness",
-    "passed": 25,
-    "regional_claims": 13,
-    "regional_real_checks": 4,
+    "passed": 29,
+    "regional_claims": 17,
+    "regional_real_checks": 8,
     "regional_synthetic_checks": 12
   }
 }
