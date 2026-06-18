@@ -79,6 +79,9 @@ R1 real China Rietveld gate validation: passed, 29/29 checks total with 4 real
 US/UK canonical falsifiable gate validation: passed, 39/39 checks total with
   10 canonical checks across clinical trials, vaccine efficacy, gravitational
   waves, AlphaFold/CASP14, and NASA DART
+Debunk 5 status: complete as explicit artifact; five canonical top-tier
+  overclaims are debunked as REWRITE while preserving the licensed scientific
+  claims
 box 3 SotA status: broad claim-safety/provenance space is taken; narrow
   evidence-type checking for scientific computation claims survives
 regional research atlas: 122 raw source records gathered across China,
@@ -287,6 +290,13 @@ scaling_law_anchor: 6
      `benefits_all_subgroups`, `prevents_all_transmission`,
      `precise_population_rate`, `solves_full_protein_folding`, and
      `solves_planetary_defense`
+25. Debunk 5 canonical overclaims:
+   - documents five explicit debunks over top-tier US/UK-linked claims
+   - preserves the exact falsifiable claim each source licenses
+   - rewrites the inflated claim and lists evidence required to upgrade it
+   - cases: dexamethasone all-subgroups, BNT162b2 all infection/transmission,
+     GW150914 precise population rate, AlphaFold full protein folding, DART
+     planetary defense solved
    - within chemical accuracy: `False`
    - lesson: adding vibrational correction can reduce the mismatch without making a poor finite-basis model chemically accurate
 19. H2 basis convergence to experiment:
