@@ -126,9 +126,11 @@ External MVP launch path: docs/EXTERNAL_MVP_LAUNCH_PLAN.md documents fresh-clone
   checklist, and RO-Crate profile registration path
 External readiness packets: reviewer packet ready, profile registration packet
   ready with a dedicated readiness gate, release readiness report generated;
-  GitHub release dry-run plan and release notes generated; release_ready=False
-  because git remote, v0.1.1 tag, and valid GitHub CLI authentication are
-  missing
+  public GitHub release v0.1.1 is published at
+  https://github.com/fomv9354lve/capas-inteligentes/releases/tag/v0.1.1;
+  release_ready may still report false locally if `gh auth status` cannot
+  validate the token, but repository, tag, assets, and CI were externally
+  verified
 RO-Crate profile registration readiness: packet complete and external review
   requested at https://github.com/ResearchObject/workflow-run-crate/issues/103
   with profile_status=external_review_requested_not_registered and

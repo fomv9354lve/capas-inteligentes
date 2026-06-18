@@ -1,6 +1,6 @@
 # CAPAS External MVP Launch Plan
 
-Status: local product MVP implemented; external launch path documented.
+Status: local product MVP implemented and public v0.1.1 release published.
 
 This file separates what is executable now from what requires an external
 account, external user, or standards-community action.
@@ -9,12 +9,12 @@ account, external user, or standards-community action.
 
 | Requirement | Current status | Evidence | Remaining work |
 |---|---|---|---|
-| Clean package install | Implemented and locally fresh-clone smoke-tested | `pyproject.toml`, entrypoint `capas`, `benchmarks/verify_fresh_clone_install.py` | Test from GitHub clone and released artifact after publication |
+| Clean package install | Implemented, CI-tested, and release packaged | `pyproject.toml`, entrypoint `capas`, `benchmarks/verify_fresh_clone_install.py`, `https://github.com/fomv9354lve/capas-inteligentes/releases/tag/v0.1.1` | Test from a truly blank external machine if needed |
 | Comfortable external input | Implemented with examples, schema, and schema check command | `capas.py decide`, `capas.py check-input`, `docs/schema/capas_claim_payload.schema.json`, `benchmarks/verify_external_input_schema.py` | Expand rule registry after external reviewer feedback |
 | UI | Implemented as schema-aware static local HTML | `capas.py ui`, `benchmarks/verify_claim_gate_ui.py`, `outputs/capas_claim_gate_ui.html` | Replace static demo with hosted or packaged app if needed |
 | External user validation | Not complete; feedback template and verifier ready | `examples/external_reviewer_feedback_template.json`, `benchmarks/verify_external_user_validation.py`, `outputs/external_user_validation_report.json` | Send minimal packet to one scientific-computation practitioner and store returned feedback in `outputs/external_validation/` |
-| Continuous integration | Implemented in repo | `.github/workflows/ci.yml` | Requires GitHub remote/actions to run externally |
-| GitHub/release publication | Not complete | release checklist below | Push to GitHub and tag release |
+| Continuous integration | Implemented and passing on GitHub | `.github/workflows/ci.yml`, latest `CAPAS CI` run on `main` | Keep CI green as claims/schema evolve |
+| GitHub/release publication | Complete for v0.1.1 | `https://github.com/fomv9354lve/capas-inteligentes/releases/tag/v0.1.1` | Future releases should update this checklist before publication |
 | Formal RO-Crate profile registration | Not complete; local registration packet readiness gate implemented | `benchmarks/verify_profile_registration_packet.py`, `outputs/profile_registration_packet/manifest.json`, `outputs/profile_registration_readiness_report.json` | Submit/register profile URI with RO-Crate/Profile registry process |
 
 Current readiness artifacts:
@@ -31,11 +31,13 @@ Current readiness artifacts:
 - `outputs/github_release_plan_v0.1.1.json`
 - `outputs/release_notes_v0.1.1.md`
 
-Current release readiness result:
+Current release state:
 
 ```text
-release_ready: False
-missing: git remote, v0.1.1 tag, valid GitHub CLI authentication
+public repository: https://github.com/fomv9354lve/capas-inteligentes
+current release: https://github.com/fomv9354lve/capas-inteligentes/releases/tag/v0.1.1
+v0.1.0 release: retired
+CI: passing on main
 ```
 
 ## Install
@@ -236,7 +238,11 @@ Check local release readiness:
 python scripts/check_release_readiness.py
 ```
 
-The check is expected to fail until GitHub remote/auth/tag/release exist.
+The check may still report `release_ready=False` if local `gh auth status`
+cannot validate the token, even when the release already exists. Treat the
+GitHub release URL and CI run as the external source of truth.
+
+For a future release:
 
 1. Push repository to GitHub.
 2. Confirm GitHub Actions passes `CAPAS CI`.
@@ -249,7 +255,7 @@ python scripts/publish_github_release.py --execute
 4. Release title:
 
 ```text
-CAPAS Claim Gate v0.1.1 - local evidence-typed claim gate MVP
+CAPAS Claim Gate v0.1.1 - public-boundary hotfix
 ```
 
 5. Release notes must include:
