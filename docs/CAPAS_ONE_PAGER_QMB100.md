@@ -40,7 +40,7 @@ https://github.com/fomv9354lve/capas-inteligentes
 Release:
 
 ```text
-https://github.com/fomv9354lve/capas-inteligentes/releases/tag/v0.1.0
+https://github.com/fomv9354lve/capas-inteligentes/releases/tag/v0.1.1
 ```
 
 ## What CAPAS Records
@@ -150,7 +150,7 @@ CAPAS does not claim:
 
 ## Current State
 
-CAPAS v0.1.0 is public and CI-validated. It remains local-MVP level:
+CAPAS v0.1.1 is public and CI-validated. It remains local-MVP level:
 
 - package-installable CLI,
 - static UI,

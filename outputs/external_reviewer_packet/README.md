@@ -1,7 +1,7 @@
 # CAPAS INTELIGENTES
 
 [![CAPAS CI](https://github.com/fomv9354lve/capas-inteligentes/actions/workflows/ci.yml/badge.svg)](https://github.com/fomv9354lve/capas-inteligentes/actions/workflows/ci.yml)
-[![Release](https://img.shields.io/github/v/release/fomv9354lve/capas-inteligentes)](https://github.com/fomv9354lve/capas-inteligentes/releases/tag/v0.1.0)
+[![Release](https://img.shields.io/github/v/release/fomv9354lve/capas-inteligentes)](https://github.com/fomv9354lve/capas-inteligentes/releases/tag/v0.1.1)
 
 CAPAS is a small evidence-typed claim gate for scientific computation.
 
@@ -42,7 +42,7 @@ Expected behavior:
 Release assets:
 
 ```text
-https://github.com/fomv9354lve/capas-inteligentes/releases/tag/v0.1.0
+https://github.com/fomv9354lve/capas-inteligentes/releases/tag/v0.1.1
 ```
 
 ## Product Demo
@@ -116,10 +116,10 @@ python3 scripts/publish_github_release.py
 Publishing a new release still requires a GitHub remote, valid `gh auth`, a
 pushed tag, a passing external CI run, and a GitHub release URL.
 
-The public v0.1.0 release is available at:
+The public v0.1.1 release is available at:
 
 ```text
-https://github.com/fomv9354lve/capas-inteligentes/releases/tag/v0.1.0
+https://github.com/fomv9354lve/capas-inteligentes/releases/tag/v0.1.1
 ```
 
 Prepare/check external reviewer feedback:

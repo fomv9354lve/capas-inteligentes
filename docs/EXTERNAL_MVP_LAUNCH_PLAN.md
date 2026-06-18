@@ -28,14 +28,14 @@ Current readiness artifacts:
 - `outputs/external_input_schema_report.json`
 - `outputs/claim_gate_ui_report.json`
 - `outputs/external_user_validation_report.json`
-- `outputs/github_release_plan_v0.1.0.json`
-- `outputs/release_notes_v0.1.0.md`
+- `outputs/github_release_plan_v0.1.1.json`
+- `outputs/release_notes_v0.1.1.md`
 
 Current release readiness result:
 
 ```text
 release_ready: False
-missing: git remote, v0.1.0 tag, valid GitHub CLI authentication
+missing: git remote, v0.1.1 tag, valid GitHub CLI authentication
 ```
 
 ## Install
@@ -227,8 +227,8 @@ python scripts/publish_github_release.py
 
 The command above is a dry-run. It writes:
 
-- `outputs/github_release_plan_v0.1.0.json`
-- `outputs/release_notes_v0.1.0.md`
+- `outputs/github_release_plan_v0.1.1.json`
+- `outputs/release_notes_v0.1.1.md`
 
 Check local release readiness:
 
@@ -249,7 +249,7 @@ python scripts/publish_github_release.py --execute
 4. Release title:
 
 ```text
-CAPAS Claim Gate v0.1.0 - local evidence-typed claim gate MVP
+CAPAS Claim Gate v0.1.1 - local evidence-typed claim gate MVP
 ```
 
 5. Release notes must include:

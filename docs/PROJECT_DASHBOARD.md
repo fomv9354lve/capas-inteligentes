@@ -127,7 +127,7 @@ External MVP launch path: docs/EXTERNAL_MVP_LAUNCH_PLAN.md documents fresh-clone
 External readiness packets: reviewer packet ready, profile registration packet
   ready with a dedicated readiness gate, release readiness report generated;
   GitHub release dry-run plan and release notes generated; release_ready=False
-  because git remote, v0.1.0 tag, and valid GitHub CLI authentication are
+  because git remote, v0.1.1 tag, and valid GitHub CLI authentication are
   missing
 RO-Crate profile registration readiness: packet complete and external review
   requested at https://github.com/ResearchObject/workflow-run-crate/issues/103

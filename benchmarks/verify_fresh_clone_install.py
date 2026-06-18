@@ -24,6 +24,11 @@ def _stable_text(text: str, tmp_root: Path | None = None) -> str:
     stable = re.sub(r"sha256=[0-9a-f]{64}", "sha256=<wheel-hash>", stable)
     stable = re.sub(r"size=\d+", "size=<wheel-size>", stable)
     stable = re.sub(
+        r"Found existing installation: capas-claim-gate [0-9]+(?:\.[0-9]+)*",
+        "Found existing installation: capas-claim-gate <existing-version>",
+        stable,
+    )
+    stable = re.sub(
         r"/(?:private/)?var/folders/[^\s]+/pip-ephem-wheel-cache-[^\s]+",
         "<PIP_EPHEM_WHEEL_CACHE>",
         stable,
