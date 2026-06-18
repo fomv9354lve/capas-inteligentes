@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CAPAS Claim Gate</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; margin: 32px; max-width: 1120px; }
+    textarea { width: 100%; min-height: 360px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; }
+    pre { background: #f5f5f5; padding: 16px; overflow: auto; }
+    button { padding: 8px 12px; margin: 8px 8px 8px 0; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    @media (max-width: 800px) { .grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <h1>CAPAS Claim Gate</h1>
+  <p>Paste a claim/evidence JSON object. This static UI mirrors the small external rule gate in <code>capas.py decide</code>.</p>
+  <div class="grid">
+    <section>
+      <h2>Input</h2>
+      <textarea id="input">{
+  "claim": {
+    "id": "sample_scaling_claim",
+    "text": "The generated scaling result is physically consistent with the universal z=1 anchor.",
+    "type": "universal_anchor_claim"
+  },
+  "evidence": {
+    "anchor_mode": "absolute_anchor",
+    "local_property_tests_pass": true,
+    "physical_evidence_level": "scaling_law_anchor",
+    "universal_anchor_pass": true,
+    "verification_independence": "theory_scaling_law_no_solver"
+  }
+}</textarea>
+      <button onclick="decide()">Decide</button>
+      <button onclick="resetSample()">Reset sample</button>
+    </section>
+    <section>
+      <h2>Decision</h2>
+      <pre id="output"></pre>
+    </section>
+  </div>
+  <script>
+    const sample = {"claim": {"id": "sample_scaling_claim", "type": "universal_anchor_claim", "text": "The generated scaling result is physically consistent with the universal z=1 anchor."}, "evidence": {"anchor_mode": "absolute_anchor", "local_property_tests_pass": true, "universal_anchor_pass": true, "physical_evidence_level": "scaling_law_anchor", "verification_independence": "theory_scaling_law_no_solver"}};
+    const required = {
+      exact_model_solution: ["abs_error", "tolerance"],
+      physical_accuracy: ["within_chemical_accuracy"],
+      universal_anchor_claim: ["anchor_mode", "local_property_tests_pass", "universal_anchor_pass"],
+      claim_transition: ["upgrade_evidence_present"]
+    };
+    function rule(payload) {
+      const claim = payload.claim || {};
+      const evidence = payload.evidence || {};
+      const fields = required[claim.type];
+      let missing = [];
+      if (fields) {
+        missing = fields.filter((field) => evidence[field] === undefined || evidence[field] === null || evidence[field] === "unknown");
+      }
+      let result = {
+        input_claim: claim,
+        verdict: "HOLD",
+        reason: "unsupported claim type or missing evidence",
+        licensed_claim: claim.text,
+        rewrite: null,
+        missing_fields: missing,
+        required_fields: fields || [],
+        fine_tune_ready: false,
+        non_claim: "This decision is rule-based over supplied evidence fields, not an LLM judgment."
+      };
+      if (!fields) {
+        result.reason = `unsupported claim type ${claim.type}; no rule was applied`;
+      } else if (missing.length) {
+        result.reason = `missing required evidence fields: ${missing.join(", ")}`;
+      } else if (claim.type === "exact_model_solution") {
+        result.verdict = Number(evidence.abs_error) <= Number(evidence.tolerance) ? "ACCEPT" : "REJECT";
+        result.reason = `abs_error ${evidence.abs_error} vs tolerance ${evidence.tolerance}`;
+      } else if (claim.type === "physical_accuracy") {
+        result.verdict = evidence.within_chemical_accuracy === true ? "ACCEPT" : "REJECT";
+        result.reason = `within_chemical_accuracy is ${evidence.within_chemical_accuracy}`;
+      } else if (claim.type === "universal_anchor_claim") {
+        if (evidence.anchor_mode !== "absolute_anchor") {
+          result.verdict = "HOLD";
+          result.reason = "claim requires an absolute_anchor, but evidence has another anchor mode";
+        } else if (evidence.local_property_tests_pass === true && evidence.universal_anchor_pass === true) {
+          result.verdict = "ACCEPT";
+          result.reason = "local checks and universal anchor both pass";
+        } else if (evidence.local_property_tests_pass === true && evidence.universal_anchor_pass !== true) {
+          result.verdict = "REWRITE";
+          result.reason = "local checks pass, but the universal anchor fails";
+          result.rewrite = "local plausibility only; universal physical correctness is not licensed";
+          result.licensed_claim = result.rewrite;
+        } else {
+          result.verdict = "REJECT";
+          result.reason = "local checks fail before the universal-anchor claim is licensed";
+        }
+      } else if (claim.type === "claim_transition") {
+        if (evidence.upgrade_evidence_present === true) {
+          result.verdict = "ACCEPT";
+          result.reason = "upgrade evidence is explicitly present";
+        } else {
+          result.verdict = "REWRITE";
+          result.reason = "upgrade evidence is absent; stronger claim is not licensed";
+          result.rewrite = evidence.current_claim || "weaker current claim only";
+          result.licensed_claim = result.rewrite;
+        }
+      }
+      return result;
+    }
+    function decide() {
+      try {
+        const payload = JSON.parse(document.getElementById("input").value);
+        document.getElementById("output").textContent = JSON.stringify(rule(payload), null, 2);
+      } catch (error) {
+        document.getElementById("output").textContent = String(error);
+      }
+    }
+    function resetSample() {
+      document.getElementById("input").value = JSON.stringify(sample, null, 2);
+      decide();
+    }
+    decide();
+  </script>
+</body>
+</html>

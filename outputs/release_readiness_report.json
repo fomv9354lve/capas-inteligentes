@@ -1,0 +1,110 @@
+{
+  "failed": 3,
+  "non_degradation": "GitHub publication is not complete until remote, auth, tag, CI run, and release artifact exist externally.",
+  "passed": 14,
+  "release_ready": false,
+  "results": [
+    {
+      "check": "package_manifest",
+      "detail": "exists",
+      "passed": true,
+      "path": "pyproject.toml"
+    },
+    {
+      "check": "product_doc",
+      "detail": "exists",
+      "passed": true,
+      "path": "PRODUCT.md"
+    },
+    {
+      "check": "readme",
+      "detail": "exists",
+      "passed": true,
+      "path": "README.md"
+    },
+    {
+      "check": "ci_workflow",
+      "detail": "exists",
+      "passed": true,
+      "path": ".github/workflows/ci.yml"
+    },
+    {
+      "check": "external_launch_plan",
+      "detail": "exists",
+      "passed": true,
+      "path": "docs/EXTERNAL_MVP_LAUNCH_PLAN.md"
+    },
+    {
+      "check": "accept_example",
+      "detail": "exists",
+      "passed": true,
+      "path": "examples/external_claim_accept.json"
+    },
+    {
+      "check": "rewrite_example",
+      "detail": "exists",
+      "passed": true,
+      "path": "examples/external_claim_rewrite.json"
+    },
+    {
+      "check": "hold_example",
+      "detail": "exists",
+      "passed": true,
+      "path": "examples/external_claim_hold.json"
+    },
+    {
+      "check": "demo_report",
+      "detail": "exists",
+      "passed": true,
+      "path": "outputs/capas_product_demo_report.md"
+    },
+    {
+      "check": "reviewer_packet_manifest",
+      "detail": "exists",
+      "passed": true,
+      "path": "outputs/external_reviewer_packet/manifest.json"
+    },
+    {
+      "check": "profile_registration_manifest",
+      "detail": "exists",
+      "passed": true,
+      "path": "outputs/profile_registration_packet/manifest.json"
+    },
+    {
+      "check": "product_demo_acceptance",
+      "command": "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3 benchmarks/verify_capas_product_demo.py",
+      "detail": "CAPAS product demo: PASS\nclaim checks: 69/69\nD11 licensed claim: complementarity_not_dominance\nwrote /Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/outputs/capas_product_demo_report.json\nwrote /Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/outputs/capas_product_demo_report.md\nACCEPT: local checks and universal anchor both pass\nwrote /Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/outputs/external_claim_accept_decision.json\nREWRITE: local checks pass, but the universal anchor fails\nwrote /Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/outputs/external_claim_rewrite_decision.json\nHOLD: missing required evidence fields: ['within_chemical_accuracy']\nwrote /Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/outputs/external_claim_hold_decision.json\n{\n  \"anchor_mode\": \"absolute_anchor\",\n  \"attempted_claim\": \"bounded_reliable_scientific_reasoning_in_declared_task_family\",\n  \"claim_scope\": \"bounded scientific-computation task family only; this licenses an agent-with-physics-anchor reliability claim for critical Ising finite-size scaling seeds, not AGI or broad reliable reasoning\",\n  \"coverage_case\": \"claim_transition_bounded_agent_scientific_reasoning\",\n  \"current_claim\": \"few_shot_or_local_benchmark_gain\",\n  \"local_property_tests_pass\": true,\n  \"physical_evidence_level\": \"scaling_law_anchor\",\n  \"trace_id\": \"trace_039\",\n  \"universal_anchor_pass\": true,\n  \"upgrade_evidence_present\": true,\n  \"verification_independence\": \"theory_scaling_law_no_solver\"\n}\nwrote /Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/outputs/capas_claim_gate_ui.html\nverify_capas_product_demo passed",
+      "passed": true
+    },
+    {
+      "check": "product_validate",
+      "command": "capas validate",
+      "detail": "001: CAPAS profile ok\ntrace_002: CAPAS profile ok\ntrace_003: CAPAS profile ok\ntrace_004: CAPAS profile ok\ntrace_005: CAPAS profile ok\ntrace_006: CAPAS profile ok\ntrace_007: CAPAS profile ok\ntrace_008: CAPAS profile ok\ntrace_009: CAPAS profile ok\ntrace_010: CAPAS profile ok\ntrace_011: CAPAS profile ok\ntrace_012: CAPAS profile ok\ntrace_013: CAPAS profile ok\ntrace_014: CAPAS profile ok\ntrace_015: CAPAS profile ok\ntrace_016: CAPAS profile ok\ntrace_017: CAPAS profile ok\ntrace_018: CAPAS profile ok\ntrace_019: CAPAS profile ok\ntrace_020: CAPAS profile ok\ntrace_021: CAPAS profile ok\ntrace_022: CAPAS profile ok\ntrace_023: CAPAS profile ok\ntrace_024: CAPAS profile ok\ntrace_025: CAPAS profile ok\ntrace_026: CAPAS profile ok\ntrace_027: CAPAS profile ok\ntrace_028: CAPAS profile ok\ntrace_029: CAPAS profile ok\ntrace_030: CAPAS profile ok\ntrace_031: CAPAS profile ok\ntrace_032: CAPAS profile ok\ntrace_033: CAPAS profile ok\ntrace_034: CAPAS profile ok\ntrace_035: CAPAS profile ok\ntrace_036: CAPAS profile ok\ntrace_037: CAPAS profile ok\ntrace_038: CAPAS profile ok\ntrace_039: CAPAS profile ok\nvalidate_capas_profile passed (39 crates)\ntrace_001: ok (analytic_success, present, CompletedActionStatus)\ntrace_011: ok (cross_sim_success, present, CompletedActionStatus)\ntrace_018: ok (cross_library_success, present, CompletedActionStatus)\ntrace_019: ok (combinatorial_optimization_function_level, present, CompletedActionStatus)\ntrace_020: ok (combinatorial_optimization_degenerate_function_level, present, CompletedActionStatus)\ntrace_021: ok (quantum_chemistry_experimental_reference, present, CompletedActionStatus)\ntrace_022: ok (quantum_chemistry_experimental_reference_improved_basis, present, CompletedActionStatus)\ntrace_023: ok (quantum_chemistry_experimental_reference_larger_basis, present, CompletedActionStatus)\ntrace_024: ok (quantum_chemistry_reference_definition_corrected, present, CompletedActionStatus)\ntrace_025: ok (quantum_chemistry_polyatomic_electronic_vibrational, present, CompletedActionStatus)\ntrace_026: ok (quantum_chemistry_larger_polyatomic_electronic_vibrational, present, CompletedActionStatus)\ntrace_027: ok (quantum_chemistry_basis_convergence_to_experiment, present, CompletedActionStatus)\ntrace_028: ok (universal_invariant_adversarial_failure, present, CompletedActionStatus)\ntrace_029: ok (universal_invariant_local_catches_anchor_not_needed, present, CompletedActionStatus)\ntrace_030: ok (universal_invariant_both_oracles_catch, present, CompletedActionStatus)\ntrace_031: ok (universal_invariant_non_heisenberg_adversarial_failure, present, CompletedActionStatus)\ntrace_032: ok (universal_invariant_no_anchor_control, present, CompletedActionStatus)\ntrace_033: ok (universal_invariant_scaling_law_adversarial_failure, present, CompletedActionStatus)\ntrace_034: ok (universal_invariant_scaling_law_positive_control, present, CompletedActionStatus)\ntrace_035: ok (universal_invariant_scaling_law_local_catches, present, CompletedActionStatus)\ntrace_036: ok (universal_invariant_scaling_law_simulation_generated, present, CompletedActionStatus)\ntrace_037: ok (universal_invariant_scaling_law_randomized_adversarial, present, CompletedActionStatus)\ntrace_038: ok (universal_invariant_scaling_law_agent_generated_adversarial, present, CompletedActionStatus)\ntrace_039: ok (claim_transition_bounded_agent_scientific_reasoning, present, CompletedActionStatus)\ntrace_012: ok (no_evidence_success, none_declared, CompletedActionStatus)\ntrace_013: ok (backend_failed, not_applicable_failed, FailedActionStatus)\ntrace_014: ok (rejected_by_router, not_applicable_rejected, CompletedActionStatus)\ntrace_015: ok (estimated_bound_candidate, present, CompletedActionStatus)\ntrace_016: ok (formal_bound_success, present, CompletedActionStatus)\ntrace_017: ok (formal_bound_composition_success, present, CompletedActionStatus)\nvalidate_ro_crates passed\n\n=== claim gate ===\n\n=== universal anchor matrix ===\n\n=== CAPAS profile ===\n\n=== RO-Crate coverage ===\n\nCAPAS product validation passed",
+      "passed": true
+    },
+    {
+      "check": "wheel_build_no_isolation",
+      "command": "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3 -m build --wheel --no-isolation",
+      "detail": "ntry_points.txt\nwriting requirements to capas_claim_gate.egg-info/requires.txt\nwriting top-level names to capas_claim_gate.egg-info/top_level.txt\nreading manifest file 'capas_claim_gate.egg-info/SOURCES.txt'\nwriting manifest file 'capas_claim_gate.egg-info/SOURCES.txt'\ninstalling to build/bdist.macosx-10.15-universal2/wheel\nrunning install\nrunning install_lib\ncreating build/bdist.macosx-10.15-universal2/wheel\ncreating build/bdist.macosx-10.15-universal2/wheel/integrations\ncopying build/lib/integrations/physics_lab_router.py -> build/bdist.macosx-10.15-universal2/wheel/./integrations\ncopying build/lib/integrations/physics_magnitude_gold_engines.py -> build/bdist.macosx-10.15-universal2/wheel/./integrations\ncopying build/lib/integrations/universal_invariant_adversarial_engines.py -> build/bdist.macosx-10.15-universal2/wheel/./integrations\ncopying build/lib/capas.py -> build/bdist.macosx-10.15-universal2/wheel/.\ncreating build/bdist.macosx-10.15-universal2/wheel/router\ncopying build/lib/router/trace.py -> build/bdist.macosx-10.15-universal2/wheel/./router\ncreating build/bdist.macosx-10.15-universal2/wheel/router/backends\ncopying build/lib/router/backends/dense_backend.py -> build/bdist.macosx-10.15-universal2/wheel/./router/backends\ncopying build/lib/router/backends/__init__.py -> build/bdist.macosx-10.15-universal2/wheel/./router/backends\ncopying build/lib/router/backends/external_engine_backend.py -> build/bdist.macosx-10.15-universal2/wheel/./router/backends\ncopying build/lib/router/backends/tensor_backend.py -> build/bdist.macosx-10.15-universal2/wheel/./router/backends\ncopying build/lib/router/backends/stim_backend.py -> build/bdist.macosx-10.15-universal2/wheel/./router/backends\ncopying build/lib/router/prov_export.py -> build/bdist.macosx-10.15-universal2/wheel/./router\ncopying build/lib/router/route.py -> build/bdist.macosx-10.15-universal2/wheel/./router\ncopying build/lib/router/__init__.py -> build/bdist.macosx-10.15-universal2/wheel/./router\ncopying build/lib/router/types.py -> build/bdist.macosx-10.15-universal2/wheel/./router\ncopying build/lib/router/pipeline.py -> build/bdist.macosx-10.15-universal2/wheel/./router\ncopying build/lib/router/ro_crate_export.py -> build/bdist.macosx-10.15-universal2/wheel/./router\ncopying build/lib/router/cost_model.py -> build/bdist.macosx-10.15-universal2/wheel/./router\ncopying build/lib/router/executor.py -> build/bdist.macosx-10.15-universal2/wheel/./router\nrunning install_egg_info\nCopying capas_claim_gate.egg-info to build/bdist.macosx-10.15-universal2/wheel/./capas_claim_gate-0.1.0-py3.14.egg-info\nrunning install_scripts\ncreating build/bdist.macosx-10.15-universal2/wheel/capas_claim_gate-0.1.0.dist-info/WHEEL\ncreating '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/dist/.tmp-2iszmeoe/capas_claim_gate-0.1.0-py3-none-any.whl' and adding 'build/bdist.macosx-10.15-universal2/wheel' to it\nadding 'capas.py'\nadding 'integrations/physics_lab_router.py'\nadding 'integrations/physics_magnitude_gold_engines.py'\nadding 'integrations/universal_invariant_adversarial_engines.py'\nadding 'router/__init__.py'\nadding 'router/cost_model.py'\nadding 'router/executor.py'\nadding 'router/pipeline.py'\nadding 'router/prov_export.py'\nadding 'router/ro_crate_export.py'\nadding 'router/route.py'\nadding 'router/trace.py'\nadding 'router/types.py'\nadding 'router/backends/__init__.py'\nadding 'router/backends/dense_backend.py'\nadding 'router/backends/external_engine_backend.py'\nadding 'router/backends/stim_backend.py'\nadding 'router/backends/tensor_backend.py'\nadding 'capas_claim_gate-0.1.0.dist-info/METADATA'\nadding 'capas_claim_gate-0.1.0.dist-info/WHEEL'\nadding 'capas_claim_gate-0.1.0.dist-info/entry_points.txt'\nadding 'capas_claim_gate-0.1.0.dist-info/top_level.txt'\nadding 'capas_claim_gate-0.1.0.dist-info/RECORD'\nremoving build/bdist.macosx-10.15-universal2/wheel\nSuccessfully built capas_claim_gate-0.1.0-py3-none-any.whl\n* Getting build dependencies for wheel...\n* Building wheel...",
+      "passed": true
+    },
+    {
+      "check": "git_remote_configured",
+      "command": "git remote -v",
+      "detail": "no git remote configured",
+      "passed": false
+    },
+    {
+      "check": "release_tag_v0_1_0_exists",
+      "command": "git tag --list v0.1.0",
+      "detail": "tag not present",
+      "passed": false
+    },
+    {
+      "check": "github_cli_authenticated",
+      "command": "gh auth status",
+      "detail": "github.com\n  X Failed to log in to github.com account fomv9354lve (default)\n  - Active account: true\n  - The token in default is invalid.\n  - To re-authenticate, run: gh auth login -h github.com\n  - To forget about this account, run: gh auth logout -h github.com -u fomv9354lve",
+      "passed": false
+    }
+  ]
+}

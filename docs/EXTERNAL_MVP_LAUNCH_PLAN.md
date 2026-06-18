@@ -17,6 +17,19 @@ account, external user, or standards-community action.
 | GitHub/release publication | Not complete | release checklist below | Push to GitHub and tag release |
 | Formal RO-Crate profile registration | Not complete | local CAPAS profile docs exist | Submit/register profile URI with RO-Crate/Profile registry process |
 
+Current readiness artifacts:
+
+- `outputs/external_reviewer_packet/manifest.json`
+- `outputs/profile_registration_packet/manifest.json`
+- `outputs/release_readiness_report.json`
+
+Current release readiness result:
+
+```text
+release_ready: False
+missing: git remote, v0.1.0 tag, valid GitHub CLI authentication
+```
+
 ## Install
 
 From a fresh clone:
@@ -82,6 +95,12 @@ gate used by `capas decide`, not an LLM judge.
 
 ## External User Validation Packet
 
+Generate/update the packet:
+
+```bash
+python scripts/prepare_external_reviewer_packet.py
+```
+
 Send a reviewer:
 
 1. `PRODUCT.md`
@@ -105,6 +124,14 @@ External validation is not complete until this feedback changes the schema or
 confirms that the schema solves a real audit problem.
 
 ## GitHub Release Checklist
+
+Check local release readiness:
+
+```bash
+python scripts/check_release_readiness.py
+```
+
+The check is expected to fail until GitHub remote/auth/tag/release exist.
 
 1. Push repository to GitHub.
 2. Confirm GitHub Actions passes `CAPAS CI`.
@@ -130,6 +157,12 @@ CAPAS Claim Gate v0.1.0 - local evidence-typed claim gate MVP
 - external user validation still pending.
 
 ## RO-Crate Profile Registration Path
+
+Generate/update the packet:
+
+```bash
+python scripts/prepare_profile_registration_packet.py
+```
 
 Current local profile docs:
 
