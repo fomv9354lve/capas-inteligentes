@@ -158,7 +158,7 @@ regional research atlas: 122 raw source records gathered across China,
 integration map: regional/SotA sources converted from "taken/not taken" audit
   into construction material for CAPAS; next experiments are China Rietveld
   evidence gate and Cono Sur AMCA validation claim gate
-reproducibility environment check: passed in local physics-magnitude-lab pixi env
+reproducibility environment check: passed in local private-scientific-engine pixi env
 ```
 
 CAPAS emits a recognized `.cwl` Workflow Run RO-Crate descriptor while recording
@@ -482,33 +482,35 @@ These are hard guardrails.
 
 ### D0. Reproducibility / Portability
 
-Status: local reproducibility gated, portability incomplete.
+Status: public validation portable, full private regeneration intentionally out
+of package boundary.
 
 What exists:
 
 - `requirements-corpus.txt`
 - `scripts/check_reproducibility_env.py`
 - `docs/REPRODUCIBILITY.md`
-- corpus builder runs the environment check before generating traces
+- public corpus validator runs the environment check before validating shipped
+  traces
 
 Current state:
 
 ```text
-local CAPAS corpus: reproducible in the physics-magnitude-lab pixi environment
-standalone CAPAS portability: not complete
+public CAPAS validation: portable from a fresh clone
+full historical regeneration: private/local engine adapters not shipped
 ```
 
 Debt:
 
-- `physics_magnitude_lab` is a local dependency, not owned by CAPAS
-- `physics-magnitude-lab/pixi.toml` and `pixi.lock` are modified by the PySCF addition
-- no CAPAS-owned `pixi.toml` yet
+- full regeneration of all historical traces requires private/local scientific
+  engines that are not part of the public release
+- published traces are the public audit artifact
 
 Done when:
 
-- a fresh clone can regenerate the 38 traces with one documented command
-- `physics_magnitude_lab` is installed from a pinned local path, package version,
-  or declared workspace dependency
+- a fresh clone can validate the shipped trace corpus with one documented command
+- any future public full-regeneration claim has public engine adapters or a
+  declared public benchmark dependency
 
 Validation:
 
@@ -572,7 +574,7 @@ Debt:
 
 Next step:
 
-- instrument `physics-magnitude-lab` DMRG to return local discarded weights
+- instrument `private-scientific-engine` DMRG to return local discarded weights
 - document canonical-form and normalization assumptions
 - decide whether the accumulated quantity is formal, estimated, or candidate
 
@@ -1098,8 +1100,8 @@ Exit criteria:
 Build corpus:
 
 ```bash
-cd /Users/kreniq/physics-magnitude-lab
-/Users/kreniq/.pixi/bin/pixi run python "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/scripts/build_evidence_corpus.py"
+cd /Users/kreniq/private-scientific-engine
+/Users/kreniq/.pixi/bin/pixi run python "<CAPAS_ROOT>/scripts/build_evidence_corpus.py"
 ```
 
 Local validation:

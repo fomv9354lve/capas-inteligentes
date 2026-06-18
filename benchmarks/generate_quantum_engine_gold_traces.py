@@ -11,7 +11,7 @@ sys.path.insert(0, str(ROOT))
 from router import CostBudget, EngineSpec, Workload, run_with_trace  # noqa: E402
 
 
-ENGINE_PATH = ROOT / "integrations" / "physics_magnitude_gold_engines.py"
+ENGINE_PATH = ROOT / "integrations" / "capas_public_evidence_engines.py"
 ADVERSARIAL_ENGINE_PATH = ROOT / "integrations" / "universal_invariant_adversarial_engines.py"
 OUT_DIR = ROOT / "benchmarks" / "gold_traces"
 AUDIT_CSV = ROOT / "audits" / "gold_trace_audit_template.csv"
@@ -102,6 +102,13 @@ def _rejected_workload() -> Workload:
 
 
 def main() -> None:
+    if not ENGINE_PATH.exists():
+        raise SystemExit(
+            "Full historical corpus generation requires private/local evidence "
+            "engine adapters that are intentionally not shipped in the public "
+            "CAPAS package. Run scripts/build_evidence_corpus.py to validate "
+            "the published trace corpus instead."
+        )
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     audit_rows = []
     for trace_id, fn, kwargs, coverage_case in TRACE_SPECS:

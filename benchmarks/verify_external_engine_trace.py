@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 import sys
 from pathlib import Path
 
@@ -9,10 +10,7 @@ sys.path.insert(0, str(ROOT))
 from router import EngineSpec, Workload, run_with_trace  # noqa: E402
 
 
-ENGINE_PATH = (
-    Path("/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/physics_quantum")
-    / "real_heisenberg_ladder.py"
-)
+ENGINE_PATH = Path(os.environ.get("CAPAS_PRIVATE_HEISENBERG_ENGINE", ""))
 
 
 def event(trace, stage: str):
@@ -23,6 +21,13 @@ def event(trace, stage: str):
 
 
 def main() -> None:
+    if not ENGINE_PATH.is_file():
+        print(
+            "verify_external_engine_trace skipped: set "
+            "CAPAS_PRIVATE_HEISENBERG_ENGINE to a local engine module to run "
+            "this private-adapter check."
+        )
+        return
     workload = Workload(
         kind="dense",
         n_qubits=2,

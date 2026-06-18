@@ -8,8 +8,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_VERSION = "v0.1.0"
-RELEASE_TITLE = "CAPAS Claim Gate v0.1.0 - local evidence-typed claim gate MVP"
+DEFAULT_VERSION = "v0.1.1"
 
 
 def _run(command: list[str], check: bool = False) -> tuple[int, str]:
@@ -51,7 +50,8 @@ def _filtered_status(version: str) -> tuple[int, str]:
 
 
 def _release_notes(version: str) -> str:
-    return f"""# {RELEASE_TITLE}
+    release_title = f"CAPAS Claim Gate {version} - public-boundary hotfix"
+    return f"""# {release_title}
 
 This is a local MVP release candidate for CAPAS Claim Gate.
 
@@ -107,6 +107,7 @@ def _write_release_files(version: str, execute: bool) -> dict[str, object]:
     release_notes_path = ROOT / "outputs" / f"release_notes_{version}.md"
     release_plan_path = ROOT / "outputs" / f"github_release_plan_{version}.json"
     release_notes = _release_notes(version)
+    release_title = f"CAPAS Claim Gate {version} - public-boundary hotfix"
 
     remote_code, remote_output = _run(["git", "remote", "-v"])
     auth_code, auth_output = _run(["gh", "auth", "status"])
@@ -117,7 +118,7 @@ def _write_release_files(version: str, execute: bool) -> dict[str, object]:
     plan = {
         "version": version,
         "execute": execute,
-        "release_title": RELEASE_TITLE,
+        "release_title": release_title,
         "release_notes": str(release_notes_path.relative_to(ROOT)),
         "commands_execute_mode": [
             "python benchmarks/verify_external_mvp_readiness.py",
@@ -125,7 +126,7 @@ def _write_release_files(version: str, execute: bool) -> dict[str, object]:
             "git push origin HEAD",
             f"git tag {version} (only if missing)",
             f"git push origin {version}",
-            f"gh release create {version} --title {RELEASE_TITLE!r} --notes-file {release_notes_path.relative_to(ROOT)}",
+            f"gh release create {version} --title {release_title!r} --notes-file {release_notes_path.relative_to(ROOT)}",
         ],
         "preflight": {
             "git_remote_configured": {
@@ -142,7 +143,11 @@ def _write_release_files(version: str, execute: bool) -> dict[str, object]:
             },
             "worktree_clean": {
                 "passed": status_code == 0 and not status_output.strip(),
-                "detail": status_output or "clean",
+                "detail": (
+                    "clean"
+                    if not status_output.strip()
+                    else f"{len(status_output.splitlines())} changed paths; omitted from release plan"
+                ),
             },
             "current_branch": {
                 "passed": branch_code == 0 and bool(branch_output.strip()),
@@ -168,7 +173,7 @@ def _write_release_files(version: str, execute: bool) -> dict[str, object]:
 
 def _execute_release(version: str, plan: dict[str, object]) -> None:
     if not plan["ready_to_execute"]:
-        raise RuntimeError("release preflight is not ready; inspect outputs/github_release_plan_v0.1.0.json")
+        raise RuntimeError(f"release preflight is not ready; inspect outputs/github_release_plan_{version}.json")
 
     _run([sys.executable, "benchmarks/verify_external_mvp_readiness.py"], check=True)
     status_code, status_output = _filtered_status(version)
@@ -182,19 +187,20 @@ def _execute_release(version: str, plan: dict[str, object]) -> None:
     _run(["git", "push", "origin", version], check=True)
 
     notes_path = ROOT / "outputs" / f"release_notes_{version}.md"
+    release_title = f"CAPAS Claim Gate {version} - public-boundary hotfix"
     release_code, release_output = _run([
         "gh",
         "release",
         "create",
         version,
         "--title",
-        RELEASE_TITLE,
+        release_title,
         "--notes-file",
         str(notes_path),
     ])
     if release_code:
         if "already_exists" in release_output or "already exists" in release_output.lower():
-            _run(["gh", "release", "edit", version, "--title", RELEASE_TITLE, "--notes-file", str(notes_path)], check=True)
+            _run(["gh", "release", "edit", version, "--title", release_title, "--notes-file", str(notes_path)], check=True)
         else:
             raise RuntimeError(f"gh release create failed:\n{release_output}")
 

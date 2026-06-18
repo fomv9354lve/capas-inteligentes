@@ -56,9 +56,9 @@ truncation sequence. It still does not certify a DMRG sweep or an observable.
 
 This is **not** a global DMRG certificate.
 
-The local DMRG implementation in `physics-magnitude-lab` performs SVD
-truncations inside `_optimize_bond`, so local discarded weights are accessible
-in principle. However, CAPAS does not yet claim a global DMRG state bound or an
+Private/local DMRG engines can expose SVD truncation weights inside bond
+optimization routines, so local discarded weights may be accessible in
+principle. However, CAPAS does not yet claim a global DMRG state bound or an
 observable bound because that requires explicit assumptions about canonical
 form, normalization, truncation composition across sweeps, and how state-norm
 error transfers to the observable being reported.

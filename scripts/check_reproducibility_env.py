@@ -16,7 +16,6 @@ REQUIRED_MODULES = [
     "quimb",
     "cotengra",
     "stim",
-    "physics_magnitude_lab",
 ]
 
 OPTIONAL_MODULES = [
@@ -53,7 +52,7 @@ def main() -> int:
         print("Missing modules:")
         for module in missing:
             print(f"- {module}")
-        print("\nInstall packages from requirements-corpus.txt and ensure the local physics-magnitude-lab package is importable.")
+        print("\nInstall packages from requirements-corpus.txt.")
         return 1
 
     print("\nEnvironment check passed.")

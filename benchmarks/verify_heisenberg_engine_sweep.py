@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -12,10 +13,7 @@ sys.path.insert(0, str(ROOT))
 from router import EngineSpec, Workload, run_with_trace  # noqa: E402
 
 
-ENGINE_PATH = (
-    Path("/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/physics_quantum")
-    / "real_heisenberg_ladder.py"
-)
+ENGINE_PATH = Path(os.environ.get("CAPAS_PRIVATE_HEISENBERG_ENGINE", ""))
 OUT_PATH = ROOT / "benchmarks" / "heisenberg_engine_sweep_results.json"
 
 
@@ -68,6 +66,13 @@ def independent_dense_ladder_energy(n_rungs: int, J_leg: float = 1.0, J_rung: fl
 
 
 def main() -> None:
+    if not ENGINE_PATH.is_file():
+        print(
+            "verify_heisenberg_engine_sweep skipped: set "
+            "CAPAS_PRIVATE_HEISENBERG_ENGINE to a local engine module to run "
+            "this private-adapter check."
+        )
+        return
     rows = []
     for n_rungs in range(1, 5):
         workload = Workload(

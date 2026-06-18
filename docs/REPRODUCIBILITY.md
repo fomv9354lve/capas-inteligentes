@@ -1,11 +1,12 @@
 # Reproducibility
 
-CAPAS is auditable only if the corpus can be regenerated from a declared
-environment.
+CAPAS is auditable only if the shipped corpus can be validated from a declared
+environment. Full exploratory regeneration from private/local scientific engines
+is outside the public package boundary.
 
 ## Required Runtime
 
-The full corpus currently requires:
+The public validation stack currently requires:
 
 - Python 3.12 or newer
 - `numpy`
@@ -14,7 +15,6 @@ The full corpus currently requires:
 - `quimb`
 - `cotengra`
 - `stim`
-- local `physics_magnitude_lab`
 
 Install Python packages from:
 
@@ -22,13 +22,8 @@ Install Python packages from:
 python3 -m pip install -r requirements-corpus.txt
 ```
 
-The local `physics_magnitude_lab` dependency must also be importable. In the
-current workspace, the most reliable environment is:
-
-```bash
-cd /Users/kreniq/physics-magnitude-lab
-/Users/kreniq/.pixi/bin/pixi run python "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/scripts/build_evidence_corpus.py"
-```
+Private/local engine adapters are intentionally not packaged in this public
+repository. The public validation path checks the shipped traces and crates.
 
 ## Environment Check
 
@@ -40,7 +35,7 @@ python3 scripts/check_reproducibility_env.py
 
 The corpus builder runs this check automatically before generating traces.
 
-## Build Corpus
+## Validate Published Corpus
 
 Run:
 
@@ -76,15 +71,15 @@ The external validator currently reports no warnings for generated crates.
 
 ## Current Debt
 
-The `physics-magnitude-lab` environment has local `pixi.toml` and `pixi.lock`
-changes because `pyscf` was added there to regenerate the chemistry traces.
+Public validation is portable; full corpus regeneration is not yet a public
+contract.
 
-Before sharing CAPAS outside this machine, choose one of:
+Before claiming public full-regeneration support, choose one of:
 
-- vendor CAPAS into the `physics-magnitude-lab` environment;
-- create a CAPAS-owned `pixi.toml` with `physics-magnitude-lab` as a local path
-  dependency;
-- or publish/install `physics-magnitude-lab` as a versioned package.
+- publish public engine adapters that can regenerate the traces without private
+  dependencies;
+- or declare the shipped trace corpus as the public reproducibility artifact and
+  keep private engines outside release assets.
 
-Until then, CAPAS is reproducible on this machine and auditable in git, but not
-portable as a standalone project.
+Until then, CAPAS is portable as a validator/claim gate over shipped traces, not
+as a full scientific-engine regeneration package.

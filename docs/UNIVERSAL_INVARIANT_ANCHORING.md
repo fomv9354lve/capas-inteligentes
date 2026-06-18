@@ -204,11 +204,10 @@ anchor.
 
 ## Validation
 
-Run the full corpus builder from the reproducible environment:
+Run the public corpus validator:
 
 ```bash
-cd /Users/kreniq/physics-magnitude-lab
-/Users/kreniq/.pixi/bin/pixi run python "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/scripts/build_evidence_corpus.py"
+python3 scripts/build_evidence_corpus.py
 ```
 
 Expected status:

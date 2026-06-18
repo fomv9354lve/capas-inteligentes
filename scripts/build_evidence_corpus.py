@@ -10,10 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 STEPS = [
     ("check reproducibility environment", [sys.executable, "scripts/check_reproducibility_env.py"]),
-    ("generate traces", [sys.executable, "benchmarks/generate_quantum_engine_gold_traces.py"]),
-    ("export PROV", [sys.executable, "benchmarks/export_gold_traces_to_prov.py"]),
-    ("export RO-Crate", [sys.executable, "benchmarks/export_gold_traces_to_ro_crate.py"]),
-    ("validate RO-Crate", [sys.executable, "benchmarks/validate_ro_crates.py"]),
+    ("validate published RO-Crate corpus", [sys.executable, "benchmarks/validate_ro_crates.py"]),
     ("validate CAPAS profile", [sys.executable, "benchmarks/validate_capas_profile.py"]),
     ("validate witness independence", [sys.executable, "benchmarks/validate_witness_independence.py"]),
     ("validate evidence claims", [sys.executable, "benchmarks/validate_evidence_claims.py"]),

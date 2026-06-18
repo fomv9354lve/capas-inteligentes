@@ -14,7 +14,7 @@ RELEASE_REPORT = ROOT / "outputs" / "release_readiness_report.json"
 
 EXPECTED_RELEASE_BLOCKERS = {
     "git_remote_configured",
-    "release_tag_v0_1_0_exists",
+    "release_tag_v0_1_1_exists",
     "github_cli_authenticated",
 }
 

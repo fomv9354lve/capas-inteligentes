@@ -162,35 +162,29 @@ The important distinction is that not all traces are training gold. Some traces
 exist to prove the format can honestly represent uncertainty, failure, or
 rejection.
 
-## Build The Evidence Corpus
+## Validate The Published Evidence Corpus
 
-Use a Python environment that has the declared corpus stack available. Check it
-first:
+Use a Python environment that has the declared public corpus stack available.
+Check it first:
 
 ```bash
 python3 scripts/check_reproducibility_env.py
 ```
 
-In this workspace, the most reliable environment is the local
-`physics-magnitude-lab` pixi environment because it already exposes the local
-`physics_magnitude_lab` package plus PySCF/quimb.
+The public repository ships the evidence traces and validators. Private/local
+scientific engines used during exploratory corpus generation are intentionally
+not packaged in the public release. The public command runs:
+
+1. RO-Crate validation
+2. CAPAS physical-evidence profile validation
+3. witness independence validation
+4. evidence claim validation
+5. universal anchor matrix validation
+6. audit summary
 
 ```bash
-cd /Users/kreniq/physics-magnitude-lab
-/Users/kreniq/.pixi/bin/pixi run python "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/scripts/build_evidence_corpus.py"
+python3 scripts/build_evidence_corpus.py
 ```
-
-The command runs:
-
-1. trace generation
-2. PROV export
-3. RO-Crate export
-4. RO-Crate validation
-5. CAPAS physical-evidence profile validation
-6. witness independence validation
-7. evidence claim validation
-8. universal anchor matrix validation
-9. audit summary
 
 `coverage_ready=True` is expected. `fine_tune_ready=False` is also expected until
 blind inference review is completed.

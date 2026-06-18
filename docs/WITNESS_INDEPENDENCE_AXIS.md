@@ -25,7 +25,7 @@ instead of collapsing them into a single "verified" label.
 
 `trace_018` checks Bell-pair entanglement entropy:
 
-- primary value: `physics_magnitude_lab.quantum_engine.entanglement_entropy`
+- primary value: `private_scientific_engine.quantum_engine.entanglement_entropy`
 - witness: explicit reduced density matrix diagonalized with `scipy.linalg.eigh`
 - evidence level: `cross_sim`
 - witness independence: `different_library_same_runtime`

@@ -27,8 +27,8 @@ CHECKS = [
     ("external_reviewer_feedback_schema", ROOT / "docs" / "schema" / "external_reviewer_feedback.schema.json"),
     ("external_reviewer_feedback_template", ROOT / "examples" / "external_reviewer_feedback_template.json"),
     ("external_user_validation_report", ROOT / "outputs" / "external_user_validation_report.json"),
-    ("github_release_plan", ROOT / "outputs" / "github_release_plan_v0.1.0.json"),
-    ("release_notes", ROOT / "outputs" / "release_notes_v0.1.0.md"),
+    ("github_release_plan", ROOT / "outputs" / "github_release_plan_v0.1.1.json"),
+    ("release_notes", ROOT / "outputs" / "release_notes_v0.1.1.md"),
     ("demo_report", ROOT / "outputs" / "capas_product_demo_report.md"),
     ("reviewer_packet_manifest", ROOT / "outputs" / "external_reviewer_packet" / "manifest.json"),
     ("profile_registration_manifest", ROOT / "outputs" / "profile_registration_packet" / "manifest.json"),
@@ -87,11 +87,11 @@ def main() -> int:
         "detail": remote_output or "no git remote configured",
     })
 
-    tag_code, tag_output = _run(["git", "tag", "--list", "v0.1.0"])
-    has_tag = "v0.1.0" in tag_output.splitlines()
+    tag_code, tag_output = _run(["git", "tag", "--list", "v0.1.1"])
+    has_tag = "v0.1.1" in tag_output.splitlines()
     results.append({
-        "check": "release_tag_v0_1_0_exists",
-        "command": "git tag --list v0.1.0",
+        "check": "release_tag_v0_1_1_exists",
+        "command": "git tag --list v0.1.1",
         "passed": has_tag,
         "detail": tag_output or "tag not present",
     })
