@@ -33,6 +33,7 @@ EXPECTED = {
     "trace_036": ("universal_invariant_scaling_law_simulation_generated", "present", True, "CompletedActionStatus"),
     "trace_037": ("universal_invariant_scaling_law_randomized_adversarial", "present", True, "CompletedActionStatus"),
     "trace_038": ("universal_invariant_scaling_law_agent_generated_adversarial", "present", True, "CompletedActionStatus"),
+    "trace_039": ("claim_transition_bounded_agent_scientific_reasoning", "present", True, "CompletedActionStatus"),
     "trace_012": ("no_evidence_success", "none_declared", False, "CompletedActionStatus"),
     "trace_013": ("backend_failed", "not_applicable_failed", False, "FailedActionStatus"),
     "trace_014": ("rejected_by_router", "not_applicable_rejected", False, "CompletedActionStatus"),
@@ -140,8 +141,8 @@ def main() -> int:
             report_path = CRATES / "ro_crate_export_report.json"
             report = json.loads(report_path.read_text(encoding="utf-8"))
             assert report[trace_id]["coverage_case"] == coverage, "wrong coverage_case"
+            evidence = physical_evidence_node(crate) if evidence_expected else {}
             if coverage.startswith("universal_invariant_"):
-                evidence = physical_evidence_node(crate)
                 assert "capas:localPropertyTestsPass" in evidence, "missing local property result"
                 assert "capas:localOracleCaught" in evidence, "missing local oracle caught result"
                 assert evidence.get("capas:universalAnchor"), "missing universal anchor"
@@ -236,6 +237,20 @@ def main() -> int:
                 assert evidence.get("capas:universalAnchorPass") is False, "agent scaling anchor should fail"
                 assert evidence.get("capas:invariantCaught") is True, "agent scaling invariant should catch"
                 assert evidence.get("capas:absError") > evidence.get("capas:exponentTolerance"), "agent exponent error should exceed tolerance"
+            elif coverage == "claim_transition_bounded_agent_scientific_reasoning":
+                assert evidence.get("capas:physicalEvidenceLevel") == "scaling_law_anchor", "wrong scaling evidence level"
+                assert evidence.get("capas:anchorKind") == "absolute_scaling_law", "wrong anchor kind"
+                assert evidence.get("capas:anchorMode") == "absolute_anchor", "wrong anchor mode"
+                assert evidence.get("capas:agentKind") == "scripted_agent_with_motor_backend", "wrong agent kind"
+                assert evidence.get("capas:localPropertyTestsPass") is True, "local scaling checks should pass"
+                assert evidence.get("capas:universalAnchorPass") is True, "bounded transition anchor should pass"
+                assert evidence.get("capas:invariantCaught") is False, "positive transition should not be caught"
+                assert evidence.get("capas:absError") <= evidence.get("capas:exponentTolerance"), "exponent error should be within tolerance"
+                assert evidence.get("capas:currentClaim") == "few_shot_or_local_benchmark_gain", "missing current claim"
+                assert evidence.get("capas:attemptedClaim") == "bounded_reliable_scientific_reasoning_in_declared_task_family", "missing attempted claim"
+                assert evidence.get("capas:blocker") == "benchmark_success_not_robust_scientific_reasoning", "missing blocker"
+                assert evidence.get("capas:upgradeEvidencePresent") is True, "upgrade evidence should be present"
+                assert len(evidence.get("capas:requiredUpgradeEvidence", [])) >= 5, "missing required upgrade evidence"
             print(f"{trace_id}: ok ({coverage}, {status}, {action_status})")
         except Exception as exc:
             failures.append(f"{trace_id}: {type(exc).__name__}: {exc}")

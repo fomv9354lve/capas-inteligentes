@@ -233,6 +233,12 @@ def _physical_evidence_from_summary(summary: dict[str, Any]) -> dict[str, Any]:
         "structure_mapping",
         "pre_registered_success_criterion",
         "claim_scope",
+        "current_claim",
+        "attempted_claim",
+        "blocker",
+        "required_upgrade_evidence",
+        "upgrade_evidence_present",
+        "evidence_record_status",
     )
     evidence = {key: summary[key] for key in keys if key in summary}
     if not evidence:

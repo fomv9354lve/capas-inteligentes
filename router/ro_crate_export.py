@@ -327,6 +327,12 @@ def run_trace_to_ro_crate_metadata(
                 "capas:structureMapping": evidence.get("structure_mapping"),
                 "capas:preRegisteredSuccessCriterion": evidence.get("pre_registered_success_criterion"),
                 "capas:claimScope": evidence.get("claim_scope"),
+                "capas:currentClaim": evidence.get("current_claim"),
+                "capas:attemptedClaim": evidence.get("attempted_claim"),
+                "capas:blocker": evidence.get("blocker"),
+                "capas:requiredUpgradeEvidence": evidence.get("required_upgrade_evidence"),
+                "capas:upgradeEvidencePresent": evidence.get("upgrade_evidence_present"),
+                "capas:evidenceRecordStatus": evidence.get("evidence_record_status"),
                 "capas:evidenceHash": stable_hash(evidence),
                 "about": {"@id": result_id},
             }
@@ -490,6 +496,12 @@ def _physical_evidence_from_trace(trace: RunTrace) -> dict[str, Any]:
             "structure_mapping",
             "pre_registered_success_criterion",
             "claim_scope",
+            "current_claim",
+            "attempted_claim",
+            "blocker",
+            "required_upgrade_evidence",
+            "upgrade_evidence_present",
+            "evidence_record_status",
         ):
             if key in trace.result_summary:
                 evidence[key] = trace.result_summary[key]

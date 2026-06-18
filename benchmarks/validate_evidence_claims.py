@@ -753,6 +753,7 @@ EXAMPLES: list[tuple[str, str, str]] = [
     ("trace_016", "single_cut_state_bound", "ACCEPT"),
     ("trace_038", "local_properties_imply_universal_scaling", "REJECT"),
     ("trace_038", "universal_anchor_caught_scaling_error", "ACCEPT"),
+    ("trace_039", "claim_transition_gate", "ACCEPT"),
 ]
 
 

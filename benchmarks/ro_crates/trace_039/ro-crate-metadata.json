@@ -1,0 +1,822 @@
+{
+  "@context": [
+    "https://w3id.org/ro/crate/1.1/context",
+    "https://w3id.org/ro/terms/workflow-run/context",
+    {
+      "capas": "https://example.org/capas-inteligentes#",
+      "sha256": "https://schema.org/sha256"
+    }
+  ],
+  "@graph": [
+    {
+      "@id": "ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "about": {
+        "@id": "./"
+      },
+      "conformsTo": [
+        {
+          "@id": "https://w3id.org/ro/crate/1.1"
+        },
+        {
+          "@id": "https://w3id.org/ro/wfrun/process/0.5"
+        },
+        {
+          "@id": "https://w3id.org/ro/wfrun/workflow/0.5"
+        },
+        {
+          "@id": "https://w3id.org/workflowhub/workflow-ro-crate/1.0"
+        },
+        {
+          "@id": "https://example.org/capas-inteligentes/ro-crate/physical-evidence/0.1"
+        }
+      ]
+    },
+    {
+      "@id": "./",
+      "@type": "Dataset",
+      "capas:evidenceStatus": "present",
+      "capas:traceHash": "3d945825ac0f76df72e1024583476332fd6bdf7929aa77538f30a1ff784b6279",
+      "capas:workflowRunCrateAlignment": "shape-compatible-with-workflow-run-crate-0.5",
+      "capas:workloadHash": "55743bfce8b689f65a3a4008ef1b5e2f6d4a7602ce68673792436dc85be95085",
+      "conformsTo": [
+        {
+          "@id": "https://w3id.org/ro/crate/1.1"
+        },
+        {
+          "@id": "https://w3id.org/ro/wfrun/process/0.5"
+        },
+        {
+          "@id": "https://w3id.org/ro/wfrun/workflow/0.5"
+        },
+        {
+          "@id": "https://w3id.org/workflowhub/workflow-ro-crate/1.0"
+        },
+        {
+          "@id": "https://example.org/capas-inteligentes/ro-crate/physical-evidence/0.1"
+        }
+      ],
+      "datePublished": "2026-06-18T05:03:54.400429Z",
+      "description": "RO-Crate package containing a sealed RunTrace, optional PROV export, routing decision, runtime context, and CAPAS physical evidence metadata.",
+      "hasPart": [
+        {
+          "@id": "runtrace.json"
+        },
+        {
+          "@id": "workflow/capas-costurero-run.cwl"
+        },
+        {
+          "@id": "software:capas-costurero"
+        },
+        {
+          "@id": "entity:workload"
+        },
+        {
+          "@id": "trace:3d945825ac0f76df:routing-decision"
+        },
+        {
+          "@id": "trace:3d945825ac0f76df:result"
+        },
+        {
+          "@id": "runtrace.prov.json"
+        },
+        {
+          "@id": "trace:3d945825ac0f76df:physical-evidence"
+        }
+      ],
+      "mainEntity": {
+        "@id": "workflow/capas-costurero-run.cwl"
+      },
+      "mentions": {
+        "@id": "trace:3d945825ac0f76df"
+      },
+      "name": "CAPAS traced scientific computation crate"
+    },
+    {
+      "@id": "https://w3id.org/ro/wfrun/process/0.5",
+      "@type": "CreativeWork",
+      "name": "Process Run Crate",
+      "version": "0.5"
+    },
+    {
+      "@id": "https://w3id.org/ro/wfrun/workflow/0.5",
+      "@type": "CreativeWork",
+      "name": "Workflow Run Crate",
+      "version": "0.5"
+    },
+    {
+      "@id": "https://w3id.org/workflowhub/workflow-ro-crate/1.0",
+      "@type": "CreativeWork",
+      "name": "Workflow RO-Crate",
+      "version": "1.0"
+    },
+    {
+      "@id": "https://example.org/capas-inteligentes/ro-crate/physical-evidence/0.1",
+      "@type": "CreativeWork",
+      "description": "Draft profile extending Workflow Run RO-Crate-style traces with first-class physical evidence, witness independence, reference truth, and explicit success/no-evidence/failure/rejection states.",
+      "name": "CAPAS Physical Evidence Profile",
+      "version": "0.1"
+    },
+    {
+      "@id": "runtrace.json",
+      "@type": [
+        "File",
+        "DigitalDocument"
+      ],
+      "about": {
+        "@id": "trace:3d945825ac0f76df"
+      },
+      "encodingFormat": "application/json",
+      "name": "Sealed CAPAS RunTrace",
+      "sha256": "6fc13289de15ab18c3441500e5ae13f0996ee7d78de87a1622c672aec39fda5e"
+    },
+    {
+      "@id": "trace:3d945825ac0f76df",
+      "@type": "CreateAction",
+      "actionStatus": "CompletedActionStatus",
+      "agent": {
+        "@id": "software:capas-costurero"
+      },
+      "capas:decisionReason": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+      "capas:decisionRoute": "external_engine",
+      "capas:evidenceStatus": "present",
+      "capas:hashAlgorithm": "sha256(stable_json)",
+      "capas:routingDecision": {
+        "@id": "trace:3d945825ac0f76df:routing-decision"
+      },
+      "capas:traceHash": "3d945825ac0f76df72e1024583476332fd6bdf7929aa77538f30a1ff784b6279",
+      "capas:traceSchemaVersion": "capas-runtrace-v2",
+      "endTime": "2026-06-18T05:03:54.400429Z",
+      "instrument": {
+        "@id": "workflow/capas-costurero-run.cwl"
+      },
+      "name": "CAPAS costurero traced run",
+      "object": {
+        "@id": "entity:workload"
+      },
+      "result": {
+        "@id": "trace:3d945825ac0f76df:result"
+      },
+      "startTime": "2026-06-18T05:03:54.292580Z"
+    },
+    {
+      "@id": "workflow/capas-costurero-run.cwl",
+      "@type": [
+        "File",
+        "SoftwareSourceCode",
+        "ComputationalWorkflow"
+      ],
+      "capas:traceSchemaVersion": "capas-runtrace-v2",
+      "description": "Workflow plan that ingests a scientific workload, records runtime context, estimates routing cost, executes or skips the selected engine, and attaches CAPAS physical-evidence metadata.",
+      "input": {
+        "@id": "parameter:workload"
+      },
+      "name": "CAPAS costurero workflow",
+      "output": {
+        "@id": "parameter:result"
+      },
+      "programmingLanguage": "Python"
+    },
+    {
+      "@id": "parameter:workload",
+      "@type": "FormalParameter",
+      "additionalType": "Dataset",
+      "description": "Structured scientific workload routed by the CAPAS costurero.",
+      "name": "Scientific workload"
+    },
+    {
+      "@id": "parameter:result",
+      "@type": "FormalParameter",
+      "additionalType": "Dataset",
+      "description": "Structured result summary, skipped state, or failure state.",
+      "name": "Result summary or skipped/failure state"
+    },
+    {
+      "@id": "software:capas-costurero",
+      "@type": "SoftwareApplication",
+      "applicationCategory": "Scientific provenance and evidence tracing",
+      "name": "CAPAS INTELIGENTES costurero"
+    },
+    {
+      "@id": "entity:workload",
+      "@type": "Dataset",
+      "capas:summary": {
+        "budget": {
+          "flops_ceiling": 100000000.0,
+          "memory_budget_bytes": 536870912,
+          "safety_factor": 0.5
+        },
+        "engine": {
+          "engine_id": "universal_invariant_adversarial_engines.bounded_agent_scientific_reasoning_upgrade_evidence",
+          "function_name": "bounded_agent_scientific_reasoning_upgrade_evidence",
+          "kwargs_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py"
+        },
+        "kind": "dense",
+        "n_qubits": 2
+      },
+      "capas:workloadHash": "55743bfce8b689f65a3a4008ef1b5e2f6d4a7602ce68673792436dc85be95085",
+      "exampleOfWork": {
+        "@id": "parameter:workload"
+      },
+      "name": "Workload summary"
+    },
+    {
+      "@id": "trace:3d945825ac0f76df:routing-decision",
+      "@type": "Thing",
+      "capas:reason": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+      "capas:route": "external_engine",
+      "name": "Routing decision"
+    },
+    {
+      "@id": "runtrace.prov.json",
+      "@type": [
+        "File",
+        "DigitalDocument"
+      ],
+      "encodingFormat": "application/json",
+      "name": "W3C PROV-shaped export",
+      "sha256": "e2bae91e97e280889cf45f0868e2f9784cebdc25eb31ede108b7441a5a12ad31"
+    },
+    {
+      "@id": "trace:3d945825ac0f76df:result",
+      "@type": "Dataset",
+      "capas:physicalEvidence": {
+        "@id": "trace:3d945825ac0f76df:physical-evidence"
+      },
+      "capas:resultHash": "3bd5e6a16e312c1f52b451ae393c586dbeb159f6c3489676a985877e04921034",
+      "capas:summary": {
+        "abs_error": 0.08297606270750346,
+        "agent_id": "scripted_exact_diag_scaling_agent_v1",
+        "agent_kind": "scripted_agent_with_motor_backend",
+        "agent_prompt": "Generate a finite-size critical transverse-field Ising gap table for L = 4, 5, 6, 7, 8, 9 using an explicit Hamiltonian simulation, then report whether the fitted dynamic exponent agrees with z=1.",
+        "agent_response": {
+          "agent": "scripted_exact_diag_scaling_agent_v1",
+          "claimed_exponent": 0.9170239372924965,
+          "generated_table": [
+            {
+              "gap": 0.6945927106677212,
+              "system_size": 4
+            },
+            {
+              "gap": 0.5692593530931491,
+              "system_size": 5
+            },
+            {
+              "gap": 0.4821467210213308,
+              "system_size": 6
+            },
+            {
+              "gap": 0.41811385307060966,
+              "system_size": 7
+            },
+            {
+              "gap": 0.3690734378531779,
+              "system_size": 8
+            },
+            {
+              "gap": 0.33031738188931037,
+              "system_size": 9
+            }
+          ],
+          "method": "critical_tfim_open_chain_exact_diagonalization"
+        },
+        "anchor_kind": "absolute_scaling_law",
+        "anchor_mode": "absolute_anchor",
+        "attempted_claim": "bounded_reliable_scientific_reasoning_in_declared_task_family",
+        "benchmark_family": "CriticalIsingFiniteSizeScaling",
+        "blocker": "benchmark_success_not_robust_scientific_reasoning",
+        "claim_scope": "bounded scientific-computation task family only; this licenses an agent-with-physics-anchor reliability claim for critical Ising finite-size scaling seeds, not AGI or broad reliable reasoning",
+        "current_claim": "few_shot_or_local_benchmark_gain",
+        "evidence_record_status": "active",
+        "expected": 1.0,
+        "expected_exponent": 1.0,
+        "exponent_tolerance": 0.1,
+        "finite_size_notes": "Exact diagonalization of open-chain critical TFIM for L=4..9. The agent is represented as an auditable scripted workflow using a real Hamiltonian simulation backend; this is a positive transition case, not an LLM benchmark.",
+        "fit_r_squared": 0.9998919680220621,
+        "fitted_exponent": 0.9170239372924965,
+        "generator_error": "none_declared_bounded_agent_exact_diagonalization_control",
+        "invariant_caught": false,
+        "local_oracle_caught": false,
+        "local_property_tests": {
+          "finite_sizes_strictly_increasing": true,
+          "gaps_finite": true,
+          "gaps_positive": true,
+          "gaps_strictly_decreasing": true
+        },
+        "local_property_tests_pass": true,
+        "observable": "Motor-backed agent scientific reasoning upgrade evidence",
+        "physical_evidence_detail": "Bounded agent-scientific-reasoning upgrade evidence: the generated finite-size gap sequence is produced by explicit exact diagonalization, passes local sanity checks, and satisfies the independent universal critical Ising z=1 scaling anchor under the preregistered tolerance.",
+        "physical_evidence_level": "scaling_law_anchor",
+        "pre_registered_success_criterion": "local_property_tests_pass is true, universal_anchor_pass is true, and abs(fitted_exponent - 1.0) <= 0.10",
+        "reference_truth": "critical_ising_gap_dynamic_exponent_z_equals_1",
+        "repr": "{'engine_id': 'universal_invariant_adversarial_engines.bounded_agent_scientific_reasoning_upgrade_evidence', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENT",
+        "required_upgrade_evidence": [
+          "pre_registered_reasoning_task",
+          "adversarial_controls",
+          "local_property_tests",
+          "independent_universal_anchor",
+          "declared_task_family_scope"
+        ],
+        "scaling_points": [
+          {
+            "gap": 0.6945927106677212,
+            "system_size": 4
+          },
+          {
+            "gap": 0.5692593530931491,
+            "system_size": 5
+          },
+          {
+            "gap": 0.4821467210213308,
+            "system_size": 6
+          },
+          {
+            "gap": 0.41811385307060966,
+            "system_size": 7
+          },
+          {
+            "gap": 0.3690734378531779,
+            "system_size": 8
+          },
+          {
+            "gap": 0.33031738188931037,
+            "system_size": 9
+          }
+        ],
+        "structure_mapping": {
+          "generator_output": "finite-size gap sequence",
+          "local_oracle_relation": "positive finite gaps decrease with increasing system size",
+          "preserved_relation": "same gap sequence judged by local monotonicity and universal scaling exponent",
+          "universal_oracle_relation": "critical Ising dynamic exponent z=1"
+        },
+        "type": "dict",
+        "units": "dynamic_exponent_z",
+        "universal_anchor": "critical_ising_gap_delta_L_scales_as_L^-1",
+        "universal_anchor_pass": true,
+        "upgrade_evidence_present": true,
+        "value": 0.9170239372924965,
+        "verification_independence": "theory_scaling_law_no_solver"
+      },
+      "exampleOfWork": {
+        "@id": "parameter:result"
+      },
+      "name": "Result summary"
+    },
+    {
+      "@id": "trace:3d945825ac0f76df:physical-evidence",
+      "@type": "capas:PhysicalEvidence",
+      "about": {
+        "@id": "trace:3d945825ac0f76df:result"
+      },
+      "capas:absError": 0.08297606270750346,
+      "capas:agentId": "scripted_exact_diag_scaling_agent_v1",
+      "capas:agentKind": "scripted_agent_with_motor_backend",
+      "capas:agentPrompt": "Generate a finite-size critical transverse-field Ising gap table for L = 4, 5, 6, 7, 8, 9 using an explicit Hamiltonian simulation, then report whether the fitted dynamic exponent agrees with z=1.",
+      "capas:agentResponse": {
+        "agent": "scripted_exact_diag_scaling_agent_v1",
+        "claimed_exponent": 0.9170239372924965,
+        "generated_table": [
+          {
+            "gap": 0.6945927106677212,
+            "system_size": 4
+          },
+          {
+            "gap": 0.5692593530931491,
+            "system_size": 5
+          },
+          {
+            "gap": 0.4821467210213308,
+            "system_size": 6
+          },
+          {
+            "gap": 0.41811385307060966,
+            "system_size": 7
+          },
+          {
+            "gap": 0.3690734378531779,
+            "system_size": 8
+          },
+          {
+            "gap": 0.33031738188931037,
+            "system_size": 9
+          }
+        ],
+        "method": "critical_tfim_open_chain_exact_diagonalization"
+      },
+      "capas:anchorKind": "absolute_scaling_law",
+      "capas:anchorMode": "absolute_anchor",
+      "capas:attemptedClaim": "bounded_reliable_scientific_reasoning_in_declared_task_family",
+      "capas:benchmarkFamily": "CriticalIsingFiniteSizeScaling",
+      "capas:blocker": "benchmark_success_not_robust_scientific_reasoning",
+      "capas:claimScope": "bounded scientific-computation task family only; this licenses an agent-with-physics-anchor reliability claim for critical Ising finite-size scaling seeds, not AGI or broad reliable reasoning",
+      "capas:currentClaim": "few_shot_or_local_benchmark_gain",
+      "capas:detail": "Bounded agent-scientific-reasoning upgrade evidence: the generated finite-size gap sequence is produced by explicit exact diagonalization, passes local sanity checks, and satisfies the independent universal critical Ising z=1 scaling anchor under the preregistered tolerance.",
+      "capas:evidenceHash": "1d2f5114ec6dc04be223a3d7d9f98ba01b7c8e2aefcac711c880fffa4c73475a",
+      "capas:evidenceRecordStatus": "active",
+      "capas:expected": 1.0,
+      "capas:expectedExponent": 1.0,
+      "capas:exponentTolerance": 0.1,
+      "capas:finiteSizeNotes": "Exact diagonalization of open-chain critical TFIM for L=4..9. The agent is represented as an auditable scripted workflow using a real Hamiltonian simulation backend; this is a positive transition case, not an LLM benchmark.",
+      "capas:fitRSquared": 0.9998919680220621,
+      "capas:fittedExponent": 0.9170239372924965,
+      "capas:generatorError": "none_declared_bounded_agent_exact_diagonalization_control",
+      "capas:invariantCaught": false,
+      "capas:localOracleCaught": false,
+      "capas:localPropertyTests": {
+        "finite_sizes_strictly_increasing": true,
+        "gaps_finite": true,
+        "gaps_positive": true,
+        "gaps_strictly_decreasing": true
+      },
+      "capas:localPropertyTestsPass": true,
+      "capas:observable": "Motor-backed agent scientific reasoning upgrade evidence",
+      "capas:physicalEvidenceLevel": "scaling_law_anchor",
+      "capas:preRegisteredSuccessCriterion": "local_property_tests_pass is true, universal_anchor_pass is true, and abs(fitted_exponent - 1.0) <= 0.10",
+      "capas:referenceTruth": "critical_ising_gap_dynamic_exponent_z_equals_1",
+      "capas:requiredUpgradeEvidence": [
+        "pre_registered_reasoning_task",
+        "adversarial_controls",
+        "local_property_tests",
+        "independent_universal_anchor",
+        "declared_task_family_scope"
+      ],
+      "capas:scalingPoints": [
+        {
+          "gap": 0.6945927106677212,
+          "system_size": 4
+        },
+        {
+          "gap": 0.5692593530931491,
+          "system_size": 5
+        },
+        {
+          "gap": 0.4821467210213308,
+          "system_size": 6
+        },
+        {
+          "gap": 0.41811385307060966,
+          "system_size": 7
+        },
+        {
+          "gap": 0.3690734378531779,
+          "system_size": 8
+        },
+        {
+          "gap": 0.33031738188931037,
+          "system_size": 9
+        }
+      ],
+      "capas:structureMapping": {
+        "generator_output": "finite-size gap sequence",
+        "local_oracle_relation": "positive finite gaps decrease with increasing system size",
+        "preserved_relation": "same gap sequence judged by local monotonicity and universal scaling exponent",
+        "universal_oracle_relation": "critical Ising dynamic exponent z=1"
+      },
+      "capas:units": "dynamic_exponent_z",
+      "capas:universalAnchor": "critical_ising_gap_delta_L_scales_as_L^-1",
+      "capas:universalAnchorPass": true,
+      "capas:upgradeEvidencePresent": true,
+      "capas:value": 0.9170239372924965,
+      "capas:verificationIndependence": "theory_scaling_law_no_solver",
+      "name": "Physical evidence attached to result"
+    },
+    {
+      "@id": "trace:3d945825ac0f76df:event:0:ingest",
+      "@type": "Action",
+      "actionStatus": "ok",
+      "capas:metrics": {
+        "budget": {
+          "flops_ceiling": 100000000.0,
+          "memory_budget_bytes": 536870912,
+          "safety_factor": 0.5
+        },
+        "engine": {
+          "engine_id": "universal_invariant_adversarial_engines.bounded_agent_scientific_reasoning_upgrade_evidence",
+          "function_name": "bounded_agent_scientific_reasoning_upgrade_evidence",
+          "kwargs_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py"
+        },
+        "kind": "dense",
+        "n_qubits": 2
+      },
+      "description": "workload accepted",
+      "name": "ingest",
+      "startTime": 1781759034.2925801
+    },
+    {
+      "@id": "trace:3d945825ac0f76df:event:1:runtime_context",
+      "@type": "Action",
+      "actionStatus": "ok",
+      "capas:metrics": {
+        "cotengra_available": true,
+        "cotengra_version": "0.8.1",
+        "machine": "arm64",
+        "mlx_probe": "skipped_in_default_trace; use apple_silicon_thermal_routing.py for Metal/MLX device probes",
+        "numpy_available": true,
+        "numpy_version": "2.4.6",
+        "platform": "macOS-26.5.1-arm64-arm-64bit-Mach-O",
+        "processor": "arm",
+        "python_executable": "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3",
+        "python_version": "3.14.5",
+        "qiskit_aer_available": true,
+        "qiskit_aer_version": "0.17.2",
+        "quimb_available": false,
+        "quimb_error": "RuntimeError: cannot cache function 'threading_choose_num_blocks': no locator available for file '/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/quimb/core.py'",
+        "scipy_available": true,
+        "scipy_version": "1.17.1",
+        "stim_available": true,
+        "stim_version": "1.16.0"
+      },
+      "description": "runtime and hardware context recorded",
+      "name": "runtime_context",
+      "startTime": 1781759034.2963572
+    },
+    {
+      "@id": "trace:3d945825ac0f76df:event:2:engine_provenance",
+      "@type": "Action",
+      "actionStatus": "ok",
+      "capas:metrics": {
+        "engine_id": "universal_invariant_adversarial_engines.bounded_agent_scientific_reasoning_upgrade_evidence",
+        "function_name": "bounded_agent_scientific_reasoning_upgrade_evidence",
+        "kwargs": {},
+        "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py",
+        "module_sha256": "6af1cfda79879c2aa92febb17002771b3f0174ea5e74e1d75bfb1d64768a76b8"
+      },
+      "description": "external engine provenance recorded",
+      "name": "engine_provenance",
+      "startTime": 1781759034.296556
+    },
+    {
+      "@id": "trace:3d945825ac0f76df:event:3:cost_model",
+      "@type": "Action",
+      "actionStatus": "ok",
+      "capas:metrics": {
+        "memory_viable": true,
+        "n_qubits": 2,
+        "route": "dense",
+        "statevector_bytes": 64,
+        "usable_memory_bytes": 268435456.0
+      },
+      "description": "dense statevector cost estimated",
+      "name": "cost_model",
+      "startTime": 1781759034.296565
+    },
+    {
+      "@id": "trace:3d945825ac0f76df:event:4:route",
+      "@type": "Action",
+      "actionStatus": "ok",
+      "capas:metrics": {
+        "engine_id": "universal_invariant_adversarial_engines.bounded_agent_scientific_reasoning_upgrade_evidence",
+        "function_name": "bounded_agent_scientific_reasoning_upgrade_evidence",
+        "module_path": "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES/integrations/universal_invariant_adversarial_engines.py"
+      },
+      "description": "explicit external engine workload; route is opt-in and engine provenance is recorded at execution",
+      "name": "route",
+      "startTime": 1781759034.29657
+    },
+    {
+      "@id": "trace:3d945825ac0f76df:event:5:execute",
+      "@type": "Action",
+      "actionStatus": "ok",
+      "capas:metrics": {
+        "abs_error": 0.08297606270750346,
+        "agent_id": "scripted_exact_diag_scaling_agent_v1",
+        "agent_kind": "scripted_agent_with_motor_backend",
+        "agent_prompt": "Generate a finite-size critical transverse-field Ising gap table for L = 4, 5, 6, 7, 8, 9 using an explicit Hamiltonian simulation, then report whether the fitted dynamic exponent agrees with z=1.",
+        "agent_response": {
+          "agent": "scripted_exact_diag_scaling_agent_v1",
+          "claimed_exponent": 0.9170239372924965,
+          "generated_table": [
+            {
+              "gap": 0.6945927106677212,
+              "system_size": 4
+            },
+            {
+              "gap": 0.5692593530931491,
+              "system_size": 5
+            },
+            {
+              "gap": 0.4821467210213308,
+              "system_size": 6
+            },
+            {
+              "gap": 0.41811385307060966,
+              "system_size": 7
+            },
+            {
+              "gap": 0.3690734378531779,
+              "system_size": 8
+            },
+            {
+              "gap": 0.33031738188931037,
+              "system_size": 9
+            }
+          ],
+          "method": "critical_tfim_open_chain_exact_diagonalization"
+        },
+        "anchor_kind": "absolute_scaling_law",
+        "anchor_mode": "absolute_anchor",
+        "attempted_claim": "bounded_reliable_scientific_reasoning_in_declared_task_family",
+        "benchmark_family": "CriticalIsingFiniteSizeScaling",
+        "blocker": "benchmark_success_not_robust_scientific_reasoning",
+        "claim_scope": "bounded scientific-computation task family only; this licenses an agent-with-physics-anchor reliability claim for critical Ising finite-size scaling seeds, not AGI or broad reliable reasoning",
+        "current_claim": "few_shot_or_local_benchmark_gain",
+        "evidence_record_status": "active",
+        "expected": 1.0,
+        "expected_exponent": 1.0,
+        "exponent_tolerance": 0.1,
+        "finite_size_notes": "Exact diagonalization of open-chain critical TFIM for L=4..9. The agent is represented as an auditable scripted workflow using a real Hamiltonian simulation backend; this is a positive transition case, not an LLM benchmark.",
+        "fit_r_squared": 0.9998919680220621,
+        "fitted_exponent": 0.9170239372924965,
+        "generator_error": "none_declared_bounded_agent_exact_diagonalization_control",
+        "invariant_caught": false,
+        "local_oracle_caught": false,
+        "local_property_tests": {
+          "finite_sizes_strictly_increasing": true,
+          "gaps_finite": true,
+          "gaps_positive": true,
+          "gaps_strictly_decreasing": true
+        },
+        "local_property_tests_pass": true,
+        "observable": "Motor-backed agent scientific reasoning upgrade evidence",
+        "physical_evidence_detail": "Bounded agent-scientific-reasoning upgrade evidence: the generated finite-size gap sequence is produced by explicit exact diagonalization, passes local sanity checks, and satisfies the independent universal critical Ising z=1 scaling anchor under the preregistered tolerance.",
+        "physical_evidence_level": "scaling_law_anchor",
+        "pre_registered_success_criterion": "local_property_tests_pass is true, universal_anchor_pass is true, and abs(fitted_exponent - 1.0) <= 0.10",
+        "reference_truth": "critical_ising_gap_dynamic_exponent_z_equals_1",
+        "repr": "{'engine_id': 'universal_invariant_adversarial_engines.bounded_agent_scientific_reasoning_upgrade_evidence', 'module_path': '/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENT",
+        "required_upgrade_evidence": [
+          "pre_registered_reasoning_task",
+          "adversarial_controls",
+          "local_property_tests",
+          "independent_universal_anchor",
+          "declared_task_family_scope"
+        ],
+        "route": "external_engine",
+        "runtime_ms": 103.61974997795187,
+        "scaling_points": [
+          {
+            "gap": 0.6945927106677212,
+            "system_size": 4
+          },
+          {
+            "gap": 0.5692593530931491,
+            "system_size": 5
+          },
+          {
+            "gap": 0.4821467210213308,
+            "system_size": 6
+          },
+          {
+            "gap": 0.41811385307060966,
+            "system_size": 7
+          },
+          {
+            "gap": 0.3690734378531779,
+            "system_size": 8
+          },
+          {
+            "gap": 0.33031738188931037,
+            "system_size": 9
+          }
+        ],
+        "structure_mapping": {
+          "generator_output": "finite-size gap sequence",
+          "local_oracle_relation": "positive finite gaps decrease with increasing system size",
+          "preserved_relation": "same gap sequence judged by local monotonicity and universal scaling exponent",
+          "universal_oracle_relation": "critical Ising dynamic exponent z=1"
+        },
+        "type": "dict",
+        "units": "dynamic_exponent_z",
+        "universal_anchor": "critical_ising_gap_delta_L_scales_as_L^-1",
+        "universal_anchor_pass": true,
+        "upgrade_evidence_present": true,
+        "value": 0.9170239372924965,
+        "verification_independence": "theory_scaling_law_no_solver"
+      },
+      "description": "backend executed",
+      "name": "execute",
+      "startTime": 1781759034.400382
+    },
+    {
+      "@id": "trace:3d945825ac0f76df:event:6:physical_evidence",
+      "@type": "Action",
+      "actionStatus": "ok",
+      "capas:metrics": {
+        "abs_error": 0.08297606270750346,
+        "agent_id": "scripted_exact_diag_scaling_agent_v1",
+        "agent_kind": "scripted_agent_with_motor_backend",
+        "agent_prompt": "Generate a finite-size critical transverse-field Ising gap table for L = 4, 5, 6, 7, 8, 9 using an explicit Hamiltonian simulation, then report whether the fitted dynamic exponent agrees with z=1.",
+        "agent_response": {
+          "agent": "scripted_exact_diag_scaling_agent_v1",
+          "claimed_exponent": 0.9170239372924965,
+          "generated_table": [
+            {
+              "gap": 0.6945927106677212,
+              "system_size": 4
+            },
+            {
+              "gap": 0.5692593530931491,
+              "system_size": 5
+            },
+            {
+              "gap": 0.4821467210213308,
+              "system_size": 6
+            },
+            {
+              "gap": 0.41811385307060966,
+              "system_size": 7
+            },
+            {
+              "gap": 0.3690734378531779,
+              "system_size": 8
+            },
+            {
+              "gap": 0.33031738188931037,
+              "system_size": 9
+            }
+          ],
+          "method": "critical_tfim_open_chain_exact_diagonalization"
+        },
+        "anchor_kind": "absolute_scaling_law",
+        "anchor_mode": "absolute_anchor",
+        "attempted_claim": "bounded_reliable_scientific_reasoning_in_declared_task_family",
+        "benchmark_family": "CriticalIsingFiniteSizeScaling",
+        "blocker": "benchmark_success_not_robust_scientific_reasoning",
+        "claim_scope": "bounded scientific-computation task family only; this licenses an agent-with-physics-anchor reliability claim for critical Ising finite-size scaling seeds, not AGI or broad reliable reasoning",
+        "current_claim": "few_shot_or_local_benchmark_gain",
+        "evidence_hash": "a8b50f2a22b3ed43b4e4bea53f64059a0801791e3b0bc21c3b81ff71e89ab5b3",
+        "evidence_record_status": "active",
+        "expected": 1.0,
+        "expected_exponent": 1.0,
+        "exponent_tolerance": 0.1,
+        "finite_size_notes": "Exact diagonalization of open-chain critical TFIM for L=4..9. The agent is represented as an auditable scripted workflow using a real Hamiltonian simulation backend; this is a positive transition case, not an LLM benchmark.",
+        "fit_r_squared": 0.9998919680220621,
+        "fitted_exponent": 0.9170239372924965,
+        "generator_error": "none_declared_bounded_agent_exact_diagonalization_control",
+        "invariant_caught": false,
+        "local_oracle_caught": false,
+        "local_property_tests": {
+          "finite_sizes_strictly_increasing": true,
+          "gaps_finite": true,
+          "gaps_positive": true,
+          "gaps_strictly_decreasing": true
+        },
+        "local_property_tests_pass": true,
+        "observable": "Motor-backed agent scientific reasoning upgrade evidence",
+        "physical_evidence_detail": "Bounded agent-scientific-reasoning upgrade evidence: the generated finite-size gap sequence is produced by explicit exact diagonalization, passes local sanity checks, and satisfies the independent universal critical Ising z=1 scaling anchor under the preregistered tolerance.",
+        "physical_evidence_level": "scaling_law_anchor",
+        "pre_registered_success_criterion": "local_property_tests_pass is true, universal_anchor_pass is true, and abs(fitted_exponent - 1.0) <= 0.10",
+        "reference_truth": "critical_ising_gap_dynamic_exponent_z_equals_1",
+        "required_upgrade_evidence": [
+          "pre_registered_reasoning_task",
+          "adversarial_controls",
+          "local_property_tests",
+          "independent_universal_anchor",
+          "declared_task_family_scope"
+        ],
+        "scaling_points": [
+          {
+            "gap": 0.6945927106677212,
+            "system_size": 4
+          },
+          {
+            "gap": 0.5692593530931491,
+            "system_size": 5
+          },
+          {
+            "gap": 0.4821467210213308,
+            "system_size": 6
+          },
+          {
+            "gap": 0.41811385307060966,
+            "system_size": 7
+          },
+          {
+            "gap": 0.3690734378531779,
+            "system_size": 8
+          },
+          {
+            "gap": 0.33031738188931037,
+            "system_size": 9
+          }
+        ],
+        "structure_mapping": {
+          "generator_output": "finite-size gap sequence",
+          "local_oracle_relation": "positive finite gaps decrease with increasing system size",
+          "preserved_relation": "same gap sequence judged by local monotonicity and universal scaling exponent",
+          "universal_oracle_relation": "critical Ising dynamic exponent z=1"
+        },
+        "units": "dynamic_exponent_z",
+        "universal_anchor": "critical_ising_gap_delta_L_scales_as_L^-1",
+        "universal_anchor_pass": true,
+        "upgrade_evidence_present": true,
+        "value": 0.9170239372924965,
+        "verification_independence": "theory_scaling_law_no_solver"
+      },
+      "description": "physical evidence reported by backend",
+      "name": "physical_evidence",
+      "startTime": 1781759034.400429
+    }
+  ]
+}

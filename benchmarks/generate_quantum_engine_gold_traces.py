@@ -28,6 +28,7 @@ UNIVERSAL_INVARIANT_COVERAGE = {
     "universal_invariant_scaling_law_simulation_generated",
     "universal_invariant_scaling_law_randomized_adversarial",
     "universal_invariant_scaling_law_agent_generated_adversarial",
+    "claim_transition_bounded_agent_scientific_reasoning",
 }
 
 
@@ -64,6 +65,7 @@ TRACE_SPECS = [
     ("trace_036", "ising_gap_exact_diagonalization_scaling_anchor", {}, "universal_invariant_scaling_law_simulation_generated"),
     ("trace_037", "ising_gap_randomized_wrong_exponent_family", {}, "universal_invariant_scaling_law_randomized_adversarial"),
     ("trace_038", "ising_gap_scripted_agent_wrong_exponent", {}, "universal_invariant_scaling_law_agent_generated_adversarial"),
+    ("trace_039", "bounded_agent_scientific_reasoning_upgrade_evidence", {}, "claim_transition_bounded_agent_scientific_reasoning"),
     ("trace_012", "unverified_variational_energy", {}, "no_evidence_success"),
     ("trace_013", "deliberately_failing_engine", {}, "backend_failed"),
     ("trace_015", "quimb_mps_estimated_bound", {"n": 60, "depth": 6, "max_bond": 8, "seed": 1}, "estimated_bound_candidate"),
@@ -85,6 +87,7 @@ def _engine_path_for(function_name: str) -> Path:
         "ising_gap_exact_diagonalization_scaling_anchor",
         "ising_gap_randomized_wrong_exponent_family",
         "ising_gap_scripted_agent_wrong_exponent",
+        "bounded_agent_scientific_reasoning_upgrade_evidence",
     }:
         return ADVERSARIAL_ENGINE_PATH
     return ENGINE_PATH
@@ -195,6 +198,15 @@ def main() -> None:
                 assert summary["universal_anchor_pass"] is False
                 assert summary["invariant_caught"] is True
                 assert summary["abs_error"] > summary["exponent_tolerance"]
+            elif coverage_case == "claim_transition_bounded_agent_scientific_reasoning":
+                assert summary["anchor_kind"] == "absolute_scaling_law"
+                assert summary["anchor_mode"] == "absolute_anchor"
+                assert summary["agent_kind"] == "scripted_agent_with_motor_backend"
+                assert summary["local_property_tests_pass"] is True
+                assert summary["universal_anchor_pass"] is True
+                assert summary["invariant_caught"] is False
+                assert summary["upgrade_evidence_present"] is True
+                assert summary["abs_error"] <= summary["exponent_tolerance"]
         elif coverage_case not in {"backend_failed", "no_evidence_success", "estimated_bound_candidate"}:
             assert result is not None
             assert result["result"]["abs_error"] < 1e-9

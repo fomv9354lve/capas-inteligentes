@@ -74,6 +74,14 @@
     },
     {
       "actual_verdict": "ACCEPT",
+      "claim_id": "claim_transition_gate",
+      "expected_verdict": "ACCEPT",
+      "passed": true,
+      "reason": "upgrade evidence is present, so the attempted stronger claim is licensed within declared scope",
+      "trace_id": "trace_039"
+    },
+    {
+      "actual_verdict": "ACCEPT",
       "claim_id": "simulation_ran",
       "expected_verdict": "ACCEPT",
       "passed": true,
@@ -905,13 +913,13 @@
     }
   },
   "summary": {
-    "checks": 68,
+    "checks": 69,
     "claim_transition_checks": 10,
     "debunk_10_more_checks": 19,
     "debunk_10_more_overclaims": 10,
     "failed": 0,
     "fine_tune_ready_implication": "none; this validates claim typing, not training readiness",
-    "passed": 68,
+    "passed": 69,
     "regional_claims": 47,
     "regional_real_checks": 8,
     "regional_synthetic_checks": 12,

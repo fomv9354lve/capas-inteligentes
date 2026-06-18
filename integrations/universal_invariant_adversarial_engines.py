@@ -786,3 +786,78 @@ def ising_gap_scripted_agent_wrong_exponent() -> dict:
         "agent_response": agent_response,
     })
     return payload
+
+
+def bounded_agent_scientific_reasoning_upgrade_evidence() -> dict:
+    """Positive motor-backed claim-transition case for bounded agent reasoning.
+
+    This does not upgrade GPT-3 to AGI. It demonstrates the evidence shape that
+    would upgrade a broad "benchmark gain" claim into a bounded, defensible
+    claim: an agent-produced scientific computation in a declared task family,
+    checked by local properties, adversarial controls, and an independent
+    universal scaling anchor.
+    """
+
+    agent_prompt = (
+        "Generate a finite-size critical transverse-field Ising gap table for "
+        "L = 4, 5, 6, 7, 8, 9 using an explicit Hamiltonian simulation, then "
+        "report whether the fitted dynamic exponent agrees with z=1."
+    )
+    sizes = np.array([4, 5, 6, 7, 8, 9], dtype=float)
+    gaps = _critical_tfim_open_chain_gap_sequence(sizes)
+    payload = _ising_scaling_payload(
+        observable="Motor-backed agent scientific reasoning upgrade evidence",
+        gaps=gaps,
+        system_sizes=sizes,
+        generator_error="none_declared_bounded_agent_exact_diagonalization_control",
+        coverage_case="claim_transition_bounded_agent_scientific_reasoning",
+        physical_evidence_detail=(
+            "Bounded agent-scientific-reasoning upgrade evidence: the generated "
+            "finite-size gap sequence is produced by explicit exact diagonalization, "
+            "passes local sanity checks, and satisfies the independent universal "
+            "critical Ising z=1 scaling anchor under the preregistered tolerance."
+        ),
+        pre_registered_success_criterion=(
+            "local_property_tests_pass is true, universal_anchor_pass is true, "
+            "and abs(fitted_exponent - 1.0) <= 0.10"
+        ),
+        claim_scope=(
+            "bounded scientific-computation task family only; this licenses an "
+            "agent-with-physics-anchor reliability claim for critical Ising "
+            "finite-size scaling seeds, not AGI or broad reliable reasoning"
+        ),
+        finite_size_notes=(
+            "Exact diagonalization of open-chain critical TFIM for L=4..9. The "
+            "agent is represented as an auditable scripted workflow using a real "
+            "Hamiltonian simulation backend; this is a positive transition case, "
+            "not an LLM benchmark."
+        ),
+    )
+    payload.update({
+        "current_claim": "few_shot_or_local_benchmark_gain",
+        "attempted_claim": "bounded_reliable_scientific_reasoning_in_declared_task_family",
+        "blocker": "benchmark_success_not_robust_scientific_reasoning",
+        "required_upgrade_evidence": [
+            "pre_registered_reasoning_task",
+            "adversarial_controls",
+            "local_property_tests",
+            "independent_universal_anchor",
+            "declared_task_family_scope",
+        ],
+        "upgrade_evidence_present": bool(
+            payload["local_property_tests_pass"] is True
+            and payload["universal_anchor_pass"] is True
+            and payload["abs_error"] <= payload["exponent_tolerance"]
+        ),
+        "evidence_record_status": "active",
+        "agent_kind": "scripted_agent_with_motor_backend",
+        "agent_id": "scripted_exact_diag_scaling_agent_v1",
+        "agent_prompt": agent_prompt,
+        "agent_response": {
+            "agent": "scripted_exact_diag_scaling_agent_v1",
+            "method": "critical_tfim_open_chain_exact_diagonalization",
+            "generated_table": payload["scaling_points"],
+            "claimed_exponent": payload["fitted_exponent"],
+        },
+    })
+    return payload
