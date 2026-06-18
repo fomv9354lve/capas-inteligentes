@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -30,6 +31,13 @@ def _run(command: list[str]) -> tuple[int, str]:
     return proc.returncode, (proc.stdout + proc.stderr).strip()
 
 
+def _stable_detail(output: str) -> str:
+    text = output[-4000:]
+    text = text.replace(str(ROOT), "<CAPAS_ROOT>")
+    text = re.sub(r"dist/\.tmp-[A-Za-z0-9_\\-]+", "dist/.tmp-<build>", text)
+    return text
+
+
 def main() -> int:
     results = []
     for name, path in CHECKS:
@@ -51,7 +59,7 @@ def main() -> int:
             "check": name,
             "command": " ".join(command),
             "passed": code == 0,
-            "detail": output[-4000:],
+            "detail": _stable_detail(output),
         })
 
     remote_code, remote_output = _run(["git", "remote", "-v"])
