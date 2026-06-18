@@ -10,6 +10,13 @@ same commit.
 
 CAPAS is a RO-Crate/PROV evidence profile for scientific computation traces.
 
+Conceptual reframing now under test:
+
+> CAPAS is an evidence type system for scientific computation.
+
+This means CAPAS should not only package traces; it should reject claims that
+exceed the evidence type attached to a result.
+
 It does not claim to invent:
 
 - scientific workflow provenance
@@ -27,6 +34,11 @@ Defensible claim:
 > run traces, explicitly recording evidence strength, witness independence,
 > route/result provenance, and honest failure/rejection/no-evidence states.
 
+Extended defensible claim under active validation:
+
+> CAPAS represents scientific results as evidence-typed objects and can reject
+> selected overclaims that are not licensed by the attached evidence.
+
 ## Latest Auditable State
 
 Repository head:
@@ -38,11 +50,11 @@ See git log. This dashboard is updated in the same commit as state changes.
 Recent commits:
 
 ```text
-Latest: Add D11 scripted-agent scaling adversarial trace (see git log for hash)
+Latest: Add evidence type system sketch and claim checker (see git log for hash)
+50de930 Add D11 scripted-agent scaling adversarial trace
 b08757b Add D11 randomized scaling variants and anchor modes
 5d6b4c2 Add D11 simulation-generated scaling anchor
 44a1742 Add D11 scaling law anchor traces
-90e4a59 Add metamorphic testing positioning audit
 ```
 
 Current validation status:
@@ -56,6 +68,7 @@ local Workflow Run Crate shape check: passed through CAPAS profile validator
 external ResearchObject RO-Crate validation: valid for 38/38 crates
 external warning: none
 witness independence validation: passed
+evidence claim type validation: passed
 reproducibility environment check: passed in local physics-magnitude-lab pixi env
 ```
 
@@ -128,6 +141,8 @@ scaling_law_anchor: 6
    - no evidence
    - failed execution
    - rejected execution
+   - claims licensed by evidence
+   - claims rejected by evidence type
 9. Formal-bound seed case:
    - single-cut Schmidt truncation
    - discarded weight equals squared state error

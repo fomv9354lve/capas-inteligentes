@@ -16,6 +16,7 @@ STEPS = [
     ("validate RO-Crate", [sys.executable, "benchmarks/validate_ro_crates.py"]),
     ("validate CAPAS profile", [sys.executable, "benchmarks/validate_capas_profile.py"]),
     ("validate witness independence", [sys.executable, "benchmarks/validate_witness_independence.py"]),
+    ("validate evidence claims", [sys.executable, "benchmarks/validate_evidence_claims.py"]),
     ("summarize audit", [sys.executable, "audits/summarize_gold_trace_audit.py"]),
 ]
 

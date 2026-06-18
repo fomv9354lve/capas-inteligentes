@@ -1,0 +1,82 @@
+{
+  "checks": [
+    {
+      "actual_verdict": "ACCEPT",
+      "claim_id": "exact_model_solution",
+      "expected_verdict": "ACCEPT",
+      "passed": true,
+      "reason": "solver/model error is explicitly zero for the declared model",
+      "trace_id": "trace_021"
+    },
+    {
+      "actual_verdict": "REJECT",
+      "claim_id": "physically_accurate_chemistry",
+      "expected_verdict": "REJECT",
+      "passed": true,
+      "reason": "experimental evidence records distance to measurement but does not show chemical accuracy",
+      "trace_id": "trace_021"
+    },
+    {
+      "actual_verdict": "ACCEPT",
+      "claim_id": "robust_physical_chemistry",
+      "expected_verdict": "ACCEPT",
+      "passed": true,
+      "reason": "basis convergence contains 2 true_robust point(s)",
+      "trace_id": "trace_027"
+    },
+    {
+      "actual_verdict": "REJECT",
+      "claim_id": "unique_optimum",
+      "expected_verdict": "REJECT",
+      "passed": true,
+      "reason": "degeneracy_count is 2; the trace licenses an optimum set, not a unique decision",
+      "trace_id": "trace_020"
+    },
+    {
+      "actual_verdict": "ACCEPT",
+      "claim_id": "optimum_set_verified",
+      "expected_verdict": "ACCEPT",
+      "passed": true,
+      "reason": "exact brute-force witness verifies the optimum set for the small instance",
+      "trace_id": "trace_020"
+    },
+    {
+      "actual_verdict": "REJECT",
+      "claim_id": "global_dmrg_formal_certificate",
+      "expected_verdict": "REJECT",
+      "passed": true,
+      "reason": "formal bound scope is 'single_bipartition_state_truncation', not a global DMRG/observable certificate",
+      "trace_id": "trace_016"
+    },
+    {
+      "actual_verdict": "ACCEPT",
+      "claim_id": "single_cut_state_bound",
+      "expected_verdict": "ACCEPT",
+      "passed": true,
+      "reason": "single-cut Schmidt truncation theorem supports the scoped state bound",
+      "trace_id": "trace_016"
+    },
+    {
+      "actual_verdict": "REJECT",
+      "claim_id": "local_properties_imply_universal_scaling",
+      "expected_verdict": "REJECT",
+      "passed": true,
+      "reason": "local properties pass, but the universal scaling anchor does not",
+      "trace_id": "trace_038"
+    },
+    {
+      "actual_verdict": "ACCEPT",
+      "claim_id": "universal_anchor_caught_scaling_error",
+      "expected_verdict": "ACCEPT",
+      "passed": true,
+      "reason": "absolute scaling-law anchor catches a locally plausible violation",
+      "trace_id": "trace_038"
+    }
+  ],
+  "summary": {
+    "checks": 9,
+    "failed": 0,
+    "fine_tune_ready_implication": "none; this validates claim typing, not training readiness",
+    "passed": 9
+  }
+}
