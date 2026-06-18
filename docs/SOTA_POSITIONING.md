@@ -46,8 +46,9 @@ Short formulation:
 
 VVUQ-aware formulation:
 
-> CAPAS packages VVUQ-style physical evidence into sealed RO-Crate/PROV
-> scientific traces.
+> CAPAS is an evidence-typed claim gate over scientific-computation traces. It
+> reads or packages provenance-aligned VVUQ-style evidence and decides whether
+> that evidence licenses ACCEPT, REWRITE, REJECT, or HOLD.
 
 ## Comparison Matrix
 

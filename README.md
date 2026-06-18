@@ -266,5 +266,6 @@ See:
 
 Short defensible claim:
 
-> CAPAS packages VVUQ-style physical evidence into sealed RO-Crate/PROV
-> scientific traces.
+> CAPAS is an evidence-typed claim gate over scientific-computation traces: it
+> reads or packages provenance-aligned evidence and decides whether that evidence
+> licenses ACCEPT, REWRITE, REJECT, or HOLD.

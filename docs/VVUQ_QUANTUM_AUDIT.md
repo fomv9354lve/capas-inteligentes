@@ -88,13 +88,14 @@ RO-Crate/PROV artifacts for scientific/quantum computation runs.
 
 Short version:
 
-> CAPAS packages VVUQ-style physical evidence into sealed scientific traces.
+> CAPAS is an evidence-typed claim gate over scientific-computation traces.
 
 Long version:
 
-> CAPAS extends RO-Crate/PROV traces with explicit VVUQ-style result evidence:
-> evidence level, reference truth, witness independence, discrepancy, and honest
-> no-evidence/failure/rejection states.
+> CAPAS reads or packages RO-Crate/PROV-aligned traces with explicit VVUQ-style
+> result evidence: evidence level, reference truth, witness independence,
+> discrepancy, and honest no-evidence/failure/rejection states. It then decides
+> whether that evidence licenses ACCEPT, REWRITE, REJECT, or HOLD.
 
 ## Falsation Condition
 

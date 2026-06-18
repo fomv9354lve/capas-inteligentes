@@ -1,6 +1,6 @@
 # CAPAS Claim Gate v0.1.1 - public-boundary hotfix
 
-This is a local MVP release candidate for CAPAS Claim Gate.
+This is the current public MVP release for CAPAS Claim Gate.
 
 ## What this release is
 
@@ -35,12 +35,15 @@ capas validate
 python benchmarks/verify_external_mvp_readiness.py
 ```
 
-Expected release-readiness status before publication:
+The historical release-readiness dry run can still report:
 
 ```text
 release_ready: False
-missing until external setup: git remote, v0.1.1 tag, valid GitHub CLI authentication
+missing until external setup: valid GitHub CLI authentication
 ```
+
+That dry-run field is not the publication source of truth for this tag. The
+public source of truth is the GitHub release and passing CI for `v0.1.1`.
 
 ## Honest scope
 
