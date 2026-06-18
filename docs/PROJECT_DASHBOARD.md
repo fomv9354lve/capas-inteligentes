@@ -50,11 +50,12 @@ See git log. This dashboard is updated in the same commit as state changes.
 Recent commits:
 
 ```text
-Latest: Add box 3 boil-the-ocean SotA audit (see git log for hash)
-b60ef3d Add evidence type system claim checker
-50de930 Add D11 scripted-agent scaling adversarial trace
-b08757b Add D11 randomized scaling variants and anchor modes
-5d6b4c2 Add D11 simulation-generated scaling anchor
+Latest: Add debunk 10 more canonical overclaims (see git log for hash)
+1dd98c7 Add debunk 5 canonical overclaims
+8c6f2d6 Add US UK canonical falsifiable claim gates
+53fac6e Add real China Rietveld claim gate checks
+0eca1aa Add real Cono Sur claim gate checks
+ffe71d3 Add regional evidence claim gate checks
 ```
 
 Current validation status:
@@ -82,6 +83,13 @@ US/UK canonical falsifiable gate validation: passed, 39/39 checks total with
 Debunk 5 status: complete as explicit artifact; five canonical top-tier
   overclaims are debunked as REWRITE while preserving the licensed scientific
   claims
+Debunk 10 more status: complete as explicit executable artifact; ten additional
+  canonical overclaims are debunked across quantum computing, QKD, AI, CRISPR,
+  genomics, particle physics, Alzheimer's, cardiometabolic trials, JWST
+  cosmology discourse, and room-temperature superconductivity
+Debunk 10 more validation: passed, 58/58 checks total with 19 new executable
+  checks; 9 overclaims are REWRITE with a licensed narrower claim, and 1
+  overclaim is REJECT due to retraction/no independent replication
 box 3 SotA status: broad claim-safety/provenance space is taken; narrow
   evidence-type checking for scientific computation claims survives
 regional research atlas: 122 raw source records gathered across China,

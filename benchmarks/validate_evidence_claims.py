@@ -476,6 +476,193 @@ def dart_solves_planetary_defense(trace: TraceResult) -> tuple[str, str]:
     return "HOLD", "no DART controlled-impact evidence available"
 
 
+def quantum_sampling_advantage_supported(trace: TraceResult) -> tuple[str, str]:
+    return verdict(
+        trace.get("task") == "random_circuit_sampling"
+        and trace.get("quantum_runtime_seconds", 10**12) < trace.get("classical_reference_runtime_seconds", 0)
+        and trace.get("fidelity_benchmark") == "xeb",
+        "random-circuit-sampling benchmark supports a task-specific quantum advantage claim",
+        "trace does not license a task-specific random-circuit-sampling advantage claim",
+    )
+
+
+def quantum_sampling_implies_useful_fault_tolerant_qc(trace: TraceResult) -> tuple[str, str]:
+    if trace.get("task") == "random_circuit_sampling":
+        return (
+            "REWRITE",
+            "random-circuit sampling licenses a benchmark advantage, not useful fault-tolerant quantum computing",
+        )
+    return "HOLD", "no quantum-sampling benchmark evidence available"
+
+
+def satellite_qkd_demo_supported(trace: TraceResult) -> tuple[str, str]:
+    return verdict(
+        trace.get("trusted_relay") is True
+        and trace.get("distance_km", 0) >= 1000
+        and trace.get("keys_exchanged") is True,
+        "trusted-relay satellite QKD demo supports intercontinental quantum-secured communication",
+        "trace does not license the satellite QKD demonstration claim",
+    )
+
+
+def satellite_qkd_implies_global_untrusted_quantum_internet(trace: TraceResult) -> tuple[str, str]:
+    if trace.get("trusted_relay") is True:
+        return (
+            "REWRITE",
+            "trusted-relay QKD demo does not license a global untrusted quantum internet",
+        )
+    return "HOLD", "no satellite QKD evidence available"
+
+
+def gpt3_fewshot_benchmark_supported(trace: TraceResult) -> tuple[str, str]:
+    return verdict(
+        trace.get("model") == "GPT-3"
+        and trace.get("few_shot_setting") is True
+        and trace.get("benchmarks_improved") is True,
+        "few-shot benchmark evidence supports broad NLP task improvement",
+        "trace does not license the GPT-3 few-shot benchmark claim",
+    )
+
+
+def gpt3_implies_agi_or_reliable_reasoner(trace: TraceResult) -> tuple[str, str]:
+    if trace.get("model") == "GPT-3":
+        return (
+            "REWRITE",
+            "few-shot NLP benchmark gains do not license AGI or reliable general reasoning",
+        )
+    return "HOLD", "no GPT-3 benchmark evidence available"
+
+
+def crispr_embryo_editing_research_supported(trace: TraceResult) -> tuple[str, str]:
+    return verdict(
+        trace.get("system") == "CRISPR-Cas9"
+        and trace.get("embryo_research") is True
+        and trace.get("correction_efficiency_percent", 0) > 0,
+        "embryo research reports correction in a fraction of embryos",
+        "trace does not license the embryo-editing research claim",
+    )
+
+
+def crispr_embryo_editing_clinically_safe(trace: TraceResult) -> tuple[str, str]:
+    if trace.get("embryo_research") is True:
+        return (
+            "REWRITE",
+            "embryo correction research does not license clinically safe heritable genome editing",
+        )
+    return "HOLD", "no embryo-editing evidence available"
+
+
+def hgp_reference_genome_supported(trace: TraceResult) -> tuple[str, str]:
+    return verdict(
+        trace.get("project") == "Human Genome Project"
+        and trace.get("reference_sequence") is True
+        and trace.get("euchromatic_coverage_percent", 0) >= 90,
+        "HGP evidence supports a high-quality euchromatic reference genome sequence",
+        "trace does not license the HGP reference-sequence claim",
+    )
+
+
+def hgp_solves_genetic_disease(trace: TraceResult) -> tuple[str, str]:
+    if trace.get("project") == "Human Genome Project":
+        return (
+            "REWRITE",
+            "reference sequencing does not license solving all genetic disease mechanisms or therapies",
+        )
+    return "HOLD", "no HGP evidence available"
+
+
+def higgs_discovery_supported(trace: TraceResult) -> tuple[str, str]:
+    return verdict(
+        trace.get("experiment") in {"ATLAS", "CMS", "ATLAS_CMS"}
+        and trace.get("sigma", 0) >= 5
+        and trace.get("mass_gev", 0) >= 120
+        and trace.get("properties_consistent_with_sm_higgs") is True,
+        "collider evidence licenses discovery of a Higgs-like boson consistent with the Standard Model",
+        "trace does not license the Higgs discovery claim",
+    )
+
+
+def higgs_discovery_completes_physics(trace: TraceResult) -> tuple[str, str]:
+    if trace.get("properties_consistent_with_sm_higgs") is True:
+        return (
+            "REWRITE",
+            "Higgs discovery completes a Standard Model slot, not all of physics or new-physics searches",
+        )
+    return "HOLD", "no Higgs evidence available"
+
+
+def lecanemab_slows_decline_supported(trace: TraceResult) -> tuple[str, str]:
+    return verdict(
+        trace.get("study_design") == "randomized_placebo_trial"
+        and trace.get("population") == "early_alzheimers"
+        and trace.get("decline_reduction_percent", 0) > 0
+        and trace.get("adverse_events_recorded") is True,
+        "trial evidence supports slower decline in early Alzheimer's with recorded adverse events",
+        "trace does not license the lecanemab trial claim",
+    )
+
+
+def lecanemab_cures_alzheimers(trace: TraceResult) -> tuple[str, str]:
+    if trace.get("population") == "early_alzheimers":
+        return (
+            "REWRITE",
+            "slower decline in early Alzheimer's does not license cure, reversal, or broad-stage efficacy",
+        )
+    return "HOLD", "no lecanemab evidence available"
+
+
+def semaglutide_select_mace_supported(trace: TraceResult) -> tuple[str, str]:
+    return verdict(
+        trace.get("trial") == "SELECT"
+        and trace.get("study_design") == "randomized_placebo_trial"
+        and trace.get("population") == "overweight_obesity_without_diabetes_with_cvd"
+        and trace.get("mace_reduction_percent", 0) > 0,
+        "SELECT trial supports MACE reduction in the declared non-diabetic overweight/obesity CVD population",
+        "trace does not license the SELECT cardiovascular outcome claim",
+    )
+
+
+def semaglutide_solves_cardiovascular_disease(trace: TraceResult) -> tuple[str, str]:
+    if trace.get("trial") == "SELECT":
+        return (
+            "REWRITE",
+            "SELECT supports risk reduction in a defined population, not solving cardiovascular disease generally",
+        )
+    return "HOLD", "no SELECT evidence available"
+
+
+def jwst_early_galaxy_observation_supported(trace: TraceResult) -> tuple[str, str]:
+    return verdict(
+        trace.get("instrument") == "JWST"
+        and trace.get("redshift", 0) >= 9
+        and trace.get("spectroscopic_confirmation") is True,
+        "JWST evidence supports an early massive galaxy observation at high redshift",
+        "trace does not license the JWST early-galaxy observation claim",
+    )
+
+
+def jwst_overturns_big_bang(trace: TraceResult) -> tuple[str, str]:
+    if trace.get("instrument") == "JWST":
+        return (
+            "REWRITE",
+            "early high-redshift galaxies pressure galaxy-formation models, not Big Bang cosmology as a whole",
+        )
+    return "HOLD", "no JWST evidence available"
+
+
+def room_temp_superconductor_established(trace: TraceResult) -> tuple[str, str]:
+    if trace.get("retracted") is True or trace.get("independent_replication") is False:
+        return (
+            "REJECT",
+            "claim is not licensed because the record is retracted or lacks independent replication",
+        )
+    return verdict(
+        trace.get("zero_resistance") is True and trace.get("meissner_effect") is True,
+        "superconductivity evidence includes zero resistance and Meissner effect",
+        "trace does not license established room-temperature superconductivity",
+    )
+
+
 CLAIM_RULES: dict[str, Rule] = {
     "exact_model_solution": exact_model_solution,
     "physically_accurate_chemistry": physically_accurate_chemistry,
@@ -514,6 +701,25 @@ CLAIM_RULES: dict[str, Rule] = {
     "alphafold_solves_full_protein_folding": alphafold_solves_full_protein_folding,
     "dart_orbit_change_supported": dart_orbit_change_supported,
     "dart_solves_planetary_defense": dart_solves_planetary_defense,
+    "quantum_sampling_advantage_supported": quantum_sampling_advantage_supported,
+    "quantum_sampling_implies_useful_fault_tolerant_qc": quantum_sampling_implies_useful_fault_tolerant_qc,
+    "satellite_qkd_demo_supported": satellite_qkd_demo_supported,
+    "satellite_qkd_implies_global_untrusted_quantum_internet": satellite_qkd_implies_global_untrusted_quantum_internet,
+    "gpt3_fewshot_benchmark_supported": gpt3_fewshot_benchmark_supported,
+    "gpt3_implies_agi_or_reliable_reasoner": gpt3_implies_agi_or_reliable_reasoner,
+    "crispr_embryo_editing_research_supported": crispr_embryo_editing_research_supported,
+    "crispr_embryo_editing_clinically_safe": crispr_embryo_editing_clinically_safe,
+    "hgp_reference_genome_supported": hgp_reference_genome_supported,
+    "hgp_solves_genetic_disease": hgp_solves_genetic_disease,
+    "higgs_discovery_supported": higgs_discovery_supported,
+    "higgs_discovery_completes_physics": higgs_discovery_completes_physics,
+    "lecanemab_slows_decline_supported": lecanemab_slows_decline_supported,
+    "lecanemab_cures_alzheimers": lecanemab_cures_alzheimers,
+    "semaglutide_select_mace_supported": semaglutide_select_mace_supported,
+    "semaglutide_solves_cardiovascular_disease": semaglutide_solves_cardiovascular_disease,
+    "jwst_early_galaxy_observation_supported": jwst_early_galaxy_observation_supported,
+    "jwst_overturns_big_bang": jwst_overturns_big_bang,
+    "room_temp_superconductor_established": room_temp_superconductor_established,
 }
 
 
@@ -826,6 +1032,140 @@ US_UK_EXAMPLES: list[tuple[str, str, str]] = [
 ]
 
 
+DEBUNK_10_TRACES: dict[str, TraceResult] = {
+    "debunk10_sycamore_random_sampling": {
+        "source_type": "top_tier_quantum_benchmark",
+        "source_url": "https://www.nature.com/articles/s41586-019-1666-5",
+        "title": "Quantum supremacy using a programmable superconducting processor",
+        "task": "random_circuit_sampling",
+        "quantum_runtime_seconds": 200,
+        "classical_reference_runtime_seconds": 10000 * 365 * 24 * 3600,
+        "fidelity_benchmark": "xeb",
+        "fault_tolerant": False,
+        "useful_application": False,
+    },
+    "debunk10_micius_qkd": {
+        "source_type": "top_tier_quantum_communication_demo",
+        "source_url": "https://arxiv.org/abs/1801.04418",
+        "title": "Satellite-relayed intercontinental quantum network",
+        "trusted_relay": True,
+        "distance_km": 7600,
+        "keys_exchanged": True,
+        "untrusted_repeater": False,
+        "global_network_deployed": False,
+    },
+    "debunk10_gpt3_fewshot": {
+        "source_type": "top_tier_ai_benchmark",
+        "source_url": "https://arxiv.org/abs/2005.14165",
+        "title": "Language Models are Few-Shot Learners",
+        "model": "GPT-3",
+        "few_shot_setting": True,
+        "benchmarks_improved": True,
+        "struggles_recorded": True,
+    },
+    "debunk10_crispr_embryo": {
+        "source_type": "top_tier_gene_editing_embryo_research",
+        "source_url": "https://www.nature.com/articles/nature23305",
+        "title": "Correction of a pathogenic gene mutation in human embryos",
+        "system": "CRISPR-Cas9",
+        "embryo_research": True,
+        "correction_efficiency_percent": 72.0,
+        "clinical_pregnancy": False,
+        "long_term_safety": False,
+    },
+    "debunk10_hgp_reference": {
+        "source_type": "top_tier_genomics_reference",
+        "source_url": "https://en.wikipedia.org/wiki/Human_Genome_Project",
+        "title": "Human Genome Project reference sequence",
+        "project": "Human Genome Project",
+        "reference_sequence": True,
+        "euchromatic_coverage_percent": 92.1,
+        "disease_mechanisms_solved": False,
+    },
+    "debunk10_higgs_discovery": {
+        "source_type": "top_tier_particle_physics_discovery",
+        "source_url": "https://arxiv.org/abs/1207.7214",
+        "title": "Observation of a new particle in the search for the Standard Model Higgs boson with the ATLAS detector",
+        "experiment": "ATLAS",
+        "sigma": 5.9,
+        "mass_gev": 126.0,
+        "properties_consistent_with_sm_higgs": True,
+        "new_physics_closed": False,
+    },
+    "debunk10_lecanemab": {
+        "source_type": "top_tier_alzheimers_trial",
+        "source_url": "https://www.nejm.org/doi/full/10.1056/NEJMoa2212948",
+        "title": "Lecanemab in Early Alzheimer's Disease",
+        "study_design": "randomized_placebo_trial",
+        "population": "early_alzheimers",
+        "decline_reduction_percent": 27.0,
+        "adverse_events_recorded": True,
+    },
+    "debunk10_semaglutide_select": {
+        "source_type": "top_tier_cardiometabolic_trial",
+        "source_url": "https://www.nejm.org/doi/full/10.1056/NEJMoa2307563",
+        "title": "Semaglutide and Cardiovascular Outcomes in Obesity without Diabetes",
+        "trial": "SELECT",
+        "study_design": "randomized_placebo_trial",
+        "population": "overweight_obesity_without_diabetes_with_cvd",
+        "mace_reduction_percent": 20.0,
+    },
+    "debunk10_jwst_early_galaxy": {
+        "source_type": "top_tier_astronomy_observation",
+        "source_url": "https://arxiv.org/abs/2303.00306",
+        "title": "A massive interacting galaxy 510 million years after the Big Bang",
+        "instrument": "JWST",
+        "redshift": 9.3127,
+        "spectroscopic_confirmation": True,
+        "standard_cosmology_refuted": False,
+    },
+    "debunk10_retracted_superconductor": {
+        "source_type": "top_tier_retracted_superconductivity_claim",
+        "source_url": "https://en.wikipedia.org/wiki/Room-temperature_superconductor",
+        "title": "Room-temperature / near-ambient superconductivity claims",
+        "retracted": True,
+        "independent_replication": False,
+        "zero_resistance": "contested",
+        "meissner_effect": False,
+    },
+}
+
+
+DEBUNK_10_EXAMPLES: list[tuple[str, str, str]] = [
+    ("debunk10_sycamore_random_sampling", "quantum_sampling_advantage_supported", "ACCEPT"),
+    (
+        "debunk10_sycamore_random_sampling",
+        "quantum_sampling_implies_useful_fault_tolerant_qc",
+        "REWRITE",
+    ),
+    ("debunk10_micius_qkd", "satellite_qkd_demo_supported", "ACCEPT"),
+    (
+        "debunk10_micius_qkd",
+        "satellite_qkd_implies_global_untrusted_quantum_internet",
+        "REWRITE",
+    ),
+    ("debunk10_gpt3_fewshot", "gpt3_fewshot_benchmark_supported", "ACCEPT"),
+    ("debunk10_gpt3_fewshot", "gpt3_implies_agi_or_reliable_reasoner", "REWRITE"),
+    ("debunk10_crispr_embryo", "crispr_embryo_editing_research_supported", "ACCEPT"),
+    ("debunk10_crispr_embryo", "crispr_embryo_editing_clinically_safe", "REWRITE"),
+    ("debunk10_hgp_reference", "hgp_reference_genome_supported", "ACCEPT"),
+    ("debunk10_hgp_reference", "hgp_solves_genetic_disease", "REWRITE"),
+    ("debunk10_higgs_discovery", "higgs_discovery_supported", "ACCEPT"),
+    ("debunk10_higgs_discovery", "higgs_discovery_completes_physics", "REWRITE"),
+    ("debunk10_lecanemab", "lecanemab_slows_decline_supported", "ACCEPT"),
+    ("debunk10_lecanemab", "lecanemab_cures_alzheimers", "REWRITE"),
+    ("debunk10_semaglutide_select", "semaglutide_select_mace_supported", "ACCEPT"),
+    (
+        "debunk10_semaglutide_select",
+        "semaglutide_solves_cardiovascular_disease",
+        "REWRITE",
+    ),
+    ("debunk10_jwst_early_galaxy", "jwst_early_galaxy_observation_supported", "ACCEPT"),
+    ("debunk10_jwst_early_galaxy", "jwst_overturns_big_bang", "REWRITE"),
+    ("debunk10_retracted_superconductor", "room_temp_superconductor_established", "REJECT"),
+]
+
+
 REGIONAL_CLAIM_MATRIX: dict[str, dict[str, Any]] = {
     "simulation_ran": {
         "minimum_fields": ["evidence_status", "method", "provenance_recorded"],
@@ -940,6 +1280,82 @@ REGIONAL_CLAIM_MATRIX: dict[str, dict[str, Any]] = {
         "minimum_fields": ["hazardous_asteroid_generalization", "multiple_target_classes"],
         "source_cluster": "DART overclaim control",
     },
+    "quantum_sampling_advantage_supported": {
+        "minimum_fields": ["task=random_circuit_sampling", "quantum_runtime_seconds", "classical_reference_runtime_seconds"],
+        "source_cluster": "Sycamore random-circuit-sampling benchmark",
+    },
+    "quantum_sampling_implies_useful_fault_tolerant_qc": {
+        "minimum_fields": ["fault_tolerant", "useful_application"],
+        "source_cluster": "Sycamore overclaim control",
+    },
+    "satellite_qkd_demo_supported": {
+        "minimum_fields": ["trusted_relay", "distance_km", "keys_exchanged"],
+        "source_cluster": "Micius satellite QKD demonstration",
+    },
+    "satellite_qkd_implies_global_untrusted_quantum_internet": {
+        "minimum_fields": ["untrusted_repeater", "global_network_deployed"],
+        "source_cluster": "Micius overclaim control",
+    },
+    "gpt3_fewshot_benchmark_supported": {
+        "minimum_fields": ["model=GPT-3", "few_shot_setting", "benchmarks_improved"],
+        "source_cluster": "GPT-3 few-shot NLP benchmark",
+    },
+    "gpt3_implies_agi_or_reliable_reasoner": {
+        "minimum_fields": ["general_reasoning_reliability", "agi_evidence"],
+        "source_cluster": "GPT-3 overclaim control",
+    },
+    "crispr_embryo_editing_research_supported": {
+        "minimum_fields": ["system=CRISPR-Cas9", "embryo_research", "correction_efficiency_percent"],
+        "source_cluster": "human embryo CRISPR research",
+    },
+    "crispr_embryo_editing_clinically_safe": {
+        "minimum_fields": ["clinical_pregnancy", "long_term_safety"],
+        "source_cluster": "human embryo CRISPR overclaim control",
+    },
+    "hgp_reference_genome_supported": {
+        "minimum_fields": ["project=Human Genome Project", "reference_sequence", "euchromatic_coverage_percent"],
+        "source_cluster": "Human Genome Project reference sequence",
+    },
+    "hgp_solves_genetic_disease": {
+        "minimum_fields": ["disease_mechanisms_solved", "therapeutic_validation"],
+        "source_cluster": "HGP overclaim control",
+    },
+    "higgs_discovery_supported": {
+        "minimum_fields": ["experiment", "sigma>=5", "mass_gev", "properties_consistent_with_sm_higgs"],
+        "source_cluster": "ATLAS/CMS Higgs discovery",
+    },
+    "higgs_discovery_completes_physics": {
+        "minimum_fields": ["new_physics_closed"],
+        "source_cluster": "Higgs overclaim control",
+    },
+    "lecanemab_slows_decline_supported": {
+        "minimum_fields": ["study_design", "population=early_alzheimers", "decline_reduction_percent", "adverse_events_recorded"],
+        "source_cluster": "lecanemab randomized trial",
+    },
+    "lecanemab_cures_alzheimers": {
+        "minimum_fields": ["cure_endpoint", "reversal_endpoint", "broad_stage_efficacy"],
+        "source_cluster": "lecanemab overclaim control",
+    },
+    "semaglutide_select_mace_supported": {
+        "minimum_fields": ["trial=SELECT", "population", "mace_reduction_percent"],
+        "source_cluster": "semaglutide SELECT cardiovascular outcomes trial",
+    },
+    "semaglutide_solves_cardiovascular_disease": {
+        "minimum_fields": ["all_cvd_populations", "disease_elimination"],
+        "source_cluster": "semaglutide overclaim control",
+    },
+    "jwst_early_galaxy_observation_supported": {
+        "minimum_fields": ["instrument=JWST", "redshift", "spectroscopic_confirmation"],
+        "source_cluster": "JWST early-galaxy observation",
+    },
+    "jwst_overturns_big_bang": {
+        "minimum_fields": ["standard_cosmology_refuted"],
+        "source_cluster": "JWST overclaim control",
+    },
+    "room_temp_superconductor_established": {
+        "minimum_fields": ["independent_replication", "zero_resistance", "meissner_effect", "retracted"],
+        "source_cluster": "room-temperature superconductivity overclaim control",
+    },
 }
 
 
@@ -993,6 +1409,18 @@ def run_checks() -> list[ClaimCheck]:
                 reason=reason,
             )
         )
+    for trace_id, claim_id, expected in DEBUNK_10_EXAMPLES:
+        actual, reason = CLAIM_RULES[claim_id](DEBUNK_10_TRACES[trace_id])
+        checks.append(
+            ClaimCheck(
+                trace_id=trace_id,
+                claim_id=claim_id,
+                expected_verdict=expected,
+                actual_verdict=actual,
+                passed=actual == expected,
+                reason=reason,
+            )
+        )
     return checks
 
 
@@ -1007,6 +1435,8 @@ def main() -> None:
             "regional_synthetic_checks": len(REGIONAL_EXAMPLES),
             "regional_real_checks": len(REGIONAL_REAL_EXAMPLES),
             "us_uk_canonical_checks": len(US_UK_EXAMPLES),
+            "debunk_10_more_checks": len(DEBUNK_10_EXAMPLES),
+            "debunk_10_more_overclaims": 10,
             "regional_claims": len(REGIONAL_CLAIM_MATRIX),
             "fine_tune_ready_implication": "none; this validates claim typing, not training readiness",
         },
