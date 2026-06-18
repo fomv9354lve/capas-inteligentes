@@ -24,6 +24,20 @@ CAPAS is for people auditing AI-generated scientific-computation outputs:
 CAPAS is not for users who only need a faster simulator or generic workflow
 lineage.
 
+## External Review Packet
+
+For reviewers and potential users:
+
+- Technical note: `docs/CAPAS_TECHNICAL_NOTE.md`
+- Request for feedback: `docs/REQUEST_FOR_FEEDBACK.md`
+- QMB100 / PhysVEC one-pager: `docs/CAPAS_ONE_PAGER_QMB100.md`
+- Current release: `https://github.com/fomv9354lve/capas-inteligentes/releases/tag/v0.1.1`
+- Public feedback issue: `https://github.com/fomv9354lve/capas-inteligentes/issues/1`
+
+The current validation question is not "is CAPAS broadly useful?" It is narrower:
+do the explicit evidence fields help audit or exchange one scientific-agent
+computation result, or are they already covered by existing artifacts?
+
 ## Try In 60 Seconds
 
 ```bash
