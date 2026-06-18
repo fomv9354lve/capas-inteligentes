@@ -463,6 +463,86 @@
       "passed": true,
       "reason": "claim is not licensed because the record is retracted or lacks independent replication",
       "trace_id": "debunk10_retracted_superconductor"
+    },
+    {
+      "actual_verdict": "REWRITE",
+      "claim_id": "claim_transition_gate",
+      "expected_verdict": "REWRITE",
+      "passed": true,
+      "reason": "current evidence licenses the narrow claim; stronger claim requires the declared upgrade evidence",
+      "trace_id": "upgrade_sycamore_to_useful_qc"
+    },
+    {
+      "actual_verdict": "REWRITE",
+      "claim_id": "claim_transition_gate",
+      "expected_verdict": "REWRITE",
+      "passed": true,
+      "reason": "current evidence licenses the narrow claim; stronger claim requires the declared upgrade evidence",
+      "trace_id": "upgrade_micius_to_untrusted_quantum_internet"
+    },
+    {
+      "actual_verdict": "REWRITE",
+      "claim_id": "claim_transition_gate",
+      "expected_verdict": "REWRITE",
+      "passed": true,
+      "reason": "current evidence licenses the narrow claim; stronger claim requires the declared upgrade evidence",
+      "trace_id": "upgrade_gpt3_to_reliable_reasoning"
+    },
+    {
+      "actual_verdict": "REWRITE",
+      "claim_id": "claim_transition_gate",
+      "expected_verdict": "REWRITE",
+      "passed": true,
+      "reason": "current evidence licenses the narrow claim; stronger claim requires the declared upgrade evidence",
+      "trace_id": "upgrade_crispr_embryo_to_clinical_safety"
+    },
+    {
+      "actual_verdict": "REWRITE",
+      "claim_id": "claim_transition_gate",
+      "expected_verdict": "REWRITE",
+      "passed": true,
+      "reason": "current evidence licenses the narrow claim; stronger claim requires the declared upgrade evidence",
+      "trace_id": "upgrade_hgp_to_disease_solution"
+    },
+    {
+      "actual_verdict": "REWRITE",
+      "claim_id": "claim_transition_gate",
+      "expected_verdict": "REWRITE",
+      "passed": true,
+      "reason": "current evidence licenses the narrow claim; stronger claim requires the declared upgrade evidence",
+      "trace_id": "upgrade_higgs_to_physics_complete"
+    },
+    {
+      "actual_verdict": "REWRITE",
+      "claim_id": "claim_transition_gate",
+      "expected_verdict": "REWRITE",
+      "passed": true,
+      "reason": "current evidence licenses the narrow claim; stronger claim requires the declared upgrade evidence",
+      "trace_id": "upgrade_lecanemab_to_alzheimers_cure"
+    },
+    {
+      "actual_verdict": "REWRITE",
+      "claim_id": "claim_transition_gate",
+      "expected_verdict": "REWRITE",
+      "passed": true,
+      "reason": "current evidence licenses the narrow claim; stronger claim requires the declared upgrade evidence",
+      "trace_id": "upgrade_semaglutide_to_cvd_solution"
+    },
+    {
+      "actual_verdict": "REWRITE",
+      "claim_id": "claim_transition_gate",
+      "expected_verdict": "REWRITE",
+      "passed": true,
+      "reason": "current evidence licenses the narrow claim; stronger claim requires the declared upgrade evidence",
+      "trace_id": "upgrade_jwst_to_big_bang_refutation"
+    },
+    {
+      "actual_verdict": "REJECT",
+      "claim_id": "claim_transition_gate",
+      "expected_verdict": "REJECT",
+      "passed": true,
+      "reason": "stronger claim cannot be upgraded from a retracted or negatively replicated evidence record",
+      "trace_id": "upgrade_retracted_superconductor_to_established"
     }
   ],
   "regional_claim_matrix": {
@@ -488,6 +568,16 @@
         "all_contexts_validation"
       ],
       "source_cluster": "AlphaFold overclaim control"
+    },
+    "claim_transition_gate": {
+      "minimum_fields": [
+        "current_claim",
+        "attempted_claim",
+        "blocker",
+        "required_upgrade_evidence",
+        "upgrade_evidence_present"
+      ],
+      "source_cluster": "CAPAS claim upgrade roadmap"
     },
     "contract_failure_not_physical_failure": {
       "minimum_fields": [
@@ -815,13 +905,14 @@
     }
   },
   "summary": {
-    "checks": 58,
+    "checks": 68,
+    "claim_transition_checks": 10,
     "debunk_10_more_checks": 19,
     "debunk_10_more_overclaims": 10,
     "failed": 0,
     "fine_tune_ready_implication": "none; this validates claim typing, not training readiness",
-    "passed": 58,
-    "regional_claims": 46,
+    "passed": 68,
+    "regional_claims": 47,
     "regional_real_checks": 8,
     "regional_synthetic_checks": 12,
     "us_uk_canonical_checks": 10

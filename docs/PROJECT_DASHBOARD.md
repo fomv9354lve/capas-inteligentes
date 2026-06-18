@@ -90,6 +90,13 @@ Debunk 10 more status: complete as explicit executable artifact; ten additional
 Debunk 10 more validation: passed, 58/58 checks total with 19 new executable
   checks; 9 overclaims are REWRITE with a licensed narrower claim, and 1
   overclaim is REJECT due to retraction/no independent replication
+Claim upgrade roadmap status: complete as executable artifact; the 10 debunks
+  are now represented as claim transitions with explicit blocker fields and
+  required upgrade evidence
+Claim transition gate validation: passed, 68/68 checks total with 10 new
+  transition checks; 9 stronger claims remain REWRITE until upgrade evidence is
+  present, and 1 remains REJECT because the evidence record is retracted/no
+  independent replication
 box 3 SotA status: broad claim-safety/provenance space is taken; narrow
   evidence-type checking for scientific computation claims survives
 regional research atlas: 122 raw source records gathered across China,

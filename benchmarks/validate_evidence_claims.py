@@ -663,6 +663,25 @@ def room_temp_superconductor_established(trace: TraceResult) -> tuple[str, str]:
     )
 
 
+def claim_transition_gate(trace: TraceResult) -> tuple[str, str]:
+    if trace.get("evidence_record_status") in {"retracted", "negative_replication"}:
+        return (
+            "REJECT",
+            "stronger claim cannot be upgraded from a retracted or negatively replicated evidence record",
+        )
+    if trace.get("upgrade_evidence_present") is True:
+        return (
+            "ACCEPT",
+            "upgrade evidence is present, so the attempted stronger claim is licensed within declared scope",
+        )
+    if trace.get("blocker") and trace.get("required_upgrade_evidence"):
+        return (
+            "REWRITE",
+            "current evidence licenses the narrow claim; stronger claim requires the declared upgrade evidence",
+        )
+    return "HOLD", "claim transition cannot be judged without blocker and required upgrade evidence"
+
+
 CLAIM_RULES: dict[str, Rule] = {
     "exact_model_solution": exact_model_solution,
     "physically_accurate_chemistry": physically_accurate_chemistry,
@@ -720,6 +739,7 @@ CLAIM_RULES: dict[str, Rule] = {
     "jwst_early_galaxy_observation_supported": jwst_early_galaxy_observation_supported,
     "jwst_overturns_big_bang": jwst_overturns_big_bang,
     "room_temp_superconductor_established": room_temp_superconductor_established,
+    "claim_transition_gate": claim_transition_gate,
 }
 
 
@@ -1166,6 +1186,154 @@ DEBUNK_10_EXAMPLES: list[tuple[str, str, str]] = [
 ]
 
 
+CLAIM_TRANSITION_TRACES: dict[str, TraceResult] = {
+    "upgrade_sycamore_to_useful_qc": {
+        "current_claim": "task_specific_random_circuit_sampling_advantage",
+        "attempted_claim": "useful_fault_tolerant_quantum_computing",
+        "blocker": "benchmark_task_not_useful_fault_tolerant_workload",
+        "required_upgrade_evidence": [
+            "logical_error_budget",
+            "fault_tolerant_operations",
+            "useful_algorithmic_workload",
+            "best_classical_baseline",
+        ],
+        "upgrade_evidence_present": False,
+        "evidence_record_status": "active",
+    },
+    "upgrade_micius_to_untrusted_quantum_internet": {
+        "current_claim": "trusted_relay_satellite_qkd_demo",
+        "attempted_claim": "global_untrusted_quantum_internet",
+        "blocker": "trusted_relay_topology",
+        "required_upgrade_evidence": [
+            "untrusted_repeater_or_device_independent_topology",
+            "operational_network_segments",
+            "attack_model",
+            "key_rate_under_declared_assumptions",
+        ],
+        "upgrade_evidence_present": False,
+        "evidence_record_status": "active",
+    },
+    "upgrade_gpt3_to_reliable_reasoning": {
+        "current_claim": "few_shot_nlp_benchmark_gain",
+        "attempted_claim": "reliable_general_reasoning",
+        "blocker": "benchmark_improvement_not_robust_reasoning",
+        "required_upgrade_evidence": [
+            "pre_registered_reasoning_tasks",
+            "adversarial_controls",
+            "calibration",
+            "out_of_distribution_evaluation",
+        ],
+        "upgrade_evidence_present": False,
+        "evidence_record_status": "active",
+    },
+    "upgrade_crispr_embryo_to_clinical_safety": {
+        "current_claim": "embryo_editing_research_signal",
+        "attempted_claim": "clinically_safe_heritable_genome_editing",
+        "blocker": "editing_fraction_not_long_term_clinical_safety",
+        "required_upgrade_evidence": [
+            "off_target_assay",
+            "mosaicism_controls",
+            "long_term_followup",
+            "regulatory_scope",
+        ],
+        "upgrade_evidence_present": False,
+        "evidence_record_status": "active",
+    },
+    "upgrade_hgp_to_disease_solution": {
+        "current_claim": "reference_genome_sequence",
+        "attempted_claim": "genetic_disease_mechanisms_solved",
+        "blocker": "reference_sequence_not_function_or_therapy",
+        "required_upgrade_evidence": [
+            "variant_to_function_map",
+            "causal_mechanism",
+            "clinical_validation",
+            "intervention_trial",
+        ],
+        "upgrade_evidence_present": False,
+        "evidence_record_status": "active",
+    },
+    "upgrade_higgs_to_physics_complete": {
+        "current_claim": "higgs_like_boson_discovered",
+        "attempted_claim": "physics_complete",
+        "blocker": "one_standard_model_particle_not_all_open_physics",
+        "required_upgrade_evidence": [
+            "precision_couplings",
+            "dark_matter_resolution",
+            "neutrino_mass_resolution",
+            "quantum_gravity_or_declared_hypothesis_space_exclusions",
+        ],
+        "upgrade_evidence_present": False,
+        "evidence_record_status": "active",
+    },
+    "upgrade_lecanemab_to_alzheimers_cure": {
+        "current_claim": "slower_decline_early_alzheimers",
+        "attempted_claim": "alzheimers_cure",
+        "blocker": "slower_decline_not_reversal_or_cure",
+        "required_upgrade_evidence": [
+            "durable_functional_benefit",
+            "disease_reversal_or_arrest_endpoint",
+            "stage_stratified_efficacy",
+            "net_safety_benefit",
+        ],
+        "upgrade_evidence_present": False,
+        "evidence_record_status": "active",
+    },
+    "upgrade_semaglutide_to_cvd_solution": {
+        "current_claim": "select_mace_reduction_defined_population",
+        "attempted_claim": "cardiovascular_disease_solved",
+        "blocker": "defined_population_risk_reduction_not_universal_solution",
+        "required_upgrade_evidence": [
+            "absolute_risk_by_population",
+            "long_horizon_safety",
+            "discontinuation_effects",
+            "mechanism_separated_outcomes",
+        ],
+        "upgrade_evidence_present": False,
+        "evidence_record_status": "active",
+    },
+    "upgrade_jwst_to_big_bang_refutation": {
+        "current_claim": "early_high_redshift_massive_galaxy_observed",
+        "attempted_claim": "big_bang_refuted",
+        "blocker": "galaxy_formation_pressure_not_cosmology_refutation",
+        "required_upgrade_evidence": [
+            "replicated_spectroscopic_sample",
+            "mass_systematics_controls",
+            "lambda_cdm_model_comparison",
+            "cosmological_parameter_exclusion",
+        ],
+        "upgrade_evidence_present": False,
+        "evidence_record_status": "active",
+    },
+    "upgrade_retracted_superconductor_to_established": {
+        "current_claim": "no_established_room_temperature_superconductor_claim",
+        "attempted_claim": "room_temperature_superconductivity_established",
+        "blocker": "retraction_and_no_independent_replication",
+        "required_upgrade_evidence": [
+            "independent_replication",
+            "zero_resistance",
+            "meissner_effect",
+            "sample_structure_characterization",
+        ],
+        "upgrade_evidence_present": False,
+        "evidence_record_status": "retracted",
+    },
+}
+
+
+CLAIM_TRANSITION_EXAMPLES: list[tuple[str, str, str]] = [
+    ("upgrade_sycamore_to_useful_qc", "claim_transition_gate", "REWRITE"),
+    ("upgrade_micius_to_untrusted_quantum_internet", "claim_transition_gate", "REWRITE"),
+    ("upgrade_gpt3_to_reliable_reasoning", "claim_transition_gate", "REWRITE"),
+    ("upgrade_crispr_embryo_to_clinical_safety", "claim_transition_gate", "REWRITE"),
+    ("upgrade_hgp_to_disease_solution", "claim_transition_gate", "REWRITE"),
+    ("upgrade_higgs_to_physics_complete", "claim_transition_gate", "REWRITE"),
+    ("upgrade_lecanemab_to_alzheimers_cure", "claim_transition_gate", "REWRITE"),
+    ("upgrade_semaglutide_to_cvd_solution", "claim_transition_gate", "REWRITE"),
+    ("upgrade_jwst_to_big_bang_refutation", "claim_transition_gate", "REWRITE"),
+    ("upgrade_retracted_superconductor_to_established", "claim_transition_gate", "REJECT"),
+]
+
+
 REGIONAL_CLAIM_MATRIX: dict[str, dict[str, Any]] = {
     "simulation_ran": {
         "minimum_fields": ["evidence_status", "method", "provenance_recorded"],
@@ -1356,6 +1524,10 @@ REGIONAL_CLAIM_MATRIX: dict[str, dict[str, Any]] = {
         "minimum_fields": ["independent_replication", "zero_resistance", "meissner_effect", "retracted"],
         "source_cluster": "room-temperature superconductivity overclaim control",
     },
+    "claim_transition_gate": {
+        "minimum_fields": ["current_claim", "attempted_claim", "blocker", "required_upgrade_evidence", "upgrade_evidence_present"],
+        "source_cluster": "CAPAS claim upgrade roadmap",
+    },
 }
 
 
@@ -1421,6 +1593,18 @@ def run_checks() -> list[ClaimCheck]:
                 reason=reason,
             )
         )
+    for trace_id, claim_id, expected in CLAIM_TRANSITION_EXAMPLES:
+        actual, reason = CLAIM_RULES[claim_id](CLAIM_TRANSITION_TRACES[trace_id])
+        checks.append(
+            ClaimCheck(
+                trace_id=trace_id,
+                claim_id=claim_id,
+                expected_verdict=expected,
+                actual_verdict=actual,
+                passed=actual == expected,
+                reason=reason,
+            )
+        )
     return checks
 
 
@@ -1437,6 +1621,7 @@ def main() -> None:
             "us_uk_canonical_checks": len(US_UK_EXAMPLES),
             "debunk_10_more_checks": len(DEBUNK_10_EXAMPLES),
             "debunk_10_more_overclaims": 10,
+            "claim_transition_checks": len(CLAIM_TRANSITION_EXAMPLES),
             "regional_claims": len(REGIONAL_CLAIM_MATRIX),
             "fine_tune_ready_implication": "none; this validates claim typing, not training readiness",
         },
