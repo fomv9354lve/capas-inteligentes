@@ -1259,6 +1259,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
     --text-2: #52525b;
     --text-3: #6f6f7a;
     --accent: #4f46e5;
+    --green: #15803d;
     --draft: #b45309;
     --json-key: #1d4ed8;
     --json-string: #15803d;
@@ -1517,6 +1518,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
       --text-2: #52525b;
       --text-3: #6f6f7a;
       --accent: #4f46e5;
+      --green: #15803d;
       --draft: #b45309;
       --json-key: #1d4ed8;
       --json-string: #15803d;
@@ -1526,10 +1528,10 @@ def _render_ui(sample: dict[str, Any]) -> str:
       --shadow: 0 4px 16px rgba(24, 24, 27, 0.08);
     }
     .topbar { background: rgba(255, 255, 255, 0.9); }
-    pre#output { background: #f4f4f5; }
+    pre#output { background: var(--bg-3); }
   }
   html[data-theme="light"] .topbar { background: rgba(255, 255, 255, 0.9); }
-  html[data-theme="light"] pre#output { background: #f4f4f5; }
+  html[data-theme="light"] pre#output { background: var(--bg-3); }
   @media (max-width: 860px) {
     .app-body { padding: 16px 16px 60px; }
     .topbar { padding: 0 16px; }

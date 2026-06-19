@@ -72,6 +72,8 @@ REQUIRED_SNIPPETS = [
     "scheduleInputChange",
     "inputChangeTimer",
     "--accent: #4f46e5",
+    "--green: #15803d",
+    "pre#output { background: var(--bg-3); }",
     "lastOutputJson",
     "--json-key",
     ".json-key { color: var(--json-key); }",
