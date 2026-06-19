@@ -2729,6 +2729,11 @@ def _render_ui(sample: dict[str, Any]) -> str:
   .topbar-source,
   #schema-version-badge,
   .topbar-actions > .topbar-badge:not(#shared-payload-badge) { display: none; }
+  .topbar-home {
+    border-color: rgba(124, 127, 255, 0.32);
+    background: var(--accent-glow);
+    color: var(--accent-hover);
+  }
 
   .product-hero { order: 1; }
   .guided-panel { order: 2; }
@@ -3110,6 +3115,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
     <span class="topbar-subtitle">Rule-based via <code>capas.py decide</code> · schema errors → <code>HOLD</code></span>
   </div>
   <div class="topbar-actions">
+    <a class="copy-btn topbar-home" href="index.html" aria-label="Return to CAPAS landing page">Home</a>
     <button class="copy-btn" id="help-btn" aria-label="Open keyboard shortcut and pipeline help" aria-expanded="false" aria-controls="help-modal" onclick="openHelpModal(this)">Help</button>
     <button class="copy-btn" type="button" aria-label="Jump to CAPAS gate" onclick="scrollToGate()">Gate</button>
     <button class="copy-btn" id="history-toggle" type="button" aria-label="Open audit log" aria-expanded="false" onclick="toggleHistoryPanel()">History</button>

@@ -69,6 +69,19 @@
     .footnotes { color: var(--quiet); font-size: 12px; line-height: 1.6; }
     .footnotes ol { margin: 8px 0 0; padding-left: 18px; }
     .screen { background: linear-gradient(180deg, var(--surface), #0c0c0e); box-shadow: 0 18px 60px rgba(0,0,0,0.35); }
+    .nav-hub { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+    .nav-card {
+      min-height: 132px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border-color: rgba(124, 127, 255, 0.18);
+      text-decoration: none;
+      transition: border-color .15s ease, transform .15s ease, background .15s ease;
+    }
+    .nav-card:hover { border-color: rgba(124, 127, 255, 0.55); background: #1c1c1f; transform: translateY(-1px); }
+    .nav-card strong { display: block; margin-bottom: 8px; }
+    .nav-card span { color: var(--quiet); font-size: 12px; }
     .screen-bar { display: flex; gap: 6px; padding-bottom: 12px; border-bottom: 1px solid var(--border); margin-bottom: 12px; }
     .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); }
     .row { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 10px; border: 1px solid var(--border); border-radius: 8px; margin-top: 8px; }
@@ -83,7 +96,7 @@
     code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--text); }
     @media (max-width: 860px) {
       header, main, footer { width: min(100% - 28px, 1180px); }
-      .hero, .metrics, .grid, .screens { grid-template-columns: 1fr; }
+      .hero, .metrics, .grid, .screens, .nav-hub { grid-template-columns: 1fr; }
       header { align-items: flex-start; flex-direction: column; gap: 12px; }
     }
   </style>
@@ -92,9 +105,10 @@
   <header>
     <div class="brand">CAPAS Claim Gate</div>
     <nav class="nav" aria-label="Product navigation">
-      <a class="button" href="app.html">Open app</a>
+      <a class="button primary" href="app.html">Open app</a>
       <a class="button" href="customer-brief.html">Customer brief</a>
-      <a class="button primary" href="https://github.com/fomv9354lve/capas-inteligentes">Source</a>
+      <a class="button" href="pilot-packet.html">Pilot packet</a>
+      <a class="button" href="https://github.com/fomv9354lve/capas-inteligentes">Source</a>
     </nav>
   </header>
   <main>
@@ -123,6 +137,16 @@
       </div>
     </section>
     <section>
+      <h2>Navigate CAPAS</h2>
+      <div class="grid nav-hub" aria-label="CAPAS site index">
+        <a class="card nav-card" href="app.html"><strong>Live app</strong><span>Guided evidence constructor, raw JSON gate, batch mode, ingestion, and audit log.</span></a>
+        <a class="card nav-card" href="customer-brief.html"><strong>Customer brief</strong><span>Buyer-ready summary: so what, pilot metrics, governance value, and disclaimers.</span></a>
+        <a class="card nav-card" href="pilot-packet.html"><strong>Pilot packet</strong><span>Two-week delivery path, artifacts, required footnotes, and rollout framing.</span></a>
+        <a class="card nav-card" href="#business-case"><strong>Business case</strong><span>Review-capacity model, assumptions, and pilot-sizing logic.</span></a>
+        <a class="card nav-card" href="https://github.com/fomv9354lve/capas-inteligentes"><strong>Source</strong><span>Repository, schema files, CLI/API surfaces, issues, and release artifacts.</span></a>
+      </div>
+    </section>
+    <section>
       <h2>The so what</h2>
       <div class="grid">
         <div class="card"><strong>Risk avoided</strong><p>Unsupported or over-claimed scientific statements are blocked before they become training examples, report language, or downstream model behavior.</p></div>
@@ -138,7 +162,7 @@
         <div class="card"><strong>After</strong><p>Reviewers focus on HOLD/REWRITE/REJECT queues, while accepted claims carry explicit audit trails into reports and pipelines.</p></div>
       </div>
     </section>
-    <section>
+    <section id="business-case">
       <h2>Business case model</h2>
       <p>For a 1,000-record scientific corpus, the model compares 30 minutes of manual expert review per record with 5 minutes of CAPAS-guided triage. That yields roughly 417 senior-review hours redirected toward exceptions, adjudication, provenance resolution, and dataset remediation.</p>
       <div class="metrics">
