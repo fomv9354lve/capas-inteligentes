@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import base64
 import json
 import shutil
 import subprocess
@@ -39,6 +40,9 @@ HARNESS = r"""
     checks.push({ name, passed: Boolean(condition), detail: detail || "" });
   }
   try {
+    ok("shared_payload_loaded", document.getElementById("input").value.includes("shared_claim"));
+    ok("share_button_exists", document.getElementById("share-btn"));
+    ok("export_button_exists", document.getElementById("export-btn"));
     localStorage.removeItem("capas_decision_history_v1");
     document.getElementById("input").value = "";
     decide();
@@ -88,6 +92,17 @@ def main() -> int:
         with tempfile.TemporaryDirectory() as tmpdir:
             harness_path = Path(tmpdir) / "capas-e2e.html"
             harness_path.write_text(html, encoding="utf-8")
+            shared_payload = {
+                "claim": {
+                    "id": "shared_claim",
+                    "type": "exact_model_solution",
+                    "text": "The shared model solution is within tolerance.",
+                },
+                "evidence": {"abs_error": 0.0, "tolerance": 0.001},
+            }
+            encoded = base64.urlsafe_b64encode(
+                json.dumps(shared_payload, sort_keys=True).encode("utf-8")
+            ).decode("ascii").rstrip("=")
             proc = subprocess.run(
                 [
                     chrome,
@@ -96,7 +111,7 @@ def main() -> int:
                     "--no-sandbox",
                     "--dump-dom",
                     "--virtual-time-budget=2000",
-                    harness_path.as_uri(),
+                    f"{harness_path.as_uri()}?p={encoded}",
                 ],
                 text=True,
                 capture_output=True,

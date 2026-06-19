@@ -1167,6 +1167,11 @@ def _render_ui(sample: dict[str, Any]) -> str:
 <meta property="og:description" content="A deterministic gate for structured scientific claims with schema validation, licensed rewrites, and evidence-aware HOLD decisions.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://fomv9354lve.github.io/capas-inteligentes/">
+<meta property="og:image" content="https://fomv9354lve.github.io/capas-inteligentes/capas-social-card.svg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="CAPAS Claim Gate">
+<meta name="twitter:description" content="Deterministic ACCEPT / REJECT / REWRITE / HOLD decisions for structured scientific claims.">
+<meta name="twitter:image" content="https://fomv9354lve.github.io/capas-inteligentes/capas-social-card.svg">
 <title>CAPAS Claim Gate</title>
 <style>
   /* CAPAS Claim Gate - Design System v9 */
@@ -1396,6 +1401,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
   .copy-btn:not(:disabled):hover { background: var(--bg-3); border-color: var(--border-2); color: var(--text-1); }
   .copy-btn:disabled { opacity: 0.35; cursor: not-allowed; }
   .copy-btn.copied { background: var(--green-bg); border-color: var(--green-border); color: var(--green); }
+  .history-actions { display: flex; align-items: center; gap: 8px; }
   .verdict-banner { display: flex; align-items: center; gap: 14px; padding: 16px 18px; border-bottom: 1px solid var(--border); }
   .verdict-badge { font-size: 11px; font-weight: 800; letter-spacing: 1.2px; border: 1px solid transparent; text-transform: uppercase; padding: 4px 13px; border-radius: 20px; white-space: nowrap; flex-shrink: 0; }
   .verdict-badge.ACCEPT { background: var(--green-bg); color: var(--green); border-color: var(--green-border); }
@@ -1428,8 +1434,9 @@ def _render_ui(sample: dict[str, Any]) -> str:
   pre#output::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 3px; }
   .history-section { margin-top: 24px; }
   .history-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .history-heading { color: var(--text-3); font-size: 11px; font-weight: 700; letter-spacing: 0.7px; text-transform: uppercase; }
   .history-list { display: flex; flex-direction: column; gap: 4px; }
-  .history-section h3, .history-count { color: var(--text-3); }
+  .history-count { color: var(--text-3); }
   .history-item { display: flex; align-items: center; gap: 10px; width: 100%; padding: 9px 14px; background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--radius); color: var(--text-1); font-family: var(--font); transition: all var(--t); cursor: pointer; text-align: left; }
   .history-item:hover { background: var(--bg-3); border-color: var(--border-2); transform: translateX(2px); }
   .history-badge { border: 1px solid; }
@@ -1465,6 +1472,11 @@ def _render_ui(sample: dict[str, Any]) -> str:
     }
     .topbar { background: rgba(255, 255, 255, 0.9); }
     pre#output { background: #f4f4f5; }
+    .json-key { color: #1d4ed8; }
+    .json-string { color: #15803d; }
+    .json-number { color: #b45309; }
+    .json-boolean { color: #7c3aed; }
+    .json-null { color: #dc2626; }
   }
   @media (max-width: 860px) {
     .app-body { padding: 16px 16px 60px; }
@@ -1534,8 +1546,12 @@ def _render_ui(sample: dict[str, Any]) -> str:
 
 <div class="history-section">
   <div class="history-header">
-    <h3>Recent decisions</h3>
-    <span class="history-count" id="history-count" aria-live="polite" aria-atomic="true">0/50 saved</span>
+    <h2 class="history-heading">Recent decisions</h2>
+    <div class="history-actions">
+      <button class="copy-btn" id="share-btn" aria-label="Copy shareable URL for current input" onclick="copyShareUrl()">Share URL</button>
+      <button class="copy-btn" id="export-btn" aria-label="Export decision history as CSV" onclick="exportHistoryCsv()">Export CSV</button>
+      <span class="history-count" id="history-count" aria-live="polite" aria-atomic="true">0/50 saved</span>
+    </div>
   </div>
   <div class="history-list" id="history-list">
     <div class="empty-state">No decisions yet.</div>
@@ -1974,6 +1990,83 @@ def _render_ui(sample: dict[str, Any]) -> str:
       }
     }
 
+    function encodeBase64Url(value) {
+      const bytes = new TextEncoder().encode(value);
+      let binary = "";
+      bytes.forEach((byte) => { binary += String.fromCharCode(byte); });
+      return btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, "");
+    }
+
+    function decodeBase64Url(value) {
+      const padded = value.replace(/-/g, "+").replace(/_/g, "/").padEnd(Math.ceil(value.length / 4) * 4, "=");
+      const binary = atob(padded);
+      const bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0));
+      return new TextDecoder().decode(bytes);
+    }
+
+    function maybeLoadSharedPayload() {
+      const params = new URLSearchParams(window.location.search);
+      const encoded = params.get("p");
+      if (!encoded) return false;
+      try {
+        const raw = decodeBase64Url(encoded);
+        JSON.parse(raw);
+        document.getElementById("input").value = raw;
+        return true;
+      } catch (error) {
+        document.getElementById("verdict-area").innerHTML =
+          `<div class="alert-block errors"><div class="alert-title">Shared payload error</div>${escHtml(error.message)}</div>`;
+        return false;
+      }
+    }
+
+    function copyShareUrl() {
+      const raw = document.getElementById("input").value.trim();
+      if (!raw) return;
+      try {
+        JSON.parse(raw);
+        const url = `${window.location.origin}${window.location.pathname}?p=${encodeBase64Url(raw)}`;
+        navigator.clipboard.writeText(url).then(() => {
+          const button = document.getElementById("share-btn");
+          button.textContent = "URL copied";
+          button.classList.add("copied");
+          setTimeout(() => {
+            button.textContent = "Share URL";
+            button.classList.remove("copied");
+          }, 1600);
+        });
+      } catch (_) {
+        document.getElementById("verdict-area").innerHTML =
+          `<div class="alert-block errors"><div class="alert-title">Share URL error</div>Only valid JSON payloads can be shared.</div>`;
+      }
+    }
+
+    function csvCell(value) {
+      return `"${String(value ?? "").replace(/"/g, '""')}"`;
+    }
+
+    function exportHistoryCsv() {
+      const header = ["timestamp", "verdict", "id", "reason", "payload", "decision"];
+      const rows = decisionHistory.map((item) => [
+        item.timestamp,
+        item.verdict,
+        item.id,
+        item.reason,
+        item.payload,
+        JSON.stringify(item.decision)
+      ]);
+      const csv = [header, ...rows].map((row) => row.map(csvCell).join(",")).join("\n");
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "capas_decision_history.csv";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+    }
+
     function escHtml(value) {
       return String(value).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
     }
@@ -2074,6 +2167,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
       }
     });
 
+    maybeLoadSharedPayload();
     onInputChange();
     renderHistory();
     decide(false);
