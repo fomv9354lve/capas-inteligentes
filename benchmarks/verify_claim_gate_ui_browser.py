@@ -93,6 +93,7 @@ HARNESS = r"""
     ok("help_modal_documents_numeric_ranges", document.getElementById("help-modal").textContent.includes("p_value") && document.getElementById("help-modal").textContent.includes("between 0 and 1"));
     ok("help_modal_documents_training_evidence_types", document.getElementById("help-modal").textContent.includes("training_evidence.source_backed_evidence") && document.getElementById("help-modal").textContent.includes("must be booleans"));
     ok("help_modal_documents_anchor_mode_boundary", document.getElementById("help-modal").textContent.includes("absolute_anchor") && document.getElementById("help-modal").textContent.includes("Other anchor modes remain"));
+    ok("help_modal_documents_guided_builder", document.getElementById("help-modal").textContent.includes("Guided claim builder") && document.getElementById("help-modal").textContent.includes("redraws required evidence fields"));
     closeHelpModal();
     ok("help_modal_closes", !document.getElementById("help-modal-backdrop").classList.contains("open"));
     ok("help_modal_returns_focus_to_trigger", document.activeElement === helpButton);
@@ -120,6 +121,9 @@ HARNESS = r"""
 
     document.getElementById("guided-type").value = "causal_mechanism_claim";
     renderGuidedFields();
+    const causalGuidedFields = Array.from(document.querySelectorAll("#guided-fields [data-field]")).map((element) => element.dataset.field);
+    ok("guided_builder_redraws_causal_fields", ["intervention_or_natural_experiment", "temporal_order_established", "confounders_controlled", "mechanism_evidence_present"].every((field) => causalGuidedFields.includes(field)) && !causalGuidedFields.includes("p_value"));
+    ok("guided_builder_updates_claim_text_for_type", document.getElementById("guided-claim-text").value.toLowerCase().includes("causal"));
     buildGuidedPayload();
     ok("guided_form_builds_schema_v3_payload", document.getElementById("input").value.includes('"schema_version": "capas-claim-payload-v3"') && document.getElementById("input").value.includes('"causal_mechanism_claim"'));
     decide();
@@ -131,6 +135,7 @@ HARNESS = r"""
     extractCandidateClaims();
     ok("paper_ingestion_extracts_candidates", ingestCandidates.length >= 1 && document.querySelectorAll(".candidate-row").length >= 1);
     ok("paper_ingestion_shows_evidence_spans", document.querySelector(".candidate-span")?.textContent.includes("line"));
+    ok("paper_ingestion_labels_evidence_spans", document.querySelector(".candidate-spans")?.textContent.includes("Evidence spans"));
     confirmCandidateClaim(0);
     ok("paper_ingestion_confirm_builds_payload", document.getElementById("input").value.includes('"ingestion"') && document.getElementById("input").value.includes('"human_confirmed": true'));
     decide();
@@ -145,6 +150,16 @@ HARNESS = r"""
     });
     extractCandidateClaims();
     ok("local_metadata_adapter_parses_semantic_scholar_export", document.getElementById("ingest-title-field").value.includes("Semantic Scholar") && document.getElementById("ingest-doi").value === "10.0000/s2-demo" && ingestCandidates.length >= 1);
+    document.getElementById("ingest-source-text").value = "A long theory paragraph proposes a causal mechanism: intervention_or_natural_experiment is true and temporal_order_established was true; confounders_controlled: true, while mechanism_evidence_present is true despite unusual prose and punctuation.";
+    extractCandidateClaims();
+    const causalCandidateIndex = ingestCandidates.findIndex((candidate) => candidate.claim.type === "causal_mechanism_claim");
+    const causalCandidate = ingestCandidates[causalCandidateIndex];
+    ok("paper_ingestion_boolean_parser_handles_causal_sentence", causalCandidate && causalCandidate.evidence.intervention_or_natural_experiment === true && causalCandidate.evidence.temporal_order_established === true && causalCandidate.evidence.confounders_controlled === true && causalCandidate.evidence.mechanism_evidence_present === true);
+    if (causalCandidateIndex >= 0) {
+      confirmCandidateClaim(causalCandidateIndex);
+      decide();
+    }
+    ok("paper_ingestion_causal_candidate_decides_accept", document.querySelector(".verdict-badge.ACCEPT") && document.getElementById("type-label").textContent === "causal_mechanism_claim");
 
     loadSample("REWRITE");
     ok("rewrite_verdict", document.querySelector(".verdict-badge.REWRITE"));

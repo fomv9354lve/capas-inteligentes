@@ -2768,6 +2768,8 @@ def _render_ui(sample: dict[str, Any]) -> str:
     <h3>Paper/text ingestion</h3>
     <p>The browser ingestion panel accepts pasted paper text, abstracts, theorem notes, local text/Markdown/JSON files, and PDF provenance metadata. It proposes candidate claims with source spans, but a human must click <code>Confirm & build payload</code> before the candidate can be decided. This is an explicit extraction aid, not broad paper understanding or theorem proving.</p>
     <p>For richer ingestion, use the CLI <code>retrieve</code>, <code>extract</code>, <code>align</code>, and <code>pipeline</code> commands. Local corpus adapters can stand in for Semantic Scholar, PubMed, Elicit, or internal metadata exports before CAPAS applies the deterministic final gate.</p>
+    <h3>Guided claim builder</h3>
+    <p>The no-code builder redraws required evidence fields whenever the claim type changes. It creates a schema v3 payload with the minimum evidence fields for that type plus a <code>training_evidence</code> scaffold, so paper or theorem candidates can be promoted into editable CAPAS payloads without hand-writing JSON.</p>
     <h3>Fine-tune readiness</h3>
     <p><code>fine_tune_ready</code> is a strict positive gate. It becomes <code>true</code> only after an <code>ACCEPT</code> verdict plus source-backed evidence, semantic alignment, witness independence, a hash-verified external review packet, recoverable/hashable source URLs, a resolvable witness registry entry, a valid RO-Crate provenance packet, and a verifiable reviewer attestation. CAPAS gates claims; it does not silently certify training data.</p>
     <p>The static browser UI previews these criteria but cannot perform active provenance I/O. The five provenance gates require <code>capas.py</code> CLI/API verification to resolve registries, hash sources, and validate RO-Crate packets.</p>
@@ -3530,6 +3532,8 @@ def _render_ui(sample: dict[str, Any]) -> str:
       };
     }
 
+    let lastGuidedType = "";
+
     function renderGuidedFields() {
       const typeSelect = document.getElementById("guided-type");
       const fields = document.getElementById("guided-fields");
@@ -3540,10 +3544,17 @@ def _render_ui(sample: dict[str, Any]) -> str:
       }
       const type = typeSelect.value;
       const example = minimalExamples[type] || minimalExamples.exact_model_solution;
-      document.getElementById("guided-claim-id").value = document.getElementById("guided-claim-id").value || example.claim.id;
-      if (!document.getElementById("guided-claim-text").value.trim()) {
-        document.getElementById("guided-claim-text").value = example.claim.text;
+      const idInput = document.getElementById("guided-claim-id");
+      const textInput = document.getElementById("guided-claim-text");
+      const typeChanged = lastGuidedType && lastGuidedType !== type;
+      if (!idInput.value || typeChanged) {
+        idInput.value = example.claim.id;
       }
+      if (!textInput.value.trim() || typeChanged) {
+        textInput.value = example.claim.text;
+      }
+      lastGuidedType = type;
+      fields.dataset.claimType = type;
       fields.innerHTML = required[type].map((field) => {
         const value = example.evidence[field];
         const inputType = typeof value === "number" ? "number" : "text";
@@ -3678,14 +3689,41 @@ def _render_ui(sample: dict[str, Any]) -> str:
       return "claim_transition";
     }
 
+    function normalizeEvidenceText(text) {
+      return String(text || "")
+        .replace(/[，؛；]/g, ",")
+        .replace(/[。]/g, ".")
+        .replace(/[“”]/g, '"')
+        .replace(/[‘’]/g, "'");
+    }
+
+    function evidenceFieldPattern(field) {
+      return field.replace(/_/g, "[_\\\\s-]?");
+    }
+
+    function parseBooleanEvidenceValue(raw) {
+      const value = String(raw || "").trim().toLowerCase();
+      if (/^(true|yes|pass|passed|1|present|available|confirmed|verified|established|controlled)$/i.test(value)) return true;
+      if (/^(false|no|fail|failed|0|absent|unavailable|unconfirmed|unverified|not\\s+established|not\\s+controlled)$/i.test(value)) return false;
+      return null;
+    }
+
     function explicitValueFromText(text, field, exampleValue) {
-      const pattern = new RegExp(`\\b${field.replace(/_/g, "[_\\\\s-]?")}\\b\\s*[:=]\\s*([^.;,\\n]+)`, "i");
-      const match = text.match(pattern);
+      const normalized = normalizeEvidenceText(text);
+      const fieldName = evidenceFieldPattern(field);
+      if (typeof exampleValue === "boolean") {
+        const booleanPattern = new RegExp(`\\b${fieldName}\\b\\s*(?:[:=]|is|was|=)?\\s*(true|false|yes|no|pass|passed|fail|failed|0|1|present|available|confirmed|verified|established|controlled|absent|unavailable|unconfirmed|unverified|not\\s+established|not\\s+controlled)\\b`, "i");
+        const booleanMatch = normalized.match(booleanPattern);
+        return booleanMatch ? parseBooleanEvidenceValue(booleanMatch[1]) : null;
+      }
+      const pattern = new RegExp(`\\b${fieldName}\\b\\s*(?:[:=]|is|was|=)\\s*([^.;\\n]+)`, "i");
+      const match = normalized.match(pattern);
       if (!match) return null;
-      const raw = match[1].trim();
-      if (typeof exampleValue === "boolean") return /^(true|yes|pass|passed|1)$/i.test(raw);
+      const raw = match[1].split(/\\s+(?:and|while|with)\\s+/i)[0].replace(/,$/, "").trim();
       if (typeof exampleValue === "number") {
-        const value = Number(raw);
+        const numberMatch = raw.match(/-?\\d+(?:\\.\\d+)?(?:e[+-]?\\d+)?/i);
+        if (!numberMatch) return null;
+        const value = Number(numberMatch[0]);
         return Number.isFinite(value) ? value : null;
       }
       if (Array.isArray(exampleValue)) return raw.split(/[|,]/).map((item) => item.trim()).filter(Boolean);
@@ -3769,7 +3807,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
           `<div class="candidate-row" role="listitem">` +
           `<div class="candidate-summary"><span class="verdict-badge HOLD">${escHtml(candidate.claim.type)}</span><span class="candidate-text">${escHtml(candidate.claim.text)}</span>` +
           `<button class="copy-btn" type="button" onclick="confirmCandidateClaim(${index})">Confirm & build payload</button></div>` +
-          `<div class="candidate-spans" aria-label="Evidence spans for candidate ${index + 1}">${spanHtml}</div>` +
+          `<div class="candidate-spans" aria-label="Evidence spans for candidate ${index + 1}"><div class="alert-title">Evidence spans</div>${spanHtml}</div>` +
           `</div>`
         );
       }).join("");
