@@ -144,6 +144,7 @@ capas decide --input examples/external_claim_hold.json
 Run the standalone upstream MVP:
 
 ```bash
+capas retrieve --input examples/standalone_pipeline_multisource.json
 capas extract --input examples/standalone_pipeline_accept.json
 capas align --input examples/standalone_pipeline_semantic_hold.json
 capas pipeline --input examples/standalone_pipeline_semantic_hold.json
@@ -152,6 +153,10 @@ python3 benchmarks/verify_standalone_pipeline.py
 
 This is not broad scientific reasoning. It is local explicit parsing plus a
 deterministic semantic-scope guard before the CAPAS gate.
+
+`extract` also returns `evidence_spans` with `source_id`, line number, snippet,
+and parser for each extracted field, so a reviewer can audit where the evidence
+came from.
 
 The published MVP input contract is
 `docs/schema/capas_claim_payload.schema.json`. `check-input` validates the

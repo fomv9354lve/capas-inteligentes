@@ -88,8 +88,11 @@ does not understand the prose.
 The current executable form is:
 
 ```text
+capas retrieve:
+local source lines matching required evidence fields
+
 capas extract:
-local text/log/code -> explicit evidence assignments
+local text/log/code -> explicit evidence assignments + field spans
 
 capas align:
 claim.text <-> claim.type <-> evidence scope

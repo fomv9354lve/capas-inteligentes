@@ -525,36 +525,59 @@ def align_claim_text(payload: dict[str, Any]) -> dict[str, Any]:
 
 
 def _source_text(payload: dict[str, Any]) -> str:
+    return "\n".join(source["text"] for source in _source_records(payload))
+
+
+def _read_source_path(path_value: str) -> str:
+    path = (ROOT / path_value).resolve()
+    try:
+        path.relative_to(ROOT.resolve())
+    except ValueError:
+        raise ValueError("source.path must stay inside the CAPAS repository")
+    return path.read_text(encoding="utf-8")
+
+
+def _source_records(payload: dict[str, Any]) -> list[dict[str, str]]:
+    records: list[dict[str, str]] = []
     source = payload.get("source")
     if isinstance(source, dict):
+        source_id = str(source.get("id") or source.get("path") or "source_0")
+        kind = str(source.get("kind") or "text")
         if isinstance(source.get("text"), str):
-            return source["text"]
-        if isinstance(source.get("path"), str):
-            path = (ROOT / source["path"]).resolve()
-            try:
-                path.relative_to(ROOT.resolve())
-            except ValueError:
-                raise ValueError("source.path must stay inside the CAPAS repository")
-            return path.read_text(encoding="utf-8")
+            records.append({"source_id": source_id, "kind": kind, "text": source["text"]})
+        elif isinstance(source.get("path"), str):
+            records.append({"source_id": source_id, "kind": kind, "text": _read_source_path(source["path"])})
     sources = payload.get("sources")
     if isinstance(sources, list):
-        chunks: list[str] = []
-        for item in sources:
+        for idx, item in enumerate(sources):
             if isinstance(item, dict) and isinstance(item.get("text"), str):
-                chunks.append(item["text"])
+                source_id = str(item.get("id") or item.get("path") or f"source_{idx}")
+                kind = str(item.get("kind") or "text")
+                records.append({"source_id": source_id, "kind": kind, "text": item["text"]})
             elif isinstance(item, dict) and isinstance(item.get("path"), str):
-                path = (ROOT / item["path"]).resolve()
-                try:
-                    path.relative_to(ROOT.resolve())
-                except ValueError:
-                    raise ValueError("source.path must stay inside the CAPAS repository")
-                chunks.append(path.read_text(encoding="utf-8"))
-        return "\n".join(chunks)
-    return ""
+                source_id = str(item.get("id") or item["path"])
+                kind = str(item.get("kind") or "text")
+                records.append({"source_id": source_id, "kind": kind, "text": _read_source_path(item["path"])})
+    return records
+
+
+def _field_pattern(field: str) -> str:
+    return field.replace("_", r"[_\s-]?")
+
+
+def _span(source: dict[str, str], line_number: int, line: str, field: str, parser: str) -> dict[str, Any]:
+    return {
+        "field": field,
+        "source_id": source["source_id"],
+        "source_kind": source["kind"],
+        "line": line_number,
+        "snippet": line.strip(),
+        "parser": parser,
+    }
 
 
 def _extract_number(text: str, field: str) -> float | None:
-    field_pattern = field.replace("_", r"[_\s-]?")
+    field_pattern = _field_pattern(field)
     match = re.search(rf"\b{field_pattern}\b\s*[:=]\s*({NUMBER_PATTERN})", text, re.IGNORECASE)
     if not match:
         return None
@@ -566,7 +589,7 @@ def _parse_bool(raw: str) -> bool:
 
 
 def _extract_bool(text: str, field: str) -> bool | None:
-    field_pattern = field.replace("_", r"[_\s-]?")
+    field_pattern = _field_pattern(field)
     match = re.search(rf"\b{field_pattern}\b\s*[:=]\s*{BOOLEAN_PATTERN}", text, re.IGNORECASE)
     if not match:
         return None
@@ -574,7 +597,7 @@ def _extract_bool(text: str, field: str) -> bool | None:
 
 
 def _extract_string(text: str, field: str) -> str | None:
-    field_pattern = field.replace("_", r"[_\s-]?")
+    field_pattern = _field_pattern(field)
     match = re.search(
         rf"\b{field_pattern}\b\s*[:=]\s*([A-Za-z0-9_.:/-]+)",
         text,
@@ -585,18 +608,73 @@ def _extract_string(text: str, field: str) -> str | None:
     return match.group(1)
 
 
+def _extract_field_from_sources(
+    sources: list[dict[str, str]],
+    field: str,
+    parser: str,
+) -> tuple[Any, dict[str, Any] | None]:
+    field_pattern = _field_pattern(field)
+    if parser == "number":
+        pattern = rf"\b{field_pattern}\b\s*[:=]\s*({NUMBER_PATTERN})"
+    elif parser == "boolean":
+        pattern = rf"\b{field_pattern}\b\s*[:=]\s*{BOOLEAN_PATTERN}"
+    else:
+        pattern = rf"\b{field_pattern}\b\s*[:=]\s*([A-Za-z0-9_.:/-]+)"
+
+    for source in sources:
+        for line_number, line in enumerate(source["text"].splitlines(), start=1):
+            match = re.search(pattern, line, re.IGNORECASE)
+            if not match:
+                continue
+            raw = match.group(1)
+            if parser == "number":
+                value: Any = float(raw)
+            elif parser == "boolean":
+                value = _parse_bool(raw)
+            else:
+                value = raw.rstrip(".,;)")
+            return value, _span(source, line_number, line, field, parser)
+    return None, None
+
+
+def retrieve_evidence_snippets(payload: dict[str, Any]) -> list[dict[str, Any]]:
+    """Return local source lines likely relevant to required evidence fields."""
+
+    claim = payload.get("claim", {}) if isinstance(payload, dict) else {}
+    claim_type = claim.get("type") if isinstance(claim, dict) else None
+    fields = REQUIRED_DECISION_FIELDS.get(str(claim_type), [])
+    snippets: list[dict[str, Any]] = []
+    for source in _source_records(payload):
+        for line_number, line in enumerate(source["text"].splitlines(), start=1):
+            lowered = line.lower()
+            matched = [field for field in fields if re.search(rf"\b{_field_pattern(field)}\b", lowered)]
+            if matched:
+                snippets.append(
+                    {
+                        "source_id": source["source_id"],
+                        "source_kind": source["kind"],
+                        "line": line_number,
+                        "snippet": line.strip(),
+                        "matched_fields": matched,
+                    }
+                )
+    return snippets
+
+
 def extract_evidence(payload: dict[str, Any]) -> dict[str, Any]:
     """Extract explicit evidence assignments from local text/code/log sources."""
 
     claim = payload.get("claim", {}) if isinstance(payload, dict) else {}
-    text = _source_text(payload)
+    sources = _source_records(payload)
     extracted: dict[str, Any] = {}
+    evidence_spans: dict[str, dict[str, Any]] = {}
     extraction_notes: list[str] = []
 
     for field in ("abs_error", "tolerance"):
-        value = _extract_number(text, field)
-        if value is not None:
+        value, span = _extract_field_from_sources(sources, field, "number")
+        if span is not None:
             extracted[field] = value
+            evidence_spans[field] = span
 
     for field in (
         "within_chemical_accuracy",
@@ -604,9 +682,10 @@ def extract_evidence(payload: dict[str, Any]) -> dict[str, Any]:
         "universal_anchor_pass",
         "upgrade_evidence_present",
     ):
-        value = _extract_bool(text, field)
-        if value is not None:
+        value, span = _extract_field_from_sources(sources, field, "boolean")
+        if span is not None:
             extracted[field] = value
+            evidence_spans[field] = span
 
     for field in (
         "anchor_mode",
@@ -614,11 +693,12 @@ def extract_evidence(payload: dict[str, Any]) -> dict[str, Any]:
         "verification_independence",
         "bound_scope",
     ):
-        value = _extract_string(text, field)
-        if value is not None:
+        value, span = _extract_field_from_sources(sources, field, "string")
+        if span is not None:
             extracted[field] = value
+            evidence_spans[field] = span
 
-    if not text:
+    if not sources:
         extraction_notes.append("no source text was supplied")
 
     claim_type = claim.get("type") if isinstance(claim, dict) else None
@@ -646,6 +726,8 @@ def extract_evidence(payload: dict[str, Any]) -> dict[str, Any]:
     return {
         "extraction_status": status,
         "extracted_evidence": extracted,
+        "evidence_spans": evidence_spans,
+        "retrieved_snippets": retrieve_evidence_snippets(payload),
         "candidate_payload": candidate_payload,
         "required_fields": required,
         "missing_fields_after_extraction": missing,
@@ -1340,6 +1422,22 @@ def cmd_extract(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_retrieve(args: argparse.Namespace) -> int:
+    payload = _load_json(Path(args.input))
+    report = {
+        "retrieved_snippets": retrieve_evidence_snippets(payload),
+        "non_claim": "This retrieves local lines matching required evidence fields; it does not fetch remote sources.",
+    }
+    if args.output:
+        _write_json(Path(args.output), report)
+    if args.json or not args.output:
+        print(json.dumps(report, indent=2, sort_keys=True))
+    else:
+        print(f"retrieved {len(report['retrieved_snippets'])} snippets")
+        print(f"wrote {args.output}")
+    return 0
+
+
 def cmd_pipeline(args: argparse.Namespace) -> int:
     payload = _load_json(Path(args.input))
     report = standalone_pipeline(payload)
@@ -1434,6 +1532,12 @@ def main(argv: list[str] | None = None) -> int:
     extract.add_argument("--output", help="optional extraction report path")
     extract.add_argument("--json", action="store_true", help="print JSON even when --output is supplied")
     extract.set_defaults(func=cmd_extract)
+
+    retrieve = subparsers.add_parser("retrieve", help="retrieve local evidence lines for the claim type")
+    retrieve.add_argument("--input", required=True, help="path to standalone pipeline input JSON")
+    retrieve.add_argument("--output", help="optional retrieval report path")
+    retrieve.add_argument("--json", action="store_true", help="print JSON even when --output is supplied")
+    retrieve.set_defaults(func=cmd_retrieve)
 
     pipeline = subparsers.add_parser("pipeline", help="run extract -> semantic alignment -> deterministic claim gate")
     pipeline.add_argument("--input", required=True, help="path to standalone pipeline input JSON")

@@ -22,6 +22,7 @@ local text / solver log / code excerpt
 Run it:
 
 ```bash
+capas retrieve --input examples/standalone_pipeline_multisource.json
 capas extract --input examples/standalone_pipeline_accept.json
 capas align --input examples/standalone_pipeline_semantic_hold.json
 capas pipeline --input examples/standalone_pipeline_semantic_hold.json
@@ -46,6 +47,34 @@ anchor_mode = absolute_anchor
 
 Non-claim: this is not literature retrieval and not hidden inference. If a value
 is not explicitly present, the extractor leaves it missing.
+
+The extractor also records `evidence_spans`:
+
+```json
+{
+  "anchor_mode": {
+    "source_id": "paper_excerpt",
+    "source_kind": "paper_excerpt",
+    "line": 1,
+    "snippet": "The scaling benchmark declares anchor_mode = absolute_anchor.",
+    "parser": "string"
+  }
+}
+```
+
+This makes the local evidence auditable instead of just extracted.
+
+### `capas retrieve`
+
+Retrieves local source lines likely relevant to the required evidence fields for
+the claim type. It is local-only and field-driven:
+
+```bash
+capas retrieve --input examples/standalone_pipeline_multisource.json
+```
+
+Non-claim: this does not fetch papers from the web and does not decide whether a
+source is authoritative.
 
 ### `capas align`
 
@@ -125,6 +154,7 @@ capas validate
 The validator checks:
 
 - explicit extraction from a solver log,
+- multsource extraction with auditable field-level spans,
 - semantic scope mismatch blocking a false ACCEPT,
 - universal-anchor overclaim lowering to REWRITE,
 - extractor refusal to infer hidden evidence.
@@ -139,4 +169,3 @@ Current:
 Not current:
 
 > CAPAS is a general scientific reasoning engine.
-

@@ -34,6 +34,13 @@ CASES = [
         "expected_alignment": "MISALIGNED",
         "expected_final": "REWRITE",
     },
+    {
+        "name": "multisource_spans_are_auditable",
+        "path": ROOT / "examples" / "standalone_pipeline_multisource.json",
+        "expected_extraction": "complete",
+        "expected_alignment": "ALIGNED",
+        "expected_final": "ACCEPT",
+    },
 ]
 
 
@@ -68,6 +75,10 @@ def main() -> int:
                     extraction["extraction_status"] == case["expected_extraction"]
                     and alignment["alignment_status"] == case["expected_alignment"]
                     and final_decision["verdict"] == case["expected_final"]
+                    and all(
+                        field in extraction["evidence_spans"]
+                        for field in extraction["required_fields"]
+                    )
                     and cli["returncode"] == 0
                 ),
                 "expected": {
@@ -78,6 +89,8 @@ def main() -> int:
                 "actual": {
                     "extraction_status": extraction["extraction_status"],
                     "extracted_evidence": extraction["extracted_evidence"],
+                    "evidence_spans": extraction["evidence_spans"],
+                    "retrieved_snippets": extraction["retrieved_snippets"],
                     "alignment_status": alignment["alignment_status"],
                     "alignment_issues": alignment["issues"],
                     "gate_verdict": pipeline["capas_gate_decision"]["verdict"],
