@@ -225,14 +225,118 @@
         "required_fields": [],
         "rewrite": null,
         "schema_errors": [
-          "evidence.current_claim must not contain raw HTML angle brackets"
+          "evidence.current_claim must not contain angle brackets or Unicode angle-bracket homoglyphs"
         ],
         "verdict": "HOLD"
       },
       "errors": [
-        "evidence.current_claim must not contain raw HTML angle brackets"
+        "evidence.current_claim must not contain angle brackets or Unicode angle-bracket homoglyphs"
       ],
-      "expected_error": "evidence.current_claim must not contain raw HTML angle brackets",
+      "expected_error": "evidence.current_claim must not contain angle brackets or Unicode angle-bracket homoglyphs",
+      "passed": true
+    },
+    {
+      "check": "adversarial_payload:current_claim_unicode_angle_homoglyph",
+      "decision": {
+        "fine_tune_ready": false,
+        "input_claim": {
+          "id": "current_claim_unicode_angle_homoglyph",
+          "text": "Unicode angle-bracket homoglyphs should not flow into rewrite output.",
+          "type": "claim_transition"
+        },
+        "licensed_claim": "Unicode angle-bracket homoglyphs should not flow into rewrite output.",
+        "missing_fields": [],
+        "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "reason": "input payload failed CAPAS schema validation",
+        "required_fields": [],
+        "rewrite": null,
+        "schema_errors": [
+          "evidence.current_claim must not contain angle brackets or Unicode angle-bracket homoglyphs"
+        ],
+        "verdict": "HOLD"
+      },
+      "errors": [
+        "evidence.current_claim must not contain angle brackets or Unicode angle-bracket homoglyphs"
+      ],
+      "expected_error": "evidence.current_claim must not contain angle brackets or Unicode angle-bracket homoglyphs",
+      "passed": true
+    },
+    {
+      "check": "adversarial_payload:claim_id_raw_html",
+      "decision": {
+        "fine_tune_ready": false,
+        "input_claim": {
+          "id": "<script>",
+          "text": "Claim ids should not carry raw HTML.",
+          "type": "physical_accuracy"
+        },
+        "licensed_claim": "Claim ids should not carry raw HTML.",
+        "missing_fields": [],
+        "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "reason": "input payload failed CAPAS schema validation",
+        "required_fields": [],
+        "rewrite": null,
+        "schema_errors": [
+          "claim.id must not contain angle brackets or Unicode angle-bracket homoglyphs"
+        ],
+        "verdict": "HOLD"
+      },
+      "errors": [
+        "claim.id must not contain angle brackets or Unicode angle-bracket homoglyphs"
+      ],
+      "expected_error": "claim.id must not contain angle brackets or Unicode angle-bracket homoglyphs",
+      "passed": true
+    },
+    {
+      "check": "adversarial_payload:claim_text_raw_html",
+      "decision": {
+        "fine_tune_ready": false,
+        "input_claim": {
+          "id": "claim_text_raw_html",
+          "text": "<img src=x onerror=alert('xss')>",
+          "type": "physical_accuracy"
+        },
+        "licensed_claim": "<img src=x onerror=alert('xss')>",
+        "missing_fields": [],
+        "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "reason": "input payload failed CAPAS schema validation",
+        "required_fields": [],
+        "rewrite": null,
+        "schema_errors": [
+          "claim.text must not contain angle brackets or Unicode angle-bracket homoglyphs"
+        ],
+        "verdict": "HOLD"
+      },
+      "errors": [
+        "claim.text must not contain angle brackets or Unicode angle-bracket homoglyphs"
+      ],
+      "expected_error": "claim.text must not contain angle brackets or Unicode angle-bracket homoglyphs",
+      "passed": true
+    },
+    {
+      "check": "adversarial_payload:claim_text_unicode_angle_homoglyph",
+      "decision": {
+        "fine_tune_ready": false,
+        "input_claim": {
+          "id": "claim_text_unicode_angle_homoglyph",
+          "text": "\u27e8img src=x onerror=alert(1)\u27e9",
+          "type": "physical_accuracy"
+        },
+        "licensed_claim": "\u27e8img src=x onerror=alert(1)\u27e9",
+        "missing_fields": [],
+        "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "reason": "input payload failed CAPAS schema validation",
+        "required_fields": [],
+        "rewrite": null,
+        "schema_errors": [
+          "claim.text must not contain angle brackets or Unicode angle-bracket homoglyphs"
+        ],
+        "verdict": "HOLD"
+      },
+      "errors": [
+        "claim.text must not contain angle brackets or Unicode angle-bracket homoglyphs"
+      ],
+      "expected_error": "claim.text must not contain angle brackets or Unicode angle-bracket homoglyphs",
       "passed": true
     },
     {

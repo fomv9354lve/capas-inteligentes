@@ -123,6 +123,12 @@ EXPERIMENT_SCOPE_PATTERNS = [
 NUMBER_PATTERN = r"[-+]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][-+]?\d+)?"
 BOOLEAN_PATTERN = r"(true|false|yes|no|pass|fail|passed|failed|1|0)"
 WEB_FETCH_TIMEOUT_SECONDS = 15
+DISALLOWED_ANGLE_CHARS = "<>\u02c2\u02c3\u2039\u203a\u27e8\u27e9\uff1c\uff1e"
+NO_ANGLE_PATTERN = f"^[^{re.escape(DISALLOWED_ANGLE_CHARS)}]*$"
+
+
+def _contains_angle_like_character(value: str) -> bool:
+    return any(char in value for char in DISALLOWED_ANGLE_CHARS)
 
 
 def external_claim_payload_schema() -> dict[str, Any]:
@@ -140,9 +146,21 @@ def external_claim_payload_schema() -> dict[str, Any]:
                 "additionalProperties": True,
                 "required": ["id", "type", "text"],
                 "properties": {
-                    "id": {"type": "string", "minLength": 1, "maxLength": 256},
+                    "id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 256,
+                        "pattern": NO_ANGLE_PATTERN,
+                        "description": "Claim ids must not contain HTML angle brackets or common Unicode angle-bracket homoglyphs.",
+                    },
                     "type": {"type": "string", "enum": claim_types},
-                    "text": {"type": "string", "minLength": 1, "maxLength": 4000},
+                    "text": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 4000,
+                        "pattern": NO_ANGLE_PATTERN,
+                        "description": "Claim text must not contain HTML angle brackets or common Unicode angle-bracket homoglyphs because payloads may be displayed by downstream consumers.",
+                    },
                 },
             },
             "evidence": {
@@ -163,7 +181,8 @@ def external_claim_payload_schema() -> dict[str, Any]:
                     "current_claim": {
                         "type": "string",
                         "maxLength": 4000,
-                        "description": "Optional weaker claim text for REWRITE. Raw HTML angle brackets are rejected because this value can be displayed by downstream consumers.",
+                        "pattern": NO_ANGLE_PATTERN,
+                        "description": "Optional weaker claim text for REWRITE. HTML angle brackets and common Unicode angle-bracket homoglyphs are rejected because this value can be displayed by downstream consumers.",
                     },
                 },
             },
@@ -190,8 +209,12 @@ def validate_external_payload(payload: dict[str, Any]) -> list[str]:
             errors.append(f"claim.{field} must be a non-empty string")
     if isinstance(claim.get("id"), str) and len(claim["id"]) > 256:
         errors.append("claim.id must be at most 256 characters")
+    if isinstance(claim.get("id"), str) and _contains_angle_like_character(claim["id"]):
+        errors.append("claim.id must not contain angle brackets or Unicode angle-bracket homoglyphs")
     if isinstance(claim.get("text"), str) and len(claim["text"]) > 4000:
         errors.append("claim.text must be at most 4000 characters")
+    if isinstance(claim.get("text"), str) and _contains_angle_like_character(claim["text"]):
+        errors.append("claim.text must not contain angle brackets or Unicode angle-bracket homoglyphs")
 
     claim_type = claim.get("type")
     if isinstance(claim_type, str) and claim_type not in REQUIRED_DECISION_FIELDS:
@@ -233,8 +256,8 @@ def validate_external_payload(payload: dict[str, Any]) -> list[str]:
         else:
             if len(current_claim) > 4000:
                 errors.append("evidence.current_claim must be at most 4000 characters")
-            if "<" in current_claim or ">" in current_claim:
-                errors.append("evidence.current_claim must not contain raw HTML angle brackets")
+            if _contains_angle_like_character(current_claim):
+                errors.append("evidence.current_claim must not contain angle brackets or Unicode angle-bracket homoglyphs")
     return errors
 
 
@@ -1254,6 +1277,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
 <script>
     const sample = __SAMPLE_COMPACT_JSON__;
     const samples = __SAMPLES_JSON__;
+    const disallowedAngleChars = "<>\u02c2\u02c3\u2039\u203a\u27e8\u27e9\uff1c\uff1e";
     const required = {
       exact_model_solution: ["abs_error", "tolerance"],
       physical_accuracy: ["within_chemical_accuracy"],
@@ -1262,6 +1286,10 @@ def _render_ui(sample: dict[str, Any]) -> str:
     };
     const claimTypes = Object.keys(required).sort();
     let decisionHistory = [];
+
+    function containsAngleLikeCharacter(value) {
+      return Array.from(disallowedAngleChars).some((char) => value.includes(char));
+    }
 
     function validatePayload(payload) {
       const errors = [];
@@ -1285,8 +1313,14 @@ def _render_ui(sample: dict[str, Any]) -> str:
       if (typeof safeClaim.id === "string" && safeClaim.id.length > 256) {
         errors.push("claim.id must be at most 256 characters");
       }
+      if (typeof safeClaim.id === "string" && containsAngleLikeCharacter(safeClaim.id)) {
+        errors.push("claim.id must not contain angle brackets or Unicode angle-bracket homoglyphs");
+      }
       if (typeof safeClaim.text === "string" && safeClaim.text.length > 4000) {
         errors.push("claim.text must be at most 4000 characters");
+      }
+      if (typeof safeClaim.text === "string" && containsAngleLikeCharacter(safeClaim.text)) {
+        errors.push("claim.text must not contain angle brackets or Unicode angle-bracket homoglyphs");
       }
       if (typeof safeClaim.type === "string" && !required[safeClaim.type]) {
         errors.push(`claim.type must be one of: ${claimTypes.join(", ")}`);
@@ -1318,8 +1352,8 @@ def _render_ui(sample: dict[str, Any]) -> str:
           if (safeEvidence.current_claim.length > 4000) {
             errors.push("evidence.current_claim must be at most 4000 characters");
           }
-          if (safeEvidence.current_claim.includes("<") || safeEvidence.current_claim.includes(">")) {
-            errors.push("evidence.current_claim must not contain raw HTML angle brackets");
+          if (containsAngleLikeCharacter(safeEvidence.current_claim)) {
+            errors.push("evidence.current_claim must not contain angle brackets or Unicode angle-bracket homoglyphs");
           }
         }
       }

@@ -7,13 +7,17 @@
       "additionalProperties": true,
       "properties": {
         "id": {
+          "description": "Claim ids must not contain HTML angle brackets or common Unicode angle-bracket homoglyphs.",
           "maxLength": 256,
           "minLength": 1,
+          "pattern": "^[^<>\u02c2\u02c3\u2039\u203a\u27e8\u27e9\uff1c\uff1e]*$",
           "type": "string"
         },
         "text": {
+          "description": "Claim text must not contain HTML angle brackets or common Unicode angle-bracket homoglyphs because payloads may be displayed by downstream consumers.",
           "maxLength": 4000,
           "minLength": 1,
+          "pattern": "^[^<>\u02c2\u02c3\u2039\u203a\u27e8\u27e9\uff1c\uff1e]*$",
           "type": "string"
         },
         "type": {
@@ -45,8 +49,9 @@
           "type": "string"
         },
         "current_claim": {
-          "description": "Optional weaker claim text for REWRITE. Raw HTML angle brackets are rejected because this value can be displayed by downstream consumers.",
+          "description": "Optional weaker claim text for REWRITE. HTML angle brackets and common Unicode angle-bracket homoglyphs are rejected because this value can be displayed by downstream consumers.",
           "maxLength": 4000,
+          "pattern": "^[^<>\u02c2\u02c3\u2039\u203a\u27e8\u27e9\uff1c\uff1e]*$",
           "type": "string"
         },
         "local_property_tests_pass": {

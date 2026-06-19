@@ -111,7 +111,64 @@ ADVERSARIAL_PAYLOADS = [
                 "current_claim": "<img src=x onerror=alert('xss')>",
             },
         },
-        "evidence.current_claim must not contain raw HTML angle brackets",
+        "evidence.current_claim must not contain angle brackets or Unicode angle-bracket homoglyphs",
+    ),
+    (
+        "current_claim_unicode_angle_homoglyph",
+        {
+            "claim": {
+                "id": "current_claim_unicode_angle_homoglyph",
+                "type": "claim_transition",
+                "text": "Unicode angle-bracket homoglyphs should not flow into rewrite output.",
+            },
+            "evidence": {
+                "upgrade_evidence_present": False,
+                "current_claim": "\uff1cscript\uff1ealert(1)\uff1c/script\uff1e",
+            },
+        },
+        "evidence.current_claim must not contain angle brackets or Unicode angle-bracket homoglyphs",
+    ),
+    (
+        "claim_id_raw_html",
+        {
+            "claim": {
+                "id": "<script>",
+                "type": "physical_accuracy",
+                "text": "Claim ids should not carry raw HTML.",
+            },
+            "evidence": {
+                "within_chemical_accuracy": True,
+            },
+        },
+        "claim.id must not contain angle brackets or Unicode angle-bracket homoglyphs",
+    ),
+    (
+        "claim_text_raw_html",
+        {
+            "claim": {
+                "id": "claim_text_raw_html",
+                "type": "physical_accuracy",
+                "text": "<img src=x onerror=alert('xss')>",
+            },
+            "evidence": {
+                "within_chemical_accuracy": True,
+            },
+        },
+        "claim.text must not contain angle brackets or Unicode angle-bracket homoglyphs",
+    ),
+    (
+        "claim_text_unicode_angle_homoglyph",
+        {
+            "claim": {
+                "id": "claim_text_unicode_angle_homoglyph",
+                "type": "physical_accuracy",
+                "text": "\u27e8img src=x onerror=alert(1)\u27e9",
+            },
+            "evidence": {
+                "within_chemical_accuracy": True,
+            },
+        },
+        "claim.text must not contain angle brackets or Unicode angle-bracket homoglyphs",
     ),
 ]
 

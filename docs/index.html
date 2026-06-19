@@ -210,6 +210,7 @@
 <script>
     const sample = {"claim": {"id": "sample_scaling_claim", "text": "The generated scaling result is physically consistent with the universal z=1 anchor.", "type": "universal_anchor_claim"}, "evidence": {"anchor_mode": "absolute_anchor", "local_property_tests_pass": true, "physical_evidence_level": "scaling_law_anchor", "universal_anchor_pass": true, "verification_independence": "theory_scaling_law_no_solver"}};
     const samples = {"ACCEPT": {"claim": {"id": "sample_scaling_claim", "text": "The generated scaling result is physically consistent with the universal z=1 anchor.", "type": "universal_anchor_claim"}, "evidence": {"anchor_mode": "absolute_anchor", "local_property_tests_pass": true, "physical_evidence_level": "scaling_law_anchor", "universal_anchor_pass": true, "verification_independence": "theory_scaling_law_no_solver"}}, "HOLD": {"claim": {"id": "sample_experiment_hold", "text": "The simulation matches experiment.", "type": "physical_accuracy"}, "evidence": {"physical_evidence_level": "experimental", "reference_truth": "external experimental reference supplied without tolerance verdict"}}, "INVALID": {"claim": {"id": "", "text": "This payload is structurally invalid because the claim id is empty.", "type": "unsupported_claim_type"}, "evidence": "not an object"}, "REWRITE": {"claim": {"id": "sample_scaling_claim_rewrite", "text": "Local monotonicity proves universal physical correctness.", "type": "universal_anchor_claim"}, "evidence": {"anchor_mode": "absolute_anchor", "local_property_tests_pass": true, "physical_evidence_level": "scaling_law_anchor", "universal_anchor_pass": false, "verification_independence": "theory_scaling_law_no_solver"}}};
+    const disallowedAngleChars = "<>\u02c2\u02c3\u2039\u203a\u27e8\u27e9\uff1c\uff1e";
     const required = {
       exact_model_solution: ["abs_error", "tolerance"],
       physical_accuracy: ["within_chemical_accuracy"],
@@ -218,6 +219,10 @@
     };
     const claimTypes = Object.keys(required).sort();
     let decisionHistory = [];
+
+    function containsAngleLikeCharacter(value) {
+      return Array.from(disallowedAngleChars).some((char) => value.includes(char));
+    }
 
     function validatePayload(payload) {
       const errors = [];
@@ -241,8 +246,14 @@
       if (typeof safeClaim.id === "string" && safeClaim.id.length > 256) {
         errors.push("claim.id must be at most 256 characters");
       }
+      if (typeof safeClaim.id === "string" && containsAngleLikeCharacter(safeClaim.id)) {
+        errors.push("claim.id must not contain angle brackets or Unicode angle-bracket homoglyphs");
+      }
       if (typeof safeClaim.text === "string" && safeClaim.text.length > 4000) {
         errors.push("claim.text must be at most 4000 characters");
+      }
+      if (typeof safeClaim.text === "string" && containsAngleLikeCharacter(safeClaim.text)) {
+        errors.push("claim.text must not contain angle brackets or Unicode angle-bracket homoglyphs");
       }
       if (typeof safeClaim.type === "string" && !required[safeClaim.type]) {
         errors.push(`claim.type must be one of: ${claimTypes.join(", ")}`);
@@ -274,8 +285,8 @@
           if (safeEvidence.current_claim.length > 4000) {
             errors.push("evidence.current_claim must be at most 4000 characters");
           }
-          if (safeEvidence.current_claim.includes("<") || safeEvidence.current_claim.includes(">")) {
-            errors.push("evidence.current_claim must not contain raw HTML angle brackets");
+          if (containsAngleLikeCharacter(safeEvidence.current_claim)) {
+            errors.push("evidence.current_claim must not contain angle brackets or Unicode angle-bracket homoglyphs");
           }
         }
       }
