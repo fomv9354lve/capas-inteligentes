@@ -67,6 +67,7 @@ For reviewers and potential users:
 - Public demo: `https://fomv9354lve.github.io/capas-inteligentes/`
 - Current release: `https://github.com/fomv9354lve/capas-inteligentes/releases/tag/v0.1.1`
 - Public feedback issue: `https://github.com/fomv9354lve/capas-inteligentes/issues/1`
+- License: proprietary research prototype; see `LICENSE`.
 
 The current validation question is not "is CAPAS broadly useful?" It is narrower:
 do the explicit evidence fields help audit or exchange one scientific-agent

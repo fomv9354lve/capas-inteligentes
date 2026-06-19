@@ -51,8 +51,14 @@ REQUIRED_SNIPPETS = [
     "property=\"og:image\"",
     "name=\"twitter:card\" content=\"summary_large_image\"",
     "http-equiv=\"Content-Security-Policy\"",
+    "style-src 'self' 'unsafe-hashes'",
+    "script-src 'self' 'unsafe-hashes'",
     "capas-social-card.svg",
     "<header class=\"topbar\">",
+    "Open CAPAS Claim Gate source repository",
+    "Source repository",
+    "https://github.com/fomv9354lve/capas-inteligentes/issues",
+    "License: proprietary research prototype",
     "aria-label=\"CAPAS Claim Gate\"",
     "aria-hidden=\"true\">CG</div>",
     "class=\"skip-link\" href=\"#main\"",
@@ -158,6 +164,8 @@ FORBIDDEN_SNIPPETS = [
     ".header {",
     "padding: 20px 28px",
     "max-width: 1200px",
+    "script-src 'unsafe-inline'",
+    "style-src 'unsafe-inline'",
 ]
 
 

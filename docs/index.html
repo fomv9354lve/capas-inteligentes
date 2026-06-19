@@ -13,7 +13,7 @@
 <meta name="twitter:title" content="CAPAS Claim Gate">
 <meta name="twitter:description" content="Deterministic ACCEPT / REJECT / REWRITE / HOLD decisions for structured scientific claims.">
 <meta name="twitter:image" content="https://fomv9354lve.github.io/capas-inteligentes/capas-social-card.svg">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'unsafe-inline'; script-src 'unsafe-inline'; object-src 'none'; base-uri 'none'; form-action 'none'; connect-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-hashes' 'sha256-L2O6Ld2MVmQQJYNKRLg7vmvCN3E5TQMIBLU1wekcu8c=' 'sha256-WR9rP4wcUSez2/tRea04nm8DytpHQpuTzmyIDPYpafs=' 'sha256-ydybVkgQBWGrhf4ZlH+JJjDUu5LPYSrevJJ9IMtVKkM='; script-src 'self' 'unsafe-hashes' 'sha256-/0VHkTUBypNrDlXz5ygl+VCnQN2DFYrKecsthvR6hzM=' 'sha256-1eGwzQw8w3Qd7Kzl2aRdZ45FgFqecbzZvvNPU2LPXEY=' 'sha256-3mFLR9JEaOk6BsK1NwnKKClH6DohDtD3uz6mDvzNAV0=' 'sha256-5J8QIN0uHa3X4+TaUpRKBKn3pljcpBNl9MhDpDECP+U=' 'sha256-5lAQgk7ejXTC3HyQdoIIarBeXpoMt0YW9ktxN/nx7ns=' 'sha256-6B7NhbsyIfhTwNN4mhmwaGNgBxiZJ1mJsfK8xhqPPm0=' 'sha256-7RYK7a8zEwcMpvHG/S0Tbb0u2j8791ks9UnZkQpcq4o=' 'sha256-DUsvkEX9JDJ0pjE1lEWjYZCSNTqx3bYlmo+TspuFCpM=' 'sha256-DwaIxal8emn89bvHzEVVm/VqfNBDRrFkC8PCzNUHQT4=' 'sha256-GmYZ5CuJvp7ktqCLM3yCre1hhKnWuTRcaPtDhU7rC3k=' 'sha256-H30oQ3eMoFQ/7gu2jy5BaTzHafI8eyrHz7lYsN9p320=' 'sha256-KqckOHfUsG4xg951PkJPFHsm8c2K9iMr28TcIQvZPr8=' 'sha256-LHyAByuBzGodVDrZei1hOVxRyoglt1vcZGfdI3LVmc4=' 'sha256-QzMkimyM3BCWD9geRKUrUk1vz9Z7UYRBzGt1S5ZM5io=' 'sha256-RbmnAuLcSgwxZYJ4NrPOZNwYxOl5YVV0XA5FpJ5HS3E=' 'sha256-YhRMPw3zA1nvoAollY80hXEtRBNH3xImxQi95QVRkio=' 'sha256-aU5Uslw4YCA5md22J2DoOaTVGG3Iy+psSwfmJum3vWk=' 'sha256-dIGSji6+8qMX086cAsfG7ngkU4mAC9rE0Rw6JVEv6Io=' 'sha256-h9aNl/aznD2gnbsWI3nKCQ5R4vM5shSxQM2I8TfkUqM=' 'sha256-jHF5hTIlMDyGZRAsNK0HO/WFYrwPvI2I1q0o1xKKB6I='; object-src 'none'; base-uri 'none'; form-action 'none'; connect-src 'none'">
 <title>CAPAS Claim Gate</title>
 <style>
   /* CAPAS Claim Gate - Design System v12 */
@@ -281,6 +281,7 @@
   .copy-btn:disabled { opacity: 0.35; cursor: not-allowed; }
   .copy-btn.copied { background: var(--green-bg); border-color: var(--green-border); color: var(--green); }
   .topbar-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+  .topbar-source { text-decoration: none; }
   .history-actions { display: flex; align-items: center; gap: 8px; }
   .verdict-banner { display: flex; align-items: center; gap: 14px; padding: 16px 18px; border-bottom: 1px solid var(--border); }
   .verdict-badge { font-size: 11px; font-weight: 800; letter-spacing: 1.2px; border: 1px solid transparent; text-transform: uppercase; padding: 4px 13px; border-radius: 20px; white-space: nowrap; flex-shrink: 0; }
@@ -379,6 +380,9 @@
     font-size: 11px;
     line-height: 1.6;
   }
+  .app-footer a { color: var(--accent); text-decoration: none; }
+  .app-footer a:hover { text-decoration: underline; }
+  .footer-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
   :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   @media (prefers-color-scheme: light) {
     :root {
@@ -481,6 +485,7 @@
   </div>
   <div class="topbar-actions">
     <button class="copy-btn" id="help-btn" aria-label="Open keyboard shortcut and pipeline help" aria-expanded="false" onclick="openHelpModal(this)">Help</button>
+    <a class="copy-btn topbar-source" href="https://github.com/fomv9354lve/capas-inteligentes" target="_blank" rel="noopener noreferrer" aria-label="Open CAPAS Claim Gate source repository">Source</a>
     <button class="copy-btn" id="theme-toggle" aria-label="Toggle light and dark theme" onclick="toggleTheme()">Theme</button>
     <span class="topbar-badge" id="schema-version-badge">schema v2</span>
     <span class="topbar-badge" id="shared-payload-badge" hidden>shared payload</span>
@@ -559,6 +564,12 @@
 </div>
 <footer class="app-footer">
   CAPAS structures and gates supplied claim evidence. It does not infer hidden evidence or certify broad scientific truth.
+  <div class="footer-links" aria-label="Project links">
+    <a href="https://github.com/fomv9354lve/capas-inteligentes" target="_blank" rel="noopener noreferrer">Source repository</a>
+    <a href="https://github.com/fomv9354lve/capas-inteligentes/issues" target="_blank" rel="noopener noreferrer">Issues</a>
+    <a href="https://github.com/fomv9354lve/capas-inteligentes/releases/tag/v0.1.1" target="_blank" rel="noopener noreferrer">Release v0.1.1</a>
+    <span>License: proprietary research prototype</span>
+  </div>
 </footer>
 </main>
 <div class="modal-backdrop" id="help-modal-backdrop" onclick="closeHelpModal(event)">
@@ -1233,13 +1244,13 @@
       }
       list.innerHTML = decisionHistory.map((item, index) => (
         `<div class="history-row">` +
-        `<button type="button" class="history-item" onclick="restoreHistory(${index})" onkeydown="handleHistoryKey(event, ${index})" aria-label="Restore decision ${escHtml(item.id)} from ${escHtml(formatHistoryTimestamp(item.timestamp))}">` +
+        `<button type="button" class="history-item" data-history-index="${index}" aria-label="Restore decision ${escHtml(item.id)} from ${escHtml(formatHistoryTimestamp(item.timestamp))}">` +
         `<span class="history-badge ${item.verdict}">${item.verdict}</span>` +
         `<span class="history-id">${escHtml(item.id)}</span>` +
         `<span class="history-reason">${escHtml(item.reason)}</span>` +
         `<time class="history-ts" datetime="${escHtml(item.timestamp || "")}">${escHtml(formatHistoryTimestamp(item.timestamp))}</time>` +
         `</button>` +
-        `<button type="button" class="history-delete" aria-label="Delete decision ${escHtml(item.id)}" onclick="deleteHistory(${index}, event)">Delete</button>` +
+        `<button type="button" class="history-delete" data-history-index="${index}" aria-label="Delete decision ${escHtml(item.id)}">Delete</button>` +
         `</div>`
       )).join("");
     }
@@ -1298,6 +1309,28 @@
         event.preventDefault();
         restoreHistory(index);
       }
+    }
+
+    function historyIndexFromEvent(event, selector) {
+      const target = event.target.closest(selector);
+      if (!target) return null;
+      const index = Number(target.dataset.historyIndex);
+      return Number.isInteger(index) ? index : null;
+    }
+
+    function handleHistoryListClick(event) {
+      const deleteIndex = historyIndexFromEvent(event, ".history-delete");
+      if (deleteIndex !== null) {
+        deleteHistory(deleteIndex, event);
+        return;
+      }
+      const restoreIndex = historyIndexFromEvent(event, ".history-item");
+      if (restoreIndex !== null) restoreHistory(restoreIndex);
+    }
+
+    function handleHistoryListKeydown(event) {
+      const restoreIndex = historyIndexFromEvent(event, ".history-item");
+      if (restoreIndex !== null) handleHistoryKey(event, restoreIndex);
     }
 
     function encodeBase64Url(value) {
@@ -1595,6 +1628,8 @@
     });
 
     initTheme();
+    document.getElementById("history-list").addEventListener("click", handleHistoryListClick);
+    document.getElementById("history-list").addEventListener("keydown", handleHistoryListKeydown);
     maybeLoadSharedPayload();
     onInputChange();
     renderHistory();

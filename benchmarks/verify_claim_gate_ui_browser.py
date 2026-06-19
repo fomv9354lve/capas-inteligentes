@@ -9,6 +9,8 @@ import tempfile
 import time
 from pathlib import Path
 
+import capas
+
 
 ROOT = Path(__file__).resolve().parents[1]
 UI_PATH = ROOT / "outputs" / "capas_claim_gate_ui.html"
@@ -246,7 +248,7 @@ def main() -> int:
         checks.append({"check": "chrome_available", "passed": False, "detail": "Chrome/Chromium binary not found"})
         passed = False
     else:
-        html = UI_PATH.read_text(encoding="utf-8").replace("</body>", HARNESS + "\n</body>")
+        html = capas._apply_inline_csp_hashes(UI_PATH.read_text(encoding="utf-8").replace("</body>", HARNESS + "\n</body>"))
         with tempfile.TemporaryDirectory() as tmpdir:
             harness_path = Path(tmpdir) / "capas-e2e.html"
             harness_path.write_text(html, encoding="utf-8")

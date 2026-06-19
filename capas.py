@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import base64
 import hashlib
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
@@ -1562,6 +1563,34 @@ def _ui_samples() -> dict[str, dict[str, Any]]:
     }
 
 
+def _csp_sha256(value: str) -> str:
+    digest = hashlib.sha256(value.encode("utf-8")).digest()
+    return "'sha256-" + base64.b64encode(digest).decode("ascii") + "'"
+
+
+def _apply_inline_csp_hashes(html: str) -> str:
+    style_blocks = re.findall(r"<style>(.*?)</style>", html, flags=re.S)
+    script_blocks = re.findall(r"<script>(.*?)</script>", html, flags=re.S)
+    event_handlers = re.findall(r'\son(?:click|input|keydown)="([^"]+)"', html)
+    style_attrs = re.findall(r'\sstyle="([^"]+)"', html)
+
+    script_hashes = sorted({_csp_sha256(block) for block in script_blocks} | {_csp_sha256(handler) for handler in event_handlers})
+    style_hashes = sorted({_csp_sha256(block) for block in style_blocks} | {_csp_sha256(attr) for attr in style_attrs})
+    csp = (
+        "default-src 'self'; "
+        "img-src 'self' data:; "
+        f"style-src 'self' 'unsafe-hashes' {' '.join(style_hashes)}; "
+        f"script-src 'self' 'unsafe-hashes' {' '.join(script_hashes)}; "
+        "object-src 'none'; base-uri 'none'; form-action 'none'; connect-src 'none'"
+    )
+    return re.sub(
+        r'<meta http-equiv="Content-Security-Policy" content="[^"]+">',
+        f'<meta http-equiv="Content-Security-Policy" content="{csp}">',
+        html,
+        count=1,
+    )
+
+
 def _render_ui(sample: dict[str, Any]) -> str:
     samples = _ui_samples()
     sample_json = json.dumps(sample, indent=2, sort_keys=True)
@@ -1849,6 +1878,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
   .copy-btn:disabled { opacity: 0.35; cursor: not-allowed; }
   .copy-btn.copied { background: var(--green-bg); border-color: var(--green-border); color: var(--green); }
   .topbar-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+  .topbar-source { text-decoration: none; }
   .history-actions { display: flex; align-items: center; gap: 8px; }
   .verdict-banner { display: flex; align-items: center; gap: 14px; padding: 16px 18px; border-bottom: 1px solid var(--border); }
   .verdict-badge { font-size: 11px; font-weight: 800; letter-spacing: 1.2px; border: 1px solid transparent; text-transform: uppercase; padding: 4px 13px; border-radius: 20px; white-space: nowrap; flex-shrink: 0; }
@@ -1947,6 +1977,9 @@ def _render_ui(sample: dict[str, Any]) -> str:
     font-size: 11px;
     line-height: 1.6;
   }
+  .app-footer a { color: var(--accent); text-decoration: none; }
+  .app-footer a:hover { text-decoration: underline; }
+  .footer-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
   :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   @media (prefers-color-scheme: light) {
     :root {
@@ -2049,6 +2082,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
   </div>
   <div class="topbar-actions">
     <button class="copy-btn" id="help-btn" aria-label="Open keyboard shortcut and pipeline help" aria-expanded="false" onclick="openHelpModal(this)">Help</button>
+    <a class="copy-btn topbar-source" href="https://github.com/fomv9354lve/capas-inteligentes" target="_blank" rel="noopener noreferrer" aria-label="Open CAPAS Claim Gate source repository">Source</a>
     <button class="copy-btn" id="theme-toggle" aria-label="Toggle light and dark theme" onclick="toggleTheme()">Theme</button>
     <span class="topbar-badge" id="schema-version-badge">schema v2</span>
     <span class="topbar-badge" id="shared-payload-badge" hidden>shared payload</span>
@@ -2114,6 +2148,12 @@ def _render_ui(sample: dict[str, Any]) -> str:
 </div>
 <footer class="app-footer">
   CAPAS structures and gates supplied claim evidence. It does not infer hidden evidence or certify broad scientific truth.
+  <div class="footer-links" aria-label="Project links">
+    <a href="https://github.com/fomv9354lve/capas-inteligentes" target="_blank" rel="noopener noreferrer">Source repository</a>
+    <a href="https://github.com/fomv9354lve/capas-inteligentes/issues" target="_blank" rel="noopener noreferrer">Issues</a>
+    <a href="https://github.com/fomv9354lve/capas-inteligentes/releases/tag/v0.1.1" target="_blank" rel="noopener noreferrer">Release v0.1.1</a>
+    <span>License: proprietary research prototype</span>
+  </div>
 </footer>
 </main>
 <div class="modal-backdrop" id="help-modal-backdrop" onclick="closeHelpModal(event)">
@@ -2788,13 +2828,13 @@ def _render_ui(sample: dict[str, Any]) -> str:
       }
       list.innerHTML = decisionHistory.map((item, index) => (
         `<div class="history-row">` +
-        `<button type="button" class="history-item" onclick="restoreHistory(${index})" onkeydown="handleHistoryKey(event, ${index})" aria-label="Restore decision ${escHtml(item.id)} from ${escHtml(formatHistoryTimestamp(item.timestamp))}">` +
+        `<button type="button" class="history-item" data-history-index="${index}" aria-label="Restore decision ${escHtml(item.id)} from ${escHtml(formatHistoryTimestamp(item.timestamp))}">` +
         `<span class="history-badge ${item.verdict}">${item.verdict}</span>` +
         `<span class="history-id">${escHtml(item.id)}</span>` +
         `<span class="history-reason">${escHtml(item.reason)}</span>` +
         `<time class="history-ts" datetime="${escHtml(item.timestamp || "")}">${escHtml(formatHistoryTimestamp(item.timestamp))}</time>` +
         `</button>` +
-        `<button type="button" class="history-delete" aria-label="Delete decision ${escHtml(item.id)}" onclick="deleteHistory(${index}, event)">Delete</button>` +
+        `<button type="button" class="history-delete" data-history-index="${index}" aria-label="Delete decision ${escHtml(item.id)}">Delete</button>` +
         `</div>`
       )).join("");
     }
@@ -2853,6 +2893,28 @@ def _render_ui(sample: dict[str, Any]) -> str:
         event.preventDefault();
         restoreHistory(index);
       }
+    }
+
+    function historyIndexFromEvent(event, selector) {
+      const target = event.target.closest(selector);
+      if (!target) return null;
+      const index = Number(target.dataset.historyIndex);
+      return Number.isInteger(index) ? index : null;
+    }
+
+    function handleHistoryListClick(event) {
+      const deleteIndex = historyIndexFromEvent(event, ".history-delete");
+      if (deleteIndex !== null) {
+        deleteHistory(deleteIndex, event);
+        return;
+      }
+      const restoreIndex = historyIndexFromEvent(event, ".history-item");
+      if (restoreIndex !== null) restoreHistory(restoreIndex);
+    }
+
+    function handleHistoryListKeydown(event) {
+      const restoreIndex = historyIndexFromEvent(event, ".history-item");
+      if (restoreIndex !== null) handleHistoryKey(event, restoreIndex);
     }
 
     function encodeBase64Url(value) {
@@ -3150,6 +3212,8 @@ def _render_ui(sample: dict[str, Any]) -> str:
     });
 
     initTheme();
+    document.getElementById("history-list").addEventListener("click", handleHistoryListClick);
+    document.getElementById("history-list").addEventListener("keydown", handleHistoryListKeydown);
     maybeLoadSharedPayload();
     onInputChange();
     renderHistory();
@@ -3158,12 +3222,13 @@ def _render_ui(sample: dict[str, Any]) -> str:
 </body>
 </html>
 """
-    return (
+    rendered = (
         html.replace("__SAMPLE_JSON__", sample_json)
         .replace("__SAMPLE_COMPACT_JSON__", json.dumps(sample, sort_keys=True))
         .replace("__SAMPLES_JSON__", samples_json)
         .replace("__UI_VERSION__", CAPAS_UI_VERSION)
     )
+    return _apply_inline_csp_hashes(rendered)
 
 
 def cmd_demo(args: argparse.Namespace) -> int:
