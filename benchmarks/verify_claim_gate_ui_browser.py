@@ -63,6 +63,9 @@ HARNESS = r"""
 
     openHelpModal();
     ok("help_modal_opens", document.getElementById("help-modal-backdrop").classList.contains("open"));
+    ok("help_modal_has_dialog_role", document.getElementById("help-modal").getAttribute("role") === "dialog");
+    ok("help_modal_has_aria_modal", document.getElementById("help-modal").getAttribute("aria-modal") === "true");
+    ok("help_modal_focuses_inside", document.getElementById("help-modal").contains(document.activeElement));
     ok("help_modal_mentions_pipeline", document.getElementById("help-modal-backdrop").textContent.includes("retrieve"));
     closeHelpModal();
     ok("help_modal_closes", !document.getElementById("help-modal-backdrop").classList.contains("open"));
@@ -89,6 +92,9 @@ HARNESS = r"""
     ok("batch_summary_visible", document.getElementById("verdict-area").textContent.includes("Batch summary"));
     ok("batch_output_json", document.getElementById("output").textContent.includes('"batch_mode": "decide"'));
     ok("batch_schema_version", document.getElementById("output").textContent.includes('"schema_version": "capas-claim-payload-v1"'));
+    document.getElementById("input").value = JSON.stringify(samples.ACCEPT, null, 2);
+    decideBatch();
+    ok("batch_single_object_autowrap", document.getElementById("output").textContent.includes('"item_count": 1'));
 
     const firstHistory = document.querySelector(".history-item");
     ok("history_item_exists", firstHistory);

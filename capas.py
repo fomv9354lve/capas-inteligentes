@@ -1619,7 +1619,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
         <button class="draft-btn" id="draft-btn" aria-label="Build draft claim JSON without deciding" onclick="buildDraft()">Build Draft</button>
         <button class="decide-btn" id="decide-btn" aria-label="Decide claim verdict" onclick="decide()">Decide <span class="decide-hint">⌘↵</span></button>
       </div>
-      <button class="draft-btn" id="batch-btn" aria-label="Evaluate a batch of claim payloads" onclick="decideBatch()">Batch</button>
+      <button class="draft-btn" id="batch-btn" title="Batch input: JSON array, object with items/claims, or one claim payload auto-wrapped as a one-item batch" aria-label="Evaluate a batch of claim payloads" onclick="decideBatch()">Batch</button>
     </div>
   </div>
 
@@ -1656,8 +1656,8 @@ def _render_ui(sample: dict[str, Any]) -> str:
   CAPAS structures and gates supplied claim evidence. It does not infer hidden evidence or certify broad scientific truth.
 </footer>
 </main>
-<div class="modal-backdrop" id="help-modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="help-modal-title" onclick="closeHelpModal(event)">
-  <div class="help-modal" onclick="event.stopPropagation()">
+<div class="modal-backdrop" id="help-modal-backdrop" onclick="closeHelpModal(event)">
+  <div class="help-modal" id="help-modal" role="dialog" aria-modal="true" aria-labelledby="help-modal-title" tabindex="-1" onclick="event.stopPropagation()" onkeydown="handleHelpModalKey(event)">
     <div class="panel-header">
       <h2 id="help-modal-title">CAPAS shortcuts and pipeline modes</h2>
       <button class="copy-btn" aria-label="Close help modal" onclick="closeHelpModal()">Close</button>
@@ -1695,6 +1695,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
     let decisionHistory = loadHistory();
     let lastOutputJson = "";
     let inputChangeTimer = null;
+    let lastFocusedBeforeHelp = null;
     const fineTuneBlockers = [
       "no blind or external inference review is attached",
       "CAPAS gates supplied structured evidence; it does not infer hidden evidence",
@@ -1920,6 +1921,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
       if (Array.isArray(payload)) return payload;
       if (payload && Array.isArray(payload.items)) return payload.items;
       if (payload && Array.isArray(payload.claims)) return payload.claims;
+      if (payload && typeof payload === "object" && payload.claim && payload.evidence) return [payload];
       throw new Error("Batch input must be a JSON array or an object with items/claims array.");
     }
 
@@ -2395,14 +2397,49 @@ def _render_ui(sample: dict[str, Any]) -> str:
     }
 
     function openHelpModal() {
+      lastFocusedBeforeHelp = document.activeElement;
       document.getElementById("help-modal-backdrop").classList.add("open");
       document.getElementById("help-btn").setAttribute("aria-expanded", "true");
+      const closeButton = document.querySelector("#help-modal .copy-btn");
+      (closeButton || document.getElementById("help-modal")).focus();
     }
 
     function closeHelpModal(event) {
       if (event && event.type === "click" && event.target.id !== "help-modal-backdrop") return;
       document.getElementById("help-modal-backdrop").classList.remove("open");
       document.getElementById("help-btn").setAttribute("aria-expanded", "false");
+      if (lastFocusedBeforeHelp && typeof lastFocusedBeforeHelp.focus === "function") {
+        lastFocusedBeforeHelp.focus();
+      }
+    }
+
+    function focusableHelpElements() {
+      return Array.from(document.querySelectorAll("#help-modal button, #help-modal [href], #help-modal [tabindex]:not([tabindex='-1'])"))
+        .filter((element) => !element.disabled && element.offsetParent !== null);
+    }
+
+    function handleHelpModalKey(event) {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        closeHelpModal();
+        return;
+      }
+      if (event.key !== "Tab") return;
+      const focusable = focusableHelpElements();
+      if (!focusable.length) {
+        event.preventDefault();
+        document.getElementById("help-modal").focus();
+        return;
+      }
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
     }
 
     document.addEventListener("keydown", (event) => {
