@@ -2232,7 +2232,65 @@ def _render_ui(sample: dict[str, Any]) -> str:
     padding: 0;
   }
   .starter-step-button:hover { color: var(--accent-hover); }
+  .starter-step.active {
+    border-color: rgba(124, 127, 255, 0.48);
+    background: var(--accent-glow);
+  }
   .starter-step span { display: block; color: var(--accent); font-size: 10px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; }
+  .phase-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    border-top: 1px solid var(--border);
+    padding-top: 10px;
+  }
+  .phase-control-group { display: flex; align-items: center; gap: 6px; }
+  .phase-control-group .copy-btn { min-height: 30px; }
+  .phase-indicator {
+    color: var(--text-3);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+  }
+  .phase-viewport {
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg-2);
+  }
+  .phase-track {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 100%));
+    transform: translateX(0);
+    transition: transform 220ms ease;
+  }
+  body[data-flow-phase="complete"] .phase-track { transform: translateX(-100%); }
+  body[data-flow-phase="gate"] .phase-track { transform: translateX(-200%); }
+  .phase-pane {
+    min-width: 0;
+    padding: 12px;
+  }
+  .phase-gate-mount {
+    min-width: 0;
+  }
+  .phase-gate-mount .gate-section {
+    padding: 0;
+    margin: 0;
+  }
+  .phase-pane .flow-section,
+  .phase-pane .gate-section {
+    min-height: 440px;
+  }
+  body[data-flow-phase="choose"] .phase-pane:not([data-phase="choose"]),
+  body[data-flow-phase="complete"] .phase-pane:not([data-phase="complete"]),
+  body[data-flow-phase="gate"] .phase-pane:not([data-phase="gate"]) {
+    visibility: hidden;
+  }
+  body[data-flow-phase="choose"] #phase-back { visibility: hidden; }
+  body[data-flow-phase="gate"] #phase-next { display: none; }
+  body:not([data-flow-phase="gate"]) #phase-run { display: none; }
   .flow-section {
     display: grid;
     gap: 10px;
@@ -2289,6 +2347,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
     line-height: 1.5;
   }
   .builder-shell { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(250px, 0.7fr); gap: 14px; align-items: start; }
+  .phase-pane .builder-shell { grid-template-columns: 1fr; }
   .builder-main, .builder-rail { display: grid; gap: 12px; min-width: 0; }
   .builder-rail {
     border: 1px solid var(--border);
@@ -2310,6 +2369,8 @@ def _render_ui(sample: dict[str, Any]) -> str:
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 8px;
   }
+  .phase-pane[data-phase="choose"] .builder-rail,
+  .phase-pane[data-phase="gate"] .builder-rail { display: none; }
   .contract-pill {
     border: 1px solid var(--border);
     border-radius: var(--radius-sm);
@@ -3386,9 +3447,20 @@ def _render_ui(sample: dict[str, Any]) -> str:
         <div class="starter-step"><button class="starter-step-button" type="button" onclick="goToPhase('gate')"><span>3. Gate</span>Use guided form, then press Run Gate to get ACCEPT, REWRITE, REJECT, or HOLD.</button></div>
       </div>
     </div>
-    <div class="builder-shell">
-      <div class="builder-main">
-        <section class="flow-section" id="phase-choose" aria-labelledby="flow-choose-title">
+    <div class="phase-controls" aria-label="Guided claim workflow controls">
+      <button class="copy-btn" id="phase-back" type="button" onclick="movePhase(-1)">Back</button>
+      <span class="phase-indicator" id="phase-indicator" role="status" aria-live="polite">Step 1 of 3 · Choose</span>
+      <div class="phase-control-group">
+        <button class="copy-btn" id="phase-next" type="button" onclick="movePhase(1)">Next</button>
+        <button class="decide-btn" id="phase-run" type="button" onclick="decide()">Run Gate <span class="decide-hint">⌘↵</span></button>
+      </div>
+    </div>
+    <div class="phase-viewport" aria-label="Guided claim workflow">
+      <div class="phase-track">
+        <div class="phase-pane" data-phase="choose">
+          <div class="builder-shell">
+            <div class="builder-main">
+              <section class="flow-section" id="phase-choose" aria-labelledby="flow-choose-title">
           <h3 class="flow-title" id="flow-choose-title"><button class="flow-title-button" type="button" onclick="goToPhase('choose')"><span class="flow-step-badge">1</span> Choose the claim</button></h3>
           <p class="flow-copy">Pick the scientific claim type and write the exact sentence CAPAS is allowed to gate.</p>
           <div class="guided-grid">
@@ -3406,8 +3478,14 @@ def _render_ui(sample: dict[str, Any]) -> str:
               <textarea id="guided-claim-text" aria-label="Guided claim text">The structured evidence record is ready for deterministic CAPAS gating.</textarea>
             </div>
           </div>
-        </section>
-        <section class="flow-section" id="phase-complete" aria-labelledby="flow-complete-title">
+              </section>
+            </div>
+          </div>
+        </div>
+        <div class="phase-pane" data-phase="complete">
+          <div class="builder-shell">
+            <div class="builder-main">
+              <section class="flow-section" id="phase-complete" aria-labelledby="flow-complete-title">
           <h3 class="flow-title" id="flow-complete-title"><button class="flow-title-button" type="button" onclick="goToPhase('complete')"><span class="flow-step-badge">2</span> Complete evidence</button></h3>
           <p class="flow-copy">Fill only the evidence fields required by the selected type. The contract on the right updates as you work.</p>
           <div class="guided-grid" id="guided-fields" aria-label="Evidence fields for selected claim type"></div>
@@ -3416,9 +3494,9 @@ def _render_ui(sample: dict[str, Any]) -> str:
             <button class="sample-btn rewrite" type="button" onclick="loadVerticalDemo('PHARMA')">Pharma demo</button>
             <button class="sample-btn hold" type="button" onclick="buildGuidedPayload()">Use guided form</button>
           </div>
-        </section>
-      </div>
-      <aside class="builder-rail" aria-labelledby="builder-rail-title">
+              </section>
+            </div>
+            <aside class="builder-rail" aria-labelledby="builder-rail-title">
         <h3 id="builder-rail-title">Evidence contract</h3>
         <div class="builder-contract" id="builder-contract" aria-live="polite">
           <div class="contract-pill"><strong>Type</strong><span>Choose a claim type</span></div>
@@ -3432,7 +3510,12 @@ def _render_ui(sample: dict[str, Any]) -> str:
           <li>Wrong types become schema errors.</li>
           <li>Training readiness requires external provenance verification.</li>
         </ul>
-      </aside>
+            </aside>
+          </div>
+        </div>
+        <div class="phase-pane" data-phase="gate">
+          <div id="phase-gate-mount" class="phase-gate-mount" aria-label="Gate workspace"></div>
+        </div>
       </div>
     </div>
 </section>
@@ -4533,33 +4616,62 @@ def _render_ui(sample: dict[str, Any]) -> str:
     }
 
     function scrollToGate() {
+      goToPhase("gate", { focus: false });
       const gate = document.getElementById("gate");
       if (gate) gate.scrollIntoView({ behavior: "smooth", block: "start" });
     }
 
     function scrollToGuidedBuilder() {
+      goToPhase("choose", { focus: false });
       const guided = document.querySelector(".guided-panel");
       if (guided) guided.scrollIntoView({ behavior: "smooth", block: "start" });
     }
 
-    function goToPhase(phase) {
+    const guidedPhases = ["choose", "complete", "gate"];
+
+    function mountGateInWizard() {
+      const mount = document.getElementById("phase-gate-mount");
+      const gate = document.getElementById("gate");
+      if (mount && gate && gate.parentElement !== mount) {
+        mount.appendChild(gate);
+      }
+    }
+
+    function setFlowPhase(phase, { focus = true } = {}) {
+      const normalized = guidedPhases.includes(phase) ? phase : "choose";
       const currentMode = document.body.dataset.gateMode || "single";
-      if (phase === "choose" || phase === "complete") {
+      if (normalized === "choose" || normalized === "complete") {
         setGateMode("single");
-      } else if (phase === "gate" && currentMode !== "ingestion") {
+      } else if (normalized === "gate" && currentMode !== "ingestion") {
         setGateMode("single");
       }
+      mountGateInWizard();
+      document.body.dataset.flowPhase = normalized;
       const targets = {
-        choose: { section: "phase-choose", focus: "guided-type" },
-        complete: { section: "phase-complete", focus: "guided-fields" },
+        choose: { focus: "guided-type", label: "Step 1 of 3 · Choose" },
+        complete: { focus: "guided-fields", label: "Step 2 of 3 · Complete" },
         gate: { section: "gate", focus: currentMode === "ingestion" ? "ingest-source-text" : "decide-btn" }
       };
-      const config = targets[phase] || targets.choose;
-      const section = document.getElementById(config.section);
-      if (section) section.scrollIntoView({ behavior: "smooth", block: "start" });
+      const labels = {
+        choose: "Step 1 of 3 · Choose",
+        complete: "Step 2 of 3 · Complete",
+        gate: currentMode === "ingestion" ? "Step 3 of 3 · Ingest" : "Step 3 of 3 · Gate"
+      };
+      const indicator = document.getElementById("phase-indicator");
+      if (indicator) indicator.textContent = labels[normalized];
+      const next = document.getElementById("phase-next");
+      if (next) next.textContent = normalized === "choose" ? "Next: Complete" : "Next: Gate";
+      document.querySelectorAll(".starter-step").forEach((step, index) => {
+        step.classList.toggle("active", guidedPhases[index] === normalized);
+      });
+      if (!focus) {
+        markOnboarded();
+        return;
+      }
+      const config = targets[normalized] || targets.choose;
       window.setTimeout(() => {
         let focusTarget = document.getElementById(config.focus);
-        if (phase === "complete") {
+        if (normalized === "complete") {
           focusTarget = document.querySelector("#guided-fields input, #guided-fields select, #guided-fields textarea") || focusTarget;
         }
         if (focusTarget && typeof focusTarget.focus === "function") {
@@ -4567,6 +4679,17 @@ def _render_ui(sample: dict[str, Any]) -> str:
         }
       }, 260);
       markOnboarded();
+    }
+
+    function goToPhase(phase, options = {}) {
+      setFlowPhase(phase, options);
+    }
+
+    function movePhase(delta) {
+      const current = document.body.dataset.flowPhase || "choose";
+      const index = guidedPhases.indexOf(current);
+      const nextIndex = Math.min(guidedPhases.length - 1, Math.max(0, index + delta));
+      setFlowPhase(guidedPhases[nextIndex]);
     }
 
     function markOnboarded() {
@@ -4616,7 +4739,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
         input.classList.add("payload-flash");
       }
       markOnboarded();
-      if (scroll) scrollToGate();
+      if (scroll) goToPhase("gate", { focus: false });
     }
 
     function buildGuidedPayload() {
@@ -5559,6 +5682,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
     initOnboardingState();
     renderGuidedFields();
     setGateMode("single");
+    setFlowPhase("choose", { focus: false });
     updateRoiCalculator();
     applySensitiveMode();
     document.getElementById("history-list").addEventListener("click", handleHistoryListClick);
