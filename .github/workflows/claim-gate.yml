@@ -11,10 +11,10 @@ on:
           - batch
           - pipeline
         default: batch
-      input:
+      input_path:
         description: Input JSON path.
         default: examples/external_claim_batch.json
-      output:
+      output_path:
         description: Output report path.
         default: outputs/capas-action-report.json
       allow_web:
@@ -26,10 +26,10 @@ on:
       mode:
         type: string
         default: batch
-      input:
+      input_path:
         type: string
         required: true
-      output:
+      output_path:
         type: string
         default: outputs/capas-action-report.json
       allow_web:
@@ -47,11 +47,11 @@ jobs:
       - uses: ./.github/actions/capas-claim-gate
         with:
           mode: ${{ inputs.mode }}
-          input: ${{ inputs.input }}
-          output: ${{ inputs.output }}
+          input: ${{ inputs.input_path }}
+          output: ${{ inputs.output_path }}
           allow_web: ${{ inputs.allow_web }}
       - name: Upload CAPAS report
         uses: actions/upload-artifact@v4
         with:
           name: capas-claim-gate-report
-          path: ${{ inputs.output }}
+          path: ${{ inputs.output_path }}
