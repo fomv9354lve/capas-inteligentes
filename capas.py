@@ -2197,6 +2197,30 @@ def _render_ui(sample: dict[str, Any]) -> str:
   .roi-result span { color: var(--text-2); font-size: 12px; }
   .guided-panel { margin-bottom: 16px; }
   .guided-body { padding: 14px 16px; display: grid; gap: 12px; }
+  .starter-guide {
+    display: grid;
+    gap: 8px;
+    border: 1px solid rgba(124, 127, 255, 0.28);
+    border-radius: var(--radius);
+    background: var(--accent-glow);
+    padding: 12px;
+    color: var(--text-2);
+    font-size: 12px;
+    line-height: 1.55;
+  }
+  .starter-guide strong { color: var(--text-1); font-size: 13px; }
+  .starter-steps {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .starter-step {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--bg-2);
+    padding: 8px;
+  }
+  .starter-step span { display: block; color: var(--accent); font-size: 10px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; }
   .builder-shell { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(250px, 0.7fr); gap: 14px; align-items: start; }
   .builder-main, .builder-rail { display: grid; gap: 12px; min-width: 0; }
   .builder-rail {
@@ -2227,6 +2251,16 @@ def _render_ui(sample: dict[str, Any]) -> str:
   }
   .contract-pill strong { display: block; color: var(--text-1); font-size: 11px; margin-bottom: 2px; }
   .contract-pill span { color: var(--text-3); font-size: 10px; }
+  .contract-progress {
+    grid-column: 1 / -1;
+    border: 1px solid var(--green-border);
+    border-radius: var(--radius-sm);
+    background: var(--green-bg);
+    padding: 8px;
+    color: var(--green);
+    font-size: 11px;
+    font-weight: 800;
+  }
   .builder-preview {
     border: 1px solid var(--border);
     border-radius: var(--radius-sm);
@@ -2241,6 +2275,16 @@ def _render_ui(sample: dict[str, Any]) -> str:
   .guided-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
   .guided-field { display: grid; gap: 5px; min-width: 0; }
   .guided-field label { color: var(--text-3); font-size: 10px; font-weight: 800; letter-spacing: 0.6px; text-transform: uppercase; }
+  .type-help {
+    grid-column: 1 / -1;
+    color: var(--text-2);
+    font-size: 12px;
+    line-height: 1.5;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--bg);
+    padding: 8px 9px;
+  }
   .guided-field input, .guided-field textarea, .guided-field select {
     width: 100%;
     border: 1px solid var(--border);
@@ -2306,6 +2350,18 @@ def _render_ui(sample: dict[str, Any]) -> str:
   }
   .mode-tab:hover { background: var(--bg-3); border-color: var(--border-2); color: var(--text-1); }
   .mode-tab[aria-selected="true"] { color: var(--accent); border-color: rgba(124, 127, 255, 0.36); background: var(--accent-glow); }
+  .advanced-badge {
+    display: inline-flex;
+    margin-left: 6px;
+    padding: 1px 6px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    color: var(--text-3);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+  }
   .mode-note { margin: -8px 0 16px; color: var(--text-3); font-size: 12px; }
   .sample-btn {
     display: inline-flex;
@@ -2538,9 +2594,9 @@ def _render_ui(sample: dict[str, Any]) -> str:
   .history-filter, .history-select { min-height: 28px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--bg-2); color: var(--text-2); font-family: var(--font); font-size: 11px; font-weight: 600; }
   .history-filter { flex: 1 1 220px; min-width: 0; padding: 5px 9px; }
   .history-select { padding: 5px 8px; }
-  .history-list { display: flex; flex-direction: column; gap: 4px; }
+  .history-list { display: flex; flex-direction: column; gap: 4px; overflow-x: auto; scrollbar-width: thin; }
   .history-count { color: var(--text-3); }
-  .audit-table { display: grid; gap: 4px; }
+  .audit-table { display: grid; gap: 4px; min-width: 820px; }
   .audit-row { display: grid; grid-template-columns: 92px minmax(140px, 1fr) 150px minmax(190px, 1.5fr) 116px 110px; gap: 8px; align-items: stretch; }
   .audit-row.header { padding: 0 8px; color: var(--text-3); font-size: 10px; font-weight: 800; letter-spacing: 0.6px; text-transform: uppercase; }
   .history-row { display: contents; }
@@ -2558,7 +2614,16 @@ def _render_ui(sample: dict[str, Any]) -> str:
   .history-reason { color: var(--text-3); }
   .history-ts { margin-left: auto; color: var(--text-3); font-size: 10px; font-variant-numeric: tabular-nums; white-space: nowrap; }
   .empty-state, .no-decision { color: var(--text-3); font-size: 13px; }
-  .no-decision { padding: 32px 16px; text-align: center; }
+  .no-decision { padding: 32px 16px; text-align: center; line-height: 1.65; }
+  .no-decision strong { display: block; color: var(--text-1); font-size: 14px; margin-bottom: 4px; }
+  .action-helper {
+    border-top: 1px solid var(--border);
+    background: var(--bg-2);
+    color: var(--text-3);
+    font-size: 11px;
+    line-height: 1.45;
+    padding: 7px 14px;
+  }
   .modal-backdrop {
     position: fixed;
     inset: 0;
@@ -3232,6 +3297,14 @@ def _render_ui(sample: dict[str, Any]) -> str:
     <button class="copy-btn" type="button" onclick="buildGuidedPayload()">Build JSON from form</button>
   </div>
   <div class="guided-body">
+    <div class="starter-guide" role="note" aria-label="CAPAS quick start">
+      <strong>Start here if you are new: build a claim in the form, then run the gate.</strong>
+      <div class="starter-steps">
+        <div class="starter-step"><span>1. Choose</span>Pick the claim type that matches the evidence you have.</div>
+        <div class="starter-step"><span>2. Complete</span>Fill the required evidence fields shown in the contract.</div>
+        <div class="starter-step"><span>3. Gate</span>Use guided form, then press Run Gate to get ACCEPT, REWRITE, REJECT, or HOLD.</div>
+      </div>
+    </div>
     <div class="builder-shell">
       <div class="builder-main">
         <div class="guided-grid">
@@ -3239,6 +3312,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
             <label for="guided-type">Claim type</label>
             <select id="guided-type" onchange="renderGuidedFields()" aria-label="Choose claim type for guided builder"></select>
           </div>
+          <div class="type-help" id="guided-type-help" role="status" aria-live="polite">Choose a claim type to see what CAPAS checks.</div>
           <div class="guided-field">
             <label for="guided-claim-id">Record ID</label>
             <input id="guided-claim-id" value="pilot_record_001" aria-label="Guided record ID">
@@ -3324,7 +3398,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
 
 <div class="mode-tabs" role="tablist" aria-label="CAPAS operating modes">
   <button class="mode-tab" id="mode-single" role="tab" aria-selected="true" type="button" onclick="setGateMode('single')">Build one claim</button>
-  <button class="mode-tab" id="mode-batch" role="tab" aria-selected="false" type="button" onclick="setGateMode('batch')">Evaluate batch</button>
+  <button class="mode-tab" id="mode-batch" role="tab" aria-selected="false" type="button" onclick="setGateMode('batch')">Evaluate batch <span class="advanced-badge">advanced</span></button>
   <button class="mode-tab" id="mode-ingestion" role="tab" aria-selected="false" type="button" onclick="setGateMode('ingestion')">Ingestion</button>
 </div>
 <div class="mode-note" id="mode-note" role="status" aria-live="polite">Guided Form is the default path. Raw JSON remains available below for advanced users.</div>
@@ -3341,9 +3415,10 @@ def _render_ui(sample: dict[str, Any]) -> str:
       <textarea id="input" spellcheck="false" aria-label="Claim and evidence JSON input" aria-describedby="json-status" oninput="scheduleInputChange()">__SAMPLE_JSON__</textarea>
       <div class="json-status" id="json-status" role="status" aria-live="polite" aria-atomic="true">Waiting for input...</div>
       <div class="action-row">
-        <button class="draft-btn" id="draft-btn" aria-label="Build draft claim JSON without deciding" onclick="buildDraft()">Build Draft</button>
+        <button class="draft-btn" id="draft-btn" aria-label="Build a schema draft without deciding the claim" title="Build Draft fills a valid schema scaffold. It does not evaluate the claim." onclick="buildDraft()">Build Draft</button>
         <button class="decide-btn" id="decide-btn" aria-label="Run deterministic CAPAS gate" onclick="decide()">Run Gate <span class="decide-hint">⌘↵</span></button>
       </div>
+      <div class="action-helper">Build Draft fills missing schema structure. Run Gate evaluates the current payload and writes the decision on the right.</div>
       <button class="draft-btn" id="batch-btn" title="Batch input: JSON array, object with items/claims, or one claim payload auto-wrapped as a one-item batch" aria-label="Evaluate a batch of claim payloads" onclick="decideBatch()">Run Batch</button>
       <div class="json-status"><span class="payload-loaded-badge" id="payload-loaded-badge" role="status" aria-live="polite">Payload loaded</span></div>
     </div>
@@ -3355,7 +3430,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
         <span class="panel-title">Decision</span>
         <button class="copy-btn" id="copy-btn" aria-label="Copy decision JSON" onclick="copyOutput()" disabled>Copy JSON</button>
       </div>
-      <div id="verdict-area" aria-live="polite" aria-atomic="true"><div class="no-decision">Run a decision to see results.</div></div>
+      <div id="verdict-area" aria-live="polite" aria-atomic="true"><div class="no-decision"><strong>No decision yet.</strong>Complete the guided form, choose <em>Use guided form</em>, then press <em>Run Gate</em> to see the verdict here.</div></div>
       <div class="output-section">
         <div class="output-inspector" id="output-inspector" aria-label="Decision inspector">
           <div class="empty-state">Decision inspector will summarize the verdict, fine-tune readiness, schema errors, provenance, and raw JSON.</div>
@@ -3474,6 +3549,19 @@ def _render_ui(sample: dict[str, Any]) -> str:
       multimodal_evidence_claim: ["modality", "source_hashes_verified", "cross_modal_alignment", "extraction_method_declared"]
     };
     const claimTypes = Object.keys(required).sort();
+    const claimTypeHelp = {
+      causal_mechanism_claim: "Use for claims that assert a mechanism causes an outcome. CAPAS expects intervention or natural experiment evidence, temporal order, confounder control, and mechanism evidence.",
+      claim_transition: "Use when a weaker claim is being upgraded to a stronger claim. CAPAS checks whether explicit upgrade evidence is present.",
+      evidence_conflict_claim: "Use when sources disagree. CAPAS checks that supporting and contradicting sources are present and that the conflict-resolution method is declared.",
+      exact_model_solution: "Use for numerical or formal model outputs where the claim depends on an absolute error being within tolerance.",
+      financial_metric_claim: "Use for reported financial metrics. CAPAS compares reported and reference values within tolerance and checks period alignment.",
+      multimodal_evidence_claim: "Use when evidence comes from multiple modalities such as text, table, image, or extracted artifact. CAPAS checks hashes, alignment, and extraction method.",
+      physical_accuracy: "Use for physical or chemistry accuracy claims where the evidence layer already determined whether the relevant accuracy threshold was met.",
+      reproducibility_check: "Use for reproducibility claims. CAPAS checks that artifacts are available and independent reproduction passed.",
+      statistical_confidence: "Use for statistical claims. CAPAS checks p-value, alpha, and whether the effect direction matches the claim wording.",
+      systematic_review_claim: "Use for systematic-review claims. CAPAS checks protocol, inclusion criteria, risk-of-bias assessment, and effect consistency.",
+      universal_anchor_claim: "Use for claims that require an absolute anchor or invariant witness beyond local checks. CAPAS only supports absolute_anchor here."
+    };
     const historyLimit = 50;
     const historyStorageKey = "capas_decision_history_v1";
     const themeStorageKey = "capas_theme_v1";
@@ -4271,6 +4359,30 @@ def _render_ui(sample: dict[str, Any]) -> str:
 
     let lastGuidedType = "";
 
+    function guidedFieldComplete(element) {
+      if (!element) return false;
+      if (element.dataset.kind === "boolean") return element.value === "true" || element.value === "false";
+      if (element.dataset.kind === "number") return element.value !== "" && Number.isFinite(Number(element.value));
+      return String(element.value || "").trim().length > 0;
+    }
+
+    function updateGuidedProgress() {
+      const typeSelect = document.getElementById("guided-type");
+      const contract = document.getElementById("builder-contract");
+      const help = document.getElementById("guided-type-help");
+      if (!typeSelect || !contract) return;
+      const type = typeSelect.value || "statistical_confidence";
+      const fieldsForType = required[type] || [];
+      const complete = fieldsForType.filter((field) => guidedFieldComplete(document.getElementById(`guided-field-${field}`))).length;
+      const progress = contract.querySelector("[data-contract-progress]");
+      if (progress) {
+        progress.textContent = `${complete}/${fieldsForType.length} required evidence fields complete`;
+      }
+      if (help) {
+        help.textContent = claimTypeHelp[type] || "CAPAS checks the required evidence fields for the selected claim type.";
+      }
+    }
+
     function renderGuidedFields() {
       const typeSelect = document.getElementById("guided-type");
       const fields = document.getElementById("guided-fields");
@@ -4294,12 +4406,17 @@ def _render_ui(sample: dict[str, Any]) -> str:
       fields.dataset.claimType = type;
       const contract = document.getElementById("builder-contract");
       const preview = document.getElementById("builder-preview");
+      const help = document.getElementById("guided-type-help");
+      if (help) {
+        help.textContent = claimTypeHelp[type] || "CAPAS checks the required evidence fields for the selected claim type.";
+      }
       if (contract) {
         contract.innerHTML =
           `<div class="contract-pill"><strong>Type</strong><span>${escHtml(type)}</span></div>` +
           `<div class="contract-pill"><strong>Fields</strong><span>${required[type].length} required</span></div>` +
           `<div class="contract-pill"><strong>Gate</strong><span>${escHtml((example.claim.text || "").slice(0, 54))}${example.claim.text.length > 54 ? "..." : ""}</span></div>` +
-          `<div class="contract-pill"><strong>Training</strong><span>14 readiness criteria after ACCEPT</span></div>`;
+          `<div class="contract-pill"><strong>Training</strong><span>14 readiness criteria after ACCEPT</span></div>` +
+          `<div class="contract-progress" data-contract-progress>${required[type].length}/${required[type].length} required evidence fields complete</div>`;
       }
       if (preview) {
         preview.textContent = `${type}: ${required[type].join(", ")}. CAPAS emits schema v3 JSON and will HOLD if required evidence is missing or typed incorrectly.`;
@@ -4310,10 +4427,11 @@ def _render_ui(sample: dict[str, Any]) -> str:
         const serialized = Array.isArray(value) ? value.join(", ") : String(value ?? "");
         const fieldLabel = `${field} evidence field for ${type}`;
         const control = typeof value === "boolean"
-          ? `<select id="guided-field-${escHtml(field)}" data-field="${escHtml(field)}" data-kind="boolean" aria-label="${escHtml(fieldLabel)}"><option value="true"${value ? " selected" : ""}>true</option><option value="false"${!value ? " selected" : ""}>false</option></select>`
-          : `<input id="guided-field-${escHtml(field)}" data-field="${escHtml(field)}" data-kind="${Array.isArray(value) ? "array" : inputType}" type="${inputType}" value="${escHtml(serialized)}" aria-label="${escHtml(fieldLabel)}">`;
+          ? `<select id="guided-field-${escHtml(field)}" data-field="${escHtml(field)}" data-kind="boolean" aria-label="${escHtml(fieldLabel)}" onchange="updateGuidedProgress()"><option value="true"${value ? " selected" : ""}>true</option><option value="false"${!value ? " selected" : ""}>false</option></select>`
+          : `<input id="guided-field-${escHtml(field)}" data-field="${escHtml(field)}" data-kind="${Array.isArray(value) ? "array" : inputType}" type="${inputType}" value="${escHtml(serialized)}" aria-label="${escHtml(fieldLabel)}" oninput="updateGuidedProgress()">`;
         return `<div class="guided-field"><label for="guided-field-${escHtml(field)}">${escHtml(field)}</label>${control}<span class="assist-muted">${escHtml(fieldHelp[field] || "Required evidence field.")}</span></div>`;
       }).join("");
+      updateGuidedProgress();
     }
 
     function coerceGuidedValue(element) {
