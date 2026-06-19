@@ -31,8 +31,8 @@ CLAIM_REPORT = ROOT / "benchmarks" / "evidence_claim_validation_report.json"
 ANCHOR_REPORT = ROOT / "benchmarks" / "universal_anchor_matrix_report.json"
 TRACE_DIR = ROOT / "benchmarks" / "gold_traces"
 EXTERNAL_CLAIM_SCHEMA_PATH = ROOT / "docs" / "schema" / "capas_claim_payload.schema.json"
-CAPAS_CLAIM_SCHEMA_VERSION = "capas-claim-payload-v2"
-CAPAS_UI_VERSION = "v12 · fine-tune readiness"
+CAPAS_CLAIM_SCHEMA_VERSION = "capas-claim-payload-v3"
+CAPAS_UI_VERSION = "v13 · end-to-end gaps"
 
 
 VALIDATION_COMMANDS = [
@@ -65,6 +65,30 @@ REQUIRED_DECISION_FIELDS = {
     "statistical_confidence": ["p_value", "alpha", "effect_direction_confirmed"],
     "reproducibility_check": ["artifact_available", "independent_reproduction_pass"],
     "financial_metric_claim": ["reported_value", "reference_value", "tolerance", "metric_period_match"],
+    "causal_mechanism_claim": [
+        "intervention_or_natural_experiment",
+        "temporal_order_established",
+        "confounders_controlled",
+        "mechanism_evidence_present",
+    ],
+    "systematic_review_claim": [
+        "protocol_registered",
+        "inclusion_criteria_declared",
+        "risk_of_bias_assessed",
+        "effect_consistency",
+    ],
+    "evidence_conflict_claim": [
+        "supporting_sources",
+        "contradicting_sources",
+        "conflict_resolution_method",
+        "resolution_pre_registered",
+    ],
+    "multimodal_evidence_claim": [
+        "modality",
+        "source_hashes_verified",
+        "cross_modal_alignment",
+        "extraction_method_declared",
+    ],
 }
 
 FINE_TUNE_BLOCKERS = [
@@ -138,6 +162,34 @@ CLAIM_TYPE_TERMS = {
         "reference",
         "period",
         "tolerance",
+    ],
+    "causal_mechanism_claim": [
+        "causal",
+        "mechanism",
+        "intervention",
+        "confounder",
+        "temporal",
+    ],
+    "systematic_review_claim": [
+        "systematic",
+        "review",
+        "protocol",
+        "inclusion",
+        "bias",
+    ],
+    "evidence_conflict_claim": [
+        "conflict",
+        "contradict",
+        "support",
+        "resolution",
+        "source",
+    ],
+    "multimodal_evidence_claim": [
+        "multimodal",
+        "image",
+        "table",
+        "video",
+        "alignment",
     ],
 }
 
@@ -242,6 +294,22 @@ def external_claim_payload_schema() -> dict[str, Any]:
                     "reported_value": {"type": "number"},
                     "reference_value": {"type": "number"},
                     "metric_period_match": {"type": "boolean"},
+                    "intervention_or_natural_experiment": {"type": "boolean"},
+                    "temporal_order_established": {"type": "boolean"},
+                    "confounders_controlled": {"type": "boolean"},
+                    "mechanism_evidence_present": {"type": "boolean"},
+                    "protocol_registered": {"type": "boolean"},
+                    "inclusion_criteria_declared": {"type": "boolean"},
+                    "risk_of_bias_assessed": {"type": "boolean"},
+                    "effect_consistency": {"type": "boolean"},
+                    "supporting_sources": {"type": "array", "items": {"type": "string"}},
+                    "contradicting_sources": {"type": "array", "items": {"type": "string"}},
+                    "conflict_resolution_method": {"type": "string", "pattern": NO_ANGLE_PATTERN},
+                    "resolution_pre_registered": {"type": "boolean"},
+                    "modality": {"type": "string", "pattern": NO_ANGLE_PATTERN},
+                    "source_hashes_verified": {"type": "boolean"},
+                    "cross_modal_alignment": {"type": "boolean"},
+                    "extraction_method_declared": {"type": "boolean"},
                     "physical_evidence_level": {
                         "type": "string",
                         "pattern": NO_ANGLE_PATTERN,
@@ -362,6 +430,18 @@ def validate_external_payload(payload: dict[str, Any]) -> list[str]:
         "artifact_available",
         "independent_reproduction_pass",
         "metric_period_match",
+        "intervention_or_natural_experiment",
+        "temporal_order_established",
+        "confounders_controlled",
+        "mechanism_evidence_present",
+        "protocol_registered",
+        "inclusion_criteria_declared",
+        "risk_of_bias_assessed",
+        "effect_consistency",
+        "resolution_pre_registered",
+        "source_hashes_verified",
+        "cross_modal_alignment",
+        "extraction_method_declared",
     ]
     for field in bool_fields:
         if field in evidence and not isinstance(evidence[field], bool):
@@ -371,6 +451,8 @@ def validate_external_payload(payload: dict[str, Any]) -> list[str]:
         "anchor_mode",
         "physical_evidence_level",
         "verification_independence",
+        "conflict_resolution_method",
+        "modality",
     ]
     for field in string_fields:
         if field in evidence and not isinstance(evidence[field], str):
@@ -384,6 +466,14 @@ def validate_external_payload(payload: dict[str, Any]) -> list[str]:
             if len(current_claim) > 4000:
                 errors.append("evidence.current_claim must be at most 4000 characters")
             _validate_no_angle_like(current_claim, "evidence.current_claim", errors)
+    for field in ("supporting_sources", "contradicting_sources"):
+        if field in evidence:
+            value = evidence[field]
+            if not isinstance(value, list) or not all(isinstance(item, str) for item in value):
+                errors.append(f"evidence.{field} must be an array of strings")
+            else:
+                for index, item in enumerate(value):
+                    _validate_no_angle_like(item, f"evidence.{field}[{index}]", errors)
     training_evidence = payload.get("training_evidence") if isinstance(payload, dict) else None
     if training_evidence is not None:
         if not isinstance(training_evidence, dict) or isinstance(training_evidence, list):
@@ -748,7 +838,7 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
     missing = [
         field
         for field in (required or [])
-        if field not in evidence or evidence.get(field) in {None, "unknown"}
+        if field not in evidence or evidence.get(field) is None or evidence.get(field) == "unknown"
     ]
 
     verdict = "HOLD"
@@ -846,6 +936,71 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
         else:
             verdict = "REJECT"
             reason = f"reported_value differs from reference_value by {delta}, above tolerance {tolerance}"
+    elif claim_type == "causal_mechanism_claim":
+        intervention = evidence["intervention_or_natural_experiment"] is True
+        temporal = evidence["temporal_order_established"] is True
+        confounders = evidence["confounders_controlled"] is True
+        mechanism = evidence["mechanism_evidence_present"] is True
+        if intervention and temporal and confounders and mechanism:
+            verdict = "ACCEPT"
+            reason = "intervention/natural experiment, temporal order, confounder controls, and mechanism evidence all pass"
+        elif intervention and temporal:
+            verdict = "REWRITE"
+            reason = "causal design and temporal order are present, but full causal mechanism licensing is incomplete"
+            rewrite = "association with causal design support; full causal mechanism wording is not licensed"
+            licensed_claim = rewrite
+        else:
+            verdict = "REJECT"
+            reason = "causal claim lacks intervention/natural experiment evidence or temporal order"
+    elif claim_type == "systematic_review_claim":
+        protocol = evidence["protocol_registered"] is True
+        inclusion = evidence["inclusion_criteria_declared"] is True
+        bias = evidence["risk_of_bias_assessed"] is True
+        consistency = evidence["effect_consistency"] is True
+        if protocol and inclusion and bias and consistency:
+            verdict = "ACCEPT"
+            reason = "protocol, inclusion criteria, risk-of-bias assessment, and effect consistency all pass"
+        elif protocol and inclusion:
+            verdict = "REWRITE"
+            reason = "review protocol and inclusion criteria are present, but bias/consistency evidence is incomplete"
+            rewrite = "systematic review process is documented; strength or consistency of effect is not fully licensed"
+            licensed_claim = rewrite
+        else:
+            verdict = "REJECT"
+            reason = "systematic review claim lacks registered protocol or declared inclusion criteria"
+    elif claim_type == "evidence_conflict_claim":
+        supporting = evidence["supporting_sources"]
+        contradicting = evidence["contradicting_sources"]
+        method = str(evidence["conflict_resolution_method"]).strip()
+        pre_registered = evidence["resolution_pre_registered"] is True
+        if supporting and contradicting and method and pre_registered:
+            verdict = "ACCEPT"
+            reason = "supporting and contradicting sources are disclosed with a pre-registered conflict-resolution method"
+        elif supporting and contradicting and method:
+            verdict = "REWRITE"
+            reason = "conflicting evidence is disclosed, but conflict resolution was not pre-registered"
+            rewrite = "evidence conflict is disclosed; resolved conclusion is not fully licensed"
+            licensed_claim = rewrite
+        else:
+            verdict = "REJECT"
+            reason = "evidence conflict claim lacks supporting/contradicting source sets or a resolution method"
+    elif claim_type == "multimodal_evidence_claim":
+        if (
+            evidence["source_hashes_verified"] is True
+            and evidence["cross_modal_alignment"] is True
+            and evidence["extraction_method_declared"] is True
+            and str(evidence["modality"]).strip()
+        ):
+            verdict = "ACCEPT"
+            reason = "modality, source hashes, cross-modal alignment, and extraction method are declared"
+        elif evidence["source_hashes_verified"] is True and str(evidence["modality"]).strip():
+            verdict = "REWRITE"
+            reason = "multimodal source identity is verified, but alignment or extraction method is not fully licensed"
+            rewrite = "multimodal evidence is identified; cross-modal claim is not fully licensed"
+            licensed_claim = rewrite
+        else:
+            verdict = "REJECT"
+            reason = "multimodal claim lacks verified source hashes or declared modality"
 
     fine_tune = evaluate_fine_tune_readiness(
         payload,
@@ -1001,6 +1156,24 @@ def align_claim_text(payload: dict[str, Any]) -> dict[str, Any]:
                 "claim.text uses proof/certification language, but upgrade_evidence_present is false"
             )
 
+    if claim_type == "causal_mechanism_claim":
+        if evidence.get("intervention_or_natural_experiment") is False and "causal" in text:
+            issues.append("claim.text uses causal wording without intervention or natural-experiment evidence")
+        if evidence.get("confounders_controlled") is False and "causal" in text:
+            warnings.append("causal wording is weaker when confounder controls are false")
+
+    if claim_type == "systematic_review_claim" and "systematic" in text:
+        if evidence.get("protocol_registered") is False:
+            issues.append("systematic review wording requires a registered protocol")
+
+    if claim_type == "evidence_conflict_claim":
+        if not evidence.get("contradicting_sources"):
+            warnings.append("evidence_conflict_claim should disclose contradicting_sources")
+
+    if claim_type == "multimodal_evidence_claim":
+        if evidence.get("cross_modal_alignment") is False:
+            issues.append("multimodal claim requires cross-modal alignment")
+
     if issues:
         status = "MISALIGNED"
         reason = "claim.text overstates or changes the scope licensed by structured evidence"
@@ -1073,6 +1246,73 @@ def _read_url_source(url: str, *, allow_web: bool) -> tuple[str, str | None]:
     return raw.decode("utf-8", errors="replace"), None
 
 
+def _corpus_query_terms(payload: dict[str, Any]) -> list[str]:
+    claim = payload.get("claim", {}) if isinstance(payload, dict) else {}
+    claim_type = str(claim.get("type", ""))
+    text = str(claim.get("text", "")).lower()
+    terms = set(REQUIRED_DECISION_FIELDS.get(claim_type, []))
+    terms.update(CLAIM_TYPE_TERMS.get(claim_type, []))
+    for token in re.findall(r"[a-zA-Z][a-zA-Z0-9_-]{4,}", text):
+        terms.add(token.lower())
+    return sorted(term for term in terms if term)
+
+
+def _read_corpus_source_path(path_value: str, payload: dict[str, Any]) -> tuple[str, str | None]:
+    path = (ROOT / path_value).resolve()
+    try:
+        path.relative_to(ROOT.resolve())
+    except ValueError:
+        raise ValueError("source.path must stay inside the CAPAS repository")
+    if not path.exists():
+        return "", f"corpus source not found: {path_value}"
+    query_terms = _corpus_query_terms(payload)
+
+    def record_text(record: Any, index: int) -> str:
+        if isinstance(record, str):
+            return record
+        if isinstance(record, dict):
+            parts = [
+                str(record.get(key, ""))
+                for key in ("id", "title", "abstract", "text", "snippet", "source")
+                if record.get(key) is not None
+            ]
+            return "\n".join(parts)
+        return str(record)
+
+    documents: list[str] = []
+    if path.is_dir():
+        for item in sorted(path.iterdir()):
+            if item.is_file() and item.suffix.lower() in {".txt", ".md", ".json", ".jsonl"}:
+                text, note = _read_corpus_source_path(str(item.relative_to(ROOT)), payload)
+                if text:
+                    documents.append(text)
+                elif note:
+                    documents.append(f"# {note}")
+    elif path.suffix.lower() == ".json":
+        data = json.loads(path.read_text(encoding="utf-8"))
+        records = data if isinstance(data, list) else data.get("documents", []) if isinstance(data, dict) else []
+        documents = [record_text(record, index) for index, record in enumerate(records)]
+    elif path.suffix.lower() == ".jsonl":
+        documents = [
+            record_text(json.loads(line), index)
+            for index, line in enumerate(path.read_text(encoding="utf-8").splitlines())
+            if line.strip()
+        ]
+    else:
+        documents = [path.read_text(encoding="utf-8")]
+
+    selected = []
+    for document in documents:
+        lowered = document.lower()
+        score = sum(1 for term in query_terms if term.lower() in lowered)
+        if score:
+            selected.append((score, document))
+    selected.sort(key=lambda pair: pair[0], reverse=True)
+    if not selected:
+        return "", "corpus source had no deterministic matches for claim terms or required fields"
+    return "\n\n--- corpus match ---\n\n".join(document for _, document in selected[:5]), None
+
+
 def _source_records(payload: dict[str, Any], *, allow_web: bool = False) -> list[dict[str, str]]:
     records: list[dict[str, str]] = []
 
@@ -1084,6 +1324,10 @@ def _source_records(payload: dict[str, Any], *, allow_web: bool = False) -> list
         text = ""
         if isinstance(item.get("text"), str):
             text = item["text"]
+        elif kind == "corpus" and isinstance(item.get("path"), str):
+            text, maybe_note = _read_corpus_source_path(str(item["path"]), payload)
+            retrieval_status = "corpus_matched" if text else "not_retrieved"
+            note = maybe_note or ""
         elif isinstance(item.get("url"), str):
             kind = kind if kind != "text" else "web"
             text, maybe_note = _read_url_source(item["url"], allow_web=allow_web)
@@ -1258,6 +1502,18 @@ def extract_evidence(payload: dict[str, Any], *, allow_web: bool = False) -> dic
         "local_property_tests_pass",
         "universal_anchor_pass",
         "upgrade_evidence_present",
+        "intervention_or_natural_experiment",
+        "temporal_order_established",
+        "confounders_controlled",
+        "mechanism_evidence_present",
+        "protocol_registered",
+        "inclusion_criteria_declared",
+        "risk_of_bias_assessed",
+        "effect_consistency",
+        "resolution_pre_registered",
+        "source_hashes_verified",
+        "cross_modal_alignment",
+        "extraction_method_declared",
     ):
         value, span = _extract_field_from_sources(sources, field, "boolean")
         if span is not None:
@@ -1269,6 +1525,8 @@ def extract_evidence(payload: dict[str, Any], *, allow_web: bool = False) -> dic
         "physical_evidence_level",
         "verification_independence",
         "bound_scope",
+        "conflict_resolution_method",
+        "modality",
     ):
         value, span = _extract_field_from_sources(sources, field, "string")
         if span is not None:
@@ -2097,7 +2355,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
     <button class="copy-btn" id="help-btn" aria-label="Open keyboard shortcut and pipeline help" aria-expanded="false" onclick="openHelpModal(this)">Help</button>
     <a class="copy-btn topbar-source" href="https://github.com/fomv9354lve/capas-inteligentes" target="_blank" rel="noopener noreferrer" aria-label="Open CAPAS Claim Gate source repository">Source</a>
     <button class="copy-btn" id="theme-toggle" aria-label="Toggle light and dark theme" onclick="toggleTheme()">Theme</button>
-    <span class="topbar-badge" id="schema-version-badge">schema v2</span>
+    <span class="topbar-badge" id="schema-version-badge">schema v3</span>
     <span class="topbar-badge" id="shared-payload-badge" hidden>shared payload</span>
     <span class="topbar-badge">__UI_VERSION__</span>
   </div>
@@ -2200,7 +2458,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
     <p><code>fine_tune_ready</code> is a strict positive gate. It becomes <code>true</code> only after an <code>ACCEPT</code> verdict plus source-backed evidence, semantic alignment, witness independence, a hash-verified external review packet, recoverable/hashable source URLs, a resolvable witness registry entry, a valid RO-Crate provenance packet, and a verifiable reviewer attestation. CAPAS gates claims; it does not silently certify training data.</p>
     <p>The static browser UI previews these criteria but cannot perform active provenance I/O. The five provenance gates require <code>capas.py</code> CLI/API verification to resolve registries, hash sources, and validate RO-Crate packets.</p>
     <h3>Schema</h3>
-    <p>Current payload schema: <code>capas-claim-payload-v2</code>. Outputs include <code>schema_version</code> for audit trails.</p>
+    <p>Current payload schema: <code>capas-claim-payload-v3</code>. Outputs include <code>schema_version</code> for audit trails.</p>
     <p>Supported claim types and minimum evidence fields:</p>
     <ul class="claim-type-list">
       <li><code>claim_transition</code>: <code>upgrade_evidence_present</code></li>
@@ -2210,6 +2468,10 @@ def _render_ui(sample: dict[str, Any]) -> str:
       <li><code>reproducibility_check</code>: <code>artifact_available</code>, <code>independent_reproduction_pass</code></li>
       <li><code>statistical_confidence</code>: <code>p_value</code>, <code>alpha</code>, <code>effect_direction_confirmed</code></li>
       <li><code>universal_anchor_claim</code>: <code>anchor_mode</code>, <code>local_property_tests_pass</code>, <code>universal_anchor_pass</code></li>
+      <li><code>causal_mechanism_claim</code>: <code>intervention_or_natural_experiment</code>, <code>temporal_order_established</code>, <code>confounders_controlled</code>, <code>mechanism_evidence_present</code></li>
+      <li><code>systematic_review_claim</code>: <code>protocol_registered</code>, <code>inclusion_criteria_declared</code>, <code>risk_of_bias_assessed</code>, <code>effect_consistency</code></li>
+      <li><code>evidence_conflict_claim</code>: <code>supporting_sources</code>, <code>contradicting_sources</code>, <code>conflict_resolution_method</code>, <code>resolution_pre_registered</code></li>
+      <li><code>multimodal_evidence_claim</code>: <code>modality</code>, <code>source_hashes_verified</code>, <code>cross_modal_alignment</code>, <code>extraction_method_declared</code></li>
     </ul>
     <p>Numeric validation ranges: <code>p_value</code> and <code>alpha</code> must be between <code>0</code> and <code>1</code>; <code>abs_error</code> and <code>tolerance</code> must be greater than or equal to <code>0</code>.</p>
     <p><code>training_evidence.source_backed_evidence</code>, <code>external_review</code>, <code>semantic_alignment</code>, and <code>witness_independence</code> must be booleans. Wrong types produce schema errors instead of silent blockers.</p>
@@ -2220,7 +2482,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
 <script>
     const sample = __SAMPLE_COMPACT_JSON__;
     const samples = __SAMPLES_JSON__;
-    const capasSchemaVersion = "capas-claim-payload-v2";
+    const capasSchemaVersion = "capas-claim-payload-v3";
     const disallowedAngleRegex = /[<>\u02c2\u02c3\u2039\u203a\u2329-\u232a\u276c-\u276d\u27e8-\u27e9\u29fc-\u29fd\u3008-\u3009\ufe64-\ufe65\uff1c-\uff1e]/u;
     const required = {
       exact_model_solution: ["abs_error", "tolerance"],
@@ -2229,7 +2491,11 @@ def _render_ui(sample: dict[str, Any]) -> str:
       claim_transition: ["upgrade_evidence_present"],
       statistical_confidence: ["p_value", "alpha", "effect_direction_confirmed"],
       reproducibility_check: ["artifact_available", "independent_reproduction_pass"],
-      financial_metric_claim: ["reported_value", "reference_value", "tolerance", "metric_period_match"]
+      financial_metric_claim: ["reported_value", "reference_value", "tolerance", "metric_period_match"],
+      causal_mechanism_claim: ["intervention_or_natural_experiment", "temporal_order_established", "confounders_controlled", "mechanism_evidence_present"],
+      systematic_review_claim: ["protocol_registered", "inclusion_criteria_declared", "risk_of_bias_assessed", "effect_consistency"],
+      evidence_conflict_claim: ["supporting_sources", "contradicting_sources", "conflict_resolution_method", "resolution_pre_registered"],
+      multimodal_evidence_claim: ["modality", "source_hashes_verified", "cross_modal_alignment", "extraction_method_declared"]
     };
     const claimTypes = Object.keys(required).sort();
     const historyLimit = 50;
@@ -2273,7 +2539,23 @@ def _render_ui(sample: dict[str, Any]) -> str:
       "reported_value": "Numeric value stated by the claim.",
       "reference_value": "Trusted numeric reference value used for comparison.",
       "metric_period_match": "Whether the reported metric and reference are from the same reporting period.",
-      "current_claim": "Exact weaker claim text currently licensed before the proposed upgrade."
+      "current_claim": "Exact weaker claim text currently licensed before the proposed upgrade.",
+      "intervention_or_natural_experiment": "Whether the claim is backed by an intervention, randomized design, or credible natural experiment.",
+      "temporal_order_established": "Whether the proposed cause is observed before the effect.",
+      "confounders_controlled": "Whether declared confounders are controlled or ruled out.",
+      "mechanism_evidence_present": "Whether independent mechanism evidence supports the causal pathway.",
+      "protocol_registered": "Whether the systematic review protocol was registered before analysis.",
+      "inclusion_criteria_declared": "Whether inclusion/exclusion criteria are explicit and auditable.",
+      "risk_of_bias_assessed": "Whether included evidence has a declared risk-of-bias assessment.",
+      "effect_consistency": "Whether the reported effect direction is consistent across included evidence.",
+      "supporting_sources": "Array of source IDs or URLs that support the claim.",
+      "contradicting_sources": "Array of source IDs or URLs that contradict or limit the claim.",
+      "conflict_resolution_method": "Declared method for resolving source conflicts.",
+      "resolution_pre_registered": "Whether conflict-resolution rules were declared before inspecting outcomes.",
+      "modality": "Primary evidence modality, such as image, table, audio, video, or figure.",
+      "source_hashes_verified": "Whether source media/data hashes match declared provenance.",
+      "cross_modal_alignment": "Whether text, table, image, or other modalities align with each other.",
+      "extraction_method_declared": "Whether the method used to extract multimodal evidence is declared."
     };
 
     const minimalExamples = {
@@ -2304,6 +2586,22 @@ def _render_ui(sample: dict[str, Any]) -> str:
       financial_metric_claim: {
         claim: { id: "draft_financial_metric", type: "financial_metric_claim", text: "The reported financial metric matches the reference for the same period." },
         evidence: { reported_value: 101.2, reference_value: 101.0, tolerance: 0.5, metric_period_match: true }
+      },
+      causal_mechanism_claim: {
+        claim: { id: "draft_causal_mechanism", type: "causal_mechanism_claim", text: "The intervention causally changes the measured outcome through the declared mechanism." },
+        evidence: { intervention_or_natural_experiment: true, temporal_order_established: true, confounders_controlled: true, mechanism_evidence_present: true }
+      },
+      systematic_review_claim: {
+        claim: { id: "draft_systematic_review", type: "systematic_review_claim", text: "The systematic review supports the reported effect across included studies." },
+        evidence: { protocol_registered: true, inclusion_criteria_declared: true, risk_of_bias_assessed: true, effect_consistency: true }
+      },
+      evidence_conflict_claim: {
+        claim: { id: "draft_evidence_conflict", type: "evidence_conflict_claim", text: "The conflicting evidence is resolved by the declared pre-registered method." },
+        evidence: { supporting_sources: ["source_a"], contradicting_sources: ["source_b"], conflict_resolution_method: "pre-registered hierarchy", resolution_pre_registered: true }
+      },
+      multimodal_evidence_claim: {
+        claim: { id: "draft_multimodal_evidence", type: "multimodal_evidence_claim", text: "The multimodal evidence supports the extracted claim." },
+        evidence: { modality: "table", source_hashes_verified: true, cross_modal_alignment: true, extraction_method_declared: true }
       }
     };
 
@@ -2364,12 +2662,27 @@ def _render_ui(sample: dict[str, Any]) -> str:
           errors.push(`evidence.${field} must be a boolean`);
         }
       }
-      for (const field of ["anchor_mode", "physical_evidence_level", "verification_independence"]) {
+      for (const field of ["intervention_or_natural_experiment", "temporal_order_established", "confounders_controlled", "mechanism_evidence_present", "protocol_registered", "inclusion_criteria_declared", "risk_of_bias_assessed", "effect_consistency", "resolution_pre_registered", "source_hashes_verified", "cross_modal_alignment", "extraction_method_declared"]) {
+        if (Object.prototype.hasOwnProperty.call(safeEvidence, field) && typeof safeEvidence[field] !== "boolean") {
+          errors.push(`evidence.${field} must be a boolean`);
+        }
+      }
+      for (const field of ["anchor_mode", "physical_evidence_level", "verification_independence", "conflict_resolution_method", "modality"]) {
         if (Object.prototype.hasOwnProperty.call(safeEvidence, field) && typeof safeEvidence[field] !== "string") {
           errors.push(`evidence.${field} must be a string`);
         }
         if (typeof safeEvidence[field] === "string" && containsAngleLikeCharacter(safeEvidence[field])) {
           errors.push(`evidence.${field} must not contain angle brackets or Unicode angle-bracket homoglyphs`);
+        }
+      }
+      for (const field of ["supporting_sources", "contradicting_sources"]) {
+        if (Object.prototype.hasOwnProperty.call(safeEvidence, field)) {
+          const value = safeEvidence[field];
+          if (!Array.isArray(value) || value.some((item) => typeof item !== "string")) {
+            errors.push(`evidence.${field} must be an array of strings`);
+          } else if (value.some((item) => containsAngleLikeCharacter(item))) {
+            errors.push(`evidence.${field} must not contain angle brackets or Unicode angle-bracket homoglyphs`);
+          }
         }
       }
       if (Object.prototype.hasOwnProperty.call(safeEvidence, "current_claim")) {
@@ -2582,6 +2895,62 @@ def _render_ui(sample: dict[str, Any]) -> str:
           result.verdict = "REJECT";
           result.reason = `reported_value differs from reference_value by ${delta}, above tolerance ${evidence.tolerance}`;
         }
+      } else if (claim.type === "causal_mechanism_claim") {
+        if (evidence.intervention_or_natural_experiment === true && evidence.temporal_order_established === true && evidence.confounders_controlled === true && evidence.mechanism_evidence_present === true) {
+          result.verdict = "ACCEPT";
+          result.reason = "intervention/natural experiment, temporal order, confounder controls, and mechanism evidence all pass";
+        } else if (evidence.intervention_or_natural_experiment === true && evidence.temporal_order_established === true) {
+          result.verdict = "REWRITE";
+          result.reason = "causal design and temporal order are present, but full causal mechanism licensing is incomplete";
+          result.rewrite = "association with causal design support; full causal mechanism wording is not licensed";
+          result.licensed_claim = result.rewrite;
+        } else {
+          result.verdict = "REJECT";
+          result.reason = "causal claim lacks intervention/natural experiment evidence or temporal order";
+        }
+      } else if (claim.type === "systematic_review_claim") {
+        if (evidence.protocol_registered === true && evidence.inclusion_criteria_declared === true && evidence.risk_of_bias_assessed === true && evidence.effect_consistency === true) {
+          result.verdict = "ACCEPT";
+          result.reason = "protocol, inclusion criteria, risk-of-bias assessment, and effect consistency all pass";
+        } else if (evidence.protocol_registered === true && evidence.inclusion_criteria_declared === true) {
+          result.verdict = "REWRITE";
+          result.reason = "review protocol and inclusion criteria are present, but bias/consistency evidence is incomplete";
+          result.rewrite = "systematic review process is documented; strength or consistency of effect is not fully licensed";
+          result.licensed_claim = result.rewrite;
+        } else {
+          result.verdict = "REJECT";
+          result.reason = "systematic review claim lacks registered protocol or declared inclusion criteria";
+        }
+      } else if (claim.type === "evidence_conflict_claim") {
+        const supporting = evidence.supporting_sources || [];
+        const contradicting = evidence.contradicting_sources || [];
+        const method = String(evidence.conflict_resolution_method || "").trim();
+        if (supporting.length && contradicting.length && method && evidence.resolution_pre_registered === true) {
+          result.verdict = "ACCEPT";
+          result.reason = "supporting and contradicting sources are disclosed with a pre-registered conflict-resolution method";
+        } else if (supporting.length && contradicting.length && method) {
+          result.verdict = "REWRITE";
+          result.reason = "conflicting evidence is disclosed, but conflict resolution was not pre-registered";
+          result.rewrite = "evidence conflict is disclosed; resolved conclusion is not fully licensed";
+          result.licensed_claim = result.rewrite;
+        } else {
+          result.verdict = "REJECT";
+          result.reason = "evidence conflict claim lacks supporting/contradicting source sets or a resolution method";
+        }
+      } else if (claim.type === "multimodal_evidence_claim") {
+        const modality = String(evidence.modality || "").trim();
+        if (modality && evidence.source_hashes_verified === true && evidence.cross_modal_alignment === true && evidence.extraction_method_declared === true) {
+          result.verdict = "ACCEPT";
+          result.reason = "modality, source hashes, cross-modal alignment, and extraction method are declared";
+        } else if (modality && evidence.source_hashes_verified === true) {
+          result.verdict = "REWRITE";
+          result.reason = "multimodal source identity is verified, but alignment or extraction method is not fully licensed";
+          result.rewrite = "multimodal evidence is identified; cross-modal claim is not fully licensed";
+          result.licensed_claim = result.rewrite;
+        } else {
+          result.verdict = "REJECT";
+          result.reason = "multimodal claim lacks verified source hashes or declared modality";
+        }
       }
       return { ...result, ...evaluateFineTuneReadiness(payload, result) };
     }
@@ -2781,6 +3150,10 @@ def _render_ui(sample: dict[str, Any]) -> str:
       if (text.includes("universal") || text.includes("anchor") || text.includes("local_property")) return "universal_anchor_claim";
       if (text.includes("upgrade") || text.includes("stronger claim") || text.includes("current_claim")) return "claim_transition";
       if (text.includes("chemical accuracy") || text.includes("within_chemical_accuracy") || text.includes("experiment")) return "physical_accuracy";
+      if (text.includes("causal") || text.includes("confounder") || text.includes("mechanism")) return "causal_mechanism_claim";
+      if (text.includes("systematic review") || text.includes("risk_of_bias") || text.includes("inclusion criteria")) return "systematic_review_claim";
+      if (text.includes("contradict") || text.includes("conflict_resolution") || text.includes("supporting_sources")) return "evidence_conflict_claim";
+      if (text.includes("multimodal") || text.includes("cross_modal") || text.includes("modality")) return "multimodal_evidence_claim";
       if (text.includes("abs_error") || text.includes("tolerance") || text.includes("error") || text.includes("ground state")) return "exact_model_solution";
       return "exact_model_solution";
     }

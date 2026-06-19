@@ -123,14 +123,15 @@ The pipeline may produce a stricter final decision than the gate alone:
 
 ## What This Still Does Not Do
 
-This is not yet the large standalone product. It does not:
+This is now a narrow end-to-end standalone product surface. It still does not:
 
 - understand arbitrary scientific prose,
 - perform broad scientific reasoning,
 - replace domain-specific scientific verifiers.
 
-It now has first-pass web retrieval and PDF parsing hooks, but they are narrow:
-field-driven retrieval, optional dependencies, and explicit failure notes.
+It now has deterministic local corpus retrieval plus first-pass web retrieval
+and PDF parsing hooks, but they are narrow: field-driven retrieval, optional
+dependencies, and explicit failure notes.
 
 ### `capas reason`
 
@@ -151,7 +152,8 @@ checklist that names obvious evidence/scope risks.
 
 1. File and evidence intake:
    - Markdown/text/log/code snippets first,
-   - PDF and notebook parsing later,
+   - local JSON/JSONL/text corpus adapters now,
+   - PDF parsing now, notebook parsing later,
    - optional external retrievers only after provenance is sealed.
 
 2. Semantic alignment:
@@ -170,6 +172,10 @@ checklist that names obvious evidence/scope risks.
    - physical accuracy,
    - universal anchor,
    - claim transition,
+   - causal mechanism,
+   - systematic review,
+   - evidence conflict,
+   - multimodal evidence,
    - future domain modules such as convergence, uncertainty, and reference
      definition match.
 

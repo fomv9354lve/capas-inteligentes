@@ -47,7 +47,7 @@ HARNESS = r"""
     ok("share_button_exists", document.getElementById("share-btn"));
     ok("export_button_exists", document.getElementById("export-btn"));
     ok("theme_button_exists", document.getElementById("theme-toggle"));
-    ok("schema_version_badge_exists", document.getElementById("schema-version-badge")?.textContent.includes("schema v2"));
+    ok("schema_version_badge_exists", document.getElementById("schema-version-badge")?.textContent.includes("schema v3"));
     ok("shared_payload_badge_visible", document.getElementById("shared-payload-badge")?.hidden === false);
     ok("help_button_exists", document.getElementById("help-btn"));
     ok("theme_button_initial_system", document.getElementById("theme-toggle").textContent === "System");
@@ -73,10 +73,11 @@ HARNESS = r"""
     ok("help_modal_has_aria_modal", document.getElementById("help-modal").getAttribute("aria-modal") === "true");
     ok("help_modal_focuses_inside", document.getElementById("help-modal").contains(document.activeElement));
     ok("help_modal_mentions_pipeline", document.getElementById("help-modal-backdrop").textContent.includes("retrieve"));
-    ok("help_modal_lists_claim_type_requirements", document.querySelectorAll("#help-modal .claim-type-list li").length === 7);
+    ok("help_modal_lists_claim_type_requirements", document.querySelectorAll("#help-modal .claim-type-list li").length === 11);
     ok("help_modal_lists_schema_v2_financial_fields", document.getElementById("help-modal").textContent.includes("financial_metric_claim") && document.getElementById("help-modal").textContent.includes("metric_period_match"));
     ok("help_modal_lists_schema_v2_statistical_fields", document.getElementById("help-modal").textContent.includes("statistical_confidence") && document.getElementById("help-modal").textContent.includes("effect_direction_confirmed"));
     ok("help_modal_lists_schema_v2_reproducibility_fields", document.getElementById("help-modal").textContent.includes("reproducibility_check") && document.getElementById("help-modal").textContent.includes("independent_reproduction_pass"));
+    ok("help_modal_lists_schema_v3_gap_fields", document.getElementById("help-modal").textContent.includes("causal_mechanism_claim") && document.getElementById("help-modal").textContent.includes("multimodal_evidence_claim"));
     ok("help_modal_documents_fine_tune_readiness", document.getElementById("help-modal").textContent.includes("fine_tune_ready") && document.getElementById("help-modal").textContent.includes("hash-verified external review packet"));
     ok("help_modal_documents_cli_provenance_verification", document.getElementById("help-modal").textContent.includes("The static browser UI previews these criteria") && document.getElementById("help-modal").textContent.includes("capas.py"));
     ok("help_modal_documents_numeric_ranges", document.getElementById("help-modal").textContent.includes("p_value") && document.getElementById("help-modal").textContent.includes("between 0 and 1"));
@@ -128,7 +129,7 @@ HARNESS = r"""
     ok("batch_per_item_reason_visible", document.querySelector(".batch-row-reason")?.textContent.length > 0);
     ok("batch_per_item_fine_tune_summary_visible", document.querySelector(".batch-row-ft")?.textContent.includes("FT"));
     ok("batch_output_json", document.getElementById("output").textContent.includes('"batch_mode": "decide"'));
-    ok("batch_schema_version", document.getElementById("output").textContent.includes('"schema_version": "capas-claim-payload-v2"'));
+    ok("batch_schema_version", document.getElementById("output").textContent.includes('"schema_version": "capas-claim-payload-v3"'));
     document.getElementById("input").value = JSON.stringify(samples.ACCEPT, null, 2);
     decideBatch();
     ok("batch_single_object_autowrap", document.getElementById("output").textContent.includes('"item_count": 1'));
@@ -151,6 +152,30 @@ HARNESS = r"""
     });
     decide();
     ok("financial_metric_claim_accept", document.querySelector(".verdict-badge.ACCEPT"));
+    document.getElementById("input").value = JSON.stringify({
+      claim: { id: "causal_accept", type: "causal_mechanism_claim", text: "The intervention causally changes the outcome through the declared mechanism." },
+      evidence: { intervention_or_natural_experiment: true, temporal_order_established: true, confounders_controlled: true, mechanism_evidence_present: true }
+    });
+    decide();
+    ok("causal_mechanism_claim_accept", document.querySelector(".verdict-badge.ACCEPT"));
+    document.getElementById("input").value = JSON.stringify({
+      claim: { id: "review_rewrite", type: "systematic_review_claim", text: "The systematic review supports the reported effect." },
+      evidence: { protocol_registered: true, inclusion_criteria_declared: true, risk_of_bias_assessed: false, effect_consistency: false }
+    });
+    decide();
+    ok("systematic_review_claim_rewrite", document.querySelector(".verdict-badge.REWRITE"));
+    document.getElementById("input").value = JSON.stringify({
+      claim: { id: "conflict_accept", type: "evidence_conflict_claim", text: "The conflicting evidence is resolved by the declared method." },
+      evidence: { supporting_sources: ["s1"], contradicting_sources: ["s2"], conflict_resolution_method: "pre-registered hierarchy", resolution_pre_registered: true }
+    });
+    decide();
+    ok("evidence_conflict_claim_accept", document.querySelector(".verdict-badge.ACCEPT"));
+    document.getElementById("input").value = JSON.stringify({
+      claim: { id: "multi_accept", type: "multimodal_evidence_claim", text: "The multimodal evidence supports the extracted claim." },
+      evidence: { modality: "table", source_hashes_verified: true, cross_modal_alignment: true, extraction_method_declared: true }
+    });
+    decide();
+    ok("multimodal_evidence_claim_accept", document.querySelector(".verdict-badge.ACCEPT"));
 
     document.getElementById("input").value = JSON.stringify({
       claim: { id: "external_scaling_anchor_fine_tune_ready", type: "universal_anchor_claim", text: "The generated scaling result is physically consistent with the universal z=1 anchor." },

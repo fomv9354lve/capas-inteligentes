@@ -43,6 +43,13 @@ CASES = [
         "expected_alignment": "ALIGNED",
         "expected_final": "ACCEPT",
     },
+    {
+        "name": "corpus_adapter_extracts_causal_evidence",
+        "path": ROOT / "examples" / "standalone_pipeline_causal_corpus.json",
+        "expected_extraction": "complete",
+        "expected_alignment": "ALIGNED",
+        "expected_final": "ACCEPT",
+    },
 ]
 
 
@@ -137,6 +144,19 @@ def main() -> int:
         }
     )
 
+    corpus_retrieved = capas.retrieve_evidence_snippets(_load(ROOT / "examples" / "standalone_pipeline_causal_corpus.json"))
+    checks.append(
+        {
+            "check": "local_corpus_adapter_returns_auditable_snippets",
+            "passed": (
+                bool(corpus_retrieved)
+                and corpus_retrieved[0]["source_kind"] == "corpus"
+                and "intervention_or_natural_experiment" in corpus_retrieved[0]["snippet"]
+            ),
+            "actual": corpus_retrieved,
+        }
+    )
+
     pdf_result = capas.extract_evidence(_load(PDF_SOURCE))
     checks.append(
         {
@@ -158,6 +178,7 @@ def main() -> int:
         "standalone_pipeline_mvp_ready": passed,
         "scope": "local explicit extraction + deterministic semantic alignment + CAPAS gate",
         "non_claims": [
+            "local corpus retrieval is deterministic term matching, not broad literature search",
             "does not silently retrieve remote evidence; web retrieval is opt-in with --allow-web",
             "does not guarantee PDF parsing; local PDF support is optional and parser failures are declared",
             "does not perform broad scientific reasoning",

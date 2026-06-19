@@ -58,6 +58,35 @@ It exercises:
 - syntax-highlighted JSON output,
 - history restore.
 
+### Claim-type coverage
+
+Schema v3 supports eleven deterministic claim types:
+
+- exact model solution,
+- physical accuracy,
+- universal anchor,
+- claim transition,
+- statistical confidence,
+- reproducibility check,
+- financial metric claim,
+- causal mechanism claim,
+- systematic review claim,
+- evidence conflict claim,
+- multimodal evidence claim.
+
+The last four close the largest product gaps identified in the V12 audit:
+causality, systematic review claims, contradictory evidence handling, and
+multimodal provenance. They are still deterministic gates over supplied
+evidence fields, not broad free-text fact checking.
+
+### Local corpus retrieval adapter
+
+Standalone retrieval can now read local JSON, JSONL, Markdown, text, or
+directories of those files as deterministic corpus sources. The adapter selects
+documents by claim terms and required evidence fields and returns auditable
+snippets. This closes the local retrieval gap without silently depending on an
+external search provider.
+
 ## Still intentionally not complete
 
 ### Formal RO-Crate profile registration
@@ -110,6 +139,13 @@ CAPAS provides deterministic lexical/scope guardrails through `capas align` and
 the standalone pipeline. It does not perform broad scientific language
 understanding. If a claim requires domain interpretation outside the structured
 fields, CAPAS should return `HOLD` or require an upstream verifier.
+
+### External search integrations
+
+CAPAS has a deterministic local corpus adapter, explicit web retrieval, and PDF
+parsing hooks. It does not bundle credentials or private integrations for
+Semantic Scholar, Elicit, PubMed, or other hosted literature systems. Those are
+integration deployments, not core gate logic.
 
 ### GitHub Actions Node warning
 

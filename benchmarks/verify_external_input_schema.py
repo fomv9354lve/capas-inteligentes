@@ -270,6 +270,23 @@ ADVERSARIAL_PAYLOADS = [
         },
         "evidence.p_value must be between 0 and 1",
     ),
+    (
+        "supporting_sources_must_be_strings",
+        {
+            "claim": {
+                "id": "supporting_sources_must_be_strings",
+                "type": "evidence_conflict_claim",
+                "text": "Source arrays must not contain untyped objects.",
+            },
+            "evidence": {
+                "supporting_sources": [{"id": "source_a"}],
+                "contradicting_sources": ["source_b"],
+                "conflict_resolution_method": "pre-registered hierarchy",
+                "resolution_pre_registered": True,
+            },
+        },
+        "evidence.supporting_sources must be an array of strings",
+    ),
 ]
 
 SEMANTIC_PAYLOADS = [
@@ -356,6 +373,78 @@ SEMANTIC_PAYLOADS = [
         },
         "ACCEPT",
         "period matches",
+    ),
+    (
+        "causal_mechanism_claim_accept",
+        {
+            "claim": {
+                "id": "causal_mechanism_claim_accept",
+                "type": "causal_mechanism_claim",
+                "text": "The intervention causally changes the outcome through the declared mechanism.",
+            },
+            "evidence": {
+                "intervention_or_natural_experiment": True,
+                "temporal_order_established": True,
+                "confounders_controlled": True,
+                "mechanism_evidence_present": True,
+            },
+        },
+        "ACCEPT",
+        "mechanism evidence all pass",
+    ),
+    (
+        "systematic_review_claim_rewrite",
+        {
+            "claim": {
+                "id": "systematic_review_claim_rewrite",
+                "type": "systematic_review_claim",
+                "text": "The systematic review supports the reported effect across included studies.",
+            },
+            "evidence": {
+                "protocol_registered": True,
+                "inclusion_criteria_declared": True,
+                "risk_of_bias_assessed": False,
+                "effect_consistency": False,
+            },
+        },
+        "REWRITE",
+        "bias/consistency evidence is incomplete",
+    ),
+    (
+        "evidence_conflict_claim_accept",
+        {
+            "claim": {
+                "id": "evidence_conflict_claim_accept",
+                "type": "evidence_conflict_claim",
+                "text": "The conflicting evidence is resolved by the declared pre-registered method.",
+            },
+            "evidence": {
+                "supporting_sources": ["source_a"],
+                "contradicting_sources": ["source_b"],
+                "conflict_resolution_method": "pre-registered hierarchy",
+                "resolution_pre_registered": True,
+            },
+        },
+        "ACCEPT",
+        "pre-registered conflict-resolution method",
+    ),
+    (
+        "multimodal_evidence_claim_accept",
+        {
+            "claim": {
+                "id": "multimodal_evidence_claim_accept",
+                "type": "multimodal_evidence_claim",
+                "text": "The multimodal evidence supports the extracted claim.",
+            },
+            "evidence": {
+                "modality": "table",
+                "source_hashes_verified": True,
+                "cross_modal_alignment": True,
+                "extraction_method_declared": True,
+            },
+        },
+        "ACCEPT",
+        "cross-modal alignment",
     ),
     (
         "fine_tune_ready_positive",

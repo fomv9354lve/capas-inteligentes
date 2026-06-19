@@ -37,9 +37,9 @@ LLM / extractor / scientific verifier upstream
 ```
 
 CAPAS now includes an explicit upstream MVP for retrieval/parsing/alignment, but
-the final decision remains deterministic. Retrieval and PDF parsing can prepare
-candidate evidence; they do not silently invent missing evidence or turn CAPAS
-into a broad scientific oracle.
+the final decision remains deterministic. Local corpus retrieval, web retrieval
+with `--allow-web`, and PDF parsing can prepare candidate evidence; they do not
+silently invent missing evidence or turn CAPAS into a broad scientific oracle.
 
 The standalone direction has started with a local upstream MVP:
 
@@ -198,8 +198,10 @@ deterministic semantic-scope guard before the CAPAS gate.
 and parser for each extracted field, so a reviewer can audit where the evidence
 came from.
 
-Web retrieval is opt-in with `--allow-web`. Local PDF parsing is supported when
-the optional standalone dependency is installed:
+Local corpus retrieval accepts JSON, JSONL, text, Markdown, or a directory of
+those files and returns auditable snippets matched to claim terms and required
+evidence fields. Web retrieval is opt-in with `--allow-web`. Local PDF parsing
+is supported when the optional standalone dependency is installed:
 
 ```bash
 python -m pip install -e ".[standalone]"
@@ -220,11 +222,14 @@ capas ui
 python3 benchmarks/verify_claim_gate_ui.py
 ```
 
-The UI exposes ACCEPT, REWRITE, HOLD, and INVALID samples. Structurally invalid
-payloads are shown as `HOLD` with `schema_errors`, matching `capas decide`.
-It also supports batch evaluation for JSON arrays or objects with `items` /
-`claims`, displays `schema v1` for audit trails, and includes a keyboard help
-modal with the main shortcuts and pipeline scope.
+The UI exposes ACCEPT, REWRITE, REJECT, HOLD, and INVALID samples.
+Structurally invalid payloads are shown as `HOLD` with `schema_errors`,
+matching `capas decide`. It also supports batch evaluation for JSON arrays or
+objects with `items` / `claims`, displays `schema v3` for audit trails, and
+includes a keyboard help modal with the main shortcuts and pipeline scope.
+
+Schema v3 supports 11 deterministic claim types, including causal mechanism,
+systematic review, evidence conflict, and multimodal evidence gates.
 
 Prepare a non-mutating GitHub release plan:
 

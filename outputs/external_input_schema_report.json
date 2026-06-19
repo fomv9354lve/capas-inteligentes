@@ -60,7 +60,7 @@
         "passed": false,
         "returncode": 1,
         "stderr_tail": "",
-        "stdout_tail": "INVALID: examples/external_claim_invalid.json\n- evidence must be an object\n- claim.id must be a non-empty string\n- claim.type must be one of: claim_transition, exact_model_solution, financial_metric_claim, physical_accuracy, reproducibility_check, statistical_confidence, universal_anchor_claim\n"
+        "stdout_tail": "INVALID: examples/external_claim_invalid.json\n- evidence must be an object\n- claim.id must be a non-empty string\n- claim.type must be one of: causal_mechanism_claim, claim_transition, evidence_conflict_claim, exact_model_solution, financial_metric_claim, multimodal_evidence_claim, physical_accuracy, reproducibility_check, statistical_confidence, systematic_review_claim, universal_anchor_claim\n"
       },
       "decision": {
         "fine_tune_blockers": [
@@ -110,15 +110,15 @@
         "schema_errors": [
           "evidence must be an object",
           "claim.id must be a non-empty string",
-          "claim.type must be one of: claim_transition, exact_model_solution, financial_metric_claim, physical_accuracy, reproducibility_check, statistical_confidence, universal_anchor_claim"
+          "claim.type must be one of: causal_mechanism_claim, claim_transition, evidence_conflict_claim, exact_model_solution, financial_metric_claim, multimodal_evidence_claim, physical_accuracy, reproducibility_check, statistical_confidence, systematic_review_claim, universal_anchor_claim"
         ],
-        "schema_version": "capas-claim-payload-v2",
+        "schema_version": "capas-claim-payload-v3",
         "verdict": "HOLD"
       },
       "errors": [
         "evidence must be an object",
         "claim.id must be a non-empty string",
-        "claim.type must be one of: claim_transition, exact_model_solution, financial_metric_claim, physical_accuracy, reproducibility_check, statistical_confidence, universal_anchor_claim"
+        "claim.type must be one of: causal_mechanism_claim, claim_transition, evidence_conflict_claim, exact_model_solution, financial_metric_claim, multimodal_evidence_claim, physical_accuracy, reproducibility_check, statistical_confidence, systematic_review_claim, universal_anchor_claim"
       ],
       "passed": true
     },
@@ -172,7 +172,7 @@
         "schema_errors": [
           "evidence.abs_error must be >= 0"
         ],
-        "schema_version": "capas-claim-payload-v2",
+        "schema_version": "capas-claim-payload-v3",
         "verdict": "HOLD"
       },
       "errors": [
@@ -231,7 +231,7 @@
         "schema_errors": [
           "evidence.tolerance must be >= 0"
         ],
-        "schema_version": "capas-claim-payload-v2",
+        "schema_version": "capas-claim-payload-v3",
         "verdict": "HOLD"
       },
       "errors": [
@@ -291,7 +291,7 @@
           "evidence.abs_error must be >= 0",
           "evidence.tolerance must be >= 0"
         ],
-        "schema_version": "capas-claim-payload-v2",
+        "schema_version": "capas-claim-payload-v3",
         "verdict": "HOLD"
       },
       "errors": [
@@ -351,7 +351,7 @@
         "schema_errors": [
           "evidence.abs_error must be a number"
         ],
-        "schema_version": "capas-claim-payload-v2",
+        "schema_version": "capas-claim-payload-v3",
         "verdict": "HOLD"
       },
       "errors": [
@@ -407,7 +407,7 @@
         "schema_errors": [
           "training_evidence.source_backed_evidence must be a boolean"
         ],
-        "schema_version": "capas-claim-payload-v2",
+        "schema_version": "capas-claim-payload-v3",
         "verdict": "HOLD"
       },
       "errors": [
@@ -466,7 +466,7 @@
         "schema_errors": [
           "claim.id must be at most 256 characters"
         ],
-        "schema_version": "capas-claim-payload-v2",
+        "schema_version": "capas-claim-payload-v3",
         "verdict": "HOLD"
       },
       "errors": [
@@ -525,7 +525,7 @@
         "schema_errors": [
           "claim.text must be at most 2000 characters"
         ],
-        "schema_version": "capas-claim-payload-v2",
+        "schema_version": "capas-claim-payload-v3",
         "verdict": "HOLD"
       },
       "errors": [
@@ -584,7 +584,7 @@
         "schema_errors": [
           "evidence.current_claim must not contain angle brackets or Unicode angle-bracket homoglyphs"
         ],
-        "schema_version": "capas-claim-payload-v2",
+        "schema_version": "capas-claim-payload-v3",
         "verdict": "HOLD"
       },
       "errors": [
@@ -643,7 +643,7 @@
         "schema_errors": [
           "evidence.current_claim must not contain angle brackets or Unicode angle-bracket homoglyphs"
         ],
-        "schema_version": "capas-claim-payload-v2",
+        "schema_version": "capas-claim-payload-v3",
         "verdict": "HOLD"
       },
       "errors": [
@@ -702,7 +702,7 @@
         "schema_errors": [
           "claim.id must not contain angle brackets or Unicode angle-bracket homoglyphs"
         ],
-        "schema_version": "capas-claim-payload-v2",
+        "schema_version": "capas-claim-payload-v3",
         "verdict": "HOLD"
       },
       "errors": [
@@ -761,7 +761,7 @@
         "schema_errors": [
           "claim.text must not contain angle brackets or Unicode angle-bracket homoglyphs"
         ],
-        "schema_version": "capas-claim-payload-v2",
+        "schema_version": "capas-claim-payload-v3",
         "verdict": "HOLD"
       },
       "errors": [
@@ -820,7 +820,7 @@
         "schema_errors": [
           "claim.text must not contain angle brackets or Unicode angle-bracket homoglyphs"
         ],
-        "schema_version": "capas-claim-payload-v2",
+        "schema_version": "capas-claim-payload-v3",
         "verdict": "HOLD"
       },
       "errors": [
@@ -879,7 +879,7 @@
         "schema_errors": [
           "claim.text must not contain angle brackets or Unicode angle-bracket homoglyphs"
         ],
-        "schema_version": "capas-claim-payload-v2",
+        "schema_version": "capas-claim-payload-v3",
         "verdict": "HOLD"
       },
       "errors": [
@@ -938,7 +938,7 @@
         "schema_errors": [
           "evidence.anchor_mode must not contain angle brackets or Unicode angle-bracket homoglyphs"
         ],
-        "schema_version": "capas-claim-payload-v2",
+        "schema_version": "capas-claim-payload-v3",
         "verdict": "HOLD"
       },
       "errors": [
@@ -997,7 +997,7 @@
         "schema_errors": [
           "evidence.physical_evidence_level must not contain angle brackets or Unicode angle-bracket homoglyphs"
         ],
-        "schema_version": "capas-claim-payload-v2",
+        "schema_version": "capas-claim-payload-v3",
         "verdict": "HOLD"
       },
       "errors": [
@@ -1056,13 +1056,72 @@
         "schema_errors": [
           "evidence.p_value must be between 0 and 1"
         ],
-        "schema_version": "capas-claim-payload-v2",
+        "schema_version": "capas-claim-payload-v3",
         "verdict": "HOLD"
       },
       "errors": [
         "evidence.p_value must be between 0 and 1"
       ],
       "expected_error": "evidence.p_value must be between 0 and 1",
+      "passed": true
+    },
+    {
+      "check": "adversarial_payload:supporting_sources_must_be_strings",
+      "decision": {
+        "fine_tune_blockers": [
+          "claim verdict is not ACCEPT",
+          "schema or required-field blockers remain",
+          "source-backed evidence is not attached",
+          "external review is not attached",
+          "claim.text semantic alignment is not externally certified",
+          "witness independence is not externally certified",
+          "provenance.sources or provenance.source_urls is empty",
+          "external review hash is missing or does not match review_packet",
+          "source URLs are not recoverable with matching hashes",
+          "witness_id is not resolvable in the witness registry",
+          "RO-Crate provenance packet is missing, invalid, or hash-mismatched",
+          "reviewer identity or attestation is not verifiable",
+          "provenance.review_id is missing",
+          "provenance.witness_id is missing"
+        ],
+        "fine_tune_criteria": {
+          "external_review": false,
+          "provenance_sources": false,
+          "review_hash_verified": false,
+          "review_id_present": false,
+          "reviewer_attestation_verified": false,
+          "ro_crate_validated": false,
+          "schema_clean": false,
+          "semantic_alignment": false,
+          "source_backed_evidence": false,
+          "source_urls_recoverable_hashable": false,
+          "verdict_accept": false,
+          "witness_id_present": false,
+          "witness_independence": false,
+          "witness_registry_resolved": false
+        },
+        "fine_tune_ready": false,
+        "input_claim": {
+          "id": "supporting_sources_must_be_strings",
+          "text": "Source arrays must not contain untyped objects.",
+          "type": "evidence_conflict_claim"
+        },
+        "licensed_claim": "Source arrays must not contain untyped objects.",
+        "missing_fields": [],
+        "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "reason": "input payload failed CAPAS schema validation",
+        "required_fields": [],
+        "rewrite": null,
+        "schema_errors": [
+          "evidence.supporting_sources must be an array of strings"
+        ],
+        "schema_version": "capas-claim-payload-v3",
+        "verdict": "HOLD"
+      },
+      "errors": [
+        "evidence.supporting_sources must be an array of strings"
+      ],
+      "expected_error": "evidence.supporting_sources must be an array of strings",
       "passed": true
     },
     {
@@ -1114,7 +1173,7 @@
         ],
         "rewrite": null,
         "schema_errors": [],
-        "schema_version": "capas-claim-payload-v2",
+        "schema_version": "capas-claim-payload-v3",
         "verdict": "ACCEPT"
       },
       "expected_detail": "abs_error 0.0 <= tolerance 0.0",
@@ -1175,7 +1234,7 @@
         ],
         "rewrite": null,
         "schema_errors": [],
-        "schema_version": "capas-claim-payload-v2",
+        "schema_version": "capas-claim-payload-v3",
         "verdict": "HOLD"
       },
       "expected_detail": "anchor_mode",
@@ -1232,7 +1291,7 @@
         ],
         "rewrite": null,
         "schema_errors": [],
-        "schema_version": "capas-claim-payload-v2",
+        "schema_version": "capas-claim-payload-v3",
         "verdict": "ACCEPT"
       },
       "expected_detail": "effect direction is confirmed",
@@ -1289,7 +1348,7 @@
         ],
         "rewrite": "artifact available; independent reproduction is not yet licensed",
         "schema_errors": [],
-        "schema_version": "capas-claim-payload-v2",
+        "schema_version": "capas-claim-payload-v3",
         "verdict": "REWRITE"
       },
       "expected_detail": "independent reproduction has not passed",
@@ -1347,10 +1406,243 @@
         ],
         "rewrite": null,
         "schema_errors": [],
-        "schema_version": "capas-claim-payload-v2",
+        "schema_version": "capas-claim-payload-v3",
         "verdict": "ACCEPT"
       },
       "expected_detail": "period matches",
+      "expected_verdict": "ACCEPT",
+      "passed": true
+    },
+    {
+      "check": "semantic_payload:causal_mechanism_claim_accept",
+      "decision": {
+        "fine_tune_blockers": [
+          "source-backed evidence is not attached",
+          "external review is not attached",
+          "claim.text semantic alignment is not externally certified",
+          "witness independence is not externally certified",
+          "provenance.sources or provenance.source_urls is empty",
+          "external review hash is missing or does not match review_packet",
+          "source URLs are not recoverable with matching hashes",
+          "witness_id is not resolvable in the witness registry",
+          "RO-Crate provenance packet is missing, invalid, or hash-mismatched",
+          "reviewer identity or attestation is not verifiable",
+          "provenance.review_id is missing",
+          "provenance.witness_id is missing"
+        ],
+        "fine_tune_criteria": {
+          "external_review": false,
+          "provenance_sources": false,
+          "review_hash_verified": false,
+          "review_id_present": false,
+          "reviewer_attestation_verified": false,
+          "ro_crate_validated": false,
+          "schema_clean": true,
+          "semantic_alignment": false,
+          "source_backed_evidence": false,
+          "source_urls_recoverable_hashable": false,
+          "verdict_accept": true,
+          "witness_id_present": false,
+          "witness_independence": false,
+          "witness_registry_resolved": false
+        },
+        "fine_tune_ready": false,
+        "input_claim": {
+          "id": "causal_mechanism_claim_accept",
+          "text": "The intervention causally changes the outcome through the declared mechanism.",
+          "type": "causal_mechanism_claim"
+        },
+        "licensed_claim": "The intervention causally changes the outcome through the declared mechanism.",
+        "missing_fields": [],
+        "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "reason": "intervention/natural experiment, temporal order, confounder controls, and mechanism evidence all pass",
+        "required_fields": [
+          "intervention_or_natural_experiment",
+          "temporal_order_established",
+          "confounders_controlled",
+          "mechanism_evidence_present"
+        ],
+        "rewrite": null,
+        "schema_errors": [],
+        "schema_version": "capas-claim-payload-v3",
+        "verdict": "ACCEPT"
+      },
+      "expected_detail": "mechanism evidence all pass",
+      "expected_verdict": "ACCEPT",
+      "passed": true
+    },
+    {
+      "check": "semantic_payload:systematic_review_claim_rewrite",
+      "decision": {
+        "fine_tune_blockers": [
+          "claim verdict is not ACCEPT",
+          "source-backed evidence is not attached",
+          "external review is not attached",
+          "claim.text semantic alignment is not externally certified",
+          "witness independence is not externally certified",
+          "provenance.sources or provenance.source_urls is empty",
+          "external review hash is missing or does not match review_packet",
+          "source URLs are not recoverable with matching hashes",
+          "witness_id is not resolvable in the witness registry",
+          "RO-Crate provenance packet is missing, invalid, or hash-mismatched",
+          "reviewer identity or attestation is not verifiable",
+          "provenance.review_id is missing",
+          "provenance.witness_id is missing"
+        ],
+        "fine_tune_criteria": {
+          "external_review": false,
+          "provenance_sources": false,
+          "review_hash_verified": false,
+          "review_id_present": false,
+          "reviewer_attestation_verified": false,
+          "ro_crate_validated": false,
+          "schema_clean": true,
+          "semantic_alignment": false,
+          "source_backed_evidence": false,
+          "source_urls_recoverable_hashable": false,
+          "verdict_accept": false,
+          "witness_id_present": false,
+          "witness_independence": false,
+          "witness_registry_resolved": false
+        },
+        "fine_tune_ready": false,
+        "input_claim": {
+          "id": "systematic_review_claim_rewrite",
+          "text": "The systematic review supports the reported effect across included studies.",
+          "type": "systematic_review_claim"
+        },
+        "licensed_claim": "systematic review process is documented; strength or consistency of effect is not fully licensed",
+        "missing_fields": [],
+        "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "reason": "review protocol and inclusion criteria are present, but bias/consistency evidence is incomplete",
+        "required_fields": [
+          "protocol_registered",
+          "inclusion_criteria_declared",
+          "risk_of_bias_assessed",
+          "effect_consistency"
+        ],
+        "rewrite": "systematic review process is documented; strength or consistency of effect is not fully licensed",
+        "schema_errors": [],
+        "schema_version": "capas-claim-payload-v3",
+        "verdict": "REWRITE"
+      },
+      "expected_detail": "bias/consistency evidence is incomplete",
+      "expected_verdict": "REWRITE",
+      "passed": true
+    },
+    {
+      "check": "semantic_payload:evidence_conflict_claim_accept",
+      "decision": {
+        "fine_tune_blockers": [
+          "source-backed evidence is not attached",
+          "external review is not attached",
+          "claim.text semantic alignment is not externally certified",
+          "witness independence is not externally certified",
+          "provenance.sources or provenance.source_urls is empty",
+          "external review hash is missing or does not match review_packet",
+          "source URLs are not recoverable with matching hashes",
+          "witness_id is not resolvable in the witness registry",
+          "RO-Crate provenance packet is missing, invalid, or hash-mismatched",
+          "reviewer identity or attestation is not verifiable",
+          "provenance.review_id is missing",
+          "provenance.witness_id is missing"
+        ],
+        "fine_tune_criteria": {
+          "external_review": false,
+          "provenance_sources": false,
+          "review_hash_verified": false,
+          "review_id_present": false,
+          "reviewer_attestation_verified": false,
+          "ro_crate_validated": false,
+          "schema_clean": true,
+          "semantic_alignment": false,
+          "source_backed_evidence": false,
+          "source_urls_recoverable_hashable": false,
+          "verdict_accept": true,
+          "witness_id_present": false,
+          "witness_independence": false,
+          "witness_registry_resolved": false
+        },
+        "fine_tune_ready": false,
+        "input_claim": {
+          "id": "evidence_conflict_claim_accept",
+          "text": "The conflicting evidence is resolved by the declared pre-registered method.",
+          "type": "evidence_conflict_claim"
+        },
+        "licensed_claim": "The conflicting evidence is resolved by the declared pre-registered method.",
+        "missing_fields": [],
+        "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "reason": "supporting and contradicting sources are disclosed with a pre-registered conflict-resolution method",
+        "required_fields": [
+          "supporting_sources",
+          "contradicting_sources",
+          "conflict_resolution_method",
+          "resolution_pre_registered"
+        ],
+        "rewrite": null,
+        "schema_errors": [],
+        "schema_version": "capas-claim-payload-v3",
+        "verdict": "ACCEPT"
+      },
+      "expected_detail": "pre-registered conflict-resolution method",
+      "expected_verdict": "ACCEPT",
+      "passed": true
+    },
+    {
+      "check": "semantic_payload:multimodal_evidence_claim_accept",
+      "decision": {
+        "fine_tune_blockers": [
+          "source-backed evidence is not attached",
+          "external review is not attached",
+          "claim.text semantic alignment is not externally certified",
+          "witness independence is not externally certified",
+          "provenance.sources or provenance.source_urls is empty",
+          "external review hash is missing or does not match review_packet",
+          "source URLs are not recoverable with matching hashes",
+          "witness_id is not resolvable in the witness registry",
+          "RO-Crate provenance packet is missing, invalid, or hash-mismatched",
+          "reviewer identity or attestation is not verifiable",
+          "provenance.review_id is missing",
+          "provenance.witness_id is missing"
+        ],
+        "fine_tune_criteria": {
+          "external_review": false,
+          "provenance_sources": false,
+          "review_hash_verified": false,
+          "review_id_present": false,
+          "reviewer_attestation_verified": false,
+          "ro_crate_validated": false,
+          "schema_clean": true,
+          "semantic_alignment": false,
+          "source_backed_evidence": false,
+          "source_urls_recoverable_hashable": false,
+          "verdict_accept": true,
+          "witness_id_present": false,
+          "witness_independence": false,
+          "witness_registry_resolved": false
+        },
+        "fine_tune_ready": false,
+        "input_claim": {
+          "id": "multimodal_evidence_claim_accept",
+          "text": "The multimodal evidence supports the extracted claim.",
+          "type": "multimodal_evidence_claim"
+        },
+        "licensed_claim": "The multimodal evidence supports the extracted claim.",
+        "missing_fields": [],
+        "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "reason": "modality, source hashes, cross-modal alignment, and extraction method are declared",
+        "required_fields": [
+          "modality",
+          "source_hashes_verified",
+          "cross_modal_alignment",
+          "extraction_method_declared"
+        ],
+        "rewrite": null,
+        "schema_errors": [],
+        "schema_version": "capas-claim-payload-v3",
+        "verdict": "ACCEPT"
+      },
+      "expected_detail": "cross-modal alignment",
       "expected_verdict": "ACCEPT",
       "passed": true
     },
@@ -1391,7 +1683,7 @@
         ],
         "rewrite": null,
         "schema_errors": [],
-        "schema_version": "capas-claim-payload-v2",
+        "schema_version": "capas-claim-payload-v3",
         "verdict": "ACCEPT"
       },
       "expected_detail": "\"fine_tune_ready\": true",
@@ -1441,7 +1733,7 @@
         ],
         "rewrite": null,
         "schema_errors": [],
-        "schema_version": "capas-claim-payload-v2",
+        "schema_version": "capas-claim-payload-v3",
         "verdict": "ACCEPT"
       },
       "expected_detail": "external review is not attached",
@@ -1487,7 +1779,7 @@
         ],
         "rewrite": null,
         "schema_errors": [],
-        "schema_version": "capas-claim-payload-v2",
+        "schema_version": "capas-claim-payload-v3",
         "verdict": "ACCEPT"
       },
       "expected_blocker": "external review hash is missing or does not match review_packet",
@@ -1533,7 +1825,7 @@
         ],
         "rewrite": null,
         "schema_errors": [],
-        "schema_version": "capas-claim-payload-v2",
+        "schema_version": "capas-claim-payload-v3",
         "verdict": "ACCEPT"
       },
       "expected_blocker": "source URLs are not recoverable with matching hashes",
@@ -1579,7 +1871,7 @@
         ],
         "rewrite": null,
         "schema_errors": [],
-        "schema_version": "capas-claim-payload-v2",
+        "schema_version": "capas-claim-payload-v3",
         "verdict": "ACCEPT"
       },
       "expected_blocker": "witness_id is not resolvable in the witness registry",
@@ -1625,7 +1917,7 @@
         ],
         "rewrite": null,
         "schema_errors": [],
-        "schema_version": "capas-claim-payload-v2",
+        "schema_version": "capas-claim-payload-v3",
         "verdict": "ACCEPT"
       },
       "expected_blocker": "RO-Crate provenance packet is missing, invalid, or hash-mismatched",
@@ -1671,7 +1963,7 @@
         ],
         "rewrite": null,
         "schema_errors": [],
-        "schema_version": "capas-claim-payload-v2",
+        "schema_version": "capas-claim-payload-v3",
         "verdict": "ACCEPT"
       },
       "expected_blocker": "reviewer identity or attestation is not verifiable",

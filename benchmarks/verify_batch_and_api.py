@@ -14,7 +14,7 @@ REPORT_PATH = ROOT / "outputs" / "batch_api_report.json"
 PORT = 8766
 ACTION_PATH = ROOT / ".github" / "actions" / "capas-claim-gate" / "action.yml"
 WORKFLOW_PATH = ROOT / ".github" / "workflows" / "claim-gate.yml"
-SCHEMA_VERSION = "capas-claim-payload-v2"
+SCHEMA_VERSION = "capas-claim-payload-v3"
 
 
 def _json_request(url: str, payload: object | None = None) -> dict:
