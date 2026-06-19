@@ -53,6 +53,7 @@ HARNESS = r"""
     ok("customer_brief_link_exists", Boolean(document.querySelector('a[href="CUSTOMER_READY_BRIEF.md"]')));
     ok("executive_dashboard_exists", Boolean(document.getElementById("metric-ft-ready")) && Boolean(document.getElementById("metric-provenance")));
     ok("guided_builder_exists", Boolean(document.getElementById("guided-type")) && Boolean(document.getElementById("guided-fields")));
+    ok("paper_ingestion_ui_exists", Boolean(document.getElementById("ingest-source-text")) && Boolean(document.getElementById("candidate-claims-list")));
     ok("sensitive_mode_button_exists", Boolean(document.getElementById("sensitive-mode-toggle")));
     ok("theme_button_exists", document.getElementById("theme-toggle"));
     ok("schema_version_badge_exists", document.getElementById("schema-version-badge")?.textContent.includes("schema v3"));
@@ -125,6 +126,17 @@ HARNESS = r"""
     ok("guided_payload_decides", document.getElementById("output").textContent.includes('"verdict"'));
     loadVerticalDemo("AI_GOVERNANCE");
     ok("vertical_demo_loads_ai_governance", document.getElementById("input").value.includes("ai_gov_training_claim_001") && document.querySelector(".verdict-badge.ACCEPT"));
+
+    document.getElementById("ingest-source-text").value = "The paper reports p_value: 0.03, alpha: 0.05, and effect_direction_confirmed: true for the main endpoint. The theory note reports anchor_mode: absolute_anchor, local_property_tests_pass: true, and universal_anchor_pass: true.";
+    extractCandidateClaims();
+    ok("paper_ingestion_extracts_candidates", ingestCandidates.length >= 1 && document.querySelectorAll(".candidate-row").length >= 1);
+    ok("paper_ingestion_shows_evidence_spans", document.querySelector(".candidate-span")?.textContent.includes("line"));
+    confirmCandidateClaim(0);
+    ok("paper_ingestion_confirm_builds_payload", document.getElementById("input").value.includes('"ingestion"') && document.getElementById("input").value.includes('"human_confirmed": true'));
+    decide();
+    ok("paper_ingestion_payload_decides", document.getElementById("output").textContent.includes('"verdict"'));
+    buildIngestionReport();
+    ok("paper_ingestion_report_visible", document.getElementById("output").textContent.includes('"report_type": "paper_ingestion_preview"') && document.getElementById("output").textContent.includes('"evidence_spans"'));
 
     loadSample("REWRITE");
     ok("rewrite_verdict", document.querySelector(".verdict-badge.REWRITE"));

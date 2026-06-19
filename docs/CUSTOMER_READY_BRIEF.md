@@ -25,6 +25,7 @@ Before CAPAS:
 
 After CAPAS:
 
+- Paper text, abstracts, theorem notes, or local metadata exports can be ingested into candidate claims with visible evidence spans.
 - Claims are typed against `capas-claim-payload-v3`.
 - Required evidence fields are checked deterministically.
 - Batch review produces explicit rates for `ACCEPT`, `REWRITE`, `REJECT`, `HOLD`, and `fine_tune_ready`.
@@ -68,11 +69,13 @@ Demo story: an AI governance team wants to curate high-confidence scientific cla
 Live demo sequence:
 
 1. Load the AI governance guided demo.
-2. Run `Decide`.
-3. Show the verdict and fine-tune blockers.
-4. Run `Batch` on a mixed list.
-5. Show the executive dashboard and per-item expandable rows.
-6. Toggle Sensitive mode and export redacted CSV.
+2. Paste a paper abstract or theorem note into Paper/Text Ingestion.
+3. Extract candidate claims, inspect evidence spans, and confirm one candidate.
+4. Run `Decide`.
+5. Show the verdict and fine-tune blockers.
+6. Run `Batch` on a mixed list.
+7. Show the executive dashboard and per-item expandable rows.
+8. Toggle Sensitive mode and export redacted CSV.
 
 ## Pricing hypothesis
 
@@ -95,7 +98,12 @@ Current surfaces:
 Upstream integration story:
 
 - Semantic Scholar, PubMed, Elicit, or internal retrieval can prepare candidate evidence.
+- The browser includes a local paper/text ingestion preview: pasted text or local files become candidate claims with spans, and no candidate can be decided until a human confirms it.
 - CAPAS remains the deterministic final gate: retrieve and extract upstream, then decide with CAPAS.
+
+## Paper/theory ingestion boundary
+
+CAPAS can ingest pasted paper text, abstracts, theorem notes, local text/Markdown/JSON/JSONL files, and PDF provenance metadata in the browser. Candidate extraction is deterministic and span-based. It does not perform full academic argument mining, theorem proving, or automatic scientific certification. For PDF text extraction and local corpora, use the CLI standalone path: `retrieve`, `extract`, `align`, `reason`, and `pipeline`.
 
 ## Sensitive data mode
 
