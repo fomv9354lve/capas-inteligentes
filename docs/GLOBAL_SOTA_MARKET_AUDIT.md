@@ -270,6 +270,15 @@ value is as:
 3. an evidence gate embedded in larger platforms,
 4. a review/audit artifact generator for high-stakes scientific claims.
 
+The stronger standalone product direction is hybrid:
+
+```text
+extract/retrieve evidence -> semantic alignment -> deterministic CAPAS gate
+```
+
+CAPAS currently implements only the deterministic gate. The extraction and
+semantic-alignment stages remain future work.
+
 Weak market path:
 
 - selling "another provenance platform."

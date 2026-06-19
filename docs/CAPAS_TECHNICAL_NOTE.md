@@ -8,6 +8,11 @@ metamorphic testing, or VVUQ methodology. Its narrower purpose is to package
 the evidence behind a scientific computation result so that downstream users can
 see which claim the result is allowed to support.
 
+In a hybrid AI-for-science pipeline, CAPAS is the deterministic middle layer:
+an upstream LLM, extractor, or scientific verifier supplies structured
+claim/evidence JSON; CAPAS decides whether that structured evidence licenses
+`ACCEPT`, `REWRITE`, `REJECT`, or `HOLD`.
+
 The current prototype represents a trace as a standards-aligned provenance
 object plus a domain evidence object, `capas:PhysicalEvidence`. That object
 records the evidence level, witness independence, declared reference truth,
@@ -66,6 +71,8 @@ CAPAS does not claim:
 
 - to invent provenance,
 - to invent scientific verification,
+- to retrieve evidence from papers or code,
+- to semantically verify arbitrary free-text claim prose,
 - to replace QMB100/PhysVEC, SciAgentGym, VVUQ, or RO-Crate,
 - to benchmark simulators,
 - to prove broad LLM scientific reasoning,
@@ -90,3 +97,8 @@ The remaining live question is external utility:
 > or do their existing artifacts already capture these distinctions?
 
 That question is being asked as validation, not assumed as solved.
+
+The next product module is a semantic alignment checker that verifies whether
+`claim.text`, `claim.type`, and the supplied evidence fields describe the same
+scientific assertion. That module should sit upstream or beside CAPAS; the final
+CAPAS verdict should remain deterministic.

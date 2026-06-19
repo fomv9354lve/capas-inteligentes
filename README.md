@@ -24,6 +24,22 @@ CAPAS is for people auditing AI-generated scientific-computation outputs:
 CAPAS is not for users who only need a faster simulator or generic workflow
 lineage.
 
+## Hybrid Pipeline Role
+
+CAPAS is the deterministic middle of a hybrid AI-for-science verification
+pipeline:
+
+```text
+LLM / extractor / scientific verifier upstream
+        -> claim + evidence JSON
+        -> CAPAS deterministic claim gate
+        -> ACCEPT / REWRITE / REJECT / HOLD
+```
+
+CAPAS does not currently retrieve evidence or semantically verify arbitrary
+claim prose. It assumes structured evidence has been supplied, then makes the
+claim decision auditable and repeatable.
+
 ## External Review Packet
 
 For reviewers and potential users:
@@ -32,6 +48,7 @@ For reviewers and potential users:
 - Request for feedback: `docs/REQUEST_FOR_FEEDBACK.md`
 - QMB100 / PhysVEC one-pager: `docs/CAPAS_ONE_PAGER_QMB100.md`
 - Global SotA / market audit: `docs/GLOBAL_SOTA_MARKET_AUDIT.md`
+- Hybrid pipeline positioning: `docs/HYBRID_PIPELINE_POSITIONING.md`
 - Input hardening notes: `docs/INPUT_HARDENING.md`
 - Public demo: `https://fomv9354lve.github.io/capas-inteligentes/`
 - Current release: `https://github.com/fomv9354lve/capas-inteligentes/releases/tag/v0.1.1`
