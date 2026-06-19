@@ -158,6 +158,8 @@ Enterprise integration notes live in:
 - `docs/SECURITY_COMPLIANCE_APPENDIX.md`
 - `docs/PILOT_ROI_BUSINESS_CASE.md`
 - `docs/PAPER_INGESTION_CONNECTORS.md`
+- `docs/UPSTREAM_GITHUB_ACTIONS_POLICY.md`
+- `docs/DAILY_SOTA_UPDATE.md`
 
 Run CAPAS in GitHub Actions:
 
@@ -378,6 +380,8 @@ See:
 - `docs/PROJECT_DASHBOARD.md`
 - `docs/REPRODUCIBILITY.md`
 - `docs/SOTA_POSITIONING.md`
+- `docs/SOTA_DAILY_WATCH.md`
+- `docs/DAILY_SOTA_UPDATE.md`
 - `docs/WORKFLOW_RUN_RO_CRATE_ALIGNMENT.md`
 - `docs/profile/CAPAS_PHYSICAL_EVIDENCE_PROFILE.md`
 - `docs/FORMAL_BOUND_AXIS.md`
