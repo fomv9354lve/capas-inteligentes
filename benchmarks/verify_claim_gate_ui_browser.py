@@ -122,6 +122,21 @@ HARNESS = r"""
     clearHistory();
     ok("clear_history_empties_list", document.getElementById("history-count").textContent.includes("0/50"));
 
+    if (window.innerWidth <= 560) {
+      const gridColumns = getComputedStyle(document.querySelector(".grid")).gridTemplateColumns.trim().split(/\s+/);
+      const actionColumns = getComputedStyle(document.querySelector(".action-row")).gridTemplateColumns.trim().split(/\s+/);
+      ok("mobile_viewport_active", window.innerWidth <= 560, String(window.innerWidth));
+      ok("mobile_grid_single_column", gridColumns.length === 1, gridColumns.join("|"));
+      ok("mobile_action_row_single_column", actionColumns.length === 1, actionColumns.join("|"));
+      ok("mobile_topbar_wraps_actions", document.querySelector(".topbar-actions").getBoundingClientRect().top > document.querySelector(".topbar-left").getBoundingClientRect().top);
+      ok("mobile_output_within_viewport", document.getElementById("output").getBoundingClientRect().right <= window.innerWidth);
+      openHelpModal(helpButton);
+      const modalRect = document.getElementById("help-modal").getBoundingClientRect();
+      ok("mobile_modal_fits_width", modalRect.left >= 0 && modalRect.right <= window.innerWidth);
+      ok("mobile_modal_fits_height", modalRect.top >= 0 && modalRect.bottom <= window.innerHeight);
+      closeHelpModal();
+    }
+
     const failures = checks.filter((check) => !check.passed);
     const pre = document.createElement("pre");
     pre.id = "capas-e2e-results";
@@ -163,32 +178,52 @@ def main() -> int:
             encoded = base64.urlsafe_b64encode(
                 json.dumps(shared_payload, sort_keys=True).encode("utf-8")
             ).decode("ascii").rstrip("=")
-            proc = subprocess.run(
-                [
-                    chrome,
-                    "--headless=new",
-                    "--disable-gpu",
-                    "--no-sandbox",
-                    "--dump-dom",
-                    "--virtual-time-budget=2000",
-                    f"{harness_path.as_uri()}?p={encoded}",
-                ],
-                text=True,
-                capture_output=True,
-                timeout=20,
-            )
-        passed = proc.returncode == 0 and 'data-capas-e2e="PASS"' in proc.stdout
+            def run_chrome(name: str, *extra_args: str) -> subprocess.CompletedProcess[str]:
+                return subprocess.run(
+                    [
+                        chrome,
+                        "--headless=new",
+                        "--disable-gpu",
+                        "--no-sandbox",
+                        "--dump-dom",
+                        "--virtual-time-budget=2000",
+                        *extra_args,
+                        f"{harness_path.as_uri()}?p={encoded}",
+                    ],
+                    text=True,
+                    capture_output=True,
+                    timeout=20,
+                )
+
+            proc = run_chrome("desktop")
+            mobile_proc = run_chrome("mobile", "--window-size=390,844", "--force-device-scale-factor=1")
+        desktop_passed = proc.returncode == 0 and 'data-capas-e2e="PASS"' in proc.stdout
+        mobile_passed = mobile_proc.returncode == 0 and 'data-capas-e2e="PASS"' in mobile_proc.stdout
+        passed = desktop_passed and mobile_passed
         checks.append({"check": "chrome_available", "passed": True, "detail": chrome})
         checks.append({
-            "check": "browser_e2e_pass",
-            "passed": passed,
-            "detail": "all browser checks passed" if passed else (proc.stderr or proc.stdout[-1000:]).strip(),
+            "check": "browser_e2e_desktop_pass",
+            "passed": desktop_passed,
+            "detail": (
+                "desktop browser checks passed"
+                if desktop_passed
+                else f"returncode={proc.returncode}; stderr={proc.stderr.strip()}; stdout_tail={proc.stdout[-4000:]}"
+            ),
+        })
+        checks.append({
+            "check": "browser_e2e_mobile_pass",
+            "passed": mobile_passed,
+            "detail": (
+                "mobile browser checks passed"
+                if mobile_passed
+                else f"returncode={mobile_proc.returncode}; stderr={mobile_proc.stderr.strip()}; stdout_tail={mobile_proc.stdout[-4000:]}"
+            ),
         })
 
     report = {
         "claim_gate_browser_e2e_ready": passed,
         "checks": checks,
-        "scope": "Runs the generated static UI in a real headless Chrome/Chromium process and exercises shared URLs, Build Draft, ACCEPT/REWRITE/REJECT/HOLD paths, INVALID schema output, syntax highlighting, history restore, and clear history.",
+        "scope": "Runs the generated static UI in real headless Chrome/Chromium desktop and mobile viewports and exercises shared URLs, Build Draft, ACCEPT/REWRITE/REJECT/HOLD paths, INVALID schema output, syntax highlighting, history restore, clear history, and responsive batch/modal layout.",
     }
     REPORT_PATH.parent.mkdir(parents=True, exist_ok=True)
     REPORT_PATH.write_text(json.dumps(report, indent=2, sort_keys=True), encoding="utf-8")

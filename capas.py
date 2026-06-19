@@ -1358,6 +1358,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
   .sample-btn.hold { color: var(--slate); border-color: var(--slate-border); background: var(--slate-bg); }
   .sample-btn.invalid { color: var(--red); border-color: var(--red-border); background: var(--red-bg); }
   .grid { display: grid; grid-template-columns: minmax(380px, 42%) minmax(0, 1fr); gap: 16px; align-items: start; }
+  .grid > div { min-width: 0; }
   .panel {
     background: var(--bg-2);
     border: 1px solid var(--border);
@@ -1387,6 +1388,8 @@ def _render_ui(sample: dict[str, Any]) -> str:
   .panel-tag:empty { display: none; }
   #input {
     width: 100%;
+    min-width: 0;
+    max-width: 100%;
     min-height: 380px;
     background: transparent;
     color: var(--text-1);
@@ -1479,7 +1482,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
   .output-section { padding: 12px 16px; }
   .output-label { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.7px; color: var(--text-3); }
   .output-label::after { content: ""; flex: 1; height: 1px; background: var(--border); }
-  pre#output { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); color: var(--text-2); max-height: 360px; padding: 14px; font-size: 11.5px; font-family: var(--mono); line-height: 1.7; overflow: auto; white-space: pre; }
+  pre#output { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); color: var(--text-2); max-width: 100%; min-width: 0; max-height: 360px; padding: 14px; font-size: 11.5px; font-family: var(--mono); line-height: 1.7; overflow: auto; white-space: pre; }
   .json-key { color: var(--json-key); }
   .json-string { color: var(--json-string); }
   .json-number { color: var(--json-number); }
@@ -1567,12 +1570,62 @@ def _render_ui(sample: dict[str, Any]) -> str:
   html[data-theme="light"] pre#output { background: var(--bg-3); }
   @media (max-width: 860px) {
     .app-body { padding: 16px 16px 60px; }
-    .topbar { padding: 0 16px; }
+    .topbar {
+      height: auto;
+      min-height: 52px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 8px 16px;
+    }
+    .topbar-left { flex: 1 1 auto; max-width: 100%; }
+    .topbar-actions {
+      order: 2;
+      flex: 1 0 100%;
+      width: 100%;
+      min-width: 0;
+      max-width: 100%;
+      justify-content: flex-start;
+      overflow-x: auto;
+      padding-bottom: 2px;
+      scrollbar-width: none;
+    }
+    .topbar-actions::-webkit-scrollbar { display: none; }
     .topbar-subtitle { display: none; }
+    .topbar-badge, .topbar-actions .copy-btn { flex: 0 0 auto; }
+    .samples-bar {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: none;
+    }
+    .samples-bar::-webkit-scrollbar { display: none; }
+    .sample-btn { flex: 0 0 auto; }
     .grid { grid-template-columns: 1fr; }
     #input { min-height: 260px; }
     pre#output { max-height: 280px; }
     .rewrite-diff { grid-template-columns: 1fr; }
+    .modal-backdrop { align-items: stretch; padding: 12px; }
+    .help-modal { width: 100%; max-height: calc(100vh - 24px); }
+    .history-header { align-items: flex-start; gap: 12px; }
+    .history-actions { flex-wrap: wrap; justify-content: flex-end; }
+    .history-item { align-items: flex-start; flex-wrap: wrap; }
+    .history-reason { flex-basis: 100%; overflow-wrap: anywhere; }
+  }
+  @media (max-width: 560px) {
+    .app-body { padding: 12px 12px 48px; }
+    .topbar-logo { font-size: 13px; }
+    .topbar-logo-icon { width: 24px; height: 24px; }
+    .panel-header { padding: 9px 12px; }
+    #input { min-height: 220px; padding: 12px; font-size: 12px; }
+    .action-row { grid-template-columns: 1fr; }
+    .draft-btn { border-right: 0; border-bottom: 1px solid var(--border); }
+    .decide-btn, .draft-btn { min-height: 44px; }
+    .verdict-banner { align-items: flex-start; flex-direction: column; gap: 8px; padding: 14px; }
+    .alert-block, .assist-block, .rewrite-block, .output-section { margin-left: 12px; margin-right: 12px; }
+    .output-section { padding: 12px; }
+    pre#output { max-height: 240px; padding: 12px; font-size: 11px; }
+    .help-modal { padding: 14px; border-radius: var(--radius); }
   }
 </style>
 </head>
