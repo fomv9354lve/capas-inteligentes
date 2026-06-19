@@ -61,7 +61,9 @@ HARNESS = r"""
     decide();
     ok("empty_input_message", document.getElementById("verdict-area").textContent.includes("Input required"));
 
-    openHelpModal();
+    const helpButton = document.getElementById("help-btn");
+    helpButton.focus();
+    openHelpModal(helpButton);
     ok("help_modal_opens", document.getElementById("help-modal-backdrop").classList.contains("open"));
     ok("help_modal_has_dialog_role", document.getElementById("help-modal").getAttribute("role") === "dialog");
     ok("help_modal_has_aria_modal", document.getElementById("help-modal").getAttribute("aria-modal") === "true");
@@ -69,6 +71,22 @@ HARNESS = r"""
     ok("help_modal_mentions_pipeline", document.getElementById("help-modal-backdrop").textContent.includes("retrieve"));
     closeHelpModal();
     ok("help_modal_closes", !document.getElementById("help-modal-backdrop").classList.contains("open"));
+    ok("help_modal_returns_focus_to_trigger", document.activeElement === helpButton);
+
+    localStorage.setItem("capas_decision_history_v1", JSON.stringify([{
+      id: '<img src=x onerror="window.__xss=true">',
+      verdict: "HOLD",
+      reason: "legacy audit artifact",
+      payload: JSON.stringify({
+        claim: { id: '<img src=x onerror="window.__xss=true">', type: "exact_model_solution", text: "legacy" },
+        evidence: { abs_error: 0, tolerance: 0.001 }
+      }),
+      decision: { verdict: "HOLD" },
+      timestamp: new Date().toISOString()
+    }]));
+    decisionHistory = loadHistory();
+    ok("legacy_history_sanitized_in_memory", decisionHistory.length === 0);
+    ok("legacy_history_sanitized_storage", JSON.parse(localStorage.getItem("capas_decision_history_v1") || "[]").length === 0);
 
     buildDraft();
     ok("draft_status_is_amber", document.getElementById("json-status").className.includes("draft"));

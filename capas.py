@@ -1589,7 +1589,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
     <span class="topbar-subtitle">Rule-based via <code>capas.py decide</code> · schema errors → <code>HOLD</code></span>
   </div>
   <div class="topbar-actions">
-    <button class="copy-btn" id="help-btn" aria-label="Open keyboard shortcut and pipeline help" aria-expanded="false" onclick="openHelpModal()">Help</button>
+    <button class="copy-btn" id="help-btn" aria-label="Open keyboard shortcut and pipeline help" aria-expanded="false" onclick="openHelpModal(this)">Help</button>
     <button class="copy-btn" id="theme-toggle" aria-label="Toggle light and dark theme" onclick="toggleTheme()">Theme</button>
     <span class="topbar-badge" id="schema-version-badge">schema v1</span>
     <span class="topbar-badge">__UI_VERSION__</span>
@@ -2104,10 +2104,28 @@ def _render_ui(sample: dict[str, Any]) -> str:
       try {
         const raw = localStorage.getItem(historyStorageKey);
         const parsed = raw ? JSON.parse(raw) : [];
-        return Array.isArray(parsed) ? parsed.slice(0, historyLimit) : [];
+        const clean = Array.isArray(parsed) ? parsed.filter(isSafeHistoryEntry).slice(0, historyLimit) : [];
+        if (Array.isArray(parsed) && clean.length !== parsed.length) {
+          localStorage.setItem(historyStorageKey, JSON.stringify(clean));
+        }
+        return clean;
       } catch (_) {
         return [];
       }
+    }
+
+    function isSafeHistoryEntry(entry) {
+      if (!entry || typeof entry !== "object") return false;
+      if (typeof entry.id === "string" && containsAngleLikeCharacter(entry.id)) return false;
+      try {
+        const payload = typeof entry.payload === "string" ? JSON.parse(entry.payload) : null;
+        const claim = payload && typeof payload.claim === "object" && !Array.isArray(payload.claim) ? payload.claim : {};
+        if (typeof claim.id === "string" && containsAngleLikeCharacter(claim.id)) return false;
+        if (typeof claim.text === "string" && containsAngleLikeCharacter(claim.text)) return false;
+      } catch (_) {
+        return false;
+      }
+      return true;
     }
 
     function saveHistory() {
@@ -2396,8 +2414,8 @@ def _render_ui(sample: dict[str, Any]) -> str:
       });
     }
 
-    function openHelpModal() {
-      lastFocusedBeforeHelp = document.activeElement;
+    function openHelpModal(trigger) {
+      lastFocusedBeforeHelp = trigger || document.getElementById("help-btn") || document.activeElement;
       document.getElementById("help-modal-backdrop").classList.add("open");
       document.getElementById("help-btn").setAttribute("aria-expanded", "true");
       const closeButton = document.querySelector("#help-modal .copy-btn");
@@ -2408,7 +2426,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
       if (event && event.type === "click" && event.target.id !== "help-modal-backdrop") return;
       document.getElementById("help-modal-backdrop").classList.remove("open");
       document.getElementById("help-btn").setAttribute("aria-expanded", "false");
-      if (lastFocusedBeforeHelp && typeof lastFocusedBeforeHelp.focus === "function") {
+      if (lastFocusedBeforeHelp && document.contains(lastFocusedBeforeHelp) && typeof lastFocusedBeforeHelp.focus === "function") {
         lastFocusedBeforeHelp.focus();
       }
     }
@@ -2450,7 +2468,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
         event.preventDefault();
         const modal = document.getElementById("help-modal-backdrop");
         if (modal.classList.contains("open")) closeHelpModal();
-        else openHelpModal();
+        else openHelpModal(document.getElementById("help-btn"));
       } else if (event.key === "Escape") {
         closeHelpModal();
       }
