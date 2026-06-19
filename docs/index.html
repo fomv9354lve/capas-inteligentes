@@ -99,6 +99,9 @@
     .accept { color: var(--green); background: rgba(34,197,94,0.08); }
     .rewrite { color: var(--orange); background: rgba(249,115,22,0.08); }
     .reject { color: var(--red); background: rgba(239,68,68,0.08); }
+    .pill-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+    .pill { border: 1px solid var(--border); border-radius: 999px; background: var(--surface); color: var(--muted); padding: 6px 11px; font-size: 12px; font-weight: 800; }
+    .audit-snippet { border: 1px solid var(--border); border-radius: var(--radius); background: #0c0c0e; padding: 16px; overflow: auto; color: var(--text); font-size: 13px; line-height: 1.55; }
     section { padding: 34px 0; border-top: 1px solid var(--border); }
     .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     .screens { grid-template-columns: repeat(3, minmax(0, 1fr)); }
@@ -129,6 +132,11 @@
         <h1>Stop claim drift before scientific claims enter datasets or fine-tuning.</h1>
         <p>CAPAS decides whether supplied evidence licenses a scientific claim for controlled reuse. It returns ACCEPT, REWRITE, REJECT, or HOLD with provenance blockers and audit-ready reasoning.</p>
         <p>It does not certify scientific truth. It prevents a paper's limited evidence from turning into an over-scoped training example, report sentence, or governed dataset record.</p>
+        <div class="pill-row" aria-label="Primary buyers">
+          <span class="pill">AI Governance</span>
+          <span class="pill">Research Operations</span>
+          <span class="pill">Scientific Data Teams</span>
+        </div>
         <div class="nav">
           <a class="button primary" href="app.html">Run sample claim</a>
           <a class="button" href="pilot-packet.html">See pilot package</a>
@@ -143,20 +151,11 @@
       </div>
     </section>
     <section>
-      <h2>The so what</h2>
+      <h2>Without CAPAS</h2>
       <div class="grid">
-        <div class="card"><strong>Claim contamination avoided</strong><p>The cost is not only reviewer time. It is unsupported claims entering datasets, reports, and model behavior as if the evidence licensed them.</p></div>
-        <div class="card"><strong>Exception queue created</strong><p>Reviewers focus on HOLD, REWRITE, REJECT, and provenance exceptions instead of treating every candidate claim as equally risky.</p></div>
-        <div class="card"><strong>Audit-ready evidence trail</strong><p>Each accepted claim carries a decision reason, source spans, reviewer/witness provenance, and a non-LLM decision marker.</p></div>
-      </div>
-    </section>
-    <section>
-      <h2>The problem is claim drift</h2>
-      <p>The problem is not lack of evidence. The problem is claim drift: the final sentence often says more than the evidence licenses.</p>
-      <div class="grid">
-        <div class="card"><strong>Before</strong><p>Evidence review happens in spreadsheets and prose. The final claim text can drift away from what the evidence actually licenses.</p></div>
-        <div class="card"><strong>CAPAS gate</strong><p>Each claim gets a type, required evidence fields, schema validation, provenance blockers, and a deterministic decision.</p></div>
-        <div class="card"><strong>After</strong><p>Reviewers focus on HOLD/REWRITE/REJECT queues, while accepted claims carry explicit audit trails into reports and pipelines.</p></div>
+        <div class="card"><strong>Association becomes causality</strong><p>A cautious source sentence turns into a stronger claim boundary than the evidence supports.</p></div>
+        <div class="card"><strong>Pilot data becomes training data</strong><p>Candidate records move downstream before anyone separates licensed claims from rewrite/reject exceptions.</p></div>
+        <div class="card"><strong>Weak evidence becomes governed knowledge</strong><p>The drift is small at the sentence level. The downstream impact is not.</p></div>
       </div>
     </section>
     <section>
@@ -178,19 +177,29 @@
       </div>
     </section>
     <section>
-      <h2>Why now</h2>
+      <h2>Why not a fact-checker or provenance tool?</h2>
       <div class="grid">
-        <div class="card"><strong>Scientific AI is moving faster than review workflows</strong><p>Foundation-model teams, research groups, and domain-data owners are turning source material into reusable training and evaluation records.</p></div>
-        <div class="card"><strong>Synthetic and curated data amplify small wording errors</strong><p>A single over-scoped claim can be copied, transformed, and learned as if it were licensed fact.</p></div>
-        <div class="card"><strong>Training-data scrutiny is becoming operational</strong><p>Governance teams increasingly need evidence trails, decision criteria, and documented controls before reuse.</p></div>
+        <div class="card"><strong>Fact-checkers ask: is it true?</strong><p>CAPAS asks: does this evidence packet license this claim boundary for controlled reuse?</p></div>
+        <div class="card"><strong>Provenance tracks sources</strong><p>CAPAS checks whether the source evidence supports the exact reusable sentence.</p></div>
+        <div class="card"><strong>Lineage tracks datasets</strong><p>CAPAS creates an exception queue before the claim becomes a dataset record.</p></div>
       </div>
     </section>
     <section>
-      <h2>The moat</h2>
+      <h2>Audit artifact</h2>
+      <p>CAPAS does not just label a record. It produces a decision object that reviewers can inspect, export, and challenge.</p>
+      <pre class="audit-snippet" aria-label="Example CAPAS audit JSON">{
+  "decision": "REWRITE",
+  "reason": "Association supported. Causality not licensed.",
+  "blocker": "No intervention or natural-experiment evidence.",
+  "non_claim": "Rule-based over supplied evidence fields, not an LLM judgment."
+}</pre>
+    </section>
+    <section>
+      <h2>Why now</h2>
       <div class="grid">
-        <div class="card"><strong>Deterministic</strong><p>The decision is rule-based over supplied evidence fields, not another model judging a model.</p></div>
-        <div class="card"><strong>Claim-level</strong><p>CAPAS works at the sentence-level boundary where drift actually happens.</p></div>
-        <div class="card"><strong>Evidence contracts</strong><p>Each claim type has explicit admissibility criteria, blockers, and exportable reasoning.</p></div>
+        <div class="card"><strong>Scientific AI is moving faster than review workflows</strong><p>Teams are turning source material into reusable training and evaluation records.</p></div>
+        <div class="card"><strong>Small wording errors compound</strong><p>A single over-scoped claim can be copied, transformed, and learned as if it were licensed fact.</p></div>
+        <div class="card"><strong>Governance needs pre-ingestion controls</strong><p>Evidence trails, decision criteria, and exception queues matter before reuse.</p></div>
       </div>
     </section>
     <section>
@@ -201,6 +210,14 @@
         <a class="card nav-card" href="customer-brief.html"><strong>Methodology</strong><span>Why CAPAS exists, where it sits against the state of the art, and what it does not claim.</span></a>
       </div>
     </section>
+    <section>
+      <h2>The moat</h2>
+      <div class="grid">
+        <div class="card"><strong>Deterministic</strong><p>The decision is rule-based over supplied evidence fields, not another model judging a model.</p></div>
+        <div class="card"><strong>Claim boundary</strong><p>CAPAS works at the exact sentence boundary where drift actually happens.</p></div>
+        <div class="card"><strong>Evidence contracts</strong><p>Each claim type has explicit admissibility criteria, blockers, and exportable reasoning.</p></div>
+      </div>
+    </section>
     <section id="business-case">
       <h2>Internal validation model</h2>
       <p>These are planning assumptions for a controlled pilot, not customer production claims. Keep them below the product thesis: the pilot should measure claim contamination risk, decision mix, reviewer agreement, and provenance blockers on the buyer's own corpus.</p>
@@ -209,23 +226,6 @@
         <div class="card"><strong>Modeled decision mix</strong><p>34% rewritten or rejected in the internal validation model. Actual rate is corpus-dependent and must be measured in pilot.</p></div>
         <div class="card"><strong>First pilot size</strong><p>Start with 500 records, then report decision mix, claim contamination examples, and provenance blockers.</p></div>
       </div>
-    </section>
-    <section>
-      <h2>CAPAS surfaces buyers can inspect</h2>
-      <div class="screens">
-        <div class="card"><strong>Paper/text ingestion</strong><p>Paste an abstract, theorem note, or source text; CAPAS proposes candidate claims with evidence spans for human confirmation.</p></div>
-        <div class="card"><strong>Guided evidence constructor</strong><p>Create a typed evidence packet without writing raw JSON. CAPAS still emits the full schema payload for audit, CLI, and API use.</p></div>
-        <div class="card"><strong>Batch/provenance dashboard</strong><p>Track ACCEPT, REWRITE, REJECT, fine-tune-ready, and provenance-blocked counts.</p></div>
-      </div>
-    </section>
-    <section>
-      <h2>Primary buyer story</h2>
-      <p>For AI governance, research operations, and scientific data teams, CAPAS answers the question: which structured evidence records are sufficiently licensed for reuse, publication workflows, or fine-tuning preparation?</p>
-      <p>The product is best understood as a deterministic claim admissibility engine: claim plus evidence goes in; a licensed decision boundary comes out.</p>
-    </section>
-    <section>
-      <h2>Advisory delivery wedge</h2>
-      <p>The transformation story is not "install a validator." It is "stand up a training-data assurance control in two weeks." A delivery partner can package CAPAS as a governed workflow: ingest source material, confirm evidence spans, gate records deterministically, export an audit packet, and quantify review capacity redirected to higher-risk exceptions.</p>
     </section>
     <section class="footnotes" aria-label="Modeling notes and disclaimers">
       <h2>Modeling notes</h2>
