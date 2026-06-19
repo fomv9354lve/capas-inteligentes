@@ -22,6 +22,16 @@ REQUIRED_SNIPPETS = [
     "claim.type must be one of",
     "fine_tune_ready",
     "not an LLM judgment",
+    "aria-label=\"Claim and evidence JSON input\"",
+    "aria-label=\"Copy decision JSON\"",
+    "focus-visible",
+    "localStorage",
+    "restoreHistory",
+    "historyLimit = 50",
+    "Input required",
+    "prefers-color-scheme: light",
+    "disabled>Copy JSON",
+    "minmax(380px, 40%)",
 ]
 
 

@@ -1133,13 +1133,18 @@ def _render_ui(sample: dict[str, Any]) -> str:
   }
   .sample-btn:hover { opacity: 0.75; transform: translateY(-1px); }
   .sample-btn:active { transform: translateY(0); }
+  .sample-btn:focus-visible, .decide-btn:focus-visible, .copy-btn:focus-visible, .history-item:focus-visible, #input:focus-visible {
+    outline: 2px solid #60a5fa;
+    outline-offset: 2px;
+  }
   .sample-btn.accept { color: #4ade80; border-color: #4ade80; }
   .sample-btn.rewrite { color: #fb923c; border-color: #fb923c; }
   .sample-btn.hold { color: #94a3b8; border-color: #94a3b8; }
   .sample-btn.invalid { color: #f87171; border-color: #f87171; }
-  .grid { display: grid; grid-template-columns: 420px 1fr; gap: 20px; align-items: start; }
+  .grid { display: grid; grid-template-columns: minmax(380px, 40%) minmax(0, 1fr); gap: 20px; align-items: start; }
   @media (max-width: 800px) { .grid { grid-template-columns: 1fr; } }
   .panel { background: #1a1f2e; border: 1px solid #2d3748; border-radius: 10px; overflow: hidden; }
+  .panel, .output-section { min-width: 0; }
   .panel-header {
     display: flex;
     align-items: center;
@@ -1196,6 +1201,8 @@ def _render_ui(sample: dict[str, Any]) -> str:
     gap: 8px;
   }
   .decide-btn:hover { background: #2563eb; }
+  .decide-btn:active { transform: translateY(1px); }
+  .decide-btn.processing { background: #1d4ed8; }
   .decide-hint { font-size: 11px; opacity: 0.6; font-weight: 500; background: #ffffff18; padding: 1px 6px; border-radius: 4px; }
   .verdict-banner { padding: 14px 16px; display: flex; align-items: center; gap: 14px; border-bottom: 1px solid #2d3748; }
   .verdict-badge { font-size: 13px; font-weight: 800; padding: 4px 14px; border-radius: 20px; letter-spacing: 1px; flex-shrink: 0; white-space: nowrap; }
@@ -1216,6 +1223,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
   .copy-btn { background: #2d3748; color: #94a3b8; border: none; border-radius: 4px; padding: 3px 8px; font-size: 10px; cursor: pointer; font-weight: 700; transition: background 0.15s, color 0.15s; }
   .copy-btn:hover { background: #3b82f6; color: white; }
   .copy-btn.copied { background: #14532d; color: #4ade80; }
+  .copy-btn:disabled { opacity: 0.45; cursor: not-allowed; }
   pre#output {
     background: #0a0d14;
     border: 1px solid #2d3748;
@@ -1224,15 +1232,19 @@ def _render_ui(sample: dict[str, Any]) -> str:
     font-size: 12px;
     font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
     overflow: auto;
+    overflow-x: auto;
     max-height: 340px;
     margin: 0;
     color: #94a3b8;
     line-height: 1.6;
   }
   .history-section { margin-top: 28px; padding-bottom: 40px; }
-  .history-section h3 { font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.8px; margin: 0 0 10px 0; }
+  .history-header { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
+  .history-section h3 { font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.8px; margin: 0; }
+  .history-count { font-size: 11px; color: #64748b; }
   .history-list { display: flex; flex-direction: column; gap: 6px; }
-  .history-item { background: #1a1f2e; border: 1px solid #2d3748; border-radius: 7px; padding: 8px 12px; display: flex; align-items: center; gap: 10px; font-size: 12px; }
+  .history-item { width: 100%; background: #1a1f2e; border: 1px solid #2d3748; border-radius: 7px; padding: 8px 12px; display: flex; align-items: center; gap: 10px; font-size: 12px; cursor: pointer; text-align: left; }
+  .history-item:hover { border-color: #3b82f6; }
   .history-badge { font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 10px; flex-shrink: 0; }
   .history-badge.ACCEPT { background: #14532d; color: #4ade80; }
   .history-badge.REJECT { background: #450a0a; color: #f87171; }
@@ -1242,6 +1254,13 @@ def _render_ui(sample: dict[str, Any]) -> str:
   .history-reason { color: #94a3b8; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .empty-state { color: #475569; font-size: 12px; font-style: italic; }
   .no-decision { padding: 32px 16px; text-align: center; color: #475569; font-size: 13px; }
+  @media (prefers-color-scheme: light) {
+    body { background: #f8fafc; color: #0f172a; }
+    .panel, #input { background: #ffffff; color: #0f172a; border-color: #cbd5e1; }
+    .panel-header { background: #f1f5f9; border-bottom-color: #cbd5e1; }
+    pre#output { background: #f8fafc; color: #334155; border-color: #cbd5e1; }
+    .history-item { background: #ffffff; border-color: #cbd5e1; }
+  }
 </style>
 </head>
 <body>
@@ -1253,10 +1272,10 @@ def _render_ui(sample: dict[str, Any]) -> str:
 
 <div class="samples-bar">
   <span>Load sample:</span>
-  <button class="sample-btn accept" title="ACCEPT sample" onclick="loadSample('ACCEPT')">&#10003; ACCEPT</button>
-  <button class="sample-btn rewrite" title="REWRITE sample" onclick="loadSample('REWRITE')">&#8634; REWRITE</button>
-  <button class="sample-btn hold" title="HOLD sample" onclick="loadSample('HOLD')">&#9646; HOLD</button>
-  <button class="sample-btn invalid" title="INVALID sample" onclick="loadSample('INVALID')">&#10005; INVALID</button>
+  <button class="sample-btn accept" title="ACCEPT sample" aria-label="Load ACCEPT sample" onclick="loadSample('ACCEPT')">&#10003; ACCEPT</button>
+  <button class="sample-btn rewrite" title="REWRITE sample" aria-label="Load REWRITE sample" onclick="loadSample('REWRITE')">&#8634; REWRITE</button>
+  <button class="sample-btn hold" title="HOLD sample" aria-label="Load HOLD sample" onclick="loadSample('HOLD')">&#9646; HOLD</button>
+  <button class="sample-btn invalid" title="INVALID sample" aria-label="Load INVALID sample" onclick="loadSample('INVALID')">&#10005; INVALID</button>
 </div>
 
 <div class="grid">
@@ -1266,9 +1285,9 @@ def _render_ui(sample: dict[str, Any]) -> str:
         <span class="panel-title">Input JSON</span>
         <span class="panel-tag" id="type-label"></span>
       </div>
-      <textarea id="input" spellcheck="false" oninput="onInputChange()">__SAMPLE_JSON__</textarea>
+      <textarea id="input" spellcheck="false" aria-label="Claim and evidence JSON input" aria-describedby="json-status" oninput="onInputChange()">__SAMPLE_JSON__</textarea>
       <div class="json-status" id="json-status">Waiting for input...</div>
-      <button class="decide-btn" onclick="decide()">Decide <span class="decide-hint">⌘↵</span></button>
+      <button class="decide-btn" id="decide-btn" aria-label="Decide claim verdict" onclick="decide()">Decide <span class="decide-hint">⌘↵</span></button>
     </div>
   </div>
 
@@ -1276,7 +1295,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
     <div class="panel">
       <div class="panel-header">
         <span class="panel-title">Decision</span>
-        <button class="copy-btn" id="copy-btn" onclick="copyOutput()">Copy JSON</button>
+        <button class="copy-btn" id="copy-btn" aria-label="Copy decision JSON" onclick="copyOutput()" disabled>Copy JSON</button>
       </div>
       <div id="verdict-area"><div class="no-decision">Run a decision to see results.</div></div>
       <div class="output-section">
@@ -1288,7 +1307,10 @@ def _render_ui(sample: dict[str, Any]) -> str:
 </div>
 
 <div class="history-section">
-  <h3>Recent decisions</h3>
+  <div class="history-header">
+    <h3>Recent decisions</h3>
+    <span class="history-count" id="history-count">0/50 saved</span>
+  </div>
   <div class="history-list" id="history-list">
     <div class="empty-state">No decisions yet.</div>
   </div>
@@ -1305,7 +1327,9 @@ def _render_ui(sample: dict[str, Any]) -> str:
       claim_transition: ["upgrade_evidence_present"]
     };
     const claimTypes = Object.keys(required).sort();
-    let decisionHistory = [];
+    const historyLimit = 50;
+    const historyStorageKey = "capas_decision_history_v1";
+    let decisionHistory = loadHistory();
 
     function containsAngleLikeCharacter(value) {
       return disallowedAngleRegex.test(value);
@@ -1475,12 +1499,64 @@ def _render_ui(sample: dict[str, Any]) -> str:
       document.getElementById("verdict-area").innerHTML = html;
     }
 
-    function addToHistory(result) {
-      decisionHistory.unshift({ verdict: result.verdict, id: result.input_claim?.id || "-", reason: result.reason });
-      decisionHistory = decisionHistory.slice(0, 6);
-      document.getElementById("history-list").innerHTML = decisionHistory.map((item) => (
-        `<div class="history-item"><span class="history-badge ${item.verdict}">${item.verdict}</span><span class="history-id">${escHtml(item.id)}</span><span class="history-reason">${escHtml(item.reason)}</span></div>`
+    function setCopyEnabled(enabled) {
+      document.getElementById("copy-btn").disabled = !enabled;
+    }
+
+    function loadHistory() {
+      try {
+        const raw = localStorage.getItem(historyStorageKey);
+        const parsed = raw ? JSON.parse(raw) : [];
+        return Array.isArray(parsed) ? parsed.slice(0, historyLimit) : [];
+      } catch (_) {
+        return [];
+      }
+    }
+
+    function saveHistory() {
+      try {
+        localStorage.setItem(historyStorageKey, JSON.stringify(decisionHistory.slice(0, historyLimit)));
+      } catch (_) {}
+    }
+
+    function renderHistory() {
+      const list = document.getElementById("history-list");
+      document.getElementById("history-count").textContent = `${decisionHistory.length}/${historyLimit} saved`;
+      if (!decisionHistory.length) {
+        list.innerHTML = `<div class="empty-state">No decisions yet.</div>`;
+        return;
+      }
+      list.innerHTML = decisionHistory.map((item, index) => (
+        `<button type="button" class="history-item" onclick="restoreHistory(${index})" aria-label="Restore decision ${escHtml(item.id)}">` +
+        `<span class="history-badge ${item.verdict}">${item.verdict}</span>` +
+        `<span class="history-id">${escHtml(item.id)}</span>` +
+        `<span class="history-reason">${escHtml(item.reason)}</span>` +
+        `</button>`
       )).join("");
+    }
+
+    function addToHistory(result) {
+      decisionHistory.unshift({
+        verdict: result.verdict,
+        id: result.input_claim?.id || "-",
+        reason: result.reason,
+        payload: document.getElementById("input").value,
+        decision: result,
+        timestamp: new Date().toISOString()
+      });
+      decisionHistory = decisionHistory.slice(0, historyLimit);
+      saveHistory();
+      renderHistory();
+    }
+
+    function restoreHistory(index) {
+      const item = decisionHistory[index];
+      if (!item) return;
+      document.getElementById("input").value = item.payload;
+      onInputChange();
+      renderVerdict(item.decision);
+      document.getElementById("output").textContent = JSON.stringify(item.decision, null, 2);
+      setCopyEnabled(true);
     }
 
     function escHtml(value) {
@@ -1497,6 +1573,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
         status.className = "json-status";
         input.className = "";
         typeLabel.textContent = "";
+        setCopyEnabled(false);
         return;
       }
       try {
@@ -1513,19 +1590,34 @@ def _render_ui(sample: dict[str, Any]) -> str:
       }
     }
 
-    function decide() {
+    function decide(recordHistory = true) {
+      const button = document.getElementById("decide-btn");
       try {
-        const payload = JSON.parse(document.getElementById("input").value);
+        const raw = document.getElementById("input").value.trim();
+        if (!raw) {
+          document.getElementById("verdict-area").innerHTML = `<div class="alert-block errors"><div class="alert-title">Input required</div>Please paste a JSON claim/evidence payload first.</div>`;
+          document.getElementById("output").textContent = "";
+          setCopyEnabled(false);
+          return;
+        }
+        button.classList.add("processing");
+        const payload = JSON.parse(raw);
         const result = rule(payload);
         renderVerdict(result);
         document.getElementById("output").textContent = JSON.stringify(result, null, 2);
-        addToHistory(result);
+        if (recordHistory) {
+          addToHistory(result);
+        }
         const copy = document.getElementById("copy-btn");
         copy.textContent = "Copy JSON";
         copy.classList.remove("copied");
+        setCopyEnabled(true);
+        setTimeout(() => button.classList.remove("processing"), 150);
       } catch (error) {
+        button.classList.remove("processing");
         document.getElementById("verdict-area").innerHTML = `<div class="alert-block errors"><div class="alert-title">JSON parse error</div>${escHtml(error.message)}</div>`;
         document.getElementById("output").textContent = "";
+        setCopyEnabled(false);
       }
     }
 
@@ -1563,7 +1655,8 @@ def _render_ui(sample: dict[str, Any]) -> str:
     });
 
     onInputChange();
-    decide();
+    renderHistory();
+    decide(false);
 </script>
 </body>
 </html>
