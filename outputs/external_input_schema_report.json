@@ -340,6 +340,84 @@
       "passed": true
     },
     {
+      "check": "adversarial_payload:claim_text_second_generation_angle_homoglyphs",
+      "decision": {
+        "fine_tune_ready": false,
+        "input_claim": {
+          "id": "claim_text_second_generation_angle_homoglyphs",
+          "text": "\ufe64bad\ufe65 \u276cbad\u276d \u29fcbad\u29fd \u2329bad\u232a \u3008bad\u3009",
+          "type": "physical_accuracy"
+        },
+        "licensed_claim": "\ufe64bad\ufe65 \u276cbad\u276d \u29fcbad\u29fd \u2329bad\u232a \u3008bad\u3009",
+        "missing_fields": [],
+        "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "reason": "input payload failed CAPAS schema validation",
+        "required_fields": [],
+        "rewrite": null,
+        "schema_errors": [
+          "claim.text must not contain angle brackets or Unicode angle-bracket homoglyphs"
+        ],
+        "verdict": "HOLD"
+      },
+      "errors": [
+        "claim.text must not contain angle brackets or Unicode angle-bracket homoglyphs"
+      ],
+      "expected_error": "claim.text must not contain angle brackets or Unicode angle-bracket homoglyphs",
+      "passed": true
+    },
+    {
+      "check": "adversarial_payload:anchor_mode_unicode_angle_homoglyph",
+      "decision": {
+        "fine_tune_ready": false,
+        "input_claim": {
+          "id": "anchor_mode_unicode_angle_homoglyph",
+          "text": "Angle-like payloads should not pass through anchor_mode.",
+          "type": "universal_anchor_claim"
+        },
+        "licensed_claim": "Angle-like payloads should not pass through anchor_mode.",
+        "missing_fields": [],
+        "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "reason": "input payload failed CAPAS schema validation",
+        "required_fields": [],
+        "rewrite": null,
+        "schema_errors": [
+          "evidence.anchor_mode must not contain angle brackets or Unicode angle-bracket homoglyphs"
+        ],
+        "verdict": "HOLD"
+      },
+      "errors": [
+        "evidence.anchor_mode must not contain angle brackets or Unicode angle-bracket homoglyphs"
+      ],
+      "expected_error": "evidence.anchor_mode must not contain angle brackets or Unicode angle-bracket homoglyphs",
+      "passed": true
+    },
+    {
+      "check": "adversarial_payload:physical_evidence_level_angle_homoglyph",
+      "decision": {
+        "fine_tune_ready": false,
+        "input_claim": {
+          "id": "physical_evidence_level_angle_homoglyph",
+          "text": "Angle-like payloads should not pass through evidence strings.",
+          "type": "physical_accuracy"
+        },
+        "licensed_claim": "Angle-like payloads should not pass through evidence strings.",
+        "missing_fields": [],
+        "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "reason": "input payload failed CAPAS schema validation",
+        "required_fields": [],
+        "rewrite": null,
+        "schema_errors": [
+          "evidence.physical_evidence_level must not contain angle brackets or Unicode angle-bracket homoglyphs"
+        ],
+        "verdict": "HOLD"
+      },
+      "errors": [
+        "evidence.physical_evidence_level must not contain angle brackets or Unicode angle-bracket homoglyphs"
+      ],
+      "expected_error": "evidence.physical_evidence_level must not contain angle brackets or Unicode angle-bracket homoglyphs",
+      "passed": true
+    },
+    {
       "check": "semantic_payload:zero_tolerance_exact_accept",
       "decision": {
         "fine_tune_ready": false,

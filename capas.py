@@ -123,12 +123,19 @@ EXPERIMENT_SCOPE_PATTERNS = [
 NUMBER_PATTERN = r"[-+]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][-+]?\d+)?"
 BOOLEAN_PATTERN = r"(true|false|yes|no|pass|fail|passed|failed|1|0)"
 WEB_FETCH_TIMEOUT_SECONDS = 15
-DISALLOWED_ANGLE_CHARS = "<>\u02c2\u02c3\u2039\u203a\u27e8\u27e9\uff1c\uff1e"
-NO_ANGLE_PATTERN = f"^[^{re.escape(DISALLOWED_ANGLE_CHARS)}]*$"
+DISALLOWED_ANGLE_CHARS = "<>\u02c2\u02c3\u2039\u203a"
+DISALLOWED_ANGLE_RANGES = "\u2329-\u232a\u276c-\u276d\u27e8-\u27e9\u29fc-\u29fd\u3008-\u3009\ufe64-\ufe65\uff1c-\uff1e"
+DISALLOWED_ANGLE_REGEX = re.compile(f"[{re.escape(DISALLOWED_ANGLE_CHARS)}{DISALLOWED_ANGLE_RANGES}]")
+NO_ANGLE_PATTERN = f"^[^{re.escape(DISALLOWED_ANGLE_CHARS)}{DISALLOWED_ANGLE_RANGES}]*$"
 
 
 def _contains_angle_like_character(value: str) -> bool:
-    return any(char in value for char in DISALLOWED_ANGLE_CHARS)
+    return bool(DISALLOWED_ANGLE_REGEX.search(value))
+
+
+def _validate_no_angle_like(value: Any, field_name: str, errors: list[str]) -> None:
+    if isinstance(value, str) and _contains_angle_like_character(value):
+        errors.append(f"{field_name} must not contain angle brackets or Unicode angle-bracket homoglyphs")
 
 
 def external_claim_payload_schema() -> dict[str, Any]:
@@ -171,12 +178,21 @@ def external_claim_payload_schema() -> dict[str, Any]:
                     "abs_error": {"type": "number", "minimum": 0},
                     "tolerance": {"type": "number", "minimum": 0},
                     "within_chemical_accuracy": {"type": "boolean"},
-                    "anchor_mode": {"type": "string"},
+                    "anchor_mode": {
+                        "type": "string",
+                        "pattern": NO_ANGLE_PATTERN,
+                    },
                     "local_property_tests_pass": {"type": "boolean"},
                     "universal_anchor_pass": {"type": "boolean"},
                     "upgrade_evidence_present": {"type": "boolean"},
-                    "physical_evidence_level": {"type": "string"},
-                    "verification_independence": {"type": "string"},
+                    "physical_evidence_level": {
+                        "type": "string",
+                        "pattern": NO_ANGLE_PATTERN,
+                    },
+                    "verification_independence": {
+                        "type": "string",
+                        "pattern": NO_ANGLE_PATTERN,
+                    },
                     "reference_truth": {},
                     "current_claim": {
                         "type": "string",
@@ -209,12 +225,10 @@ def validate_external_payload(payload: dict[str, Any]) -> list[str]:
             errors.append(f"claim.{field} must be a non-empty string")
     if isinstance(claim.get("id"), str) and len(claim["id"]) > 256:
         errors.append("claim.id must be at most 256 characters")
-    if isinstance(claim.get("id"), str) and _contains_angle_like_character(claim["id"]):
-        errors.append("claim.id must not contain angle brackets or Unicode angle-bracket homoglyphs")
+    _validate_no_angle_like(claim.get("id"), "claim.id", errors)
     if isinstance(claim.get("text"), str) and len(claim["text"]) > 4000:
         errors.append("claim.text must be at most 4000 characters")
-    if isinstance(claim.get("text"), str) and _contains_angle_like_character(claim["text"]):
-        errors.append("claim.text must not contain angle brackets or Unicode angle-bracket homoglyphs")
+    _validate_no_angle_like(claim.get("text"), "claim.text", errors)
 
     claim_type = claim.get("type")
     if isinstance(claim_type, str) and claim_type not in REQUIRED_DECISION_FIELDS:
@@ -247,8 +261,15 @@ def validate_external_payload(payload: dict[str, Any]) -> list[str]:
         if field in evidence and not isinstance(evidence[field], bool):
             errors.append(f"evidence.{field} must be a boolean")
 
-    if "anchor_mode" in evidence and not isinstance(evidence["anchor_mode"], str):
-        errors.append("evidence.anchor_mode must be a string")
+    string_fields = [
+        "anchor_mode",
+        "physical_evidence_level",
+        "verification_independence",
+    ]
+    for field in string_fields:
+        if field in evidence and not isinstance(evidence[field], str):
+            errors.append(f"evidence.{field} must be a string")
+        _validate_no_angle_like(evidence.get(field), f"evidence.{field}", errors)
     if "current_claim" in evidence:
         current_claim = evidence["current_claim"]
         if not isinstance(current_claim, str):
@@ -256,8 +277,7 @@ def validate_external_payload(payload: dict[str, Any]) -> list[str]:
         else:
             if len(current_claim) > 4000:
                 errors.append("evidence.current_claim must be at most 4000 characters")
-            if _contains_angle_like_character(current_claim):
-                errors.append("evidence.current_claim must not contain angle brackets or Unicode angle-bracket homoglyphs")
+            _validate_no_angle_like(current_claim, "evidence.current_claim", errors)
     return errors
 
 
@@ -1277,7 +1297,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
 <script>
     const sample = __SAMPLE_COMPACT_JSON__;
     const samples = __SAMPLES_JSON__;
-    const disallowedAngleChars = "<>\u02c2\u02c3\u2039\u203a\u27e8\u27e9\uff1c\uff1e";
+    const disallowedAngleRegex = /[<>\u02c2\u02c3\u2039\u203a\u2329-\u232a\u276c-\u276d\u27e8-\u27e9\u29fc-\u29fd\u3008-\u3009\ufe64-\ufe65\uff1c-\uff1e]/u;
     const required = {
       exact_model_solution: ["abs_error", "tolerance"],
       physical_accuracy: ["within_chemical_accuracy"],
@@ -1288,7 +1308,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
     let decisionHistory = [];
 
     function containsAngleLikeCharacter(value) {
-      return Array.from(disallowedAngleChars).some((char) => value.includes(char));
+      return disallowedAngleRegex.test(value);
     }
 
     function validatePayload(payload) {
@@ -1342,8 +1362,13 @@ def _render_ui(sample: dict[str, Any]) -> str:
           errors.push(`evidence.${field} must be a boolean`);
         }
       }
-      if (Object.prototype.hasOwnProperty.call(safeEvidence, "anchor_mode") && typeof safeEvidence.anchor_mode !== "string") {
-        errors.push("evidence.anchor_mode must be a string");
+      for (const field of ["anchor_mode", "physical_evidence_level", "verification_independence"]) {
+        if (Object.prototype.hasOwnProperty.call(safeEvidence, field) && typeof safeEvidence[field] !== "string") {
+          errors.push(`evidence.${field} must be a string`);
+        }
+        if (typeof safeEvidence[field] === "string" && containsAngleLikeCharacter(safeEvidence[field])) {
+          errors.push(`evidence.${field} must not contain angle brackets or Unicode angle-bracket homoglyphs`);
+        }
       }
       if (Object.prototype.hasOwnProperty.call(safeEvidence, "current_claim")) {
         if (typeof safeEvidence.current_claim !== "string") {

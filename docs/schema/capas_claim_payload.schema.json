@@ -10,14 +10,14 @@
           "description": "Claim ids must not contain HTML angle brackets or common Unicode angle-bracket homoglyphs.",
           "maxLength": 256,
           "minLength": 1,
-          "pattern": "^[^<>\u02c2\u02c3\u2039\u203a\u27e8\u27e9\uff1c\uff1e]*$",
+          "pattern": "^[^<>\u02c2\u02c3\u2039\u203a\u2329-\u232a\u276c-\u276d\u27e8-\u27e9\u29fc-\u29fd\u3008-\u3009\ufe64-\ufe65\uff1c-\uff1e]*$",
           "type": "string"
         },
         "text": {
           "description": "Claim text must not contain HTML angle brackets or common Unicode angle-bracket homoglyphs because payloads may be displayed by downstream consumers.",
           "maxLength": 4000,
           "minLength": 1,
-          "pattern": "^[^<>\u02c2\u02c3\u2039\u203a\u27e8\u27e9\uff1c\uff1e]*$",
+          "pattern": "^[^<>\u02c2\u02c3\u2039\u203a\u2329-\u232a\u276c-\u276d\u27e8-\u27e9\u29fc-\u29fd\u3008-\u3009\ufe64-\ufe65\uff1c-\uff1e]*$",
           "type": "string"
         },
         "type": {
@@ -46,18 +46,20 @@
           "type": "number"
         },
         "anchor_mode": {
+          "pattern": "^[^<>\u02c2\u02c3\u2039\u203a\u2329-\u232a\u276c-\u276d\u27e8-\u27e9\u29fc-\u29fd\u3008-\u3009\ufe64-\ufe65\uff1c-\uff1e]*$",
           "type": "string"
         },
         "current_claim": {
           "description": "Optional weaker claim text for REWRITE. HTML angle brackets and common Unicode angle-bracket homoglyphs are rejected because this value can be displayed by downstream consumers.",
           "maxLength": 4000,
-          "pattern": "^[^<>\u02c2\u02c3\u2039\u203a\u27e8\u27e9\uff1c\uff1e]*$",
+          "pattern": "^[^<>\u02c2\u02c3\u2039\u203a\u2329-\u232a\u276c-\u276d\u27e8-\u27e9\u29fc-\u29fd\u3008-\u3009\ufe64-\ufe65\uff1c-\uff1e]*$",
           "type": "string"
         },
         "local_property_tests_pass": {
           "type": "boolean"
         },
         "physical_evidence_level": {
+          "pattern": "^[^<>\u02c2\u02c3\u2039\u203a\u2329-\u232a\u276c-\u276d\u27e8-\u27e9\u29fc-\u29fd\u3008-\u3009\ufe64-\ufe65\uff1c-\uff1e]*$",
           "type": "string"
         },
         "reference_truth": {},
@@ -72,6 +74,7 @@
           "type": "boolean"
         },
         "verification_independence": {
+          "pattern": "^[^<>\u02c2\u02c3\u2039\u203a\u2329-\u232a\u276c-\u276d\u27e8-\u27e9\u29fc-\u29fd\u3008-\u3009\ufe64-\ufe65\uff1c-\uff1e]*$",
           "type": "string"
         },
         "within_chemical_accuracy": {

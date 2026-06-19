@@ -210,7 +210,7 @@
 <script>
     const sample = {"claim": {"id": "sample_scaling_claim", "text": "The generated scaling result is physically consistent with the universal z=1 anchor.", "type": "universal_anchor_claim"}, "evidence": {"anchor_mode": "absolute_anchor", "local_property_tests_pass": true, "physical_evidence_level": "scaling_law_anchor", "universal_anchor_pass": true, "verification_independence": "theory_scaling_law_no_solver"}};
     const samples = {"ACCEPT": {"claim": {"id": "sample_scaling_claim", "text": "The generated scaling result is physically consistent with the universal z=1 anchor.", "type": "universal_anchor_claim"}, "evidence": {"anchor_mode": "absolute_anchor", "local_property_tests_pass": true, "physical_evidence_level": "scaling_law_anchor", "universal_anchor_pass": true, "verification_independence": "theory_scaling_law_no_solver"}}, "HOLD": {"claim": {"id": "sample_experiment_hold", "text": "The simulation matches experiment.", "type": "physical_accuracy"}, "evidence": {"physical_evidence_level": "experimental", "reference_truth": "external experimental reference supplied without tolerance verdict"}}, "INVALID": {"claim": {"id": "", "text": "This payload is structurally invalid because the claim id is empty.", "type": "unsupported_claim_type"}, "evidence": "not an object"}, "REWRITE": {"claim": {"id": "sample_scaling_claim_rewrite", "text": "Local monotonicity proves universal physical correctness.", "type": "universal_anchor_claim"}, "evidence": {"anchor_mode": "absolute_anchor", "local_property_tests_pass": true, "physical_evidence_level": "scaling_law_anchor", "universal_anchor_pass": false, "verification_independence": "theory_scaling_law_no_solver"}}};
-    const disallowedAngleChars = "<>\u02c2\u02c3\u2039\u203a\u27e8\u27e9\uff1c\uff1e";
+    const disallowedAngleRegex = /[<>\u02c2\u02c3\u2039\u203a\u2329-\u232a\u276c-\u276d\u27e8-\u27e9\u29fc-\u29fd\u3008-\u3009\ufe64-\ufe65\uff1c-\uff1e]/u;
     const required = {
       exact_model_solution: ["abs_error", "tolerance"],
       physical_accuracy: ["within_chemical_accuracy"],
@@ -221,7 +221,7 @@
     let decisionHistory = [];
 
     function containsAngleLikeCharacter(value) {
-      return Array.from(disallowedAngleChars).some((char) => value.includes(char));
+      return disallowedAngleRegex.test(value);
     }
 
     function validatePayload(payload) {
@@ -275,8 +275,13 @@
           errors.push(`evidence.${field} must be a boolean`);
         }
       }
-      if (Object.prototype.hasOwnProperty.call(safeEvidence, "anchor_mode") && typeof safeEvidence.anchor_mode !== "string") {
-        errors.push("evidence.anchor_mode must be a string");
+      for (const field of ["anchor_mode", "physical_evidence_level", "verification_independence"]) {
+        if (Object.prototype.hasOwnProperty.call(safeEvidence, field) && typeof safeEvidence[field] !== "string") {
+          errors.push(`evidence.${field} must be a string`);
+        }
+        if (typeof safeEvidence[field] === "string" && containsAngleLikeCharacter(safeEvidence[field])) {
+          errors.push(`evidence.${field} must not contain angle brackets or Unicode angle-bracket homoglyphs`);
+        }
       }
       if (Object.prototype.hasOwnProperty.call(safeEvidence, "current_claim")) {
         if (typeof safeEvidence.current_claim !== "string") {

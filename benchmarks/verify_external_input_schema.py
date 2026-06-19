@@ -170,6 +170,51 @@ ADVERSARIAL_PAYLOADS = [
         },
         "claim.text must not contain angle brackets or Unicode angle-bracket homoglyphs",
     ),
+    (
+        "claim_text_second_generation_angle_homoglyphs",
+        {
+            "claim": {
+                "id": "claim_text_second_generation_angle_homoglyphs",
+                "type": "physical_accuracy",
+                "text": "\ufe64bad\ufe65 \u276cbad\u276d \u29fcbad\u29fd \u2329bad\u232a \u3008bad\u3009",
+            },
+            "evidence": {
+                "within_chemical_accuracy": True,
+            },
+        },
+        "claim.text must not contain angle brackets or Unicode angle-bracket homoglyphs",
+    ),
+    (
+        "anchor_mode_unicode_angle_homoglyph",
+        {
+            "claim": {
+                "id": "anchor_mode_unicode_angle_homoglyph",
+                "type": "universal_anchor_claim",
+                "text": "Angle-like payloads should not pass through anchor_mode.",
+            },
+            "evidence": {
+                "anchor_mode": "absolute_\uff1canchor",
+                "local_property_tests_pass": True,
+                "universal_anchor_pass": True,
+            },
+        },
+        "evidence.anchor_mode must not contain angle brackets or Unicode angle-bracket homoglyphs",
+    ),
+    (
+        "physical_evidence_level_angle_homoglyph",
+        {
+            "claim": {
+                "id": "physical_evidence_level_angle_homoglyph",
+                "type": "physical_accuracy",
+                "text": "Angle-like payloads should not pass through evidence strings.",
+            },
+            "evidence": {
+                "within_chemical_accuracy": True,
+                "physical_evidence_level": "\u3008experimental\u3009",
+            },
+        },
+        "evidence.physical_evidence_level must not contain angle brackets or Unicode angle-bracket homoglyphs",
+    ),
 ]
 
 SEMANTIC_PAYLOADS = [
