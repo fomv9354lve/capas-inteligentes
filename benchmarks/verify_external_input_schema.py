@@ -231,6 +231,22 @@ ADVERSARIAL_PAYLOADS = [
         },
         "evidence.physical_evidence_level must not contain angle brackets or Unicode angle-bracket homoglyphs",
     ),
+    (
+        "p_value_out_of_range",
+        {
+            "claim": {
+                "id": "p_value_out_of_range",
+                "type": "statistical_confidence",
+                "text": "A p-value outside probability bounds must not license a statistical claim.",
+            },
+            "evidence": {
+                "p_value": 1.2,
+                "alpha": 0.05,
+                "effect_direction_confirmed": True,
+            },
+        },
+        "evidence.p_value must be between 0 and 1",
+    ),
 ]
 
 SEMANTIC_PAYLOADS = [
@@ -266,6 +282,57 @@ SEMANTIC_PAYLOADS = [
         },
         "HOLD",
         "anchor_mode",
+    ),
+    (
+        "statistical_confidence_accept",
+        {
+            "claim": {
+                "id": "statistical_confidence_accept",
+                "type": "statistical_confidence",
+                "text": "The observed effect is statistically significant at alpha 0.05.",
+            },
+            "evidence": {
+                "p_value": 0.01,
+                "alpha": 0.05,
+                "effect_direction_confirmed": True,
+            },
+        },
+        "ACCEPT",
+        "effect direction is confirmed",
+    ),
+    (
+        "reproducibility_check_rewrite",
+        {
+            "claim": {
+                "id": "reproducibility_check_rewrite",
+                "type": "reproducibility_check",
+                "text": "The reported result is independently reproducible.",
+            },
+            "evidence": {
+                "artifact_available": True,
+                "independent_reproduction_pass": False,
+            },
+        },
+        "REWRITE",
+        "independent reproduction has not passed",
+    ),
+    (
+        "financial_metric_claim_accept",
+        {
+            "claim": {
+                "id": "financial_metric_claim_accept",
+                "type": "financial_metric_claim",
+                "text": "The reported financial metric matches the reference for the same period.",
+            },
+            "evidence": {
+                "reported_value": 101.2,
+                "reference_value": 101.0,
+                "tolerance": 0.5,
+                "metric_period_match": True,
+            },
+        },
+        "ACCEPT",
+        "period matches",
     ),
 ]
 

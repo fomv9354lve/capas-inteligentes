@@ -6,6 +6,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import time
 from pathlib import Path
 
 
@@ -44,7 +45,8 @@ HARNESS = r"""
     ok("share_button_exists", document.getElementById("share-btn"));
     ok("export_button_exists", document.getElementById("export-btn"));
     ok("theme_button_exists", document.getElementById("theme-toggle"));
-    ok("schema_version_badge_exists", document.getElementById("schema-version-badge")?.textContent.includes("schema v1"));
+    ok("schema_version_badge_exists", document.getElementById("schema-version-badge")?.textContent.includes("schema v2"));
+    ok("shared_payload_badge_visible", document.getElementById("shared-payload-badge")?.hidden === false);
     ok("help_button_exists", document.getElementById("help-btn"));
     ok("theme_button_initial_system", document.getElementById("theme-toggle").textContent === "System");
     toggleTheme();
@@ -108,11 +110,32 @@ HARNESS = r"""
     document.getElementById("input").value = JSON.stringify([samples.ACCEPT, samples.REJECT], null, 2);
     decideBatch();
     ok("batch_summary_visible", document.getElementById("verdict-area").textContent.includes("Batch summary"));
+    ok("batch_progress_visible", document.querySelector(".batch-progress-fill"));
+    ok("batch_progress_label_visible", document.getElementById("verdict-area").textContent.includes("claims processed"));
     ok("batch_output_json", document.getElementById("output").textContent.includes('"batch_mode": "decide"'));
-    ok("batch_schema_version", document.getElementById("output").textContent.includes('"schema_version": "capas-claim-payload-v1"'));
+    ok("batch_schema_version", document.getElementById("output").textContent.includes('"schema_version": "capas-claim-payload-v2"'));
     document.getElementById("input").value = JSON.stringify(samples.ACCEPT, null, 2);
     decideBatch();
     ok("batch_single_object_autowrap", document.getElementById("output").textContent.includes('"item_count": 1'));
+
+    document.getElementById("input").value = JSON.stringify({
+      claim: { id: "stat_sig", type: "statistical_confidence", text: "The effect is statistically significant at alpha 0.05." },
+      evidence: { p_value: 0.01, alpha: 0.05, effect_direction_confirmed: true }
+    });
+    decide();
+    ok("statistical_confidence_accept", document.querySelector(".verdict-badge.ACCEPT"));
+    document.getElementById("input").value = JSON.stringify({
+      claim: { id: "repro_rw", type: "reproducibility_check", text: "The result is independently reproducible." },
+      evidence: { artifact_available: true, independent_reproduction_pass: false }
+    });
+    decide();
+    ok("reproducibility_check_rewrite", document.querySelector(".verdict-badge.REWRITE"));
+    document.getElementById("input").value = JSON.stringify({
+      claim: { id: "finance_accept", type: "financial_metric_claim", text: "The reported metric matches the reference for the same period." },
+      evidence: { reported_value: 101.2, reference_value: 101.0, tolerance: 0.5, metric_period_match: true }
+    });
+    decide();
+    ok("financial_metric_claim_accept", document.querySelector(".verdict-badge.ACCEPT"));
 
     const firstHistory = document.querySelector(".history-item");
     ok("history_item_exists", firstHistory);
@@ -179,21 +202,29 @@ def main() -> int:
                 json.dumps(shared_payload, sort_keys=True).encode("utf-8")
             ).decode("ascii").rstrip("=")
             def run_chrome(name: str, *extra_args: str) -> subprocess.CompletedProcess[str]:
-                return subprocess.run(
-                    [
-                        chrome,
-                        "--headless=new",
-                        "--disable-gpu",
-                        "--no-sandbox",
-                        "--dump-dom",
-                        "--virtual-time-budget=2000",
-                        *extra_args,
-                        f"{harness_path.as_uri()}?p={encoded}",
-                    ],
-                    text=True,
-                    capture_output=True,
-                    timeout=20,
-                )
+                command = [
+                    chrome,
+                    "--headless=new",
+                    "--disable-gpu",
+                    "--no-sandbox",
+                    "--dump-dom",
+                    "--virtual-time-budget=2000",
+                    *extra_args,
+                    f"{harness_path.as_uri()}?p={encoded}",
+                ]
+                last_proc: subprocess.CompletedProcess[str] | None = None
+                for attempt in range(3):
+                    last_proc = subprocess.run(
+                        command,
+                        text=True,
+                        capture_output=True,
+                        timeout=20,
+                    )
+                    if last_proc.returncode == 0 and last_proc.stdout:
+                        return last_proc
+                    time.sleep(0.2 * (attempt + 1))
+                assert last_proc is not None
+                return last_proc
 
             proc = run_chrome("desktop")
             mobile_proc = run_chrome("mobile", "--window-size=390,844", "--force-device-scale-factor=1")

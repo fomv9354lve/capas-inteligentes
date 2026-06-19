@@ -24,7 +24,10 @@
           "enum": [
             "claim_transition",
             "exact_model_solution",
+            "financial_metric_claim",
             "physical_accuracy",
+            "reproducibility_check",
+            "statistical_confidence",
             "universal_anchor_claim"
           ],
           "type": "string"
@@ -45,9 +48,17 @@
           "minimum": 0,
           "type": "number"
         },
+        "alpha": {
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
         "anchor_mode": {
           "pattern": "^[^<>\u02c2\u02c3\u2039\u203a\u2329-\u232a\u276c-\u276d\u27e8-\u27e9\u29fc-\u29fd\u3008-\u3009\ufe64-\ufe65\uff1c-\uff1e]*$",
           "type": "string"
+        },
+        "artifact_available": {
+          "type": "boolean"
         },
         "current_claim": {
           "description": "Optional weaker claim text for REWRITE. HTML angle brackets and common Unicode angle-bracket homoglyphs are rejected because this value can be displayed by downstream consumers.",
@@ -55,14 +66,34 @@
           "pattern": "^[^<>\u02c2\u02c3\u2039\u203a\u2329-\u232a\u276c-\u276d\u27e8-\u27e9\u29fc-\u29fd\u3008-\u3009\ufe64-\ufe65\uff1c-\uff1e]*$",
           "type": "string"
         },
+        "effect_direction_confirmed": {
+          "type": "boolean"
+        },
+        "independent_reproduction_pass": {
+          "type": "boolean"
+        },
         "local_property_tests_pass": {
           "type": "boolean"
+        },
+        "metric_period_match": {
+          "type": "boolean"
+        },
+        "p_value": {
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
         },
         "physical_evidence_level": {
           "pattern": "^[^<>\u02c2\u02c3\u2039\u203a\u2329-\u232a\u276c-\u276d\u27e8-\u27e9\u29fc-\u29fd\u3008-\u3009\ufe64-\ufe65\uff1c-\uff1e]*$",
           "type": "string"
         },
         "reference_truth": {},
+        "reference_value": {
+          "type": "number"
+        },
+        "reported_value": {
+          "type": "number"
+        },
         "tolerance": {
           "minimum": 0,
           "type": "number"
@@ -90,5 +121,5 @@
   ],
   "title": "CAPAS external claim/evidence payload",
   "type": "object",
-  "x-capas-schema-version": "capas-claim-payload-v1"
+  "x-capas-schema-version": "capas-claim-payload-v2"
 }

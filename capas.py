@@ -29,8 +29,8 @@ CLAIM_REPORT = ROOT / "benchmarks" / "evidence_claim_validation_report.json"
 ANCHOR_REPORT = ROOT / "benchmarks" / "universal_anchor_matrix_report.json"
 TRACE_DIR = ROOT / "benchmarks" / "gold_traces"
 EXTERNAL_CLAIM_SCHEMA_PATH = ROOT / "docs" / "schema" / "capas_claim_payload.schema.json"
-CAPAS_CLAIM_SCHEMA_VERSION = "capas-claim-payload-v1"
-CAPAS_UI_VERSION = "v10 · batch pipelines"
+CAPAS_CLAIM_SCHEMA_VERSION = "capas-claim-payload-v2"
+CAPAS_UI_VERSION = "v11 · schema v2 pipelines"
 
 
 VALIDATION_COMMANDS = [
@@ -60,6 +60,9 @@ REQUIRED_DECISION_FIELDS = {
     "physical_accuracy": ["within_chemical_accuracy"],
     "universal_anchor_claim": ["anchor_mode", "local_property_tests_pass", "universal_anchor_pass"],
     "claim_transition": ["upgrade_evidence_present"],
+    "statistical_confidence": ["p_value", "alpha", "effect_direction_confirmed"],
+    "reproducibility_check": ["artifact_available", "independent_reproduction_pass"],
+    "financial_metric_claim": ["reported_value", "reference_value", "tolerance", "metric_period_match"],
 }
 
 FINE_TUNE_BLOCKERS = [
@@ -101,6 +104,28 @@ CLAIM_TYPE_TERMS = {
         "supports",
         "rewrite",
         "stronger",
+    ],
+    "statistical_confidence": [
+        "p-value",
+        "alpha",
+        "confidence",
+        "significant",
+        "statistical",
+    ],
+    "reproducibility_check": [
+        "reproduce",
+        "reproducible",
+        "artifact",
+        "replication",
+        "independent",
+    ],
+    "financial_metric_claim": [
+        "financial",
+        "metric",
+        "reported",
+        "reference",
+        "period",
+        "tolerance",
     ],
 }
 
@@ -197,6 +222,14 @@ def external_claim_payload_schema() -> dict[str, Any]:
                     "local_property_tests_pass": {"type": "boolean"},
                     "universal_anchor_pass": {"type": "boolean"},
                     "upgrade_evidence_present": {"type": "boolean"},
+                    "p_value": {"type": "number", "minimum": 0, "maximum": 1},
+                    "alpha": {"type": "number", "minimum": 0, "maximum": 1},
+                    "effect_direction_confirmed": {"type": "boolean"},
+                    "artifact_available": {"type": "boolean"},
+                    "independent_reproduction_pass": {"type": "boolean"},
+                    "reported_value": {"type": "number"},
+                    "reference_value": {"type": "number"},
+                    "metric_period_match": {"type": "boolean"},
                     "physical_evidence_level": {
                         "type": "string",
                         "pattern": NO_ANGLE_PATTERN,
@@ -249,7 +282,7 @@ def validate_external_payload(payload: dict[str, Any]) -> list[str]:
             + ", ".join(sorted(REQUIRED_DECISION_FIELDS))
         )
 
-    numeric_fields = ["abs_error", "tolerance"]
+    numeric_fields = ["abs_error", "tolerance", "p_value", "alpha", "reported_value", "reference_value"]
     for field in numeric_fields:
         if field in evidence and (
             isinstance(evidence[field], bool)
@@ -260,14 +293,20 @@ def validate_external_payload(payload: dict[str, Any]) -> list[str]:
             value = float(evidence[field])
             if not (value == value and value not in (float("inf"), float("-inf"))):
                 errors.append(f"evidence.{field} must be finite")
-            elif value < 0:
+            elif field in {"abs_error", "tolerance"} and value < 0:
                 errors.append(f"evidence.{field} must be >= 0")
+            elif field in {"p_value", "alpha"} and not 0 <= value <= 1:
+                errors.append(f"evidence.{field} must be between 0 and 1")
 
     bool_fields = [
         "within_chemical_accuracy",
         "local_property_tests_pass",
         "universal_anchor_pass",
         "upgrade_evidence_present",
+        "effect_direction_confirmed",
+        "artifact_available",
+        "independent_reproduction_pass",
+        "metric_period_match",
     ]
     for field in bool_fields:
         if field in evidence and not isinstance(evidence[field], bool):
@@ -469,6 +508,50 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
             reason = "upgrade evidence is absent; stronger claim is not licensed"
             rewrite = evidence.get("current_claim", "weaker current claim only")
             licensed_claim = rewrite
+    elif claim_type == "statistical_confidence":
+        p_value = float(evidence["p_value"])
+        alpha = float(evidence["alpha"])
+        if p_value <= alpha and evidence["effect_direction_confirmed"] is True:
+            verdict = "ACCEPT"
+            reason = f"p_value {p_value} <= alpha {alpha} and effect direction is confirmed"
+        elif p_value <= alpha:
+            verdict = "REWRITE"
+            reason = "statistical threshold passes, but effect direction is not licensed"
+            rewrite = "statistical threshold only; directional or causal wording is not licensed"
+            licensed_claim = rewrite
+        else:
+            verdict = "REJECT"
+            reason = f"p_value {p_value} > alpha {alpha}"
+    elif claim_type == "reproducibility_check":
+        artifact_available = evidence["artifact_available"] is True
+        reproduced = evidence["independent_reproduction_pass"] is True
+        if artifact_available and reproduced:
+            verdict = "ACCEPT"
+            reason = "artifact is available and independent reproduction passed"
+        elif artifact_available and not reproduced:
+            verdict = "REWRITE"
+            reason = "artifact exists, but independent reproduction has not passed"
+            rewrite = "artifact available; independent reproduction is not yet licensed"
+            licensed_claim = rewrite
+        else:
+            verdict = "REJECT"
+            reason = "required artifact is not available for reproducibility"
+    elif claim_type == "financial_metric_claim":
+        reported_value = float(evidence["reported_value"])
+        reference_value = float(evidence["reference_value"])
+        tolerance = float(evidence["tolerance"])
+        delta = abs(reported_value - reference_value)
+        if delta <= tolerance and evidence["metric_period_match"] is True:
+            verdict = "ACCEPT"
+            reason = f"reported_value differs from reference_value by {delta}, within tolerance {tolerance}, and period matches"
+        elif delta <= tolerance:
+            verdict = "REWRITE"
+            reason = "numeric metric matches tolerance, but period alignment is not licensed"
+            rewrite = "numeric metric matches reference tolerance; period-specific claim is not licensed"
+            licensed_claim = rewrite
+        else:
+            verdict = "REJECT"
+            reason = f"reported_value differs from reference_value by {delta}, above tolerance {tolerance}"
 
     return {
         "schema_version": CAPAS_CLAIM_SCHEMA_VERSION,
@@ -493,8 +576,10 @@ def _batch_items(payload: Any) -> list[dict[str, Any]]:
         items = payload["items"]
     elif isinstance(payload, dict) and isinstance(payload.get("claims"), list):
         items = payload["claims"]
+    elif isinstance(payload, dict) and isinstance(payload.get("claim"), dict) and isinstance(payload.get("evidence"), dict):
+        items = [payload]
     else:
-        raise ValueError("batch input must be a JSON array or an object with items/claims array")
+        raise ValueError("batch input must be a JSON array, an object with items/claims array, or one claim/evidence payload")
     if not all(isinstance(item, dict) for item in items):
         raise ValueError("every batch item must be a JSON object")
     return items
@@ -1195,7 +1280,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'unsafe-inline'; script-src 'unsafe-inline'; object-src 'none'; base-uri 'none'; form-action 'none'; connect-src 'none'">
 <title>CAPAS Claim Gate</title>
 <style>
-  /* CAPAS Claim Gate - Design System v10 */
+  /* CAPAS Claim Gate - Design System v11 */
   :root {
     --bg: #09090b;
     --bg-2: #111113;
@@ -1473,6 +1558,9 @@ def _render_ui(sample: dict[str, Any]) -> str:
   .alert-block.errors { background: var(--red-bg); border-color: var(--red-border); color: var(--error-soft); }
   .assist-block { margin: 12px 16px; padding: 12px 14px; border-radius: var(--radius); background: var(--accent-glow); border-color: rgba(99, 102, 241, 0.24); color: var(--assist-text); }
   .assist-block pre { background: var(--bg); border-color: rgba(99, 102, 241, 0.24); color: var(--assist-text); }
+  .batch-progress { margin-top: 10px; height: 8px; overflow: hidden; border: 1px solid var(--border); border-radius: 999px; background: var(--bg); }
+  .batch-progress-fill { height: 100%; width: var(--batch-progress, 100%); background: linear-gradient(90deg, var(--accent), var(--green)); }
+  .batch-progress-label { margin-top: 6px; color: var(--text-3); font-size: 11px; font-weight: 600; }
   .rewrite-block { margin: 12px 16px; padding: 12px 14px; border-radius: var(--radius); background: var(--orange-bg); border-color: var(--orange-border); }
   .rewrite-text { color: var(--text-1); }
   .rewrite-diff { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
@@ -1644,7 +1732,8 @@ def _render_ui(sample: dict[str, Any]) -> str:
   <div class="topbar-actions">
     <button class="copy-btn" id="help-btn" aria-label="Open keyboard shortcut and pipeline help" aria-expanded="false" onclick="openHelpModal(this)">Help</button>
     <button class="copy-btn" id="theme-toggle" aria-label="Toggle light and dark theme" onclick="toggleTheme()">Theme</button>
-    <span class="topbar-badge" id="schema-version-badge">schema v1</span>
+    <span class="topbar-badge" id="schema-version-badge">schema v2</span>
+    <span class="topbar-badge" id="shared-payload-badge" hidden>shared payload</span>
     <span class="topbar-badge">__UI_VERSION__</span>
   </div>
 </header>
@@ -1722,24 +1811,28 @@ def _render_ui(sample: dict[str, Any]) -> str:
       <li><code>Enter</code> or <code>Space</code> on a history item: restore it.</li>
     </ul>
     <h3>Batch mode</h3>
-    <p>Paste a JSON array, or an object with <code>items</code> or <code>claims</code>. Batch applies the same deterministic rule to every item and returns a summary. It does not infer missing evidence.</p>
+    <p>Paste a JSON array, an object with <code>items</code> or <code>claims</code>, or one claim/evidence payload. Batch applies the same deterministic rule to every item and returns a summary. It does not infer missing evidence.</p>
     <h3>Pipeline surfaces</h3>
     <p>The CLI/API support <code>decide</code>, <code>batch</code>, and standalone <code>retrieve → extract → align → reason → pipeline</code>. Retrieval and parsing prepare candidate evidence; the final CAPAS verdict still comes from the deterministic gate.</p>
     <h3>Schema</h3>
-    <p>Current payload schema: <code>capas-claim-payload-v1</code>. Outputs include <code>schema_version</code> for audit trails.</p>
+    <p>Current payload schema: <code>capas-claim-payload-v2</code>. Outputs include <code>schema_version</code> for audit trails.</p>
+    <p>Supported claim types: <code>claim_transition</code>, <code>exact_model_solution</code>, <code>financial_metric_claim</code>, <code>physical_accuracy</code>, <code>reproducibility_check</code>, <code>statistical_confidence</code>, and <code>universal_anchor_claim</code>.</p>
   </div>
 </div>
 
 <script>
     const sample = __SAMPLE_COMPACT_JSON__;
     const samples = __SAMPLES_JSON__;
-    const capasSchemaVersion = "capas-claim-payload-v1";
+    const capasSchemaVersion = "capas-claim-payload-v2";
     const disallowedAngleRegex = /[<>\u02c2\u02c3\u2039\u203a\u2329-\u232a\u276c-\u276d\u27e8-\u27e9\u29fc-\u29fd\u3008-\u3009\ufe64-\ufe65\uff1c-\uff1e]/u;
     const required = {
       exact_model_solution: ["abs_error", "tolerance"],
       physical_accuracy: ["within_chemical_accuracy"],
       universal_anchor_claim: ["anchor_mode", "local_property_tests_pass", "universal_anchor_pass"],
-      claim_transition: ["upgrade_evidence_present"]
+      claim_transition: ["upgrade_evidence_present"],
+      statistical_confidence: ["p_value", "alpha", "effect_direction_confirmed"],
+      reproducibility_check: ["artifact_available", "independent_reproduction_pass"],
+      financial_metric_claim: ["reported_value", "reference_value", "tolerance", "metric_period_match"]
     };
     const claimTypes = Object.keys(required).sort();
     const historyLimit = 50;
@@ -1768,7 +1861,15 @@ def _render_ui(sample: dict[str, Any]) -> str:
       "anchor_mode": "Use absolute_anchor only when the witness is a fixed theoretical value or scaling law, not another guess.",
       "local_property_tests_pass": "Whether local/problem-specific checks passed.",
       "universal_anchor_pass": "Whether the independent universal anchor passed.",
-      "upgrade_evidence_present": "Whether explicit evidence exists to license the stronger upgraded claim."
+      "upgrade_evidence_present": "Whether explicit evidence exists to license the stronger upgraded claim.",
+      "p_value": "Observed p-value for a statistical threshold claim. Must be between 0 and 1.",
+      "alpha": "Declared significance threshold. Must be between 0 and 1.",
+      "effect_direction_confirmed": "Whether the measured effect direction matches the claim wording.",
+      "artifact_available": "Whether the code/data/model artifact required for reproduction is available.",
+      "independent_reproduction_pass": "Whether an independent reproduction attempt passed.",
+      "reported_value": "Numeric value stated by the claim.",
+      "reference_value": "Trusted numeric reference value used for comparison.",
+      "metric_period_match": "Whether the reported metric and reference are from the same reporting period."
     };
 
     const minimalExamples = {
@@ -1787,6 +1888,18 @@ def _render_ui(sample: dict[str, Any]) -> str:
       claim_transition: {
         claim: { id: "draft_claim_transition", type: "claim_transition", text: "The stronger claim is licensed by explicit upgrade evidence." },
         evidence: { upgrade_evidence_present: false, current_claim: "weaker current claim only" }
+      },
+      statistical_confidence: {
+        claim: { id: "draft_statistical_confidence", type: "statistical_confidence", text: "The observed effect is statistically significant at the declared alpha." },
+        evidence: { p_value: 0.01, alpha: 0.05, effect_direction_confirmed: true }
+      },
+      reproducibility_check: {
+        claim: { id: "draft_reproducibility_check", type: "reproducibility_check", text: "The reported result is independently reproducible from the supplied artifact." },
+        evidence: { artifact_available: true, independent_reproduction_pass: true }
+      },
+      financial_metric_claim: {
+        claim: { id: "draft_financial_metric", type: "financial_metric_claim", text: "The reported financial metric matches the reference for the same period." },
+        evidence: { reported_value: 101.2, reference_value: 101.0, tolerance: 0.5, metric_period_match: true }
       }
     };
 
@@ -1829,18 +1942,20 @@ def _render_ui(sample: dict[str, Any]) -> str:
         errors.push(`claim.type must be one of: ${claimTypes.join(", ")}`);
       }
       const safeEvidence = evidence && typeof evidence === "object" && !Array.isArray(evidence) ? evidence : {};
-      for (const field of ["abs_error", "tolerance"]) {
+      for (const field of ["abs_error", "tolerance", "p_value", "alpha", "reported_value", "reference_value"]) {
         if (Object.prototype.hasOwnProperty.call(safeEvidence, field) && typeof safeEvidence[field] !== "number") {
           errors.push(`evidence.${field} must be a number`);
         } else if (Object.prototype.hasOwnProperty.call(safeEvidence, field)) {
           if (!Number.isFinite(safeEvidence[field])) {
             errors.push(`evidence.${field} must be finite`);
-          } else if (safeEvidence[field] < 0) {
+          } else if (["abs_error", "tolerance"].includes(field) && safeEvidence[field] < 0) {
             errors.push(`evidence.${field} must be >= 0`);
+          } else if (["p_value", "alpha"].includes(field) && (safeEvidence[field] < 0 || safeEvidence[field] > 1)) {
+            errors.push(`evidence.${field} must be between 0 and 1`);
           }
         }
       }
-      for (const field of ["within_chemical_accuracy", "local_property_tests_pass", "universal_anchor_pass", "upgrade_evidence_present"]) {
+      for (const field of ["within_chemical_accuracy", "local_property_tests_pass", "universal_anchor_pass", "upgrade_evidence_present", "effect_direction_confirmed", "artifact_available", "independent_reproduction_pass", "metric_period_match"]) {
         if (Object.prototype.hasOwnProperty.call(safeEvidence, field) && typeof safeEvidence[field] !== "boolean") {
           errors.push(`evidence.${field} must be a boolean`);
         }
@@ -1943,6 +2058,46 @@ def _render_ui(sample: dict[str, Any]) -> str:
           result.rewrite = evidence.current_claim || "weaker current claim only";
           result.licensed_claim = result.rewrite;
         }
+      } else if (claim.type === "statistical_confidence") {
+        if (Number(evidence.p_value) <= Number(evidence.alpha) && evidence.effect_direction_confirmed === true) {
+          result.verdict = "ACCEPT";
+          result.reason = `p_value ${evidence.p_value} <= alpha ${evidence.alpha} and effect direction is confirmed`;
+        } else if (Number(evidence.p_value) <= Number(evidence.alpha)) {
+          result.verdict = "REWRITE";
+          result.reason = "statistical threshold passes, but effect direction is not licensed";
+          result.rewrite = "statistical threshold only; directional or causal wording is not licensed";
+          result.licensed_claim = result.rewrite;
+        } else {
+          result.verdict = "REJECT";
+          result.reason = `p_value ${evidence.p_value} > alpha ${evidence.alpha}`;
+        }
+      } else if (claim.type === "reproducibility_check") {
+        if (evidence.artifact_available === true && evidence.independent_reproduction_pass === true) {
+          result.verdict = "ACCEPT";
+          result.reason = "artifact is available and independent reproduction passed";
+        } else if (evidence.artifact_available === true) {
+          result.verdict = "REWRITE";
+          result.reason = "artifact exists, but independent reproduction has not passed";
+          result.rewrite = "artifact available; independent reproduction is not yet licensed";
+          result.licensed_claim = result.rewrite;
+        } else {
+          result.verdict = "REJECT";
+          result.reason = "required artifact is not available for reproducibility";
+        }
+      } else if (claim.type === "financial_metric_claim") {
+        const delta = Math.abs(Number(evidence.reported_value) - Number(evidence.reference_value));
+        if (delta <= Number(evidence.tolerance) && evidence.metric_period_match === true) {
+          result.verdict = "ACCEPT";
+          result.reason = `reported_value differs from reference_value by ${delta}, within tolerance ${evidence.tolerance}, and period matches`;
+        } else if (delta <= Number(evidence.tolerance)) {
+          result.verdict = "REWRITE";
+          result.reason = "numeric metric matches tolerance, but period alignment is not licensed";
+          result.rewrite = "numeric metric matches reference tolerance; period-specific claim is not licensed";
+          result.licensed_claim = result.rewrite;
+        } else {
+          result.verdict = "REJECT";
+          result.reason = `reported_value differs from reference_value by ${delta}, above tolerance ${evidence.tolerance}`;
+        }
       }
       return result;
     }
@@ -2005,7 +2160,9 @@ def _render_ui(sample: dict[str, Any]) -> str:
       const summary = Object.entries(result.summary).map(([verdict, count]) => `<span class="verdict-badge ${escHtml(verdict)}">${escHtml(verdict)} ${count}</span>`).join("");
       document.getElementById("verdict-area").innerHTML =
         `<div class="verdict-banner"><span class="verdict-badge HOLD">BATCH</span><span class="verdict-reason">${result.item_count} items evaluated with deterministic CAPAS gates.</span></div>` +
-        `<div class="assist-block"><div class="alert-title">Batch summary</div><div style="display:flex;gap:8px;flex-wrap:wrap">${summary}</div></div>`;
+        `<div class="assist-block"><div class="alert-title">Batch summary</div><div style="display:flex;gap:8px;flex-wrap:wrap">${summary}</div>` +
+        `<div class="batch-progress" aria-hidden="true"><div class="batch-progress-fill" style="--batch-progress:100%"></div></div>` +
+        `<div class="batch-progress-label">${result.item_count}/${result.item_count} claims processed · deterministic gate complete</div></div>`;
     }
 
     function hasNullEvidence(payload) {
@@ -2262,6 +2419,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
         const raw = decodeBase64Url(encoded);
         JSON.parse(raw);
         document.getElementById("input").value = raw;
+        document.getElementById("shared-payload-badge").hidden = false;
         return true;
       } catch (error) {
         document.getElementById("verdict-area").innerHTML =

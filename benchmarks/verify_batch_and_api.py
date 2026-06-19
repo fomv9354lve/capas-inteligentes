@@ -14,6 +14,7 @@ REPORT_PATH = ROOT / "outputs" / "batch_api_report.json"
 PORT = 8766
 ACTION_PATH = ROOT / ".github" / "actions" / "capas-claim-gate" / "action.yml"
 WORKFLOW_PATH = ROOT / ".github" / "workflows" / "claim-gate.yml"
+SCHEMA_VERSION = "capas-claim-payload-v2"
 
 
 def _json_request(url: str, payload: object | None = None) -> dict:
@@ -66,8 +67,30 @@ def main() -> int:
     })
     checks.append({
         "check": "batch_cli_schema_version",
-        "passed": batch_report.get("schema_version") == "capas-claim-payload-v1",
+        "passed": batch_report.get("schema_version") == SCHEMA_VERSION,
         "detail": batch_report.get("schema_version"),
+    })
+    single_proc = subprocess.run(
+        [
+            sys.executable,
+            "capas.py",
+            "batch",
+            "--input",
+            "examples/external_claim_accept.json",
+            "--json",
+        ],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+    )
+    try:
+        single_batch = json.loads(single_proc.stdout)
+    except json.JSONDecodeError:
+        single_batch = {}
+    checks.append({
+        "check": "batch_cli_single_payload_autowrap",
+        "passed": single_proc.returncode == 0 and single_batch.get("item_count") == 1 and single_batch.get("summary") == {"ACCEPT": 1},
+        "detail": single_batch.get("summary") or single_proc.stderr.strip(),
     })
 
     server = subprocess.Popen(
@@ -83,7 +106,7 @@ def main() -> int:
         health = _json_request(f"http://127.0.0.1:{PORT}/health") if healthy else {}
         checks.append({
             "check": "api_health_schema_version",
-            "passed": health.get("schema_version") == "capas-claim-payload-v1",
+            "passed": health.get("schema_version") == SCHEMA_VERSION,
             "detail": health.get("schema_version"),
         })
         accept_payload = json.loads((ROOT / "examples" / "external_claim_accept.json").read_text(encoding="utf-8"))
@@ -99,6 +122,12 @@ def main() -> int:
             "check": "api_batch_summary",
             "passed": api_batch.get("summary") == {"ACCEPT": 1, "HOLD": 1, "REWRITE": 1},
             "detail": api_batch.get("summary"),
+        })
+        api_single_batch = _json_request(f"http://127.0.0.1:{PORT}/batch", accept_payload) if healthy else {}
+        checks.append({
+            "check": "api_batch_single_payload_autowrap",
+            "passed": api_single_batch.get("item_count") == 1 and api_single_batch.get("summary") == {"ACCEPT": 1},
+            "detail": api_single_batch.get("summary"),
         })
     finally:
         server.terminate()

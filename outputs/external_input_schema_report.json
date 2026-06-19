@@ -48,7 +48,7 @@
         "passed": false,
         "returncode": 1,
         "stderr_tail": "",
-        "stdout_tail": "INVALID: examples/external_claim_invalid.json\n- evidence must be an object\n- claim.id must be a non-empty string\n- claim.type must be one of: claim_transition, exact_model_solution, physical_accuracy, universal_anchor_claim\n"
+        "stdout_tail": "INVALID: examples/external_claim_invalid.json\n- evidence must be an object\n- claim.id must be a non-empty string\n- claim.type must be one of: claim_transition, exact_model_solution, financial_metric_claim, physical_accuracy, reproducibility_check, statistical_confidence, universal_anchor_claim\n"
       },
       "decision": {
         "fine_tune_blockers": [
@@ -71,15 +71,15 @@
         "schema_errors": [
           "evidence must be an object",
           "claim.id must be a non-empty string",
-          "claim.type must be one of: claim_transition, exact_model_solution, physical_accuracy, universal_anchor_claim"
+          "claim.type must be one of: claim_transition, exact_model_solution, financial_metric_claim, physical_accuracy, reproducibility_check, statistical_confidence, universal_anchor_claim"
         ],
-        "schema_version": "capas-claim-payload-v1",
+        "schema_version": "capas-claim-payload-v2",
         "verdict": "HOLD"
       },
       "errors": [
         "evidence must be an object",
         "claim.id must be a non-empty string",
-        "claim.type must be one of: claim_transition, exact_model_solution, physical_accuracy, universal_anchor_claim"
+        "claim.type must be one of: claim_transition, exact_model_solution, financial_metric_claim, physical_accuracy, reproducibility_check, statistical_confidence, universal_anchor_claim"
       ],
       "passed": true
     },
@@ -106,7 +106,7 @@
         "schema_errors": [
           "evidence.abs_error must be >= 0"
         ],
-        "schema_version": "capas-claim-payload-v1",
+        "schema_version": "capas-claim-payload-v2",
         "verdict": "HOLD"
       },
       "errors": [
@@ -138,7 +138,7 @@
         "schema_errors": [
           "evidence.tolerance must be >= 0"
         ],
-        "schema_version": "capas-claim-payload-v1",
+        "schema_version": "capas-claim-payload-v2",
         "verdict": "HOLD"
       },
       "errors": [
@@ -171,7 +171,7 @@
           "evidence.abs_error must be >= 0",
           "evidence.tolerance must be >= 0"
         ],
-        "schema_version": "capas-claim-payload-v1",
+        "schema_version": "capas-claim-payload-v2",
         "verdict": "HOLD"
       },
       "errors": [
@@ -204,7 +204,7 @@
         "schema_errors": [
           "evidence.abs_error must be a number"
         ],
-        "schema_version": "capas-claim-payload-v1",
+        "schema_version": "capas-claim-payload-v2",
         "verdict": "HOLD"
       },
       "errors": [
@@ -236,7 +236,7 @@
         "schema_errors": [
           "claim.id must be at most 256 characters"
         ],
-        "schema_version": "capas-claim-payload-v1",
+        "schema_version": "capas-claim-payload-v2",
         "verdict": "HOLD"
       },
       "errors": [
@@ -268,7 +268,7 @@
         "schema_errors": [
           "claim.text must be at most 2000 characters"
         ],
-        "schema_version": "capas-claim-payload-v1",
+        "schema_version": "capas-claim-payload-v2",
         "verdict": "HOLD"
       },
       "errors": [
@@ -300,7 +300,7 @@
         "schema_errors": [
           "evidence.current_claim must not contain angle brackets or Unicode angle-bracket homoglyphs"
         ],
-        "schema_version": "capas-claim-payload-v1",
+        "schema_version": "capas-claim-payload-v2",
         "verdict": "HOLD"
       },
       "errors": [
@@ -332,7 +332,7 @@
         "schema_errors": [
           "evidence.current_claim must not contain angle brackets or Unicode angle-bracket homoglyphs"
         ],
-        "schema_version": "capas-claim-payload-v1",
+        "schema_version": "capas-claim-payload-v2",
         "verdict": "HOLD"
       },
       "errors": [
@@ -364,7 +364,7 @@
         "schema_errors": [
           "claim.id must not contain angle brackets or Unicode angle-bracket homoglyphs"
         ],
-        "schema_version": "capas-claim-payload-v1",
+        "schema_version": "capas-claim-payload-v2",
         "verdict": "HOLD"
       },
       "errors": [
@@ -396,7 +396,7 @@
         "schema_errors": [
           "claim.text must not contain angle brackets or Unicode angle-bracket homoglyphs"
         ],
-        "schema_version": "capas-claim-payload-v1",
+        "schema_version": "capas-claim-payload-v2",
         "verdict": "HOLD"
       },
       "errors": [
@@ -428,7 +428,7 @@
         "schema_errors": [
           "claim.text must not contain angle brackets or Unicode angle-bracket homoglyphs"
         ],
-        "schema_version": "capas-claim-payload-v1",
+        "schema_version": "capas-claim-payload-v2",
         "verdict": "HOLD"
       },
       "errors": [
@@ -460,7 +460,7 @@
         "schema_errors": [
           "claim.text must not contain angle brackets or Unicode angle-bracket homoglyphs"
         ],
-        "schema_version": "capas-claim-payload-v1",
+        "schema_version": "capas-claim-payload-v2",
         "verdict": "HOLD"
       },
       "errors": [
@@ -492,7 +492,7 @@
         "schema_errors": [
           "evidence.anchor_mode must not contain angle brackets or Unicode angle-bracket homoglyphs"
         ],
-        "schema_version": "capas-claim-payload-v1",
+        "schema_version": "capas-claim-payload-v2",
         "verdict": "HOLD"
       },
       "errors": [
@@ -524,13 +524,45 @@
         "schema_errors": [
           "evidence.physical_evidence_level must not contain angle brackets or Unicode angle-bracket homoglyphs"
         ],
-        "schema_version": "capas-claim-payload-v1",
+        "schema_version": "capas-claim-payload-v2",
         "verdict": "HOLD"
       },
       "errors": [
         "evidence.physical_evidence_level must not contain angle brackets or Unicode angle-bracket homoglyphs"
       ],
       "expected_error": "evidence.physical_evidence_level must not contain angle brackets or Unicode angle-bracket homoglyphs",
+      "passed": true
+    },
+    {
+      "check": "adversarial_payload:p_value_out_of_range",
+      "decision": {
+        "fine_tune_blockers": [
+          "no blind or external inference review is attached",
+          "CAPAS gates supplied structured evidence; it does not infer hidden evidence",
+          "training readiness requires source-backed evidence, semantic alignment, witness independence, and review"
+        ],
+        "fine_tune_ready": false,
+        "input_claim": {
+          "id": "p_value_out_of_range",
+          "text": "A p-value outside probability bounds must not license a statistical claim.",
+          "type": "statistical_confidence"
+        },
+        "licensed_claim": "A p-value outside probability bounds must not license a statistical claim.",
+        "missing_fields": [],
+        "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "reason": "input payload failed CAPAS schema validation",
+        "required_fields": [],
+        "rewrite": null,
+        "schema_errors": [
+          "evidence.p_value must be between 0 and 1"
+        ],
+        "schema_version": "capas-claim-payload-v2",
+        "verdict": "HOLD"
+      },
+      "errors": [
+        "evidence.p_value must be between 0 and 1"
+      ],
+      "expected_error": "evidence.p_value must be between 0 and 1",
       "passed": true
     },
     {
@@ -557,7 +589,7 @@
         ],
         "rewrite": null,
         "schema_errors": [],
-        "schema_version": "capas-claim-payload-v1",
+        "schema_version": "capas-claim-payload-v2",
         "verdict": "ACCEPT"
       },
       "expected_detail": "abs_error 0.0 <= tolerance 0.0",
@@ -591,11 +623,107 @@
         ],
         "rewrite": null,
         "schema_errors": [],
-        "schema_version": "capas-claim-payload-v1",
+        "schema_version": "capas-claim-payload-v2",
         "verdict": "HOLD"
       },
       "expected_detail": "anchor_mode",
       "expected_verdict": "HOLD",
+      "passed": true
+    },
+    {
+      "check": "semantic_payload:statistical_confidence_accept",
+      "decision": {
+        "fine_tune_blockers": [
+          "no blind or external inference review is attached",
+          "CAPAS gates supplied structured evidence; it does not infer hidden evidence",
+          "training readiness requires source-backed evidence, semantic alignment, witness independence, and review"
+        ],
+        "fine_tune_ready": false,
+        "input_claim": {
+          "id": "statistical_confidence_accept",
+          "text": "The observed effect is statistically significant at alpha 0.05.",
+          "type": "statistical_confidence"
+        },
+        "licensed_claim": "The observed effect is statistically significant at alpha 0.05.",
+        "missing_fields": [],
+        "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "reason": "p_value 0.01 <= alpha 0.05 and effect direction is confirmed",
+        "required_fields": [
+          "p_value",
+          "alpha",
+          "effect_direction_confirmed"
+        ],
+        "rewrite": null,
+        "schema_errors": [],
+        "schema_version": "capas-claim-payload-v2",
+        "verdict": "ACCEPT"
+      },
+      "expected_detail": "effect direction is confirmed",
+      "expected_verdict": "ACCEPT",
+      "passed": true
+    },
+    {
+      "check": "semantic_payload:reproducibility_check_rewrite",
+      "decision": {
+        "fine_tune_blockers": [
+          "no blind or external inference review is attached",
+          "CAPAS gates supplied structured evidence; it does not infer hidden evidence",
+          "training readiness requires source-backed evidence, semantic alignment, witness independence, and review"
+        ],
+        "fine_tune_ready": false,
+        "input_claim": {
+          "id": "reproducibility_check_rewrite",
+          "text": "The reported result is independently reproducible.",
+          "type": "reproducibility_check"
+        },
+        "licensed_claim": "artifact available; independent reproduction is not yet licensed",
+        "missing_fields": [],
+        "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "reason": "artifact exists, but independent reproduction has not passed",
+        "required_fields": [
+          "artifact_available",
+          "independent_reproduction_pass"
+        ],
+        "rewrite": "artifact available; independent reproduction is not yet licensed",
+        "schema_errors": [],
+        "schema_version": "capas-claim-payload-v2",
+        "verdict": "REWRITE"
+      },
+      "expected_detail": "independent reproduction has not passed",
+      "expected_verdict": "REWRITE",
+      "passed": true
+    },
+    {
+      "check": "semantic_payload:financial_metric_claim_accept",
+      "decision": {
+        "fine_tune_blockers": [
+          "no blind or external inference review is attached",
+          "CAPAS gates supplied structured evidence; it does not infer hidden evidence",
+          "training readiness requires source-backed evidence, semantic alignment, witness independence, and review"
+        ],
+        "fine_tune_ready": false,
+        "input_claim": {
+          "id": "financial_metric_claim_accept",
+          "text": "The reported financial metric matches the reference for the same period.",
+          "type": "financial_metric_claim"
+        },
+        "licensed_claim": "The reported financial metric matches the reference for the same period.",
+        "missing_fields": [],
+        "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "reason": "reported_value differs from reference_value by 0.20000000000000284, within tolerance 0.5, and period matches",
+        "required_fields": [
+          "reported_value",
+          "reference_value",
+          "tolerance",
+          "metric_period_match"
+        ],
+        "rewrite": null,
+        "schema_errors": [],
+        "schema_version": "capas-claim-payload-v2",
+        "verdict": "ACCEPT"
+      },
+      "expected_detail": "period matches",
+      "expected_verdict": "ACCEPT",
       "passed": true
     }
   ],
