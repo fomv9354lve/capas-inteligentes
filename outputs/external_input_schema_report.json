@@ -208,6 +208,85 @@
       ],
       "expected_error": "claim.id must be at most 256 characters",
       "passed": true
+    },
+    {
+      "check": "adversarial_payload:current_claim_raw_html",
+      "decision": {
+        "fine_tune_ready": false,
+        "input_claim": {
+          "id": "current_claim_raw_html",
+          "text": "A malicious current_claim should not flow into rewrite output.",
+          "type": "claim_transition"
+        },
+        "licensed_claim": "A malicious current_claim should not flow into rewrite output.",
+        "missing_fields": [],
+        "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "reason": "input payload failed CAPAS schema validation",
+        "required_fields": [],
+        "rewrite": null,
+        "schema_errors": [
+          "evidence.current_claim must not contain raw HTML angle brackets"
+        ],
+        "verdict": "HOLD"
+      },
+      "errors": [
+        "evidence.current_claim must not contain raw HTML angle brackets"
+      ],
+      "expected_error": "evidence.current_claim must not contain raw HTML angle brackets",
+      "passed": true
+    },
+    {
+      "check": "semantic_payload:zero_tolerance_exact_accept",
+      "decision": {
+        "fine_tune_ready": false,
+        "input_claim": {
+          "id": "zero_tolerance_exact_accept",
+          "text": "A zero tolerance is allowed only as an exact equality check.",
+          "type": "exact_model_solution"
+        },
+        "licensed_claim": "A zero tolerance is allowed only as an exact equality check.",
+        "missing_fields": [],
+        "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "reason": "abs_error 0.0 <= tolerance 0.0",
+        "required_fields": [
+          "abs_error",
+          "tolerance"
+        ],
+        "rewrite": null,
+        "schema_errors": [],
+        "verdict": "ACCEPT"
+      },
+      "expected_detail": "abs_error 0.0 <= tolerance 0.0",
+      "expected_verdict": "ACCEPT",
+      "passed": true
+    },
+    {
+      "check": "semantic_payload:anchor_mode_unknown_missing",
+      "decision": {
+        "fine_tune_ready": false,
+        "input_claim": {
+          "id": "anchor_mode_unknown_missing",
+          "text": "An unknown anchor mode should be treated as undeclared evidence.",
+          "type": "universal_anchor_claim"
+        },
+        "licensed_claim": "An unknown anchor mode should be treated as undeclared evidence.",
+        "missing_fields": [
+          "anchor_mode"
+        ],
+        "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "reason": "missing required evidence fields: ['anchor_mode']",
+        "required_fields": [
+          "anchor_mode",
+          "local_property_tests_pass",
+          "universal_anchor_pass"
+        ],
+        "rewrite": null,
+        "schema_errors": [],
+        "verdict": "HOLD"
+      },
+      "expected_detail": "anchor_mode",
+      "expected_verdict": "HOLD",
+      "passed": true
     }
   ],
   "external_input_schema_ready": true,

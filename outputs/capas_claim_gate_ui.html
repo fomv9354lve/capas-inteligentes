@@ -267,6 +267,18 @@
       if (Object.prototype.hasOwnProperty.call(safeEvidence, "anchor_mode") && typeof safeEvidence.anchor_mode !== "string") {
         errors.push("evidence.anchor_mode must be a string");
       }
+      if (Object.prototype.hasOwnProperty.call(safeEvidence, "current_claim")) {
+        if (typeof safeEvidence.current_claim !== "string") {
+          errors.push("evidence.current_claim must be a string");
+        } else {
+          if (safeEvidence.current_claim.length > 4000) {
+            errors.push("evidence.current_claim must be at most 4000 characters");
+          }
+          if (safeEvidence.current_claim.includes("<") || safeEvidence.current_claim.includes(">")) {
+            errors.push("evidence.current_claim must not contain raw HTML angle brackets");
+          }
+        }
+      }
       return errors;
     }
 

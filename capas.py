@@ -89,7 +89,11 @@ def external_claim_payload_schema() -> dict[str, Any]:
                     "physical_evidence_level": {"type": "string"},
                     "verification_independence": {"type": "string"},
                     "reference_truth": {},
-                    "current_claim": {"type": "string"},
+                    "current_claim": {
+                        "type": "string",
+                        "maxLength": 4000,
+                        "description": "Optional weaker claim text for REWRITE. Raw HTML angle brackets are rejected because this value can be displayed by downstream consumers.",
+                    },
                 },
             },
         },
@@ -151,6 +155,15 @@ def validate_external_payload(payload: dict[str, Any]) -> list[str]:
 
     if "anchor_mode" in evidence and not isinstance(evidence["anchor_mode"], str):
         errors.append("evidence.anchor_mode must be a string")
+    if "current_claim" in evidence:
+        current_claim = evidence["current_claim"]
+        if not isinstance(current_claim, str):
+            errors.append("evidence.current_claim must be a string")
+        else:
+            if len(current_claim) > 4000:
+                errors.append("evidence.current_claim must be at most 4000 characters")
+            if "<" in current_claim or ">" in current_claim:
+                errors.append("evidence.current_claim must not contain raw HTML angle brackets")
     return errors
 
 
@@ -725,6 +738,18 @@ def _render_ui(sample: dict[str, Any]) -> str:
       }
       if (Object.prototype.hasOwnProperty.call(safeEvidence, "anchor_mode") && typeof safeEvidence.anchor_mode !== "string") {
         errors.push("evidence.anchor_mode must be a string");
+      }
+      if (Object.prototype.hasOwnProperty.call(safeEvidence, "current_claim")) {
+        if (typeof safeEvidence.current_claim !== "string") {
+          errors.push("evidence.current_claim must be a string");
+        } else {
+          if (safeEvidence.current_claim.length > 4000) {
+            errors.push("evidence.current_claim must be at most 4000 characters");
+          }
+          if (safeEvidence.current_claim.includes("<") || safeEvidence.current_claim.includes(">")) {
+            errors.push("evidence.current_claim must not contain raw HTML angle brackets");
+          }
+        }
       }
       return errors;
     }

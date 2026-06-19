@@ -98,6 +98,57 @@ ADVERSARIAL_PAYLOADS = [
         },
         "claim.id must be at most 256 characters",
     ),
+    (
+        "current_claim_raw_html",
+        {
+            "claim": {
+                "id": "current_claim_raw_html",
+                "type": "claim_transition",
+                "text": "A malicious current_claim should not flow into rewrite output.",
+            },
+            "evidence": {
+                "upgrade_evidence_present": False,
+                "current_claim": "<img src=x onerror=alert('xss')>",
+            },
+        },
+        "evidence.current_claim must not contain raw HTML angle brackets",
+    ),
+]
+
+SEMANTIC_PAYLOADS = [
+    (
+        "zero_tolerance_exact_accept",
+        {
+            "claim": {
+                "id": "zero_tolerance_exact_accept",
+                "type": "exact_model_solution",
+                "text": "A zero tolerance is allowed only as an exact equality check.",
+            },
+            "evidence": {
+                "abs_error": 0.0,
+                "tolerance": 0.0,
+            },
+        },
+        "ACCEPT",
+        "abs_error 0.0 <= tolerance 0.0",
+    ),
+    (
+        "anchor_mode_unknown_missing",
+        {
+            "claim": {
+                "id": "anchor_mode_unknown_missing",
+                "type": "universal_anchor_claim",
+                "text": "An unknown anchor mode should be treated as undeclared evidence.",
+            },
+            "evidence": {
+                "anchor_mode": "unknown",
+                "local_property_tests_pass": True,
+                "universal_anchor_pass": True,
+            },
+        },
+        "HOLD",
+        "anchor_mode",
+    ),
 ]
 
 
@@ -162,6 +213,22 @@ def main() -> int:
             ),
             "expected_error": expected_error,
             "errors": errors,
+            "decision": decision,
+        })
+
+    for name, payload, expected_verdict, expected_detail in SEMANTIC_PAYLOADS:
+        decision = capas.decide_external_claim(payload)
+        checks.append({
+            "check": f"semantic_payload:{name}",
+            "passed": (
+                decision["verdict"] == expected_verdict
+                and (
+                    expected_detail in decision["reason"]
+                    or expected_detail in decision.get("missing_fields", [])
+                )
+            ),
+            "expected_verdict": expected_verdict,
+            "expected_detail": expected_detail,
             "decision": decision,
         })
 
