@@ -42,6 +42,18 @@
       "passed": true
     },
     {
+      "check": "valid_example:external_claim_fine_tune_ready.json",
+      "cli": {
+        "command": "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3 capas.py check-input --input examples/external_claim_fine_tune_ready.json",
+        "passed": true,
+        "returncode": 0,
+        "stderr_tail": "",
+        "stdout_tail": "VALID: examples/external_claim_fine_tune_ready.json\n"
+      },
+      "errors": [],
+      "passed": true
+    },
+    {
       "check": "invalid_example:external_claim_invalid.json",
       "cli": {
         "command": "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3 capas.py check-input --input examples/external_claim_invalid.json",
@@ -52,10 +64,27 @@
       },
       "decision": {
         "fine_tune_blockers": [
-          "no blind or external inference review is attached",
-          "CAPAS gates supplied structured evidence; it does not infer hidden evidence",
-          "training readiness requires source-backed evidence, semantic alignment, witness independence, and review"
+          "claim verdict is not ACCEPT",
+          "schema or required-field blockers remain",
+          "source-backed evidence is not attached",
+          "external review is not attached",
+          "claim.text semantic alignment is not externally certified",
+          "witness independence is not externally certified",
+          "provenance.sources or provenance.source_urls is empty",
+          "provenance.review_id is missing",
+          "provenance.witness_id is missing"
         ],
+        "fine_tune_criteria": {
+          "external_review": false,
+          "provenance_sources": false,
+          "review_id_present": false,
+          "schema_clean": false,
+          "semantic_alignment": false,
+          "source_backed_evidence": false,
+          "verdict_accept": false,
+          "witness_id_present": false,
+          "witness_independence": false
+        },
         "fine_tune_ready": false,
         "input_claim": {
           "id": "",
@@ -87,10 +116,27 @@
       "check": "adversarial_payload:negative_abs_error",
       "decision": {
         "fine_tune_blockers": [
-          "no blind or external inference review is attached",
-          "CAPAS gates supplied structured evidence; it does not infer hidden evidence",
-          "training readiness requires source-backed evidence, semantic alignment, witness independence, and review"
+          "claim verdict is not ACCEPT",
+          "schema or required-field blockers remain",
+          "source-backed evidence is not attached",
+          "external review is not attached",
+          "claim.text semantic alignment is not externally certified",
+          "witness independence is not externally certified",
+          "provenance.sources or provenance.source_urls is empty",
+          "provenance.review_id is missing",
+          "provenance.witness_id is missing"
         ],
+        "fine_tune_criteria": {
+          "external_review": false,
+          "provenance_sources": false,
+          "review_id_present": false,
+          "schema_clean": false,
+          "semantic_alignment": false,
+          "source_backed_evidence": false,
+          "verdict_accept": false,
+          "witness_id_present": false,
+          "witness_independence": false
+        },
         "fine_tune_ready": false,
         "input_claim": {
           "id": "negative_abs_error",
@@ -119,10 +165,27 @@
       "check": "adversarial_payload:negative_tolerance",
       "decision": {
         "fine_tune_blockers": [
-          "no blind or external inference review is attached",
-          "CAPAS gates supplied structured evidence; it does not infer hidden evidence",
-          "training readiness requires source-backed evidence, semantic alignment, witness independence, and review"
+          "claim verdict is not ACCEPT",
+          "schema or required-field blockers remain",
+          "source-backed evidence is not attached",
+          "external review is not attached",
+          "claim.text semantic alignment is not externally certified",
+          "witness independence is not externally certified",
+          "provenance.sources or provenance.source_urls is empty",
+          "provenance.review_id is missing",
+          "provenance.witness_id is missing"
         ],
+        "fine_tune_criteria": {
+          "external_review": false,
+          "provenance_sources": false,
+          "review_id_present": false,
+          "schema_clean": false,
+          "semantic_alignment": false,
+          "source_backed_evidence": false,
+          "verdict_accept": false,
+          "witness_id_present": false,
+          "witness_independence": false
+        },
         "fine_tune_ready": false,
         "input_claim": {
           "id": "negative_tolerance",
@@ -151,10 +214,27 @@
       "check": "adversarial_payload:double_negative_exact_solution",
       "decision": {
         "fine_tune_blockers": [
-          "no blind or external inference review is attached",
-          "CAPAS gates supplied structured evidence; it does not infer hidden evidence",
-          "training readiness requires source-backed evidence, semantic alignment, witness independence, and review"
+          "claim verdict is not ACCEPT",
+          "schema or required-field blockers remain",
+          "source-backed evidence is not attached",
+          "external review is not attached",
+          "claim.text semantic alignment is not externally certified",
+          "witness independence is not externally certified",
+          "provenance.sources or provenance.source_urls is empty",
+          "provenance.review_id is missing",
+          "provenance.witness_id is missing"
         ],
+        "fine_tune_criteria": {
+          "external_review": false,
+          "provenance_sources": false,
+          "review_id_present": false,
+          "schema_clean": false,
+          "semantic_alignment": false,
+          "source_backed_evidence": false,
+          "verdict_accept": false,
+          "witness_id_present": false,
+          "witness_independence": false
+        },
         "fine_tune_ready": false,
         "input_claim": {
           "id": "double_negative_exact_solution",
@@ -185,10 +265,27 @@
       "check": "adversarial_payload:boolean_numeric_field",
       "decision": {
         "fine_tune_blockers": [
-          "no blind or external inference review is attached",
-          "CAPAS gates supplied structured evidence; it does not infer hidden evidence",
-          "training readiness requires source-backed evidence, semantic alignment, witness independence, and review"
+          "claim verdict is not ACCEPT",
+          "schema or required-field blockers remain",
+          "source-backed evidence is not attached",
+          "external review is not attached",
+          "claim.text semantic alignment is not externally certified",
+          "witness independence is not externally certified",
+          "provenance.sources or provenance.source_urls is empty",
+          "provenance.review_id is missing",
+          "provenance.witness_id is missing"
         ],
+        "fine_tune_criteria": {
+          "external_review": false,
+          "provenance_sources": false,
+          "review_id_present": false,
+          "schema_clean": false,
+          "semantic_alignment": false,
+          "source_backed_evidence": false,
+          "verdict_accept": false,
+          "witness_id_present": false,
+          "witness_independence": false
+        },
         "fine_tune_ready": false,
         "input_claim": {
           "id": "boolean_numeric_field",
@@ -217,10 +314,27 @@
       "check": "adversarial_payload:oversized_claim_id",
       "decision": {
         "fine_tune_blockers": [
-          "no blind or external inference review is attached",
-          "CAPAS gates supplied structured evidence; it does not infer hidden evidence",
-          "training readiness requires source-backed evidence, semantic alignment, witness independence, and review"
+          "claim verdict is not ACCEPT",
+          "schema or required-field blockers remain",
+          "source-backed evidence is not attached",
+          "external review is not attached",
+          "claim.text semantic alignment is not externally certified",
+          "witness independence is not externally certified",
+          "provenance.sources or provenance.source_urls is empty",
+          "provenance.review_id is missing",
+          "provenance.witness_id is missing"
         ],
+        "fine_tune_criteria": {
+          "external_review": false,
+          "provenance_sources": false,
+          "review_id_present": false,
+          "schema_clean": false,
+          "semantic_alignment": false,
+          "source_backed_evidence": false,
+          "verdict_accept": false,
+          "witness_id_present": false,
+          "witness_independence": false
+        },
         "fine_tune_ready": false,
         "input_claim": {
           "id": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
@@ -249,10 +363,27 @@
       "check": "adversarial_payload:oversized_claim_text",
       "decision": {
         "fine_tune_blockers": [
-          "no blind or external inference review is attached",
-          "CAPAS gates supplied structured evidence; it does not infer hidden evidence",
-          "training readiness requires source-backed evidence, semantic alignment, witness independence, and review"
+          "claim verdict is not ACCEPT",
+          "schema or required-field blockers remain",
+          "source-backed evidence is not attached",
+          "external review is not attached",
+          "claim.text semantic alignment is not externally certified",
+          "witness independence is not externally certified",
+          "provenance.sources or provenance.source_urls is empty",
+          "provenance.review_id is missing",
+          "provenance.witness_id is missing"
         ],
+        "fine_tune_criteria": {
+          "external_review": false,
+          "provenance_sources": false,
+          "review_id_present": false,
+          "schema_clean": false,
+          "semantic_alignment": false,
+          "source_backed_evidence": false,
+          "verdict_accept": false,
+          "witness_id_present": false,
+          "witness_independence": false
+        },
         "fine_tune_ready": false,
         "input_claim": {
           "id": "oversized_claim_text",
@@ -281,10 +412,27 @@
       "check": "adversarial_payload:current_claim_raw_html",
       "decision": {
         "fine_tune_blockers": [
-          "no blind or external inference review is attached",
-          "CAPAS gates supplied structured evidence; it does not infer hidden evidence",
-          "training readiness requires source-backed evidence, semantic alignment, witness independence, and review"
+          "claim verdict is not ACCEPT",
+          "schema or required-field blockers remain",
+          "source-backed evidence is not attached",
+          "external review is not attached",
+          "claim.text semantic alignment is not externally certified",
+          "witness independence is not externally certified",
+          "provenance.sources or provenance.source_urls is empty",
+          "provenance.review_id is missing",
+          "provenance.witness_id is missing"
         ],
+        "fine_tune_criteria": {
+          "external_review": false,
+          "provenance_sources": false,
+          "review_id_present": false,
+          "schema_clean": false,
+          "semantic_alignment": false,
+          "source_backed_evidence": false,
+          "verdict_accept": false,
+          "witness_id_present": false,
+          "witness_independence": false
+        },
         "fine_tune_ready": false,
         "input_claim": {
           "id": "current_claim_raw_html",
@@ -313,10 +461,27 @@
       "check": "adversarial_payload:current_claim_unicode_angle_homoglyph",
       "decision": {
         "fine_tune_blockers": [
-          "no blind or external inference review is attached",
-          "CAPAS gates supplied structured evidence; it does not infer hidden evidence",
-          "training readiness requires source-backed evidence, semantic alignment, witness independence, and review"
+          "claim verdict is not ACCEPT",
+          "schema or required-field blockers remain",
+          "source-backed evidence is not attached",
+          "external review is not attached",
+          "claim.text semantic alignment is not externally certified",
+          "witness independence is not externally certified",
+          "provenance.sources or provenance.source_urls is empty",
+          "provenance.review_id is missing",
+          "provenance.witness_id is missing"
         ],
+        "fine_tune_criteria": {
+          "external_review": false,
+          "provenance_sources": false,
+          "review_id_present": false,
+          "schema_clean": false,
+          "semantic_alignment": false,
+          "source_backed_evidence": false,
+          "verdict_accept": false,
+          "witness_id_present": false,
+          "witness_independence": false
+        },
         "fine_tune_ready": false,
         "input_claim": {
           "id": "current_claim_unicode_angle_homoglyph",
@@ -345,10 +510,27 @@
       "check": "adversarial_payload:claim_id_raw_html",
       "decision": {
         "fine_tune_blockers": [
-          "no blind or external inference review is attached",
-          "CAPAS gates supplied structured evidence; it does not infer hidden evidence",
-          "training readiness requires source-backed evidence, semantic alignment, witness independence, and review"
+          "claim verdict is not ACCEPT",
+          "schema or required-field blockers remain",
+          "source-backed evidence is not attached",
+          "external review is not attached",
+          "claim.text semantic alignment is not externally certified",
+          "witness independence is not externally certified",
+          "provenance.sources or provenance.source_urls is empty",
+          "provenance.review_id is missing",
+          "provenance.witness_id is missing"
         ],
+        "fine_tune_criteria": {
+          "external_review": false,
+          "provenance_sources": false,
+          "review_id_present": false,
+          "schema_clean": false,
+          "semantic_alignment": false,
+          "source_backed_evidence": false,
+          "verdict_accept": false,
+          "witness_id_present": false,
+          "witness_independence": false
+        },
         "fine_tune_ready": false,
         "input_claim": {
           "id": "<script>",
@@ -377,10 +559,27 @@
       "check": "adversarial_payload:claim_text_raw_html",
       "decision": {
         "fine_tune_blockers": [
-          "no blind or external inference review is attached",
-          "CAPAS gates supplied structured evidence; it does not infer hidden evidence",
-          "training readiness requires source-backed evidence, semantic alignment, witness independence, and review"
+          "claim verdict is not ACCEPT",
+          "schema or required-field blockers remain",
+          "source-backed evidence is not attached",
+          "external review is not attached",
+          "claim.text semantic alignment is not externally certified",
+          "witness independence is not externally certified",
+          "provenance.sources or provenance.source_urls is empty",
+          "provenance.review_id is missing",
+          "provenance.witness_id is missing"
         ],
+        "fine_tune_criteria": {
+          "external_review": false,
+          "provenance_sources": false,
+          "review_id_present": false,
+          "schema_clean": false,
+          "semantic_alignment": false,
+          "source_backed_evidence": false,
+          "verdict_accept": false,
+          "witness_id_present": false,
+          "witness_independence": false
+        },
         "fine_tune_ready": false,
         "input_claim": {
           "id": "claim_text_raw_html",
@@ -409,10 +608,27 @@
       "check": "adversarial_payload:claim_text_unicode_angle_homoglyph",
       "decision": {
         "fine_tune_blockers": [
-          "no blind or external inference review is attached",
-          "CAPAS gates supplied structured evidence; it does not infer hidden evidence",
-          "training readiness requires source-backed evidence, semantic alignment, witness independence, and review"
+          "claim verdict is not ACCEPT",
+          "schema or required-field blockers remain",
+          "source-backed evidence is not attached",
+          "external review is not attached",
+          "claim.text semantic alignment is not externally certified",
+          "witness independence is not externally certified",
+          "provenance.sources or provenance.source_urls is empty",
+          "provenance.review_id is missing",
+          "provenance.witness_id is missing"
         ],
+        "fine_tune_criteria": {
+          "external_review": false,
+          "provenance_sources": false,
+          "review_id_present": false,
+          "schema_clean": false,
+          "semantic_alignment": false,
+          "source_backed_evidence": false,
+          "verdict_accept": false,
+          "witness_id_present": false,
+          "witness_independence": false
+        },
         "fine_tune_ready": false,
         "input_claim": {
           "id": "claim_text_unicode_angle_homoglyph",
@@ -441,10 +657,27 @@
       "check": "adversarial_payload:claim_text_second_generation_angle_homoglyphs",
       "decision": {
         "fine_tune_blockers": [
-          "no blind or external inference review is attached",
-          "CAPAS gates supplied structured evidence; it does not infer hidden evidence",
-          "training readiness requires source-backed evidence, semantic alignment, witness independence, and review"
+          "claim verdict is not ACCEPT",
+          "schema or required-field blockers remain",
+          "source-backed evidence is not attached",
+          "external review is not attached",
+          "claim.text semantic alignment is not externally certified",
+          "witness independence is not externally certified",
+          "provenance.sources or provenance.source_urls is empty",
+          "provenance.review_id is missing",
+          "provenance.witness_id is missing"
         ],
+        "fine_tune_criteria": {
+          "external_review": false,
+          "provenance_sources": false,
+          "review_id_present": false,
+          "schema_clean": false,
+          "semantic_alignment": false,
+          "source_backed_evidence": false,
+          "verdict_accept": false,
+          "witness_id_present": false,
+          "witness_independence": false
+        },
         "fine_tune_ready": false,
         "input_claim": {
           "id": "claim_text_second_generation_angle_homoglyphs",
@@ -473,10 +706,27 @@
       "check": "adversarial_payload:anchor_mode_unicode_angle_homoglyph",
       "decision": {
         "fine_tune_blockers": [
-          "no blind or external inference review is attached",
-          "CAPAS gates supplied structured evidence; it does not infer hidden evidence",
-          "training readiness requires source-backed evidence, semantic alignment, witness independence, and review"
+          "claim verdict is not ACCEPT",
+          "schema or required-field blockers remain",
+          "source-backed evidence is not attached",
+          "external review is not attached",
+          "claim.text semantic alignment is not externally certified",
+          "witness independence is not externally certified",
+          "provenance.sources or provenance.source_urls is empty",
+          "provenance.review_id is missing",
+          "provenance.witness_id is missing"
         ],
+        "fine_tune_criteria": {
+          "external_review": false,
+          "provenance_sources": false,
+          "review_id_present": false,
+          "schema_clean": false,
+          "semantic_alignment": false,
+          "source_backed_evidence": false,
+          "verdict_accept": false,
+          "witness_id_present": false,
+          "witness_independence": false
+        },
         "fine_tune_ready": false,
         "input_claim": {
           "id": "anchor_mode_unicode_angle_homoglyph",
@@ -505,10 +755,27 @@
       "check": "adversarial_payload:physical_evidence_level_angle_homoglyph",
       "decision": {
         "fine_tune_blockers": [
-          "no blind or external inference review is attached",
-          "CAPAS gates supplied structured evidence; it does not infer hidden evidence",
-          "training readiness requires source-backed evidence, semantic alignment, witness independence, and review"
+          "claim verdict is not ACCEPT",
+          "schema or required-field blockers remain",
+          "source-backed evidence is not attached",
+          "external review is not attached",
+          "claim.text semantic alignment is not externally certified",
+          "witness independence is not externally certified",
+          "provenance.sources or provenance.source_urls is empty",
+          "provenance.review_id is missing",
+          "provenance.witness_id is missing"
         ],
+        "fine_tune_criteria": {
+          "external_review": false,
+          "provenance_sources": false,
+          "review_id_present": false,
+          "schema_clean": false,
+          "semantic_alignment": false,
+          "source_backed_evidence": false,
+          "verdict_accept": false,
+          "witness_id_present": false,
+          "witness_independence": false
+        },
         "fine_tune_ready": false,
         "input_claim": {
           "id": "physical_evidence_level_angle_homoglyph",
@@ -537,10 +804,27 @@
       "check": "adversarial_payload:p_value_out_of_range",
       "decision": {
         "fine_tune_blockers": [
-          "no blind or external inference review is attached",
-          "CAPAS gates supplied structured evidence; it does not infer hidden evidence",
-          "training readiness requires source-backed evidence, semantic alignment, witness independence, and review"
+          "claim verdict is not ACCEPT",
+          "schema or required-field blockers remain",
+          "source-backed evidence is not attached",
+          "external review is not attached",
+          "claim.text semantic alignment is not externally certified",
+          "witness independence is not externally certified",
+          "provenance.sources or provenance.source_urls is empty",
+          "provenance.review_id is missing",
+          "provenance.witness_id is missing"
         ],
+        "fine_tune_criteria": {
+          "external_review": false,
+          "provenance_sources": false,
+          "review_id_present": false,
+          "schema_clean": false,
+          "semantic_alignment": false,
+          "source_backed_evidence": false,
+          "verdict_accept": false,
+          "witness_id_present": false,
+          "witness_independence": false
+        },
         "fine_tune_ready": false,
         "input_claim": {
           "id": "p_value_out_of_range",
@@ -569,10 +853,25 @@
       "check": "semantic_payload:zero_tolerance_exact_accept",
       "decision": {
         "fine_tune_blockers": [
-          "no blind or external inference review is attached",
-          "CAPAS gates supplied structured evidence; it does not infer hidden evidence",
-          "training readiness requires source-backed evidence, semantic alignment, witness independence, and review"
+          "source-backed evidence is not attached",
+          "external review is not attached",
+          "claim.text semantic alignment is not externally certified",
+          "witness independence is not externally certified",
+          "provenance.sources or provenance.source_urls is empty",
+          "provenance.review_id is missing",
+          "provenance.witness_id is missing"
         ],
+        "fine_tune_criteria": {
+          "external_review": false,
+          "provenance_sources": false,
+          "review_id_present": false,
+          "schema_clean": true,
+          "semantic_alignment": false,
+          "source_backed_evidence": false,
+          "verdict_accept": true,
+          "witness_id_present": false,
+          "witness_independence": false
+        },
         "fine_tune_ready": false,
         "input_claim": {
           "id": "zero_tolerance_exact_accept",
@@ -600,10 +899,27 @@
       "check": "semantic_payload:anchor_mode_unknown_missing",
       "decision": {
         "fine_tune_blockers": [
-          "no blind or external inference review is attached",
-          "CAPAS gates supplied structured evidence; it does not infer hidden evidence",
-          "training readiness requires source-backed evidence, semantic alignment, witness independence, and review"
+          "claim verdict is not ACCEPT",
+          "schema or required-field blockers remain",
+          "source-backed evidence is not attached",
+          "external review is not attached",
+          "claim.text semantic alignment is not externally certified",
+          "witness independence is not externally certified",
+          "provenance.sources or provenance.source_urls is empty",
+          "provenance.review_id is missing",
+          "provenance.witness_id is missing"
         ],
+        "fine_tune_criteria": {
+          "external_review": false,
+          "provenance_sources": false,
+          "review_id_present": false,
+          "schema_clean": false,
+          "semantic_alignment": false,
+          "source_backed_evidence": false,
+          "verdict_accept": false,
+          "witness_id_present": false,
+          "witness_independence": false
+        },
         "fine_tune_ready": false,
         "input_claim": {
           "id": "anchor_mode_unknown_missing",
@@ -634,10 +950,25 @@
       "check": "semantic_payload:statistical_confidence_accept",
       "decision": {
         "fine_tune_blockers": [
-          "no blind or external inference review is attached",
-          "CAPAS gates supplied structured evidence; it does not infer hidden evidence",
-          "training readiness requires source-backed evidence, semantic alignment, witness independence, and review"
+          "source-backed evidence is not attached",
+          "external review is not attached",
+          "claim.text semantic alignment is not externally certified",
+          "witness independence is not externally certified",
+          "provenance.sources or provenance.source_urls is empty",
+          "provenance.review_id is missing",
+          "provenance.witness_id is missing"
         ],
+        "fine_tune_criteria": {
+          "external_review": false,
+          "provenance_sources": false,
+          "review_id_present": false,
+          "schema_clean": true,
+          "semantic_alignment": false,
+          "source_backed_evidence": false,
+          "verdict_accept": true,
+          "witness_id_present": false,
+          "witness_independence": false
+        },
         "fine_tune_ready": false,
         "input_claim": {
           "id": "statistical_confidence_accept",
@@ -666,10 +997,26 @@
       "check": "semantic_payload:reproducibility_check_rewrite",
       "decision": {
         "fine_tune_blockers": [
-          "no blind or external inference review is attached",
-          "CAPAS gates supplied structured evidence; it does not infer hidden evidence",
-          "training readiness requires source-backed evidence, semantic alignment, witness independence, and review"
+          "claim verdict is not ACCEPT",
+          "source-backed evidence is not attached",
+          "external review is not attached",
+          "claim.text semantic alignment is not externally certified",
+          "witness independence is not externally certified",
+          "provenance.sources or provenance.source_urls is empty",
+          "provenance.review_id is missing",
+          "provenance.witness_id is missing"
         ],
+        "fine_tune_criteria": {
+          "external_review": false,
+          "provenance_sources": false,
+          "review_id_present": false,
+          "schema_clean": true,
+          "semantic_alignment": false,
+          "source_backed_evidence": false,
+          "verdict_accept": false,
+          "witness_id_present": false,
+          "witness_independence": false
+        },
         "fine_tune_ready": false,
         "input_claim": {
           "id": "reproducibility_check_rewrite",
@@ -697,10 +1044,25 @@
       "check": "semantic_payload:financial_metric_claim_accept",
       "decision": {
         "fine_tune_blockers": [
-          "no blind or external inference review is attached",
-          "CAPAS gates supplied structured evidence; it does not infer hidden evidence",
-          "training readiness requires source-backed evidence, semantic alignment, witness independence, and review"
+          "source-backed evidence is not attached",
+          "external review is not attached",
+          "claim.text semantic alignment is not externally certified",
+          "witness independence is not externally certified",
+          "provenance.sources or provenance.source_urls is empty",
+          "provenance.review_id is missing",
+          "provenance.witness_id is missing"
         ],
+        "fine_tune_criteria": {
+          "external_review": false,
+          "provenance_sources": false,
+          "review_id_present": false,
+          "schema_clean": true,
+          "semantic_alignment": false,
+          "source_backed_evidence": false,
+          "verdict_accept": true,
+          "witness_id_present": false,
+          "witness_independence": false
+        },
         "fine_tune_ready": false,
         "input_claim": {
           "id": "financial_metric_claim_accept",
@@ -725,6 +1087,86 @@
       "expected_detail": "period matches",
       "expected_verdict": "ACCEPT",
       "passed": true
+    },
+    {
+      "check": "semantic_payload:fine_tune_ready_positive",
+      "decision": {
+        "fine_tune_blockers": [],
+        "fine_tune_criteria": {
+          "external_review": true,
+          "provenance_sources": true,
+          "review_id_present": true,
+          "schema_clean": true,
+          "semantic_alignment": true,
+          "source_backed_evidence": true,
+          "verdict_accept": true,
+          "witness_id_present": true,
+          "witness_independence": true
+        },
+        "fine_tune_ready": true,
+        "input_claim": {
+          "id": "fine_tune_ready_positive",
+          "text": "The generated scaling result is physically consistent with the universal z=1 anchor.",
+          "type": "universal_anchor_claim"
+        },
+        "licensed_claim": "The generated scaling result is physically consistent with the universal z=1 anchor.",
+        "missing_fields": [],
+        "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "reason": "local checks and universal anchor both pass",
+        "required_fields": [
+          "anchor_mode",
+          "local_property_tests_pass",
+          "universal_anchor_pass"
+        ],
+        "rewrite": null,
+        "schema_errors": [],
+        "schema_version": "capas-claim-payload-v2",
+        "verdict": "ACCEPT"
+      },
+      "expected_detail": "fine_tune_ready",
+      "expected_verdict": "ACCEPT",
+      "passed": true
+    },
+    {
+      "check": "semantic_payload:fine_tune_ready_blocked_without_review",
+      "decision": {
+        "fine_tune_blockers": [
+          "external review is not attached"
+        ],
+        "fine_tune_criteria": {
+          "external_review": false,
+          "provenance_sources": true,
+          "review_id_present": true,
+          "schema_clean": true,
+          "semantic_alignment": true,
+          "source_backed_evidence": true,
+          "verdict_accept": true,
+          "witness_id_present": true,
+          "witness_independence": true
+        },
+        "fine_tune_ready": false,
+        "input_claim": {
+          "id": "fine_tune_ready_blocked_without_review",
+          "text": "The generated scaling result is physically consistent with the universal z=1 anchor.",
+          "type": "universal_anchor_claim"
+        },
+        "licensed_claim": "The generated scaling result is physically consistent with the universal z=1 anchor.",
+        "missing_fields": [],
+        "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "reason": "local checks and universal anchor both pass",
+        "required_fields": [
+          "anchor_mode",
+          "local_property_tests_pass",
+          "universal_anchor_pass"
+        ],
+        "rewrite": null,
+        "schema_errors": [],
+        "schema_version": "capas-claim-payload-v2",
+        "verdict": "ACCEPT"
+      },
+      "expected_detail": "external review is not attached",
+      "expected_verdict": "ACCEPT",
+      "passed": true
     }
   ],
   "external_input_schema_ready": true,
@@ -733,6 +1175,7 @@
   "valid_examples": [
     "examples/external_claim_accept.json",
     "examples/external_claim_rewrite.json",
-    "examples/external_claim_hold.json"
+    "examples/external_claim_hold.json",
+    "examples/external_claim_fine_tune_ready.json"
   ]
 }

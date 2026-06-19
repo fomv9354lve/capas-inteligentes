@@ -45,7 +45,7 @@ REQUIRED_SNIPPETS = [
     "history-ts",
     "deleteHistory",
     "history-delete",
-    "CAPAS Claim Gate - Design System v11",
+    "CAPAS Claim Gate - Design System v12",
     "<meta name=\"description\"",
     "property=\"og:title\"",
     "property=\"og:image\"",
@@ -103,7 +103,12 @@ REQUIRED_SNIPPETS = [
     "id=\"help-modal\" role=\"dialog\" aria-modal=\"true\"",
     "CAPAS shortcuts and pipeline modes",
     "Fine-tune readiness",
+    "training_evidence.source_backed_evidence",
+    "review_id",
+    "witness_id",
     "it does not silently certify training data",
+    "evaluateFineTuneReadiness",
+    "fine_tune_criteria",
     "openHelpModal",
     "closeHelpModal",
     "isSafeHistoryEntry",
@@ -135,7 +140,7 @@ REQUIRED_SNIPPETS = [
     "syntaxHighlight",
     "rewrite-diff",
     "json-key",
-    "v11 · schema v2 pipelines",
+    "v12 · fine-tune readiness",
 ]
 
 FORBIDDEN_SNIPPETS = [

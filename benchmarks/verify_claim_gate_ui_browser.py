@@ -75,7 +75,7 @@ HARNESS = r"""
     ok("help_modal_lists_schema_v2_financial_fields", document.getElementById("help-modal").textContent.includes("financial_metric_claim") && document.getElementById("help-modal").textContent.includes("metric_period_match"));
     ok("help_modal_lists_schema_v2_statistical_fields", document.getElementById("help-modal").textContent.includes("statistical_confidence") && document.getElementById("help-modal").textContent.includes("effect_direction_confirmed"));
     ok("help_modal_lists_schema_v2_reproducibility_fields", document.getElementById("help-modal").textContent.includes("reproducibility_check") && document.getElementById("help-modal").textContent.includes("independent_reproduction_pass"));
-    ok("help_modal_documents_fine_tune_readiness", document.getElementById("help-modal").textContent.includes("fine_tune_ready") && document.getElementById("help-modal").textContent.includes("does not silently certify training data"));
+    ok("help_modal_documents_fine_tune_readiness", document.getElementById("help-modal").textContent.includes("fine_tune_ready") && document.getElementById("help-modal").textContent.includes("training_evidence.source_backed_evidence"));
     closeHelpModal();
     ok("help_modal_closes", !document.getElementById("help-modal-backdrop").classList.contains("open"));
     ok("help_modal_returns_focus_to_trigger", document.activeElement === helpButton);
@@ -143,6 +143,25 @@ HARNESS = r"""
     });
     decide();
     ok("financial_metric_claim_accept", document.querySelector(".verdict-badge.ACCEPT"));
+
+    document.getElementById("input").value = JSON.stringify({
+      claim: { id: "fine_tune_positive", type: "universal_anchor_claim", text: "The generated scaling result is physically consistent with the universal z=1 anchor." },
+      evidence: { anchor_mode: "absolute_anchor", local_property_tests_pass: true, universal_anchor_pass: true },
+      training_evidence: {
+        source_backed_evidence: true,
+        external_review: true,
+        semantic_alignment: true,
+        witness_independence: true,
+        provenance: {
+          sources: ["benchmarks/gold_traces/trace_039.json"],
+          review_id: "external-review-trace-039-v1",
+          witness_id: "theory_scaling_law_no_solver"
+        }
+      }
+    });
+    decide();
+    ok("fine_tune_ready_positive", document.getElementById("output").textContent.includes('"fine_tune_ready": true'));
+    ok("fine_tune_criteria_visible", document.getElementById("output").textContent.includes('"fine_tune_criteria"'));
 
     const firstHistory = document.querySelector(".history-item");
     ok("history_item_exists", firstHistory);

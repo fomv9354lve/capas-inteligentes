@@ -76,21 +76,26 @@ or listing by the relevant RO-Crate/profile registry process or maintainers.
 
 ### fine_tune_ready
 
-Current status: always `False`.
+Current status: strict positive gate. The default is `False`, but
+`fine_tune_ready=True` is emitted for accepted claims only when an explicit
+`training_evidence` block supplies external review, provenance, semantic
+alignment, source-backed evidence, and witness-independence metadata.
 
-This is intentional. A decision may be structurally valid and still not be a
-training datum. `fine_tune_ready=True` requires all of the following:
+A decision may be structurally valid and still not be a training datum.
+`fine_tune_ready=True` requires all of the following:
 
-1. deterministic gate decision is `ACCEPT` or explicitly licensed `REWRITE`,
-2. required evidence fields are present and source-backed,
-3. claim text passes semantic/scope alignment,
-4. witness independence is declared,
-5. evidence level and scope are declared,
-6. blind or external review confirms that the licensed claim is correct,
-7. no unresolved schema, source, or provenance warnings remain.
+1. deterministic gate decision is `ACCEPT`,
+2. no unresolved schema or required-field blockers remain,
+3. `training_evidence.source_backed_evidence=true`,
+4. `training_evidence.external_review=true`,
+5. `training_evidence.semantic_alignment=true`,
+6. `training_evidence.witness_independence=true`,
+7. `training_evidence.provenance.sources` or `source_urls` is non-empty,
+8. `training_evidence.provenance.review_id` is present,
+9. `training_evidence.provenance.witness_id` is present.
 
-Until blind/external review exists, the product must keep
-`fine_tune_ready=False`.
+Any missing criterion is surfaced in `fine_tune_blockers`, and the full
+criterion vector is emitted as `fine_tune_criteria`.
 
 ### Build Draft heuristic
 

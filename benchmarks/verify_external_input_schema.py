@@ -17,6 +17,7 @@ VALID_EXAMPLES = [
     ROOT / "examples" / "external_claim_accept.json",
     ROOT / "examples" / "external_claim_rewrite.json",
     ROOT / "examples" / "external_claim_hold.json",
+    ROOT / "examples" / "external_claim_fine_tune_ready.json",
 ]
 INVALID_EXAMPLE = ROOT / "examples" / "external_claim_invalid.json"
 
@@ -334,6 +335,62 @@ SEMANTIC_PAYLOADS = [
         "ACCEPT",
         "period matches",
     ),
+    (
+        "fine_tune_ready_positive",
+        {
+            "claim": {
+                "id": "fine_tune_ready_positive",
+                "type": "universal_anchor_claim",
+                "text": "The generated scaling result is physically consistent with the universal z=1 anchor.",
+            },
+            "evidence": {
+                "anchor_mode": "absolute_anchor",
+                "local_property_tests_pass": True,
+                "universal_anchor_pass": True,
+            },
+            "training_evidence": {
+                "source_backed_evidence": True,
+                "external_review": True,
+                "semantic_alignment": True,
+                "witness_independence": True,
+                "provenance": {
+                    "sources": ["benchmarks/gold_traces/trace_039.json"],
+                    "review_id": "external-review-trace-039-v1",
+                    "witness_id": "theory_scaling_law_no_solver",
+                },
+            },
+        },
+        "ACCEPT",
+        "fine_tune_ready",
+    ),
+    (
+        "fine_tune_ready_blocked_without_review",
+        {
+            "claim": {
+                "id": "fine_tune_ready_blocked_without_review",
+                "type": "universal_anchor_claim",
+                "text": "The generated scaling result is physically consistent with the universal z=1 anchor.",
+            },
+            "evidence": {
+                "anchor_mode": "absolute_anchor",
+                "local_property_tests_pass": True,
+                "universal_anchor_pass": True,
+            },
+            "training_evidence": {
+                "source_backed_evidence": True,
+                "external_review": False,
+                "semantic_alignment": True,
+                "witness_independence": True,
+                "provenance": {
+                    "sources": ["benchmarks/gold_traces/trace_039.json"],
+                    "review_id": "external-review-trace-039-v1",
+                    "witness_id": "theory_scaling_law_no_solver",
+                },
+            },
+        },
+        "ACCEPT",
+        "external review is not attached",
+    ),
 ]
 
 
@@ -410,6 +467,9 @@ def main() -> int:
                 and (
                     expected_detail in decision["reason"]
                     or expected_detail in decision.get("missing_fields", [])
+                    or expected_detail in decision.get("fine_tune_blockers", [])
+                    or expected_detail in json.dumps(decision, sort_keys=True)
+                    or expected_detail in json.dumps(decision.get("fine_tune_criteria", {}), sort_keys=True)
                 )
             ),
             "expected_verdict": expected_verdict,

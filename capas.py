@@ -30,7 +30,7 @@ ANCHOR_REPORT = ROOT / "benchmarks" / "universal_anchor_matrix_report.json"
 TRACE_DIR = ROOT / "benchmarks" / "gold_traces"
 EXTERNAL_CLAIM_SCHEMA_PATH = ROOT / "docs" / "schema" / "capas_claim_payload.schema.json"
 CAPAS_CLAIM_SCHEMA_VERSION = "capas-claim-payload-v2"
-CAPAS_UI_VERSION = "v11 · schema v2 pipelines"
+CAPAS_UI_VERSION = "v12 · fine-tune readiness"
 
 
 VALIDATION_COMMANDS = [
@@ -69,6 +69,13 @@ FINE_TUNE_BLOCKERS = [
     "no blind or external inference review is attached",
     "CAPAS gates supplied structured evidence; it does not infer hidden evidence",
     "training readiness requires source-backed evidence, semantic alignment, witness independence, and review",
+]
+
+FINE_TUNE_REQUIRED_FIELDS = [
+    "source_backed_evidence",
+    "external_review",
+    "semantic_alignment",
+    "witness_independence",
 ]
 
 CLAIM_TYPE_TERMS = {
@@ -247,6 +254,27 @@ def external_claim_payload_schema() -> dict[str, Any]:
                     },
                 },
             },
+            "training_evidence": {
+                "type": "object",
+                "additionalProperties": True,
+                "description": "Optional positive-readiness packet. It never changes ACCEPT/REJECT/REWRITE/HOLD; it only controls fine_tune_ready after an ACCEPT verdict.",
+                "properties": {
+                    "source_backed_evidence": {"type": "boolean"},
+                    "external_review": {"type": "boolean"},
+                    "semantic_alignment": {"type": "boolean"},
+                    "witness_independence": {"type": "boolean"},
+                    "provenance": {
+                        "type": "object",
+                        "additionalProperties": True,
+                        "properties": {
+                            "sources": {"type": "array", "items": {"type": "string"}},
+                            "source_urls": {"type": "array", "items": {"type": "string"}},
+                            "review_id": {"type": "string", "minLength": 1},
+                            "witness_id": {"type": "string", "minLength": 1},
+                        },
+                    },
+                },
+            },
         },
     }
 
@@ -329,7 +357,67 @@ def validate_external_payload(payload: dict[str, Any]) -> list[str]:
             if len(current_claim) > 4000:
                 errors.append("evidence.current_claim must be at most 4000 characters")
             _validate_no_angle_like(current_claim, "evidence.current_claim", errors)
+    training_evidence = payload.get("training_evidence") if isinstance(payload, dict) else None
+    if training_evidence is not None:
+        if not isinstance(training_evidence, dict) or isinstance(training_evidence, list):
+            errors.append("training_evidence must be an object")
+        else:
+            for field in FINE_TUNE_REQUIRED_FIELDS:
+                if field in training_evidence and not isinstance(training_evidence[field], bool):
+                    errors.append(f"training_evidence.{field} must be a boolean")
+            provenance = training_evidence.get("provenance")
+            if provenance is not None and (not isinstance(provenance, dict) or isinstance(provenance, list)):
+                errors.append("training_evidence.provenance must be an object")
     return errors
+
+
+def evaluate_fine_tune_readiness(
+    payload: dict[str, Any],
+    *,
+    verdict: str,
+    missing_fields: list[str],
+    schema_errors: list[str],
+) -> dict[str, Any]:
+    training_evidence = payload.get("training_evidence")
+    if not isinstance(training_evidence, dict):
+        training_evidence = {}
+    provenance = training_evidence.get("provenance")
+    if not isinstance(provenance, dict):
+        provenance = {}
+
+    source_candidates = provenance.get("sources", provenance.get("source_urls", []))
+    has_sources = (
+        isinstance(source_candidates, list)
+        and any(isinstance(source, str) and source.strip() for source in source_candidates)
+    )
+    criteria = {
+        "verdict_accept": verdict == "ACCEPT",
+        "schema_clean": not schema_errors and not missing_fields,
+        "source_backed_evidence": training_evidence.get("source_backed_evidence") is True,
+        "external_review": training_evidence.get("external_review") is True,
+        "semantic_alignment": training_evidence.get("semantic_alignment") is True,
+        "witness_independence": training_evidence.get("witness_independence") is True,
+        "provenance_sources": has_sources,
+        "review_id_present": isinstance(provenance.get("review_id"), str) and bool(provenance["review_id"].strip()),
+        "witness_id_present": isinstance(provenance.get("witness_id"), str) and bool(provenance["witness_id"].strip()),
+    }
+    blocker_labels = {
+        "verdict_accept": "claim verdict is not ACCEPT",
+        "schema_clean": "schema or required-field blockers remain",
+        "source_backed_evidence": "source-backed evidence is not attached",
+        "external_review": "external review is not attached",
+        "semantic_alignment": "claim.text semantic alignment is not externally certified",
+        "witness_independence": "witness independence is not externally certified",
+        "provenance_sources": "provenance.sources or provenance.source_urls is empty",
+        "review_id_present": "provenance.review_id is missing",
+        "witness_id_present": "provenance.witness_id is missing",
+    }
+    blockers = [blocker_labels[key] for key, passed in criteria.items() if not passed]
+    return {
+        "fine_tune_ready": not blockers,
+        "fine_tune_blockers": blockers,
+        "fine_tune_criteria": criteria,
+    }
 
 
 def _load_json(path: Path) -> dict[str, Any]:
@@ -434,6 +522,12 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
     claim = payload.get("claim", {}) if isinstance(payload, dict) else {}
     evidence = payload.get("evidence", {}) if isinstance(payload, dict) else {}
     if schema_errors:
+        fine_tune = evaluate_fine_tune_readiness(
+            payload if isinstance(payload, dict) else {},
+            verdict="HOLD",
+            missing_fields=[],
+            schema_errors=schema_errors,
+        )
         return {
             "schema_version": CAPAS_CLAIM_SCHEMA_VERSION,
             "input_claim": claim if isinstance(claim, dict) else {},
@@ -444,8 +538,7 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
             "missing_fields": [],
             "required_fields": [],
             "schema_errors": schema_errors,
-            "fine_tune_ready": False,
-            "fine_tune_blockers": FINE_TUNE_BLOCKERS,
+            **fine_tune,
             "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
         }
 
@@ -553,6 +646,13 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
             verdict = "REJECT"
             reason = f"reported_value differs from reference_value by {delta}, above tolerance {tolerance}"
 
+    fine_tune = evaluate_fine_tune_readiness(
+        payload,
+        verdict=verdict,
+        missing_fields=missing,
+        schema_errors=[],
+    )
+
     return {
         "schema_version": CAPAS_CLAIM_SCHEMA_VERSION,
         "input_claim": claim,
@@ -563,8 +663,7 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
         "missing_fields": missing,
         "required_fields": required or [],
         "schema_errors": [],
-        "fine_tune_ready": False,
-        "fine_tune_blockers": FINE_TUNE_BLOCKERS,
+        **fine_tune,
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
     }
 
@@ -605,17 +704,22 @@ def run_batch(payload: Any, *, mode: str = "decide", allow_web: bool = False) ->
         verdict = result.get("verdict") or result.get("final_decision", {}).get("verdict") or result.get("alignment_status")
         verdicts[str(verdict)] += 1
 
+    batch_blockers = []
+    if not results:
+        batch_blockers.append("batch has no items")
+    if any(entry["result"].get("fine_tune_ready") is not True for entry in results):
+        batch_blockers.append("one or more batch items are not fine_tune_ready")
+    if mode != "decide":
+        batch_blockers.append("fine-tune readiness is only emitted for deterministic decide batches")
+
     return {
         "schema_version": CAPAS_CLAIM_SCHEMA_VERSION,
         "batch_mode": mode,
         "item_count": len(items),
         "results": results,
         "summary": dict(sorted(verdicts.items())),
-        "fine_tune_ready": False,
-        "fine_tune_blockers": [
-            "batch decisions are not blind-reviewed",
-            "CAPAS gates supplied structured evidence; it does not infer hidden evidence",
-        ],
+        "fine_tune_ready": not batch_blockers,
+        "fine_tune_blockers": batch_blockers,
         "non_claim": "Batch mode applies the same deterministic per-claim gates; it does not create new scientific evidence.",
     }
 
@@ -1280,7 +1384,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'unsafe-inline'; script-src 'unsafe-inline'; object-src 'none'; base-uri 'none'; form-action 'none'; connect-src 'none'">
 <title>CAPAS Claim Gate</title>
 <style>
-  /* CAPAS Claim Gate - Design System v11 */
+  /* CAPAS Claim Gate - Design System v12 */
   :root {
     --bg: #09090b;
     --bg-2: #111113;
@@ -1829,7 +1933,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
     <h3>Pipeline surfaces</h3>
     <p>The CLI/API support <code>decide</code>, <code>batch</code>, and standalone <code>retrieve → extract → align → reason → pipeline</code>. Retrieval and parsing prepare candidate evidence; the final CAPAS verdict still comes from the deterministic gate.</p>
     <h3>Fine-tune readiness</h3>
-    <p><code>fine_tune_ready</code> stays <code>false</code> unless an external review layer supplies source-backed evidence, semantic alignment, witness independence, and review metadata. CAPAS gates claims; it does not silently certify training data.</p>
+    <p><code>fine_tune_ready</code> is a strict positive gate. It becomes <code>true</code> only after an <code>ACCEPT</code> verdict plus <code>training_evidence.source_backed_evidence</code>, <code>external_review</code>, <code>semantic_alignment</code>, <code>witness_independence</code>, and provenance <code>sources</code>, <code>review_id</code>, and <code>witness_id</code>. CAPAS gates claims; it does not silently certify training data.</p>
     <h3>Schema</h3>
     <p>Current payload schema: <code>capas-claim-payload-v2</code>. Outputs include <code>schema_version</code> for audit trails.</p>
     <p>Supported claim types and minimum evidence fields:</p>
@@ -1871,6 +1975,12 @@ def _render_ui(sample: dict[str, Any]) -> str:
       "no blind or external inference review is attached",
       "CAPAS gates supplied structured evidence; it does not infer hidden evidence",
       "training readiness requires source-backed evidence, semantic alignment, witness independence, and review"
+    ];
+    const fineTuneRequiredFields = [
+      "source_backed_evidence",
+      "external_review",
+      "semantic_alignment",
+      "witness_independence"
     ];
 
     const fieldHelp = {
@@ -2005,7 +2115,68 @@ def _render_ui(sample: dict[str, Any]) -> str:
           }
         }
       }
+      if (Object.prototype.hasOwnProperty.call(payload, "training_evidence")) {
+        if (payload.training_evidence === null || typeof payload.training_evidence !== "object" || Array.isArray(payload.training_evidence)) {
+          errors.push("training_evidence must be an object");
+        } else {
+          for (const field of fineTuneRequiredFields) {
+            if (Object.prototype.hasOwnProperty.call(payload.training_evidence, field) && typeof payload.training_evidence[field] !== "boolean") {
+              errors.push(`training_evidence.${field} must be a boolean`);
+            }
+          }
+          if (Object.prototype.hasOwnProperty.call(payload.training_evidence, "provenance")) {
+            const provenance = payload.training_evidence.provenance;
+            if (provenance === null || typeof provenance !== "object" || Array.isArray(provenance)) {
+              errors.push("training_evidence.provenance must be an object");
+            }
+          }
+        }
+      }
       return errors;
+    }
+
+    function evaluateFineTuneReadiness(payload, result) {
+      const trainingEvidence = payload && typeof payload.training_evidence === "object" && !Array.isArray(payload.training_evidence)
+        ? payload.training_evidence
+        : {};
+      const provenance = trainingEvidence.provenance && typeof trainingEvidence.provenance === "object" && !Array.isArray(trainingEvidence.provenance)
+        ? trainingEvidence.provenance
+        : {};
+      const sourceCandidates = Array.isArray(provenance.sources)
+        ? provenance.sources
+        : Array.isArray(provenance.source_urls)
+          ? provenance.source_urls
+          : [];
+      const criteria = {
+        verdict_accept: result.verdict === "ACCEPT",
+        schema_clean: !(result.schema_errors && result.schema_errors.length) && !(result.missing_fields && result.missing_fields.length),
+        source_backed_evidence: trainingEvidence.source_backed_evidence === true,
+        external_review: trainingEvidence.external_review === true,
+        semantic_alignment: trainingEvidence.semantic_alignment === true,
+        witness_independence: trainingEvidence.witness_independence === true,
+        provenance_sources: sourceCandidates.some((source) => typeof source === "string" && source.trim() !== ""),
+        review_id_present: typeof provenance.review_id === "string" && provenance.review_id.trim() !== "",
+        witness_id_present: typeof provenance.witness_id === "string" && provenance.witness_id.trim() !== ""
+      };
+      const labels = {
+        verdict_accept: "claim verdict is not ACCEPT",
+        schema_clean: "schema or required-field blockers remain",
+        source_backed_evidence: "source-backed evidence is not attached",
+        external_review: "external review is not attached",
+        semantic_alignment: "claim.text semantic alignment is not externally certified",
+        witness_independence: "witness independence is not externally certified",
+        provenance_sources: "provenance.sources or provenance.source_urls is empty",
+        review_id_present: "provenance.review_id is missing",
+        witness_id_present: "provenance.witness_id is missing"
+      };
+      const blockers = Object.entries(criteria)
+        .filter(([, passed]) => !passed)
+        .map(([key]) => labels[key]);
+      return {
+        fine_tune_ready: blockers.length === 0,
+        fine_tune_blockers: blockers,
+        fine_tune_criteria: criteria
+      };
     }
 
     function rule(payload) {
@@ -2013,7 +2184,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
       const claim = payload && typeof payload.claim === "object" && !Array.isArray(payload.claim) ? payload.claim : {};
       const evidence = payload && typeof payload.evidence === "object" && !Array.isArray(payload.evidence) ? payload.evidence : {};
       if (schemaErrors.length) {
-        return {
+        const invalidResult = {
           schema_version: capasSchemaVersion,
           input_claim: claim,
           verdict: "HOLD",
@@ -2027,6 +2198,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
           fine_tune_blockers: fineTuneBlockers,
           non_claim: "This decision is rule-based over supplied evidence fields, not an LLM judgment."
         };
+        return { ...invalidResult, ...evaluateFineTuneReadiness(payload, invalidResult) };
       }
       const fields = required[claim.type];
       let missing = [];
@@ -2124,7 +2296,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
           result.reason = `reported_value differs from reference_value by ${delta}, above tolerance ${evidence.tolerance}`;
         }
       }
-      return result;
+      return { ...result, ...evaluateFineTuneReadiness(payload, result) };
     }
 
     function renderVerdict(result) {
@@ -2172,11 +2344,10 @@ def _render_ui(sample: dict[str, Any]) -> str:
         item_count: items.length,
         results,
         summary,
-        fine_tune_ready: false,
-        fine_tune_blockers: [
-          "batch decisions are not blind-reviewed",
-          "CAPAS gates supplied structured evidence; it does not infer hidden evidence"
-        ],
+        fine_tune_ready: results.length > 0 && results.every((entry) => entry.result.fine_tune_ready === true),
+        fine_tune_blockers: results.length > 0 && results.every((entry) => entry.result.fine_tune_ready === true)
+          ? []
+          : ["one or more batch items are not fine_tune_ready"],
         non_claim: "Batch mode applies the same deterministic per-claim gates; it does not create new scientific evidence."
       };
     }

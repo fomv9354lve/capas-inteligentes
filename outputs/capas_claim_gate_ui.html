@@ -16,7 +16,7 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'unsafe-inline'; script-src 'unsafe-inline'; object-src 'none'; base-uri 'none'; form-action 'none'; connect-src 'none'">
 <title>CAPAS Claim Gate</title>
 <style>
-  /* CAPAS Claim Gate - Design System v11 */
+  /* CAPAS Claim Gate - Design System v12 */
   :root {
     --bg: #09090b;
     --bg-2: #111113;
@@ -484,7 +484,7 @@
     <button class="copy-btn" id="theme-toggle" aria-label="Toggle light and dark theme" onclick="toggleTheme()">Theme</button>
     <span class="topbar-badge" id="schema-version-badge">schema v2</span>
     <span class="topbar-badge" id="shared-payload-badge" hidden>shared payload</span>
-    <span class="topbar-badge">v11 · schema v2 pipelines</span>
+    <span class="topbar-badge">v12 · fine-tune readiness</span>
   </div>
 </header>
 
@@ -578,7 +578,7 @@
     <h3>Pipeline surfaces</h3>
     <p>The CLI/API support <code>decide</code>, <code>batch</code>, and standalone <code>retrieve → extract → align → reason → pipeline</code>. Retrieval and parsing prepare candidate evidence; the final CAPAS verdict still comes from the deterministic gate.</p>
     <h3>Fine-tune readiness</h3>
-    <p><code>fine_tune_ready</code> stays <code>false</code> unless an external review layer supplies source-backed evidence, semantic alignment, witness independence, and review metadata. CAPAS gates claims; it does not silently certify training data.</p>
+    <p><code>fine_tune_ready</code> is a strict positive gate. It becomes <code>true</code> only after an <code>ACCEPT</code> verdict plus <code>training_evidence.source_backed_evidence</code>, <code>external_review</code>, <code>semantic_alignment</code>, <code>witness_independence</code>, and provenance <code>sources</code>, <code>review_id</code>, and <code>witness_id</code>. CAPAS gates claims; it does not silently certify training data.</p>
     <h3>Schema</h3>
     <p>Current payload schema: <code>capas-claim-payload-v2</code>. Outputs include <code>schema_version</code> for audit trails.</p>
     <p>Supported claim types and minimum evidence fields:</p>
@@ -620,6 +620,12 @@
       "no blind or external inference review is attached",
       "CAPAS gates supplied structured evidence; it does not infer hidden evidence",
       "training readiness requires source-backed evidence, semantic alignment, witness independence, and review"
+    ];
+    const fineTuneRequiredFields = [
+      "source_backed_evidence",
+      "external_review",
+      "semantic_alignment",
+      "witness_independence"
     ];
 
     const fieldHelp = {
@@ -754,7 +760,68 @@
           }
         }
       }
+      if (Object.prototype.hasOwnProperty.call(payload, "training_evidence")) {
+        if (payload.training_evidence === null || typeof payload.training_evidence !== "object" || Array.isArray(payload.training_evidence)) {
+          errors.push("training_evidence must be an object");
+        } else {
+          for (const field of fineTuneRequiredFields) {
+            if (Object.prototype.hasOwnProperty.call(payload.training_evidence, field) && typeof payload.training_evidence[field] !== "boolean") {
+              errors.push(`training_evidence.${field} must be a boolean`);
+            }
+          }
+          if (Object.prototype.hasOwnProperty.call(payload.training_evidence, "provenance")) {
+            const provenance = payload.training_evidence.provenance;
+            if (provenance === null || typeof provenance !== "object" || Array.isArray(provenance)) {
+              errors.push("training_evidence.provenance must be an object");
+            }
+          }
+        }
+      }
       return errors;
+    }
+
+    function evaluateFineTuneReadiness(payload, result) {
+      const trainingEvidence = payload && typeof payload.training_evidence === "object" && !Array.isArray(payload.training_evidence)
+        ? payload.training_evidence
+        : {};
+      const provenance = trainingEvidence.provenance && typeof trainingEvidence.provenance === "object" && !Array.isArray(trainingEvidence.provenance)
+        ? trainingEvidence.provenance
+        : {};
+      const sourceCandidates = Array.isArray(provenance.sources)
+        ? provenance.sources
+        : Array.isArray(provenance.source_urls)
+          ? provenance.source_urls
+          : [];
+      const criteria = {
+        verdict_accept: result.verdict === "ACCEPT",
+        schema_clean: !(result.schema_errors && result.schema_errors.length) && !(result.missing_fields && result.missing_fields.length),
+        source_backed_evidence: trainingEvidence.source_backed_evidence === true,
+        external_review: trainingEvidence.external_review === true,
+        semantic_alignment: trainingEvidence.semantic_alignment === true,
+        witness_independence: trainingEvidence.witness_independence === true,
+        provenance_sources: sourceCandidates.some((source) => typeof source === "string" && source.trim() !== ""),
+        review_id_present: typeof provenance.review_id === "string" && provenance.review_id.trim() !== "",
+        witness_id_present: typeof provenance.witness_id === "string" && provenance.witness_id.trim() !== ""
+      };
+      const labels = {
+        verdict_accept: "claim verdict is not ACCEPT",
+        schema_clean: "schema or required-field blockers remain",
+        source_backed_evidence: "source-backed evidence is not attached",
+        external_review: "external review is not attached",
+        semantic_alignment: "claim.text semantic alignment is not externally certified",
+        witness_independence: "witness independence is not externally certified",
+        provenance_sources: "provenance.sources or provenance.source_urls is empty",
+        review_id_present: "provenance.review_id is missing",
+        witness_id_present: "provenance.witness_id is missing"
+      };
+      const blockers = Object.entries(criteria)
+        .filter(([, passed]) => !passed)
+        .map(([key]) => labels[key]);
+      return {
+        fine_tune_ready: blockers.length === 0,
+        fine_tune_blockers: blockers,
+        fine_tune_criteria: criteria
+      };
     }
 
     function rule(payload) {
@@ -762,7 +829,7 @@
       const claim = payload && typeof payload.claim === "object" && !Array.isArray(payload.claim) ? payload.claim : {};
       const evidence = payload && typeof payload.evidence === "object" && !Array.isArray(payload.evidence) ? payload.evidence : {};
       if (schemaErrors.length) {
-        return {
+        const invalidResult = {
           schema_version: capasSchemaVersion,
           input_claim: claim,
           verdict: "HOLD",
@@ -776,6 +843,7 @@
           fine_tune_blockers: fineTuneBlockers,
           non_claim: "This decision is rule-based over supplied evidence fields, not an LLM judgment."
         };
+        return { ...invalidResult, ...evaluateFineTuneReadiness(payload, invalidResult) };
       }
       const fields = required[claim.type];
       let missing = [];
@@ -873,7 +941,7 @@
           result.reason = `reported_value differs from reference_value by ${delta}, above tolerance ${evidence.tolerance}`;
         }
       }
-      return result;
+      return { ...result, ...evaluateFineTuneReadiness(payload, result) };
     }
 
     function renderVerdict(result) {
@@ -921,11 +989,10 @@
         item_count: items.length,
         results,
         summary,
-        fine_tune_ready: false,
-        fine_tune_blockers: [
-          "batch decisions are not blind-reviewed",
-          "CAPAS gates supplied structured evidence; it does not infer hidden evidence"
-        ],
+        fine_tune_ready: results.length > 0 && results.every((entry) => entry.result.fine_tune_ready === true),
+        fine_tune_blockers: results.length > 0 && results.every((entry) => entry.result.fine_tune_ready === true)
+          ? []
+          : ["one or more batch items are not fine_tune_ready"],
         non_claim: "Batch mode applies the same deterministic per-claim gates; it does not create new scientific evidence."
       };
     }

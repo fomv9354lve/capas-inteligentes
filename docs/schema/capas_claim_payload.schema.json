@@ -113,6 +113,51 @@
         }
       },
       "type": "object"
+    },
+    "training_evidence": {
+      "additionalProperties": true,
+      "description": "Optional positive-readiness packet. It never changes ACCEPT/REJECT/REWRITE/HOLD; it only controls fine_tune_ready after an ACCEPT verdict.",
+      "properties": {
+        "external_review": {
+          "type": "boolean"
+        },
+        "provenance": {
+          "additionalProperties": true,
+          "properties": {
+            "review_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "source_urls": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "sources": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "witness_id": {
+              "minLength": 1,
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "semantic_alignment": {
+          "type": "boolean"
+        },
+        "source_backed_evidence": {
+          "type": "boolean"
+        },
+        "witness_independence": {
+          "type": "boolean"
+        }
+      },
+      "type": "object"
     }
   },
   "required": [
