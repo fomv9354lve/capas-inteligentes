@@ -31,7 +31,7 @@ REQUIRED_SNIPPETS = [
     "Input required",
     "prefers-color-scheme: light",
     "disabled>Copy JSON",
-    "minmax(380px, 40%)",
+    "minmax(380px, 42%)",
     "Build Draft",
     "Draft built, not decided",
     "renderSchemaAssistant",
@@ -40,11 +40,21 @@ REQUIRED_SNIPPETS = [
     "CAPAS will not infer them",
     "role=\"button\" tabindex=\"0\"",
     "handleHistoryKey",
-    "CAPAS Claim Gate - Design System v8",
+    "CAPAS Claim Gate - Design System v9",
     "class=\"topbar\"",
-    "class=\"app-body\"",
+    "<main class=\"app-body\">",
     "--accent-glow",
-    "v8 · guided intake",
+    "Draft - fill null values before deciding",
+    "syntaxHighlight",
+    "rewrite-diff",
+    "json-key",
+    "v9 · guided intake",
+]
+
+FORBIDDEN_SNIPPETS = [
+    ".header {",
+    "padding: 20px 28px",
+    "max-width: 1200px",
 ]
 
 
@@ -62,6 +72,12 @@ def main() -> int:
         checks.append({
             "check": f"ui_contains:{snippet}",
             "passed": snippet in html,
+            "detail": snippet,
+        })
+    for snippet in FORBIDDEN_SNIPPETS:
+        checks.append({
+            "check": f"ui_omits_legacy:{snippet}",
+            "passed": snippet not in html,
             "detail": snippet,
         })
 
