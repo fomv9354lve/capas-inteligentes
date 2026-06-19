@@ -31,7 +31,7 @@ DEFAULT_QUERIES = [
 
 
 def today_utc() -> str:
-    return dt.datetime.now(dt.UTC).date().isoformat()
+    return dt.datetime.now(dt.timezone.utc).date().isoformat()
 
 
 def ssl_context() -> ssl.SSLContext:
