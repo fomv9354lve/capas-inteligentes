@@ -3,35 +3,38 @@
     {
       "claim": {
         "id": "batch_accept_exact",
-        "type": "exact_model_solution",
-        "text": "The model solution is within the declared tolerance."
+        "text": "The model solution is within the declared tolerance.",
+        "type": "exact_model_solution"
       },
       "evidence": {
         "abs_error": 0.0002,
         "tolerance": 0.0016
-      }
+      },
+      "schema_version": "capas-claim-payload-v3"
     },
     {
       "claim": {
         "id": "batch_rewrite_anchor",
-        "type": "universal_anchor_claim",
-        "text": "Local monotonicity proves universal physical correctness."
+        "text": "Local monotonicity proves universal physical correctness.",
+        "type": "universal_anchor_claim"
       },
       "evidence": {
         "anchor_mode": "absolute_anchor",
         "local_property_tests_pass": true,
         "universal_anchor_pass": false
-      }
+      },
+      "schema_version": "capas-claim-payload-v3"
     },
     {
       "claim": {
         "id": "batch_hold_missing",
-        "type": "physical_accuracy",
-        "text": "The simulation matches experiment."
+        "text": "The simulation matches experiment.",
+        "type": "physical_accuracy"
       },
       "evidence": {
         "physical_evidence_level": "experimental"
-      }
+      },
+      "schema_version": "capas-claim-payload-v3"
     }
   ]
 }

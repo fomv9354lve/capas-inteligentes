@@ -42,6 +42,9 @@ HARNESS = r"""
   function ok(name, condition, detail) {
     checks.push({ name, passed: Boolean(condition), detail: detail || "" });
   }
+  function versioned(payload) {
+    return Object.assign({ schema_version: capasSchemaVersion }, payload);
+  }
   try {
     ok("shared_payload_loaded", document.getElementById("input").value.includes("shared_claim"));
     ok("share_button_exists", document.getElementById("share-btn"));
@@ -91,10 +94,10 @@ HARNESS = r"""
       id: '<img src=x onerror="window.__xss=true">',
       verdict: "HOLD",
       reason: "legacy audit artifact",
-      payload: JSON.stringify({
+      payload: JSON.stringify(versioned({
         claim: { id: '<img src=x onerror="window.__xss=true">', type: "exact_model_solution", text: "legacy" },
         evidence: { abs_error: 0, tolerance: 0.001 }
-      }),
+      })),
       decision: { verdict: "HOLD" },
       timestamp: new Date().toISOString()
     }]));
@@ -106,6 +109,7 @@ HARNESS = r"""
     ok("draft_status_is_amber", document.getElementById("json-status").className.includes("draft"));
     ok("draft_not_decided", document.getElementById("verdict-area").textContent.includes("Draft built, not decided"));
     ok("draft_includes_training_evidence_scaffold", document.getElementById("input").value.includes('"training_evidence"') && document.getElementById("input").value.includes('"source_backed_evidence"'));
+    ok("draft_includes_schema_version", document.getElementById("input").value.includes('"schema_version": "capas-claim-payload-v3"'));
 
     loadSample("REWRITE");
     ok("rewrite_verdict", document.querySelector(".verdict-badge.REWRITE"));
@@ -119,6 +123,15 @@ HARNESS = r"""
     loadSample("INVALID");
     ok("invalid_schema_holds", document.querySelector(".verdict-badge.HOLD"));
     ok("invalid_output_json", document.getElementById("output").textContent.includes('"schema_errors"'));
+    ok("new_schema_v3_sample_buttons_exist", ["CAUSAL", "SYSTEMATIC", "CONFLICT", "MULTIMODAL"].every((name) => typeof samples[name] === "object"));
+    loadSample("CAUSAL");
+    ok("causal_sample_button_accepts", document.querySelector(".verdict-badge.ACCEPT") && document.getElementById("type-label").textContent === "causal_mechanism_claim");
+    loadSample("SYSTEMATIC");
+    ok("systematic_sample_button_accepts", document.querySelector(".verdict-badge.ACCEPT") && document.getElementById("type-label").textContent === "systematic_review_claim");
+    loadSample("CONFLICT");
+    ok("conflict_sample_button_accepts", document.querySelector(".verdict-badge.ACCEPT") && document.getElementById("type-label").textContent === "evidence_conflict_claim");
+    loadSample("MULTIMODAL");
+    ok("multimodal_sample_button_accepts", document.querySelector(".verdict-badge.ACCEPT") && document.getElementById("type-label").textContent === "multimodal_evidence_claim");
 
     document.getElementById("input").value = JSON.stringify([samples.ACCEPT, samples.REJECT], null, 2);
     decideBatch();
@@ -134,50 +147,50 @@ HARNESS = r"""
     decideBatch();
     ok("batch_single_object_autowrap", document.getElementById("output").textContent.includes('"item_count": 1'));
 
-    document.getElementById("input").value = JSON.stringify({
+    document.getElementById("input").value = JSON.stringify(versioned({
       claim: { id: "stat_sig", type: "statistical_confidence", text: "The effect is statistically significant at alpha 0.05." },
       evidence: { p_value: 0.01, alpha: 0.05, effect_direction_confirmed: true }
-    });
+    }));
     decide();
     ok("statistical_confidence_accept", document.querySelector(".verdict-badge.ACCEPT"));
-    document.getElementById("input").value = JSON.stringify({
+    document.getElementById("input").value = JSON.stringify(versioned({
       claim: { id: "repro_rw", type: "reproducibility_check", text: "The result is independently reproducible." },
       evidence: { artifact_available: true, independent_reproduction_pass: false }
-    });
+    }));
     decide();
     ok("reproducibility_check_rewrite", document.querySelector(".verdict-badge.REWRITE"));
-    document.getElementById("input").value = JSON.stringify({
+    document.getElementById("input").value = JSON.stringify(versioned({
       claim: { id: "finance_accept", type: "financial_metric_claim", text: "The reported metric matches the reference for the same period." },
       evidence: { reported_value: 101.2, reference_value: 101.0, tolerance: 0.5, metric_period_match: true }
-    });
+    }));
     decide();
     ok("financial_metric_claim_accept", document.querySelector(".verdict-badge.ACCEPT"));
-    document.getElementById("input").value = JSON.stringify({
+    document.getElementById("input").value = JSON.stringify(versioned({
       claim: { id: "causal_accept", type: "causal_mechanism_claim", text: "The intervention causally changes the outcome through the declared mechanism." },
       evidence: { intervention_or_natural_experiment: true, temporal_order_established: true, confounders_controlled: true, mechanism_evidence_present: true }
-    });
+    }));
     decide();
     ok("causal_mechanism_claim_accept", document.querySelector(".verdict-badge.ACCEPT"));
-    document.getElementById("input").value = JSON.stringify({
+    document.getElementById("input").value = JSON.stringify(versioned({
       claim: { id: "review_rewrite", type: "systematic_review_claim", text: "The systematic review supports the reported effect." },
       evidence: { protocol_registered: true, inclusion_criteria_declared: true, risk_of_bias_assessed: false, effect_consistency: false }
-    });
+    }));
     decide();
     ok("systematic_review_claim_rewrite", document.querySelector(".verdict-badge.REWRITE"));
-    document.getElementById("input").value = JSON.stringify({
+    document.getElementById("input").value = JSON.stringify(versioned({
       claim: { id: "conflict_accept", type: "evidence_conflict_claim", text: "The conflicting evidence is resolved by the declared method." },
       evidence: { supporting_sources: ["s1"], contradicting_sources: ["s2"], conflict_resolution_method: "pre-registered hierarchy", resolution_pre_registered: true }
-    });
+    }));
     decide();
     ok("evidence_conflict_claim_accept", document.querySelector(".verdict-badge.ACCEPT"));
-    document.getElementById("input").value = JSON.stringify({
+    document.getElementById("input").value = JSON.stringify(versioned({
       claim: { id: "multi_accept", type: "multimodal_evidence_claim", text: "The multimodal evidence supports the extracted claim." },
       evidence: { modality: "table", source_hashes_verified: true, cross_modal_alignment: true, extraction_method_declared: true }
-    });
+    }));
     decide();
     ok("multimodal_evidence_claim_accept", document.querySelector(".verdict-badge.ACCEPT"));
 
-    document.getElementById("input").value = JSON.stringify({
+    document.getElementById("input").value = JSON.stringify(versioned({
       claim: { id: "external_scaling_anchor_fine_tune_ready", type: "universal_anchor_claim", text: "The generated scaling result is physically consistent with the universal z=1 anchor." },
       evidence: { anchor_mode: "absolute_anchor", local_property_tests_pass: true, universal_anchor_pass: true },
       training_evidence: {
@@ -213,12 +226,21 @@ HARNESS = r"""
           reviewer_registry_sha256: "00c3133d7001b4a6e3b9223f0144ab4bfa90fc86a22a2a6220dde3e1f3021202"
         }
       }
-    });
+    }));
     decide();
     ok("browser_fine_tune_ready_requires_cli", document.getElementById("output").textContent.includes('"fine_tune_ready": false') && document.getElementById("output").textContent.includes("Active provenance gates require capas.py CLI/API verification"));
     ok("browser_provenance_gates_blocked", document.getElementById("output").textContent.includes('"review_hash_verified": false') && document.getElementById("output").textContent.includes('"reviewer_attestation_verified": false'));
     ok("fine_tune_criteria_visible", document.getElementById("output").textContent.includes('"fine_tune_criteria"'));
     ok("fine_tune_status_visible_in_verdict_area", document.getElementById("verdict-area").textContent.includes("Fine-tune readiness") && document.getElementById("verdict-area").textContent.includes("NOT READY"));
+    ok("fine_tune_status_is_live_region", document.querySelector(".fine-tune-block")?.getAttribute("role") === "status" && document.querySelector(".fine-tune-block")?.getAttribute("aria-live") === "polite");
+    ok("type_label_is_live_region", document.getElementById("type-label")?.getAttribute("role") === "status" && document.getElementById("type-label")?.getAttribute("aria-live") === "polite");
+
+    document.getElementById("input").value = JSON.stringify({
+      claim: { id: "missing_schema_version", type: "exact_model_solution", text: "A missing schema version must not be processed as current schema." },
+      evidence: { abs_error: 0, tolerance: 0.1 }
+    });
+    decide();
+    ok("missing_schema_version_holds", document.querySelector(".verdict-badge.HOLD") && document.getElementById("output").textContent.includes("schema_version must be capas-claim-payload-v3"));
 
     const firstHistory = document.querySelector(".history-item");
     ok("history_item_exists", firstHistory);

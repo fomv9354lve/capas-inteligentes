@@ -20,6 +20,10 @@ REQUIRED_SNIPPETS = [
     "REJECT sample",
     "HOLD sample",
     "INVALID schema sample",
+    "CAUSAL sample",
+    "SYSTEMATIC sample",
+    "CONFLICT sample",
+    "MULTIMODAL sample",
     "claim.type must be one of",
     "fine_tune_ready",
     "fine_tune_blockers",
@@ -122,6 +126,7 @@ REQUIRED_SNIPPETS = [
     "artifact_available</code>, <code>independent_reproduction_pass",
     "p_value</code>, <code>alpha</code>, <code>effect_direction_confirmed",
     "Batch input: JSON array, object with items/claims, or one claim payload",
+    "schema_version must be",
     "batch-progress",
     "claims processed · deterministic gate complete",
     "id=\"help-btn\"",
@@ -133,6 +138,7 @@ REQUIRED_SNIPPETS = [
     "fine-tune-block",
     "renderFineTuneStatus",
     "aria-label=\"Fine-tune readiness status\"",
+    "class=\"fine-tune-block\" role=\"status\" aria-live=\"polite\" aria-atomic=\"true\" tabindex=\"0\"",
     "hash-verified external review packet",
     "recoverable/hashable source URLs",
     "resolvable witness registry entry",
@@ -182,6 +188,7 @@ REQUIRED_SNIPPETS = [
     "rewrite-diff",
     "json-key",
     "v13 · end-to-end gaps",
+    "id=\"type-label\" role=\"status\" aria-live=\"polite\" aria-atomic=\"true\"",
 ]
 
 FORBIDDEN_SNIPPETS = [

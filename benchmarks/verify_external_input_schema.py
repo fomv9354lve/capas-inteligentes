@@ -21,6 +21,13 @@ VALID_EXAMPLES = [
     ROOT / "examples" / "external_claim_fine_tune_ready.json",
 ]
 INVALID_EXAMPLE = ROOT / "examples" / "external_claim_invalid.json"
+SCHEMA_VERSION = capas.CAPAS_CLAIM_SCHEMA_VERSION
+
+
+def _with_schema(payload: dict) -> dict:
+    payload = copy.deepcopy(payload)
+    payload.setdefault("schema_version", SCHEMA_VERSION)
+    return payload
 
 
 ADVERSARIAL_PAYLOADS = [
@@ -532,7 +539,31 @@ def main() -> int:
         "decision": invalid_decision,
     })
 
+    base_schema_payload = _with_schema({
+        "claim": {
+            "id": "schema_version_control",
+            "type": "exact_model_solution",
+            "text": "The model solution is within tolerance.",
+        },
+        "evidence": {"abs_error": 0.0, "tolerance": 0.1},
+    })
+    for name, payload in [
+        ("missing_schema_version", {key: value for key, value in base_schema_payload.items() if key != "schema_version"}),
+        ("wrong_schema_version", {**base_schema_payload, "schema_version": "capas-claim-payload-v2"}),
+    ]:
+        errors = capas.validate_external_payload(payload)
+        decision = capas.decide_external_claim(payload)
+        expected_error = f"schema_version must be {SCHEMA_VERSION}"
+        checks.append({
+            "check": f"schema_version_enforced:{name}",
+            "passed": expected_error in errors and decision["verdict"] == "HOLD" and expected_error in decision["schema_errors"],
+            "expected_error": expected_error,
+            "errors": errors,
+            "decision": decision,
+        })
+
     for name, payload, expected_error in ADVERSARIAL_PAYLOADS:
+        payload = _with_schema(payload)
         errors = capas.validate_external_payload(payload)
         decision = capas.decide_external_claim(payload)
         checks.append({
@@ -548,6 +579,7 @@ def main() -> int:
         })
 
     for name, payload, expected_verdict, expected_detail in SEMANTIC_PAYLOADS:
+        payload = _with_schema(payload)
         decision = capas.decide_external_claim(payload)
         checks.append({
             "check": f"semantic_payload:{name}",

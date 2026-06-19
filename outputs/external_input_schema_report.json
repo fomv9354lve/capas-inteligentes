@@ -123,6 +123,124 @@
       "passed": true
     },
     {
+      "check": "schema_version_enforced:missing_schema_version",
+      "decision": {
+        "fine_tune_blockers": [
+          "claim verdict is not ACCEPT",
+          "schema or required-field blockers remain",
+          "source-backed evidence is not attached",
+          "external review is not attached",
+          "claim.text semantic alignment is not externally certified",
+          "witness independence is not externally certified",
+          "provenance.sources or provenance.source_urls is empty",
+          "external review hash is missing or does not match review_packet",
+          "source URLs are not recoverable with matching hashes",
+          "witness_id is not resolvable in the witness registry",
+          "RO-Crate provenance packet is missing, invalid, or hash-mismatched",
+          "reviewer identity or attestation is not verifiable",
+          "provenance.review_id is missing",
+          "provenance.witness_id is missing"
+        ],
+        "fine_tune_criteria": {
+          "external_review": false,
+          "provenance_sources": false,
+          "review_hash_verified": false,
+          "review_id_present": false,
+          "reviewer_attestation_verified": false,
+          "ro_crate_validated": false,
+          "schema_clean": false,
+          "semantic_alignment": false,
+          "source_backed_evidence": false,
+          "source_urls_recoverable_hashable": false,
+          "verdict_accept": false,
+          "witness_id_present": false,
+          "witness_independence": false,
+          "witness_registry_resolved": false
+        },
+        "fine_tune_ready": false,
+        "input_claim": {
+          "id": "schema_version_control",
+          "text": "The model solution is within tolerance.",
+          "type": "exact_model_solution"
+        },
+        "licensed_claim": "The model solution is within tolerance.",
+        "missing_fields": [],
+        "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "reason": "input payload failed CAPAS schema validation",
+        "required_fields": [],
+        "rewrite": null,
+        "schema_errors": [
+          "schema_version must be capas-claim-payload-v3"
+        ],
+        "schema_version": "capas-claim-payload-v3",
+        "verdict": "HOLD"
+      },
+      "errors": [
+        "schema_version must be capas-claim-payload-v3"
+      ],
+      "expected_error": "schema_version must be capas-claim-payload-v3",
+      "passed": true
+    },
+    {
+      "check": "schema_version_enforced:wrong_schema_version",
+      "decision": {
+        "fine_tune_blockers": [
+          "claim verdict is not ACCEPT",
+          "schema or required-field blockers remain",
+          "source-backed evidence is not attached",
+          "external review is not attached",
+          "claim.text semantic alignment is not externally certified",
+          "witness independence is not externally certified",
+          "provenance.sources or provenance.source_urls is empty",
+          "external review hash is missing or does not match review_packet",
+          "source URLs are not recoverable with matching hashes",
+          "witness_id is not resolvable in the witness registry",
+          "RO-Crate provenance packet is missing, invalid, or hash-mismatched",
+          "reviewer identity or attestation is not verifiable",
+          "provenance.review_id is missing",
+          "provenance.witness_id is missing"
+        ],
+        "fine_tune_criteria": {
+          "external_review": false,
+          "provenance_sources": false,
+          "review_hash_verified": false,
+          "review_id_present": false,
+          "reviewer_attestation_verified": false,
+          "ro_crate_validated": false,
+          "schema_clean": false,
+          "semantic_alignment": false,
+          "source_backed_evidence": false,
+          "source_urls_recoverable_hashable": false,
+          "verdict_accept": false,
+          "witness_id_present": false,
+          "witness_independence": false,
+          "witness_registry_resolved": false
+        },
+        "fine_tune_ready": false,
+        "input_claim": {
+          "id": "schema_version_control",
+          "text": "The model solution is within tolerance.",
+          "type": "exact_model_solution"
+        },
+        "licensed_claim": "The model solution is within tolerance.",
+        "missing_fields": [],
+        "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "reason": "input payload failed CAPAS schema validation",
+        "required_fields": [],
+        "rewrite": null,
+        "schema_errors": [
+          "schema_version must be capas-claim-payload-v3"
+        ],
+        "schema_version": "capas-claim-payload-v3",
+        "verdict": "HOLD"
+      },
+      "errors": [
+        "schema_version must be capas-claim-payload-v3"
+      ],
+      "expected_error": "schema_version must be capas-claim-payload-v3",
+      "passed": true
+    },
+    {
       "check": "adversarial_payload:negative_abs_error",
       "decision": {
         "fine_tune_blockers": [

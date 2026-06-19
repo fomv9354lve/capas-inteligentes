@@ -247,8 +247,13 @@ def external_claim_payload_schema() -> dict[str, Any]:
         "x-capas-schema-version": CAPAS_CLAIM_SCHEMA_VERSION,
         "type": "object",
         "additionalProperties": True,
-        "required": ["claim", "evidence"],
+        "required": ["schema_version", "claim", "evidence"],
         "properties": {
+            "schema_version": {
+                "type": "string",
+                "const": CAPAS_CLAIM_SCHEMA_VERSION,
+                "description": "Payload schema version required for migration-safe CAPAS decisions.",
+            },
             "claim": {
                 "type": "object",
                 "additionalProperties": True,
@@ -378,6 +383,8 @@ def validate_external_payload(payload: dict[str, Any]) -> list[str]:
     errors: list[str] = []
     if not isinstance(payload, dict):
         return ["payload must be a JSON object"]
+    if payload.get("schema_version") != CAPAS_CLAIM_SCHEMA_VERSION:
+        errors.append(f"schema_version must be {CAPAS_CLAIM_SCHEMA_VERSION}")
     claim = payload.get("claim")
     evidence = payload.get("evidence")
     if not isinstance(claim, dict):
@@ -1551,6 +1558,7 @@ def extract_evidence(payload: dict[str, Any], *, allow_web: bool = False) -> dic
         status = "complete"
 
     candidate_payload = {
+        "schema_version": CAPAS_CLAIM_SCHEMA_VERSION,
         "claim": claim,
         "evidence": {
             **(payload.get("evidence", {}) if isinstance(payload.get("evidence"), dict) else {}),
@@ -1753,6 +1761,7 @@ Forbidden claims:
 
 def _sample_external_claim() -> dict[str, Any]:
     return {
+        "schema_version": CAPAS_CLAIM_SCHEMA_VERSION,
         "claim": {
             "id": "sample_scaling_claim",
             "type": "universal_anchor_claim",
@@ -1772,6 +1781,7 @@ def _ui_samples() -> dict[str, dict[str, Any]]:
     return {
         "ACCEPT": _sample_external_claim(),
         "REWRITE": {
+            "schema_version": CAPAS_CLAIM_SCHEMA_VERSION,
             "claim": {
                 "id": "sample_scaling_claim_rewrite",
                 "type": "universal_anchor_claim",
@@ -1786,6 +1796,7 @@ def _ui_samples() -> dict[str, dict[str, Any]]:
             },
         },
         "REJECT": {
+            "schema_version": CAPAS_CLAIM_SCHEMA_VERSION,
             "claim": {
                 "id": "sample_scaling_claim_reject",
                 "type": "universal_anchor_claim",
@@ -1800,6 +1811,7 @@ def _ui_samples() -> dict[str, dict[str, Any]]:
             },
         },
         "HOLD": {
+            "schema_version": CAPAS_CLAIM_SCHEMA_VERSION,
             "claim": {
                 "id": "sample_experiment_hold",
                 "type": "physical_accuracy",
@@ -1811,12 +1823,69 @@ def _ui_samples() -> dict[str, dict[str, Any]]:
             },
         },
         "INVALID": {
+            "schema_version": CAPAS_CLAIM_SCHEMA_VERSION,
             "claim": {
                 "id": "",
                 "type": "unsupported_claim_type",
                 "text": "This payload is structurally invalid because the claim id is empty.",
             },
             "evidence": "not an object",
+        },
+        "CAUSAL": {
+            "schema_version": CAPAS_CLAIM_SCHEMA_VERSION,
+            "claim": {
+                "id": "sample_causal_mechanism",
+                "type": "causal_mechanism_claim",
+                "text": "The intervention causally changes the measured outcome through the declared mechanism.",
+            },
+            "evidence": {
+                "intervention_or_natural_experiment": True,
+                "temporal_order_established": True,
+                "confounders_controlled": True,
+                "mechanism_evidence_present": True,
+            },
+        },
+        "SYSTEMATIC": {
+            "schema_version": CAPAS_CLAIM_SCHEMA_VERSION,
+            "claim": {
+                "id": "sample_systematic_review",
+                "type": "systematic_review_claim",
+                "text": "The systematic review supports the reported effect across included studies.",
+            },
+            "evidence": {
+                "protocol_registered": True,
+                "inclusion_criteria_declared": True,
+                "risk_of_bias_assessed": True,
+                "effect_consistency": True,
+            },
+        },
+        "CONFLICT": {
+            "schema_version": CAPAS_CLAIM_SCHEMA_VERSION,
+            "claim": {
+                "id": "sample_evidence_conflict",
+                "type": "evidence_conflict_claim",
+                "text": "The conflicting evidence is resolved by the declared pre-registered method.",
+            },
+            "evidence": {
+                "supporting_sources": ["source_a"],
+                "contradicting_sources": ["source_b"],
+                "conflict_resolution_method": "pre-registered hierarchy",
+                "resolution_pre_registered": True,
+            },
+        },
+        "MULTIMODAL": {
+            "schema_version": CAPAS_CLAIM_SCHEMA_VERSION,
+            "claim": {
+                "id": "sample_multimodal_evidence",
+                "type": "multimodal_evidence_claim",
+                "text": "The multimodal evidence supports the extracted claim.",
+            },
+            "evidence": {
+                "modality": "table",
+                "source_hashes_verified": True,
+                "cross_modal_alignment": True,
+                "extraction_method_declared": True,
+            },
         },
     }
 
@@ -2369,6 +2438,10 @@ def _render_ui(sample: dict[str, Any]) -> str:
   <button class="sample-btn invalid" title="REJECT sample" aria-label="Load REJECT sample" onclick="loadSample('REJECT')">&#10005; REJECT</button>
   <button class="sample-btn hold" title="HOLD sample" aria-label="Load HOLD sample" onclick="loadSample('HOLD')">&#9646; HOLD</button>
   <button class="sample-btn invalid" title="Invalid schema sample that resolves to HOLD" aria-label="Load INVALID schema sample" onclick="loadSample('INVALID')">&#9888; INVALID</button>
+  <button class="sample-btn accept" title="Causal mechanism sample" aria-label="Load CAUSAL sample" onclick="loadSample('CAUSAL')">Causal</button>
+  <button class="sample-btn accept" title="Systematic review sample" aria-label="Load SYSTEMATIC sample" onclick="loadSample('SYSTEMATIC')">Review</button>
+  <button class="sample-btn accept" title="Evidence conflict sample" aria-label="Load CONFLICT sample" onclick="loadSample('CONFLICT')">Conflict</button>
+  <button class="sample-btn accept" title="Multimodal evidence sample" aria-label="Load MULTIMODAL sample" onclick="loadSample('MULTIMODAL')">Multimodal</button>
 </div>
 
 <div class="grid">
@@ -2376,7 +2449,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
     <div class="panel">
       <div class="panel-header">
         <span class="panel-title">Input JSON</span>
-        <span class="panel-tag" id="type-label"></span>
+        <span class="panel-tag" id="type-label" role="status" aria-live="polite" aria-atomic="true"></span>
       </div>
       <textarea id="input" spellcheck="false" aria-label="Claim and evidence JSON input" aria-describedby="json-status" oninput="scheduleInputChange()">__SAMPLE_JSON__</textarea>
       <div class="json-status" id="json-status" role="status" aria-live="polite" aria-atomic="true">Waiting for input...</div>
@@ -2613,6 +2686,9 @@ def _render_ui(sample: dict[str, Any]) -> str:
       const errors = [];
       if (payload === null || typeof payload !== "object" || Array.isArray(payload)) {
         return ["payload must be a JSON object"];
+      }
+      if (payload.schema_version !== capasSchemaVersion) {
+        errors.push(`schema_version must be ${capasSchemaVersion}`);
       }
       const claim = payload.claim;
       const evidence = payload.evidence;
@@ -3138,7 +3214,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
         : `<div class="fine-tune-summary">${summary.passed}/${summary.total} fine-tune readiness criteria passed. ${escHtml(result.fine_tune_note || "Review blockers before using this output for training.")}</div>` +
           (blockers.length ? `<ul>${blockers.slice(0, 5).map((blocker) => `<li>${escHtml(blocker)}</li>`).join("")}${blockers.length > 5 ? `<li>${blockers.length - 5} more blockers in Full output JSON.</li>` : ""}</ul>` : "");
       return (
-        `<div class="fine-tune-block" aria-label="Fine-tune readiness status">` +
+        `<div class="fine-tune-block" role="status" aria-live="polite" aria-atomic="true" tabindex="0" aria-label="Fine-tune readiness status">` +
         `<div class="fine-tune-head"><div class="fine-tune-title">Fine-tune readiness</div><div class="fine-tune-status ${statusClass}">${statusText}</div></div>` +
         body +
         `</div>`
@@ -3205,6 +3281,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
       const type = parsed?.claim?.type && required[parsed.claim.type] ? parsed.claim.type : inferClaimType(raw, parsed);
       const numbers = extractNumbers(raw);
       const draft = {
+        schema_version: capasSchemaVersion,
         claim: {
           id: parsed?.claim?.id || "draft_claim_001",
           type,
