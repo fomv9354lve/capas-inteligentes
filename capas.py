@@ -1931,6 +1931,17 @@ def _render_ui(sample: dict[str, Any]) -> str:
     samples = _ui_samples()
     sample_json = json.dumps(sample, indent=2, sort_keys=True)
     samples_json = json.dumps(samples, sort_keys=True)
+    docs_app = ROOT / "docs" / "app.html"
+    if docs_app.exists():
+        html = docs_app.read_text(encoding="utf-8")
+        html = re.sub(
+            r'(<textarea id="input" spellcheck="false" aria-label="Claim and evidence JSON input" aria-describedby="json-status" oninput="scheduleInputChange\(\)">)(.*?)(</textarea>)',
+            lambda match: f"{match.group(1)}{sample_json}{match.group(3)}",
+            html,
+            count=1,
+            flags=re.S,
+        )
+        return _apply_inline_csp_hashes(html)
     html = r"""<!doctype html>
 <html lang="en">
 <head>
@@ -2268,19 +2279,20 @@ def _render_ui(sample: dict[str, Any]) -> str:
     background: var(--bg-2);
   }
   .phase-track {
-    display: flex;
-    width: 300%;
-    transform: translateX(0);
-    transition: transform 220ms ease;
+    display: block;
+    width: 100%;
   }
-  body[data-flow-phase="complete"] .phase-track { transform: translateX(-33.333333%); }
-  body[data-flow-phase="gate"] .phase-track { transform: translateX(-66.666667%); }
   .phase-pane {
-    flex: 0 0 33.333333%;
+    display: none;
     min-width: 0;
-    width: 33.333333%;
+    width: 100%;
     overflow: hidden;
     padding: 12px;
+  }
+  body[data-flow-phase="choose"] .phase-pane[data-phase="choose"],
+  body[data-flow-phase="complete"] .phase-pane[data-phase="complete"],
+  body[data-flow-phase="gate"] .phase-pane[data-phase="gate"] {
+    display: block;
   }
   .phase-gate-mount {
     min-width: 0;
@@ -2292,11 +2304,6 @@ def _render_ui(sample: dict[str, Any]) -> str:
   .phase-pane .flow-section,
   .phase-pane .gate-section {
     min-height: 440px;
-  }
-  body[data-flow-phase="choose"] .phase-pane:not([data-phase="choose"]),
-  body[data-flow-phase="complete"] .phase-pane:not([data-phase="complete"]),
-  body[data-flow-phase="gate"] .phase-pane:not([data-phase="gate"]) {
-    visibility: hidden;
   }
   body[data-flow-phase="choose"] #phase-back { visibility: hidden; }
   body[data-flow-phase="gate"] #phase-next { display: none; }
@@ -2575,7 +2582,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
   .json-status.invalid { color: var(--red); }
   .json-status.draft { color: var(--draft); }
   .json-status.draft::before { content: "◐"; }
-  .action-row { display: grid; grid-template-columns: 1fr 2fr; border-top: 1px solid var(--border); }
+  .action-row { display: grid; grid-template-columns: 1fr; border-top: 1px solid var(--border); }
   .draft-btn {
     width: 100%;
     padding: 13px;
@@ -2944,9 +2951,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
   .product-hero { order: 1; }
   .samples-bar { order: 2; }
   .guided-panel { order: 3; }
-  .mode-tabs { order: 4; }
-  .mode-note { order: 5; }
-  .gate-section { order: 6; }
+  .gate-section { order: 4; }
   .ingest-panel { order: 7; }
   .history-section { order: 99; display: none; }
   .workflow-strip { order: 9; }
@@ -3076,14 +3081,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
     scrollbar-width: none;
   }
   .samples-bar::before {
-    content: "Try an example:";
-    flex: 0 0 auto;
-    align-self: center;
-    color: var(--text-3);
-    font-size: 10px;
-    font-weight: 800;
-    letter-spacing: 0.6px;
-    text-transform: uppercase;
+    content: none;
   }
   .samples-bar::-webkit-scrollbar { display: none; }
   .samples-bar .sample-btn, .sample-btn {
@@ -3094,12 +3092,27 @@ def _render_ui(sample: dict[str, Any]) -> str:
     font-size: 10px;
     white-space: nowrap;
   }
+  .gate-mode-controls {
+    display: grid;
+    gap: 0;
+    border: 1px solid var(--border);
+    border-bottom: 0;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    overflow: hidden;
+    background: var(--bg);
+  }
+  .gate-mode-controls + .gate-section {
+    padding-top: 0;
+  }
+  .gate-mode-controls + .gate-section .grid {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
   .mode-tabs {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 0;
     margin: 0;
-    padding: 0 20px;
     border-bottom: 1px solid var(--border);
     background: var(--bg);
   }
@@ -3113,7 +3126,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
   }
   .mode-tab:last-child { border-right: 0; }
   .mode-tab[aria-selected="true"] { background: var(--accent-glow); }
-  .mode-note { margin: 0; padding: 5px 20px; border-bottom: 1px solid var(--border); background: var(--bg); font-size: 11px; }
+  .mode-note { margin: 0; padding: 6px 12px; background: var(--bg); font-size: 11px; }
 
   .gate-section {
     margin-bottom: 12px;
@@ -3180,7 +3193,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
     letter-spacing: 0.5px;
     text-transform: uppercase;
   }
-  .action-row { gap: 0; padding: 0; border-top: 1px solid var(--border); background: var(--bg-3); }
+  .action-row { grid-template-columns: 1fr; gap: 0; padding: 0; border-top: 1px solid var(--border); background: var(--bg-3); }
   .draft-btn#draft-btn {
     height: 40px;
     padding: 10px 12px;
@@ -3270,8 +3283,8 @@ def _render_ui(sample: dict[str, Any]) -> str:
   .guided-panel .panel-header {
     background: linear-gradient(180deg, var(--bg-3), var(--bg-2));
   }
-  .mode-tabs .mode-tab:first-child::before { content: "Guided Form · "; color: var(--accent); }
-  .mode-tabs .mode-tab:nth-child(2)::before { content: "Raw JSON · "; color: var(--text-3); }
+  .mode-tabs .mode-tab:first-child::before,
+  .mode-tabs .mode-tab:nth-child(2)::before { content: ""; }
   .history-section {
     margin: 0 20px 12px;
     overflow: hidden;
@@ -3316,7 +3329,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
     .hero-copy { align-items: flex-start; flex-direction: column; gap: 8px; }
     .hero-copy > h2 { max-width: none; -webkit-line-clamp: 2; }
     .workflow-step { min-width: 190px; flex: 0 0 190px; }
-    .samples-bar, .mode-tabs, .mode-note { padding-left: 16px; padding-right: 16px; }
+    .samples-bar { padding-left: 16px; padding-right: 16px; }
     .mode-tabs { grid-template-columns: 1fr; }
     .mode-tab { border-right: 0; border-bottom: 1px solid var(--border); }
     .gate-section { padding: 12px 16px 0; }
@@ -3324,6 +3337,27 @@ def _render_ui(sample: dict[str, Any]) -> str:
     .grid > div { border-right: 0; border-bottom: 1px solid var(--border); }
     .grid > div:last-child { border-bottom: 0; }
     section.guided-panel, section.ingest-panel, .history-section { margin-left: 16px; margin-right: 16px; }
+  }
+
+  /* Hard gate-step visibility.
+     Step 3 controls and workspace must not render as static content below Steps 1-2. */
+  .phase-pane,
+  .gate-mode-controls,
+  #phase-gate-mount,
+  #gate {
+    display: none !important;
+  }
+  body[data-flow-phase="choose"] .phase-pane[data-phase="choose"],
+  body[data-flow-phase="complete"] .phase-pane[data-phase="complete"],
+  body[data-flow-phase="gate"] .phase-pane[data-phase="gate"] {
+    display: block !important;
+  }
+  body[data-flow-phase="gate"] .gate-mode-controls {
+    display: grid !important;
+  }
+  body[data-flow-phase="gate"] #phase-gate-mount,
+  body[data-flow-phase="gate"] #gate {
+    display: block !important;
   }
   /* ================================================================ */
 </style>
@@ -3530,32 +3564,32 @@ def _render_ui(sample: dict[str, Any]) -> str:
           </div>
         </div>
         <div class="phase-pane" data-phase="gate">
+          <div class="gate-mode-controls" aria-label="Step 3 workspace mode controls">
+            <div class="mode-tabs" role="tablist" aria-label="CAPAS operating modes">
+              <button class="mode-tab" id="mode-single" role="tab" aria-selected="true" type="button" onclick="setGateMode('single')">Guided Form</button>
+              <button class="mode-tab" id="mode-batch" role="tab" aria-selected="false" type="button" onclick="setGateMode('batch')">Raw JSON / Batch <span class="advanced-badge">advanced</span></button>
+              <button class="mode-tab" id="mode-ingestion" role="tab" aria-selected="false" type="button" onclick="setGateMode('ingestion')">Ingestion</button>
+            </div>
+            <div class="mode-note" id="mode-note" role="status" aria-live="polite">Guided Form is the default path. Raw JSON and ingestion are available inside Step 3.</div>
+            <div class="samples-bar">
+              <span>Examples with deterministic outcomes:</span>
+              <button class="sample-btn accept" title="ACCEPT sample" aria-label="Load ACCEPT sample" onclick="loadSample('ACCEPT')">&#10003; ACCEPT</button>
+              <button class="sample-btn rewrite" title="REWRITE sample" aria-label="Load REWRITE sample" onclick="loadSample('REWRITE')">&#8634; REWRITE</button>
+              <button class="sample-btn invalid" title="REJECT sample" aria-label="Load REJECT sample" onclick="loadSample('REJECT')">&#10005; REJECT</button>
+              <button class="sample-btn hold" title="HOLD sample" aria-label="Load HOLD sample" onclick="loadSample('HOLD')">&#9646; HOLD</button>
+              <button class="sample-btn invalid" title="Invalid schema sample that resolves to HOLD" aria-label="Load INVALID schema sample" onclick="loadSample('INVALID')">&#9888; INVALID</button>
+              <button class="sample-btn accept" title="Causal mechanism sample" aria-label="Load CAUSAL sample" onclick="loadSample('CAUSAL')">Causal</button>
+              <button class="sample-btn accept" title="Systematic review sample" aria-label="Load SYSTEMATIC sample" onclick="loadSample('SYSTEMATIC')">Review</button>
+              <button class="sample-btn accept" title="Evidence conflict sample" aria-label="Load CONFLICT sample" onclick="loadSample('CONFLICT')">Conflict</button>
+              <button class="sample-btn accept" title="Multimodal evidence sample" aria-label="Load MULTIMODAL sample" onclick="loadSample('MULTIMODAL')">Multimodal</button>
+              <button class="sample-btn hold" title="Batch demo with multiple claim types" aria-label="Load batch demo sample" onclick="loadBatchDemo()">Batch demo</button>
+            </div>
+          </div>
           <div id="phase-gate-mount" class="phase-gate-mount" aria-label="Gate workspace"></div>
         </div>
       </div>
     </div>
 </section>
-
-<div class="samples-bar">
-  <span>Examples with deterministic outcomes:</span>
-  <button class="sample-btn accept" title="ACCEPT sample" aria-label="Load ACCEPT sample" onclick="loadSample('ACCEPT')">&#10003; ACCEPT</button>
-  <button class="sample-btn rewrite" title="REWRITE sample" aria-label="Load REWRITE sample" onclick="loadSample('REWRITE')">&#8634; REWRITE</button>
-  <button class="sample-btn invalid" title="REJECT sample" aria-label="Load REJECT sample" onclick="loadSample('REJECT')">&#10005; REJECT</button>
-  <button class="sample-btn hold" title="HOLD sample" aria-label="Load HOLD sample" onclick="loadSample('HOLD')">&#9646; HOLD</button>
-  <button class="sample-btn invalid" title="Invalid schema sample that resolves to HOLD" aria-label="Load INVALID schema sample" onclick="loadSample('INVALID')">&#9888; INVALID</button>
-  <button class="sample-btn accept" title="Causal mechanism sample" aria-label="Load CAUSAL sample" onclick="loadSample('CAUSAL')">Causal</button>
-  <button class="sample-btn accept" title="Systematic review sample" aria-label="Load SYSTEMATIC sample" onclick="loadSample('SYSTEMATIC')">Review</button>
-  <button class="sample-btn accept" title="Evidence conflict sample" aria-label="Load CONFLICT sample" onclick="loadSample('CONFLICT')">Conflict</button>
-  <button class="sample-btn accept" title="Multimodal evidence sample" aria-label="Load MULTIMODAL sample" onclick="loadSample('MULTIMODAL')">Multimodal</button>
-  <button class="sample-btn hold" title="Batch demo with multiple claim types" aria-label="Load batch demo sample" onclick="loadBatchDemo()">Batch demo</button>
-</div>
-
-<div class="mode-tabs" role="tablist" aria-label="CAPAS operating modes">
-  <button class="mode-tab" id="mode-single" role="tab" aria-selected="true" type="button" onclick="setGateMode('single')">Build one claim</button>
-  <button class="mode-tab" id="mode-batch" role="tab" aria-selected="false" type="button" onclick="setGateMode('batch')">Evaluate batch <span class="advanced-badge">advanced</span></button>
-  <button class="mode-tab" id="mode-ingestion" role="tab" aria-selected="false" type="button" onclick="setGateMode('ingestion')">Ingestion</button>
-</div>
-<div class="mode-note" id="mode-note" role="status" aria-live="polite">Guided Form is the default path. Raw JSON remains available below for advanced users.</div>
 
 <section class="gate-section" id="gate" aria-labelledby="gate-title">
 <h2 class="sr-only" id="gate-title">CAPAS deterministic claim gate</h2>
@@ -3570,10 +3604,9 @@ def _render_ui(sample: dict[str, Any]) -> str:
       <textarea id="input" spellcheck="false" aria-label="Claim and evidence JSON input" aria-describedby="json-status" oninput="scheduleInputChange()">__SAMPLE_JSON__</textarea>
       <div class="json-status" id="json-status" role="status" aria-live="polite" aria-atomic="true">Waiting for input...</div>
       <div class="action-row">
-        <button class="draft-btn" id="draft-btn" aria-label="Build a schema draft without deciding the claim" title="Build Draft fills a valid schema scaffold. It does not evaluate the claim." onclick="buildDraft()">Build Draft</button>
         <button class="decide-btn" id="decide-btn" aria-label="Run deterministic CAPAS gate" onclick="decide()">Run Gate <span class="decide-hint">⌘↵</span></button>
       </div>
-      <div class="action-helper">Build Draft fills missing schema structure. Run Gate evaluates the current payload and writes the decision on the right.</div>
+      <div class="action-helper">Run Gate evaluates the current payload. To create a typed payload, use Steps 1-2 in the Guided Form.</div>
       <button class="draft-btn" id="batch-btn" title="Batch input: JSON array, object with items/claims, or one claim payload auto-wrapped as a one-item batch" aria-label="Evaluate a batch of claim payloads" onclick="decideBatch()">Run Batch</button>
       <div class="json-status"><span class="payload-loaded-badge" id="payload-loaded-badge" role="status" aria-live="polite">Payload loaded</span></div>
     </div>
@@ -4741,8 +4774,8 @@ def _render_ui(sample: dict[str, Any]) -> str:
 
     function setGateMode(mode) {
       const labels = {
-        single: "Single claim mode: start with the Guided Form, then run the deterministic CAPAS gate.",
-        batch: "Batch claims mode: use Raw JSON (Advanced) with an array or object containing items/claims.",
+        single: "Guided Form mode: run the payload built in Steps 1-2, or inspect/edit it before deciding.",
+        batch: "Raw JSON / Batch mode: use an array, an object containing items/claims, or the current payload.",
         ingestion: "Ingestion mode: extract candidate claims from paper text, confirm spans, then gate the payload."
       };
       for (const key of Object.keys(labels)) {

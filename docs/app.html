@@ -335,19 +335,20 @@
     background: var(--bg-2);
   }
   .phase-track {
-    display: flex;
-    width: 300%;
-    transform: translateX(0);
-    transition: transform 220ms ease;
+    display: block;
+    width: 100%;
   }
-  body[data-flow-phase="complete"] .phase-track { transform: translateX(-33.333333%); }
-  body[data-flow-phase="gate"] .phase-track { transform: translateX(-66.666667%); }
   .phase-pane {
-    flex: 0 0 33.333333%;
+    display: none;
     min-width: 0;
-    width: 33.333333%;
+    width: 100%;
     overflow: hidden;
     padding: 12px;
+  }
+  body[data-flow-phase="choose"] .phase-pane[data-phase="choose"],
+  body[data-flow-phase="complete"] .phase-pane[data-phase="complete"],
+  body[data-flow-phase="gate"] .phase-pane[data-phase="gate"] {
+    display: block;
   }
   .phase-gate-mount {
     min-width: 0;
@@ -359,11 +360,6 @@
   .phase-pane .flow-section,
   .phase-pane .gate-section {
     min-height: 440px;
-  }
-  body[data-flow-phase="choose"] .phase-pane:not([data-phase="choose"]),
-  body[data-flow-phase="complete"] .phase-pane:not([data-phase="complete"]),
-  body[data-flow-phase="gate"] .phase-pane:not([data-phase="gate"]) {
-    visibility: hidden;
   }
   body[data-flow-phase="choose"] #phase-back { visibility: hidden; }
   body[data-flow-phase="gate"] #phase-next { display: none; }
@@ -642,7 +638,7 @@
   .json-status.invalid { color: var(--red); }
   .json-status.draft { color: var(--draft); }
   .json-status.draft::before { content: "◐"; }
-  .action-row { display: grid; grid-template-columns: 1fr 2fr; border-top: 1px solid var(--border); }
+  .action-row { display: grid; grid-template-columns: 1fr; border-top: 1px solid var(--border); }
   .draft-btn {
     width: 100%;
     padding: 13px;
@@ -906,6 +902,92 @@
   }
   html[data-theme="light"] .topbar { background: rgba(255, 255, 255, 0.9); }
   html[data-theme="light"] pre#output { background: var(--bg-3); }
+  /* CAPAS navigation and workspace hardening.
+     Keep the app as a workspace: no false navigation strips, no squeezed step cards. */
+  .workflow-strip {
+    display: none;
+  }
+  .starter-guide {
+    padding: 12px;
+  }
+  .starter-guide strong {
+    font-size: 12px;
+  }
+  .starter-steps {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--bg);
+  }
+  .starter-step {
+    min-width: 0;
+    padding: 0;
+    border: 0;
+    border-right: 1px solid var(--border);
+    border-radius: 0;
+    background: transparent;
+  }
+  .starter-step:last-child {
+    border-right: 0;
+  }
+  .starter-step-button {
+    min-height: 56px;
+    padding: 9px 10px;
+  }
+  .starter-step-button span {
+    margin-bottom: 2px;
+  }
+  .starter-step-button,
+  .starter-step-button span {
+    overflow-wrap: anywhere;
+  }
+  .starter-step.active {
+    border-color: transparent;
+    background: var(--accent-glow);
+  }
+  .phase-viewport,
+  .phase-track,
+  .phase-pane,
+  .phase-gate-mount,
+  .workspace-panel,
+  .ingest-panel,
+  .guided-body,
+  .guided-grid,
+  .ingest-toolbar,
+  .candidate-table,
+  .candidate-row,
+  .candidate-summary {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .guided-field input,
+  .guided-field textarea,
+  .guided-field select,
+  #ingest-file {
+    min-width: 0;
+    max-width: 100%;
+  }
+  #ingest-file {
+    width: min(100%, 340px);
+  }
+  .ingest-toolbar {
+    align-items: stretch;
+  }
+  .ingest-toolbar .sample-btn {
+    min-height: 30px;
+  }
+  .candidate-summary {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+  }
+  .candidate-summary .sample-btn,
+  .candidate-summary .verdict-badge {
+    width: fit-content;
+  }
+
   @media (max-width: 860px) {
     .app-body { padding: 16px 16px 60px; }
     .product-hero, .business-system { grid-template-columns: 1fr; }
@@ -1011,9 +1093,7 @@
   .product-hero { order: 1; }
   .samples-bar { order: 2; }
   .guided-panel { order: 3; }
-  .mode-tabs { order: 4; }
-  .mode-note { order: 5; }
-  .gate-section { order: 6; }
+  .gate-section { order: 4; }
   .ingest-panel { order: 7; }
   .history-section { order: 99; display: none; }
   .workflow-strip { order: 9; }
@@ -1143,14 +1223,7 @@
     scrollbar-width: none;
   }
   .samples-bar::before {
-    content: "Try an example:";
-    flex: 0 0 auto;
-    align-self: center;
-    color: var(--text-3);
-    font-size: 10px;
-    font-weight: 800;
-    letter-spacing: 0.6px;
-    text-transform: uppercase;
+    content: none;
   }
   .samples-bar::-webkit-scrollbar { display: none; }
   .samples-bar .sample-btn, .sample-btn {
@@ -1166,7 +1239,6 @@
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 0;
     margin: 0;
-    padding: 0 20px;
     border-bottom: 1px solid var(--border);
     background: var(--bg);
   }
@@ -1180,7 +1252,7 @@
   }
   .mode-tab:last-child { border-right: 0; }
   .mode-tab[aria-selected="true"] { background: var(--accent-glow); }
-  .mode-note { margin: 0; padding: 5px 20px; border-bottom: 1px solid var(--border); background: var(--bg); font-size: 11px; }
+  .mode-note { margin: 0; padding: 6px 12px; background: var(--bg); font-size: 11px; }
 
   .gate-section {
     margin-bottom: 12px;
@@ -1247,7 +1319,7 @@
     letter-spacing: 0.5px;
     text-transform: uppercase;
   }
-  .action-row { gap: 0; padding: 0; border-top: 1px solid var(--border); background: var(--bg-3); }
+  .action-row { grid-template-columns: 1fr; gap: 0; padding: 0; border-top: 1px solid var(--border); background: var(--bg-3); }
   .draft-btn#draft-btn {
     height: 40px;
     padding: 10px 12px;
@@ -1337,8 +1409,8 @@
   .guided-panel .panel-header {
     background: linear-gradient(180deg, var(--bg-3), var(--bg-2));
   }
-  .mode-tabs .mode-tab:first-child::before { content: "Guided Form · "; color: var(--accent); }
-  .mode-tabs .mode-tab:nth-child(2)::before { content: "Raw JSON · "; color: var(--text-3); }
+  .mode-tabs .mode-tab:first-child::before,
+  .mode-tabs .mode-tab:nth-child(2)::before { content: ""; }
   .history-section {
     margin: 0 20px 12px;
     overflow: hidden;
@@ -1382,8 +1454,10 @@
     .product-hero { align-items: flex-start; padding: 10px 16px; }
     .hero-copy { align-items: flex-start; flex-direction: column; gap: 8px; }
     .hero-copy > h2 { max-width: none; -webkit-line-clamp: 2; }
-    .workflow-step { min-width: 190px; flex: 0 0 190px; }
-    .samples-bar, .mode-tabs, .mode-note { padding-left: 16px; padding-right: 16px; }
+    .starter-steps { grid-template-columns: 1fr; }
+    .starter-step { border-right: 0; border-bottom: 1px solid var(--border); }
+    .starter-step:last-child { border-bottom: 0; }
+    .samples-bar { padding-left: 16px; padding-right: 16px; }
     .mode-tabs { grid-template-columns: 1fr; }
     .mode-tab { border-right: 0; border-bottom: 1px solid var(--border); }
     .gate-section { padding: 12px 16px 0; }
@@ -1391,6 +1465,316 @@
     .grid > div { border-right: 0; border-bottom: 1px solid var(--border); }
     .grid > div:last-child { border-bottom: 0; }
     section.guided-panel, section.ingest-panel, .history-section { margin-left: 16px; margin-right: 16px; }
+  }
+
+  /* Hard gate-step visibility.
+     Step 3 controls and workspace must not render as static content below Steps 1-2. */
+  .phase-pane,
+  #phase-gate-mount,
+  #gate {
+    display: none !important;
+  }
+  body[data-flow-phase="choose"] .phase-pane[data-phase="choose"],
+  body[data-flow-phase="complete"] .phase-pane[data-phase="complete"],
+  body[data-flow-phase="gate"] .phase-pane[data-phase="gate"] {
+    display: block !important;
+  }
+  body[data-flow-phase="gate"] #phase-gate-mount,
+  body[data-flow-phase="gate"] #gate {
+    display: block !important;
+  }
+  .workflow-mode-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .workflow-mode-card {
+    min-height: 118px;
+    padding: 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg-2);
+    color: var(--text-2);
+    text-align: left;
+    cursor: pointer;
+    transition: all var(--t);
+  }
+  .workflow-mode-card strong {
+    display: block;
+    color: var(--text-1);
+    font-size: 13px;
+    margin-bottom: 8px;
+  }
+  .workflow-mode-card span {
+    display: block;
+    color: var(--text-3);
+    font-size: 11px;
+    line-height: 1.45;
+  }
+  .workflow-mode-card:hover,
+  .workflow-mode-card.selected {
+    border-color: var(--accent);
+    background: var(--accent-glow);
+    transform: translateY(-1px);
+  }
+  .workflow-panel[hidden],
+  .workspace-panel[hidden] {
+    display: none !important;
+  }
+  .workflow-workspace-mount {
+    min-width: 0;
+  }
+  .workflow-workspace-mount .action-row,
+  .workflow-workspace-mount #batch-btn {
+    display: none !important;
+  }
+  body[data-flow-phase="gate"] #gate .grid {
+    grid-template-columns: 1fr;
+  }
+  body[data-flow-phase="gate"] #gate .grid > div:first-child {
+    display: none;
+  }
+  body[data-flow-phase="gate"] #gate .panel {
+    border-radius: var(--radius-lg);
+  }
+  body[data-workflow-mode="guided"] [data-workflow-panel="guided"],
+  body[data-workflow-mode="raw"] [data-workflow-panel="raw"],
+  body[data-workflow-mode="batch"] [data-workflow-panel="batch"],
+  body[data-workflow-mode="ingestion"] [data-workflow-panel="ingestion"] {
+    display: block;
+  }
+  body[data-workflow-mode="batch"] #decide-btn,
+  body[data-workflow-mode="batch"] #decide-btn + .decide-hint {
+    display: none;
+  }
+  @media (max-width: 860px) {
+    .workflow-mode-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 560px) {
+    .workflow-mode-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* CAPAS compiler console overrides.
+     Keep product value, business case, and audit trail visible instead of burying
+     them as static content below the working app. */
+  .product-hero {
+    order: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 1.08fr) minmax(300px, 0.92fr);
+    align-items: stretch;
+    gap: 18px;
+    padding: 18px 20px;
+    background:
+      linear-gradient(135deg, rgba(124, 127, 255, 0.10), transparent 38%),
+      var(--bg);
+  }
+  body.onboarded .product-hero {
+    padding-top: 18px;
+    padding-bottom: 18px;
+  }
+  .hero-copy {
+    justify-content: center;
+    gap: 10px;
+  }
+  .hero-eyebrow {
+    display: inline-flex;
+    width: fit-content;
+    padding: 4px 8px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--bg-2);
+    color: var(--accent);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+  }
+  .hero-copy > h2,
+  body.onboarded .product-hero h2 {
+    max-width: 760px;
+    color: var(--text-1);
+    font-size: 28px;
+    line-height: 1.06;
+    letter-spacing: 0;
+  }
+  .hero-copy > p,
+  body.onboarded .product-hero p {
+    display: block;
+    max-width: 720px;
+    color: var(--text-2);
+    font-size: 14px;
+    line-height: 1.55;
+  }
+  .hero-actions {
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .hero-actions > :not(.hero-primary) {
+    display: inline-flex;
+  }
+  .hero-actions a,
+  .hero-actions button {
+    height: 34px;
+    padding: 8px 14px;
+    font-size: 12px;
+  }
+  .hero-actions .hero-primary {
+    background: var(--accent);
+    box-shadow: 0 12px 32px rgba(79, 70, 229, 0.28);
+  }
+  .hero-shot {
+    display: block;
+    align-self: stretch;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--bg-2);
+    overflow: hidden;
+  }
+
+  .workflow-strip {
+    order: 2;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0;
+    border-top: 1px solid var(--border);
+  }
+  .workflow-step {
+    appearance: none;
+    text-align: left;
+    cursor: pointer;
+    color: inherit;
+    font: inherit;
+    min-height: 64px;
+    max-height: none;
+    transition: background var(--t), border-color var(--t);
+  }
+  .workflow-step:hover,
+  .workflow-step:focus-visible {
+    background: var(--accent-glow);
+    outline: none;
+  }
+  .workflow-step span {
+    -webkit-line-clamp: 2;
+    font-size: 11px;
+  }
+
+  .exec-dashboard {
+    order: 3;
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    margin: 0;
+    padding: 0 20px 12px;
+    gap: 8px;
+    background: var(--bg);
+  }
+  .exec-card {
+    min-height: 68px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg-2);
+  }
+
+  .guided-panel {
+    order: 4;
+  }
+  .gate-section {
+    order: 5;
+  }
+  .business-system {
+    order: 6;
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
+    gap: 12px;
+    margin: 0 20px 12px;
+  }
+  .business-system .panel {
+    margin: 0;
+  }
+  .workflow-board {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+  .workflow-stage {
+    min-height: 124px;
+  }
+
+  .history-section {
+    order: 7;
+    display: block;
+    opacity: 1;
+  }
+  .history-section:not(.history-open) .history-tools {
+    display: flex;
+  }
+  .history-section:not(.history-open) .history-list {
+    display: flex;
+    flex-direction: column;
+  }
+  .history-section .history-header .panel-title::after {
+    content: " / governed local decision trail";
+    color: var(--text-3);
+    font-weight: 600;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+  footer,
+  .app-footer {
+    order: 8;
+  }
+
+  .workflow-mode-card strong {
+    font-size: 14px;
+  }
+  .workflow-mode-card span {
+    font-size: 12px;
+  }
+  #verdict-area {
+    min-height: 146px;
+  }
+  .verdict-badge {
+    font-size: 18px;
+    padding: 7px 14px;
+  }
+  .verdict-reason {
+    font-size: 14px;
+    line-height: 1.45;
+  }
+
+  @media (max-width: 1020px) {
+    .product-hero,
+    .business-system {
+      grid-template-columns: 1fr;
+    }
+    .exec-dashboard {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .workflow-board {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 700px) {
+    .workflow-strip {
+      display: flex;
+      overflow-x: auto;
+    }
+    .workflow-step {
+      flex: 0 0 220px;
+    }
+    .exec-dashboard {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+    .business-system {
+      margin-left: 16px;
+      margin-right: 16px;
+    }
+    .workflow-board {
+      grid-template-columns: 1fr;
+    }
   }
   /* ================================================================ */
 </style>
@@ -1410,12 +1794,11 @@
   <div class="topbar-actions">
     <a class="copy-btn topbar-home" href="index.html" aria-label="Open CAPAS home page">Home</a>
     <button class="copy-btn topbar-site-link" type="button" aria-label="Jump to the CAPAS gate app workspace" onclick="scrollToGate()">Gate app</button>
-    <a class="copy-btn topbar-site-link" href="customer-brief.html" aria-label="Open CAPAS customer brief">Customer brief</a>
-    <a class="copy-btn topbar-site-link" href="pilot-packet.html" aria-label="Open CAPAS pilot packet">Pilot packet</a>
-    <a class="copy-btn topbar-site-link" href="product.html" aria-label="Open CAPAS product story">Product story</a>
+    <a class="copy-btn topbar-site-link" href="product.html" aria-label="Open CAPAS product page">Product</a>
+    <a class="copy-btn topbar-site-link" href="pilot-packet.html" aria-label="Open CAPAS pilot package">Pilot</a>
+    <a class="copy-btn topbar-site-link" href="customer-brief.html" aria-label="Open CAPAS methodology brief">Methodology</a>
     <button class="copy-btn" id="help-btn" aria-label="Open keyboard shortcut and pipeline help" aria-expanded="false" aria-controls="help-modal" onclick="openHelpModal(this)">Help</button>
-    <a class="copy-btn topbar-site-link" id="history-toggle" href="audit.html" aria-label="Open audit log page">Audit log</a>
-    <a class="copy-btn topbar-source" href="product.html" aria-label="Open CAPAS product story and business case">Product</a>
+    <a class="copy-btn topbar-site-link" id="history-toggle" href="audit.html" aria-label="Open audit trail page">Audit</a>
     <a class="copy-btn topbar-source" href="https://github.com/fomv9354lve/capas-inteligentes" target="_blank" rel="noopener noreferrer" aria-label="Open CAPAS Claim Gate source repository">Source</a>
     <button class="copy-btn" id="theme-toggle" aria-label="Toggle light and dark theme" onclick="toggleTheme()">Theme</button>
     <span class="topbar-badge" id="schema-version-badge">schema v3</span>
@@ -1427,22 +1810,18 @@
 <main class="app-body" id="main">
 <section class="product-hero" aria-labelledby="product-hero-title">
   <div class="hero-copy">
-    <div class="hero-eyebrow">Scientific claim governance for AI training data</div>
-    <h2 id="product-hero-title">CAPAS is the deterministic quality gate before claims enter reports, datasets, or fine-tuning.</h2>
-    <p>Instead of asking a reviewer to re-read every paper, CAPAS turns supplied evidence into an auditable ACCEPT, REWRITE, REJECT, or HOLD decision with schema versioning, provenance blockers, and batch economics.</p>
+    <div class="hero-eyebrow">Deterministic scientific claim gate</div>
+    <h2 id="product-hero-title">CAPAS compiles supplied evidence into a claim admissibility decision.</h2>
+    <p>Claim plus evidence goes in; ACCEPT, REWRITE, REJECT, or HOLD comes out. CAPAS does not certify scientific truth. It decides whether supplied evidence licenses a claim for controlled reuse in reports, datasets, or fine-tuning.</p>
     <div class="hero-actions">
-      <button class="sample-btn accept hero-primary" type="button" onclick="loadSample('CAUSAL')">Try the gate with a sample claim →</button>
+      <button class="sample-btn accept hero-primary" type="button" onclick="loadSample('CAUSAL')">Run sample claim →</button>
       <a class="sample-btn accept hero-link" href="https://github.com/fomv9354lve/capas-inteligentes/issues/new?title=CAPAS%20pilot%20conversation" target="_blank" rel="noopener noreferrer">Talk to pilot owner</a>
-      <a class="sample-btn hold hero-link" href="customer-brief.html">Open customer brief</a>
-      <a class="sample-btn rewrite hero-link" href="pilot-packet.html">Open pilot packet</a>
-      <button class="sample-btn hold" type="button" onclick="document.getElementById('roi-calculator-title').scrollIntoView({behavior:'smooth', block:'start'})">See business case</button>
-      <a class="sample-btn accept hero-link" href="product.html">Read product story</a>
-      <button class="sample-btn rewrite" type="button" onclick="document.getElementById('guided-claim-id').focus()">Start no-code claim</button>
+      <a class="sample-btn rewrite hero-link" href="pilot-packet.html">See pilot package</a>
     </div>
-    <div class="hero-metrics" aria-label="Illustrative pilot metrics">
-      <div class="hero-metric"><strong>10k</strong><span>structured evidence records stress-tested</span></div>
+    <div class="hero-metrics" aria-label="Internal validation model metrics">
+      <div class="hero-metric"><strong>10k</strong><span>structured payload validations</span></div>
       <div class="hero-metric"><strong>34%</strong><span>rewritten or rejected before reuse</span></div>
-      <div class="hero-metric"><strong>417h</strong><span>review capacity modeled</span></div>
+      <div class="hero-metric"><strong>417h</strong><span>modeled review capacity</span></div>
     </div>
   </div>
   <div class="hero-shot" aria-label="CAPAS decision screenshot mock">
@@ -1456,11 +1835,11 @@
   </div>
 </section>
 
-<section class="workflow-strip" aria-label="Before and after workflow">
-  <div class="workflow-step"><strong>Before CAPAS</strong><span>Researchers paste evidence into spreadsheets, reviewers debate wording, and training data enters pipelines with weak traceability.</span></div>
-  <div class="workflow-step"><strong>CAPAS gate</strong><span>Each claim is typed, checked against required evidence, and given a deterministic license boundary.</span></div>
-  <div class="workflow-step"><strong>Executive output</strong><span>Batch summaries show rewrite/reject rates, provenance gaps, and fine-tune blockers.</span></div>
-  <div class="workflow-step"><strong>Business case</strong><span>Run a 500-record pilot, measure reviewer agreement, and quantify review capacity redirected before enterprise rollout.</span></div>
+<section class="workflow-strip" aria-label="Claim admissibility workflow">
+  <button class="workflow-step" type="button" onclick="loadSample('CAUSAL')" aria-label="Run a causal claim drift sample"><strong>Claim drift</strong><span>A paper says association. A dataset row turns it into causation. CAPAS catches the boundary.</span></button>
+  <button class="workflow-step" type="button" onclick="goToPhase('choose')" aria-label="Choose a CAPAS input mode"><strong>Select mode</strong><span>Use the guided builder, raw JSON, batch evaluation, or paper/text ingestion.</span></button>
+  <button class="workflow-step" type="button" onclick="goToPhase('gate')" aria-label="Run the deterministic claim gate"><strong>Run gate</strong><span>Compile claim plus supplied evidence into ACCEPT, REWRITE, REJECT, or HOLD.</span></button>
+  <button class="workflow-step" type="button" onclick="document.getElementById('history-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' })" aria-label="Open the audit trail"><strong>Audit trail</strong><span>Export decisions, inspect blockers, and turn review work into governed evidence.</span></button>
 </section>
 
 <section class="exec-dashboard" aria-label="Executive batch and provenance dashboard">
@@ -1472,18 +1851,18 @@
   <div class="exec-card"><strong id="metric-provenance">0</strong><span>provenance-blocked</span></div>
 </section>
 
-<section class="business-system" aria-label="Training data assurance business system">
+<section class="business-system" aria-label="Scientific claim admissibility system">
   <div class="panel" aria-labelledby="workflow-view-title">
     <div class="panel-header">
-      <h2 class="panel-title" id="workflow-view-title">Training data assurance workflow</h2>
-      <span class="panel-tag">extracted to ready</span>
+      <h2 class="panel-title" id="workflow-view-title">Claim admissibility workflow</h2>
+      <span class="panel-tag">mode to audit trail</span>
     </div>
     <div class="workflow-board" aria-label="Operational claim review stages">
-      <div class="workflow-stage"><strong>1. Ingest</strong><span>Paste paper text, theorem notes, metadata exports, or local corpus snippets.</span></div>
-      <div class="workflow-stage"><strong>2. Confirm</strong><span>Human reviewer accepts candidate spans before CAPAS will decide.</span></div>
-      <div class="workflow-stage"><strong>3. Gate</strong><span>Schema v3 and claim-type rules return ACCEPT, REWRITE, REJECT, or HOLD.</span></div>
-      <div class="workflow-stage"><strong>4. Provenance</strong><span>Review hash, witness registry, source URLs, RO-Crate, and attestation blockers surface before training.</span></div>
-      <div class="workflow-stage"><strong>5. Approve</strong><span>Only fine-tune-ready claims move into governed datasets or downstream reports.</span></div>
+      <div class="workflow-stage"><strong>1. Select mode</strong><span>Choose guided builder, raw JSON, batch evaluation, or paper/text ingestion.</span></div>
+      <div class="workflow-stage"><strong>2. Build evidence</strong><span>Provide typed evidence fields or confirm extracted candidate spans.</span></div>
+      <div class="workflow-stage"><strong>3. Run gate</strong><span>Schema v3 and claim-type rules return ACCEPT, REWRITE, REJECT, or HOLD.</span></div>
+      <div class="workflow-stage"><strong>4. Inspect decision</strong><span>Review reason, schema errors, provenance blockers, and fine-tune readiness.</span></div>
+      <div class="workflow-stage"><strong>5. Export audit trail</strong><span>Export CSV or share app links without embedding sensitive payloads.</span></div>
     </div>
   </div>
   <div class="panel" aria-labelledby="roi-calculator-title">
@@ -1510,7 +1889,7 @@
       </div>
       <div class="roi-result" role="status" aria-live="polite">
         <strong id="roi-hours">417h</strong>
-        <span id="roi-value">~$75,060 senior-review capacity avoided in the pilot model.</span>
+        <span id="roi-value">~$75,060 senior-review capacity redirected in the pilot model.</span>
       </div>
     </div>
   </div>
@@ -1518,16 +1897,16 @@
 
 <section class="panel guided-panel" aria-labelledby="guided-title">
   <div class="panel-header">
-    <h2 class="panel-title" id="guided-title">Guided evidence constructor</h2>
-    <button class="copy-btn" type="button" onclick="buildGuidedPayload()">Build JSON from form</button>
+    <h2 class="panel-title" id="guided-title">CAPAS workflow</h2>
+    <span class="panel-tag">mode → evidence → gate</span>
   </div>
   <div class="guided-body">
     <div class="starter-guide" role="note" aria-label="CAPAS quick start">
-      <strong>Start here if you are new: build a claim in the form, then run the gate.</strong>
+      <strong>Mode selection is Step 1. Evidence construction is Step 2. Gate execution is Step 3.</strong>
       <div class="starter-steps">
-        <div class="starter-step"><button class="starter-step-button" type="button" onclick="goToPhase('choose')"><span>1. Choose</span>Pick the claim type that matches the evidence you have.</button></div>
-        <div class="starter-step"><button class="starter-step-button" type="button" onclick="goToPhase('complete')"><span>2. Complete</span>Fill the required evidence fields shown in the contract.</button></div>
-        <div class="starter-step"><button class="starter-step-button" type="button" onclick="goToPhase('gate')"><span>3. Gate</span>Use guided form, then press Run Gate to get ACCEPT, REWRITE, REJECT, or HOLD.</button></div>
+        <div class="starter-step"><button class="starter-step-button" type="button" onclick="goToPhase('choose')"><span>1. Select mode</span>Choose one workflow: guided, raw JSON, batch, or paper ingestion.</button></div>
+        <div class="starter-step"><button class="starter-step-button" type="button" onclick="goToPhase('complete')"><span>2. Build evidence</span>Only the controls for the selected workflow appear here.</button></div>
+        <div class="starter-step"><button class="starter-step-button" type="button" onclick="goToPhase('gate')"><span>3. Run gate</span>Execute CAPAS and inspect the deterministic decision output.</button></div>
       </div>
     </div>
     <div class="phase-controls" aria-label="Guided claim workflow controls">
@@ -1535,51 +1914,70 @@
       <span class="phase-indicator" id="phase-indicator" role="status" aria-live="polite">Step 1 of 3 · Choose</span>
       <div class="phase-control-group">
         <button class="copy-btn" id="phase-next" type="button" onclick="movePhase(1)">Next</button>
-        <button class="decide-btn" id="phase-run" type="button" onclick="decide()">Run Gate <span class="decide-hint">⌘↵</span></button>
+        <button class="decide-btn" id="phase-run" type="button" onclick="runSelectedWorkflow()">Run CAPAS Gate <span class="decide-hint">⌘↵</span></button>
       </div>
     </div>
     <div class="phase-viewport" aria-label="Guided claim workflow">
       <div class="phase-track">
         <div class="phase-pane" data-phase="choose">
-          <div class="builder-shell">
-            <div class="builder-main">
-              <section class="flow-section" id="phase-choose" aria-labelledby="flow-choose-title">
-          <h3 class="flow-title" id="flow-choose-title"><button class="flow-title-button" type="button" onclick="goToPhase('choose')"><span class="flow-step-badge">1</span> Choose the claim</button></h3>
-          <p class="flow-copy">Pick the scientific claim type and write the exact sentence CAPAS is allowed to gate.</p>
-          <div class="guided-grid">
-            <div class="guided-field">
-              <label for="guided-type">Claim type</label>
-              <select id="guided-type" onchange="renderGuidedFields()" aria-label="Choose claim type for guided builder"></select>
-            </div>
-            <div class="type-help" id="guided-type-help" role="status" aria-live="polite">Choose a claim type to see what CAPAS checks.</div>
-            <div class="guided-field">
-              <label for="guided-claim-id">Record ID</label>
-              <input id="guided-claim-id" value="pilot_record_001" aria-label="Guided record ID">
-            </div>
-            <div class="guided-field full">
-              <label for="guided-claim-text">Claim wording</label>
-              <textarea id="guided-claim-text" aria-label="Guided claim text">The structured evidence record is ready for deterministic CAPAS gating.</textarea>
-            </div>
-          </div>
-              </section>
+          <div class="flow-section" id="phase-choose" aria-labelledby="flow-choose-title">
+            <h3 class="flow-title" id="flow-choose-title"><button class="flow-title-button" type="button" onclick="goToPhase('choose')"><span class="flow-step-badge">1</span> Select workflow mode</button></h3>
+            <p class="flow-copy">Only one mode is active at a time. Pick how you want to create or provide the claim evidence.</p>
+            <div class="workflow-mode-grid" role="radiogroup" aria-label="Select CAPAS workflow mode">
+              <button class="workflow-mode-card" id="workflow-mode-guided" type="button" role="radio" aria-checked="true" onclick="setWorkflowMode('guided')">
+                <strong>Guided Claim Builder</strong>
+                <span>No-code claim creation with dynamic evidence fields.</span>
+              </button>
+              <button class="workflow-mode-card" id="workflow-mode-raw" type="button" role="radio" aria-checked="false" onclick="setWorkflowMode('raw')">
+                <strong>Raw JSON Payload</strong>
+                <span>Advanced mode for existing CAPAS schema v3 payloads.</span>
+              </button>
+              <button class="workflow-mode-card" id="workflow-mode-batch" type="button" role="radio" aria-checked="false" onclick="setWorkflowMode('batch')">
+                <strong>Batch Evaluation</strong>
+                <span>Corpus/pilot mode for many claim/evidence records.</span>
+              </button>
+              <button class="workflow-mode-card" id="workflow-mode-ingestion" type="button" role="radio" aria-checked="false" onclick="setWorkflowMode('ingestion')">
+                <strong>Paper/Text Ingestion</strong>
+                <span>Extraction aid. Human confirmation is required before gating.</span>
+              </button>
             </div>
           </div>
         </div>
         <div class="phase-pane" data-phase="complete">
-          <div class="builder-shell">
-            <div class="builder-main">
+          <div class="workflow-panel" data-workflow-panel="guided">
+            <div class="builder-shell">
+              <div class="builder-main">
+                <section class="flow-section" aria-labelledby="flow-guided-title">
+                  <h3 class="flow-title" id="flow-guided-title"><button class="flow-title-button" type="button" onclick="goToPhase('complete')"><span class="flow-step-badge">2</span> Guided Claim Builder</button></h3>
+                  <p class="flow-copy">Choose a claim type, write the claim, then complete only the evidence fields required by that type.</p>
+                  <div class="guided-grid">
+                    <div class="guided-field">
+                      <label for="guided-type">What are you evaluating?</label>
+                      <select id="guided-type" onchange="renderGuidedFields()" aria-label="Choose what kind of scientific claim you are evaluating"></select>
+                    </div>
+                    <div class="type-help" id="guided-type-help" role="status" aria-live="polite">Choose a claim type to see what CAPAS checks.</div>
+                    <div class="guided-field">
+                      <label for="guided-claim-id">Record ID</label>
+                      <input id="guided-claim-id" value="pilot_record_001" aria-label="Guided record ID">
+                    </div>
+                    <div class="guided-field full">
+                      <label for="guided-claim-text">Claim wording</label>
+                      <textarea id="guided-claim-text" aria-label="Guided claim text">The structured evidence record is ready for deterministic CAPAS gating.</textarea>
+                    </div>
+                  </div>
+                </section>
               <section class="flow-section" id="phase-complete" aria-labelledby="flow-complete-title">
           <h3 class="flow-title" id="flow-complete-title"><button class="flow-title-button" type="button" onclick="goToPhase('complete')"><span class="flow-step-badge">2</span> Complete evidence</button></h3>
-          <p class="flow-copy">Fill only the evidence fields required by the selected type. The contract on the right updates as you work.</p>
+          <p class="flow-copy">The evidence contract on the right updates as you work. The payload is built internally before the gate runs.</p>
           <div class="guided-grid" id="guided-fields" aria-label="Evidence fields for selected claim type"></div>
           <div class="hero-actions">
             <button class="sample-btn accept" type="button" onclick="loadVerticalDemo('AI_GOVERNANCE')">AI governance demo</button>
             <button class="sample-btn rewrite" type="button" onclick="loadVerticalDemo('PHARMA')">Pharma demo</button>
-            <button class="sample-btn hold" type="button" onclick="buildGuidedPayload()">Use guided form</button>
+            <button class="sample-btn hold" type="button" onclick="buildGuidedPayload({ scroll: false })">Build guided payload</button>
           </div>
               </section>
-            </div>
-            <aside class="builder-rail" aria-labelledby="builder-rail-title">
+              </div>
+              <aside class="builder-rail" aria-labelledby="builder-rail-title">
         <h3 id="builder-rail-title">Evidence contract</h3>
         <div class="builder-contract" id="builder-contract" aria-live="polite">
           <div class="contract-pill"><strong>Type</strong><span>Choose a claim type</span></div>
@@ -1593,36 +1991,43 @@
           <li>Wrong types become schema errors.</li>
           <li>Training readiness requires external provenance verification.</li>
         </ul>
-            </aside>
+              </aside>
+            </div>
+          </div>
+          <div class="workflow-panel" data-workflow-panel="raw">
+            <div id="raw-workspace-mount" class="workflow-workspace-mount" aria-label="Raw JSON Payload workspace"></div>
+          </div>
+          <div class="workflow-panel" data-workflow-panel="batch">
+            <div class="assist-block"><div class="alert-title">Batch Evaluation input</div>Evaluate many claim/evidence records using the same deterministic rules. Paste a JSON array, an object with <code>items</code> or <code>claims</code>, or a single payload to auto-wrap as one item.</div>
+            <div id="batch-workspace-mount" class="workflow-workspace-mount" aria-label="Batch Evaluation workspace"></div>
+          </div>
+          <div class="workflow-panel" data-workflow-panel="ingestion">
+            <div id="ingestion-workspace-mount" class="workflow-workspace-mount" aria-label="Paper/Text Ingestion workspace"></div>
           </div>
         </div>
         <div class="phase-pane" data-phase="gate">
+          <div class="flow-section" aria-labelledby="flow-run-title">
+            <h3 class="flow-title" id="flow-run-title"><button class="flow-title-button" type="button" onclick="goToPhase('gate')"><span class="flow-step-badge">3</span> Run CAPAS Gate</button></h3>
+            <p class="flow-copy" id="run-mode-note">Run the selected workflow through the deterministic CAPAS gate. Step 3 never changes mode.</p>
+            <div class="samples-bar">
+              <span>Examples:</span>
+              <button class="sample-btn accept" title="ACCEPT sample" aria-label="Load ACCEPT sample" onclick="loadSample('ACCEPT')">&#10003; ACCEPT</button>
+              <button class="sample-btn rewrite" title="REWRITE sample" aria-label="Load REWRITE sample" onclick="loadSample('REWRITE')">&#8634; REWRITE</button>
+              <button class="sample-btn invalid" title="REJECT sample" aria-label="Load REJECT sample" onclick="loadSample('REJECT')">&#10005; REJECT</button>
+              <button class="sample-btn hold" title="HOLD sample" aria-label="Load HOLD sample" onclick="loadSample('HOLD')">&#9646; HOLD</button>
+              <button class="sample-btn invalid" title="Invalid schema sample that resolves to HOLD" aria-label="Load INVALID schema sample" onclick="loadSample('INVALID')">&#9888; INVALID</button>
+              <button class="sample-btn accept" title="Causal mechanism sample" aria-label="Load CAUSAL sample" onclick="loadSample('CAUSAL')">Causal</button>
+              <button class="sample-btn accept" title="Systematic review sample" aria-label="Load SYSTEMATIC sample" onclick="loadSample('SYSTEMATIC')">Review</button>
+              <button class="sample-btn accept" title="Evidence conflict sample" aria-label="Load CONFLICT sample" onclick="loadSample('CONFLICT')">Conflict</button>
+              <button class="sample-btn accept" title="Multimodal evidence sample" aria-label="Load MULTIMODAL sample" onclick="loadSample('MULTIMODAL')">Multimodal</button>
+              <button class="sample-btn hold" title="Batch demo with multiple claim types" aria-label="Load batch demo sample" onclick="loadBatchDemo()">Batch demo</button>
+            </div>
+          </div>
           <div id="phase-gate-mount" class="phase-gate-mount" aria-label="Gate workspace"></div>
         </div>
       </div>
     </div>
 </section>
-
-<div class="samples-bar">
-  <span>Examples with deterministic outcomes:</span>
-  <button class="sample-btn accept" title="ACCEPT sample" aria-label="Load ACCEPT sample" onclick="loadSample('ACCEPT')">&#10003; ACCEPT</button>
-  <button class="sample-btn rewrite" title="REWRITE sample" aria-label="Load REWRITE sample" onclick="loadSample('REWRITE')">&#8634; REWRITE</button>
-  <button class="sample-btn invalid" title="REJECT sample" aria-label="Load REJECT sample" onclick="loadSample('REJECT')">&#10005; REJECT</button>
-  <button class="sample-btn hold" title="HOLD sample" aria-label="Load HOLD sample" onclick="loadSample('HOLD')">&#9646; HOLD</button>
-  <button class="sample-btn invalid" title="Invalid schema sample that resolves to HOLD" aria-label="Load INVALID schema sample" onclick="loadSample('INVALID')">&#9888; INVALID</button>
-  <button class="sample-btn accept" title="Causal mechanism sample" aria-label="Load CAUSAL sample" onclick="loadSample('CAUSAL')">Causal</button>
-  <button class="sample-btn accept" title="Systematic review sample" aria-label="Load SYSTEMATIC sample" onclick="loadSample('SYSTEMATIC')">Review</button>
-  <button class="sample-btn accept" title="Evidence conflict sample" aria-label="Load CONFLICT sample" onclick="loadSample('CONFLICT')">Conflict</button>
-  <button class="sample-btn accept" title="Multimodal evidence sample" aria-label="Load MULTIMODAL sample" onclick="loadSample('MULTIMODAL')">Multimodal</button>
-  <button class="sample-btn hold" title="Batch demo with multiple claim types" aria-label="Load batch demo sample" onclick="loadBatchDemo()">Batch demo</button>
-</div>
-
-<div class="mode-tabs" role="tablist" aria-label="CAPAS operating modes">
-  <button class="mode-tab" id="mode-single" role="tab" aria-selected="true" type="button" onclick="setGateMode('single')">Build one claim</button>
-  <button class="mode-tab" id="mode-batch" role="tab" aria-selected="false" type="button" onclick="setGateMode('batch')">Evaluate batch <span class="advanced-badge">advanced</span></button>
-  <button class="mode-tab" id="mode-ingestion" role="tab" aria-selected="false" type="button" onclick="setGateMode('ingestion')">Ingestion</button>
-</div>
-<div class="mode-note" id="mode-note" role="status" aria-live="polite">Guided Form is the default path. Raw JSON remains available below for advanced users.</div>
 
 <section class="gate-section" id="gate" aria-labelledby="gate-title">
 <h2 class="sr-only" id="gate-title">CAPAS deterministic claim gate</h2>
@@ -1651,18 +2056,17 @@
 }</textarea>
       <div class="json-status" id="json-status" role="status" aria-live="polite" aria-atomic="true">Waiting for input...</div>
       <div class="action-row">
-        <button class="draft-btn" id="draft-btn" aria-label="Build a schema draft without deciding the claim" title="Build Draft fills a valid schema scaffold. It does not evaluate the claim." onclick="buildDraft()">Build Draft</button>
         <button class="decide-btn" id="decide-btn" aria-label="Run deterministic CAPAS gate" onclick="decide()">Run Gate <span class="decide-hint">⌘↵</span></button>
       </div>
-      <div class="action-helper">Build Draft fills missing schema structure. Run Gate evaluates the current payload and writes the decision on the right.</div>
+      <div class="action-helper">Raw JSON Payload is the advanced path. Paste or inspect schema v3 JSON here, then run the gate from Step 3.</div>
       <button class="draft-btn" id="batch-btn" title="Batch input: JSON array, object with items/claims, or one claim payload auto-wrapped as a one-item batch" aria-label="Evaluate a batch of claim payloads" onclick="decideBatch()">Run Batch</button>
       <div class="json-status"><span class="payload-loaded-badge" id="payload-loaded-badge" role="status" aria-live="polite">Payload loaded</span></div>
     </div>
     <section class="panel workspace-panel ingest-panel" id="ingestion-workspace" aria-labelledby="ingest-title" hidden>
       <div class="gate-flow-title"><button class="flow-title-button" type="button" onclick="goToPhase('gate')"><span class="flow-step-badge">3</span> Ingest text into candidate claims</button></div>
       <div class="panel-header">
-        <h2 class="panel-title" id="ingest-title">Paper / text ingestion</h2>
-        <span class="panel-tag">human-confirmed candidates</span>
+        <h2 class="panel-title" id="ingest-title">Candidate extraction aid</h2>
+        <span class="panel-tag">human confirmation required</span>
       </div>
       <div class="guided-body">
         <div class="guided-grid">
@@ -1688,7 +2092,7 @@
           <button class="sample-btn accept" type="button" onclick="extractCandidateClaims()">Extract candidate claims</button>
           <button class="sample-btn hold" type="button" onclick="buildIngestionReport()">Build ingestion report</button>
         </div>
-        <div class="ingest-report" id="ingest-report-summary" role="status" aria-live="polite">Paste text, upload a local file, then extract candidates. PDF files are declared for provenance; browser PDF text parsing remains a CLI/standalone path.</div>
+        <div class="ingest-report" id="ingest-report-summary" role="status" aria-live="polite">Candidate extraction does not decide claims. A human must confirm spans before CAPAS gates the payload. PDF files are declared for provenance; browser PDF text parsing remains a CLI/standalone path.</div>
         <div class="candidate-table" id="candidate-claims-list" role="list" aria-label="candidate claims extracted from paper or text"></div>
       </div>
     </section>
@@ -1700,7 +2104,7 @@
         <span class="panel-title">Decision</span>
         <button class="copy-btn" id="copy-btn" aria-label="Copy decision JSON" onclick="copyOutput()" disabled>Copy JSON</button>
       </div>
-      <div id="verdict-area" aria-live="polite" aria-atomic="true"><div class="no-decision"><strong>No decision yet.</strong>Complete the guided form, choose <em>Use guided form</em>, then press <em>Run Gate</em> to see the verdict here.</div></div>
+      <div id="verdict-area" aria-live="polite" aria-atomic="true"><div class="no-decision"><strong>No decision yet.</strong>Select a workflow mode, build or provide evidence, then press <em>Run CAPAS Gate</em> in Step 3.</div></div>
       <div class="output-section">
         <div class="output-inspector" id="output-inspector" aria-label="Decision inspector">
           <div class="empty-state">Decision inspector will summarize the verdict, fine-tune readiness, schema errors, provenance, and raw JSON.</div>
@@ -1717,7 +2121,7 @@
 
 <div class="history-section" id="history-section">
   <div class="history-header">
-    <h2 class="history-heading">Audit log</h2>
+    <h2 class="history-heading">Audit trail</h2>
     <div class="history-actions">
       <button class="copy-btn" id="share-btn" aria-label="Copy shareable URL for current input. The payload is embedded in the URL; do not share sensitive claims." title="The payload is embedded in the URL; do not share sensitive claims." onclick="copyShareUrl()">Share URL</button>
       <button class="copy-btn" id="share-app-btn" aria-label="Copy app URL without embedding the current payload" title="Copy the app URL only, without embedding claim or provenance data." onclick="copyAppUrl()">Share App</button>
@@ -1728,8 +2132,8 @@
     </div>
   </div>
   <div class="history-tools" aria-label="History filters">
-    <input class="history-filter" id="history-filter" type="search" placeholder="Search claim ID, type, reason" aria-label="Search decision history by claim ID, type, or reason" oninput="renderHistory()">
-    <select class="history-select" id="history-verdict-filter" aria-label="Filter decision history by verdict" onchange="renderHistory()">
+    <input class="history-filter" id="history-filter" type="search" placeholder="Search claim ID, type, reason" aria-label="Search audit trail by claim ID, type, or reason" oninput="renderHistory()">
+    <select class="history-select" id="history-verdict-filter" aria-label="Filter audit trail by verdict" onchange="renderHistory()">
       <option value="">All verdicts</option>
       <option value="ACCEPT">ACCEPT</option>
       <option value="REWRITE">REWRITE</option>
@@ -1737,7 +2141,7 @@
       <option value="HOLD">HOLD</option>
     </select>
   </div>
-  <div class="history-list" id="history-list" role="list" aria-label="Decision history">
+  <div class="history-list" id="history-list" role="list" aria-label="Decision audit trail">
     <div class="empty-state">No decisions yet.</div>
   </div>
 </div>
@@ -1831,6 +2235,19 @@
       statistical_confidence: "Use for statistical claims. CAPAS checks p-value, alpha, and whether the effect direction matches the claim wording.",
       systematic_review_claim: "Use for systematic-review claims. CAPAS checks protocol, inclusion criteria, risk-of-bias assessment, and effect consistency.",
       universal_anchor_claim: "Use for claims that require an absolute anchor or invariant witness beyond local checks. CAPAS only supports absolute_anchor here."
+    };
+    const claimTypeLabels = {
+      causal_mechanism_claim: "A causal claim",
+      claim_transition: "A stronger wording than the evidence may license",
+      evidence_conflict_claim: "Conflicting evidence across sources",
+      exact_model_solution: "A numerical/model accuracy claim",
+      financial_metric_claim: "A financial metric claim",
+      multimodal_evidence_claim: "A claim backed by text/table/image evidence",
+      physical_accuracy: "A chemistry or physical accuracy claim",
+      reproducibility_check: "A reproducibility claim",
+      statistical_confidence: "A statistical result",
+      systematic_review_claim: "A review paper claim",
+      universal_anchor_claim: "A theory/anchor claim"
     };
     const historyLimit = 50;
     const historyStorageKey = "capas_decision_history_v1";
@@ -2669,7 +3086,7 @@
       const fields = document.getElementById("guided-fields");
       if (!typeSelect || !fields) return;
       if (!typeSelect.options.length) {
-        typeSelect.innerHTML = claimTypes.map((type) => `<option value="${escHtml(type)}">${escHtml(type)}</option>`).join("");
+        typeSelect.innerHTML = claimTypes.map((type) => `<option value="${escHtml(type)}">${escHtml(claimTypeLabels[type] || type)} · ${escHtml(type)}</option>`).join("");
         typeSelect.value = "statistical_confidence";
       }
       const type = typeSelect.value;
@@ -2693,7 +3110,8 @@
       }
       if (contract) {
         contract.innerHTML =
-          `<div class="contract-pill"><strong>Type</strong><span>${escHtml(type)}</span></div>` +
+          `<div class="contract-pill"><strong>Evaluating</strong><span>${escHtml(claimTypeLabels[type] || type)}</span></div>` +
+          `<div class="contract-pill"><strong>Internal type</strong><span>${escHtml(type)}</span></div>` +
           `<div class="contract-pill"><strong>Fields</strong><span>${required[type].length} required</span></div>` +
           `<div class="contract-pill"><strong>Gate</strong><span>${escHtml((example.claim.text || "").slice(0, 54))}${example.claim.text.length > 54 ? "..." : ""}</span></div>` +
           `<div class="contract-pill"><strong>Training</strong><span>14 readiness criteria after ACCEPT</span></div>` +
@@ -2741,6 +3159,7 @@
     }
 
     const guidedPhases = ["choose", "complete", "gate"];
+    const workflowModes = ["guided", "raw", "batch", "ingestion"];
 
     function mountGateInWizard() {
       const mount = document.getElementById("phase-gate-mount");
@@ -2750,30 +3169,56 @@
       }
     }
 
+    function mountWorkspaceForMode(mode) {
+      const normalized = workflowModes.includes(mode) ? mode : "guided";
+      const raw = document.getElementById("raw-workspace");
+      const ingestion = document.getElementById("ingestion-workspace");
+      const rawMount = document.getElementById(normalized === "batch" ? "batch-workspace-mount" : "raw-workspace-mount");
+      const ingestionMount = document.getElementById("ingestion-workspace-mount");
+      if ((normalized === "raw" || normalized === "batch") && raw && rawMount && raw.parentElement !== rawMount) {
+        rawMount.appendChild(raw);
+      }
+      if (normalized === "ingestion" && ingestion && ingestionMount && ingestion.parentElement !== ingestionMount) {
+        ingestionMount.appendChild(ingestion);
+      }
+      if (raw) {
+        raw.hidden = !(normalized === "raw" || normalized === "batch");
+        raw.dataset.workflowMode = normalized;
+        const title = raw.querySelector(".panel-title");
+        const helper = raw.querySelector(".action-helper");
+        if (title) title.textContent = normalized === "batch" ? "Batch Evaluation" : "Raw JSON Payload";
+        if (helper) {
+          helper.textContent = normalized === "batch"
+            ? "Batch accepts a JSON array, an object with items/claims, or a single payload auto-wrapped as one item."
+            : "Raw JSON is the advanced path for schema v3 payloads. Paste, validate, then run the gate in Step 3.";
+        }
+      }
+      if (ingestion) ingestion.hidden = normalized !== "ingestion";
+    }
+
     function setFlowPhase(phase, { focus = true } = {}) {
       const normalized = guidedPhases.includes(phase) ? phase : "choose";
-      const currentMode = document.body.dataset.gateMode || "single";
-      if (normalized === "choose" || normalized === "complete") {
-        setGateMode("single");
-      } else if (normalized === "gate" && !currentMode) {
-        setGateMode("single");
-      }
+      const currentMode = document.body.dataset.workflowMode || "guided";
+      mountWorkspaceForMode(currentMode);
       mountGateInWizard();
       document.body.dataset.flowPhase = normalized;
       const targets = {
-        choose: { focus: "guided-type", label: "Step 1 of 3 · Choose" },
-        complete: { focus: "guided-fields", label: "Step 2 of 3 · Complete" },
-        gate: { section: "gate", focus: currentMode === "ingestion" ? "ingest-source-text" : "decide-btn" }
+        choose: { focus: `workflow-mode-${currentMode}`, label: "Step 1 of 3 · Select mode" },
+        complete: {
+          focus: currentMode === "guided" ? "guided-type" : currentMode === "ingestion" ? "ingest-source-text" : "input",
+          label: "Step 2 of 3 · Build evidence"
+        },
+        gate: { section: "gate", focus: "phase-run" }
       };
       const labels = {
-        choose: "Step 1 of 3 · Choose",
-        complete: "Step 2 of 3 · Complete",
-        gate: currentMode === "ingestion" ? "Step 3 of 3 · Ingest" : "Step 3 of 3 · Gate"
+        choose: "Step 1 of 3 · Select mode",
+        complete: `Step 2 of 3 · ${workflowModeLabel(currentMode)}`,
+        gate: currentMode === "batch" ? "Step 3 of 3 · Run Batch" : "Step 3 of 3 · Run CAPAS Gate"
       };
       const indicator = document.getElementById("phase-indicator");
       if (indicator) indicator.textContent = labels[normalized];
       const next = document.getElementById("phase-next");
-      if (next) next.textContent = normalized === "choose" ? "Next: Complete" : "Next: Gate";
+      if (next) next.textContent = normalized === "choose" ? "Next: Build evidence" : "Next: Run gate";
       document.querySelectorAll(".starter-step").forEach((step, index) => {
         step.classList.toggle("active", guidedPhases[index] === normalized);
       });
@@ -2820,23 +3265,81 @@
       window.location.href = "audit.html";
     }
 
-    function setGateMode(mode) {
+    function workflowModeLabel(mode) {
       const labels = {
-        single: "Single claim mode: start with the Guided Form, then run the deterministic CAPAS gate.",
-        batch: "Batch claims mode: use Raw JSON (Advanced) with an array or object containing items/claims.",
-        ingestion: "Ingestion mode: extract candidate claims from paper text, confirm spans, then gate the payload."
+        guided: "Guided Claim Builder",
+        raw: "Raw JSON Payload",
+        batch: "Batch Evaluation",
+        ingestion: "Paper/Text Ingestion"
       };
-      for (const key of Object.keys(labels)) {
-        const tab = document.getElementById(`mode-${key}`);
-        if (tab) tab.setAttribute("aria-selected", key === mode ? "true" : "false");
+      return labels[mode] || labels.guided;
+    }
+
+    function setWorkflowMode(mode, { advance = false } = {}) {
+      const normalized = workflowModes.includes(mode) ? mode : "guided";
+      document.body.dataset.workflowMode = normalized;
+      document.body.dataset.gateMode = normalized === "batch" ? "batch" : normalized === "ingestion" ? "ingestion" : "single";
+      document.querySelectorAll(".workflow-mode-card").forEach((card) => {
+        const selected = card.id === `workflow-mode-${normalized}`;
+        card.classList.toggle("selected", selected);
+        card.setAttribute("aria-checked", selected ? "true" : "false");
+      });
+      document.querySelectorAll(".workflow-panel").forEach((panel) => {
+        panel.hidden = panel.dataset.workflowPanel !== normalized;
+      });
+      mountWorkspaceForMode(normalized);
+      const run = document.getElementById("phase-run");
+      if (run) {
+        run.innerHTML = normalized === "batch" ? `Run Batch <span class="decide-hint">⌘↵</span>` : `Run CAPAS Gate <span class="decide-hint">⌘↵</span>`;
+        run.setAttribute("aria-label", normalized === "batch" ? "Run CAPAS batch evaluation" : `Run CAPAS Gate for ${workflowModeLabel(normalized)}`);
       }
-      const note = document.getElementById("mode-note");
-      if (note) note.textContent = labels[mode] || labels.single;
-      const raw = document.getElementById("raw-workspace");
-      const ingestion = document.getElementById("ingestion-workspace");
-      if (raw) raw.hidden = mode === "ingestion";
-      if (ingestion) ingestion.hidden = mode !== "ingestion";
-      document.body.dataset.gateMode = mode;
+      const note = document.getElementById("run-mode-note");
+      if (note) {
+        note.textContent = normalized === "batch"
+          ? "Batch Evaluation runs all items through the same deterministic CAPAS gate and reports an aggregate fine-tune readiness AND-gate."
+          : `${workflowModeLabel(normalized)} produces or provides one schema v3 payload. Step 3 only runs the gate and shows the decision.`;
+      }
+      if (advance) goToPhase("complete");
+    }
+
+    function setGateMode(mode) {
+      const mapped = mode === "batch" ? "batch" : mode === "ingestion" ? "ingestion" : mode === "raw" ? "raw" : "guided";
+      setWorkflowMode(mapped);
+    }
+
+    function runSelectedWorkflow() {
+      const mode = document.body.dataset.workflowMode || "guided";
+      if (mode === "guided") {
+        buildGuidedPayload({ scroll: false, announce: false });
+        decide();
+        return;
+      }
+      if (mode === "batch") {
+        decideBatch();
+        return;
+      }
+      if (mode === "ingestion") {
+        try {
+          const payload = JSON.parse(document.getElementById("input").value || "{}");
+          if (!payload.source_metadata) {
+            document.getElementById("verdict-area").innerHTML =
+              `<div class="assist-block"><div class="alert-title">Confirm an ingestion candidate first</div>` +
+              `<div>Use Step 2 to extract candidate claims from paper/text, then confirm one candidate before running the gate.</div></div>`;
+            setOutputEmpty();
+            setCopyEnabled(false);
+            goToPhase("complete", { focus: false });
+            return;
+          }
+        } catch (_) {
+          document.getElementById("verdict-area").innerHTML =
+            `<div class="alert-block errors"><div class="alert-title">Input required</div>Confirm an ingestion candidate before running CAPAS Gate.</div>`;
+          setOutputEmpty();
+          setCopyEnabled(false);
+          goToPhase("complete", { focus: false });
+          return;
+        }
+      }
+      decide();
     }
 
     function markPayloadLoaded({ scroll = true } = {}) {
@@ -2855,7 +3358,7 @@
       if (scroll) goToPhase("gate", { focus: false });
     }
 
-    function buildGuidedPayload() {
+    function buildGuidedPayload({ scroll = true, announce = true } = {}) {
       const type = document.getElementById("guided-type").value || "statistical_confidence";
       const fields = document.getElementById("guided-fields");
       if (fields && fields.dataset.claimType !== type) {
@@ -2877,15 +3380,18 @@
       };
       document.getElementById("input").value = JSON.stringify(payload, null, 2);
       onInputChange();
-      markPayloadLoaded();
-      document.getElementById("verdict-area").innerHTML =
-        `<div class="assist-block"><div class="alert-title">Guided payload built</div>` +
-        `<div>The no-code form generated a <code>${escHtml(type)}</code> payload. Run Decide or Batch to apply the deterministic gate.</div></div>`;
-      setOutputEmpty();
-      setCopyEnabled(false);
+      markPayloadLoaded({ scroll });
+      if (announce) {
+        document.getElementById("verdict-area").innerHTML =
+          `<div class="assist-block"><div class="alert-title">Guided payload built</div>` +
+          `<div>The no-code form generated a <code>${escHtml(type)}</code> payload. Run CAPAS Gate to apply the deterministic gate.</div></div>`;
+        setOutputEmpty();
+        setCopyEnabled(false);
+      }
     }
 
     function loadVerticalDemo(name) {
+      setWorkflowMode("guided");
       const payload = verticalDemos[name] || verticalDemos.AI_GOVERNANCE;
       document.getElementById("input").value = JSON.stringify(payload, null, 2);
       markPayloadLoaded({ scroll: false });
@@ -3127,6 +3633,7 @@
     }
 
     function confirmCandidateClaim(index) {
+      setWorkflowMode("ingestion");
       const candidate = ingestCandidates[index];
       if (!candidate) return;
       candidate.confirmed = true;
@@ -3740,12 +4247,14 @@
     }
 
     function loadSample(name) {
+      setWorkflowMode("raw");
       document.getElementById("input").value = JSON.stringify(samples[name], null, 2);
       onInputChange();
       decide();
     }
 
     function loadBatchDemo() {
+      setWorkflowMode("batch");
       const batch = [
         samples.ACCEPT,
         samples.CAUSAL,
@@ -3822,7 +4331,7 @@
     document.addEventListener("keydown", (event) => {
       if ((event.metaKey || event.ctrlKey) && event.key === "Enter") {
         event.preventDefault();
-        decide();
+        runSelectedWorkflow();
       } else if (event.key === "?" && !["INPUT", "TEXTAREA"].includes(document.activeElement?.tagName || "")) {
         event.preventDefault();
         const modal = document.getElementById("help-modal-backdrop");
@@ -3836,7 +4345,7 @@
     initTheme();
     initOnboardingState();
     renderGuidedFields();
-    setGateMode("single");
+    setWorkflowMode("guided");
     setFlowPhase("choose", { focus: false });
     updateRoiCalculator();
     applySensitiveMode();

@@ -57,11 +57,11 @@ HARNESS = r"""
     ok("shared_payload_loaded", document.getElementById("input").value.includes("shared_claim"));
     ok("share_button_exists", document.getElementById("share-btn"));
     ok("export_button_exists", document.getElementById("export-btn"));
-    ok("product_hero_exists", document.querySelector(".product-hero")?.textContent.includes("deterministic quality gate"));
+    ok("product_hero_exists", document.querySelector(".product-hero")?.textContent.includes("claim admissibility decision"));
     ok("customer_brief_link_exists", Boolean(document.querySelector('a[href="customer-brief.html"]')));
     ok("pilot_packet_link_exists", Boolean(document.querySelector('a[href="pilot-packet.html"]')));
     ok("executive_dashboard_exists", Boolean(document.getElementById("metric-ft-ready")) && Boolean(document.getElementById("metric-provenance")));
-    ok("workflow_view_exists", document.getElementById("workflow-view-title")?.textContent.includes("Training data assurance workflow"));
+    ok("workflow_view_exists", document.getElementById("workflow-view-title")?.textContent.includes("Claim admissibility workflow"));
     ok("roi_calculator_exists", Boolean(document.getElementById("roi-claims")) && Boolean(document.getElementById("roi-hours")));
     document.getElementById("roi-claims").value = "1200";
     document.getElementById("roi-manual").value = "40";
