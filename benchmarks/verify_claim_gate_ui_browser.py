@@ -76,6 +76,7 @@ HARNESS = r"""
     ok("help_modal_lists_schema_v2_statistical_fields", document.getElementById("help-modal").textContent.includes("statistical_confidence") && document.getElementById("help-modal").textContent.includes("effect_direction_confirmed"));
     ok("help_modal_lists_schema_v2_reproducibility_fields", document.getElementById("help-modal").textContent.includes("reproducibility_check") && document.getElementById("help-modal").textContent.includes("independent_reproduction_pass"));
     ok("help_modal_documents_fine_tune_readiness", document.getElementById("help-modal").textContent.includes("fine_tune_ready") && document.getElementById("help-modal").textContent.includes("hash-verified external review packet"));
+    ok("help_modal_documents_cli_provenance_verification", document.getElementById("help-modal").textContent.includes("The static browser UI previews these criteria") && document.getElementById("help-modal").textContent.includes("capas.py"));
     closeHelpModal();
     ok("help_modal_closes", !document.getElementById("help-modal-backdrop").classList.contains("open"));
     ok("help_modal_returns_focus_to_trigger", document.activeElement === helpButton);
@@ -182,7 +183,8 @@ HARNESS = r"""
       }
     });
     decide();
-    ok("fine_tune_ready_positive", document.getElementById("output").textContent.includes('"fine_tune_ready": true'));
+    ok("browser_fine_tune_ready_requires_cli", document.getElementById("output").textContent.includes('"fine_tune_ready": false') && document.getElementById("output").textContent.includes("Active provenance gates require capas.py CLI/API verification"));
+    ok("browser_provenance_gates_blocked", document.getElementById("output").textContent.includes('"review_hash_verified": false') && document.getElementById("output").textContent.includes('"reviewer_attestation_verified": false'));
     ok("fine_tune_criteria_visible", document.getElementById("output").textContent.includes('"fine_tune_criteria"'));
 
     const firstHistory = document.querySelector(".history-item");
