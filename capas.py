@@ -456,96 +456,260 @@ def _ui_samples() -> dict[str, dict[str, Any]]:
 def _render_ui(sample: dict[str, Any]) -> str:
     samples = _ui_samples()
     sample_json = json.dumps(sample, indent=2, sort_keys=True)
-    return f"""<!doctype html>
+    samples_json = json.dumps(samples, sort_keys=True)
+    html = r"""<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CAPAS Claim Gate</title>
-  <style>
-    body {{ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; margin: 32px; max-width: 1120px; }}
-    textarea {{ width: 100%; min-height: 360px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; }}
-    pre {{ background: #f5f5f5; padding: 16px; overflow: auto; }}
-    button {{ padding: 8px 12px; margin: 8px 8px 8px 0; }}
-    .grid {{ display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }}
-    .toolbar {{ display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0; }}
-    @media (max-width: 800px) {{ .grid {{ grid-template-columns: 1fr; }} }}
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CAPAS Claim Gate</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    margin: 0;
+    padding: 20px 28px;
+    max-width: 1200px;
+    background: #0f1117;
+    color: #e2e8f0;
+    min-height: 100vh;
+  }
+  .header { margin-bottom: 20px; }
+  .header h1 { font-size: 20px; font-weight: 700; margin: 0 0 4px 0; color: #f8fafc; }
+  .header p { margin: 0; font-size: 13px; color: #64748b; }
+  .header code { background: #1e2535; color: #94a3b8; padding: 1px 5px; border-radius: 4px; font-size: 12px; }
+  .samples-bar { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; align-items: center; }
+  .samples-bar span { font-size: 12px; color: #64748b; font-weight: 600; margin-right: 4px; }
+  .sample-btn {
+    padding: 5px 14px;
+    border-radius: 6px;
+    border: 1px solid;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.15s, transform 0.1s;
+    background: transparent;
+  }
+  .sample-btn:hover { opacity: 0.75; transform: translateY(-1px); }
+  .sample-btn:active { transform: translateY(0); }
+  .sample-btn.accept { color: #4ade80; border-color: #4ade80; }
+  .sample-btn.rewrite { color: #fb923c; border-color: #fb923c; }
+  .sample-btn.hold { color: #94a3b8; border-color: #94a3b8; }
+  .sample-btn.invalid { color: #f87171; border-color: #f87171; }
+  .grid { display: grid; grid-template-columns: 420px 1fr; gap: 20px; align-items: start; }
+  @media (max-width: 800px) { .grid { grid-template-columns: 1fr; } }
+  .panel { background: #1a1f2e; border: 1px solid #2d3748; border-radius: 10px; overflow: hidden; }
+  .panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    background: #151a27;
+    border-bottom: 1px solid #2d3748;
+  }
+  .panel-title { font-size: 11px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.8px; }
+  .panel-tag { font-size: 11px; color: #64748b; }
+  #input {
+    width: 100%;
+    min-height: 360px;
+    background: #1a1f2e;
+    color: #e2e8f0;
+    border: none;
+    outline: none;
+    resize: vertical;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    padding: 14px;
+    display: block;
+    transition: box-shadow 0.2s;
+  }
+  #input.ok-border { box-shadow: inset 0 0 0 2px #4ade8033; }
+  #input.error-border { box-shadow: inset 0 0 0 2px #f8717155; }
+  .json-status {
+    padding: 6px 14px;
+    font-size: 11px;
+    font-weight: 600;
+    border-top: 1px solid #2d3748;
+    min-height: 28px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #64748b;
+  }
+  .json-status.valid { color: #4ade80; }
+  .json-status.invalid { color: #f87171; }
+  .decide-btn {
+    width: 100%;
+    padding: 11px;
+    background: #3b82f6;
+    color: white;
+    border: none;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .decide-btn:hover { background: #2563eb; }
+  .decide-hint { font-size: 11px; opacity: 0.6; font-weight: 500; background: #ffffff18; padding: 1px 6px; border-radius: 4px; }
+  .verdict-banner { padding: 14px 16px; display: flex; align-items: center; gap: 14px; border-bottom: 1px solid #2d3748; }
+  .verdict-badge { font-size: 13px; font-weight: 800; padding: 4px 14px; border-radius: 20px; letter-spacing: 1px; flex-shrink: 0; white-space: nowrap; }
+  .verdict-badge.ACCEPT { background: #14532d; color: #4ade80; border: 1px solid #166534; }
+  .verdict-badge.REJECT { background: #450a0a; color: #f87171; border: 1px solid #7f1d1d; }
+  .verdict-badge.REWRITE { background: #431407; color: #fb923c; border: 1px solid #7c2d12; }
+  .verdict-badge.HOLD { background: #1e293b; color: #94a3b8; border: 1px solid #334155; }
+  .verdict-reason { font-size: 13px; color: #cbd5e1; line-height: 1.4; }
+  .alert-block { margin: 10px 14px; padding: 10px 12px; border-radius: 7px; font-size: 12px; line-height: 1.6; }
+  .alert-block.missing { background: #1c1000; border: 1px solid #78350f; color: #fbbf24; }
+  .alert-block.errors { background: #160404; border: 1px solid #7f1d1d; color: #fca5a5; }
+  .alert-title { font-weight: 800; margin-bottom: 5px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .alert-block ul { margin: 4px 0 0 0; padding-left: 16px; }
+  .rewrite-block { margin: 10px 14px; padding: 10px 12px; border-radius: 7px; background: #140e00; border: 1px solid #92400e; font-size: 12px; color: #fcd34d; }
+  .rewrite-text { font-style: italic; color: #fbbf24; margin-top: 4px; }
+  .output-section { padding: 10px 14px 14px; }
+  .output-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: #64748b; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
+  .copy-btn { background: #2d3748; color: #94a3b8; border: none; border-radius: 4px; padding: 3px 8px; font-size: 10px; cursor: pointer; font-weight: 700; transition: background 0.15s, color 0.15s; }
+  .copy-btn:hover { background: #3b82f6; color: white; }
+  .copy-btn.copied { background: #14532d; color: #4ade80; }
+  pre#output {
+    background: #0a0d14;
+    border: 1px solid #2d3748;
+    border-radius: 6px;
+    padding: 12px;
+    font-size: 12px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    overflow: auto;
+    max-height: 340px;
+    margin: 0;
+    color: #94a3b8;
+    line-height: 1.6;
+  }
+  .history-section { margin-top: 28px; padding-bottom: 40px; }
+  .history-section h3 { font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.8px; margin: 0 0 10px 0; }
+  .history-list { display: flex; flex-direction: column; gap: 6px; }
+  .history-item { background: #1a1f2e; border: 1px solid #2d3748; border-radius: 7px; padding: 8px 12px; display: flex; align-items: center; gap: 10px; font-size: 12px; }
+  .history-badge { font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 10px; flex-shrink: 0; }
+  .history-badge.ACCEPT { background: #14532d; color: #4ade80; }
+  .history-badge.REJECT { background: #450a0a; color: #f87171; }
+  .history-badge.REWRITE { background: #431407; color: #fb923c; }
+  .history-badge.HOLD { background: #1e293b; color: #94a3b8; }
+  .history-id { color: #64748b; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; flex-shrink: 0; }
+  .history-reason { color: #94a3b8; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .empty-state { color: #475569; font-size: 12px; font-style: italic; }
+  .no-decision { padding: 32px 16px; text-align: center; color: #475569; font-size: 13px; }
+</style>
 </head>
 <body>
+
+<div class="header">
   <h1>CAPAS Claim Gate</h1>
-  <p>Paste a claim/evidence JSON object. This static UI mirrors the external rule gate in <code>capas.py decide</code> and exposes schema errors as <code>HOLD</code>, not guesses.</p>
-  <div class="grid">
-    <section>
-      <h2>Input</h2>
-      <textarea id="input">{sample_json}</textarea>
-      <div class="toolbar">
-        <button onclick="decide()">Decide</button>
-        <button onclick="loadSample('ACCEPT')">ACCEPT sample</button>
-        <button onclick="loadSample('REWRITE')">REWRITE sample</button>
-        <button onclick="loadSample('HOLD')">HOLD sample</button>
-        <button onclick="loadSample('INVALID')">INVALID sample</button>
+  <p>Paste a claim/evidence JSON. Decisions are rule-based via <code>capas.py decide</code>. Schema errors surface as <code>HOLD</code>, never as guesses.</p>
+</div>
+
+<div class="samples-bar">
+  <span>Load sample:</span>
+  <button class="sample-btn accept" title="ACCEPT sample" onclick="loadSample('ACCEPT')">&#10003; ACCEPT</button>
+  <button class="sample-btn rewrite" title="REWRITE sample" onclick="loadSample('REWRITE')">&#8634; REWRITE</button>
+  <button class="sample-btn hold" title="HOLD sample" onclick="loadSample('HOLD')">&#9646; HOLD</button>
+  <button class="sample-btn invalid" title="INVALID sample" onclick="loadSample('INVALID')">&#10005; INVALID</button>
+</div>
+
+<div class="grid">
+  <div>
+    <div class="panel">
+      <div class="panel-header">
+        <span class="panel-title">Input JSON</span>
+        <span class="panel-tag" id="type-label"></span>
       </div>
-    </section>
-    <section>
-      <h2>Decision</h2>
-      <pre id="output"></pre>
-    </section>
+      <textarea id="input" spellcheck="false" oninput="onInputChange()">__SAMPLE_JSON__</textarea>
+      <div class="json-status" id="json-status">Waiting for input...</div>
+      <button class="decide-btn" onclick="decide()">Decide <span class="decide-hint">⌘↵</span></button>
+    </div>
   </div>
-  <script>
-    const sample = {json.dumps(sample)};
-    const samples = {json.dumps(samples)};
-    const required = {{
+
+  <div>
+    <div class="panel">
+      <div class="panel-header">
+        <span class="panel-title">Decision</span>
+        <button class="copy-btn" id="copy-btn" onclick="copyOutput()">Copy JSON</button>
+      </div>
+      <div id="verdict-area"><div class="no-decision">Run a decision to see results.</div></div>
+      <div class="output-section">
+        <div class="output-label"><span>Full output</span></div>
+      <pre id="output"></pre>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="history-section">
+  <h3>Recent decisions</h3>
+  <div class="history-list" id="history-list">
+    <div class="empty-state">No decisions yet.</div>
+  </div>
+</div>
+
+<script>
+    const sample = __SAMPLE_COMPACT_JSON__;
+    const samples = __SAMPLES_JSON__;
+    const required = {
       exact_model_solution: ["abs_error", "tolerance"],
       physical_accuracy: ["within_chemical_accuracy"],
       universal_anchor_claim: ["anchor_mode", "local_property_tests_pass", "universal_anchor_pass"],
       claim_transition: ["upgrade_evidence_present"]
-    }};
+    };
     const claimTypes = Object.keys(required).sort();
-    function validatePayload(payload) {{
+    let decisionHistory = [];
+
+    function validatePayload(payload) {
       const errors = [];
-      if (payload === null || typeof payload !== "object" || Array.isArray(payload)) {{
+      if (payload === null || typeof payload !== "object" || Array.isArray(payload)) {
         return ["payload must be a JSON object"];
-      }}
+      }
       const claim = payload.claim;
       const evidence = payload.evidence;
-      if (claim === null || typeof claim !== "object" || Array.isArray(claim)) {{
+      if (claim === null || typeof claim !== "object" || Array.isArray(claim)) {
         errors.push("claim must be an object");
-      }}
-      if (evidence === null || typeof evidence !== "object" || Array.isArray(evidence)) {{
+      }
+      if (evidence === null || typeof evidence !== "object" || Array.isArray(evidence)) {
         errors.push("evidence must be an object");
-      }}
-      const safeClaim = claim && typeof claim === "object" && !Array.isArray(claim) ? claim : {{}};
-      for (const field of ["id", "type", "text"]) {{
-        if (typeof safeClaim[field] !== "string" || safeClaim[field].trim() === "") {{
-          errors.push(`claim.${{field}} must be a non-empty string`);
-        }}
-      }}
-      if (typeof safeClaim.type === "string" && !required[safeClaim.type]) {{
-        errors.push(`claim.type must be one of: ${{claimTypes.join(", ")}}`);
-      }}
-      const safeEvidence = evidence && typeof evidence === "object" && !Array.isArray(evidence) ? evidence : {{}};
-      for (const field of ["abs_error", "tolerance"]) {{
-        if (Object.prototype.hasOwnProperty.call(safeEvidence, field) && typeof safeEvidence[field] !== "number") {{
-          errors.push(`evidence.${{field}} must be a number`);
-        }}
-      }}
-      for (const field of ["within_chemical_accuracy", "local_property_tests_pass", "universal_anchor_pass", "upgrade_evidence_present"]) {{
-        if (Object.prototype.hasOwnProperty.call(safeEvidence, field) && typeof safeEvidence[field] !== "boolean") {{
-          errors.push(`evidence.${{field}} must be a boolean`);
-        }}
-      }}
-      if (Object.prototype.hasOwnProperty.call(safeEvidence, "anchor_mode") && typeof safeEvidence.anchor_mode !== "string") {{
+      }
+      const safeClaim = claim && typeof claim === "object" && !Array.isArray(claim) ? claim : {};
+      for (const field of ["id", "type", "text"]) {
+        if (typeof safeClaim[field] !== "string" || safeClaim[field].trim() === "") {
+          errors.push(`claim.${field} must be a non-empty string`);
+        }
+      }
+      if (typeof safeClaim.type === "string" && !required[safeClaim.type]) {
+        errors.push(`claim.type must be one of: ${claimTypes.join(", ")}`);
+      }
+      const safeEvidence = evidence && typeof evidence === "object" && !Array.isArray(evidence) ? evidence : {};
+      for (const field of ["abs_error", "tolerance"]) {
+        if (Object.prototype.hasOwnProperty.call(safeEvidence, field) && typeof safeEvidence[field] !== "number") {
+          errors.push(`evidence.${field} must be a number`);
+        }
+      }
+      for (const field of ["within_chemical_accuracy", "local_property_tests_pass", "universal_anchor_pass", "upgrade_evidence_present"]) {
+        if (Object.prototype.hasOwnProperty.call(safeEvidence, field) && typeof safeEvidence[field] !== "boolean") {
+          errors.push(`evidence.${field} must be a boolean`);
+        }
+      }
+      if (Object.prototype.hasOwnProperty.call(safeEvidence, "anchor_mode") && typeof safeEvidence.anchor_mode !== "string") {
         errors.push("evidence.anchor_mode must be a string");
-      }}
+      }
       return errors;
-    }}
-    function rule(payload) {{
+    }
+
+    function rule(payload) {
       const schemaErrors = validatePayload(payload);
-      const claim = payload && typeof payload.claim === "object" && !Array.isArray(payload.claim) ? payload.claim : {{}};
-      const evidence = payload && typeof payload.evidence === "object" && !Array.isArray(payload.evidence) ? payload.evidence : {{}};
-      if (schemaErrors.length) {{
-        return {{
+      const claim = payload && typeof payload.claim === "object" && !Array.isArray(payload.claim) ? payload.claim : {};
+      const evidence = payload && typeof payload.evidence === "object" && !Array.isArray(payload.evidence) ? payload.evidence : {};
+      if (schemaErrors.length) {
+        return {
           input_claim: claim,
           verdict: "HOLD",
           reason: "input payload failed CAPAS schema validation",
@@ -556,14 +720,14 @@ def _render_ui(sample: dict[str, Any]) -> str:
           schema_errors: schemaErrors,
           fine_tune_ready: false,
           non_claim: "This decision is rule-based over supplied evidence fields, not an LLM judgment."
-        }};
-      }}
+        };
+      }
       const fields = required[claim.type];
       let missing = [];
-      if (fields) {{
+      if (fields) {
         missing = fields.filter((field) => evidence[field] === undefined || evidence[field] === null || evidence[field] === "unknown");
-      }}
-      let result = {{
+      }
+      let result = {
         input_claim: claim,
         verdict: "HOLD",
         reason: "unsupported claim type or missing evidence",
@@ -574,67 +738,160 @@ def _render_ui(sample: dict[str, Any]) -> str:
         schema_errors: [],
         fine_tune_ready: false,
         non_claim: "This decision is rule-based over supplied evidence fields, not an LLM judgment."
-      }};
-      if (!fields) {{
-        result.reason = `unsupported claim type ${{claim.type}}; no rule was applied`;
-      }} else if (missing.length) {{
-        result.reason = `missing required evidence fields: ${{missing.join(", ")}}`;
-      }} else if (claim.type === "exact_model_solution") {{
+      };
+      if (!fields) {
+        result.reason = `unsupported claim type ${claim.type}; no rule was applied`;
+      } else if (missing.length) {
+        result.reason = `missing required evidence fields: ${missing.join(", ")}`;
+      } else if (claim.type === "exact_model_solution") {
         result.verdict = Number(evidence.abs_error) <= Number(evidence.tolerance) ? "ACCEPT" : "REJECT";
-        result.reason = `abs_error ${{evidence.abs_error}} vs tolerance ${{evidence.tolerance}}`;
-      }} else if (claim.type === "physical_accuracy") {{
+        result.reason = `abs_error ${evidence.abs_error} vs tolerance ${evidence.tolerance}`;
+      } else if (claim.type === "physical_accuracy") {
         result.verdict = evidence.within_chemical_accuracy === true ? "ACCEPT" : "REJECT";
-        result.reason = `within_chemical_accuracy is ${{evidence.within_chemical_accuracy}}`;
-      }} else if (claim.type === "universal_anchor_claim") {{
-        if (evidence.anchor_mode !== "absolute_anchor") {{
+        result.reason = `within_chemical_accuracy is ${evidence.within_chemical_accuracy}`;
+      } else if (claim.type === "universal_anchor_claim") {
+        if (evidence.anchor_mode !== "absolute_anchor") {
           result.verdict = "HOLD";
           result.reason = "claim requires an absolute_anchor, but evidence has another anchor mode";
-        }} else if (evidence.local_property_tests_pass === true && evidence.universal_anchor_pass === true) {{
+        } else if (evidence.local_property_tests_pass === true && evidence.universal_anchor_pass === true) {
           result.verdict = "ACCEPT";
           result.reason = "local checks and universal anchor both pass";
-        }} else if (evidence.local_property_tests_pass === true && evidence.universal_anchor_pass !== true) {{
+        } else if (evidence.local_property_tests_pass === true && evidence.universal_anchor_pass !== true) {
           result.verdict = "REWRITE";
           result.reason = "local checks pass, but the universal anchor fails";
           result.rewrite = "local plausibility only; universal physical correctness is not licensed";
           result.licensed_claim = result.rewrite;
-        }} else {{
+        } else {
           result.verdict = "REJECT";
           result.reason = "local checks fail before the universal-anchor claim is licensed";
-        }}
-      }} else if (claim.type === "claim_transition") {{
-        if (evidence.upgrade_evidence_present === true) {{
+        }
+      } else if (claim.type === "claim_transition") {
+        if (evidence.upgrade_evidence_present === true) {
           result.verdict = "ACCEPT";
           result.reason = "upgrade evidence is explicitly present";
-        }} else {{
+        } else {
           result.verdict = "REWRITE";
           result.reason = "upgrade evidence is absent; stronger claim is not licensed";
           result.rewrite = evidence.current_claim || "weaker current claim only";
           result.licensed_claim = result.rewrite;
-        }}
-      }}
+        }
+      }
       return result;
-    }}
-    function decide() {{
-      try {{
+    }
+
+    function renderVerdict(result) {
+      const verdict = result.verdict;
+      let html = `<div class="verdict-banner"><span class="verdict-badge ${verdict}">${verdict}</span><span class="verdict-reason">${escHtml(result.reason)}</span></div>`;
+      if (result.schema_errors && result.schema_errors.length) {
+        html += `<div class="alert-block errors"><div class="alert-title">Schema errors</div><ul>${result.schema_errors.map((e) => `<li>${escHtml(e)}</li>`).join("")}</ul></div>`;
+      }
+      if (result.missing_fields && result.missing_fields.length) {
+        html += `<div class="alert-block missing"><div class="alert-title">Missing required fields</div><ul>${result.missing_fields.map((f) => `<li><code>${escHtml(f)}</code></li>`).join("")}</ul></div>`;
+      }
+      if (result.rewrite) {
+        html += `<div class="rewrite-block"><div class="alert-title">Licensed rewrite</div><div class="rewrite-text">"${escHtml(result.rewrite)}"</div></div>`;
+      }
+      document.getElementById("verdict-area").innerHTML = html;
+    }
+
+    function addToHistory(result) {
+      decisionHistory.unshift({ verdict: result.verdict, id: result.input_claim?.id || "-", reason: result.reason });
+      decisionHistory = decisionHistory.slice(0, 6);
+      document.getElementById("history-list").innerHTML = decisionHistory.map((item) => (
+        `<div class="history-item"><span class="history-badge ${item.verdict}">${item.verdict}</span><span class="history-id">${escHtml(item.id)}</span><span class="history-reason">${escHtml(item.reason)}</span></div>`
+      )).join("");
+    }
+
+    function escHtml(value) {
+      return String(value).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+    }
+
+    function onInputChange() {
+      const raw = document.getElementById("input").value.trim();
+      const status = document.getElementById("json-status");
+      const input = document.getElementById("input");
+      const typeLabel = document.getElementById("type-label");
+      if (!raw) {
+        status.textContent = "Waiting for input...";
+        status.className = "json-status";
+        input.className = "";
+        typeLabel.textContent = "";
+        return;
+      }
+      try {
+        const payload = JSON.parse(raw);
+        input.className = "ok-border";
+        status.textContent = "Valid JSON";
+        status.className = "json-status valid";
+        typeLabel.textContent = payload?.claim?.type || "";
+      } catch (error) {
+        input.className = "error-border";
+        status.textContent = error.message;
+        status.className = "json-status invalid";
+        typeLabel.textContent = "";
+      }
+    }
+
+    function decide() {
+      try {
         const payload = JSON.parse(document.getElementById("input").value);
-        document.getElementById("output").textContent = JSON.stringify(rule(payload), null, 2);
-      }} catch (error) {{
-        document.getElementById("output").textContent = String(error);
-      }}
-    }}
-    function resetSample() {{
+        const result = rule(payload);
+        renderVerdict(result);
+        document.getElementById("output").textContent = JSON.stringify(result, null, 2);
+        addToHistory(result);
+        const copy = document.getElementById("copy-btn");
+        copy.textContent = "Copy JSON";
+        copy.classList.remove("copied");
+      } catch (error) {
+        document.getElementById("verdict-area").innerHTML = `<div class="alert-block errors"><div class="alert-title">JSON parse error</div>${escHtml(error.message)}</div>`;
+        document.getElementById("output").textContent = "";
+      }
+    }
+
+    function resetSample() {
       document.getElementById("input").value = JSON.stringify(sample, null, 2);
+      onInputChange();
       decide();
-    }}
-    function loadSample(name) {{
+    }
+
+    function loadSample(name) {
       document.getElementById("input").value = JSON.stringify(samples[name], null, 2);
+      onInputChange();
       decide();
-    }}
+    }
+
+    function copyOutput() {
+      const text = document.getElementById("output").textContent;
+      if (!text) return;
+      navigator.clipboard.writeText(text).then(() => {
+        const button = document.getElementById("copy-btn");
+        button.textContent = "Copied";
+        button.classList.add("copied");
+        setTimeout(() => {
+          button.textContent = "Copy JSON";
+          button.classList.remove("copied");
+        }, 1600);
+      });
+    }
+
+    document.addEventListener("keydown", (event) => {
+      if ((event.metaKey || event.ctrlKey) && event.key === "Enter") {
+        event.preventDefault();
+        decide();
+      }
+    });
+
+    onInputChange();
     decide();
-  </script>
+</script>
 </body>
 </html>
 """
+    return (
+        html.replace("__SAMPLE_JSON__", sample_json)
+        .replace("__SAMPLE_COMPACT_JSON__", json.dumps(sample, sort_keys=True))
+        .replace("__SAMPLES_JSON__", samples_json)
+    )
 
 
 def cmd_demo(args: argparse.Namespace) -> int:
