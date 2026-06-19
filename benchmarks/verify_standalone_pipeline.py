@@ -158,8 +158,8 @@ def main() -> int:
         "standalone_pipeline_mvp_ready": passed,
         "scope": "local explicit extraction + deterministic semantic alignment + CAPAS gate",
         "non_claims": [
-            "does not retrieve remote evidence",
-            "does not parse PDFs",
+            "does not silently retrieve remote evidence; web retrieval is opt-in with --allow-web",
+            "does not guarantee PDF parsing; local PDF support is optional and parser failures are declared",
             "does not perform broad scientific reasoning",
             "does not use an LLM at runtime",
         ],

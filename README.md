@@ -36,9 +36,10 @@ LLM / extractor / scientific verifier upstream
         -> ACCEPT / REWRITE / REJECT / HOLD
 ```
 
-CAPAS does not currently retrieve evidence or semantically verify arbitrary
-claim prose. It assumes structured evidence has been supplied, then makes the
-claim decision auditable and repeatable.
+CAPAS now includes an explicit upstream MVP for retrieval/parsing/alignment, but
+the final decision remains deterministic. Retrieval and PDF parsing can prepare
+candidate evidence; they do not silently invent missing evidence or turn CAPAS
+into a broad scientific oracle.
 
 The standalone direction has started with a local upstream MVP:
 
@@ -138,6 +139,27 @@ curl http://127.0.0.1:8765/health
 The API is local and deterministic. It exposes `POST /decide` and `POST /batch`.
 It is not a hosted SaaS service.
 
+Run CAPAS in GitHub Actions:
+
+```yaml
+jobs:
+  claim-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - uses: ./.github/actions/capas-claim-gate
+        with:
+          mode: batch
+          input: examples/external_claim_batch.json
+          output: outputs/capas-action-report.json
+```
+
+The reusable workflow `.github/workflows/claim-gate.yml` can run `decide`,
+`batch`, or `pipeline` through `workflow_dispatch` or `workflow_call`.
+
 Inspect a trace:
 
 ```bash
@@ -198,6 +220,9 @@ python3 benchmarks/verify_claim_gate_ui.py
 
 The UI exposes ACCEPT, REWRITE, HOLD, and INVALID samples. Structurally invalid
 payloads are shown as `HOLD` with `schema_errors`, matching `capas decide`.
+It also supports batch evaluation for JSON arrays or objects with `items` /
+`claims`, displays `schema v1` for audit trails, and includes a keyboard help
+modal with the main shortcuts and pipeline scope.
 
 Prepare a non-mutating GitHub release plan:
 

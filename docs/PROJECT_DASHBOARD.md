@@ -1,6 +1,6 @@
 # CAPAS Project Dashboard
 
-Last updated: 2026-06-18
+Last updated: 2026-06-19
 
 This dashboard is the non-degradable control surface for CAPAS. If future work
 changes a claim, a coverage case, or a validation status, update this file in the
@@ -69,7 +69,8 @@ external_input_ready: JSON claim/evidence input implemented for MVP claim types
 local_ui_ready: static HTML UI generator implemented
 ui_contract_ready: static UI exposes schema_errors and ACCEPT/REWRITE/HOLD/INVALID samples
 ci_ready: GitHub Actions workflow present, pending external GitHub run
-product surface: capas demo / validate / inspect / decide / ui
+product surface: capas demo / validate / inspect / decide / batch / serve /
+  retrieve / extract / align / reason / pipeline / ui
 local RO-Crate validation: passed
 local CAPAS physical-evidence profile validation: passed for 39/39 crates
 local Workflow Run Crate shape check: passed through CAPAS profile validator
@@ -115,7 +116,16 @@ External input schema validation: passed; docs/schema/capas_claim_payload.schema
   matches the CLI schema, valid examples pass `capas check-input`, and the
   invalid example fails structurally while `decide` returns HOLD with schema_errors
 Claim gate UI validation: passed; generated static HTML exposes schema-aware
-  validation, ACCEPT/REWRITE/HOLD/INVALID samples, and the non-LLM-judge warning
+  validation, ACCEPT/REWRITE/HOLD/INVALID samples, batch evaluation, schema v1
+  traceability, keyboard help modal, and the non-LLM-judge warning
+Batch/API/GitHub Action validation: passed; `capas batch`, local `/decide` and
+  `/batch` API routes, `.github/actions/capas-claim-gate`, and reusable
+  `.github/workflows/claim-gate.yml` are covered by verifier
+Standalone retrieval/PDF/parser pipeline: passed as explicit upstream MVP;
+  local retrieval/extraction/alignment/reason/pipeline gates run before the
+  deterministic CAPAS decision, web retrieval is opt-in with `--allow-web`, and
+  PDF parser failures or missing optional support are declared instead of
+  inferred
 Fresh clone install smoke: passed locally via
   benchmarks/verify_fresh_clone_install.py; scope is local clean source-tree
   copy plus editable install in a temporary venv with system site packages,

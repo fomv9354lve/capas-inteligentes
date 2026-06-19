@@ -16,8 +16,18 @@
       "passed": true
     },
     {
+      "check": "batch_cli_schema_version",
+      "detail": "capas-claim-payload-v1",
+      "passed": true
+    },
+    {
       "check": "api_health",
       "detail": "port 8766",
+      "passed": true
+    },
+    {
+      "check": "api_health_schema_version",
+      "detail": "capas-claim-payload-v1",
       "passed": true
     },
     {
@@ -33,7 +43,22 @@
         "REWRITE": 1
       },
       "passed": true
+    },
+    {
+      "check": "github_action_exists",
+      "detail": ".github/actions/capas-claim-gate/action.yml",
+      "passed": true
+    },
+    {
+      "check": "github_action_modes",
+      "detail": "decide/batch/pipeline",
+      "passed": true
+    },
+    {
+      "check": "github_workflow_reusable",
+      "detail": ".github/workflows/claim-gate.yml",
+      "passed": true
     }
   ],
-  "scope": "Verifies batch CLI and local stdlib HTTP API. This is not an externally hosted SaaS endpoint."
+  "scope": "Verifies batch CLI, local stdlib HTTP API, and GitHub Action pipeline integration. This is not an externally hosted SaaS endpoint."
 }

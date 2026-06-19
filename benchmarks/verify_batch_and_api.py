@@ -12,6 +12,8 @@ from urllib.request import Request, urlopen
 ROOT = Path(__file__).resolve().parents[1]
 REPORT_PATH = ROOT / "outputs" / "batch_api_report.json"
 PORT = 8766
+ACTION_PATH = ROOT / ".github" / "actions" / "capas-claim-gate" / "action.yml"
+WORKFLOW_PATH = ROOT / ".github" / "workflows" / "claim-gate.yml"
 
 
 def _json_request(url: str, payload: object | None = None) -> dict:
@@ -62,6 +64,11 @@ def main() -> int:
         "passed": batch_report.get("summary") == {"ACCEPT": 1, "HOLD": 1, "REWRITE": 1},
         "detail": batch_report.get("summary"),
     })
+    checks.append({
+        "check": "batch_cli_schema_version",
+        "passed": batch_report.get("schema_version") == "capas-claim-payload-v1",
+        "detail": batch_report.get("schema_version"),
+    })
 
     server = subprocess.Popen(
         [sys.executable, "capas.py", "serve", "--host", "127.0.0.1", "--port", str(PORT)],
@@ -73,6 +80,12 @@ def main() -> int:
     try:
         healthy = _wait_for_health()
         checks.append({"check": "api_health", "passed": healthy, "detail": f"port {PORT}"})
+        health = _json_request(f"http://127.0.0.1:{PORT}/health") if healthy else {}
+        checks.append({
+            "check": "api_health_schema_version",
+            "passed": health.get("schema_version") == "capas-claim-payload-v1",
+            "detail": health.get("schema_version"),
+        })
         accept_payload = json.loads((ROOT / "examples" / "external_claim_accept.json").read_text(encoding="utf-8"))
         api_decision = _json_request(f"http://127.0.0.1:{PORT}/decide", accept_payload) if healthy else {}
         checks.append({
@@ -94,11 +107,31 @@ def main() -> int:
         except subprocess.TimeoutExpired:
             server.kill()
 
+    action_text = ACTION_PATH.read_text(encoding="utf-8") if ACTION_PATH.exists() else ""
+    workflow_text = WORKFLOW_PATH.read_text(encoding="utf-8") if WORKFLOW_PATH.exists() else ""
+    checks.extend([
+        {
+            "check": "github_action_exists",
+            "passed": ACTION_PATH.exists() and "CAPAS Claim Gate" in action_text,
+            "detail": str(ACTION_PATH.relative_to(ROOT)),
+        },
+        {
+            "check": "github_action_modes",
+            "passed": all(snippet in action_text for snippet in ["capas.py decide", "capas.py batch", "capas.py pipeline"]),
+            "detail": "decide/batch/pipeline",
+        },
+        {
+            "check": "github_workflow_reusable",
+            "passed": WORKFLOW_PATH.exists() and "workflow_call" in workflow_text and "workflow_dispatch" in workflow_text,
+            "detail": str(WORKFLOW_PATH.relative_to(ROOT)),
+        },
+    ])
+
     passed = all(check["passed"] for check in checks)
     report = {
         "batch_api_ready": passed,
         "checks": checks,
-        "scope": "Verifies batch CLI and local stdlib HTTP API. This is not an externally hosted SaaS endpoint.",
+        "scope": "Verifies batch CLI, local stdlib HTTP API, and GitHub Action pipeline integration. This is not an externally hosted SaaS endpoint.",
     }
     REPORT_PATH.parent.mkdir(parents=True, exist_ok=True)
     REPORT_PATH.write_text(json.dumps(report, indent=2, sort_keys=True), encoding="utf-8")

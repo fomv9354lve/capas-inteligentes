@@ -44,6 +44,8 @@ HARNESS = r"""
     ok("share_button_exists", document.getElementById("share-btn"));
     ok("export_button_exists", document.getElementById("export-btn"));
     ok("theme_button_exists", document.getElementById("theme-toggle"));
+    ok("schema_version_badge_exists", document.getElementById("schema-version-badge")?.textContent.includes("schema v1"));
+    ok("help_button_exists", document.getElementById("help-btn"));
     ok("theme_button_initial_system", document.getElementById("theme-toggle").textContent === "System");
     toggleTheme();
     ok("theme_toggle_sets_light", document.documentElement.dataset.theme === "light");
@@ -58,6 +60,12 @@ HARNESS = r"""
     document.getElementById("input").value = "";
     decide();
     ok("empty_input_message", document.getElementById("verdict-area").textContent.includes("Input required"));
+
+    openHelpModal();
+    ok("help_modal_opens", document.getElementById("help-modal-backdrop").classList.contains("open"));
+    ok("help_modal_mentions_pipeline", document.getElementById("help-modal-backdrop").textContent.includes("retrieve"));
+    closeHelpModal();
+    ok("help_modal_closes", !document.getElementById("help-modal-backdrop").classList.contains("open"));
 
     buildDraft();
     ok("draft_status_is_amber", document.getElementById("json-status").className.includes("draft"));
@@ -75,6 +83,12 @@ HARNESS = r"""
     loadSample("INVALID");
     ok("invalid_schema_holds", document.querySelector(".verdict-badge.HOLD"));
     ok("invalid_output_json", document.getElementById("output").textContent.includes('"schema_errors"'));
+
+    document.getElementById("input").value = JSON.stringify([samples.ACCEPT, samples.REJECT], null, 2);
+    decideBatch();
+    ok("batch_summary_visible", document.getElementById("verdict-area").textContent.includes("Batch summary"));
+    ok("batch_output_json", document.getElementById("output").textContent.includes('"batch_mode": "decide"'));
+    ok("batch_schema_version", document.getElementById("output").textContent.includes('"schema_version": "capas-claim-payload-v1"'));
 
     const firstHistory = document.querySelector(".history-item");
     ok("history_item_exists", firstHistory);

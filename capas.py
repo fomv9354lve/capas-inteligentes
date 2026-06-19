@@ -29,6 +29,8 @@ CLAIM_REPORT = ROOT / "benchmarks" / "evidence_claim_validation_report.json"
 ANCHOR_REPORT = ROOT / "benchmarks" / "universal_anchor_matrix_report.json"
 TRACE_DIR = ROOT / "benchmarks" / "gold_traces"
 EXTERNAL_CLAIM_SCHEMA_PATH = ROOT / "docs" / "schema" / "capas_claim_payload.schema.json"
+CAPAS_CLAIM_SCHEMA_VERSION = "capas-claim-payload-v1"
+CAPAS_UI_VERSION = "v10 · batch pipelines"
 
 
 VALIDATION_COMMANDS = [
@@ -153,6 +155,7 @@ def external_claim_payload_schema() -> dict[str, Any]:
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "$id": "https://capas.local/schema/capas_claim_payload.schema.json",
         "title": "CAPAS external claim/evidence payload",
+        "x-capas-schema-version": CAPAS_CLAIM_SCHEMA_VERSION,
         "type": "object",
         "additionalProperties": True,
         "required": ["claim", "evidence"],
@@ -393,6 +396,7 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
     evidence = payload.get("evidence", {}) if isinstance(payload, dict) else {}
     if schema_errors:
         return {
+            "schema_version": CAPAS_CLAIM_SCHEMA_VERSION,
             "input_claim": claim if isinstance(claim, dict) else {},
             "verdict": "HOLD",
             "reason": "input payload failed CAPAS schema validation",
@@ -467,6 +471,7 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
             licensed_claim = rewrite
 
     return {
+        "schema_version": CAPAS_CLAIM_SCHEMA_VERSION,
         "input_claim": claim,
         "verdict": verdict,
         "reason": reason,
@@ -516,6 +521,7 @@ def run_batch(payload: Any, *, mode: str = "decide", allow_web: bool = False) ->
         verdicts[str(verdict)] += 1
 
     return {
+        "schema_version": CAPAS_CLAIM_SCHEMA_VERSION,
         "batch_mode": mode,
         "item_count": len(items),
         "results": results,
@@ -1189,7 +1195,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'unsafe-inline'; script-src 'unsafe-inline'; object-src 'none'; base-uri 'none'; form-action 'none'; connect-src 'none'">
 <title>CAPAS Claim Gate</title>
 <style>
-  /* CAPAS Claim Gate - Design System v9 */
+  /* CAPAS Claim Gate - Design System v10 */
   :root {
     --bg: #09090b;
     --bg-2: #111113;
@@ -1450,6 +1456,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
   .copy-btn:not(:disabled):hover { background: var(--bg-3); border-color: var(--border-2); color: var(--text-1); }
   .copy-btn:disabled { opacity: 0.35; cursor: not-allowed; }
   .copy-btn.copied { background: var(--green-bg); border-color: var(--green-border); color: var(--green); }
+  .topbar-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
   .history-actions { display: flex; align-items: center; gap: 8px; }
   .verdict-banner { display: flex; align-items: center; gap: 14px; padding: 16px 18px; border-bottom: 1px solid var(--border); }
   .verdict-badge { font-size: 11px; font-weight: 800; letter-spacing: 1.2px; border: 1px solid transparent; text-transform: uppercase; padding: 4px 13px; border-radius: 20px; white-space: nowrap; flex-shrink: 0; }
@@ -1497,6 +1504,32 @@ def _render_ui(sample: dict[str, Any]) -> str:
   .history-reason { color: var(--text-3); }
   .empty-state, .no-decision { color: var(--text-3); font-size: 13px; }
   .no-decision { padding: 32px 16px; text-align: center; }
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 80;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.55);
+  }
+  .modal-backdrop.open { display: flex; }
+  .help-modal {
+    width: min(680px, 100%);
+    max-height: 86vh;
+    overflow: auto;
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+    padding: 18px;
+  }
+  .help-modal h2 { font-size: 15px; margin-bottom: 10px; }
+  .help-modal h3 { font-size: 11px; color: var(--text-3); letter-spacing: 0.7px; text-transform: uppercase; margin: 16px 0 6px; }
+  .help-modal p, .help-modal li { color: var(--text-2); font-size: 13px; line-height: 1.6; }
+  .help-modal ul { padding-left: 18px; }
+  .help-modal code { background: var(--bg-3); color: var(--text-1); padding: 1px 5px; border-radius: 4px; }
   .app-footer {
     margin-top: 28px;
     padding-top: 16px;
@@ -1555,8 +1588,12 @@ def _render_ui(sample: dict[str, Any]) -> str:
     <div class="topbar-divider"></div>
     <span class="topbar-subtitle">Rule-based via <code>capas.py decide</code> · schema errors → <code>HOLD</code></span>
   </div>
-  <button class="copy-btn" id="theme-toggle" aria-label="Toggle light and dark theme" onclick="toggleTheme()">Theme</button>
-  <span class="topbar-badge">v9 · guided intake</span>
+  <div class="topbar-actions">
+    <button class="copy-btn" id="help-btn" aria-label="Open keyboard shortcut and pipeline help" aria-expanded="false" onclick="openHelpModal()">Help</button>
+    <button class="copy-btn" id="theme-toggle" aria-label="Toggle light and dark theme" onclick="toggleTheme()">Theme</button>
+    <span class="topbar-badge" id="schema-version-badge">schema v1</span>
+    <span class="topbar-badge">__UI_VERSION__</span>
+  </div>
 </header>
 
 <main class="app-body" id="main">
@@ -1582,6 +1619,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
         <button class="draft-btn" id="draft-btn" aria-label="Build draft claim JSON without deciding" onclick="buildDraft()">Build Draft</button>
         <button class="decide-btn" id="decide-btn" aria-label="Decide claim verdict" onclick="decide()">Decide <span class="decide-hint">⌘↵</span></button>
       </div>
+      <button class="draft-btn" id="batch-btn" aria-label="Evaluate a batch of claim payloads" onclick="decideBatch()">Batch</button>
     </div>
   </div>
 
@@ -1618,10 +1656,31 @@ def _render_ui(sample: dict[str, Any]) -> str:
   CAPAS structures and gates supplied claim evidence. It does not infer hidden evidence or certify broad scientific truth.
 </footer>
 </main>
+<div class="modal-backdrop" id="help-modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="help-modal-title" onclick="closeHelpModal(event)">
+  <div class="help-modal" onclick="event.stopPropagation()">
+    <div class="panel-header">
+      <h2 id="help-modal-title">CAPAS shortcuts and pipeline modes</h2>
+      <button class="copy-btn" aria-label="Close help modal" onclick="closeHelpModal()">Close</button>
+    </div>
+    <h3>Shortcuts</h3>
+    <ul>
+      <li><code>Cmd/Ctrl + Enter</code>: run Decide on one claim.</li>
+      <li><code>?</code>: open or close this help modal.</li>
+      <li><code>Enter</code> or <code>Space</code> on a history item: restore it.</li>
+    </ul>
+    <h3>Batch mode</h3>
+    <p>Paste a JSON array, or an object with <code>items</code> or <code>claims</code>. Batch applies the same deterministic rule to every item and returns a summary. It does not infer missing evidence.</p>
+    <h3>Pipeline surfaces</h3>
+    <p>The CLI/API support <code>decide</code>, <code>batch</code>, and standalone <code>retrieve → extract → align → reason → pipeline</code>. Retrieval and parsing prepare candidate evidence; the final CAPAS verdict still comes from the deterministic gate.</p>
+    <h3>Schema</h3>
+    <p>Current payload schema: <code>capas-claim-payload-v1</code>. Outputs include <code>schema_version</code> for audit trails.</p>
+  </div>
+</div>
 
 <script>
     const sample = __SAMPLE_COMPACT_JSON__;
     const samples = __SAMPLES_JSON__;
+    const capasSchemaVersion = "capas-claim-payload-v1";
     const disallowedAngleRegex = /[<>\u02c2\u02c3\u2039\u203a\u2329-\u232a\u276c-\u276d\u27e8-\u27e9\u29fc-\u29fd\u3008-\u3009\ufe64-\ufe65\uff1c-\uff1e]/u;
     const required = {
       exact_model_solution: ["abs_error", "tolerance"],
@@ -1761,6 +1820,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
       const evidence = payload && typeof payload.evidence === "object" && !Array.isArray(payload.evidence) ? payload.evidence : {};
       if (schemaErrors.length) {
         return {
+          schema_version: capasSchemaVersion,
           input_claim: claim,
           verdict: "HOLD",
           reason: "input payload failed CAPAS schema validation",
@@ -1780,6 +1840,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
         missing = fields.filter((field) => evidence[field] === undefined || evidence[field] === null || evidence[field] === "unknown");
       }
       let result = {
+        schema_version: capasSchemaVersion,
         input_claim: claim,
         verdict: "HOLD",
         reason: "unsupported claim type or missing evidence",
@@ -1853,6 +1914,43 @@ def _render_ui(sample: dict[str, Any]) -> str:
         );
       }
       document.getElementById("verdict-area").innerHTML = html;
+    }
+
+    function batchItems(payload) {
+      if (Array.isArray(payload)) return payload;
+      if (payload && Array.isArray(payload.items)) return payload.items;
+      if (payload && Array.isArray(payload.claims)) return payload.claims;
+      throw new Error("Batch input must be a JSON array or an object with items/claims array.");
+    }
+
+    function runBatch(payload) {
+      const items = batchItems(payload);
+      const results = items.map((item, index) => ({ index, result: rule(item) }));
+      const summary = {};
+      for (const entry of results) {
+        const verdict = entry.result.verdict || "UNKNOWN";
+        summary[verdict] = (summary[verdict] || 0) + 1;
+      }
+      return {
+        schema_version: capasSchemaVersion,
+        batch_mode: "decide",
+        item_count: items.length,
+        results,
+        summary,
+        fine_tune_ready: false,
+        fine_tune_blockers: [
+          "batch decisions are not blind-reviewed",
+          "CAPAS gates supplied structured evidence; it does not infer hidden evidence"
+        ],
+        non_claim: "Batch mode applies the same deterministic per-claim gates; it does not create new scientific evidence."
+      };
+    }
+
+    function renderBatch(result) {
+      const summary = Object.entries(result.summary).map(([verdict, count]) => `<span class="verdict-badge ${escHtml(verdict)}">${escHtml(verdict)} ${count}</span>`).join("");
+      document.getElementById("verdict-area").innerHTML =
+        `<div class="verdict-banner"><span class="verdict-badge HOLD">BATCH</span><span class="verdict-reason">${result.item_count} items evaluated with deterministic CAPAS gates.</span></div>` +
+        `<div class="assist-block"><div class="alert-title">Batch summary</div><div style="display:flex;gap:8px;flex-wrap:wrap">${summary}</div></div>`;
     }
 
     function hasNullEvidence(payload) {
@@ -2249,6 +2347,27 @@ def _render_ui(sample: dict[str, Any]) -> str:
       }
     }
 
+    function decideBatch() {
+      try {
+        const raw = document.getElementById("input").value.trim();
+        if (!raw) {
+          document.getElementById("verdict-area").innerHTML = `<div class="alert-block errors"><div class="alert-title">Input required</div>Please paste a JSON array or items/claims batch first.</div>`;
+          setOutputEmpty();
+          setCopyEnabled(false);
+          return;
+        }
+        const payload = JSON.parse(raw);
+        const result = runBatch(payload);
+        renderBatch(result);
+        setOutputJson(result);
+        setCopyEnabled(true);
+      } catch (error) {
+        document.getElementById("verdict-area").innerHTML = `<div class="alert-block errors"><div class="alert-title">Batch error</div>${escHtml(error.message)}</div>`;
+        setOutputEmpty();
+        setCopyEnabled(false);
+      }
+    }
+
     function resetSample() {
       document.getElementById("input").value = JSON.stringify(sample, null, 2);
       onInputChange();
@@ -2275,10 +2394,28 @@ def _render_ui(sample: dict[str, Any]) -> str:
       });
     }
 
+    function openHelpModal() {
+      document.getElementById("help-modal-backdrop").classList.add("open");
+      document.getElementById("help-btn").setAttribute("aria-expanded", "true");
+    }
+
+    function closeHelpModal(event) {
+      if (event && event.type === "click" && event.target.id !== "help-modal-backdrop") return;
+      document.getElementById("help-modal-backdrop").classList.remove("open");
+      document.getElementById("help-btn").setAttribute("aria-expanded", "false");
+    }
+
     document.addEventListener("keydown", (event) => {
       if ((event.metaKey || event.ctrlKey) && event.key === "Enter") {
         event.preventDefault();
         decide();
+      } else if (event.key === "?" && !["INPUT", "TEXTAREA"].includes(document.activeElement?.tagName || "")) {
+        event.preventDefault();
+        const modal = document.getElementById("help-modal-backdrop");
+        if (modal.classList.contains("open")) closeHelpModal();
+        else openHelpModal();
+      } else if (event.key === "Escape") {
+        closeHelpModal();
       }
     });
 
@@ -2295,6 +2432,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
         html.replace("__SAMPLE_JSON__", sample_json)
         .replace("__SAMPLE_COMPACT_JSON__", json.dumps(sample, sort_keys=True))
         .replace("__SAMPLES_JSON__", samples_json)
+        .replace("__UI_VERSION__", CAPAS_UI_VERSION)
     )
 
 
@@ -2379,7 +2517,7 @@ class CapasApiHandler(BaseHTTPRequestHandler):
 
     def do_GET(self) -> None:  # noqa: N802 - stdlib callback name
         if self.path == "/health":
-            _write_response_json(self, 200, {"status": "ok", "service": "capas-claim-gate"})
+            _write_response_json(self, 200, {"status": "ok", "service": "capas-claim-gate", "schema_version": CAPAS_CLAIM_SCHEMA_VERSION})
         else:
             _write_response_json(self, 404, {"error": "not found", "available": ["/health", "/decide", "/batch"]})
 
