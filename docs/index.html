@@ -356,6 +356,8 @@
   .help-modal h3 { font-size: 11px; color: var(--text-3); letter-spacing: 0.7px; text-transform: uppercase; margin: 16px 0 6px; }
   .help-modal p, .help-modal li { color: var(--text-2); font-size: 13px; line-height: 1.6; }
   .help-modal ul { padding-left: 18px; }
+  .claim-type-list { display: grid; gap: 6px; margin-top: 8px; padding-left: 0; list-style: none; }
+  .claim-type-list li { padding: 8px 10px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--bg); }
   .help-modal code { background: var(--bg-3); color: var(--text-1); padding: 1px 5px; border-radius: 4px; }
   .app-footer {
     margin-top: 28px;
@@ -565,7 +567,16 @@
     <p>The CLI/API support <code>decide</code>, <code>batch</code>, and standalone <code>retrieve → extract → align → reason → pipeline</code>. Retrieval and parsing prepare candidate evidence; the final CAPAS verdict still comes from the deterministic gate.</p>
     <h3>Schema</h3>
     <p>Current payload schema: <code>capas-claim-payload-v2</code>. Outputs include <code>schema_version</code> for audit trails.</p>
-    <p>Supported claim types: <code>claim_transition</code>, <code>exact_model_solution</code>, <code>financial_metric_claim</code>, <code>physical_accuracy</code>, <code>reproducibility_check</code>, <code>statistical_confidence</code>, and <code>universal_anchor_claim</code>.</p>
+    <p>Supported claim types and minimum evidence fields:</p>
+    <ul class="claim-type-list">
+      <li><code>claim_transition</code>: <code>upgrade_evidence_present</code></li>
+      <li><code>exact_model_solution</code>: <code>abs_error</code>, <code>tolerance</code></li>
+      <li><code>financial_metric_claim</code>: <code>reported_value</code>, <code>reference_value</code>, <code>tolerance</code>, <code>metric_period_match</code></li>
+      <li><code>physical_accuracy</code>: <code>within_chemical_accuracy</code></li>
+      <li><code>reproducibility_check</code>: <code>artifact_available</code>, <code>independent_reproduction_pass</code></li>
+      <li><code>statistical_confidence</code>: <code>p_value</code>, <code>alpha</code>, <code>effect_direction_confirmed</code></li>
+      <li><code>universal_anchor_claim</code>: <code>anchor_mode</code>, <code>local_property_tests_pass</code>, <code>universal_anchor_pass</code></li>
+    </ul>
   </div>
 </div>
 

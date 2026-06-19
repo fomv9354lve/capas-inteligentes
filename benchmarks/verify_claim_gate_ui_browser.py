@@ -71,6 +71,10 @@ HARNESS = r"""
     ok("help_modal_has_aria_modal", document.getElementById("help-modal").getAttribute("aria-modal") === "true");
     ok("help_modal_focuses_inside", document.getElementById("help-modal").contains(document.activeElement));
     ok("help_modal_mentions_pipeline", document.getElementById("help-modal-backdrop").textContent.includes("retrieve"));
+    ok("help_modal_lists_claim_type_requirements", document.querySelectorAll("#help-modal .claim-type-list li").length === 7);
+    ok("help_modal_lists_schema_v2_financial_fields", document.getElementById("help-modal").textContent.includes("financial_metric_claim") && document.getElementById("help-modal").textContent.includes("metric_period_match"));
+    ok("help_modal_lists_schema_v2_statistical_fields", document.getElementById("help-modal").textContent.includes("statistical_confidence") && document.getElementById("help-modal").textContent.includes("effect_direction_confirmed"));
+    ok("help_modal_lists_schema_v2_reproducibility_fields", document.getElementById("help-modal").textContent.includes("reproducibility_check") && document.getElementById("help-modal").textContent.includes("independent_reproduction_pass"));
     closeHelpModal();
     ok("help_modal_closes", !document.getElementById("help-modal-backdrop").classList.contains("open"));
     ok("help_modal_returns_focus_to_trigger", document.activeElement === helpButton);
