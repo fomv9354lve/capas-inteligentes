@@ -10,7 +10,7 @@
   <array>
     <string>/bin/zsh</string>
     <string>-lc</string>
-    <string>cd '/Users/kreniq/Library/Application Support/CAPAS/capas-inteligentes' &amp;&amp; /usr/bin/git fetch origin main &amp;&amp; /usr/bin/git reset --hard origin/main &amp;&amp; echo "[$(/bin/date -u +%Y-%m-%dT%H:%M:%SZ)] CAPAS daily SOTA watch started" &amp;&amp; /usr/bin/python3 scripts/update_sota_watch.py &amp;&amp; echo "[$(/bin/date -u +%Y-%m-%dT%H:%M:%SZ)] CAPAS validation started" &amp;&amp; /usr/bin/python3 capas.py validate &amp;&amp; echo "[$(/bin/date -u +%Y-%m-%dT%H:%M:%SZ)] CAPAS daily SOTA watch finished"</string>
+    <string>cd '/Users/kreniq/Library/Application Support/CAPAS/capas-inteligentes' &amp;&amp; /usr/bin/git fetch origin main &amp;&amp; /usr/bin/git reset --hard origin/main &amp;&amp; echo "[$(/bin/date -u +%Y-%m-%dT%H:%M:%SZ)] CAPAS daily SOTA watch started" &amp;&amp; PYTHONPATH=. /usr/bin/python3 scripts/update_sota_watch.py &amp;&amp; echo "[$(/bin/date -u +%Y-%m-%dT%H:%M:%SZ)] CAPAS validation started" &amp;&amp; PYTHONPATH=. /usr/bin/python3 capas.py validate &amp;&amp; echo "[$(/bin/date -u +%Y-%m-%dT%H:%M:%SZ)] CAPAS daily SOTA watch finished"</string>
   </array>
 
   <key>WorkingDirectory</key>
