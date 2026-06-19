@@ -483,6 +483,45 @@ def validate_external_payload(payload: dict[str, Any]) -> list[str]:
             else:
                 for index, item in enumerate(value):
                     _validate_no_angle_like(item, f"evidence.{field}[{index}]", errors)
+    def validate_provenance_object(provenance: Any, prefix: str) -> None:
+        if provenance is None:
+            return
+        if not isinstance(provenance, dict) or isinstance(provenance, list):
+            errors.append(f"{prefix} must be an object")
+            return
+        for field in (
+            "review_id",
+            "review_sha256",
+            "review_hash",
+            "witness_id",
+            "witness_registry_path",
+            "witness_registry_sha256",
+            "ro_crate_path",
+            "ro_crate_sha256",
+            "reviewer_registry_path",
+            "reviewer_registry_sha256",
+        ):
+            if field in provenance and not isinstance(provenance[field], str):
+                errors.append(f"{prefix}.{field} must be a string")
+        for field in ("sources", "source_urls"):
+            if field in provenance and (
+                not isinstance(provenance[field], list)
+                or not all(isinstance(item, str) for item in provenance[field])
+            ):
+                errors.append(f"{prefix}.{field} must be an array of strings")
+        if "source_hashes" in provenance and not isinstance(provenance["source_hashes"], dict):
+            errors.append(f"{prefix}.source_hashes must be an object")
+        if "review_packet" in provenance and not isinstance(provenance["review_packet"], dict):
+            errors.append(f"{prefix}.review_packet must be an object")
+        reviewer = provenance.get("reviewer")
+        if reviewer is not None:
+            if not isinstance(reviewer, dict) or isinstance(reviewer, list):
+                errors.append(f"{prefix}.reviewer must be an object")
+            else:
+                for field in ("reviewer_id", "attestation", "attestation_sha256"):
+                    if field in reviewer and not isinstance(reviewer[field], str):
+                        errors.append(f"{prefix}.reviewer.{field} must be a string")
+
     training_evidence = payload.get("training_evidence") if isinstance(payload, dict) else None
     if training_evidence is not None:
         if not isinstance(training_evidence, dict) or isinstance(training_evidence, list):
@@ -491,42 +530,9 @@ def validate_external_payload(payload: dict[str, Any]) -> list[str]:
             for field in FINE_TUNE_REQUIRED_FIELDS:
                 if field in training_evidence and not isinstance(training_evidence[field], bool):
                     errors.append(f"training_evidence.{field} must be a boolean")
-            provenance = training_evidence.get("provenance")
-            if provenance is not None and (not isinstance(provenance, dict) or isinstance(provenance, list)):
-                errors.append("training_evidence.provenance must be an object")
-            elif isinstance(provenance, dict):
-                for field in (
-                    "review_id",
-                    "review_sha256",
-                    "review_hash",
-                    "witness_id",
-                    "witness_registry_path",
-                    "witness_registry_sha256",
-                    "ro_crate_path",
-                    "ro_crate_sha256",
-                    "reviewer_registry_path",
-                    "reviewer_registry_sha256",
-                ):
-                    if field in provenance and not isinstance(provenance[field], str):
-                        errors.append(f"training_evidence.provenance.{field} must be a string")
-                for field in ("sources", "source_urls"):
-                    if field in provenance and (
-                        not isinstance(provenance[field], list)
-                        or not all(isinstance(item, str) for item in provenance[field])
-                    ):
-                        errors.append(f"training_evidence.provenance.{field} must be an array of strings")
-                if "source_hashes" in provenance and not isinstance(provenance["source_hashes"], dict):
-                    errors.append("training_evidence.provenance.source_hashes must be an object")
-                if "review_packet" in provenance and not isinstance(provenance["review_packet"], dict):
-                    errors.append("training_evidence.provenance.review_packet must be an object")
-                reviewer = provenance.get("reviewer")
-                if reviewer is not None:
-                    if not isinstance(reviewer, dict) or isinstance(reviewer, list):
-                        errors.append("training_evidence.provenance.reviewer must be an object")
-                    else:
-                        for field in ("reviewer_id", "attestation", "attestation_sha256"):
-                            if field in reviewer and not isinstance(reviewer[field], str):
-                                errors.append(f"training_evidence.provenance.reviewer.{field} must be a string")
+            validate_provenance_object(training_evidence.get("provenance"), "training_evidence.provenance")
+    if isinstance(payload, dict) and "provenance" in payload:
+        validate_provenance_object(payload.get("provenance"), "provenance")
     return errors
 
 
@@ -672,8 +678,9 @@ def evaluate_fine_tune_readiness(
     if not isinstance(training_evidence, dict):
         training_evidence = {}
     provenance = training_evidence.get("provenance")
+    root_provenance = payload.get("provenance")
     if not isinstance(provenance, dict):
-        provenance = {}
+        provenance = root_provenance if isinstance(root_provenance, dict) else {}
 
     source_candidates = provenance.get("source_urls", provenance.get("sources", []))
     has_sources = (
@@ -3972,6 +3979,11 @@ def _render_ui(sample: dict[str, Any]) -> str:
           }
         }
       }
+      if (Object.prototype.hasOwnProperty.call(payload, "provenance")) {
+        if (payload.provenance === null || typeof payload.provenance !== "object" || Array.isArray(payload.provenance)) {
+          errors.push("provenance must be an object when supplied at the payload root");
+        }
+      }
       return errors;
     }
 
@@ -3979,9 +3991,12 @@ def _render_ui(sample: dict[str, Any]) -> str:
       const trainingEvidence = payload && typeof payload.training_evidence === "object" && !Array.isArray(payload.training_evidence)
         ? payload.training_evidence
         : {};
+      const rootProvenance = payload && payload.provenance && typeof payload.provenance === "object" && !Array.isArray(payload.provenance)
+        ? payload.provenance
+        : {};
       const provenance = trainingEvidence.provenance && typeof trainingEvidence.provenance === "object" && !Array.isArray(trainingEvidence.provenance)
         ? trainingEvidence.provenance
-        : {};
+        : rootProvenance;
       const sourceCandidates = Array.isArray(provenance.sources)
         ? provenance.sources
         : Array.isArray(provenance.source_urls)
@@ -4490,8 +4505,11 @@ def _render_ui(sample: dict[str, Any]) -> str:
       if (text.includes("systematic review") || text.includes("risk_of_bias") || text.includes("inclusion criteria")) return "systematic_review_claim";
       if (text.includes("contradict") || text.includes("conflict_resolution") || text.includes("supporting_sources")) return "evidence_conflict_claim";
       if (text.includes("multimodal") || text.includes("cross_modal") || text.includes("modality")) return "multimodal_evidence_claim";
+      if (text.includes("p_value") || text.includes("alpha") || text.includes("statistical")) return "statistical_confidence";
+      if (text.includes("artifact") || text.includes("reproduction") || text.includes("reproducib")) return "reproducibility_check";
+      if (text.includes("reported_value") || text.includes("reference_value") || text.includes("metric")) return "financial_metric_claim";
       if (text.includes("abs_error") || text.includes("tolerance") || text.includes("error") || text.includes("ground state")) return "exact_model_solution";
-      return "exact_model_solution";
+      return "statistical_confidence";
     }
 
     function extractNumbers(raw) {
@@ -4599,9 +4617,14 @@ def _render_ui(sample: dict[str, Any]) -> str:
         const inputType = typeof value === "number" ? "number" : "text";
         const serialized = Array.isArray(value) ? value.join(", ") : String(value ?? "");
         const fieldLabel = `${field} evidence field for ${type}`;
+        const numericAttrs = field === "p_value" || field === "alpha"
+          ? ` min="0" max="1" step="0.001"`
+          : inputType === "number"
+            ? ` min="0" step="any"`
+            : "";
         const control = typeof value === "boolean"
           ? `<select id="guided-field-${escHtml(field)}" data-field="${escHtml(field)}" data-kind="boolean" aria-label="${escHtml(fieldLabel)}" onchange="updateGuidedProgress()"><option value="true"${value ? " selected" : ""}>true</option><option value="false"${!value ? " selected" : ""}>false</option></select>`
-          : `<input id="guided-field-${escHtml(field)}" data-field="${escHtml(field)}" data-kind="${Array.isArray(value) ? "array" : inputType}" type="${inputType}" value="${escHtml(serialized)}" aria-label="${escHtml(fieldLabel)}" oninput="updateGuidedProgress()">`;
+          : `<input id="guided-field-${escHtml(field)}" data-field="${escHtml(field)}" data-kind="${Array.isArray(value) ? "array" : inputType}" type="${inputType}"${numericAttrs} value="${escHtml(serialized)}" aria-label="${escHtml(fieldLabel)}" oninput="updateGuidedProgress()">`;
         return `<div class="guided-field"><label for="guided-field-${escHtml(field)}">${escHtml(field)}</label>${control}<span class="assist-muted">${escHtml(fieldHelp[field] || "Required evidence field.")}</span></div>`;
       }).join("");
       updateGuidedProgress();
@@ -4842,10 +4865,12 @@ def _render_ui(sample: dict[str, Any]) -> str:
     }
 
     function splitSourceSentences(text) {
-      return text
+      const normalized = String(text || "").trim();
+      if (!normalized) return [];
+      return normalized
         .split(/(?<=[.!?])\s+|\n+/)
         .map((sentence) => sentence.trim())
-        .filter((sentence) => sentence.length > 24)
+        .filter((sentence) => sentence.length >= 4)
         .slice(0, 80);
     }
 
@@ -4876,7 +4901,9 @@ def _render_ui(sample: dict[str, Any]) -> str:
     }
 
     function parseBooleanEvidenceValue(raw) {
-      const value = String(raw || "").trim().toLowerCase();
+      if (raw === true || raw === 1) return true;
+      if (raw === false || raw === 0) return false;
+      const value = String(raw ?? "").trim().toLowerCase();
       if (/^(true|yes|pass|passed|1|present|available|confirmed|verified|established|controlled)$/i.test(value)) return true;
       if (/^(false|no|fail|failed|0|absent|unavailable|unconfirmed|unverified|not\\s+established|not\\s+controlled)$/i.test(value)) return false;
       return null;
@@ -5120,12 +5147,23 @@ def _render_ui(sample: dict[str, Any]) -> str:
 
     function isSafeHistoryEntry(entry) {
       if (!entry || typeof entry !== "object") return false;
-      if (typeof entry.id === "string" && containsAngleLikeCharacter(entry.id)) return false;
+      if (!["ACCEPT", "REWRITE", "REJECT", "HOLD"].includes(entry.verdict)) return false;
+      if (typeof entry.id !== "string" || entry.id.trim() === "" || entry.id === "-") return false;
+      if (containsAngleLikeCharacter(entry.id)) return false;
+      if (typeof entry.reason !== "string" || entry.reason.trim() === "") return false;
+      if (typeof entry.timestamp !== "string" || Number.isNaN(new Date(entry.timestamp).getTime())) return false;
+      if (typeof entry.payload !== "string") return false;
+      if (!entry.decision || typeof entry.decision !== "object" || Array.isArray(entry.decision)) return false;
       try {
-        const payload = typeof entry.payload === "string" ? JSON.parse(entry.payload) : null;
+        const payload = JSON.parse(entry.payload);
         const claim = payload && typeof payload.claim === "object" && !Array.isArray(payload.claim) ? payload.claim : {};
+        if (typeof claim.id !== "string" || claim.id !== entry.id) return false;
         if (typeof claim.id === "string" && containsAngleLikeCharacter(claim.id)) return false;
         if (typeof claim.text === "string" && containsAngleLikeCharacter(claim.text)) return false;
+        const recomputed = rule(payload);
+        if (entry.verdict !== recomputed.verdict) return false;
+        if (entry.decision.verdict !== recomputed.verdict) return false;
+        if (entry.decision.fine_tune_ready !== recomputed.fine_tune_ready) return false;
       } catch (_) {
         return false;
       }
@@ -5169,19 +5207,27 @@ def _render_ui(sample: dict[str, Any]) -> str:
     }
 
     function updateRoiCalculator() {
-      const readNumber = (id, fallback) => {
+      let invalid = false;
+      const readNumber = (id, fallback, min = 0) => {
         const value = Number(document.getElementById(id)?.value);
-        return Number.isFinite(value) && value >= 0 ? value : fallback;
+        if (Number.isFinite(value) && value >= min) return value;
+        invalid = true;
+        return fallback;
       };
-      const claims = readNumber("roi-claims", 1000);
-      const manualMinutes = readNumber("roi-manual", 30);
-      const capasMinutes = readNumber("roi-triage", 5);
-      const hourlyRate = readNumber("roi-rate", 180);
+      const hoursNode = document.getElementById("roi-hours");
+      const valueNode = document.getElementById("roi-value");
+      const claims = readNumber("roi-claims", 1000, 1);
+      const manualMinutes = readNumber("roi-manual", 30, 1);
+      const capasMinutes = readNumber("roi-triage", 5, 1);
+      const hourlyRate = readNumber("roi-rate", 180, 1);
+      if (invalid) {
+        if (hoursNode) hoursNode.textContent = "—";
+        if (valueNode) valueNode.textContent = "Enter positive values to calculate pilot capacity avoided.";
+        return;
+      }
       const avoidedMinutes = Math.max(0, claims * (manualMinutes - capasMinutes));
       const avoidedHours = avoidedMinutes / 60;
       const avoidedValue = avoidedHours * hourlyRate;
-      const hoursNode = document.getElementById("roi-hours");
-      const valueNode = document.getElementById("roi-value");
       if (hoursNode) hoursNode.textContent = `${Math.round(avoidedHours).toLocaleString()}h`;
       if (valueNode) valueNode.textContent = `~$${Math.round(avoidedValue).toLocaleString()} senior-review capacity avoided in the pilot model.`;
     }
@@ -5269,11 +5315,28 @@ def _render_ui(sample: dict[str, Any]) -> str:
     }
 
     function addToHistory(result) {
+      const id = result.input_claim?.id;
+      if (typeof id !== "string" || id.trim() === "" || id === "-") {
+        return;
+      }
+      const payload = document.getElementById("input").value;
+      let payloadType = "";
+      try {
+        payloadType = JSON.parse(payload)?.claim?.type || "";
+      } catch (_) {}
+      decisionHistory = decisionHistory.filter((item) => {
+        try {
+          const itemType = JSON.parse(item.payload || "{}")?.claim?.type || "";
+          return !(item.id === id && itemType === payloadType);
+        } catch (_) {
+          return item.id !== id;
+        }
+      });
       decisionHistory.unshift({
         verdict: result.verdict,
-        id: result.input_claim?.id || "-",
+        id,
         reason: result.reason,
-        payload: document.getElementById("input").value,
+        payload,
         decision: result,
         timestamp: new Date().toISOString()
       });
