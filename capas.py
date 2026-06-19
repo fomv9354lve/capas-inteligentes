@@ -2664,6 +2664,356 @@ def _render_ui(sample: dict[str, Any]) -> str:
     pre#output { max-height: 240px; padding: 12px; font-size: 11px; }
     .help-modal { padding: 14px; border-radius: var(--radius); }
   }
+
+  /* ================================================================
+     CAPAS Professional Redesign v14
+     Aesthetic: IBM Carbon / Linear / Raycast
+     Goal: app-shell architecture; gate visible in first screen.
+     ================================================================ */
+  body { max-width: 1100px; margin: 0 auto; }
+  main.app-body { display: flex; flex-direction: column; gap: 0; padding: 0; }
+  .topbar {
+    height: 44px;
+    padding: 0 20px;
+    background: var(--bg);
+    backdrop-filter: none;
+  }
+  .topbar-divider, .topbar-subtitle { display: none; }
+  .topbar-logo { font-size: 13px; font-weight: 700; }
+  .topbar-logo-icon { width: 22px; height: 22px; border-radius: 5px; font-size: 10px; }
+  .topbar-actions { gap: 2px; }
+  .topbar-actions .copy-btn { min-height: 28px; padding: 4px 10px; font-size: 12px; }
+  .topbar-badge { font-size: 10px; padding: 2px 7px; }
+
+  .product-hero { order: 1; }
+  .workflow-strip { order: 2; }
+  .samples-bar { order: 3; }
+  .mode-tabs { order: 4; }
+  .mode-note { order: 5; }
+  .gate-section { order: 6; }
+  .guided-panel { order: 7; }
+  .ingest-panel { order: 8; }
+  .history-section { order: 9; }
+  .exec-dashboard, .business-system { order: 99; display: none; }
+  footer, .app-footer { order: 100; }
+
+  .product-hero {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 10px 20px;
+    margin: 0;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    border-radius: 0;
+  }
+  .hero-copy {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+  .hero-eyebrow, .hero-copy > p, .hero-metrics, .hero-shot { display: none; }
+  .hero-copy > h2 {
+    max-width: 520px;
+    margin: 0;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    font-size: 13px;
+    font-weight: 650;
+    line-height: 1.2;
+    letter-spacing: 0;
+  }
+  .hero-actions {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 6px;
+    margin-top: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .hero-actions::-webkit-scrollbar { display: none; }
+  .hero-actions a, .hero-actions button {
+    height: 28px;
+    padding: 5px 12px;
+    font-size: 11px;
+    white-space: nowrap;
+  }
+  .hero-actions .hero-primary {
+    color: white;
+    background: var(--accent);
+    border-color: transparent;
+    font-weight: 700;
+  }
+
+  .workflow-strip {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    overflow-x: auto;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg);
+    scrollbar-width: none;
+  }
+  .workflow-strip::-webkit-scrollbar { display: none; }
+  .workflow-step {
+    flex: 1 1 0;
+    min-width: 0;
+    max-height: 52px;
+    overflow: hidden;
+    padding: 6px 14px;
+    border: 0;
+    border-right: 1px solid var(--border);
+    border-radius: 0;
+    background: transparent;
+  }
+  .workflow-step:last-child { border-right: 0; }
+  .workflow-step strong {
+    display: block;
+    margin-bottom: 1px;
+    color: var(--accent);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.3px;
+  }
+  .workflow-step span {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin: 0;
+    color: var(--text-3);
+    font-size: 10px;
+    line-height: 1.4;
+  }
+
+  .samples-bar {
+    flex-wrap: nowrap;
+    gap: 4px;
+    margin-bottom: 0;
+    padding: 6px 20px;
+    overflow-x: auto;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg);
+    scrollbar-width: none;
+  }
+  .samples-bar::-webkit-scrollbar { display: none; }
+  .samples-bar .sample-btn, .sample-btn {
+    flex-shrink: 0;
+    height: 22px;
+    padding: 3px 9px;
+    border-radius: 4px;
+    font-size: 10px;
+    white-space: nowrap;
+  }
+  .mode-tabs {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0;
+    margin: 0;
+    padding: 0 20px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg);
+  }
+  .mode-tab {
+    min-height: 30px;
+    border-radius: 0;
+    border: 0;
+    border-right: 1px solid var(--border);
+    background: transparent;
+    font-size: 11px;
+  }
+  .mode-tab:last-child { border-right: 0; }
+  .mode-tab[aria-selected="true"] { background: var(--accent-glow); }
+  .mode-note { margin: 0; padding: 5px 20px; border-bottom: 1px solid var(--border); background: var(--bg); font-size: 11px; }
+
+  .gate-section {
+    margin-bottom: 12px;
+    padding: 12px 20px 0;
+    scroll-margin-top: 44px;
+    background: var(--bg);
+  }
+  .grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 0;
+    overflow: hidden;
+    margin: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--bg-2);
+  }
+  .grid > div { border-right: 1px solid var(--border); }
+  .grid > div:last-child { border-right: 0; }
+  .gate-section .panel {
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    background: var(--bg-2);
+  }
+  .panel-header {
+    min-height: 38px;
+    height: 38px;
+    padding: 0 14px;
+    border-radius: 0;
+    background: var(--bg-3);
+  }
+  .panel-title {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+  }
+  #input {
+    min-height: 260px;
+    padding: 14px;
+    border-radius: 0;
+    background: var(--bg-2);
+    font-size: 12px;
+    line-height: 1.6;
+  }
+  .json-status {
+    min-height: 0;
+    padding: 4px 14px;
+    border-top: 1px solid var(--border);
+    background: var(--bg-3);
+    font-size: 10px;
+  }
+  .action-row { gap: 0; padding: 0; border-top: 1px solid var(--border); background: var(--bg-3); }
+  .draft-btn#draft-btn {
+    height: 40px;
+    padding: 10px 12px;
+    border: 0;
+    border-right: 1px solid var(--border);
+    border-radius: 0;
+    background: var(--bg-4);
+    color: var(--text-1);
+    font-size: 12px;
+    font-weight: 650;
+  }
+  .decide-btn {
+    height: 40px;
+    padding: 10px 12px;
+    border: 0;
+    border-radius: 0;
+    background: var(--accent);
+    color: white;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0;
+  }
+  .decide-btn:hover { background: var(--accent-hover); }
+  #batch-btn {
+    width: 100%;
+    height: 32px;
+    padding: 0 14px;
+    border: 0;
+    border-top: 1px solid var(--border);
+    border-radius: 0;
+    background: var(--bg-3);
+    color: var(--text-3);
+    font-size: 11px;
+    font-weight: 600;
+    text-align: left;
+  }
+  #batch-btn:hover { color: var(--text-1); background: var(--bg-4); }
+
+  #verdict-area { min-height: 110px; padding: 18px 16px 12px; }
+  .verdict-banner { padding: 0 0 12px; border-bottom: 0; }
+  .verdict-badge {
+    padding: 4px 12px;
+    border-radius: 5px;
+    font-size: 13px;
+    font-weight: 800;
+  }
+  .fine-tune-block {
+    margin: 10px 0 0;
+    padding: 10px 14px;
+    border-top: 1px solid var(--border);
+    background: var(--bg-3);
+  }
+  .output-section {
+    max-height: 240px;
+    overflow-y: auto;
+    padding: 10px 12px;
+    border-top: 1px solid var(--border);
+    scrollbar-width: thin;
+  }
+  .output-section pre, #output {
+    margin: 0;
+    padding: 12px 14px;
+    border: 0;
+    background: transparent;
+    font-size: 11px;
+    line-height: 1.55;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  section.guided-panel, section.ingest-panel {
+    margin: 0 20px 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+  }
+  .history-section {
+    margin: 0 20px 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--bg-2);
+  }
+  .history-header {
+    min-height: 38px;
+    margin-bottom: 0;
+    padding: 0 14px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg-3);
+  }
+  .history-tools { padding: 8px 14px; margin-bottom: 0; border-bottom: 1px solid var(--border); }
+  .history-item {
+    padding: 8px 10px;
+    border-radius: 0;
+    border-width: 0 0 1px;
+    font-size: 12px;
+  }
+  .history-delete { border-radius: 0; border-width: 0 0 1px; }
+  .history-ts { font-size: 10px; }
+  footer, .app-footer {
+    margin: 0;
+    padding: 12px 20px;
+    border-top: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text-3);
+    font-size: 10px;
+  }
+
+  @media (max-width: 860px) {
+    body { max-width: none; }
+    .topbar { height: auto; padding: 8px 16px; }
+    .product-hero { align-items: flex-start; padding: 10px 16px; }
+    .hero-copy { align-items: flex-start; flex-direction: column; gap: 8px; }
+    .hero-copy > h2 { max-width: none; -webkit-line-clamp: 2; }
+    .workflow-step { min-width: 190px; flex: 0 0 190px; }
+    .samples-bar, .mode-tabs, .mode-note { padding-left: 16px; padding-right: 16px; }
+    .mode-tabs { grid-template-columns: 1fr; }
+    .mode-tab { border-right: 0; border-bottom: 1px solid var(--border); }
+    .gate-section { padding: 12px 16px 0; }
+    .grid { grid-template-columns: 1fr; }
+    .grid > div { border-right: 0; border-bottom: 1px solid var(--border); }
+    .grid > div:last-child { border-bottom: 0; }
+    section.guided-panel, section.ingest-panel, .history-section { margin-left: 16px; margin-right: 16px; }
+  }
+  /* ================================================================ */
 </style>
 </head>
 <body>
