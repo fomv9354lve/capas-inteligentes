@@ -40,6 +40,11 @@ REQUIRED_SNIPPETS = [
     "CAPAS will not infer them",
     "role=\"button\" tabindex=\"0\"",
     "handleHistoryKey",
+    "CAPAS Claim Gate - Design System v8",
+    "class=\"topbar\"",
+    "class=\"app-body\"",
+    "--accent-glow",
+    "v8 · guided intake",
 ]
 
 

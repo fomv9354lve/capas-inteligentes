@@ -1280,15 +1280,259 @@ def _render_ui(sample: dict[str, Any]) -> str:
     pre#output { background: #f8fafc; color: #334155; border-color: #cbd5e1; }
     .history-item { background: #ffffff; border-color: #cbd5e1; }
   }
+
+  /* CAPAS Claim Gate - Design System v8 */
+  :root {
+    --bg: #09090b;
+    --bg-2: #111113;
+    --bg-3: #18181b;
+    --bg-4: #1c1c1f;
+    --border: #27272a;
+    --border-2: #3f3f46;
+    --text-1: #fafafa;
+    --text-2: #a1a1aa;
+    --text-3: #71717a;
+    --accent: #6366f1;
+    --accent-hover: #818cf8;
+    --accent-glow: rgba(99, 102, 241, 0.15);
+    --green: #22c55e;
+    --green-bg: rgba(34, 197, 94, 0.08);
+    --green-border: rgba(34, 197, 94, 0.2);
+    --orange: #f97316;
+    --orange-bg: rgba(249, 115, 22, 0.08);
+    --orange-border: rgba(249, 115, 22, 0.2);
+    --red: #ef4444;
+    --red-bg: rgba(239, 68, 68, 0.08);
+    --red-border: rgba(239, 68, 68, 0.2);
+    --slate: #94a3b8;
+    --slate-bg: rgba(148, 163, 184, 0.08);
+    --slate-border: rgba(148, 163, 184, 0.15);
+    --radius-sm: 6px;
+    --radius: 10px;
+    --radius-lg: 14px;
+    --shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+    --font: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --mono: ui-monospace, "SF Mono", "Fira Code", Menlo, monospace;
+    --t: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  body {
+    margin: 0;
+    padding: 0;
+    max-width: none;
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text-1);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    height: 52px;
+    padding: 0 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    background: rgba(9, 9, 11, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .topbar-left { display: flex; align-items: center; gap: 12px; min-width: 0; }
+  .topbar-logo { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 800; color: var(--text-1); white-space: nowrap; }
+  .topbar-logo-icon {
+    width: 26px;
+    height: 26px;
+    border-radius: 7px;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 800;
+    color: white;
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.4);
+  }
+  .topbar-divider { width: 1px; height: 18px; background: var(--border); flex-shrink: 0; }
+  .topbar-subtitle { font-size: 12px; color: var(--text-3); font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .topbar-subtitle code { color: var(--text-2); background: var(--bg-3); padding: 1px 5px; border-radius: 4px; }
+  .topbar-badge {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--accent-hover);
+    background: var(--accent-glow);
+    border: 1px solid rgba(99, 102, 241, 0.25);
+    padding: 2px 8px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .app-body { max-width: 1280px; margin: 0 auto; padding: 24px 28px 60px; }
+  .samples-bar { gap: 6px; margin-bottom: 20px; }
+  .samples-bar > span { font-size: 11px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.6px; }
+  .sample-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 13px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: var(--bg-3);
+    font-family: var(--font);
+    font-size: 11px;
+    color: var(--text-2);
+    transition: all var(--t);
+  }
+  .sample-btn:hover { border-color: var(--border-2); color: var(--text-1); background: var(--bg-4); box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4); }
+  .sample-btn.accept { color: var(--green); border-color: var(--green-border); background: var(--green-bg); }
+  .sample-btn.rewrite { color: var(--orange); border-color: var(--orange-border); background: var(--orange-bg); }
+  .sample-btn.hold { color: var(--slate); border-color: var(--slate-border); background: var(--slate-bg); }
+  .sample-btn.invalid { color: var(--red); border-color: var(--red-border); background: var(--red-bg); }
+  .grid { grid-template-columns: minmax(380px, 42%) minmax(0, 1fr); gap: 16px; }
+  .panel {
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+    transition: border-color var(--t);
+  }
+  .panel:focus-within { border-color: var(--border-2); }
+  .panel-header { padding: 10px 16px; min-height: 42px; background: var(--bg-3); border-bottom: 1px solid var(--border); }
+  .panel-title { font-size: 11px; font-weight: 700; color: var(--text-3); letter-spacing: 0.7px; }
+  .panel-tag {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--accent-hover);
+    background: var(--accent-glow);
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-family: var(--mono);
+    max-width: 220px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .panel-tag:empty { display: none; }
+  #input {
+    min-height: 380px;
+    background: transparent;
+    color: var(--text-1);
+    font-family: var(--mono);
+    font-size: 12.5px;
+    line-height: 1.7;
+    padding: 16px;
+    caret-color: var(--accent);
+  }
+  #input.ok-border { box-shadow: inset 3px 0 0 var(--green); }
+  #input.error-border { box-shadow: inset 3px 0 0 var(--red); }
+  .json-status { min-height: 32px; padding: 7px 16px; color: var(--text-3); border-top: 1px solid var(--border); }
+  .json-status::before { content: "●"; font-size: 8px; }
+  .json-status.valid { color: var(--green); }
+  .json-status.invalid { color: var(--red); }
+  .action-row { border-top: 1px solid var(--border); }
+  .draft-btn {
+    background: var(--bg-4);
+    color: var(--text-2);
+    border-right: 1px solid var(--border);
+    font-family: var(--font);
+    transition: all var(--t);
+  }
+  .draft-btn:hover { background: var(--bg-3); color: var(--text-1); }
+  .decide-btn {
+    background: linear-gradient(135deg, var(--accent), #8b5cf6);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    font-family: var(--font);
+    font-size: 13px;
+    position: relative;
+    overflow: hidden;
+    transition: all var(--t);
+  }
+  .decide-btn::before { content: ""; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), transparent); opacity: 0; transition: opacity var(--t); }
+  .decide-btn:hover::before { opacity: 1; }
+  .decide-btn:hover { box-shadow: 0 4px 20px rgba(99, 102, 241, 0.35); }
+  .decide-btn.processing { animation: pulse-btn 1s ease-in-out infinite; }
+  @keyframes pulse-btn {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4); }
+    50% { box-shadow: 0 0 0 6px rgba(99, 102, 241, 0); }
+  }
+  .copy-btn { display: inline-flex; align-items: center; gap: 5px; padding: 4px 12px; background: var(--bg-4); border: 1px solid var(--border); color: var(--text-2); font-family: var(--font); font-size: 11px; transition: all var(--t); }
+  .copy-btn:not(:disabled):hover { background: var(--bg-3); border-color: var(--border-2); color: var(--text-1); }
+  .copy-btn.copied { background: var(--green-bg); border-color: var(--green-border); color: var(--green); }
+  .verdict-banner { padding: 16px 18px; border-bottom: 1px solid var(--border); }
+  .verdict-badge { font-size: 11px; letter-spacing: 1.2px; border: 1px solid transparent; text-transform: uppercase; }
+  .verdict-badge.ACCEPT { background: var(--green-bg); color: var(--green); border-color: var(--green-border); }
+  .verdict-badge.REJECT { background: var(--red-bg); color: var(--red); border-color: var(--red-border); }
+  .verdict-badge.REWRITE { background: var(--orange-bg); color: var(--orange); border-color: var(--orange-border); }
+  .verdict-badge.HOLD { background: var(--slate-bg); color: var(--slate); border-color: var(--slate-border); }
+  .verdict-reason { color: var(--text-2); }
+  .alert-block { margin: 12px 16px; padding: 12px 14px; border-radius: var(--radius); border: 1px solid; }
+  .alert-block.missing { background: rgba(251, 191, 36, 0.06); border-color: rgba(251, 191, 36, 0.2); color: #fbbf24; }
+  .alert-block.errors { background: var(--red-bg); border-color: var(--red-border); color: #fca5a5; }
+  .assist-block { margin: 12px 16px; padding: 12px 14px; border-radius: var(--radius); background: var(--accent-glow); border-color: rgba(99, 102, 241, 0.24); color: #c7d2fe; }
+  .assist-block pre { background: var(--bg); border-color: rgba(99, 102, 241, 0.24); color: #c7d2fe; }
+  .rewrite-block { margin: 12px 16px; padding: 12px 14px; border-radius: var(--radius); background: var(--orange-bg); border-color: var(--orange-border); }
+  .rewrite-text { color: var(--text-1); }
+  .output-section { padding: 12px 16px; }
+  .output-label { color: var(--text-3); }
+  .output-label::after { content: ""; flex: 1; height: 1px; background: var(--border); }
+  pre#output { background: var(--bg); border-color: var(--border); color: var(--text-2); max-height: 360px; }
+  pre#output::-webkit-scrollbar { width: 6px; height: 6px; }
+  pre#output::-webkit-scrollbar-track { background: transparent; }
+  pre#output::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 3px; }
+  .history-section { margin-top: 24px; }
+  .history-section h3, .history-count { color: var(--text-3); }
+  .history-item { background: var(--bg-2); border-color: var(--border); color: var(--text-1); font-family: var(--font); transition: all var(--t); }
+  .history-item:hover { background: var(--bg-3); border-color: var(--border-2); transform: translateX(2px); }
+  .history-badge { border: 1px solid; }
+  .history-badge.ACCEPT { color: var(--green); background: var(--green-bg); border-color: var(--green-border); }
+  .history-badge.REJECT { color: var(--red); background: var(--red-bg); border-color: var(--red-border); }
+  .history-badge.REWRITE { color: var(--orange); background: var(--orange-bg); border-color: var(--orange-border); }
+  .history-badge.HOLD { color: var(--slate); background: var(--slate-bg); border-color: var(--slate-border); }
+  .history-id { color: var(--text-1); }
+  .history-reason { color: var(--text-3); }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #ffffff;
+      --bg-2: #fafafa;
+      --bg-3: #f4f4f5;
+      --bg-4: #e4e4e7;
+      --border: #e4e4e7;
+      --border-2: #d4d4d8;
+      --text-1: #09090b;
+      --text-2: #52525b;
+      --text-3: #71717a;
+      --shadow: 0 4px 16px rgba(24, 24, 27, 0.08);
+    }
+    .topbar { background: rgba(255, 255, 255, 0.9); }
+    pre#output { background: #f4f4f5; }
+  }
+  @media (max-width: 860px) {
+    .app-body { padding: 16px 16px 60px; }
+    .topbar { padding: 0 16px; }
+    .topbar-subtitle { display: none; }
+    .grid { grid-template-columns: 1fr; }
+  }
 </style>
 </head>
 <body>
 
-<div class="header">
-  <h1>CAPAS Claim Gate</h1>
-  <p>Paste a claim/evidence JSON. Decisions are rule-based via <code>capas.py decide</code>. Schema errors surface as <code>HOLD</code>, never as guesses.</p>
+<div class="topbar">
+  <div class="topbar-left">
+    <div class="topbar-logo">
+      <div class="topbar-logo-icon">CG</div>
+      CAPAS Claim Gate
+    </div>
+    <div class="topbar-divider"></div>
+    <span class="topbar-subtitle">Rule-based via <code>capas.py decide</code> · schema errors → <code>HOLD</code></span>
+  </div>
+  <span class="topbar-badge">v8 · guided intake</span>
 </div>
 
+<div class="app-body">
 <div class="samples-bar">
   <span>Load sample:</span>
   <button class="sample-btn accept" title="ACCEPT sample" aria-label="Load ACCEPT sample" onclick="loadSample('ACCEPT')">&#10003; ACCEPT</button>
@@ -1336,6 +1580,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
   <div class="history-list" id="history-list">
     <div class="empty-state">No decisions yet.</div>
   </div>
+</div>
 </div>
 
 <script>
