@@ -5,7 +5,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-PRODUCT = ROOT / "docs" / "product.html"
+PRODUCT = ROOT / "docs" / "index.html"
 BRIEF = ROOT / "docs" / "CUSTOMER_READY_BRIEF.md"
 BRIEF_HTML = ROOT / "docs" / "customer-brief.html"
 DECK = ROOT / "docs" / "PARTNER_DECK.md"
@@ -29,7 +29,7 @@ REQUIRED = {
     "landing page with narrative": (PRODUCT, ["Deterministic Scientific Claim Gate", "Compile scientific claims", "Advisory delivery wedge"]),
     "landing page screenshots": (PRODUCT, ["CAPAS screenshot mock", "ACCEPT", "RO-Crate pending"]),
     "product business case": (PRODUCT, ["The so what", "Internal validation model", "417 senior-review hours", "10k", "Modeling notes"]),
-    "designed customer brief": (BRIEF_HTML, ["Customer brief", "Training-data assurance", "Planning metrics", "Disclaimers"]),
+    "designed methodology page": (BRIEF_HTML, ["Methodology", "Training-data assurance", "Planning metrics", "Disclaimers"]),
     "designed pilot packet": (PACKET_HTML, ["CAPAS Pilot Packet", "Delivery path", "Buyer-ready artifacts", "Required footnotes"]),
     "guided no-code form": (UI, ["CAPAS workflow", "Guided Claim Builder", "Evidence contract", "builder-preview", "buildGuidedPayload", "Build guided payload", "evidence field for"]),
     "paper text ingestion": (UI, ["Candidate extraction aid", "extractCandidateClaims", "candidate claims extracted from paper or text", "Evidence spans", "evidence_spans", "parseBooleanEvidenceValue", "numberPattern", "parseFloat"]),
