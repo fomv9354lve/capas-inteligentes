@@ -7,7 +7,7 @@ claims entering an AI fine-tuning corpus?
 
 ## Pilot design
 
-- Corpus size: 500-1,000 candidate claims.
+- Corpus size: 500-1,000 structured evidence records.
 - Baseline: manual expert review in spreadsheets.
 - CAPAS path: extraction/annotation -> guided payload -> deterministic gate ->
   exportable audit artifact.
@@ -20,7 +20,7 @@ claims entering an AI fine-tuning corpus?
 
 ## Example economics
 
-For 1,000 claims:
+For 1,000 structured records:
 
 - manual expert review: 30 minutes per claim = 500 hours
 - CAPAS-guided triage: 5 minutes per claim = 83 hours
@@ -29,3 +29,7 @@ For 1,000 claims:
 
 This excludes the larger avoided cost of retraining, compliance remediation, or
 removing contaminated data after a model has already learned it.
+
+Planning note: these figures model review capacity, not guaranteed booked
+savings. Separate stress tests cover 10,000 structured CAPAS payload records
+across UI/CLI validation surfaces.

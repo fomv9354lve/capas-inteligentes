@@ -2197,6 +2197,47 @@ def _render_ui(sample: dict[str, Any]) -> str:
   .roi-result span { color: var(--text-2); font-size: 12px; }
   .guided-panel { margin-bottom: 16px; }
   .guided-body { padding: 14px 16px; display: grid; gap: 12px; }
+  .builder-shell { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(250px, 0.7fr); gap: 14px; align-items: start; }
+  .builder-main, .builder-rail { display: grid; gap: 12px; min-width: 0; }
+  .builder-rail {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg);
+    padding: 12px;
+  }
+  .builder-rail h3 {
+    margin: 0;
+    color: var(--text-1);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.4px;
+  }
+  .builder-rail p, .builder-rail li { color: var(--text-2); font-size: 12px; line-height: 1.55; }
+  .builder-rail ul { margin: 0; padding-left: 18px; }
+  .builder-contract {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .contract-pill {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--bg-2);
+    padding: 8px;
+  }
+  .contract-pill strong { display: block; color: var(--text-1); font-size: 11px; margin-bottom: 2px; }
+  .contract-pill span { color: var(--text-3); font-size: 10px; }
+  .builder-preview {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--bg-2);
+    padding: 10px;
+    color: var(--text-2);
+    font-family: var(--mono);
+    font-size: 11px;
+    line-height: 1.55;
+    overflow-wrap: anywhere;
+  }
   .guided-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
   .guided-field { display: grid; gap: 5px; min-width: 0; }
   .guided-field label { color: var(--text-3); font-size: 10px; font-weight: 800; letter-spacing: 0.6px; text-transform: uppercase; }
@@ -2600,6 +2641,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
     .product-hero, .business-system { grid-template-columns: 1fr; }
     .hero-metrics, .exec-dashboard, .workflow-strip, .workflow-board { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .guided-grid { grid-template-columns: 1fr; }
+    .builder-shell, .builder-contract { grid-template-columns: 1fr; }
     .topbar {
       height: auto;
       min-height: 52px;
@@ -3049,16 +3091,16 @@ def _render_ui(sample: dict[str, Any]) -> str:
     <div class="hero-actions">
       <button class="sample-btn accept hero-primary" type="button" onclick="scrollToGate()">Try the gate →</button>
       <a class="sample-btn accept hero-link" href="https://github.com/fomv9354lve/capas-inteligentes/issues/new?title=CAPAS%20pilot%20conversation" target="_blank" rel="noopener noreferrer">Talk to pilot owner</a>
-      <a class="sample-btn hold hero-link" href="CUSTOMER_READY_BRIEF.md">Open customer brief</a>
-      <a class="sample-btn rewrite hero-link" href="PARTNER_DECK.md">Download pilot packet</a>
+      <a class="sample-btn hold hero-link" href="customer-brief.html">Open customer brief</a>
+      <a class="sample-btn rewrite hero-link" href="pilot-packet.html">Open pilot packet</a>
       <button class="sample-btn hold" type="button" onclick="document.getElementById('roi-calculator-title').scrollIntoView({behavior:'smooth', block:'start'})">See business case</button>
       <a class="sample-btn accept hero-link" href="product.html">Read product story</a>
       <button class="sample-btn rewrite" type="button" onclick="document.getElementById('guided-claim-id').focus()">Start no-code claim</button>
     </div>
     <div class="hero-metrics" aria-label="Illustrative pilot metrics">
-      <div class="hero-metric"><strong>1,000</strong><span>candidate training claims gated</span></div>
+      <div class="hero-metric"><strong>10k</strong><span>structured evidence records stress-tested</span></div>
       <div class="hero-metric"><strong>34%</strong><span>rewritten or rejected before reuse</span></div>
-      <div class="hero-metric"><strong>417h</strong><span>review time avoided in pilot model</span></div>
+      <div class="hero-metric"><strong>417h</strong><span>review capacity modeled</span></div>
     </div>
   </div>
   <div class="hero-shot" aria-label="CAPAS decision screenshot mock">
@@ -3076,7 +3118,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
   <div class="workflow-step"><strong>Before CAPAS</strong><span>Researchers paste evidence into spreadsheets, reviewers debate wording, and training data enters pipelines with weak traceability.</span></div>
   <div class="workflow-step"><strong>CAPAS gate</strong><span>Each claim is typed, checked against required evidence, and given a deterministic license boundary.</span></div>
   <div class="workflow-step"><strong>Executive output</strong><span>Batch summaries show rewrite/reject rates, provenance gaps, and fine-tune blockers.</span></div>
-  <div class="workflow-step"><strong>Business case</strong><span>Run a 500-claim pilot, measure reviewer agreement, and quantify hours saved before enterprise rollout.</span></div>
+  <div class="workflow-step"><strong>Business case</strong><span>Run a 500-record pilot, measure reviewer agreement, and quantify review capacity redirected before enterprise rollout.</span></div>
 </section>
 
 <section class="exec-dashboard" aria-label="Executive batch and provenance dashboard">
@@ -3134,31 +3176,50 @@ def _render_ui(sample: dict[str, Any]) -> str:
 
 <section class="panel guided-panel" aria-labelledby="guided-title">
   <div class="panel-header">
-    <h2 class="panel-title" id="guided-title">Guided claim builder</h2>
+    <h2 class="panel-title" id="guided-title">Guided evidence constructor</h2>
     <button class="copy-btn" type="button" onclick="buildGuidedPayload()">Build JSON from form</button>
   </div>
   <div class="guided-body">
-    <div class="guided-grid">
-      <div class="guided-field">
-        <label for="guided-type">Claim type</label>
-        <select id="guided-type" onchange="renderGuidedFields()" aria-label="Choose claim type for guided builder"></select>
+    <div class="builder-shell">
+      <div class="builder-main">
+        <div class="guided-grid">
+          <div class="guided-field">
+            <label for="guided-type">Claim type</label>
+            <select id="guided-type" onchange="renderGuidedFields()" aria-label="Choose claim type for guided builder"></select>
+          </div>
+          <div class="guided-field">
+            <label for="guided-claim-id">Record ID</label>
+            <input id="guided-claim-id" value="pilot_record_001" aria-label="Guided record ID">
+          </div>
+          <div class="guided-field full">
+            <label for="guided-claim-text">Claim wording</label>
+            <textarea id="guided-claim-text" aria-label="Guided claim text">The structured evidence record is ready for deterministic CAPAS gating.</textarea>
+          </div>
+        </div>
+        <div class="guided-grid" id="guided-fields" aria-label="Evidence fields for selected claim type"></div>
+        <div class="hero-actions">
+          <button class="sample-btn accept" type="button" onclick="loadVerticalDemo('AI_GOVERNANCE')">AI governance demo</button>
+          <button class="sample-btn rewrite" type="button" onclick="loadVerticalDemo('PHARMA')">Pharma demo</button>
+          <button class="sample-btn hold" type="button" onclick="buildGuidedPayload()">Use guided form</button>
+        </div>
       </div>
-      <div class="guided-field">
-        <label for="guided-claim-id">Claim ID</label>
-        <input id="guided-claim-id" value="pilot_claim_001" aria-label="Guided claim ID">
-      </div>
-      <div class="guided-field full">
-        <label for="guided-claim-text">Claim text</label>
-        <textarea id="guided-claim-text" aria-label="Guided claim text">The candidate claim is supported by supplied structured evidence.</textarea>
+      <aside class="builder-rail" aria-labelledby="builder-rail-title">
+        <h3 id="builder-rail-title">Evidence contract</h3>
+        <div class="builder-contract" id="builder-contract" aria-live="polite">
+          <div class="contract-pill"><strong>Type</strong><span>Choose a claim type</span></div>
+          <div class="contract-pill"><strong>Fields</strong><span>Required evidence appears here</span></div>
+          <div class="contract-pill"><strong>Gate</strong><span>ACCEPT / REWRITE / REJECT / HOLD</span></div>
+          <div class="contract-pill"><strong>Training</strong><span>Provenance required for fine-tune readiness</span></div>
+        </div>
+        <div class="builder-preview" id="builder-preview" role="status" aria-live="polite">Select a type to preview the evidence contract before writing JSON.</div>
+        <ul>
+          <li>CAPAS will not infer missing evidence.</li>
+          <li>Wrong types become schema errors.</li>
+          <li>Training readiness requires external provenance verification.</li>
+        </ul>
+      </aside>
       </div>
     </div>
-    <div class="guided-grid" id="guided-fields" aria-label="Evidence fields for selected claim type"></div>
-    <div class="hero-actions">
-      <button class="sample-btn accept" type="button" onclick="loadVerticalDemo('AI_GOVERNANCE')">AI governance demo</button>
-      <button class="sample-btn rewrite" type="button" onclick="loadVerticalDemo('PHARMA')">Pharma demo</button>
-      <button class="sample-btn hold" type="button" onclick="buildGuidedPayload()">Use guided form</button>
-    </div>
-  </div>
 </section>
 
 <section class="panel ingest-panel" aria-labelledby="ingest-title">
@@ -3288,7 +3349,8 @@ def _render_ui(sample: dict[str, Any]) -> str:
   <div class="footer-links" aria-label="Project links">
     <a href="https://github.com/fomv9354lve/capas-inteligentes" target="_blank" rel="noopener noreferrer">Source repository</a>
     <a href="product.html">Product story</a>
-    <a href="CUSTOMER_READY_BRIEF.md">Customer brief</a>
+    <a href="customer-brief.html">Customer brief</a>
+    <a href="pilot-packet.html">Pilot packet</a>
     <a href="https://github.com/fomv9354lve/capas-inteligentes/issues" target="_blank" rel="noopener noreferrer">Issues</a>
     <a href="https://github.com/fomv9354lve/capas-inteligentes/releases/tag/v0.1.1" target="_blank" rel="noopener noreferrer">Release v0.1.1</a>
     <span>License: proprietary research prototype</span>
@@ -4178,6 +4240,18 @@ def _render_ui(sample: dict[str, Any]) -> str:
       }
       lastGuidedType = type;
       fields.dataset.claimType = type;
+      const contract = document.getElementById("builder-contract");
+      const preview = document.getElementById("builder-preview");
+      if (contract) {
+        contract.innerHTML =
+          `<div class="contract-pill"><strong>Type</strong><span>${escHtml(type)}</span></div>` +
+          `<div class="contract-pill"><strong>Fields</strong><span>${required[type].length} required</span></div>` +
+          `<div class="contract-pill"><strong>Gate</strong><span>${escHtml((example.claim.text || "").slice(0, 54))}${example.claim.text.length > 54 ? "..." : ""}</span></div>` +
+          `<div class="contract-pill"><strong>Training</strong><span>14 readiness criteria after ACCEPT</span></div>`;
+      }
+      if (preview) {
+        preview.textContent = `${type}: ${required[type].join(", ")}. CAPAS emits schema v3 JSON and will HOLD if required evidence is missing or typed incorrectly.`;
+      }
       fields.innerHTML = required[type].map((field) => {
         const value = example.evidence[field];
         const inputType = typeof value === "number" ? "number" : "text";

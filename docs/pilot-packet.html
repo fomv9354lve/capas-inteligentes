@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CAPAS Pilot Packet | Evidence Gate Deployment</title>
+  <meta name="description" content="Pilot packet for deploying CAPAS as a two-week scientific training-data assurance workflow.">
+  <style>
+    :root { --bg:#09090b; --surface:#111113; --panel:#18181b; --border:#27272a; --text:#fafafa; --muted:#a1a1aa; --quiet:#8d8d99; --accent:#7c7fff; --green:#22c55e; --orange:#f97316; --radius:12px; --font:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--text); font-family:var(--font); line-height:1.5; }
+    header, main, footer { width:min(1120px, calc(100% - 40px)); margin:0 auto; }
+    header { display:flex; justify-content:space-between; align-items:center; gap:14px; padding:18px 0; border-bottom:1px solid var(--border); }
+    .brand { font-weight:800; }
+    .nav { display:flex; flex-wrap:wrap; gap:8px; }
+    a { color:inherit; }
+    .button { display:inline-flex; align-items:center; justify-content:center; min-height:34px; padding:7px 12px; border:1px solid var(--border); border-radius:8px; background:var(--panel); color:var(--text); text-decoration:none; font-size:13px; font-weight:700; }
+    .button.primary { background:var(--accent); border-color:transparent; color:white; }
+    .hero { padding:44px 0 28px; border-bottom:1px solid var(--border); }
+    .eyebrow { color:var(--accent); font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:.9px; }
+    h1 { max-width:880px; margin:10px 0 14px; font-size:clamp(34px,6vw,58px); line-height:1.02; }
+    h2 { margin:0 0 12px; font-size:22px; }
+    p, li { color:var(--muted); }
+    section { padding:28px 0; border-bottom:1px solid var(--border); }
+    .timeline { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:10px; }
+    .step, .card { border:1px solid var(--border); border-radius:var(--radius); background:var(--surface); padding:15px; }
+    .step strong { display:block; color:var(--accent); margin-bottom:6px; }
+    .grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; }
+    .note { color:var(--quiet); font-size:12px; }
+    footer { padding:24px 0 40px; color:var(--quiet); font-size:12px; }
+    @media (max-width:860px) { header { flex-direction:column; align-items:flex-start; } .timeline, .grid { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">CAPAS Pilot Packet</div>
+    <nav class="nav" aria-label="Pilot packet navigation">
+      <a class="button primary" href="app.html">Open app</a>
+      <a class="button" href="customer-brief.html">Customer brief</a>
+      <a class="button" href="index.html">Product story</a>
+    </nav>
+  </header>
+  <main>
+    <section class="hero">
+      <div class="eyebrow">Two-week deployment packet</div>
+      <h1>Stand up a governed evidence-gating workflow without pretending the browser certifies truth.</h1>
+      <p>CAPAS packages claim typing, deterministic gating, human confirmation, batch reporting, and provenance blockers into a pilot that a technical team can measure and a steering committee can understand.</p>
+    </section>
+    <section>
+      <h2>Delivery path</h2>
+      <div class="timeline">
+        <div class="step"><strong>1. Scope</strong><span>Select corpus, owner, reviewer, and baseline review process.</span></div>
+        <div class="step"><strong>2. Ingest</strong><span>Bring paper text, metadata exports, theorem notes, or structured records.</span></div>
+        <div class="step"><strong>3. Confirm</strong><span>Human reviewer approves candidate spans before CAPAS decides.</span></div>
+        <div class="step"><strong>4. Gate</strong><span>Run single/batch CAPAS decisions with schema v3 evidence contracts.</span></div>
+        <div class="step"><strong>5. Read out</strong><span>Deliver decision mix, exception queue, provenance blockers, and ROI model.</span></div>
+      </div>
+    </section>
+    <section>
+      <h2>Buyer-ready artifacts</h2>
+      <div class="grid">
+        <div class="card"><strong>Audit export</strong><p>CSV/JSON with verdict, reason, schema version, record ID, evidence fields, and provenance blockers.</p></div>
+        <div class="card"><strong>Exception queue</strong><p>HOLD/REWRITE/REJECT records routed for expert adjudication and wording repair.</p></div>
+        <div class="card"><strong>Capacity model</strong><p>Baseline review minutes compared with CAPAS-guided triage minutes and measured pilot deltas.</p></div>
+      </div>
+    </section>
+    <section>
+      <h2>Required footnotes</h2>
+      <ul class="note">
+        <li>CAPAS outputs are deterministic gates over supplied evidence fields, not LLM judgments.</li>
+        <li>Fine-tune readiness requires CLI/API provenance checks for source hashes, RO-Crate packets, witness registries, review hashes, and reviewer attestations.</li>
+        <li>All third-party source materials remain subject to their original license, confidentiality, copyright, and database-right constraints.</li>
+        <li>Stress-test and planning metrics are not customer production claims unless separately measured and approved.</li>
+      </ul>
+    </section>
+  </main>
+  <footer>Use this packet with the customer brief, ROI assumptions, and the live CAPAS app. Source markdown is kept in the repository for auditability.</footer>
+</body>
+</html>

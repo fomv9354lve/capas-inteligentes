@@ -67,7 +67,7 @@ The wedge is the combination of:
 
 Two-week pilot:
 
-- 500 candidate claims from one vertical corpus.
+- 500 structured evidence records from one vertical corpus.
 - One vertical: AI governance, pharma evidence review, finance model risk, journal reproducibility, or materials R&D.
 - CAPAS batch run with human spot adjudication.
 - 100-decision senior-review sample.
@@ -82,9 +82,10 @@ Success metrics:
 
 ## 8. ROI model
 
-Default simulated pilot:
+Default planning model:
 
-- 1,000 candidate claims.
+- 1,000 structured records.
+- 10,000 structured payload records stress-tested across UI/CLI validation surfaces.
 - 30 minutes manual review per claim.
 - 5 minutes CAPAS-guided triage per claim.
 - 417 senior-review hours avoided.
@@ -97,7 +98,7 @@ Formula:
 
 `capacity value = hours avoided * expert_hourly_rate`
 
-This is a capacity model. The pilot validates the actual baseline and triage time.
+This is a capacity model. The pilot validates the actual baseline and triage time; it is not a guarantee of booked savings.
 
 ## 9. Demo flow
 

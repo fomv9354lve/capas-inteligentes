@@ -7,7 +7,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 PRODUCT = ROOT / "docs" / "product.html"
 BRIEF = ROOT / "docs" / "CUSTOMER_READY_BRIEF.md"
+BRIEF_HTML = ROOT / "docs" / "customer-brief.html"
 DECK = ROOT / "docs" / "PARTNER_DECK.md"
+PACKET_HTML = ROOT / "docs" / "pilot-packet.html"
 METRICS = ROOT / "outputs" / "pilot_metrics.json"
 UI = ROOT / "outputs" / "capas_claim_gate_ui.html"
 REPORT = ROOT / "outputs" / "customer_product_assets_report.json"
@@ -24,10 +26,12 @@ ARGILLA_EXAMPLE = ROOT / "examples" / "argilla_capas_record.json"
 
 
 REQUIRED = {
-    "landing page with narrative": (PRODUCT, ["Training Data Assurance for Scientific AI", "Stop weak scientific claims", "Big 3 consulting wedge"]),
+    "landing page with narrative": (PRODUCT, ["Training Data Assurance for Scientific AI", "Stop weak scientific claims", "Advisory delivery wedge"]),
     "landing page screenshots": (PRODUCT, ["CAPAS screenshot mock", "ACCEPT", "RO-Crate pending"]),
-    "product business case": (PRODUCT, ["The so what", "Business case model", "417 senior-review hours"]),
-    "guided no-code form": (UI, ["Guided claim builder", "The no-code builder redraws required evidence fields", "buildGuidedPayload", "Build JSON from form", "evidence field for"]),
+    "product business case": (PRODUCT, ["The so what", "Business case model", "417 senior-review hours", "10k", "Modeling notes"]),
+    "designed customer brief": (BRIEF_HTML, ["Customer brief", "Training-data assurance", "Planning metrics", "Disclaimers"]),
+    "designed pilot packet": (PACKET_HTML, ["CAPAS Pilot Packet", "Delivery path", "Buyer-ready artifacts", "Required footnotes"]),
+    "guided no-code form": (UI, ["Guided evidence constructor", "Evidence contract", "builder-preview", "buildGuidedPayload", "Build JSON from form", "evidence field for"]),
     "paper text ingestion": (UI, ["Paper / text ingestion", "extractCandidateClaims", "candidate claims extracted from paper or text", "Evidence spans", "evidence_spans", "parseBooleanEvidenceValue", "numberPattern", "parseFloat"]),
     "human in the loop": (UI, ["Confirm & build payload", "human_confirmed", "CAPAS will not decide unconfirmed candidates"]),
     "local metadata adapter": (UI, ["normalizeLocalMetadataExport", "local_semantic_scholar_pubmed_metadata_adapter", "DOI / external ID", "Paper title"]),
@@ -43,14 +47,14 @@ REQUIRED = {
     "customer-facing docs": (BRIEF, ["One-page value proposition", "Customer-facing caveat", "Integration story"]),
     "sensitive data mode": (UI, ["sensitive-mode-toggle", "Sensitive mode", "redacted in sensitive data mode"]),
     "integration story": (BRIEF, ["GitHub Action", "Semantic Scholar", "Elicit"]),
-    "case study": (BRIEF, ["CAPAS gated 1,000 candidate training claims", "230 rewritten", "110 rejected"]),
+    "case study": (BRIEF, ["CAPAS gated 1,000 structured evidence records", "10,000 structured payload records", "230 rewritten", "110 rejected"]),
     "partner deck": (DECK, ["Training Data Assurance for Scientific AI", "two-week pilot", "ROI model", "Buyer ask"]),
     "canonical schema registry": (SCHEMA_REGISTRY, ["Canonical URL", "capas-claim-payload-v3", "schema/v3/capas_claim_payload.schema.json"]),
     "canonical schema file": (CANONICAL_SCHEMA, ["https://fomv9354lve.github.io/capas-inteligentes/schema/v3/capas_claim_payload.schema.json", "capas-claim-payload-v3"]),
     "enterprise integration pack": (ENTERPRISE_PACK, ["GET /decisions", "POST /provenance-check", "Label Studio", "Hugging Face Datasets"]),
     "provenance registry operations": (PROVENANCE_OPS, ["review packet SHA-256", "witness ID in registry", "RO-Crate metadata hash"]),
     "security compliance appendix": (SECURITY_APPENDIX, ["Optional bearer token", "Workspace-scoped JSONL audit log", "training-data provenance"]),
-    "pilot ROI business case": (PILOT_ROI, ["1,000 claims", "417 hours", "USD 83,400"]),
+    "pilot ROI business case": (PILOT_ROI, ["1,000 structured records", "417 hours", "USD 83,400", "10,000 structured CAPAS payload records"]),
     "paper ingestion connectors": (PAPER_CONNECTORS, ["browser preview", "local CLI pipeline", "Semantic Scholar/PubMed-like metadata"]),
     "huggingface metadata example": (HF_EXAMPLE, ["capas_schema_version", "capas_decision_json"]),
     "label studio handoff example": (LABEL_STUDIO_EXAMPLE, ["claim_type", "source_span", "capas_schema_version"]),
@@ -81,7 +85,8 @@ def main() -> int:
         "check": "case study rates match brief",
         "passed": metrics.get("rates", {}).get("rewritten") == 0.23
         and metrics.get("rates", {}).get("rejected") == 0.11
-        and metrics.get("rates", {}).get("fine_tune_ready") == 0.04,
+        and metrics.get("rates", {}).get("fine_tune_ready") == 0.04
+        and metrics.get("stress_test_record_count") == 10000,
         "path": str(METRICS.relative_to(ROOT)),
         "missing": [],
     })

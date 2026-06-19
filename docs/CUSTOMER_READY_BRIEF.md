@@ -46,12 +46,12 @@ After CAPAS:
 
 ## Two-week pilot design
 
-Scope: 500 candidate scientific training claims from one vertical corpus.
+Scope: 500 structured scientific evidence records from one vertical corpus.
 
 Pilot steps:
 
 1. Select one vertical: AI governance, pharma evidence review, academic journal reproducibility, or finance model-risk.
-2. Convert 500 candidate claims into CAPAS payloads using the guided form, CLI, or upstream extraction adapter.
+2. Convert 500 source-backed records into CAPAS payloads using the guided form, CLI, or upstream extraction adapter.
 3. Run CAPAS batch gate.
 4. Sample 100 decisions for senior-review adjudication.
 5. Measure reviewer agreement, false rejects, rewrite acceptance, provenance blocker rate, and time saved.
@@ -65,7 +65,7 @@ Pilot success metrics:
 
 ## Simulated case study
 
-Illustrative run: CAPAS gated 1,000 candidate training claims.
+Illustrative planning run: CAPAS gated 1,000 structured evidence records. Separately, the UI/CLI surface is stress-tested against 10,000 structured payload records.
 
 - 620 accepted for ordinary downstream use.
 - 230 rewritten before reuse.
@@ -87,7 +87,7 @@ Core formula:
 
 Default pilot model:
 
-- 1,000 claims.
+- 1,000 structured records.
 - 30 manual minutes per claim.
 - 5 CAPAS-guided triage minutes per claim.
 - USD 180/hour senior reviewer loaded cost.
@@ -115,7 +115,7 @@ Live demo sequence:
 
 These are working hypotheses, not published pricing:
 
-- Two-week pilot: USD 15k-25k for 500 claims, setup, adjudication support, and executive readout.
+- Two-week pilot: USD 15k-25k for 500 records, setup, adjudication support, and executive readout.
 - Team tier: USD 2k-5k per month for guided review, local history/export, and schema-governed batch workflows.
 - Enterprise/API tier: USD 50k-150k per year for CLI/API integration, GitHub Action enforcement, provenance registry integration, and support for regulated corpora.
 
@@ -143,7 +143,7 @@ Upstream integration story:
 4. Provenance: source hashes, RO-Crate, reviewer attestation, and witness registry blockers are resolved through CLI/API surfaces.
 5. Approve: only fine-tune-ready positives enter governed training datasets.
 
-This lets a consulting or enterprise AI team sell a concrete operating model, not only a technical validator.
+This lets an advisory or enterprise AI team deliver a concrete operating model, not only a technical validator.
 
 ## Paper/theory ingestion boundary
 
@@ -152,6 +152,13 @@ CAPAS can ingest pasted paper text, abstracts, theorem notes, local text/Markdow
 ## Sensitive data mode
 
 Sensitive mode disables payload-embedded share URLs and redacts payload/decision fields in CSV export. This is intended for demos and regulated workflows where claim text, source IDs, reviewer IDs, or provenance paths must not leave the local review context.
+
+## IP, licensing, and data-handling notes
+
+- CAPAS does not grant rights to reuse source papers, abstracts, tables, figures, datasets, or proprietary review packets.
+- Payload URLs can embed claim text, source references, reviewer IDs, witness IDs, and provenance paths. Use Sensitive mode or app-only sharing when that content is confidential, licensed, or regulated.
+- Exported CSV/JSON artifacts should be treated as audit material. They may inherit the confidentiality and license constraints of the underlying source corpus.
+- Pilot results should distinguish measured production outcomes from planning assumptions, stress tests, and simulated decision mixes.
 
 ## Customer-facing caveat
 

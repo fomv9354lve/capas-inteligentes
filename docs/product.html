@@ -66,6 +66,8 @@
     }
     .metric strong { display: block; font-size: 28px; line-height: 1; }
     .metric span, .card span { color: var(--quiet); font-size: 13px; }
+    .footnotes { color: var(--quiet); font-size: 12px; line-height: 1.6; }
+    .footnotes ol { margin: 8px 0 0; padding-left: 18px; }
     .screen { background: linear-gradient(180deg, var(--surface), #0c0c0e); box-shadow: 0 18px 60px rgba(0,0,0,0.35); }
     .screen-bar { display: flex; gap: 6px; padding-bottom: 12px; border-bottom: 1px solid var(--border); margin-bottom: 12px; }
     .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); }
@@ -91,7 +93,7 @@
     <div class="brand">CAPAS Claim Gate</div>
     <nav class="nav" aria-label="Product navigation">
       <a class="button" href="app.html">Open app</a>
-      <a class="button" href="CUSTOMER_READY_BRIEF.md">Customer brief</a>
+      <a class="button" href="customer-brief.html">Customer brief</a>
       <a class="button primary" href="https://github.com/fomv9354lve/capas-inteligentes">Source</a>
     </nav>
   </header>
@@ -103,14 +105,14 @@
         <p>CAPAS turns paper text, theorem notes, or supplied scientific evidence into auditable ACCEPT, REWRITE, REJECT, or HOLD workflows. It is not another LLM fact-checker; it is a deterministic control layer for scientific training-data governance.</p>
         <div class="nav">
           <a class="button primary" href="app.html#gate">Run the live gate</a>
-          <a class="button" href="CUSTOMER_READY_BRIEF.md">Read pilot plan</a>
-          <a class="button" href="PARTNER_DECK.md">Partner deck</a>
+          <a class="button" href="customer-brief.html">Open customer brief</a>
+          <a class="button" href="pilot-packet.html">Open pilot packet</a>
         </div>
         <div class="metrics">
-          <div class="metric"><strong>1,000</strong><span>candidate training claims in simulated pilot</span></div>
+          <div class="metric"><strong>10k</strong><span>structured evidence records stress-tested<sup>1</sup></span></div>
           <div class="metric"><strong>23%</strong><span>rewritten before reuse</span></div>
           <div class="metric"><strong>11%</strong><span>rejected before downstream risk</span></div>
-          <div class="metric"><strong>417h</strong><span>review effort avoided vs manual pass</span></div>
+          <div class="metric"><strong>417h</strong><span>review capacity modeled<sup>2</sup></span></div>
         </div>
       </div>
       <div class="screen" aria-label="CAPAS screenshot mock">
@@ -138,29 +140,38 @@
     </section>
     <section>
       <h2>Business case model</h2>
-      <p>For a 1,000-claim scientific corpus, the pilot model assumes 30 minutes of manual expert review per claim versus 5 minutes of CAPAS-guided triage. That yields roughly 417 senior-review hours avoided before counting the cost of downstream errors, compliance review, or dataset rework.</p>
+      <p>For a 1,000-record scientific corpus, the model compares 30 minutes of manual expert review per record with 5 minutes of CAPAS-guided triage. That yields roughly 417 senior-review hours redirected toward exceptions, adjudication, provenance resolution, and dataset remediation.</p>
       <div class="metrics">
         <div class="metric"><strong>34%</strong><span>rewritten or rejected before reuse</span></div>
         <div class="metric"><strong>40</strong><span>fine-tune-ready positives after provenance verification</span></div>
         <div class="metric"><strong>2 weeks</strong><span>recommended first pilot window</span></div>
-        <div class="metric"><strong>500</strong><span>claims for first customer pilot</span></div>
+        <div class="metric"><strong>500</strong><span>records for first controlled pilot</span></div>
       </div>
     </section>
     <section>
       <h2>Product surfaces buyers can inspect</h2>
       <div class="screens">
         <div class="card"><strong>Paper/text ingestion</strong><p>Paste an abstract, theorem note, or source text; CAPAS proposes candidate claims with evidence spans for human confirmation.</p></div>
-        <div class="card"><strong>No-code guided form</strong><p>Create a claim without writing raw JSON. CAPAS still emits the full schema payload.</p></div>
+        <div class="card"><strong>Guided evidence constructor</strong><p>Create a typed evidence packet without writing raw JSON. CAPAS still emits the full schema payload for audit, CLI, and API use.</p></div>
         <div class="card"><strong>Batch/provenance dashboard</strong><p>Track ACCEPT, REWRITE, REJECT, fine-tune-ready, and provenance-blocked counts.</p></div>
       </div>
     </section>
     <section>
       <h2>Primary buyer story</h2>
-      <p>For AI governance and scientific data teams, CAPAS answers the question: which candidate claims are safe enough to reuse, publish, or send into model fine-tuning? The economic case is fewer senior-review hours, fewer unlicensed claims in training sets, and a defensible audit trail when downstream users ask why a claim was accepted.</p>
+      <p>For AI governance and scientific data teams, CAPAS answers the question: which structured evidence records are sufficiently licensed for reuse, publication workflows, or fine-tuning preparation? The economic case is fewer senior-review hours spent on routine cases, fewer unlicensed claims in training sets, and a defensible audit trail when downstream users ask why a claim was accepted.</p>
     </section>
     <section>
-      <h2>Big 3 consulting wedge</h2>
-      <p>The consulting story is not "install a validator." It is "stand up a training-data assurance control in two weeks." A partner can sell CAPAS as a governed workflow: ingest candidate claims, confirm evidence spans, gate them deterministically, export an audit packet, and quantify avoided review effort for the steering committee.</p>
+      <h2>Advisory delivery wedge</h2>
+      <p>The transformation story is not "install a validator." It is "stand up a training-data assurance control in two weeks." A delivery partner can package CAPAS as a governed workflow: ingest source material, confirm evidence spans, gate records deterministically, export an audit packet, and quantify review capacity redirected to higher-risk exceptions.</p>
+    </section>
+    <section class="footnotes" aria-label="Modeling notes and disclaimers">
+      <h2>Modeling notes</h2>
+      <ol>
+        <li>Stress-test counts refer to structured CAPAS payload and UI/CLI validation runs, not a public customer production deployment.</li>
+        <li>Review-capacity estimates are planning assumptions. They are not booked savings and must be calibrated against an organization's actual review baseline.</li>
+        <li>CAPAS gates supplied evidence fields. It does not infer hidden evidence, provide legal advice, certify broad scientific truth, or replace external review.</li>
+        <li>Customer documents, schemas, and provenance packets may contain proprietary or licensed material. Do not share payload URLs or exports containing sensitive claim text, reviewer identifiers, source paths, or third-party licensed content without permission.</li>
+      </ol>
     </section>
   </main>
   <footer>
