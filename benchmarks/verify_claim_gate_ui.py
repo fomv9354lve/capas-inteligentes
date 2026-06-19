@@ -32,6 +32,14 @@ REQUIRED_SNIPPETS = [
     "prefers-color-scheme: light",
     "disabled>Copy JSON",
     "minmax(380px, 40%)",
+    "Build Draft",
+    "Draft built, not decided",
+    "renderSchemaAssistant",
+    "Missing field assistant",
+    "explainSchemaError",
+    "CAPAS will not infer them",
+    "role=\"button\" tabindex=\"0\"",
+    "handleHistoryKey",
 ]
 
 

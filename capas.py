@@ -1133,7 +1133,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
   }
   .sample-btn:hover { opacity: 0.75; transform: translateY(-1px); }
   .sample-btn:active { transform: translateY(0); }
-  .sample-btn:focus-visible, .decide-btn:focus-visible, .copy-btn:focus-visible, .history-item:focus-visible, #input:focus-visible {
+  .sample-btn:focus-visible, .decide-btn:focus-visible, .draft-btn:focus-visible, .copy-btn:focus-visible, .history-item:focus-visible, #input:focus-visible {
     outline: 2px solid #60a5fa;
     outline-offset: 2px;
   }
@@ -1185,6 +1185,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
   }
   .json-status.valid { color: #4ade80; }
   .json-status.invalid { color: #f87171; }
+  .action-row { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid #2d3748; }
   .decide-btn {
     width: 100%;
     padding: 11px;
@@ -1200,6 +1201,20 @@ def _render_ui(sample: dict[str, Any]) -> str:
     justify-content: center;
     gap: 8px;
   }
+  .draft-btn {
+    width: 100%;
+    padding: 11px;
+    background: #2d3748;
+    color: #cbd5e1;
+    border: none;
+    border-right: 1px solid #1f2937;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .draft-btn:hover { background: #334155; }
+  .draft-btn:active { transform: translateY(1px); }
   .decide-btn:hover { background: #2563eb; }
   .decide-btn:active { transform: translateY(1px); }
   .decide-btn.processing { background: #1d4ed8; }
@@ -1214,6 +1229,10 @@ def _render_ui(sample: dict[str, Any]) -> str:
   .alert-block { margin: 10px 14px; padding: 10px 12px; border-radius: 7px; font-size: 12px; line-height: 1.6; }
   .alert-block.missing { background: #1c1000; border: 1px solid #78350f; color: #fbbf24; }
   .alert-block.errors { background: #160404; border: 1px solid #7f1d1d; color: #fca5a5; }
+  .assist-block { margin: 10px 14px; padding: 10px 12px; border-radius: 7px; background: #08111f; border: 1px solid #1d4ed8; color: #bfdbfe; font-size: 12px; line-height: 1.6; }
+  .assist-block code { color: #dbeafe; }
+  .assist-block pre { margin: 8px 0 0; max-height: 180px; overflow: auto; background: #020617; border: 1px solid #1e3a8a; border-radius: 6px; padding: 8px; color: #bfdbfe; }
+  .assist-muted { color: #93c5fd; }
   .alert-title { font-weight: 800; margin-bottom: 5px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
   .alert-block ul { margin: 4px 0 0 0; padding-left: 16px; }
   .rewrite-block { margin: 10px 14px; padding: 10px 12px; border-radius: 7px; background: #140e00; border: 1px solid #92400e; font-size: 12px; color: #fcd34d; }
@@ -1287,7 +1306,10 @@ def _render_ui(sample: dict[str, Any]) -> str:
       </div>
       <textarea id="input" spellcheck="false" aria-label="Claim and evidence JSON input" aria-describedby="json-status" oninput="onInputChange()">__SAMPLE_JSON__</textarea>
       <div class="json-status" id="json-status">Waiting for input...</div>
-      <button class="decide-btn" id="decide-btn" aria-label="Decide claim verdict" onclick="decide()">Decide <span class="decide-hint">⌘↵</span></button>
+      <div class="action-row">
+        <button class="draft-btn" id="draft-btn" aria-label="Build draft claim JSON without deciding" onclick="buildDraft()">Build Draft</button>
+        <button class="decide-btn" id="decide-btn" aria-label="Decide claim verdict" onclick="decide()">Decide <span class="decide-hint">⌘↵</span></button>
+      </div>
     </div>
   </div>
 
@@ -1330,6 +1352,41 @@ def _render_ui(sample: dict[str, Any]) -> str:
     const historyLimit = 50;
     const historyStorageKey = "capas_decision_history_v1";
     let decisionHistory = loadHistory();
+
+    const fieldHelp = {
+      "payload": "Paste one JSON object at the root, not an array or loose text, before the strict gate can decide.",
+      "claim": "Add a claim object with id, type, and text. CAPAS decides claims, not raw prose.",
+      "evidence": "Add an evidence object with the measured fields that support or limit the claim.",
+      "claim.id": "Give this claim a stable non-empty identifier so the decision can be audited later.",
+      "claim.type": `Choose one supported claim type: ${claimTypes.join(", ")}.`,
+      "claim.text": "Write the exact sentence the evidence is allowed to license.",
+      "abs_error": "Numerical absolute error between the computed value and the declared reference.",
+      "tolerance": "Maximum allowed error for this exact-model claim.",
+      "within_chemical_accuracy": "Boolean verdict from the chemistry evidence layer; true only when the threshold was actually met.",
+      "anchor_mode": "Use absolute_anchor only when the witness is a fixed theoretical value or scaling law, not another guess.",
+      "local_property_tests_pass": "Whether local/problem-specific checks passed.",
+      "universal_anchor_pass": "Whether the independent universal anchor passed.",
+      "upgrade_evidence_present": "Whether explicit evidence exists to license the stronger upgraded claim."
+    };
+
+    const minimalExamples = {
+      exact_model_solution: {
+        claim: { id: "draft_exact_model_solution", type: "exact_model_solution", text: "The model solution is within the declared tolerance." },
+        evidence: { abs_error: 0.0002, tolerance: 0.0016 }
+      },
+      physical_accuracy: {
+        claim: { id: "draft_physical_accuracy", type: "physical_accuracy", text: "The calculation is within the declared physical accuracy threshold." },
+        evidence: { within_chemical_accuracy: true }
+      },
+      universal_anchor_claim: {
+        claim: { id: "draft_universal_anchor", type: "universal_anchor_claim", text: "The generated result is consistent with the universal anchor." },
+        evidence: { anchor_mode: "absolute_anchor", local_property_tests_pass: true, universal_anchor_pass: true }
+      },
+      claim_transition: {
+        claim: { id: "draft_claim_transition", type: "claim_transition", text: "The stronger claim is licensed by explicit upgrade evidence." },
+        evidence: { upgrade_evidence_present: false, current_claim: "weaker current claim only" }
+      }
+    };
 
     function containsAngleLikeCharacter(value) {
       return disallowedAngleRegex.test(value);
@@ -1489,14 +1546,120 @@ def _render_ui(sample: dict[str, Any]) -> str:
       let html = `<div class="verdict-banner"><span class="verdict-badge ${verdict}">${verdict}</span><span class="verdict-reason">${escHtml(result.reason)}</span></div>`;
       if (result.schema_errors && result.schema_errors.length) {
         html += `<div class="alert-block errors"><div class="alert-title">Schema errors</div><ul>${result.schema_errors.map((e) => `<li>${escHtml(e)}</li>`).join("")}</ul></div>`;
+        html += renderSchemaAssistant(result.schema_errors);
       }
       if (result.missing_fields && result.missing_fields.length) {
         html += `<div class="alert-block missing"><div class="alert-title">Missing required fields</div><ul>${result.missing_fields.map((f) => `<li><code>${escHtml(f)}</code></li>`).join("")}</ul></div>`;
+        html += renderMissingAssistant(result);
       }
       if (result.rewrite) {
         html += `<div class="rewrite-block"><div class="alert-title">Licensed rewrite</div><div class="rewrite-text">"${escHtml(result.rewrite)}"</div></div>`;
       }
       document.getElementById("verdict-area").innerHTML = html;
+    }
+
+    function renderSchemaAssistant(errors) {
+      const tips = errors.map((error) => `<li>${escHtml(explainSchemaError(error))}</li>`).join("");
+      const example = minimalExamples.exact_model_solution;
+      return (
+        `<div class="assist-block"><div class="alert-title">How to make this evaluable</div>` +
+        `<div class="assist-muted">This is still a HOLD. The assistant only explains structure; it does not license the claim.</div>` +
+        `<ul>${tips}</ul>` +
+        `<pre>${escHtml(JSON.stringify(example, null, 2))}</pre></div>`
+      );
+    }
+
+    function renderMissingAssistant(result) {
+      const type = result.input_claim?.type;
+      const example = minimalExamples[type] || minimalExamples.exact_model_solution;
+      const tips = result.missing_fields.map((field) => `<li><code>${escHtml(field)}</code>: ${escHtml(fieldHelp[field] || "Required evidence field for this claim type.")}</li>`).join("");
+      return (
+        `<div class="assist-block"><div class="alert-title">Missing field assistant</div>` +
+        `<div class="assist-muted">Fill these fields, then run Decide again. CAPAS will not infer them.</div>` +
+        `<ul>${tips}</ul>` +
+        `<pre>${escHtml(JSON.stringify(example, null, 2))}</pre></div>`
+      );
+    }
+
+    function explainSchemaError(error) {
+      if (error.includes("payload must be a JSON object")) return fieldHelp.payload;
+      if (error.includes("claim must be an object")) return fieldHelp.claim;
+      if (error.includes("evidence must be an object")) return fieldHelp.evidence;
+      if (error.includes("claim.id must be a non-empty string")) return fieldHelp["claim.id"];
+      if (error.includes("claim.type must be a non-empty string")) return fieldHelp["claim.type"];
+      if (error.includes("claim.type must be one of")) return fieldHelp["claim.type"];
+      if (error.includes("claim.text must be a non-empty string")) return fieldHelp["claim.text"];
+      if (error.includes("abs_error")) return fieldHelp.abs_error;
+      if (error.includes("tolerance")) return fieldHelp.tolerance;
+      if (error.includes("within_chemical_accuracy")) return fieldHelp.within_chemical_accuracy;
+      if (error.includes("anchor_mode")) return fieldHelp.anchor_mode;
+      if (error.includes("local_property_tests_pass")) return fieldHelp.local_property_tests_pass;
+      if (error.includes("universal_anchor_pass")) return fieldHelp.universal_anchor_pass;
+      if (error.includes("upgrade_evidence_present")) return fieldHelp.upgrade_evidence_present;
+      return "Fix this schema issue before the strict gate can evaluate the claim.";
+    }
+
+    function inferClaimType(raw, parsed) {
+      const text = `${raw} ${JSON.stringify(parsed || {})}`.toLowerCase();
+      if (text.includes("universal") || text.includes("anchor") || text.includes("local_property")) return "universal_anchor_claim";
+      if (text.includes("upgrade") || text.includes("stronger claim") || text.includes("current_claim")) return "claim_transition";
+      if (text.includes("chemical accuracy") || text.includes("within_chemical_accuracy") || text.includes("experiment")) return "physical_accuracy";
+      if (text.includes("abs_error") || text.includes("tolerance") || text.includes("error") || text.includes("ground state")) return "exact_model_solution";
+      return "exact_model_solution";
+    }
+
+    function extractNumbers(raw) {
+      const matches = raw.match(/-?\d+(?:\.\d+)?(?:e[+-]?\d+)?/gi) || [];
+      return matches.map(Number).filter(Number.isFinite);
+    }
+
+    function buildDraft() {
+      const raw = document.getElementById("input").value.trim();
+      let parsed = null;
+      try {
+        parsed = raw ? JSON.parse(raw) : null;
+      } catch (_) {
+        parsed = null;
+      }
+      const type = parsed?.claim?.type && required[parsed.claim.type] ? parsed.claim.type : inferClaimType(raw, parsed);
+      const numbers = extractNumbers(raw);
+      const draft = {
+        claim: {
+          id: parsed?.claim?.id || "draft_claim_001",
+          type,
+          text: parsed?.claim?.text || (raw && !parsed ? raw.slice(0, 4000) : minimalExamples[type].claim.text)
+        },
+        evidence: {}
+      };
+      const sourceEvidence = parsed?.evidence && typeof parsed.evidence === "object" && !Array.isArray(parsed.evidence) ? parsed.evidence : {};
+      for (const field of required[type]) {
+        if (Object.prototype.hasOwnProperty.call(sourceEvidence, field)) {
+          draft.evidence[field] = sourceEvidence[field];
+        } else if (field === "abs_error" && numbers.length > 0) {
+          draft.evidence[field] = Math.abs(numbers[0]);
+        } else if (field === "tolerance" && numbers.length > 1) {
+          draft.evidence[field] = Math.abs(numbers[1]);
+        } else if (field === "anchor_mode") {
+          draft.evidence[field] = "absolute_anchor";
+        } else if (field === "upgrade_evidence_present") {
+          draft.evidence[field] = false;
+        } else {
+          draft.evidence[field] = null;
+        }
+      }
+      if (type === "claim_transition" && !Object.prototype.hasOwnProperty.call(draft.evidence, "current_claim")) {
+        draft.evidence.current_claim = sourceEvidence.current_claim || "weaker current claim only";
+      }
+      document.getElementById("input").value = JSON.stringify(draft, null, 2);
+      onInputChange();
+      const missing = required[type].filter((field) => draft.evidence[field] === null || draft.evidence[field] === "unknown");
+      document.getElementById("verdict-area").innerHTML =
+        `<div class="assist-block"><div class="alert-title">Draft built, not decided</div>` +
+        `<div>CAPAS prepared a candidate <code>${escHtml(type)}</code> payload. Run Decide only after the missing evidence is real.</div>` +
+        (missing.length ? `<ul>${missing.map((field) => `<li><code>${escHtml(field)}</code>: ${escHtml(fieldHelp[field])}</li>`).join("")}</ul>` : `<div class="assist-muted">No required fields are null; the strict gate can now evaluate it.</div>`) +
+        `</div>`;
+      document.getElementById("output").textContent = "";
+      setCopyEnabled(false);
     }
 
     function setCopyEnabled(enabled) {
@@ -1527,7 +1690,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
         return;
       }
       list.innerHTML = decisionHistory.map((item, index) => (
-        `<button type="button" class="history-item" onclick="restoreHistory(${index})" aria-label="Restore decision ${escHtml(item.id)}">` +
+        `<button type="button" class="history-item" role="button" tabindex="0" onclick="restoreHistory(${index})" onkeydown="handleHistoryKey(event, ${index})" aria-label="Restore decision ${escHtml(item.id)}">` +
         `<span class="history-badge ${item.verdict}">${item.verdict}</span>` +
         `<span class="history-id">${escHtml(item.id)}</span>` +
         `<span class="history-reason">${escHtml(item.reason)}</span>` +
@@ -1557,6 +1720,13 @@ def _render_ui(sample: dict[str, Any]) -> str:
       renderVerdict(item.decision);
       document.getElementById("output").textContent = JSON.stringify(item.decision, null, 2);
       setCopyEnabled(true);
+    }
+
+    function handleHistoryKey(event, index) {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        restoreHistory(index);
+      }
     }
 
     function escHtml(value) {
