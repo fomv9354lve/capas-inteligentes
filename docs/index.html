@@ -69,6 +69,7 @@
     .footnotes { color: var(--quiet); font-size: 12px; line-height: 1.6; }
     .footnotes ol { margin: 8px 0 0; padding-left: 18px; }
     .screen { background: linear-gradient(180deg, var(--surface), #0c0c0e); box-shadow: 0 18px 60px rgba(0,0,0,0.35); }
+    .demo-title { color: var(--muted); font-size: 12px; font-weight: 800; letter-spacing: .8px; text-transform: uppercase; margin-bottom: 12px; }
     .claim-flow { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; align-items: stretch; }
     .claim-flow .card { min-height: 170px; }
     .claim-flow small { display: block; color: var(--quiet); font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 10px; }
@@ -132,26 +133,13 @@
           <a class="button primary" href="app.html">Run sample claim</a>
           <a class="button" href="pilot-packet.html">See pilot package</a>
         </div>
-        <div class="metrics">
-          <div class="metric"><strong>Claim</strong><span>one scientific statement</span></div>
-          <div class="metric"><strong>Evidence</strong><span>supplied fields and spans</span></div>
-          <div class="metric"><strong>Gate</strong><span>deterministic rules</span></div>
-          <div class="metric"><strong>Audit</strong><span>exportable decision trail</span></div>
-        </div>
       </div>
       <div class="screen" aria-label="CAPAS screenshot mock">
         <div class="screen-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
-        <div class="row"><span class="badge accept">ACCEPT</span><span>evidence licenses the claim boundary</span><code>audit ready</code></div>
-        <div class="row"><span class="badge rewrite">REWRITE</span><span>association supported; causality not licensed</span><code>revise</code></div>
-        <div class="row"><span class="badge reject">REJECT</span><span>artifact unavailable for reproducibility</span><code>non-claim</code></div>
-      </div>
-    </section>
-    <section>
-      <h2>Navigate CAPAS</h2>
-      <div class="grid nav-hub" aria-label="CAPAS site index">
-        <a class="card nav-card primary" href="app.html"><strong>Run a sample claim</strong><span>Open the working app: select a workflow mode, supply evidence, run the deterministic gate, and export the audit trail.</span></a>
-        <a class="card nav-card" href="pilot-packet.html"><strong>Pilot</strong><span>Two-week delivery path, artifacts, governance assumptions, footnotes, and rollout framing.</span></a>
-        <a class="card nav-card" href="customer-brief.html"><strong>Methodology</strong><span>Why CAPAS exists, where it sits against the state of the art, and what it does not claim.</span></a>
+        <div class="demo-title">Claim drift example</div>
+        <div class="row"><span>Paper</span><span>Association observed under limited conditions</span><code>source</code></div>
+        <div class="row"><span>Dataset</span><span>Treatment causes improvement</span><code>drift</code></div>
+        <div class="row"><span class="badge rewrite">REWRITE</span><span>Association supported; causality not licensed</span><code>gate</code></div>
       </div>
     </section>
     <section>
@@ -173,21 +161,20 @@
     </section>
     <section>
       <h2>Claim Drift Example</h2>
-      <p>A strong buyer does not need more schema language. They need to see the failure mode CAPAS prevents.</p>
+      <p>CAPAS is built for the moment where a sourced scientific statement becomes a reusable data record. That is where wording drift creates downstream risk.</p>
       <div class="claim-flow" aria-label="Claim drift example">
         <div class="card"><small>Paper evidence</small><strong>Association observed</strong><p>The source reports a directional association under limited conditions. It does not establish intervention, temporal order, or confounder control.</p></div>
         <div class="card"><small>Dataset claim drift</small><strong>Causal improvement stated</strong><p>The candidate training record says the treatment causes improvement, turning a limited finding into a stronger reusable claim.</p></div>
         <div class="card decision-card"><small>CAPAS decision</small><span class="badge rewrite">REWRITE</span><p>Evidence supports association. It does not license causality. Rewrite the claim boundary before reuse.</p></div>
       </div>
     </section>
-    <section id="business-case">
-      <h2>Internal validation model</h2>
-      <p>These are planning assumptions for a controlled pilot, not customer production claims. The point of the pilot is to measure claim contamination risk, decision mix, reviewer agreement, and provenance blockers on the buyer's own corpus.</p>
-      <div class="metrics">
-        <div class="metric"><strong>34%</strong><span>rewritten or rejected before reuse</span></div>
-        <div class="metric"><strong>40</strong><span>fine-tune-ready positives after provenance verification</span></div>
-        <div class="metric"><strong>10k</strong><span>structured validation records stress-tested<sup>1</sup></span></div>
-        <div class="metric"><strong>500</strong><span>records for first controlled pilot</span></div>
+    <section>
+      <h2>Why claim admissibility?</h2>
+      <p>Datasets govern records. Provenance systems govern sources. CAPAS governs the claim itself: the exact reusable sentence and whether the supplied evidence licenses it.</p>
+      <div class="grid">
+        <div class="card"><strong>Record-level tools miss wording drift</strong><p>A dataset can have a source, license, and lineage while still containing a claim that says more than the source supports.</p></div>
+        <div class="card"><strong>Fact-checkers answer a different question</strong><p>CAPAS does not ask whether the world is true. It asks whether this evidence packet licenses this claim boundary.</p></div>
+        <div class="card"><strong>Governance needs a decision artifact</strong><p>ACCEPT, REWRITE, REJECT, and HOLD create an exception queue, not just another annotation or confidence score.</p></div>
       </div>
     </section>
     <section>
@@ -204,6 +191,23 @@
         <div class="card"><strong>Deterministic</strong><p>The decision is rule-based over supplied evidence fields, not another model judging a model.</p></div>
         <div class="card"><strong>Claim-level</strong><p>CAPAS works at the sentence-level boundary where drift actually happens.</p></div>
         <div class="card"><strong>Evidence contracts</strong><p>Each claim type has explicit admissibility criteria, blockers, and exportable reasoning.</p></div>
+      </div>
+    </section>
+    <section>
+      <h2>Navigate CAPAS</h2>
+      <div class="grid nav-hub" aria-label="CAPAS site index">
+        <a class="card nav-card primary" href="app.html"><strong>Run a sample claim</strong><span>Open the working app: select a workflow mode, supply evidence, run the deterministic gate, and export the audit trail.</span></a>
+        <a class="card nav-card" href="pilot-packet.html"><strong>Pilot</strong><span>Two-week delivery path, artifacts, governance assumptions, footnotes, and rollout framing.</span></a>
+        <a class="card nav-card" href="customer-brief.html"><strong>Methodology</strong><span>Why CAPAS exists, where it sits against the state of the art, and what it does not claim.</span></a>
+      </div>
+    </section>
+    <section id="business-case">
+      <h2>Internal validation model</h2>
+      <p>These are planning assumptions for a controlled pilot, not customer production claims. Keep them below the product thesis: the pilot should measure claim contamination risk, decision mix, reviewer agreement, and provenance blockers on the buyer's own corpus.</p>
+      <div class="grid">
+        <div class="card"><strong>Internal stress test</strong><p>10k structured validation records were used to exercise schema and decision paths. This is not a public production deployment claim.</p></div>
+        <div class="card"><strong>Modeled decision mix</strong><p>34% rewritten or rejected in the internal validation model. Actual rate is corpus-dependent and must be measured in pilot.</p></div>
+        <div class="card"><strong>First pilot size</strong><p>Start with 500 records, then report decision mix, claim contamination examples, and provenance blockers.</p></div>
       </div>
     </section>
     <section>
