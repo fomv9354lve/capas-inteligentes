@@ -1258,6 +1258,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
     --text-1: #09090b;
     --text-2: #52525b;
     --text-3: #6f6f7a;
+    --accent: #4f46e5;
     --draft: #b45309;
     --json-key: #1d4ed8;
     --json-string: #15803d;
@@ -1515,6 +1516,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
       --text-1: #09090b;
       --text-2: #52525b;
       --text-3: #6f6f7a;
+      --accent: #4f46e5;
       --draft: #b45309;
       --json-key: #1d4ed8;
       --json-string: #15803d;
@@ -1572,7 +1574,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
         <span class="panel-title">Input JSON</span>
         <span class="panel-tag" id="type-label"></span>
       </div>
-      <textarea id="input" spellcheck="false" aria-label="Claim and evidence JSON input" aria-describedby="json-status" oninput="onInputChange()">__SAMPLE_JSON__</textarea>
+      <textarea id="input" spellcheck="false" aria-label="Claim and evidence JSON input" aria-describedby="json-status" oninput="scheduleInputChange()">__SAMPLE_JSON__</textarea>
       <div class="json-status" id="json-status">Waiting for input...</div>
       <div class="action-row">
         <button class="draft-btn" id="draft-btn" aria-label="Build draft claim JSON without deciding" onclick="buildDraft()">Build Draft</button>
@@ -1631,6 +1633,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
     const themeStorageKey = "capas_theme_v1";
     let decisionHistory = loadHistory();
     let lastOutputJson = "";
+    let inputChangeTimer = null;
     const fineTuneBlockers = [
       "no blind or external inference review is attached",
       "CAPAS gates supplied structured evidence; it does not infer hidden evidence",
@@ -2150,7 +2153,9 @@ def _render_ui(sample: dict[str, Any]) -> str:
       }
       const button = document.getElementById("theme-toggle");
       if (button) {
-        button.textContent = normalized === "light" ? "Light" : normalized === "dark" ? "Dark" : "Theme";
+        const label = normalized === "light" ? "Light" : normalized === "dark" ? "Dark" : "System";
+        button.textContent = label;
+        button.setAttribute("aria-label", `Current theme: ${label}. Toggle light, dark, and system theme.`);
       }
     }
 
@@ -2173,7 +2178,13 @@ def _render_ui(sample: dict[str, Any]) -> str:
       return String(value).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
     }
 
+    function scheduleInputChange() {
+      clearTimeout(inputChangeTimer);
+      inputChangeTimer = setTimeout(onInputChange, 300);
+    }
+
     function onInputChange() {
+      clearTimeout(inputChangeTimer);
       const raw = document.getElementById("input").value.trim();
       const status = document.getElementById("json-status");
       const input = document.getElementById("input");

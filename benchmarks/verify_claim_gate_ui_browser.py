@@ -44,12 +44,16 @@ HARNESS = r"""
     ok("share_button_exists", document.getElementById("share-btn"));
     ok("export_button_exists", document.getElementById("export-btn"));
     ok("theme_button_exists", document.getElementById("theme-toggle"));
+    ok("theme_button_initial_system", document.getElementById("theme-toggle").textContent === "System");
     toggleTheme();
     ok("theme_toggle_sets_light", document.documentElement.dataset.theme === "light");
+    ok("theme_button_labels_light", document.getElementById("theme-toggle").textContent === "Light");
     toggleTheme();
     ok("theme_toggle_sets_dark", document.documentElement.dataset.theme === "dark");
+    ok("theme_button_labels_dark", document.getElementById("theme-toggle").textContent === "Dark");
     toggleTheme();
     ok("theme_toggle_returns_system", !document.documentElement.dataset.theme);
+    ok("theme_button_labels_system", document.getElementById("theme-toggle").textContent === "System");
     localStorage.removeItem("capas_decision_history_v1");
     document.getElementById("input").value = "";
     decide();
