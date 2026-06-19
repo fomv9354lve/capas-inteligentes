@@ -2844,13 +2844,13 @@ def _render_ui(sample: dict[str, Any]) -> str:
   }
 
   .product-hero { order: 1; }
-  .guided-panel { order: 2; }
-  .mode-tabs { order: 3; }
-  .mode-note { order: 4; }
-  .gate-section { order: 5; }
-  .samples-bar { order: 6; }
+  .samples-bar { order: 2; }
+  .guided-panel { order: 3; }
+  .mode-tabs { order: 4; }
+  .mode-note { order: 5; }
+  .gate-section { order: 6; }
   .ingest-panel { order: 7; }
-  .history-section { order: 8; }
+  .history-section { order: 99; display: none; }
   .workflow-strip { order: 9; }
   .exec-dashboard, .business-system { order: 99; display: none; }
   footer, .app-footer { order: 100; }
@@ -3040,6 +3040,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
     box-shadow: none;
     background: var(--bg-2);
   }
+  .workspace-panel[hidden] { display: none; }
   .panel-header {
     min-height: 38px;
     height: 38px;
@@ -3242,7 +3243,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
     <a class="copy-btn topbar-site-link" href="pilot-packet.html" aria-label="Open CAPAS pilot packet">Pilot packet</a>
     <a class="copy-btn topbar-site-link" href="product.html" aria-label="Open CAPAS product story">Product story</a>
     <button class="copy-btn" id="help-btn" aria-label="Open keyboard shortcut and pipeline help" aria-expanded="false" aria-controls="help-modal" onclick="openHelpModal(this)">Help</button>
-    <button class="copy-btn" id="history-toggle" type="button" aria-label="Open audit log" aria-expanded="false" onclick="toggleHistoryPanel()">History</button>
+    <a class="copy-btn topbar-site-link" id="history-toggle" href="audit.html" aria-label="Open audit log page">Audit log</a>
     <a class="copy-btn topbar-source" href="product.html" aria-label="Open CAPAS product story and business case">Product</a>
     <a class="copy-btn topbar-source" href="https://github.com/fomv9354lve/capas-inteligentes" target="_blank" rel="noopener noreferrer" aria-label="Open CAPAS Claim Gate source repository">Source</a>
     <button class="copy-btn" id="theme-toggle" aria-label="Toggle light and dark theme" onclick="toggleTheme()">Theme</button>
@@ -3409,40 +3410,6 @@ def _render_ui(sample: dict[str, Any]) -> str:
     </div>
 </section>
 
-<section class="panel ingest-panel" aria-labelledby="ingest-title">
-  <div class="panel-header">
-    <h2 class="panel-title" id="ingest-title">Paper / text ingestion</h2>
-    <span class="panel-tag">human-confirmed candidates</span>
-  </div>
-  <div class="guided-body">
-    <div class="guided-grid">
-      <div class="guided-field">
-        <label for="ingest-source-id">Source ID</label>
-        <input id="ingest-source-id" value="paper_demo_001" aria-label="Ingest source ID">
-      </div>
-      <div class="guided-field">
-        <label for="ingest-doi">DOI / external ID</label>
-        <input id="ingest-doi" value="10.0000/capas-demo" aria-label="Ingest DOI or external metadata ID">
-      </div>
-      <div class="guided-field full">
-        <label for="ingest-title-field">Paper title</label>
-        <input id="ingest-title-field" value="Demo paper for CAPAS candidate claim extraction" aria-label="Ingest paper title">
-      </div>
-      <div class="guided-field full">
-        <label for="ingest-source-text">Paper, abstract, theorem note, or evidence text</label>
-        <textarea id="ingest-source-text" aria-label="Paste paper or theory text for candidate claim extraction">We report a statistical effect with p_value: 0.03, alpha: 0.05, and effect_direction_confirmed: true. The artifact_available: true and independent_reproduction_pass: true support reproducibility. For the theoretical scaling claim, anchor_mode: absolute_anchor, local_property_tests_pass: true, universal_anchor_pass: true.</textarea>
-      </div>
-    </div>
-    <div class="ingest-toolbar">
-      <input id="ingest-file" type="file" accept=".txt,.md,.json,.jsonl,.pdf" aria-label="Upload local text, markdown, JSON, JSONL, or PDF metadata file" onchange="loadIngestFile(event)">
-      <button class="sample-btn accept" type="button" onclick="extractCandidateClaims()">Extract candidate claims</button>
-      <button class="sample-btn hold" type="button" onclick="buildIngestionReport()">Build ingestion report</button>
-    </div>
-    <div class="ingest-report" id="ingest-report-summary" role="status" aria-live="polite">Paste text, upload a local file, then extract candidates. PDF files are declared for provenance; browser PDF text parsing remains a CLI/standalone path.</div>
-    <div class="candidate-table" id="candidate-claims-list" role="list" aria-label="candidate claims extracted from paper or text"></div>
-  </div>
-</section>
-
 <div class="samples-bar">
   <span>Examples with deterministic outcomes:</span>
   <button class="sample-btn accept" title="ACCEPT sample" aria-label="Load ACCEPT sample" onclick="loadSample('ACCEPT')">&#10003; ACCEPT</button>
@@ -3468,7 +3435,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
 <h2 class="sr-only" id="gate-title">CAPAS deterministic claim gate</h2>
 <div class="grid">
   <div>
-      <div class="panel">
+    <div class="panel workspace-panel" id="raw-workspace">
       <div class="gate-flow-title"><span class="flow-step-badge">3</span> Gate the payload</div>
       <div class="panel-header">
         <span class="panel-title">Raw JSON (Advanced)</span>
@@ -3484,6 +3451,40 @@ def _render_ui(sample: dict[str, Any]) -> str:
       <button class="draft-btn" id="batch-btn" title="Batch input: JSON array, object with items/claims, or one claim payload auto-wrapped as a one-item batch" aria-label="Evaluate a batch of claim payloads" onclick="decideBatch()">Run Batch</button>
       <div class="json-status"><span class="payload-loaded-badge" id="payload-loaded-badge" role="status" aria-live="polite">Payload loaded</span></div>
     </div>
+    <section class="panel workspace-panel ingest-panel" id="ingestion-workspace" aria-labelledby="ingest-title" hidden>
+      <div class="gate-flow-title"><span class="flow-step-badge">3</span> Ingest text into candidate claims</div>
+      <div class="panel-header">
+        <h2 class="panel-title" id="ingest-title">Paper / text ingestion</h2>
+        <span class="panel-tag">human-confirmed candidates</span>
+      </div>
+      <div class="guided-body">
+        <div class="guided-grid">
+          <div class="guided-field">
+            <label for="ingest-source-id">Source ID</label>
+            <input id="ingest-source-id" value="paper_demo_001" aria-label="Ingest source ID">
+          </div>
+          <div class="guided-field">
+            <label for="ingest-doi">DOI / external ID</label>
+            <input id="ingest-doi" value="10.0000/capas-demo" aria-label="Ingest DOI or external metadata ID">
+          </div>
+          <div class="guided-field full">
+            <label for="ingest-title-field">Paper title</label>
+            <input id="ingest-title-field" value="Demo paper for CAPAS candidate claim extraction" aria-label="Ingest paper title">
+          </div>
+          <div class="guided-field full">
+            <label for="ingest-source-text">Paper, abstract, theorem note, or evidence text</label>
+            <textarea id="ingest-source-text" aria-label="Paste paper or theory text for candidate claim extraction">We report a statistical effect with p_value: 0.03, alpha: 0.05, and effect_direction_confirmed: true. The artifact_available: true and independent_reproduction_pass: true support reproducibility. For the theoretical scaling claim, anchor_mode: absolute_anchor, local_property_tests_pass: true, universal_anchor_pass: true.</textarea>
+          </div>
+        </div>
+        <div class="ingest-toolbar">
+          <input id="ingest-file" type="file" accept=".txt,.md,.json,.jsonl,.pdf" aria-label="Upload local text, markdown, JSON, JSONL, or PDF metadata file" onchange="loadIngestFile(event)">
+          <button class="sample-btn accept" type="button" onclick="extractCandidateClaims()">Extract candidate claims</button>
+          <button class="sample-btn hold" type="button" onclick="buildIngestionReport()">Build ingestion report</button>
+        </div>
+        <div class="ingest-report" id="ingest-report-summary" role="status" aria-live="polite">Paste text, upload a local file, then extract candidates. PDF files are declared for provenance; browser PDF text parsing remains a CLI/standalone path.</div>
+        <div class="candidate-table" id="candidate-claims-list" role="list" aria-label="candidate claims extracted from paper or text"></div>
+      </div>
+    </section>
   </div>
 
   <div>
@@ -4526,16 +4527,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
     }
 
     function toggleHistoryPanel(forceOpen) {
-      const section = document.getElementById("history-section");
-      const button = document.getElementById("history-toggle");
-      if (!section) return;
-      const open = typeof forceOpen === "boolean" ? forceOpen : !section.classList.contains("history-open");
-      section.classList.toggle("history-open", open);
-      if (button) {
-        button.setAttribute("aria-expanded", open ? "true" : "false");
-        button.setAttribute("aria-label", open ? "Close audit log" : "Open audit log");
-      }
-      if (open) section.scrollIntoView({ behavior: "smooth", block: "start" });
+      window.location.href = "audit.html";
     }
 
     function setGateMode(mode) {
@@ -4550,13 +4542,11 @@ def _render_ui(sample: dict[str, Any]) -> str:
       }
       const note = document.getElementById("mode-note");
       if (note) note.textContent = labels[mode] || labels.single;
-      if (mode === "ingestion") {
-        document.getElementById("ingest-title")?.scrollIntoView({ behavior: "smooth", block: "start" });
-      } else if (mode === "single") {
-        scrollToGuidedBuilder();
-      } else {
-        scrollToGate();
-      }
+      const raw = document.getElementById("raw-workspace");
+      const ingestion = document.getElementById("ingestion-workspace");
+      if (raw) raw.hidden = mode === "ingestion";
+      if (ingestion) ingestion.hidden = mode !== "ingestion";
+      document.body.dataset.gateMode = mode;
     }
 
     function markPayloadLoaded({ scroll = true } = {}) {
@@ -5514,6 +5504,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
     initTheme();
     initOnboardingState();
     renderGuidedFields();
+    setGateMode("single");
     updateRoiCalculator();
     applySensitiveMode();
     document.getElementById("history-list").addEventListener("click", handleHistoryListClick);

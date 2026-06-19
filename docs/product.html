@@ -32,24 +32,24 @@
     }
     a { color: inherit; }
     header, main, footer { width: min(1180px, calc(100% - 40px)); margin: 0 auto; }
-    header { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; border-bottom: 1px solid var(--border); }
-    .brand { font-weight: 800; letter-spacing: 0; }
-    .nav { display: flex; gap: 10px; flex-wrap: wrap; }
+    header { min-height: 44px; display: flex; justify-content: space-between; align-items: center; padding: 0; border-bottom: 1px solid var(--border); }
+    .brand { font-size: 13px; font-weight: 800; letter-spacing: 0; }
+    .nav { display: flex; gap: 2px; flex-wrap: wrap; }
     .button {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-height: 34px;
-      padding: 7px 12px;
+      min-height: 28px;
+      padding: 4px 10px;
       border: 1px solid var(--border);
-      border-radius: 8px;
+      border-radius: 6px;
       background: var(--panel);
-      color: var(--text);
+      color: var(--muted);
       text-decoration: none;
-      font-size: 13px;
-      font-weight: 650;
+      font-size: 12px;
+      font-weight: 700;
     }
-    .button.primary { border-color: rgba(124, 127, 255, 0.45); background: linear-gradient(135deg, var(--accent), #8b5cf6); }
+    .button.primary { border-color: rgba(124, 127, 255, 0.45); background: rgba(124,127,255,.12); color: #a5b4fc; }
     .hero { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr); gap: 24px; align-items: center; padding: 54px 0 34px; }
     .eyebrow { color: var(--accent); font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.9px; }
     h1 { font-size: clamp(36px, 6vw, 64px); line-height: 1.02; margin: 10px 0 16px; letter-spacing: 0; }
@@ -110,6 +110,7 @@
       <a class="button" href="customer-brief.html">Customer brief</a>
       <a class="button" href="pilot-packet.html">Pilot packet</a>
       <a class="button primary" href="product.html" aria-current="page">Product story</a>
+      <a class="button" href="audit.html">Audit log</a>
       <a class="button" href="https://github.com/fomv9354lve/capas-inteligentes">Source</a>
     </nav>
   </header>

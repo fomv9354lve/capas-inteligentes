@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CAPAS Audit Log</title>
+  <meta name="description" content="Local CAPAS decision audit log with filters and CSV export.">
+  <style>
+    :root { --bg:#09090b; --surface:#111113; --panel:#18181b; --border:#27272a; --text:#fafafa; --muted:#a1a1aa; --quiet:#8d8d99; --accent:#7c7fff; --green:#22c55e; --orange:#f97316; --red:#ef4444; --slate:#94a3b8; --radius:8px; --font:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; --mono:ui-monospace,SFMono-Regular,Menlo,monospace; }
+    * { box-sizing:border-box; }
+    body { max-width:1100px; margin:0 auto; background:var(--bg); color:var(--text); font-family:var(--font); line-height:1.5; -webkit-font-smoothing:antialiased; }
+    header { height:44px; display:flex; align-items:center; justify-content:space-between; gap:16px; padding:0 20px; border-bottom:1px solid var(--border); }
+    .brand { font-size:13px; font-weight:800; }
+    nav { display:flex; align-items:center; gap:2px; overflow-x:auto; scrollbar-width:none; }
+    nav::-webkit-scrollbar { display:none; }
+    a, button, select, input { font:inherit; }
+    .nav-link, button { min-height:28px; display:inline-flex; align-items:center; justify-content:center; padding:4px 10px; border:1px solid var(--border); border-radius:6px; background:var(--panel); color:var(--muted); text-decoration:none; font-size:12px; font-weight:700; white-space:nowrap; cursor:pointer; }
+    .nav-link[aria-current="page"] { border-color:rgba(124,127,255,.45); background:rgba(124,127,255,.12); color:#a5b4fc; }
+    main { padding:20px; }
+    .hero { border-bottom:1px solid var(--border); padding:18px 0 20px; }
+    h1 { margin:0 0 8px; font-size:28px; line-height:1.1; letter-spacing:0; }
+    p { max-width:760px; margin:0; color:var(--muted); font-size:13px; }
+    .toolbar { display:flex; flex-wrap:wrap; align-items:center; gap:8px; padding:14px 0; }
+    input, select { min-height:32px; border:1px solid var(--border); border-radius:6px; background:var(--panel); color:var(--text); padding:6px 9px; font-size:12px; }
+    input { flex:1 1 260px; min-width:0; }
+    .count { margin-left:auto; color:var(--quiet); font-size:12px; font-variant-numeric:tabular-nums; }
+    .table-wrap { overflow-x:auto; border:1px solid var(--border); border-radius:10px; background:var(--surface); }
+    table { width:100%; min-width:860px; border-collapse:collapse; }
+    th, td { padding:10px 12px; border-bottom:1px solid var(--border); text-align:left; font-size:12px; vertical-align:top; }
+    th { color:var(--quiet); font-size:10px; text-transform:uppercase; letter-spacing:.7px; background:var(--panel); }
+    tr:last-child td { border-bottom:0; }
+    .badge { display:inline-flex; padding:2px 8px; border:1px solid; border-radius:999px; font-size:10px; font-weight:900; letter-spacing:.6px; }
+    .ACCEPT { color:var(--green); border-color:rgba(34,197,94,.35); background:rgba(34,197,94,.08); }
+    .REWRITE { color:var(--orange); border-color:rgba(249,115,22,.35); background:rgba(249,115,22,.08); }
+    .REJECT { color:var(--red); border-color:rgba(239,68,68,.35); background:rgba(239,68,68,.08); }
+    .HOLD { color:var(--slate); border-color:rgba(148,163,184,.35); background:rgba(148,163,184,.08); }
+    .mono { font-family:var(--mono); }
+    .empty { padding:28px; color:var(--quiet); text-align:center; }
+    @media (max-width:860px) { header { height:auto; align-items:flex-start; flex-direction:column; padding:10px 16px; } main { padding:16px; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">CAPAS Claim Gate</div>
+    <nav aria-label="CAPAS navigation">
+      <a class="nav-link" href="index.html">Home</a>
+      <a class="nav-link" href="app.html">Gate app</a>
+      <a class="nav-link" href="customer-brief.html">Customer brief</a>
+      <a class="nav-link" href="pilot-packet.html">Pilot packet</a>
+      <a class="nav-link" href="product.html">Product story</a>
+      <a class="nav-link" href="audit.html" aria-current="page">Audit log</a>
+    </nav>
+  </header>
+  <main>
+    <section class="hero">
+      <h1>Decision audit log</h1>
+      <p>This page reads the same local browser history used by the CAPAS Gate app. It is local to this browser unless exported.</p>
+    </section>
+    <section class="toolbar" aria-label="Audit log controls">
+      <input id="filter" type="search" placeholder="Search claim ID, type, reason" aria-label="Search audit log">
+      <select id="verdict" aria-label="Filter by verdict">
+        <option value="">All verdicts</option>
+        <option value="ACCEPT">ACCEPT</option>
+        <option value="REWRITE">REWRITE</option>
+        <option value="REJECT">REJECT</option>
+        <option value="HOLD">HOLD</option>
+      </select>
+      <button type="button" onclick="exportCsv()">Export CSV</button>
+      <button type="button" onclick="clearLog()">Clear</button>
+      <span class="count" id="count">0 decisions</span>
+    </section>
+    <section class="table-wrap" aria-label="Governance decision audit log">
+      <table>
+        <thead><tr><th>Verdict</th><th>Claim ID</th><th>Type</th><th>Reason</th><th>Timestamp</th><th>Action</th></tr></thead>
+        <tbody id="rows"><tr><td colspan="6"><div class="empty">No decisions yet.</div></td></tr></tbody>
+      </table>
+    </section>
+  </main>
+  <script>
+    const key = "capas_decision_history_v1";
+    let historyRows = load();
+    function esc(value) {
+      return String(value ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+    }
+    function load() {
+      try {
+        const parsed = JSON.parse(localStorage.getItem(key) || "[]");
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (_) {
+        return [];
+      }
+    }
+    function payloadType(item) {
+      try { return JSON.parse(item.payload || "{}")?.claim?.type || "-"; } catch (_) { return "-"; }
+    }
+    function matches(item) {
+      const q = document.getElementById("filter").value.trim().toLowerCase();
+      const verdict = document.getElementById("verdict").value;
+      if (verdict && item.verdict !== verdict) return false;
+      if (!q) return true;
+      return [item.id, item.reason, item.verdict, payloadType(item)].join(" ").toLowerCase().includes(q);
+    }
+    function render() {
+      const visible = historyRows.filter(matches);
+      document.getElementById("count").textContent = `${visible.length}/${historyRows.length} decisions`;
+      const rows = document.getElementById("rows");
+      if (!visible.length) {
+        rows.innerHTML = `<tr><td colspan="6"><div class="empty">No matching decisions.</div></td></tr>`;
+        return;
+      }
+      rows.innerHTML = visible.map((item) => {
+        const index = historyRows.indexOf(item);
+        return `<tr>` +
+          `<td><span class="badge ${esc(item.verdict)}">${esc(item.verdict)}</span></td>` +
+          `<td class="mono">${esc(item.id || "-")}</td>` +
+          `<td class="mono">${esc(payloadType(item))}</td>` +
+          `<td>${esc(item.reason || "-")}</td>` +
+          `<td>${esc(item.timestamp ? new Date(item.timestamp).toLocaleString([], { dateStyle: "medium", timeStyle: "short" }) : "-")}</td>` +
+          `<td><button type="button" onclick="deleteRow(${index})">Delete</button></td>` +
+          `</tr>`;
+      }).join("");
+    }
+    function deleteRow(index) {
+      historyRows.splice(index, 1);
+      localStorage.setItem(key, JSON.stringify(historyRows));
+      render();
+    }
+    function clearLog() {
+      if (!confirm("Clear local CAPAS audit log for this browser?")) return;
+      historyRows = [];
+      localStorage.setItem(key, "[]");
+      render();
+    }
+    function exportCsv() {
+      const rows = historyRows.filter(matches);
+      const header = ["timestamp", "verdict", "id", "type", "reason"];
+      const csv = [header.join(",")].concat(rows.map((item) => [
+        item.timestamp || "",
+        item.verdict || "",
+        item.id || "",
+        payloadType(item),
+        item.reason || ""
+      ].map((value) => `"${String(value).replace(/"/g, '""')}"`).join(","))).join("\n");
+      const blob = new Blob([csv], { type: "text/csv" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "capas_decision_audit_log.csv";
+      link.click();
+      URL.revokeObjectURL(link.href);
+    }
+    document.getElementById("filter").addEventListener("input", render);
+    document.getElementById("verdict").addEventListener("change", render);
+    render();
+  </script>
+</body>
+</html>
