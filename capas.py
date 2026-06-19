@@ -3609,8 +3609,34 @@ def _render_ui(sample: dict[str, Any]) -> str:
         source_id: document.getElementById("ingest-source-id")?.value.trim() || "paper_source",
         doi: document.getElementById("ingest-doi")?.value.trim() || "",
         title: document.getElementById("ingest-title-field")?.value.trim() || "Untitled source",
-        adapter: "local_semantic_scholar_pubmed_metadata_stub"
+        adapter: "local_semantic_scholar_pubmed_metadata_adapter"
       };
+    }
+
+    function normalizeLocalMetadataExport(raw) {
+      try {
+        const parsed = JSON.parse(raw);
+        const record = Array.isArray(parsed)
+          ? parsed[0]
+          : Array.isArray(parsed.documents)
+            ? parsed.documents[0]
+            : parsed;
+        if (!record || typeof record !== "object") return null;
+        const externalIds = record.externalIds && typeof record.externalIds === "object" ? record.externalIds : {};
+        const title = record.title || record.articleTitle || record.name || "";
+        const abstract = record.abstract || record.summary || record.text || record.snippet || "";
+        const doi = externalIds.DOI || record.doi || record.DOI || record.pmid || record.PMID || "";
+        const sourceId = record.paperId || record.corpusId || record.pmid || record.PMID || record.id || "metadata_record";
+        if (!title && !abstract) return null;
+        return {
+          source_id: String(sourceId).replace(/\W+/g, "_").slice(0, 80),
+          doi: String(doi),
+          title: String(title || "Untitled metadata record"),
+          text: [title, abstract].filter(Boolean).join(". ")
+        };
+      } catch (_) {
+        return null;
+      }
     }
 
     function loadIngestFile(event) {
@@ -3688,7 +3714,15 @@ def _render_ui(sample: dict[str, Any]) -> str:
     }
 
     function extractCandidateClaims() {
-      const sourceText = document.getElementById("ingest-source-text").value.trim();
+      let sourceText = document.getElementById("ingest-source-text").value.trim();
+      const adapted = normalizeLocalMetadataExport(sourceText);
+      if (adapted) {
+        document.getElementById("ingest-source-id").value = adapted.source_id;
+        document.getElementById("ingest-doi").value = adapted.doi;
+        document.getElementById("ingest-title-field").value = adapted.title;
+        document.getElementById("ingest-source-text").value = adapted.text;
+        sourceText = adapted.text;
+      }
       const summary = document.getElementById("ingest-report-summary");
       if (!sourceText) {
         summary.textContent = "No source text supplied.";

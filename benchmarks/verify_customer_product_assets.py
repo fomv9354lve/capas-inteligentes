@@ -18,7 +18,7 @@ REQUIRED = {
     "guided no-code form": (UI, ["Guided claim builder", "buildGuidedPayload", "Build JSON from form"]),
     "paper text ingestion": (UI, ["Paper / text ingestion", "extractCandidateClaims", "candidate claims extracted from paper or text", "evidence_spans"]),
     "human in the loop": (UI, ["Confirm & build payload", "human_confirmed", "CAPAS will not decide unconfirmed candidates"]),
-    "local metadata adapter": (UI, ["local_semantic_scholar_pubmed_metadata_stub", "DOI / external ID", "Paper title"]),
+    "local metadata adapter": (UI, ["normalizeLocalMetadataExport", "local_semantic_scholar_pubmed_metadata_adapter", "DOI / external ID", "Paper title"]),
     "paper ingestion report": (UI, ["paper_ingestion_preview", "buildIngestionReport", "source_metadata"]),
     "executive dashboard": (UI, ["Executive batch and provenance dashboard", "metric-ft-ready", "metric-provenance"]),
     "pilot metrics": (METRICS, ["fine_tune_ready_count", "hours_avoided", "simulated_case_study"]),

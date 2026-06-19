@@ -137,6 +137,14 @@ HARNESS = r"""
     ok("paper_ingestion_payload_decides", document.getElementById("output").textContent.includes('"verdict"'));
     buildIngestionReport();
     ok("paper_ingestion_report_visible", document.getElementById("output").textContent.includes('"report_type": "paper_ingestion_preview"') && document.getElementById("output").textContent.includes('"evidence_spans"'));
+    document.getElementById("ingest-source-text").value = JSON.stringify({
+      paperId: "S2-123",
+      title: "Semantic Scholar export demo",
+      abstract: "The abstract reports p_value: 0.02, alpha: 0.05, and effect_direction_confirmed: true.",
+      externalIds: { DOI: "10.0000/s2-demo" }
+    });
+    extractCandidateClaims();
+    ok("local_metadata_adapter_parses_semantic_scholar_export", document.getElementById("ingest-title-field").value.includes("Semantic Scholar") && document.getElementById("ingest-doi").value === "10.0000/s2-demo" && ingestCandidates.length >= 1);
 
     loadSample("REWRITE");
     ok("rewrite_verdict", document.querySelector(".verdict-badge.REWRITE"));
