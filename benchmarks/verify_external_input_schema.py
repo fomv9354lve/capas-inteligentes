@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import copy
 import json
 import subprocess
 import sys
@@ -337,31 +338,9 @@ SEMANTIC_PAYLOADS = [
     ),
     (
         "fine_tune_ready_positive",
-        {
-            "claim": {
-                "id": "fine_tune_ready_positive",
-                "type": "universal_anchor_claim",
-                "text": "The generated scaling result is physically consistent with the universal z=1 anchor.",
-            },
-            "evidence": {
-                "anchor_mode": "absolute_anchor",
-                "local_property_tests_pass": True,
-                "universal_anchor_pass": True,
-            },
-            "training_evidence": {
-                "source_backed_evidence": True,
-                "external_review": True,
-                "semantic_alignment": True,
-                "witness_independence": True,
-                "provenance": {
-                    "sources": ["benchmarks/gold_traces/trace_039.json"],
-                    "review_id": "external-review-trace-039-v1",
-                    "witness_id": "theory_scaling_law_no_solver",
-                },
-            },
-        },
+        json.loads((ROOT / "examples" / "external_claim_fine_tune_ready.json").read_text(encoding="utf-8")),
         "ACCEPT",
-        "fine_tune_ready",
+        '"fine_tune_ready": true',
     ),
     (
         "fine_tune_ready_blocked_without_review",
@@ -474,6 +453,62 @@ def main() -> int:
             ),
             "expected_verdict": expected_verdict,
             "expected_detail": expected_detail,
+            "decision": decision,
+        })
+
+    ready_payload = _load(ROOT / "examples" / "external_claim_fine_tune_ready.json")
+    fine_tune_negative_cases = [
+        (
+            "review_hash_mismatch",
+            ("review_sha256", "0" * 64),
+            "review_hash_verified",
+            "external review hash is missing or does not match review_packet",
+        ),
+        (
+            "source_hash_mismatch",
+            ("source_hashes", {"file://benchmarks/gold_traces/trace_039.json": "0" * 64}),
+            "source_urls_recoverable_hashable",
+            "source URLs are not recoverable with matching hashes",
+        ),
+        (
+            "witness_not_in_registry",
+            ("witness_id", "missing_witness"),
+            "witness_registry_resolved",
+            "witness_id is not resolvable in the witness registry",
+        ),
+        (
+            "ro_crate_hash_mismatch",
+            ("ro_crate_sha256", "0" * 64),
+            "ro_crate_validated",
+            "RO-Crate provenance packet is missing, invalid, or hash-mismatched",
+        ),
+        (
+            "reviewer_attestation_hash_mismatch",
+            ("reviewer.attestation_sha256", "0" * 64),
+            "reviewer_attestation_verified",
+            "reviewer identity or attestation is not verifiable",
+        ),
+    ]
+    for name, (field_path, value), expected_criterion, expected_blocker in fine_tune_negative_cases:
+        payload = copy.deepcopy(ready_payload)
+        provenance = payload["training_evidence"]["provenance"]
+        if field_path == "reviewer.attestation_sha256":
+            provenance["reviewer"]["attestation_sha256"] = value
+        else:
+            provenance[field_path] = value
+        decision = capas.decide_external_claim(payload)
+        criteria = decision.get("fine_tune_criteria", {})
+        blockers = decision.get("fine_tune_blockers", [])
+        checks.append({
+            "check": f"fine_tune_external_verification:{name}",
+            "passed": (
+                decision["verdict"] == "ACCEPT"
+                and decision["fine_tune_ready"] is False
+                and criteria.get(expected_criterion) is False
+                and expected_blocker in blockers
+            ),
+            "expected_criterion": expected_criterion,
+            "expected_blocker": expected_blocker,
             "decision": decision,
         })
 

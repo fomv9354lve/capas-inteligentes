@@ -578,7 +578,7 @@
     <h3>Pipeline surfaces</h3>
     <p>The CLI/API support <code>decide</code>, <code>batch</code>, and standalone <code>retrieve → extract → align → reason → pipeline</code>. Retrieval and parsing prepare candidate evidence; the final CAPAS verdict still comes from the deterministic gate.</p>
     <h3>Fine-tune readiness</h3>
-    <p><code>fine_tune_ready</code> is a strict positive gate. It becomes <code>true</code> only after an <code>ACCEPT</code> verdict plus <code>training_evidence.source_backed_evidence</code>, <code>external_review</code>, <code>semantic_alignment</code>, <code>witness_independence</code>, and provenance <code>sources</code>, <code>review_id</code>, and <code>witness_id</code>. CAPAS gates claims; it does not silently certify training data.</p>
+    <p><code>fine_tune_ready</code> is a strict positive gate. It becomes <code>true</code> only after an <code>ACCEPT</code> verdict plus source-backed evidence, semantic alignment, witness independence, a hash-verified external review packet, recoverable/hashable source URLs, a resolvable witness registry entry, a valid RO-Crate provenance packet, and a verifiable reviewer attestation. CAPAS gates claims; it does not silently certify training data.</p>
     <h3>Schema</h3>
     <p>Current payload schema: <code>capas-claim-payload-v2</code>. Outputs include <code>schema_version</code> for audit trails.</p>
     <p>Supported claim types and minimum evidence fields:</p>
@@ -792,6 +792,12 @@
         : Array.isArray(provenance.source_urls)
           ? provenance.source_urls
           : [];
+      const sourceHashes = provenance.source_hashes && typeof provenance.source_hashes === "object" && !Array.isArray(provenance.source_hashes)
+        ? provenance.source_hashes
+        : {};
+      const reviewer = provenance.reviewer && typeof provenance.reviewer === "object" && !Array.isArray(provenance.reviewer)
+        ? provenance.reviewer
+        : {};
       const criteria = {
         verdict_accept: result.verdict === "ACCEPT",
         schema_clean: !(result.schema_errors && result.schema_errors.length) && !(result.missing_fields && result.missing_fields.length),
@@ -800,6 +806,11 @@
         semantic_alignment: trainingEvidence.semantic_alignment === true,
         witness_independence: trainingEvidence.witness_independence === true,
         provenance_sources: sourceCandidates.some((source) => typeof source === "string" && source.trim() !== ""),
+        review_hash_verified: typeof (provenance.review_sha256 || provenance.review_hash) === "string" && typeof provenance.review_packet === "object" && provenance.review_packet !== null,
+        source_urls_recoverable_hashable: sourceCandidates.length > 0 && sourceCandidates.every((source) => typeof source === "string" && typeof sourceHashes[source] === "string"),
+        witness_registry_resolved: typeof provenance.witness_id === "string" && provenance.witness_id.trim() !== "" && typeof provenance.witness_registry_path === "string" && typeof provenance.witness_registry_sha256 === "string",
+        ro_crate_validated: typeof provenance.ro_crate_path === "string" && typeof provenance.ro_crate_sha256 === "string",
+        reviewer_attestation_verified: typeof reviewer.reviewer_id === "string" && typeof reviewer.attestation === "string" && typeof reviewer.attestation_sha256 === "string" && typeof provenance.reviewer_registry_path === "string" && typeof provenance.reviewer_registry_sha256 === "string",
         review_id_present: typeof provenance.review_id === "string" && provenance.review_id.trim() !== "",
         witness_id_present: typeof provenance.witness_id === "string" && provenance.witness_id.trim() !== ""
       };
@@ -811,6 +822,11 @@
         semantic_alignment: "claim.text semantic alignment is not externally certified",
         witness_independence: "witness independence is not externally certified",
         provenance_sources: "provenance.sources or provenance.source_urls is empty",
+        review_hash_verified: "external review hash is missing or does not match review_packet",
+        source_urls_recoverable_hashable: "source URLs are not recoverable with matching hashes",
+        witness_registry_resolved: "witness_id is not resolvable in the witness registry",
+        ro_crate_validated: "RO-Crate provenance packet is missing, invalid, or hash-mismatched",
+        reviewer_attestation_verified: "reviewer identity or attestation is not verifiable",
         review_id_present: "provenance.review_id is missing",
         witness_id_present: "provenance.witness_id is missing"
       };

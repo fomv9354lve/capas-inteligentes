@@ -75,7 +75,7 @@ HARNESS = r"""
     ok("help_modal_lists_schema_v2_financial_fields", document.getElementById("help-modal").textContent.includes("financial_metric_claim") && document.getElementById("help-modal").textContent.includes("metric_period_match"));
     ok("help_modal_lists_schema_v2_statistical_fields", document.getElementById("help-modal").textContent.includes("statistical_confidence") && document.getElementById("help-modal").textContent.includes("effect_direction_confirmed"));
     ok("help_modal_lists_schema_v2_reproducibility_fields", document.getElementById("help-modal").textContent.includes("reproducibility_check") && document.getElementById("help-modal").textContent.includes("independent_reproduction_pass"));
-    ok("help_modal_documents_fine_tune_readiness", document.getElementById("help-modal").textContent.includes("fine_tune_ready") && document.getElementById("help-modal").textContent.includes("training_evidence.source_backed_evidence"));
+    ok("help_modal_documents_fine_tune_readiness", document.getElementById("help-modal").textContent.includes("fine_tune_ready") && document.getElementById("help-modal").textContent.includes("hash-verified external review packet"));
     closeHelpModal();
     ok("help_modal_closes", !document.getElementById("help-modal-backdrop").classList.contains("open"));
     ok("help_modal_returns_focus_to_trigger", document.activeElement === helpButton);
@@ -145,7 +145,7 @@ HARNESS = r"""
     ok("financial_metric_claim_accept", document.querySelector(".verdict-badge.ACCEPT"));
 
     document.getElementById("input").value = JSON.stringify({
-      claim: { id: "fine_tune_positive", type: "universal_anchor_claim", text: "The generated scaling result is physically consistent with the universal z=1 anchor." },
+      claim: { id: "external_scaling_anchor_fine_tune_ready", type: "universal_anchor_claim", text: "The generated scaling result is physically consistent with the universal z=1 anchor." },
       evidence: { anchor_mode: "absolute_anchor", local_property_tests_pass: true, universal_anchor_pass: true },
       training_evidence: {
         source_backed_evidence: true,
@@ -153,9 +153,31 @@ HARNESS = r"""
         semantic_alignment: true,
         witness_independence: true,
         provenance: {
-          sources: ["benchmarks/gold_traces/trace_039.json"],
+          source_urls: ["file://benchmarks/gold_traces/trace_039.json"],
+          source_hashes: {
+            "file://benchmarks/gold_traces/trace_039.json": "d5884367e508273ef1d54ac507135864b8aa493adf5602f65da55f0a38bc86b6"
+          },
           review_id: "external-review-trace-039-v1",
-          witness_id: "theory_scaling_law_no_solver"
+          review_sha256: "120d4d2847ebdf385bd21848d32bf65b7b0cb6e2b072bda9ac3c80f780732640",
+          review_packet: {
+            claim_id: "external_scaling_anchor_fine_tune_ready",
+            decision: "confirms_fine_tune_readiness",
+            review_id: "external-review-trace-039-v1",
+            reviewer_id: "capas-external-reviewer-demo",
+            scope: "training readiness criteria only"
+          },
+          witness_id: "theory_scaling_law_no_solver",
+          witness_registry_path: "docs/witness_registry.json",
+          witness_registry_sha256: "64bd434da1acfe79a25905c7b6470485b00194882d2f5e12becbf7baea3e77c8",
+          ro_crate_path: "benchmarks/ro_crates/trace_039/ro-crate-metadata.json",
+          ro_crate_sha256: "9e8f3769049430f9a620e838e44e936cc4fa6414769f25be611f9388f4080b86",
+          reviewer: {
+            attestation: "External reviewer confirms source-backed evidence, semantic alignment, witness independence, and ACCEPT scope for trace_039.",
+            attestation_sha256: "ebe5ebb8660e891b30ccf0ef34e8457d53cf3caa04ac62416b1d64af13528fbf",
+            reviewer_id: "capas-external-reviewer-demo"
+          },
+          reviewer_registry_path: "docs/reviewer_registry.json",
+          reviewer_registry_sha256: "00c3133d7001b4a6e3b9223f0144ab4bfa90fc86a22a2a6220dde3e1f3021202"
         }
       }
     });

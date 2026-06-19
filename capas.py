@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 import os
@@ -77,6 +78,9 @@ FINE_TUNE_REQUIRED_FIELDS = [
     "semantic_alignment",
     "witness_independence",
 ]
+
+WITNESS_REGISTRY_PATH = ROOT / "docs" / "witness_registry.json"
+REVIEWER_REGISTRY_PATH = ROOT / "docs" / "reviewer_registry.json"
 
 CLAIM_TYPE_TERMS = {
     "exact_model_solution": [
@@ -269,8 +273,30 @@ def external_claim_payload_schema() -> dict[str, Any]:
                         "properties": {
                             "sources": {"type": "array", "items": {"type": "string"}},
                             "source_urls": {"type": "array", "items": {"type": "string"}},
+                            "source_hashes": {
+                                "type": "object",
+                                "additionalProperties": {"type": "string"},
+                            },
                             "review_id": {"type": "string", "minLength": 1},
+                            "review_sha256": {"type": "string", "minLength": 64, "maxLength": 64},
+                            "review_hash": {"type": "string", "minLength": 64, "maxLength": 64},
+                            "review_packet": {"type": "object", "additionalProperties": True},
                             "witness_id": {"type": "string", "minLength": 1},
+                            "witness_registry_path": {"type": "string"},
+                            "witness_registry_sha256": {"type": "string", "minLength": 64, "maxLength": 64},
+                            "ro_crate_path": {"type": "string"},
+                            "ro_crate_sha256": {"type": "string", "minLength": 64, "maxLength": 64},
+                            "reviewer": {
+                                "type": "object",
+                                "additionalProperties": True,
+                                "properties": {
+                                    "reviewer_id": {"type": "string", "minLength": 1},
+                                    "attestation": {"type": "string", "minLength": 1},
+                                    "attestation_sha256": {"type": "string", "minLength": 64, "maxLength": 64},
+                                },
+                            },
+                            "reviewer_registry_path": {"type": "string"},
+                            "reviewer_registry_sha256": {"type": "string", "minLength": 64, "maxLength": 64},
                         },
                     },
                 },
@@ -368,7 +394,171 @@ def validate_external_payload(payload: dict[str, Any]) -> list[str]:
             provenance = training_evidence.get("provenance")
             if provenance is not None and (not isinstance(provenance, dict) or isinstance(provenance, list)):
                 errors.append("training_evidence.provenance must be an object")
+            elif isinstance(provenance, dict):
+                for field in (
+                    "review_id",
+                    "review_sha256",
+                    "review_hash",
+                    "witness_id",
+                    "witness_registry_path",
+                    "witness_registry_sha256",
+                    "ro_crate_path",
+                    "ro_crate_sha256",
+                    "reviewer_registry_path",
+                    "reviewer_registry_sha256",
+                ):
+                    if field in provenance and not isinstance(provenance[field], str):
+                        errors.append(f"training_evidence.provenance.{field} must be a string")
+                for field in ("sources", "source_urls"):
+                    if field in provenance and (
+                        not isinstance(provenance[field], list)
+                        or not all(isinstance(item, str) for item in provenance[field])
+                    ):
+                        errors.append(f"training_evidence.provenance.{field} must be an array of strings")
+                if "source_hashes" in provenance and not isinstance(provenance["source_hashes"], dict):
+                    errors.append("training_evidence.provenance.source_hashes must be an object")
+                if "review_packet" in provenance and not isinstance(provenance["review_packet"], dict):
+                    errors.append("training_evidence.provenance.review_packet must be an object")
+                reviewer = provenance.get("reviewer")
+                if reviewer is not None:
+                    if not isinstance(reviewer, dict) or isinstance(reviewer, list):
+                        errors.append("training_evidence.provenance.reviewer must be an object")
+                    else:
+                        for field in ("reviewer_id", "attestation", "attestation_sha256"):
+                            if field in reviewer and not isinstance(reviewer[field], str):
+                                errors.append(f"training_evidence.provenance.reviewer.{field} must be a string")
     return errors
+
+
+def _stable_json_hash(value: Any) -> str:
+    data = json.dumps(value, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    return hashlib.sha256(data).hexdigest()
+
+
+def _sha256_bytes(data: bytes) -> str:
+    return hashlib.sha256(data).hexdigest()
+
+
+def _safe_local_path(value: str) -> Path | None:
+    if value.startswith("file://"):
+        value = value.removeprefix("file://")
+    path = Path(value)
+    if not path.is_absolute():
+        path = ROOT / path
+    try:
+        resolved = path.resolve()
+        resolved.relative_to(ROOT)
+    except (ValueError, OSError):
+        return None
+    return resolved
+
+
+def _load_json_if_exists(path: Path) -> Any | None:
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return None
+
+
+def _source_url_verified(source: str, expected_hash: str | None) -> bool:
+    if not expected_hash:
+        return False
+    if source.startswith(("http://", "https://")):
+        if os.environ.get("CAPAS_VERIFY_REMOTE_SOURCES") != "1":
+            return False
+        try:
+            request = Request(source, headers={"User-Agent": "CAPAS-Claim-Gate/1.0"})
+            with urlopen(request, timeout=10) as response:
+                return _sha256_bytes(response.read()) == expected_hash
+        except (OSError, URLError):
+            return False
+    path = _safe_local_path(source)
+    if not path or not path.exists() or not path.is_file():
+        return False
+    return _sha256_bytes(path.read_bytes()) == expected_hash
+
+
+def _verify_review_hash(provenance: dict[str, Any]) -> bool:
+    review_packet = provenance.get("review_packet")
+    review_sha256 = provenance.get("review_sha256") or provenance.get("review_hash")
+    return (
+        isinstance(review_packet, dict)
+        and isinstance(review_sha256, str)
+        and _stable_json_hash(review_packet) == review_sha256
+    )
+
+
+def _verify_sources(provenance: dict[str, Any]) -> bool:
+    source_urls = provenance.get("source_urls", provenance.get("sources", []))
+    source_hashes = provenance.get("source_hashes", {})
+    if not isinstance(source_urls, list) or not isinstance(source_hashes, dict) or not source_urls:
+        return False
+    for source in source_urls:
+        if not isinstance(source, str) or not source.strip():
+            return False
+        expected_hash = source_hashes.get(source) or source_hashes.get(source.removeprefix("file://"))
+        if not isinstance(expected_hash, str) or not _source_url_verified(source, expected_hash):
+            return False
+    return True
+
+
+def _verify_witness_registry(provenance: dict[str, Any]) -> bool:
+    witness_id = provenance.get("witness_id")
+    registry_path_value = provenance.get("witness_registry_path", str(WITNESS_REGISTRY_PATH.relative_to(ROOT)))
+    registry_sha256 = provenance.get("witness_registry_sha256")
+    if not isinstance(witness_id, str) or not witness_id.strip():
+        return False
+    registry_path = _safe_local_path(str(registry_path_value))
+    if not registry_path or not registry_path.exists() or not registry_path.is_file():
+        return False
+    if isinstance(registry_sha256, str) and _sha256_bytes(registry_path.read_bytes()) != registry_sha256:
+        return False
+    registry = _load_json_if_exists(registry_path)
+    witnesses = registry.get("witnesses") if isinstance(registry, dict) else None
+    return isinstance(witnesses, dict) and witness_id in witnesses
+
+
+def _verify_ro_crate(provenance: dict[str, Any]) -> bool:
+    crate_path_value = provenance.get("ro_crate_path")
+    crate_sha256 = provenance.get("ro_crate_sha256")
+    if not isinstance(crate_path_value, str) or not isinstance(crate_sha256, str):
+        return False
+    crate_path = _safe_local_path(crate_path_value)
+    if not crate_path or not crate_path.exists() or not crate_path.is_file():
+        return False
+    if _sha256_bytes(crate_path.read_bytes()) != crate_sha256:
+        return False
+    crate = _load_json_if_exists(crate_path)
+    if not isinstance(crate, dict):
+        return False
+    graph = crate.get("@graph")
+    if not isinstance(graph, list):
+        return False
+    ids = {node.get("@id") for node in graph if isinstance(node, dict)}
+    return "ro-crate-metadata.json" in ids and "./" in ids
+
+
+def _verify_reviewer_attestation(provenance: dict[str, Any]) -> bool:
+    reviewer = provenance.get("reviewer")
+    if not isinstance(reviewer, dict):
+        return False
+    reviewer_id = reviewer.get("reviewer_id")
+    attestation = reviewer.get("attestation")
+    attestation_sha256 = reviewer.get("attestation_sha256")
+    if not all(isinstance(value, str) and value.strip() for value in (reviewer_id, attestation, attestation_sha256)):
+        return False
+    if _sha256_bytes(attestation.encode("utf-8")) != attestation_sha256:
+        return False
+    registry_path_value = provenance.get("reviewer_registry_path", str(REVIEWER_REGISTRY_PATH.relative_to(ROOT)))
+    registry_sha256 = provenance.get("reviewer_registry_sha256")
+    registry_path = _safe_local_path(str(registry_path_value))
+    if not registry_path or not registry_path.exists() or not registry_path.is_file():
+        return False
+    if isinstance(registry_sha256, str) and _sha256_bytes(registry_path.read_bytes()) != registry_sha256:
+        return False
+    registry = _load_json_if_exists(registry_path)
+    reviewers = registry.get("reviewers") if isinstance(registry, dict) else None
+    return isinstance(reviewers, dict) and reviewer_id in reviewers
 
 
 def evaluate_fine_tune_readiness(
@@ -385,7 +575,7 @@ def evaluate_fine_tune_readiness(
     if not isinstance(provenance, dict):
         provenance = {}
 
-    source_candidates = provenance.get("sources", provenance.get("source_urls", []))
+    source_candidates = provenance.get("source_urls", provenance.get("sources", []))
     has_sources = (
         isinstance(source_candidates, list)
         and any(isinstance(source, str) and source.strip() for source in source_candidates)
@@ -398,6 +588,11 @@ def evaluate_fine_tune_readiness(
         "semantic_alignment": training_evidence.get("semantic_alignment") is True,
         "witness_independence": training_evidence.get("witness_independence") is True,
         "provenance_sources": has_sources,
+        "review_hash_verified": _verify_review_hash(provenance),
+        "source_urls_recoverable_hashable": _verify_sources(provenance),
+        "witness_registry_resolved": _verify_witness_registry(provenance),
+        "ro_crate_validated": _verify_ro_crate(provenance),
+        "reviewer_attestation_verified": _verify_reviewer_attestation(provenance),
         "review_id_present": isinstance(provenance.get("review_id"), str) and bool(provenance["review_id"].strip()),
         "witness_id_present": isinstance(provenance.get("witness_id"), str) and bool(provenance["witness_id"].strip()),
     }
@@ -409,6 +604,11 @@ def evaluate_fine_tune_readiness(
         "semantic_alignment": "claim.text semantic alignment is not externally certified",
         "witness_independence": "witness independence is not externally certified",
         "provenance_sources": "provenance.sources or provenance.source_urls is empty",
+        "review_hash_verified": "external review hash is missing or does not match review_packet",
+        "source_urls_recoverable_hashable": "source URLs are not recoverable with matching hashes",
+        "witness_registry_resolved": "witness_id is not resolvable in the witness registry",
+        "ro_crate_validated": "RO-Crate provenance packet is missing, invalid, or hash-mismatched",
+        "reviewer_attestation_verified": "reviewer identity or attestation is not verifiable",
         "review_id_present": "provenance.review_id is missing",
         "witness_id_present": "provenance.witness_id is missing",
     }
@@ -1933,7 +2133,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
     <h3>Pipeline surfaces</h3>
     <p>The CLI/API support <code>decide</code>, <code>batch</code>, and standalone <code>retrieve → extract → align → reason → pipeline</code>. Retrieval and parsing prepare candidate evidence; the final CAPAS verdict still comes from the deterministic gate.</p>
     <h3>Fine-tune readiness</h3>
-    <p><code>fine_tune_ready</code> is a strict positive gate. It becomes <code>true</code> only after an <code>ACCEPT</code> verdict plus <code>training_evidence.source_backed_evidence</code>, <code>external_review</code>, <code>semantic_alignment</code>, <code>witness_independence</code>, and provenance <code>sources</code>, <code>review_id</code>, and <code>witness_id</code>. CAPAS gates claims; it does not silently certify training data.</p>
+    <p><code>fine_tune_ready</code> is a strict positive gate. It becomes <code>true</code> only after an <code>ACCEPT</code> verdict plus source-backed evidence, semantic alignment, witness independence, a hash-verified external review packet, recoverable/hashable source URLs, a resolvable witness registry entry, a valid RO-Crate provenance packet, and a verifiable reviewer attestation. CAPAS gates claims; it does not silently certify training data.</p>
     <h3>Schema</h3>
     <p>Current payload schema: <code>capas-claim-payload-v2</code>. Outputs include <code>schema_version</code> for audit trails.</p>
     <p>Supported claim types and minimum evidence fields:</p>
@@ -2147,6 +2347,12 @@ def _render_ui(sample: dict[str, Any]) -> str:
         : Array.isArray(provenance.source_urls)
           ? provenance.source_urls
           : [];
+      const sourceHashes = provenance.source_hashes && typeof provenance.source_hashes === "object" && !Array.isArray(provenance.source_hashes)
+        ? provenance.source_hashes
+        : {};
+      const reviewer = provenance.reviewer && typeof provenance.reviewer === "object" && !Array.isArray(provenance.reviewer)
+        ? provenance.reviewer
+        : {};
       const criteria = {
         verdict_accept: result.verdict === "ACCEPT",
         schema_clean: !(result.schema_errors && result.schema_errors.length) && !(result.missing_fields && result.missing_fields.length),
@@ -2155,6 +2361,11 @@ def _render_ui(sample: dict[str, Any]) -> str:
         semantic_alignment: trainingEvidence.semantic_alignment === true,
         witness_independence: trainingEvidence.witness_independence === true,
         provenance_sources: sourceCandidates.some((source) => typeof source === "string" && source.trim() !== ""),
+        review_hash_verified: typeof (provenance.review_sha256 || provenance.review_hash) === "string" && typeof provenance.review_packet === "object" && provenance.review_packet !== null,
+        source_urls_recoverable_hashable: sourceCandidates.length > 0 && sourceCandidates.every((source) => typeof source === "string" && typeof sourceHashes[source] === "string"),
+        witness_registry_resolved: typeof provenance.witness_id === "string" && provenance.witness_id.trim() !== "" && typeof provenance.witness_registry_path === "string" && typeof provenance.witness_registry_sha256 === "string",
+        ro_crate_validated: typeof provenance.ro_crate_path === "string" && typeof provenance.ro_crate_sha256 === "string",
+        reviewer_attestation_verified: typeof reviewer.reviewer_id === "string" && typeof reviewer.attestation === "string" && typeof reviewer.attestation_sha256 === "string" && typeof provenance.reviewer_registry_path === "string" && typeof provenance.reviewer_registry_sha256 === "string",
         review_id_present: typeof provenance.review_id === "string" && provenance.review_id.trim() !== "",
         witness_id_present: typeof provenance.witness_id === "string" && provenance.witness_id.trim() !== ""
       };
@@ -2166,6 +2377,11 @@ def _render_ui(sample: dict[str, Any]) -> str:
         semantic_alignment: "claim.text semantic alignment is not externally certified",
         witness_independence: "witness independence is not externally certified",
         provenance_sources: "provenance.sources or provenance.source_urls is empty",
+        review_hash_verified: "external review hash is missing or does not match review_packet",
+        source_urls_recoverable_hashable: "source URLs are not recoverable with matching hashes",
+        witness_registry_resolved: "witness_id is not resolvable in the witness registry",
+        ro_crate_validated: "RO-Crate provenance packet is missing, invalid, or hash-mismatched",
+        reviewer_attestation_verified: "reviewer identity or attestation is not verifiable",
         review_id_present: "provenance.review_id is missing",
         witness_id_present: "provenance.witness_id is missing"
       };

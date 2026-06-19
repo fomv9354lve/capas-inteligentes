@@ -124,9 +124,64 @@
         "provenance": {
           "additionalProperties": true,
           "properties": {
+            "review_hash": {
+              "maxLength": 64,
+              "minLength": 64,
+              "type": "string"
+            },
             "review_id": {
               "minLength": 1,
               "type": "string"
+            },
+            "review_packet": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "review_sha256": {
+              "maxLength": 64,
+              "minLength": 64,
+              "type": "string"
+            },
+            "reviewer": {
+              "additionalProperties": true,
+              "properties": {
+                "attestation": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "attestation_sha256": {
+                  "maxLength": 64,
+                  "minLength": 64,
+                  "type": "string"
+                },
+                "reviewer_id": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "reviewer_registry_path": {
+              "type": "string"
+            },
+            "reviewer_registry_sha256": {
+              "maxLength": 64,
+              "minLength": 64,
+              "type": "string"
+            },
+            "ro_crate_path": {
+              "type": "string"
+            },
+            "ro_crate_sha256": {
+              "maxLength": 64,
+              "minLength": 64,
+              "type": "string"
+            },
+            "source_hashes": {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object"
             },
             "source_urls": {
               "items": {
@@ -142,6 +197,14 @@
             },
             "witness_id": {
               "minLength": 1,
+              "type": "string"
+            },
+            "witness_registry_path": {
+              "type": "string"
+            },
+            "witness_registry_sha256": {
+              "maxLength": 64,
+              "minLength": 64,
               "type": "string"
             }
           },
