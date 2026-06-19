@@ -3559,9 +3559,10 @@ def _render_ui(sample: dict[str, Any]) -> str:
         const value = example.evidence[field];
         const inputType = typeof value === "number" ? "number" : "text";
         const serialized = Array.isArray(value) ? value.join(", ") : String(value ?? "");
+        const fieldLabel = `${field} evidence field for ${type}`;
         const control = typeof value === "boolean"
-          ? `<select id="guided-field-${escHtml(field)}" data-field="${escHtml(field)}" data-kind="boolean"><option value="true"${value ? " selected" : ""}>true</option><option value="false"${!value ? " selected" : ""}>false</option></select>`
-          : `<input id="guided-field-${escHtml(field)}" data-field="${escHtml(field)}" data-kind="${Array.isArray(value) ? "array" : inputType}" type="${inputType}" value="${escHtml(serialized)}">`;
+          ? `<select id="guided-field-${escHtml(field)}" data-field="${escHtml(field)}" data-kind="boolean" aria-label="${escHtml(fieldLabel)}"><option value="true"${value ? " selected" : ""}>true</option><option value="false"${!value ? " selected" : ""}>false</option></select>`
+          : `<input id="guided-field-${escHtml(field)}" data-field="${escHtml(field)}" data-kind="${Array.isArray(value) ? "array" : inputType}" type="${inputType}" value="${escHtml(serialized)}" aria-label="${escHtml(fieldLabel)}">`;
         return `<div class="guided-field"><label for="guided-field-${escHtml(field)}">${escHtml(field)}</label>${control}<span class="assist-muted">${escHtml(fieldHelp[field] || "Required evidence field.")}</span></div>`;
       }).join("");
     }
@@ -3716,16 +3717,17 @@ def _render_ui(sample: dict[str, Any]) -> str:
         const booleanMatch = normalized.match(booleanPattern);
         return booleanMatch ? parseBooleanEvidenceValue(booleanMatch[1]) : null;
       }
+      if (typeof exampleValue === "number") {
+        const numberPattern = new RegExp(`\\b${fieldName}\\b\\s*(?:[:=]|is|was|=)?\\s*(-?\\d+(?:\\.\\d+)?(?:e[+-]?\\d+)?)`, "i");
+        const numberMatch = normalized.match(numberPattern);
+        if (!numberMatch) return null;
+        const value = Number(numberMatch[1]);
+        return Number.isFinite(value) ? value : null;
+      }
       const pattern = new RegExp(`\\b${fieldName}\\b\\s*(?:[:=]|is|was|=)\\s*([^.;\\n]+)`, "i");
       const match = normalized.match(pattern);
       if (!match) return null;
       const raw = match[1].split(/\\s+(?:and|while|with)\\s+/i)[0].replace(/,$/, "").trim();
-      if (typeof exampleValue === "number") {
-        const numberMatch = raw.match(/-?\\d+(?:\\.\\d+)?(?:e[+-]?\\d+)?/i);
-        if (!numberMatch) return null;
-        const value = Number(numberMatch[0]);
-        return Number.isFinite(value) ? value : null;
-      }
       if (Array.isArray(exampleValue)) return raw.split(/[|,]/).map((item) => item.trim()).filter(Boolean);
       return raw.replace(/^["']|["']$/g, "");
     }

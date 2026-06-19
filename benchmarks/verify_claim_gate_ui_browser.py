@@ -124,6 +124,20 @@ HARNESS = r"""
     const causalGuidedFields = Array.from(document.querySelectorAll("#guided-fields [data-field]")).map((element) => element.dataset.field);
     ok("guided_builder_redraws_causal_fields", ["intervention_or_natural_experiment", "temporal_order_established", "confounders_controlled", "mechanism_evidence_present"].every((field) => causalGuidedFields.includes(field)) && !causalGuidedFields.includes("p_value"));
     ok("guided_builder_updates_claim_text_for_type", document.getElementById("guided-claim-text").value.toLowerCase().includes("causal"));
+    const guidedTypeExpectations = {
+      systematic_review_claim: ["protocol_registered", "inclusion_criteria_declared", "risk_of_bias_assessed", "effect_consistency"],
+      evidence_conflict_claim: ["supporting_sources", "contradicting_sources", "conflict_resolution_method", "resolution_pre_registered"],
+      multimodal_evidence_claim: ["modality", "source_hashes_verified", "cross_modal_alignment", "extraction_method_declared"]
+    };
+    for (const [guidedType, expectedFields] of Object.entries(guidedTypeExpectations)) {
+      document.getElementById("guided-type").value = guidedType;
+      renderGuidedFields();
+      const renderedFields = Array.from(document.querySelectorAll("#guided-fields [data-field]")).map((element) => element.dataset.field);
+      ok(`guided_builder_redraws_${guidedType}`, expectedFields.every((field) => renderedFields.includes(field)) && !renderedFields.includes("p_value"), renderedFields.join(","));
+    }
+    ok("guided_dynamic_fields_have_aria_labels", Array.from(document.querySelectorAll("#guided-fields [data-field]")).every((element) => element.getAttribute("aria-label")?.includes("evidence field")));
+    document.getElementById("guided-type").value = "causal_mechanism_claim";
+    renderGuidedFields();
     buildGuidedPayload();
     ok("guided_form_builds_schema_v3_payload", document.getElementById("input").value.includes('"schema_version": "capas-claim-payload-v3"') && document.getElementById("input").value.includes('"causal_mechanism_claim"'));
     decide();
@@ -134,6 +148,8 @@ HARNESS = r"""
     document.getElementById("ingest-source-text").value = "The paper reports p_value: 0.03, alpha: 0.05, and effect_direction_confirmed: true for the main endpoint. The theory note reports anchor_mode: absolute_anchor, local_property_tests_pass: true, and universal_anchor_pass: true.";
     extractCandidateClaims();
     ok("paper_ingestion_extracts_candidates", ingestCandidates.length >= 1 && document.querySelectorAll(".candidate-row").length >= 1);
+    const statisticalCandidate = ingestCandidates.find((candidate) => candidate.claim.type === "statistical_confidence");
+    ok("paper_ingestion_numeric_parser_handles_statistical_sentence", statisticalCandidate && statisticalCandidate.evidence.p_value === 0.03 && statisticalCandidate.evidence.alpha === 0.05 && statisticalCandidate.evidence.effect_direction_confirmed === true, JSON.stringify(statisticalCandidate?.evidence || {}));
     ok("paper_ingestion_shows_evidence_spans", document.querySelector(".candidate-span")?.textContent.includes("line"));
     ok("paper_ingestion_labels_evidence_spans", document.querySelector(".candidate-spans")?.textContent.includes("Evidence spans"));
     confirmCandidateClaim(0);

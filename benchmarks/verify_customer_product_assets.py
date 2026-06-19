@@ -15,8 +15,8 @@ REPORT = ROOT / "outputs" / "customer_product_assets_report.json"
 REQUIRED = {
     "landing page with narrative": (PRODUCT, ["Stop weak claims", "Read pilot plan", "workflow change"]),
     "landing page screenshots": (PRODUCT, ["CAPAS screenshot mock", "ACCEPT", "RO-Crate pending"]),
-    "guided no-code form": (UI, ["Guided claim builder", "The no-code builder redraws required evidence fields", "buildGuidedPayload", "Build JSON from form"]),
-    "paper text ingestion": (UI, ["Paper / text ingestion", "extractCandidateClaims", "candidate claims extracted from paper or text", "Evidence spans", "evidence_spans", "parseBooleanEvidenceValue"]),
+    "guided no-code form": (UI, ["Guided claim builder", "The no-code builder redraws required evidence fields", "buildGuidedPayload", "Build JSON from form", "evidence field for"]),
+    "paper text ingestion": (UI, ["Paper / text ingestion", "extractCandidateClaims", "candidate claims extracted from paper or text", "Evidence spans", "evidence_spans", "parseBooleanEvidenceValue", "numberPattern"]),
     "human in the loop": (UI, ["Confirm & build payload", "human_confirmed", "CAPAS will not decide unconfirmed candidates"]),
     "local metadata adapter": (UI, ["normalizeLocalMetadataExport", "local_semantic_scholar_pubmed_metadata_adapter", "DOI / external ID", "Paper title"]),
     "paper ingestion report": (UI, ["paper_ingestion_preview", "buildIngestionReport", "source_metadata"]),
