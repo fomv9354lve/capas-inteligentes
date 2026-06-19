@@ -33,8 +33,18 @@
       "passed": true
     },
     {
+      "check": "api_optional_bearer_auth_blocks_unauthorized",
+      "detail": 401,
+      "passed": true
+    },
+    {
       "check": "api_health_schema_version",
       "detail": "capas-claim-payload-v3",
+      "passed": true
+    },
+    {
+      "check": "api_health_schema_id_is_canonical",
+      "detail": "https://fomv9354lve.github.io/capas-inteligentes/schema/v3/capas_claim_payload.schema.json",
       "passed": true
     },
     {
@@ -55,6 +65,22 @@
       "check": "api_batch_single_payload_autowrap",
       "detail": {
         "ACCEPT": 1
+      },
+      "passed": true
+    },
+    {
+      "check": "api_workspace_audit_log",
+      "detail": 3,
+      "passed": true
+    },
+    {
+      "check": "api_provenance_check_ready",
+      "detail": {
+        "review_hash_verified": true,
+        "reviewer_attestation_verified": true,
+        "ro_crate_validated": true,
+        "source_urls_recoverable_hashable": true,
+        "witness_registry_resolved": true
       },
       "passed": true
     },

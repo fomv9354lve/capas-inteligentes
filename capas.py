@@ -32,6 +32,7 @@ ANCHOR_REPORT = ROOT / "benchmarks" / "universal_anchor_matrix_report.json"
 TRACE_DIR = ROOT / "benchmarks" / "gold_traces"
 EXTERNAL_CLAIM_SCHEMA_PATH = ROOT / "docs" / "schema" / "capas_claim_payload.schema.json"
 CAPAS_CLAIM_SCHEMA_VERSION = "capas-claim-payload-v3"
+CANONICAL_SCHEMA_ID = "https://fomv9354lve.github.io/capas-inteligentes/schema/v3/capas_claim_payload.schema.json"
 CAPAS_UI_VERSION = "v13 · end-to-end gaps"
 
 
@@ -243,7 +244,7 @@ def external_claim_payload_schema() -> dict[str, Any]:
     claim_types = sorted(REQUIRED_DECISION_FIELDS)
     return {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
-        "$id": "https://capas.local/schema/capas_claim_payload.schema.json",
+        "$id": CANONICAL_SCHEMA_ID,
         "title": "CAPAS external claim/evidence payload",
         "x-capas-schema-version": CAPAS_CLAIM_SCHEMA_VERSION,
         "type": "object",
@@ -4676,6 +4677,86 @@ def _write_response_json(handler: BaseHTTPRequestHandler, status: int, payload: 
     handler.wfile.write(body)
 
 
+def _api_workspace(handler: BaseHTTPRequestHandler) -> str:
+    raw = handler.headers.get("x-capas-workspace", "default")
+    workspace = re.sub(r"[^A-Za-z0-9_.-]+", "-", raw).strip("-")
+    return workspace[:80] or "default"
+
+
+def _api_authorized(handler: BaseHTTPRequestHandler) -> bool:
+    token = getattr(handler.server, "capas_api_token", "")  # type: ignore[attr-defined]
+    if not token:
+        return True
+    supplied = handler.headers.get("authorization", "")
+    return supplied == f"Bearer {token}"
+
+
+def _api_audit_dir(handler: BaseHTTPRequestHandler) -> Path | None:
+    value = getattr(handler.server, "capas_audit_dir", "")  # type: ignore[attr-defined]
+    if not value:
+        return None
+    path = Path(str(value))
+    return path if path.is_absolute() else ROOT / path
+
+
+def _append_api_audit(handler: BaseHTTPRequestHandler, operation: str, result: dict[str, Any]) -> None:
+    audit_dir = _api_audit_dir(handler)
+    if audit_dir is None:
+        return
+    workspace = _api_workspace(handler)
+    audit_dir.mkdir(parents=True, exist_ok=True)
+    claim = result.get("input_claim", {}) if isinstance(result, dict) else {}
+    entry = {
+        "operation": operation,
+        "workspace": workspace,
+        "schema_version": CAPAS_CLAIM_SCHEMA_VERSION,
+        "verdict": result.get("verdict"),
+        "summary": result.get("summary"),
+        "claim_id": claim.get("id") if isinstance(claim, dict) else None,
+        "fine_tune_ready": result.get("fine_tune_ready"),
+        "decision": result,
+    }
+    with (audit_dir / f"{workspace}.jsonl").open("a", encoding="utf-8") as stream:
+        stream.write(json.dumps(entry, sort_keys=True) + "\n")
+
+
+def _read_api_audit(handler: BaseHTTPRequestHandler) -> dict[str, Any]:
+    audit_dir = _api_audit_dir(handler)
+    workspace = _api_workspace(handler)
+    if audit_dir is None:
+        return {"workspace": workspace, "decisions": [], "audit_enabled": False}
+    path = audit_dir / f"{workspace}.jsonl"
+    decisions: list[dict[str, Any]] = []
+    if path.exists():
+        for line in path.read_text(encoding="utf-8").splitlines():
+            try:
+                decisions.append(json.loads(line))
+            except json.JSONDecodeError:
+                continue
+    return {"workspace": workspace, "decisions": decisions[-250:], "audit_enabled": True}
+
+
+def provenance_verification_report(payload: dict[str, Any]) -> dict[str, Any]:
+    training_evidence = payload.get("training_evidence") if isinstance(payload, dict) else None
+    provenance = training_evidence.get("provenance") if isinstance(training_evidence, dict) else None
+    if not isinstance(provenance, dict):
+        provenance = {}
+    checks = {
+        "review_hash_verified": _verify_review_hash(provenance),
+        "source_urls_recoverable_hashable": _verify_sources(provenance),
+        "witness_registry_resolved": _verify_witness_registry(provenance),
+        "ro_crate_validated": _verify_ro_crate(provenance),
+        "reviewer_attestation_verified": _verify_reviewer_attestation(provenance),
+    }
+    return {
+        "schema_version": CAPAS_CLAIM_SCHEMA_VERSION,
+        "provenance_ready": all(checks.values()),
+        "checks": checks,
+        "verification_surface": "local_cli_or_enterprise_api",
+        "non_claim": "This verifies declared provenance artifacts and hashes; it does not infer scientific truth.",
+    }
+
+
 class CapasApiHandler(BaseHTTPRequestHandler):
     server_version = "CAPASClaimGate/0.1"
 
@@ -4683,30 +4764,54 @@ class CapasApiHandler(BaseHTTPRequestHandler):
         return
 
     def do_GET(self) -> None:  # noqa: N802 - stdlib callback name
+        if not _api_authorized(self):
+            _write_response_json(self, 401, {"error": "unauthorized", "fine_tune_ready": False})
+            return
         if self.path == "/health":
-            _write_response_json(self, 200, {"status": "ok", "service": "capas-claim-gate", "schema_version": CAPAS_CLAIM_SCHEMA_VERSION})
+            _write_response_json(self, 200, {
+                "status": "ok",
+                "service": "capas-claim-gate",
+                "schema_version": CAPAS_CLAIM_SCHEMA_VERSION,
+                "schema_id": CANONICAL_SCHEMA_ID,
+                "audit_enabled": _api_audit_dir(self) is not None,
+            })
+        elif self.path.startswith("/decisions"):
+            _write_response_json(self, 200, _read_api_audit(self))
         else:
-            _write_response_json(self, 404, {"error": "not found", "available": ["/health", "/decide", "/batch"]})
+            _write_response_json(self, 404, {"error": "not found", "available": ["/health", "/decisions", "/decide", "/batch", "/provenance-check"]})
 
     def do_POST(self) -> None:  # noqa: N802 - stdlib callback name
+        if not _api_authorized(self):
+            _write_response_json(self, 401, {"error": "unauthorized", "fine_tune_ready": False})
+            return
         try:
             payload = _read_request_json(self)
             if self.path == "/decide":
                 if not isinstance(payload, dict):
                     raise ValueError("/decide expects one JSON object")
-                _write_response_json(self, 200, decide_external_claim(payload))
+                result = decide_external_claim(payload)
+                _append_api_audit(self, "decide", result)
+                _write_response_json(self, 200, result)
             elif self.path == "/batch":
-                _write_response_json(self, 200, run_batch(payload, mode="decide"))
+                result = run_batch(payload, mode="decide")
+                _append_api_audit(self, "batch", result)
+                _write_response_json(self, 200, result)
+            elif self.path == "/provenance-check":
+                if not isinstance(payload, dict):
+                    raise ValueError("/provenance-check expects one JSON object")
+                _write_response_json(self, 200, provenance_verification_report(payload))
             else:
-                _write_response_json(self, 404, {"error": "not found", "available": ["/health", "/decide", "/batch"]})
+                _write_response_json(self, 404, {"error": "not found", "available": ["/health", "/decisions", "/decide", "/batch", "/provenance-check"]})
         except (json.JSONDecodeError, ValueError) as exc:
             _write_response_json(self, 400, {"error": str(exc), "fine_tune_ready": False})
 
 
 def cmd_serve(args: argparse.Namespace) -> int:
     server = HTTPServer((args.host, args.port), CapasApiHandler)
+    server.capas_api_token = args.api_token or os.environ.get("CAPAS_API_TOKEN", "")  # type: ignore[attr-defined]
+    server.capas_audit_dir = args.audit_dir or os.environ.get("CAPAS_AUDIT_DIR", "")  # type: ignore[attr-defined]
     print(f"CAPAS API listening on http://{args.host}:{args.port}")
-    print("endpoints: GET /health, POST /decide, POST /batch")
+    print("endpoints: GET /health, GET /decisions, POST /decide, POST /batch, POST /provenance-check")
     try:
         server.serve_forever()
     except KeyboardInterrupt:
@@ -4714,6 +4819,19 @@ def cmd_serve(args: argparse.Namespace) -> int:
     finally:
         server.server_close()
     return 0
+
+
+def cmd_provenance_check(args: argparse.Namespace) -> int:
+    payload = _load_json(Path(args.input))
+    report = provenance_verification_report(payload)
+    if args.output:
+        _write_json(Path(args.output), report)
+    if args.json or not args.output:
+        print(json.dumps(report, indent=2, sort_keys=True))
+    else:
+        print(f"provenance_ready: {report['provenance_ready']}")
+        print(f"wrote {args.output}")
+    return 0 if report["provenance_ready"] else 1
 
 
 def cmd_align(args: argparse.Namespace) -> int:
@@ -4874,6 +4992,8 @@ def main(argv: list[str] | None = None) -> int:
     serve = subparsers.add_parser("serve", help="run a local HTTP API for /decide and /batch")
     serve.add_argument("--host", default="127.0.0.1", help="bind host")
     serve.add_argument("--port", type=int, default=8765, help="bind port")
+    serve.add_argument("--api-token", default="", help="optional bearer token; also read from CAPAS_API_TOKEN")
+    serve.add_argument("--audit-dir", default="", help="optional workspace JSONL audit directory; also read from CAPAS_AUDIT_DIR")
     serve.set_defaults(func=cmd_serve)
 
     align = subparsers.add_parser("align", help="check claim.text alignment against structured evidence")
@@ -4919,6 +5039,12 @@ def main(argv: list[str] | None = None) -> int:
     check_input.add_argument("--input", required=True, help="path to claim/evidence JSON")
     check_input.add_argument("--json", action="store_true", help="print machine-readable validation result")
     check_input.set_defaults(func=cmd_check_input)
+
+    provenance_check = subparsers.add_parser("provenance-check", help="verify review/source/witness/RO-Crate provenance artifacts")
+    provenance_check.add_argument("--input", required=True, help="path to claim/evidence JSON with training_evidence.provenance")
+    provenance_check.add_argument("--output", help="optional provenance verification report path")
+    provenance_check.add_argument("--json", action="store_true", help="print JSON even when --output is supplied")
+    provenance_check.set_defaults(func=cmd_provenance_check)
 
     ui = subparsers.add_parser("ui", help="write a static local claim-gate UI")
     ui.add_argument("--output", help="optional HTML output path")

@@ -11,6 +11,16 @@ DECK = ROOT / "docs" / "PARTNER_DECK.md"
 METRICS = ROOT / "outputs" / "pilot_metrics.json"
 UI = ROOT / "outputs" / "capas_claim_gate_ui.html"
 REPORT = ROOT / "outputs" / "customer_product_assets_report.json"
+SCHEMA_REGISTRY = ROOT / "docs" / "SCHEMA_REGISTRY.md"
+ENTERPRISE_PACK = ROOT / "docs" / "ENTERPRISE_INTEGRATION_PACK.md"
+PROVENANCE_OPS = ROOT / "docs" / "PROVENANCE_REGISTRY_OPERATIONS.md"
+SECURITY_APPENDIX = ROOT / "docs" / "SECURITY_COMPLIANCE_APPENDIX.md"
+PILOT_ROI = ROOT / "docs" / "PILOT_ROI_BUSINESS_CASE.md"
+PAPER_CONNECTORS = ROOT / "docs" / "PAPER_INGESTION_CONNECTORS.md"
+CANONICAL_SCHEMA = ROOT / "docs" / "schema" / "v3" / "capas_claim_payload.schema.json"
+HF_EXAMPLE = ROOT / "examples" / "huggingface_dataset_capas_metadata.json"
+LABEL_STUDIO_EXAMPLE = ROOT / "examples" / "label_studio_capas_task.json"
+ARGILLA_EXAMPLE = ROOT / "examples" / "argilla_capas_record.json"
 
 
 REQUIRED = {
@@ -34,7 +44,17 @@ REQUIRED = {
     "sensitive data mode": (UI, ["sensitive-mode-toggle", "Sensitive mode", "redacted in sensitive data mode"]),
     "integration story": (BRIEF, ["GitHub Action", "Semantic Scholar", "Elicit"]),
     "case study": (BRIEF, ["CAPAS gated 1,000 candidate training claims", "230 rewritten", "110 rejected"]),
-    "partner deck": (DECK, ["Training Data Assurance for Scientific AI", "two-week pilot", "ROI model", "Buyer ask"])
+    "partner deck": (DECK, ["Training Data Assurance for Scientific AI", "two-week pilot", "ROI model", "Buyer ask"]),
+    "canonical schema registry": (SCHEMA_REGISTRY, ["Canonical URL", "capas-claim-payload-v3", "schema/v3/capas_claim_payload.schema.json"]),
+    "canonical schema file": (CANONICAL_SCHEMA, ["https://fomv9354lve.github.io/capas-inteligentes/schema/v3/capas_claim_payload.schema.json", "capas-claim-payload-v3"]),
+    "enterprise integration pack": (ENTERPRISE_PACK, ["GET /decisions", "POST /provenance-check", "Label Studio", "Hugging Face Datasets"]),
+    "provenance registry operations": (PROVENANCE_OPS, ["review packet SHA-256", "witness ID in registry", "RO-Crate metadata hash"]),
+    "security compliance appendix": (SECURITY_APPENDIX, ["Optional bearer token", "Workspace-scoped JSONL audit log", "training-data provenance"]),
+    "pilot ROI business case": (PILOT_ROI, ["1,000 claims", "417 hours", "USD 83,400"]),
+    "paper ingestion connectors": (PAPER_CONNECTORS, ["browser preview", "local CLI pipeline", "Semantic Scholar/PubMed-like metadata"]),
+    "huggingface metadata example": (HF_EXAMPLE, ["capas_schema_version", "capas_decision_json"]),
+    "label studio handoff example": (LABEL_STUDIO_EXAMPLE, ["claim_type", "source_span", "capas_schema_version"]),
+    "argilla handoff example": (ARGILLA_EXAMPLE, ["required_evidence_fields", "reproducibility_check"])
 }
 
 

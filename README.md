@@ -79,6 +79,7 @@ computation result, or are they already covered by existing artifacts?
 python -m pip install -e .
 capas decide --input examples/external_claim_rewrite.json
 capas batch --input examples/external_claim_batch.json --json
+capas provenance-check --input examples/external_claim_fine_tune_ready.json --json
 capas pipeline --input examples/standalone_pipeline_semantic_hold.json
 capas inspect trace_039
 capas validate
@@ -133,12 +134,30 @@ capas validate
 Run the local integration API:
 
 ```bash
-capas serve --host 127.0.0.1 --port 8765
-curl http://127.0.0.1:8765/health
+CAPAS_API_TOKEN=change-me CAPAS_AUDIT_DIR=outputs/api-audit \
+  capas serve --host 127.0.0.1 --port 8765
+curl -H "Authorization: Bearer change-me" http://127.0.0.1:8765/health
 ```
 
-The API is local and deterministic. It exposes `POST /decide` and `POST /batch`.
-It is not a hosted SaaS service.
+The API is local and deterministic. It exposes `GET /health`,
+`GET /decisions`, `POST /decide`, `POST /batch`, and
+`POST /provenance-check`. `CAPAS_API_TOKEN` enables bearer-token auth;
+`CAPAS_AUDIT_DIR` writes workspace-scoped JSONL decision logs keyed by
+`X-CAPAS-Workspace`. It is not a hosted SaaS service.
+
+The canonical payload schema is published in the static docs tree:
+
+```text
+https://fomv9354lve.github.io/capas-inteligentes/schema/v3/capas_claim_payload.schema.json
+```
+
+Enterprise integration notes live in:
+
+- `docs/ENTERPRISE_INTEGRATION_PACK.md`
+- `docs/PROVENANCE_REGISTRY_OPERATIONS.md`
+- `docs/SECURITY_COMPLIANCE_APPENDIX.md`
+- `docs/PILOT_ROI_BUSINESS_CASE.md`
+- `docs/PAPER_INGESTION_CONNECTORS.md`
 
 Run CAPAS in GitHub Actions:
 
