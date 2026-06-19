@@ -1561,6 +1561,14 @@ def _render_ui(sample: dict[str, Any]) -> str:
   .batch-progress { margin-top: 10px; height: 8px; overflow: hidden; border: 1px solid var(--border); border-radius: 999px; background: var(--bg); }
   .batch-progress-fill { height: 100%; width: var(--batch-progress, 100%); background: linear-gradient(90deg, var(--accent), var(--green)); }
   .batch-progress-label { margin-top: 6px; color: var(--text-3); font-size: 11px; font-weight: 600; }
+  .batch-table { display: grid; gap: 6px; margin-top: 12px; }
+  .batch-row { border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--bg); overflow: hidden; }
+  .batch-row summary { display: grid; grid-template-columns: auto minmax(0, 1fr) minmax(0, 1.4fr); gap: 8px; align-items: center; padding: 8px 10px; cursor: pointer; list-style: none; }
+  .batch-row summary::-webkit-details-marker { display: none; }
+  .batch-row-id, .batch-row-reason { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .batch-row-id { color: var(--text-1); font-family: var(--mono); font-size: 11px; }
+  .batch-row-reason { color: var(--text-3); font-size: 11px; }
+  .batch-row pre { margin: 0; border-top: 1px solid var(--border); border-radius: 0; max-height: 220px; overflow: auto; }
   .rewrite-block { margin: 12px 16px; padding: 12px 14px; border-radius: var(--radius); background: var(--orange-bg); border-color: var(--orange-border); }
   .rewrite-text { color: var(--text-1); }
   .rewrite-diff { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
@@ -1584,8 +1592,11 @@ def _render_ui(sample: dict[str, Any]) -> str:
   .history-heading { color: var(--text-3); font-size: 11px; font-weight: 700; letter-spacing: 0.7px; text-transform: uppercase; }
   .history-list { display: flex; flex-direction: column; gap: 4px; }
   .history-count { color: var(--text-3); }
+  .history-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px; align-items: stretch; }
   .history-item { display: flex; align-items: center; gap: 10px; width: 100%; padding: 9px 14px; background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--radius); color: var(--text-1); font-family: var(--font); transition: all var(--t); cursor: pointer; text-align: left; }
   .history-item:hover { background: var(--bg-3); border-color: var(--border-2); transform: translateX(2px); }
+  .history-delete { padding: 0 10px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-2); color: var(--text-3); font-family: var(--font); font-size: 11px; font-weight: 700; cursor: pointer; }
+  .history-delete:hover { color: var(--red); border-color: var(--red-border); background: var(--red-bg); }
   .history-badge { border: 1px solid; }
   .history-badge.ACCEPT { color: var(--green); background: var(--green-bg); border-color: var(--green-border); }
   .history-badge.REJECT { color: var(--red); background: var(--red-bg); border-color: var(--red-border); }
@@ -1593,6 +1604,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
   .history-badge.HOLD { color: var(--slate); background: var(--slate-bg); border-color: var(--slate-border); }
   .history-id { color: var(--text-1); }
   .history-reason { color: var(--text-3); }
+  .history-ts { margin-left: auto; color: var(--text-3); font-size: 10px; font-variant-numeric: tabular-nums; white-space: nowrap; }
   .empty-state, .no-decision { color: var(--text-3); font-size: 13px; }
   .no-decision { padding: 32px 16px; text-align: center; }
   .modal-backdrop {
@@ -1786,7 +1798,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
   <div class="history-header">
     <h2 class="history-heading">Recent decisions</h2>
     <div class="history-actions">
-      <button class="copy-btn" id="share-btn" aria-label="Copy shareable URL for current input" onclick="copyShareUrl()">Share URL</button>
+      <button class="copy-btn" id="share-btn" aria-label="Copy shareable URL for current input. The payload is embedded in the URL; do not share sensitive claims." title="The payload is embedded in the URL; do not share sensitive claims." onclick="copyShareUrl()">Share URL</button>
       <button class="copy-btn" id="export-btn" aria-label="Export decision history as CSV" onclick="exportHistoryCsv()">Export CSV</button>
       <button class="copy-btn" id="clear-history-btn" aria-label="Clear local decision history" onclick="clearHistory()">Clear</button>
       <span class="history-count" id="history-count" aria-live="polite" aria-atomic="true">0/50 saved</span>
@@ -1816,6 +1828,8 @@ def _render_ui(sample: dict[str, Any]) -> str:
     <p>Paste a JSON array, an object with <code>items</code> or <code>claims</code>, or one claim/evidence payload. Batch applies the same deterministic rule to every item and returns a summary. It does not infer missing evidence.</p>
     <h3>Pipeline surfaces</h3>
     <p>The CLI/API support <code>decide</code>, <code>batch</code>, and standalone <code>retrieve → extract → align → reason → pipeline</code>. Retrieval and parsing prepare candidate evidence; the final CAPAS verdict still comes from the deterministic gate.</p>
+    <h3>Fine-tune readiness</h3>
+    <p><code>fine_tune_ready</code> stays <code>false</code> unless an external review layer supplies source-backed evidence, semantic alignment, witness independence, and review metadata. CAPAS gates claims; it does not silently certify training data.</p>
     <h3>Schema</h3>
     <p>Current payload schema: <code>capas-claim-payload-v2</code>. Outputs include <code>schema_version</code> for audit trails.</p>
     <p>Supported claim types and minimum evidence fields:</p>
@@ -2169,11 +2183,23 @@ def _render_ui(sample: dict[str, Any]) -> str:
 
     function renderBatch(result) {
       const summary = Object.entries(result.summary).map(([verdict, count]) => `<span class="verdict-badge ${escHtml(verdict)}">${escHtml(verdict)} ${count}</span>`).join("");
+      const rows = result.results.map((entry) => {
+        const claim = entry.result.input_claim || {};
+        const verdict = entry.result.verdict || "UNKNOWN";
+        const id = claim.id || `item_${entry.index + 1}`;
+        return (
+          `<details class="batch-row">` +
+          `<summary><span class="verdict-badge ${escHtml(verdict)}">${escHtml(verdict)}</span><span class="batch-row-id">#${entry.index + 1} ${escHtml(id)}</span><span class="batch-row-reason">${escHtml(entry.result.reason || "")}</span></summary>` +
+          `<pre>${escHtml(JSON.stringify(entry.result, null, 2))}</pre>` +
+          `</details>`
+        );
+      }).join("");
       document.getElementById("verdict-area").innerHTML =
         `<div class="verdict-banner"><span class="verdict-badge HOLD">BATCH</span><span class="verdict-reason">${result.item_count} items evaluated with deterministic CAPAS gates.</span></div>` +
         `<div class="assist-block"><div class="alert-title">Batch summary</div><div style="display:flex;gap:8px;flex-wrap:wrap">${summary}</div>` +
         `<div class="batch-progress" aria-hidden="true"><div class="batch-progress-fill" style="--batch-progress:100%"></div></div>` +
-        `<div class="batch-progress-label">${result.item_count}/${result.item_count} claims processed · deterministic gate complete</div></div>`;
+        `<div class="batch-progress-label">${result.item_count}/${result.item_count} claims processed · deterministic gate complete</div>` +
+        `<div class="batch-table" aria-label="Batch per-item decisions">${rows}</div></div>`;
     }
 
     function hasNullEvidence(payload) {
@@ -2184,14 +2210,22 @@ def _render_ui(sample: dict[str, Any]) -> str:
 
     function setOutputJson(value) {
       const json = JSON.stringify(value, null, 2);
-      if (json === lastOutputJson) return;
-      lastOutputJson = json;
       const output = document.getElementById("output");
+      if (json === lastOutputJson) {
+        output.scrollTop = 0;
+        output.scrollLeft = 0;
+        return;
+      }
+      lastOutputJson = json;
       if (json.length > 5000) {
         output.textContent = json;
+        output.scrollTop = 0;
+        output.scrollLeft = 0;
         return;
       }
       output.innerHTML = syntaxHighlight(json);
+      output.scrollTop = 0;
+      output.scrollLeft = 0;
     }
 
     function setOutputEmpty() {
@@ -2363,16 +2397,39 @@ def _render_ui(sample: dict[str, Any]) -> str:
         return;
       }
       list.innerHTML = decisionHistory.map((item, index) => (
-        `<button type="button" class="history-item" role="button" tabindex="0" onclick="restoreHistory(${index})" onkeydown="handleHistoryKey(event, ${index})" aria-label="Restore decision ${escHtml(item.id)}">` +
+        `<div class="history-row">` +
+        `<button type="button" class="history-item" onclick="restoreHistory(${index})" onkeydown="handleHistoryKey(event, ${index})" aria-label="Restore decision ${escHtml(item.id)} from ${escHtml(formatHistoryTimestamp(item.timestamp))}">` +
         `<span class="history-badge ${item.verdict}">${item.verdict}</span>` +
         `<span class="history-id">${escHtml(item.id)}</span>` +
         `<span class="history-reason">${escHtml(item.reason)}</span>` +
-        `</button>`
+        `<time class="history-ts" datetime="${escHtml(item.timestamp || "")}">${escHtml(formatHistoryTimestamp(item.timestamp))}</time>` +
+        `</button>` +
+        `<button type="button" class="history-delete" aria-label="Delete decision ${escHtml(item.id)}" onclick="deleteHistory(${index}, event)">Delete</button>` +
+        `</div>`
       )).join("");
+    }
+
+    function formatHistoryTimestamp(value) {
+      if (!value) return "no timestamp";
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return "invalid time";
+      return date.toLocaleString(undefined, {
+        month: "short",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit"
+      });
     }
 
     function clearHistory() {
       decisionHistory = [];
+      saveHistory();
+      renderHistory();
+    }
+
+    function deleteHistory(index, event) {
+      if (event) event.stopPropagation();
+      decisionHistory.splice(index, 1);
       saveHistory();
       renderHistory();
     }
@@ -2449,6 +2506,12 @@ def _render_ui(sample: dict[str, Any]) -> str:
           const button = document.getElementById("share-btn");
           button.textContent = "URL copied";
           button.classList.add("copied");
+          const existing = document.getElementById("share-privacy-warning");
+          if (existing) existing.remove();
+          document.getElementById("verdict-area").insertAdjacentHTML(
+            "beforeend",
+            `<div class="assist-block" id="share-privacy-warning"><div class="alert-title">Share URL privacy</div>The current payload is embedded in the URL. Do not share links that contain sensitive claims or private evidence.</div>`
+          );
           setTimeout(() => {
             button.textContent = "Share URL";
             button.classList.remove("copied");

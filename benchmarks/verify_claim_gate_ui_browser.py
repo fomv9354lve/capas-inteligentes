@@ -75,6 +75,7 @@ HARNESS = r"""
     ok("help_modal_lists_schema_v2_financial_fields", document.getElementById("help-modal").textContent.includes("financial_metric_claim") && document.getElementById("help-modal").textContent.includes("metric_period_match"));
     ok("help_modal_lists_schema_v2_statistical_fields", document.getElementById("help-modal").textContent.includes("statistical_confidence") && document.getElementById("help-modal").textContent.includes("effect_direction_confirmed"));
     ok("help_modal_lists_schema_v2_reproducibility_fields", document.getElementById("help-modal").textContent.includes("reproducibility_check") && document.getElementById("help-modal").textContent.includes("independent_reproduction_pass"));
+    ok("help_modal_documents_fine_tune_readiness", document.getElementById("help-modal").textContent.includes("fine_tune_ready") && document.getElementById("help-modal").textContent.includes("does not silently certify training data"));
     closeHelpModal();
     ok("help_modal_closes", !document.getElementById("help-modal-backdrop").classList.contains("open"));
     ok("help_modal_returns_focus_to_trigger", document.activeElement === helpButton);
@@ -116,6 +117,8 @@ HARNESS = r"""
     ok("batch_summary_visible", document.getElementById("verdict-area").textContent.includes("Batch summary"));
     ok("batch_progress_visible", document.querySelector(".batch-progress-fill"));
     ok("batch_progress_label_visible", document.getElementById("verdict-area").textContent.includes("claims processed"));
+    ok("batch_per_item_table_visible", document.querySelectorAll(".batch-row").length === 2);
+    ok("batch_per_item_reason_visible", document.querySelector(".batch-row-reason")?.textContent.length > 0);
     ok("batch_output_json", document.getElementById("output").textContent.includes('"batch_mode": "decide"'));
     ok("batch_schema_version", document.getElementById("output").textContent.includes('"schema_version": "capas-claim-payload-v2"'));
     document.getElementById("input").value = JSON.stringify(samples.ACCEPT, null, 2);
@@ -145,6 +148,16 @@ HARNESS = r"""
     ok("history_item_exists", firstHistory);
     if (firstHistory) firstHistory.click();
     ok("history_restore_keeps_output", document.getElementById("output").textContent.includes("verdict"));
+    ok("history_timestamp_visible", Boolean(document.querySelector(".history-ts")?.textContent.trim()));
+    ok("history_delete_button_visible", Boolean(document.querySelector(".history-delete")));
+    const historyLengthBeforeDelete = decisionHistory.length;
+    document.querySelector(".history-delete")?.click();
+    ok("history_delete_removes_one_entry", decisionHistory.length === historyLengthBeforeDelete - 1);
+
+    document.getElementById("output").scrollTop = 999;
+    decide();
+    ok("output_scroll_resets_to_top", document.getElementById("output").scrollTop === 0);
+    ok("share_button_privacy_label", document.getElementById("share-btn").getAttribute("aria-label").includes("payload is embedded"));
 
     clearHistory();
     ok("clear_history_empties_list", document.getElementById("history-count").textContent.includes("0/50"));
