@@ -9,6 +9,8 @@ import sys
 from collections import Counter
 from pathlib import Path
 from typing import Any
+from urllib.error import URLError
+from urllib.request import Request, urlopen
 
 
 def _discover_root() -> Path:
@@ -120,6 +122,7 @@ EXPERIMENT_SCOPE_PATTERNS = [
 
 NUMBER_PATTERN = r"[-+]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][-+]?\d+)?"
 BOOLEAN_PATTERN = r"(true|false|yes|no|pass|fail|passed|failed|1|0)"
+WEB_FETCH_TIMEOUT_SECONDS = 15
 
 
 def external_claim_payload_schema() -> dict[str, Any]:
@@ -524,8 +527,8 @@ def align_claim_text(payload: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def _source_text(payload: dict[str, Any]) -> str:
-    return "\n".join(source["text"] for source in _source_records(payload))
+def _source_text(payload: dict[str, Any], *, allow_web: bool = False) -> str:
+    return "\n".join(source["text"] for source in _source_records(payload, allow_web=allow_web))
 
 
 def _read_source_path(path_value: str) -> str:
@@ -537,27 +540,85 @@ def _read_source_path(path_value: str) -> str:
     return path.read_text(encoding="utf-8")
 
 
-def _source_records(payload: dict[str, Any]) -> list[dict[str, str]]:
+def _read_pdf_source_path(path_value: str) -> tuple[str, str | None]:
+    path = (ROOT / path_value).resolve()
+    try:
+        path.relative_to(ROOT.resolve())
+    except ValueError:
+        raise ValueError("source.path must stay inside the CAPAS repository")
+    try:
+        from pypdf import PdfReader  # type: ignore
+    except ImportError:
+        return "", "PDF source requires optional dependency pypdf; install with capas-claim-gate[standalone]"
+    try:
+        reader = PdfReader(str(path))
+        pages = [page.extract_text() or "" for page in reader.pages]
+    except Exception as exc:  # pragma: no cover - parser errors depend on PDF internals
+        return "", f"PDF parser failed for {path_value}: {exc}"
+    return "\n".join(pages), None
+
+
+def _read_url_source(url: str, *, allow_web: bool) -> tuple[str, str | None]:
+    if not allow_web:
+        return "", "web source declared but --allow-web was not set"
+    if not url.startswith(("http://", "https://")):
+        return "", "source.url must use http:// or https://"
+    request = Request(url, headers={"User-Agent": "CAPAS-Claim-Gate/0.1"})
+    try:
+        with urlopen(request, timeout=WEB_FETCH_TIMEOUT_SECONDS) as response:
+            content_type = response.headers.get("content-type", "")
+            raw = response.read(2_000_000)
+    except (OSError, URLError) as exc:
+        return "", f"web retrieval failed for {url}: {exc}"
+    if "pdf" in content_type.lower() or url.lower().endswith(".pdf"):
+        return "", "web PDF retrieval is detected but PDF parsing from remote bytes is not enabled in this MVP"
+    return raw.decode("utf-8", errors="replace"), None
+
+
+def _source_records(payload: dict[str, Any], *, allow_web: bool = False) -> list[dict[str, str]]:
     records: list[dict[str, str]] = []
+
+    def add_record(item: dict[str, Any], idx: int) -> None:
+        source_id = str(item.get("id") or item.get("path") or item.get("url") or f"source_{idx}")
+        kind = str(item.get("kind") or "text")
+        retrieval_status = "present"
+        note = ""
+        text = ""
+        if isinstance(item.get("text"), str):
+            text = item["text"]
+        elif isinstance(item.get("url"), str):
+            kind = kind if kind != "text" else "web"
+            text, maybe_note = _read_url_source(item["url"], allow_web=allow_web)
+            retrieval_status = "retrieved" if text else "not_retrieved"
+            note = maybe_note or ""
+        elif isinstance(item.get("path"), str):
+            path = str(item["path"])
+            if path.lower().endswith(".pdf") or kind == "pdf":
+                kind = "pdf"
+                text, maybe_note = _read_pdf_source_path(path)
+                retrieval_status = "parsed" if text else "not_parsed"
+                note = maybe_note or ""
+            else:
+                text = _read_source_path(path)
+                retrieval_status = "read"
+        records.append(
+            {
+                "source_id": source_id,
+                "kind": kind,
+                "text": text,
+                "retrieval_status": retrieval_status,
+                "retrieval_note": note,
+            }
+        )
+
     source = payload.get("source")
     if isinstance(source, dict):
-        source_id = str(source.get("id") or source.get("path") or "source_0")
-        kind = str(source.get("kind") or "text")
-        if isinstance(source.get("text"), str):
-            records.append({"source_id": source_id, "kind": kind, "text": source["text"]})
-        elif isinstance(source.get("path"), str):
-            records.append({"source_id": source_id, "kind": kind, "text": _read_source_path(source["path"])})
+        add_record(source, 0)
     sources = payload.get("sources")
     if isinstance(sources, list):
         for idx, item in enumerate(sources):
-            if isinstance(item, dict) and isinstance(item.get("text"), str):
-                source_id = str(item.get("id") or item.get("path") or f"source_{idx}")
-                kind = str(item.get("kind") or "text")
-                records.append({"source_id": source_id, "kind": kind, "text": item["text"]})
-            elif isinstance(item, dict) and isinstance(item.get("path"), str):
-                source_id = str(item.get("id") or item["path"])
-                kind = str(item.get("kind") or "text")
-                records.append({"source_id": source_id, "kind": kind, "text": _read_source_path(item["path"])})
+            if isinstance(item, dict):
+                add_record(item, idx)
     return records
 
 
@@ -637,14 +698,27 @@ def _extract_field_from_sources(
     return None, None
 
 
-def retrieve_evidence_snippets(payload: dict[str, Any]) -> list[dict[str, Any]]:
+def retrieve_evidence_snippets(payload: dict[str, Any], *, allow_web: bool = False) -> list[dict[str, Any]]:
     """Return local source lines likely relevant to required evidence fields."""
 
     claim = payload.get("claim", {}) if isinstance(payload, dict) else {}
     claim_type = claim.get("type") if isinstance(claim, dict) else None
     fields = REQUIRED_DECISION_FIELDS.get(str(claim_type), [])
     snippets: list[dict[str, Any]] = []
-    for source in _source_records(payload):
+    for source in _source_records(payload, allow_web=allow_web):
+        if source.get("retrieval_note"):
+            snippets.append(
+                {
+                    "source_id": source["source_id"],
+                    "source_kind": source["kind"],
+                    "line": None,
+                    "snippet": "",
+                    "matched_fields": [],
+                    "retrieval_status": source.get("retrieval_status"),
+                    "retrieval_note": source.get("retrieval_note"),
+                }
+            )
+            continue
         for line_number, line in enumerate(source["text"].splitlines(), start=1):
             lowered = line.lower()
             matched = [field for field in fields if re.search(rf"\b{_field_pattern(field)}\b", lowered)]
@@ -656,19 +730,24 @@ def retrieve_evidence_snippets(payload: dict[str, Any]) -> list[dict[str, Any]]:
                         "line": line_number,
                         "snippet": line.strip(),
                         "matched_fields": matched,
+                        "retrieval_status": source.get("retrieval_status"),
                     }
                 )
     return snippets
 
 
-def extract_evidence(payload: dict[str, Any]) -> dict[str, Any]:
+def extract_evidence(payload: dict[str, Any], *, allow_web: bool = False) -> dict[str, Any]:
     """Extract explicit evidence assignments from local text/code/log sources."""
 
     claim = payload.get("claim", {}) if isinstance(payload, dict) else {}
-    sources = _source_records(payload)
+    sources = _source_records(payload, allow_web=allow_web)
     extracted: dict[str, Any] = {}
     evidence_spans: dict[str, dict[str, Any]] = {}
-    extraction_notes: list[str] = []
+    extraction_notes: list[str] = [
+        source["retrieval_note"]
+        for source in sources
+        if source.get("retrieval_note")
+    ]
 
     for field in ("abs_error", "tolerance"):
         value, span = _extract_field_from_sources(sources, field, "number")
@@ -727,7 +806,7 @@ def extract_evidence(payload: dict[str, Any]) -> dict[str, Any]:
         "extraction_status": status,
         "extracted_evidence": extracted,
         "evidence_spans": evidence_spans,
-        "retrieved_snippets": retrieve_evidence_snippets(payload),
+        "retrieved_snippets": retrieve_evidence_snippets(payload, allow_web=allow_web),
         "candidate_payload": candidate_payload,
         "required_fields": required,
         "missing_fields_after_extraction": missing,
@@ -736,13 +815,80 @@ def extract_evidence(payload: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def standalone_pipeline(payload: dict[str, Any]) -> dict[str, Any]:
+def scientific_reasoning_report(
+    candidate_payload: dict[str, Any],
+    extraction: dict[str, Any],
+    alignment: dict[str, Any],
+    gate_decision: dict[str, Any],
+) -> dict[str, Any]:
+    """A deterministic scientific-reasoning checklist over CAPAS outputs.
+
+    This is not a scientific oracle. It names obvious scope, evidence, and
+    independence risks so the final gate is not confused with broad reasoning.
+    """
+
+    claim = candidate_payload.get("claim", {}) if isinstance(candidate_payload, dict) else {}
+    evidence = candidate_payload.get("evidence", {}) if isinstance(candidate_payload, dict) else {}
+    claim_type = claim.get("type") if isinstance(claim, dict) else None
+    risks: list[str] = []
+    recommendations: list[str] = []
+
+    if extraction["extraction_status"] != "complete":
+        risks.append("required evidence is not completely extracted")
+        recommendations.append("HOLD until required evidence fields are present with source spans")
+
+    missing_spans = [
+        field
+        for field in extraction.get("required_fields", [])
+        if field not in extraction.get("evidence_spans", {})
+    ]
+    if missing_spans:
+        risks.append(f"required fields lack auditable source spans: {missing_spans}")
+        recommendations.append("do not accept claims whose required evidence cannot be traced to source snippets")
+
+    if alignment["alignment_status"] == "MISALIGNED":
+        risks.append("claim prose overstates or changes evidence scope")
+        recommendations.append("rewrite claim text to the strongest scope licensed by structured evidence")
+
+    if claim_type == "exact_model_solution" and evidence.get("physical_evidence_level") == "experimental":
+        risks.append("exact_model_solution is mixed with experimental evidence level")
+        recommendations.append("separate exact model correctness from physical/experimental accuracy")
+
+    if claim_type == "physical_accuracy" and "reference_truth" not in evidence:
+        risks.append("physical_accuracy claim lacks declared reference_truth")
+        recommendations.append("declare experimental/reference truth before accepting physical accuracy")
+
+    if claim_type == "universal_anchor_claim" and evidence.get("anchor_mode") != "absolute_anchor":
+        risks.append("universal anchor claim lacks absolute_anchor mode")
+        recommendations.append("downgrade to local/property plausibility unless an absolute anchor is declared")
+
+    if evidence.get("verification_independence") in {None, "unknown", "same_runtime"}:
+        risks.append("verification independence is weak or undeclared")
+        recommendations.append("prefer independent witness, analytic reference, or no-solver theoretical anchor")
+
+    if gate_decision["verdict"] == "ACCEPT" and risks:
+        status = "BLOCK_ACCEPT"
+    elif risks:
+        status = "WARN"
+    else:
+        status = "CLEAR"
+
+    return {
+        "reasoning_status": status,
+        "risks": risks,
+        "recommendations": recommendations,
+        "non_claim": "This is a deterministic checklist for scope/evidence risks, not broad scientific reasoning or literature understanding.",
+    }
+
+
+def standalone_pipeline(payload: dict[str, Any], *, allow_web: bool = False) -> dict[str, Any]:
     """Run the local standalone MVP: extract -> align -> deterministic gate."""
 
-    extraction = extract_evidence(payload)
+    extraction = extract_evidence(payload, allow_web=allow_web)
     candidate = extraction["candidate_payload"]
     alignment = align_claim_text(candidate)
     gate_decision = decide_external_claim(candidate)
+    reasoning = scientific_reasoning_report(candidate, extraction, alignment, gate_decision)
 
     final_decision = dict(gate_decision)
     if alignment["alignment_status"] == "MISALIGNED" and gate_decision["verdict"] == "ACCEPT":
@@ -756,11 +902,21 @@ def standalone_pipeline(payload: dict[str, Any]) -> dict[str, Any]:
         )
     elif alignment["alignment_status"] == "MISALIGNED" and gate_decision["verdict"] == "REWRITE":
         final_decision["reason"] = f"{gate_decision['reason']}; semantic alignment also found overclaim"
+    elif reasoning["reasoning_status"] == "BLOCK_ACCEPT" and gate_decision["verdict"] == "ACCEPT":
+        final_decision.update(
+            {
+                "verdict": "HOLD",
+                "reason": "scientific reasoning checklist found unresolved evidence/scope risks before ACCEPT",
+                "licensed_claim": None,
+                "rewrite": None,
+            }
+        )
 
     return {
         "pipeline_status": "PASS" if final_decision["verdict"] in {"ACCEPT", "REWRITE", "REJECT", "HOLD"} else "ERROR",
         "extraction": extraction,
         "semantic_alignment": alignment,
+        "scientific_reasoning": reasoning,
         "capas_gate_decision": gate_decision,
         "final_decision": final_decision,
         "fine_tune_ready": False,
@@ -1396,7 +1552,7 @@ def cmd_align(args: argparse.Namespace) -> int:
     if not isinstance(payload.get("evidence"), dict) and (
         isinstance(payload.get("source"), dict) or isinstance(payload.get("sources"), list)
     ):
-        payload = extract_evidence(payload)["candidate_payload"]
+        payload = extract_evidence(payload, allow_web=args.allow_web)["candidate_payload"]
     report = align_claim_text(payload)
     if args.output:
         _write_json(Path(args.output), report)
@@ -1410,7 +1566,7 @@ def cmd_align(args: argparse.Namespace) -> int:
 
 def cmd_extract(args: argparse.Namespace) -> int:
     payload = _load_json(Path(args.input))
-    report = extract_evidence(payload)
+    report = extract_evidence(payload, allow_web=args.allow_web)
     if args.output:
         _write_json(Path(args.output), report)
     if args.json or not args.output:
@@ -1425,8 +1581,8 @@ def cmd_extract(args: argparse.Namespace) -> int:
 def cmd_retrieve(args: argparse.Namespace) -> int:
     payload = _load_json(Path(args.input))
     report = {
-        "retrieved_snippets": retrieve_evidence_snippets(payload),
-        "non_claim": "This retrieves local lines matching required evidence fields; it does not fetch remote sources.",
+        "retrieved_snippets": retrieve_evidence_snippets(payload, allow_web=args.allow_web),
+        "non_claim": "This retrieves source lines matching required evidence fields; web retrieval requires --allow-web.",
     }
     if args.output:
         _write_json(Path(args.output), report)
@@ -1438,9 +1594,26 @@ def cmd_retrieve(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_reason(args: argparse.Namespace) -> int:
+    payload = _load_json(Path(args.input))
+    extraction = extract_evidence(payload, allow_web=args.allow_web)
+    candidate = extraction["candidate_payload"]
+    alignment = align_claim_text(candidate)
+    gate_decision = decide_external_claim(candidate)
+    report = scientific_reasoning_report(candidate, extraction, alignment, gate_decision)
+    if args.output:
+        _write_json(Path(args.output), report)
+    if args.json or not args.output:
+        print(json.dumps(report, indent=2, sort_keys=True))
+    else:
+        print(f"{report['reasoning_status']}: {', '.join(report['risks']) or 'clear'}")
+        print(f"wrote {args.output}")
+    return 0
+
+
 def cmd_pipeline(args: argparse.Namespace) -> int:
     payload = _load_json(Path(args.input))
-    report = standalone_pipeline(payload)
+    report = standalone_pipeline(payload, allow_web=args.allow_web)
     if args.output:
         _write_json(Path(args.output), report)
     if args.json or not args.output:
@@ -1525,24 +1698,35 @@ def main(argv: list[str] | None = None) -> int:
     align.add_argument("--input", required=True, help="path to claim/evidence JSON")
     align.add_argument("--output", help="optional alignment report path")
     align.add_argument("--json", action="store_true", help="print JSON even when --output is supplied")
+    align.add_argument("--allow-web", action="store_true", help="allow fetching source.url before alignment")
     align.set_defaults(func=cmd_align)
 
     extract = subparsers.add_parser("extract", help="extract explicit evidence assignments from local text/code/log input")
     extract.add_argument("--input", required=True, help="path to extraction input JSON")
     extract.add_argument("--output", help="optional extraction report path")
     extract.add_argument("--json", action="store_true", help="print JSON even when --output is supplied")
+    extract.add_argument("--allow-web", action="store_true", help="allow fetching source.url")
     extract.set_defaults(func=cmd_extract)
 
     retrieve = subparsers.add_parser("retrieve", help="retrieve local evidence lines for the claim type")
     retrieve.add_argument("--input", required=True, help="path to standalone pipeline input JSON")
     retrieve.add_argument("--output", help="optional retrieval report path")
     retrieve.add_argument("--json", action="store_true", help="print JSON even when --output is supplied")
+    retrieve.add_argument("--allow-web", action="store_true", help="allow fetching source.url")
     retrieve.set_defaults(func=cmd_retrieve)
+
+    reason = subparsers.add_parser("reason", help="run deterministic scientific evidence/scope checklist")
+    reason.add_argument("--input", required=True, help="path to standalone pipeline input JSON")
+    reason.add_argument("--output", help="optional reasoning report path")
+    reason.add_argument("--json", action="store_true", help="print JSON even when --output is supplied")
+    reason.add_argument("--allow-web", action="store_true", help="allow fetching source.url")
+    reason.set_defaults(func=cmd_reason)
 
     pipeline = subparsers.add_parser("pipeline", help="run extract -> semantic alignment -> deterministic claim gate")
     pipeline.add_argument("--input", required=True, help="path to standalone pipeline input JSON")
     pipeline.add_argument("--output", help="optional pipeline report path")
     pipeline.add_argument("--json", action="store_true", help="print JSON even when --output is supplied")
+    pipeline.add_argument("--allow-web", action="store_true", help="allow fetching source.url")
     pipeline.set_defaults(func=cmd_pipeline)
 
     schema = subparsers.add_parser("schema", help="print or write the external claim/evidence JSON schema")

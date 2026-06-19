@@ -23,8 +23,11 @@ Run it:
 
 ```bash
 capas retrieve --input examples/standalone_pipeline_multisource.json
+capas retrieve --input examples/standalone_pipeline_web_source.json --allow-web
 capas extract --input examples/standalone_pipeline_accept.json
+capas extract --input examples/standalone_pipeline_pdf_source.json
 capas align --input examples/standalone_pipeline_semantic_hold.json
+capas reason --input examples/standalone_pipeline_semantic_hold.json
 capas pipeline --input examples/standalone_pipeline_semantic_hold.json
 python3 benchmarks/verify_standalone_pipeline.py
 ```
@@ -67,14 +70,33 @@ This makes the local evidence auditable instead of just extracted.
 ### `capas retrieve`
 
 Retrieves local source lines likely relevant to the required evidence fields for
-the claim type. It is local-only and field-driven:
+the claim type. It is field-driven and can read local sources by default:
 
 ```bash
 capas retrieve --input examples/standalone_pipeline_multisource.json
 ```
 
-Non-claim: this does not fetch papers from the web and does not decide whether a
-source is authoritative.
+Web retrieval is explicit:
+
+```bash
+capas retrieve --input examples/standalone_pipeline_web_source.json --allow-web
+```
+
+Without `--allow-web`, declared URLs produce a `not_retrieved` snippet with a
+note. This avoids accidental network access during audits.
+
+### PDF Sources
+
+Local PDF parsing is optional:
+
+```bash
+python -m pip install -e ".[standalone]"
+capas extract --input examples/standalone_pipeline_pdf_source.json
+```
+
+If the optional parser is missing or the PDF cannot be parsed, CAPAS records the
+parser failure as an extraction note. It does not infer evidence from a failed
+parse.
 
 ### `capas align`
 
@@ -103,13 +125,27 @@ The pipeline may produce a stricter final decision than the gate alone:
 
 This is not yet the large standalone product. It does not:
 
-- retrieve evidence from the web,
-- parse PDF structure,
 - understand arbitrary scientific prose,
 - perform broad scientific reasoning,
 - replace domain-specific scientific verifiers.
 
-It is the first safe local bridge toward those modules.
+It now has first-pass web retrieval and PDF parsing hooks, but they are narrow:
+field-driven retrieval, optional dependencies, and explicit failure notes.
+
+### `capas reason`
+
+Runs a deterministic scientific evidence/scope checklist over the extracted
+evidence, semantic alignment, and CAPAS gate decision.
+
+It flags risks such as:
+
+- missing source spans for required fields,
+- model truth being stated as experimental truth,
+- weak or undeclared witness independence,
+- universal-anchor claims without `absolute_anchor`.
+
+Non-claim: this is not general scientific reasoning. It is a transparent
+checklist that names obvious evidence/scope risks.
 
 ## Product Expansion Path
 

@@ -145,8 +145,11 @@ Run the standalone upstream MVP:
 
 ```bash
 capas retrieve --input examples/standalone_pipeline_multisource.json
+capas retrieve --input examples/standalone_pipeline_web_source.json --allow-web
 capas extract --input examples/standalone_pipeline_accept.json
+capas extract --input examples/standalone_pipeline_pdf_source.json
 capas align --input examples/standalone_pipeline_semantic_hold.json
+capas reason --input examples/standalone_pipeline_semantic_hold.json
 capas pipeline --input examples/standalone_pipeline_semantic_hold.json
 python3 benchmarks/verify_standalone_pipeline.py
 ```
@@ -157,6 +160,16 @@ deterministic semantic-scope guard before the CAPAS gate.
 `extract` also returns `evidence_spans` with `source_id`, line number, snippet,
 and parser for each extracted field, so a reviewer can audit where the evidence
 came from.
+
+Web retrieval is opt-in with `--allow-web`. Local PDF parsing is supported when
+the optional standalone dependency is installed:
+
+```bash
+python -m pip install -e ".[standalone]"
+```
+
+If web permission or PDF parser support is missing, CAPAS records that as an
+extraction note instead of silently inventing evidence.
 
 The published MVP input contract is
 `docs/schema/capas_claim_payload.schema.json`. `check-input` validates the

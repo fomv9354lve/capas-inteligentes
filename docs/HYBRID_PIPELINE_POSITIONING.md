@@ -89,16 +89,19 @@ The current executable form is:
 
 ```text
 capas retrieve:
-local source lines matching required evidence fields
+source lines matching required evidence fields; URL fetch requires --allow-web
 
 capas extract:
-local text/log/code -> explicit evidence assignments + field spans
+local text/log/code/PDF or opted-in web text -> explicit evidence assignments + field spans
 
 capas align:
 claim.text <-> claim.type <-> evidence scope
 
+capas reason:
+deterministic evidence/scope risk checklist
+
 capas pipeline:
-extract -> align -> deterministic gate
+extract -> align -> reason -> deterministic gate
 ```
 
 Future semantic checkers can be neural, symbolic, or hybrid, but they should sit

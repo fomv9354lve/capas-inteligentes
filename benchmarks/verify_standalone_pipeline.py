@@ -10,6 +10,8 @@ import capas
 
 ROOT = Path(__file__).resolve().parents[1]
 REPORT = ROOT / "outputs" / "standalone_pipeline_report.json"
+WEB_SOURCE = ROOT / "examples" / "standalone_pipeline_web_source.json"
+PDF_SOURCE = ROOT / "examples" / "standalone_pipeline_pdf_source.json"
 
 
 CASES = [
@@ -79,6 +81,7 @@ def main() -> int:
                         field in extraction["evidence_spans"]
                         for field in extraction["required_fields"]
                     )
+                    and "scientific_reasoning" in pipeline
                     and cli["returncode"] == 0
                 ),
                 "expected": {
@@ -94,6 +97,8 @@ def main() -> int:
                     "alignment_status": alignment["alignment_status"],
                     "alignment_issues": alignment["issues"],
                     "gate_verdict": pipeline["capas_gate_decision"]["verdict"],
+                    "reasoning_status": pipeline["scientific_reasoning"]["reasoning_status"],
+                    "reasoning_risks": pipeline["scientific_reasoning"]["risks"],
                     "final_verdict": final_decision["verdict"],
                     "final_reason": final_decision["reason"],
                 },
@@ -116,6 +121,35 @@ def main() -> int:
             "check": "extractor_does_not_infer_hidden_evidence",
             "passed": explicit_only["extraction_status"] == "none" and explicit_only["extracted_evidence"] == {},
             "actual": explicit_only,
+        }
+    )
+
+    web_blocked = capas.retrieve_evidence_snippets(_load(WEB_SOURCE), allow_web=False)
+    checks.append(
+        {
+            "check": "web_retrieval_requires_explicit_allow_web",
+            "passed": (
+                len(web_blocked) == 1
+                and web_blocked[0]["retrieval_status"] == "not_retrieved"
+                and "--allow-web" in web_blocked[0]["retrieval_note"]
+            ),
+            "actual": web_blocked,
+        }
+    )
+
+    pdf_result = capas.extract_evidence(_load(PDF_SOURCE))
+    checks.append(
+        {
+            "check": "pdf_parser_failure_or_missing_dependency_is_declared",
+            "passed": (
+                pdf_result["extraction_status"] == "none"
+                and bool(pdf_result["extraction_notes"])
+                and (
+                    "pypdf" in pdf_result["extraction_notes"][0]
+                    or "PDF parser failed" in pdf_result["extraction_notes"][0]
+                )
+            ),
+            "actual": pdf_result,
         }
     )
 
