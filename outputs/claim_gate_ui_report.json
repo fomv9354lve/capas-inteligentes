@@ -31,13 +31,18 @@
       "passed": true
     },
     {
+      "check": "ui_contains:REJECT sample",
+      "detail": "REJECT sample",
+      "passed": true
+    },
+    {
       "check": "ui_contains:HOLD sample",
       "detail": "HOLD sample",
       "passed": true
     },
     {
-      "check": "ui_contains:INVALID sample",
-      "detail": "INVALID sample",
+      "check": "ui_contains:INVALID schema sample",
+      "detail": "INVALID schema sample",
       "passed": true
     },
     {
@@ -176,6 +181,11 @@
       "passed": true
     },
     {
+      "check": "ui_contains:http-equiv=\"Content-Security-Policy\"",
+      "detail": "http-equiv=\"Content-Security-Policy\"",
+      "passed": true
+    },
+    {
       "check": "ui_contains:capas-social-card.svg",
       "detail": "capas-social-card.svg",
       "passed": true
@@ -251,8 +261,28 @@
       "passed": true
     },
     {
-      "check": "ui_contains:.json-key { color: #1d4ed8; }",
-      "detail": ".json-key { color: #1d4ed8; }",
+      "check": "ui_contains:id=\"clear-history-btn\"",
+      "detail": "id=\"clear-history-btn\"",
+      "passed": true
+    },
+    {
+      "check": "ui_contains:clearHistory",
+      "detail": "clearHistory",
+      "passed": true
+    },
+    {
+      "check": "ui_contains:--json-key",
+      "detail": "--json-key",
+      "passed": true
+    },
+    {
+      "check": "ui_contains:.json-key { color: var(--json-key); }",
+      "detail": ".json-key { color: var(--json-key); }",
+      "passed": true
+    },
+    {
+      "check": "ui_contains:if (json.length > 5000)",
+      "detail": "if (json.length > 5000)",
       "passed": true
     },
     {

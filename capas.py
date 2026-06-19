@@ -1131,6 +1131,20 @@ def _ui_samples() -> dict[str, dict[str, Any]]:
                 "verification_independence": "theory_scaling_law_no_solver",
             },
         },
+        "REJECT": {
+            "claim": {
+                "id": "sample_scaling_claim_reject",
+                "type": "universal_anchor_claim",
+                "text": "The generated result is physically consistent.",
+            },
+            "evidence": {
+                "anchor_mode": "absolute_anchor",
+                "local_property_tests_pass": False,
+                "universal_anchor_pass": False,
+                "physical_evidence_level": "failed_local_checks",
+                "verification_independence": "local_properties_no_anchor_needed",
+            },
+        },
         "HOLD": {
             "claim": {
                 "id": "sample_experiment_hold",
@@ -1172,6 +1186,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
 <meta name="twitter:title" content="CAPAS Claim Gate">
 <meta name="twitter:description" content="Deterministic ACCEPT / REJECT / REWRITE / HOLD decisions for structured scientific claims.">
 <meta name="twitter:image" content="https://fomv9354lve.github.io/capas-inteligentes/capas-social-card.svg">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'unsafe-inline'; script-src 'unsafe-inline'; object-src 'none'; base-uri 'none'; form-action 'none'; connect-src 'none'">
 <title>CAPAS Claim Gate</title>
 <style>
   /* CAPAS Claim Gate - Design System v9 */
@@ -1188,6 +1203,8 @@ def _render_ui(sample: dict[str, Any]) -> str:
     --accent: #7c7fff;
     --accent-hover: #818cf8;
     --accent-glow: rgba(99, 102, 241, 0.15);
+    --accent-start: #6366f1;
+    --accent-end: #8b5cf6;
     --green: #22c55e;
     --green-bg: rgba(34, 197, 94, 0.08);
     --green-border: rgba(34, 197, 94, 0.2);
@@ -1200,6 +1217,15 @@ def _render_ui(sample: dict[str, Any]) -> str:
     --slate: #94a3b8;
     --slate-bg: rgba(148, 163, 184, 0.08);
     --slate-border: rgba(148, 163, 184, 0.15);
+    --draft: #f59e0b;
+    --warning: #fbbf24;
+    --error-soft: #fca5a5;
+    --assist-text: #c7d2fe;
+    --json-key: #93c5fd;
+    --json-string: #86efac;
+    --json-number: #fbbf24;
+    --json-boolean: #c4b5fd;
+    --json-null: #fca5a5;
     --radius-sm: 6px;
     --radius: 10px;
     --radius-lg: 14px;
@@ -1255,7 +1281,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
     width: 26px;
     height: 26px;
     border-radius: 7px;
-    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    background: linear-gradient(135deg, var(--accent-start), var(--accent-end));
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1352,7 +1378,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
   .json-status::before { content: "●"; font-size: 8px; }
   .json-status.valid { color: var(--green); }
   .json-status.invalid { color: var(--red); }
-  .json-status.draft { color: #f59e0b; }
+  .json-status.draft { color: var(--draft); }
   .json-status.draft::before { content: "◐"; }
   .action-row { display: grid; grid-template-columns: 1fr 2fr; border-top: 1px solid var(--border); }
   .draft-btn {
@@ -1372,7 +1398,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
   .decide-btn {
     width: 100%;
     padding: 13px;
-    background: linear-gradient(135deg, var(--accent), #8b5cf6);
+    background: linear-gradient(135deg, var(--accent), var(--accent-end));
     color: white;
     border: none;
     border-top: 1px solid rgba(255, 255, 255, 0.05);
@@ -1410,10 +1436,10 @@ def _render_ui(sample: dict[str, Any]) -> str:
   .verdict-badge.HOLD { background: var(--slate-bg); color: var(--slate); border-color: var(--slate-border); }
   .verdict-reason { color: var(--text-2); }
   .alert-block { margin: 12px 16px; padding: 12px 14px; border-radius: var(--radius); border: 1px solid; font-size: 12px; line-height: 1.7; }
-  .alert-block.missing { background: rgba(251, 191, 36, 0.06); border-color: rgba(251, 191, 36, 0.2); color: #fbbf24; }
-  .alert-block.errors { background: var(--red-bg); border-color: var(--red-border); color: #fca5a5; }
-  .assist-block { margin: 12px 16px; padding: 12px 14px; border-radius: var(--radius); background: var(--accent-glow); border-color: rgba(99, 102, 241, 0.24); color: #c7d2fe; }
-  .assist-block pre { background: var(--bg); border-color: rgba(99, 102, 241, 0.24); color: #c7d2fe; }
+  .alert-block.missing { background: rgba(251, 191, 36, 0.06); border-color: rgba(251, 191, 36, 0.2); color: var(--warning); }
+  .alert-block.errors { background: var(--red-bg); border-color: var(--red-border); color: var(--error-soft); }
+  .assist-block { margin: 12px 16px; padding: 12px 14px; border-radius: var(--radius); background: var(--accent-glow); border-color: rgba(99, 102, 241, 0.24); color: var(--assist-text); }
+  .assist-block pre { background: var(--bg); border-color: rgba(99, 102, 241, 0.24); color: var(--assist-text); }
   .rewrite-block { margin: 12px 16px; padding: 12px 14px; border-radius: var(--radius); background: var(--orange-bg); border-color: var(--orange-border); }
   .rewrite-text { color: var(--text-1); }
   .rewrite-diff { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
@@ -1424,11 +1450,11 @@ def _render_ui(sample: dict[str, Any]) -> str:
   .output-label { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.7px; color: var(--text-3); }
   .output-label::after { content: ""; flex: 1; height: 1px; background: var(--border); }
   pre#output { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); color: var(--text-2); max-height: 360px; padding: 14px; font-size: 11.5px; font-family: var(--mono); line-height: 1.7; overflow: auto; white-space: pre; }
-  .json-key { color: #93c5fd; }
-  .json-string { color: #86efac; }
-  .json-number { color: #fbbf24; }
-  .json-boolean { color: #c4b5fd; }
-  .json-null { color: #fca5a5; }
+  .json-key { color: var(--json-key); }
+  .json-string { color: var(--json-string); }
+  .json-number { color: var(--json-number); }
+  .json-boolean { color: var(--json-boolean); }
+  .json-null { color: var(--json-null); }
   pre#output::-webkit-scrollbar { width: 6px; height: 6px; }
   pre#output::-webkit-scrollbar-track { background: transparent; }
   pre#output::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 3px; }
@@ -1468,15 +1494,16 @@ def _render_ui(sample: dict[str, Any]) -> str:
       --text-1: #09090b;
       --text-2: #52525b;
       --text-3: #6f6f7a;
+      --draft: #b45309;
+      --json-key: #1d4ed8;
+      --json-string: #15803d;
+      --json-number: #b45309;
+      --json-boolean: #7c3aed;
+      --json-null: #dc2626;
       --shadow: 0 4px 16px rgba(24, 24, 27, 0.08);
     }
     .topbar { background: rgba(255, 255, 255, 0.9); }
     pre#output { background: #f4f4f5; }
-    .json-key { color: #1d4ed8; }
-    .json-string { color: #15803d; }
-    .json-number { color: #b45309; }
-    .json-boolean { color: #7c3aed; }
-    .json-null { color: #dc2626; }
   }
   @media (max-width: 860px) {
     .app-body { padding: 16px 16px 60px; }
@@ -1509,8 +1536,9 @@ def _render_ui(sample: dict[str, Any]) -> str:
   <span>Load sample:</span>
   <button class="sample-btn accept" title="ACCEPT sample" aria-label="Load ACCEPT sample" onclick="loadSample('ACCEPT')">&#10003; ACCEPT</button>
   <button class="sample-btn rewrite" title="REWRITE sample" aria-label="Load REWRITE sample" onclick="loadSample('REWRITE')">&#8634; REWRITE</button>
+  <button class="sample-btn invalid" title="REJECT sample" aria-label="Load REJECT sample" onclick="loadSample('REJECT')">&#10005; REJECT</button>
   <button class="sample-btn hold" title="HOLD sample" aria-label="Load HOLD sample" onclick="loadSample('HOLD')">&#9646; HOLD</button>
-  <button class="sample-btn invalid" title="INVALID sample" aria-label="Load INVALID sample" onclick="loadSample('INVALID')">&#10005; INVALID</button>
+  <button class="sample-btn invalid" title="Invalid schema sample that resolves to HOLD" aria-label="Load INVALID schema sample" onclick="loadSample('INVALID')">&#9888; INVALID</button>
 </div>
 
 <div class="grid">
@@ -1550,6 +1578,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
     <div class="history-actions">
       <button class="copy-btn" id="share-btn" aria-label="Copy shareable URL for current input" onclick="copyShareUrl()">Share URL</button>
       <button class="copy-btn" id="export-btn" aria-label="Export decision history as CSV" onclick="exportHistoryCsv()">Export CSV</button>
+      <button class="copy-btn" id="clear-history-btn" aria-label="Clear local decision history" onclick="clearHistory()">Clear</button>
       <span class="history-count" id="history-count" aria-live="polite" aria-atomic="true">0/50 saved</span>
     </div>
   </div>
@@ -1802,7 +1831,13 @@ def _render_ui(sample: dict[str, Any]) -> str:
     }
 
     function setOutputJson(value) {
-      document.getElementById("output").innerHTML = syntaxHighlight(JSON.stringify(value, null, 2));
+      const json = JSON.stringify(value, null, 2);
+      const output = document.getElementById("output");
+      if (json.length > 5000) {
+        output.textContent = json;
+        return;
+      }
+      output.innerHTML = syntaxHighlight(json);
     }
 
     function syntaxHighlight(json) {
@@ -1957,6 +1992,12 @@ def _render_ui(sample: dict[str, Any]) -> str:
         `<span class="history-reason">${escHtml(item.reason)}</span>` +
         `</button>`
       )).join("");
+    }
+
+    function clearHistory() {
+      decisionHistory = [];
+      saveHistory();
+      renderHistory();
     }
 
     function addToHistory(result) {

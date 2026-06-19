@@ -57,10 +57,21 @@ HARNESS = r"""
     ok("rewrite_diff_visible", document.querySelector(".rewrite-diff"));
     ok("syntax_highlight_visible", document.querySelector("#output .json-key"));
 
+    loadSample("REJECT");
+    ok("reject_verdict", document.querySelector(".verdict-badge.REJECT"));
+    ok("reject_output_json", document.getElementById("output").textContent.includes('"verdict": "REJECT"'));
+
+    loadSample("INVALID");
+    ok("invalid_schema_holds", document.querySelector(".verdict-badge.HOLD"));
+    ok("invalid_output_json", document.getElementById("output").textContent.includes('"schema_errors"'));
+
     const firstHistory = document.querySelector(".history-item");
     ok("history_item_exists", firstHistory);
     if (firstHistory) firstHistory.click();
     ok("history_restore_keeps_output", document.getElementById("output").textContent.includes("verdict"));
+
+    clearHistory();
+    ok("clear_history_empties_list", document.getElementById("history-count").textContent.includes("0/50"));
 
     const failures = checks.filter((check) => !check.passed);
     const pre = document.createElement("pre");
@@ -122,13 +133,13 @@ def main() -> int:
         checks.append({
             "check": "browser_e2e_pass",
             "passed": passed,
-            "detail": (proc.stderr or proc.stdout[-1000:]).strip(),
+            "detail": "all browser checks passed" if passed else (proc.stderr or proc.stdout[-1000:]).strip(),
         })
 
     report = {
         "claim_gate_browser_e2e_ready": passed,
         "checks": checks,
-        "scope": "Runs the generated static UI in a real headless Chrome/Chromium process and exercises Build Draft, Decide, rewrite diff, syntax highlighting, and history restore.",
+        "scope": "Runs the generated static UI in a real headless Chrome/Chromium process and exercises shared URLs, Build Draft, ACCEPT/REWRITE/REJECT/HOLD paths, INVALID schema output, syntax highlighting, history restore, and clear history.",
     }
     REPORT_PATH.parent.mkdir(parents=True, exist_ok=True)
     REPORT_PATH.write_text(json.dumps(report, indent=2, sort_keys=True), encoding="utf-8")
