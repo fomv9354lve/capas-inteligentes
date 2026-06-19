@@ -2221,6 +2221,46 @@ def _render_ui(sample: dict[str, Any]) -> str:
     padding: 8px;
   }
   .starter-step span { display: block; color: var(--accent); font-size: 10px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; }
+  .flow-section {
+    display: grid;
+    gap: 10px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg-2);
+    padding: 12px;
+  }
+  .flow-section + .flow-section { margin-top: 2px; }
+  .flow-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    color: var(--text-1);
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+  }
+  .flow-step-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 999px;
+    background: var(--accent);
+    color: white;
+    font-size: 11px;
+    font-weight: 900;
+    font-variant-numeric: tabular-nums;
+    flex: 0 0 auto;
+  }
+  .flow-copy {
+    margin: -4px 0 0;
+    color: var(--text-3);
+    font-size: 11px;
+    line-height: 1.5;
+  }
   .builder-shell { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(250px, 0.7fr); gap: 14px; align-items: start; }
   .builder-main, .builder-rail { display: grid; gap: 12px; min-width: 0; }
   .builder-rail {
@@ -3028,6 +3068,19 @@ def _render_ui(sample: dict[str, Any]) -> str:
     background: var(--bg-3);
     font-size: 10px;
   }
+  .gate-flow-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg-3);
+    color: var(--text-1);
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
   .action-row { gap: 0; padding: 0; border-top: 1px solid var(--border); background: var(--bg-3); }
   .draft-btn#draft-btn {
     height: 40px;
@@ -3307,27 +3360,35 @@ def _render_ui(sample: dict[str, Any]) -> str:
     </div>
     <div class="builder-shell">
       <div class="builder-main">
-        <div class="guided-grid">
-          <div class="guided-field">
-            <label for="guided-type">Claim type</label>
-            <select id="guided-type" onchange="renderGuidedFields()" aria-label="Choose claim type for guided builder"></select>
+        <section class="flow-section" aria-labelledby="flow-choose-title">
+          <h3 class="flow-title" id="flow-choose-title"><span class="flow-step-badge">1</span> Choose the claim</h3>
+          <p class="flow-copy">Pick the scientific claim type and write the exact sentence CAPAS is allowed to gate.</p>
+          <div class="guided-grid">
+            <div class="guided-field">
+              <label for="guided-type">Claim type</label>
+              <select id="guided-type" onchange="renderGuidedFields()" aria-label="Choose claim type for guided builder"></select>
+            </div>
+            <div class="type-help" id="guided-type-help" role="status" aria-live="polite">Choose a claim type to see what CAPAS checks.</div>
+            <div class="guided-field">
+              <label for="guided-claim-id">Record ID</label>
+              <input id="guided-claim-id" value="pilot_record_001" aria-label="Guided record ID">
+            </div>
+            <div class="guided-field full">
+              <label for="guided-claim-text">Claim wording</label>
+              <textarea id="guided-claim-text" aria-label="Guided claim text">The structured evidence record is ready for deterministic CAPAS gating.</textarea>
+            </div>
           </div>
-          <div class="type-help" id="guided-type-help" role="status" aria-live="polite">Choose a claim type to see what CAPAS checks.</div>
-          <div class="guided-field">
-            <label for="guided-claim-id">Record ID</label>
-            <input id="guided-claim-id" value="pilot_record_001" aria-label="Guided record ID">
+        </section>
+        <section class="flow-section" aria-labelledby="flow-complete-title">
+          <h3 class="flow-title" id="flow-complete-title"><span class="flow-step-badge">2</span> Complete evidence</h3>
+          <p class="flow-copy">Fill only the evidence fields required by the selected type. The contract on the right updates as you work.</p>
+          <div class="guided-grid" id="guided-fields" aria-label="Evidence fields for selected claim type"></div>
+          <div class="hero-actions">
+            <button class="sample-btn accept" type="button" onclick="loadVerticalDemo('AI_GOVERNANCE')">AI governance demo</button>
+            <button class="sample-btn rewrite" type="button" onclick="loadVerticalDemo('PHARMA')">Pharma demo</button>
+            <button class="sample-btn hold" type="button" onclick="buildGuidedPayload()">Use guided form</button>
           </div>
-          <div class="guided-field full">
-            <label for="guided-claim-text">Claim wording</label>
-            <textarea id="guided-claim-text" aria-label="Guided claim text">The structured evidence record is ready for deterministic CAPAS gating.</textarea>
-          </div>
-        </div>
-        <div class="guided-grid" id="guided-fields" aria-label="Evidence fields for selected claim type"></div>
-        <div class="hero-actions">
-          <button class="sample-btn accept" type="button" onclick="loadVerticalDemo('AI_GOVERNANCE')">AI governance demo</button>
-          <button class="sample-btn rewrite" type="button" onclick="loadVerticalDemo('PHARMA')">Pharma demo</button>
-          <button class="sample-btn hold" type="button" onclick="buildGuidedPayload()">Use guided form</button>
-        </div>
+        </section>
       </div>
       <aside class="builder-rail" aria-labelledby="builder-rail-title">
         <h3 id="builder-rail-title">Evidence contract</h3>
@@ -3407,7 +3468,8 @@ def _render_ui(sample: dict[str, Any]) -> str:
 <h2 class="sr-only" id="gate-title">CAPAS deterministic claim gate</h2>
 <div class="grid">
   <div>
-    <div class="panel">
+      <div class="panel">
+      <div class="gate-flow-title"><span class="flow-step-badge">3</span> Gate the payload</div>
       <div class="panel-header">
         <span class="panel-title">Raw JSON (Advanced)</span>
         <span class="panel-tag" id="type-label" role="status" aria-live="polite" aria-atomic="true"></span>
