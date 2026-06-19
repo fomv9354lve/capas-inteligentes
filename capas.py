@@ -2220,6 +2220,18 @@ def _render_ui(sample: dict[str, Any]) -> str:
     background: var(--bg-2);
     padding: 8px;
   }
+  .starter-step-button {
+    appearance: none;
+    width: 100%;
+    border: 0;
+    background: transparent;
+    color: var(--text-2);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    padding: 0;
+  }
+  .starter-step-button:hover { color: var(--accent-hover); }
   .starter-step span { display: block; color: var(--accent); font-size: 10px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; }
   .flow-section {
     display: grid;
@@ -2241,6 +2253,21 @@ def _render_ui(sample: dict[str, Any]) -> str:
     letter-spacing: 0.4px;
     text-transform: uppercase;
   }
+  .flow-title-button {
+    appearance: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    text-transform: inherit;
+    letter-spacing: inherit;
+    cursor: pointer;
+    padding: 0;
+  }
+  .flow-title-button:hover { color: var(--accent-hover); }
   .flow-step-badge {
     display: inline-flex;
     align-items: center;
@@ -3354,15 +3381,15 @@ def _render_ui(sample: dict[str, Any]) -> str:
     <div class="starter-guide" role="note" aria-label="CAPAS quick start">
       <strong>Start here if you are new: build a claim in the form, then run the gate.</strong>
       <div class="starter-steps">
-        <div class="starter-step"><span>1. Choose</span>Pick the claim type that matches the evidence you have.</div>
-        <div class="starter-step"><span>2. Complete</span>Fill the required evidence fields shown in the contract.</div>
-        <div class="starter-step"><span>3. Gate</span>Use guided form, then press Run Gate to get ACCEPT, REWRITE, REJECT, or HOLD.</div>
+        <div class="starter-step"><button class="starter-step-button" type="button" onclick="goToPhase('choose')"><span>1. Choose</span>Pick the claim type that matches the evidence you have.</button></div>
+        <div class="starter-step"><button class="starter-step-button" type="button" onclick="goToPhase('complete')"><span>2. Complete</span>Fill the required evidence fields shown in the contract.</button></div>
+        <div class="starter-step"><button class="starter-step-button" type="button" onclick="goToPhase('gate')"><span>3. Gate</span>Use guided form, then press Run Gate to get ACCEPT, REWRITE, REJECT, or HOLD.</button></div>
       </div>
     </div>
     <div class="builder-shell">
       <div class="builder-main">
-        <section class="flow-section" aria-labelledby="flow-choose-title">
-          <h3 class="flow-title" id="flow-choose-title"><span class="flow-step-badge">1</span> Choose the claim</h3>
+        <section class="flow-section" id="phase-choose" aria-labelledby="flow-choose-title">
+          <h3 class="flow-title" id="flow-choose-title"><button class="flow-title-button" type="button" onclick="goToPhase('choose')"><span class="flow-step-badge">1</span> Choose the claim</button></h3>
           <p class="flow-copy">Pick the scientific claim type and write the exact sentence CAPAS is allowed to gate.</p>
           <div class="guided-grid">
             <div class="guided-field">
@@ -3380,8 +3407,8 @@ def _render_ui(sample: dict[str, Any]) -> str:
             </div>
           </div>
         </section>
-        <section class="flow-section" aria-labelledby="flow-complete-title">
-          <h3 class="flow-title" id="flow-complete-title"><span class="flow-step-badge">2</span> Complete evidence</h3>
+        <section class="flow-section" id="phase-complete" aria-labelledby="flow-complete-title">
+          <h3 class="flow-title" id="flow-complete-title"><button class="flow-title-button" type="button" onclick="goToPhase('complete')"><span class="flow-step-badge">2</span> Complete evidence</button></h3>
           <p class="flow-copy">Fill only the evidence fields required by the selected type. The contract on the right updates as you work.</p>
           <div class="guided-grid" id="guided-fields" aria-label="Evidence fields for selected claim type"></div>
           <div class="hero-actions">
@@ -3436,7 +3463,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
 <div class="grid">
   <div>
     <div class="panel workspace-panel" id="raw-workspace">
-      <div class="gate-flow-title"><span class="flow-step-badge">3</span> Gate the payload</div>
+      <div class="gate-flow-title" id="phase-gate"><button class="flow-title-button" type="button" onclick="goToPhase('gate')"><span class="flow-step-badge">3</span> Gate the payload</button></div>
       <div class="panel-header">
         <span class="panel-title">Raw JSON (Advanced)</span>
         <span class="panel-tag" id="type-label" role="status" aria-live="polite" aria-atomic="true"></span>
@@ -3452,7 +3479,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
       <div class="json-status"><span class="payload-loaded-badge" id="payload-loaded-badge" role="status" aria-live="polite">Payload loaded</span></div>
     </div>
     <section class="panel workspace-panel ingest-panel" id="ingestion-workspace" aria-labelledby="ingest-title" hidden>
-      <div class="gate-flow-title"><span class="flow-step-badge">3</span> Ingest text into candidate claims</div>
+      <div class="gate-flow-title"><button class="flow-title-button" type="button" onclick="goToPhase('gate')"><span class="flow-step-badge">3</span> Ingest text into candidate claims</button></div>
       <div class="panel-header">
         <h2 class="panel-title" id="ingest-title">Paper / text ingestion</h2>
         <span class="panel-tag">human-confirmed candidates</span>
@@ -4513,6 +4540,33 @@ def _render_ui(sample: dict[str, Any]) -> str:
     function scrollToGuidedBuilder() {
       const guided = document.querySelector(".guided-panel");
       if (guided) guided.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function goToPhase(phase) {
+      const currentMode = document.body.dataset.gateMode || "single";
+      if (phase === "choose" || phase === "complete") {
+        setGateMode("single");
+      } else if (phase === "gate" && currentMode !== "ingestion") {
+        setGateMode("single");
+      }
+      const targets = {
+        choose: { section: "phase-choose", focus: "guided-type" },
+        complete: { section: "phase-complete", focus: "guided-fields" },
+        gate: { section: "gate", focus: currentMode === "ingestion" ? "ingest-source-text" : "decide-btn" }
+      };
+      const config = targets[phase] || targets.choose;
+      const section = document.getElementById(config.section);
+      if (section) section.scrollIntoView({ behavior: "smooth", block: "start" });
+      window.setTimeout(() => {
+        let focusTarget = document.getElementById(config.focus);
+        if (phase === "complete") {
+          focusTarget = document.querySelector("#guided-fields input, #guided-fields select, #guided-fields textarea") || focusTarget;
+        }
+        if (focusTarget && typeof focusTarget.focus === "function") {
+          focusTarget.focus({ preventScroll: true });
+        }
+      }, 260);
+      markOnboarded();
     }
 
     function markOnboarded() {
