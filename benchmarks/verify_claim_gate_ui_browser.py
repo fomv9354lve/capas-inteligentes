@@ -369,13 +369,22 @@ HARNESS = r"""
     ok("clear_history_empties_list", document.getElementById("history-count").textContent.includes("0/50"));
 
     if (window.innerWidth <= 560) {
+      const phaseTrack = document.querySelector(".phase-track");
+      if (phaseTrack) phaseTrack.style.transition = "none";
+      if (typeof setFlowPhase === "function") setFlowPhase("gate", { focus: false });
+      if (phaseTrack) void phaseTrack.offsetWidth;
       const gridColumns = getComputedStyle(document.querySelector(".grid")).gridTemplateColumns.trim().split(/\s+/);
       const actionColumns = getComputedStyle(document.querySelector(".action-row")).gridTemplateColumns.trim().split(/\s+/);
       ok("mobile_viewport_active", window.innerWidth <= 560, String(window.innerWidth));
       ok("mobile_grid_single_column", gridColumns.length === 1, gridColumns.join("|"));
       ok("mobile_action_row_single_column", actionColumns.length === 1, actionColumns.join("|"));
       ok("mobile_topbar_wraps_actions", document.querySelector(".topbar-actions").getBoundingClientRect().top > document.querySelector(".topbar-left").getBoundingClientRect().top);
-      ok("mobile_output_within_viewport", document.getElementById("output").getBoundingClientRect().right <= window.innerWidth);
+      const outputRect = document.getElementById("output").getBoundingClientRect();
+      ok(
+        "mobile_output_within_viewport",
+        outputRect.left >= 0 && outputRect.right <= window.innerWidth,
+        JSON.stringify({ left: outputRect.left, right: outputRect.right, width: outputRect.width, innerWidth: window.innerWidth })
+      );
       openHelpModal(helpButton);
       const modalRect = document.getElementById("help-modal").getBoundingClientRect();
       ok("mobile_modal_fits_width", modalRect.left >= 0 && modalRect.right <= window.innerWidth);

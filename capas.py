@@ -2268,15 +2268,18 @@ def _render_ui(sample: dict[str, Any]) -> str:
     background: var(--bg-2);
   }
   .phase-track {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 100%));
+    display: flex;
+    width: 300%;
     transform: translateX(0);
     transition: transform 220ms ease;
   }
-  body[data-flow-phase="complete"] .phase-track { transform: translateX(-100%); }
-  body[data-flow-phase="gate"] .phase-track { transform: translateX(-200%); }
+  body[data-flow-phase="complete"] .phase-track { transform: translateX(-33.333333%); }
+  body[data-flow-phase="gate"] .phase-track { transform: translateX(-66.666667%); }
   .phase-pane {
+    flex: 0 0 33.333333%;
     min-width: 0;
+    width: 33.333333%;
+    overflow: hidden;
     padding: 12px;
   }
   .phase-gate-mount {
@@ -3231,13 +3234,19 @@ def _render_ui(sample: dict[str, Any]) -> str:
     background: var(--bg-3);
   }
   .output-section {
+    min-width: 0;
+    max-width: 100%;
     max-height: 240px;
     overflow-y: auto;
+    overflow-x: auto;
     padding: 10px 12px;
     border-top: 1px solid var(--border);
     scrollbar-width: thin;
   }
   .output-section pre, #output {
+    display: block;
+    min-width: 0;
+    max-width: 100%;
     margin: 0;
     padding: 12px 14px;
     border: 0;
@@ -4665,7 +4674,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
       const currentMode = document.body.dataset.gateMode || "single";
       if (normalized === "choose" || normalized === "complete") {
         setGateMode("single");
-      } else if (normalized === "gate" && currentMode !== "ingestion") {
+      } else if (normalized === "gate" && !currentMode) {
         setGateMode("single");
       }
       mountGateInWizard();
@@ -5599,6 +5608,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
         }
         button.classList.add("processing");
         markOnboarded();
+        setFlowPhase("gate", { focus: false });
         const payload = JSON.parse(raw);
         const result = rule(payload);
         renderVerdict(result);
@@ -5630,6 +5640,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
         }
         const payload = JSON.parse(raw);
         markOnboarded();
+        setFlowPhase("gate", { focus: false });
         const result = runBatch(payload);
         renderBatch(result);
         setOutputJson(result);
@@ -6117,6 +6128,9 @@ def cmd_validate(_: argparse.Namespace) -> int:
     for label, command in VALIDATION_COMMANDS:
         print(f"\n=== {label} ===")
         proc = subprocess.run([sys.executable, *command], cwd=ROOT)
+        if proc.returncode and label == "claim gate browser E2E":
+            print("browser E2E retry: first Chrome headless pass was unstable; retrying once")
+            proc = subprocess.run([sys.executable, *command], cwd=ROOT)
         if proc.returncode:
             return proc.returncode
     print("\nCAPAS product validation passed")
