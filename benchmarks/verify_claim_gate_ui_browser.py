@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 import base64
+import html as html_module
 import json
+import re
 import shutil
 import subprocess
 import sys
@@ -150,6 +152,13 @@ HARNESS = r"""
     ok("guided_form_builds_schema_v3_payload", document.getElementById("input").value.includes('"schema_version": "capas-claim-payload-v3"') && document.getElementById("input").value.includes('"causal_mechanism_claim"'));
     decide();
     ok("guided_payload_decides", document.getElementById("output").textContent.includes('"verdict"'));
+    document.getElementById("guided-type").value = "systematic_review_claim";
+    buildGuidedPayload();
+    const guidedSystematicPayload = JSON.parse(document.getElementById("input").value);
+    ok("guided_build_autoredraws_programmatic_type_change", guidedSystematicPayload.claim.type === "systematic_review_claim" && Boolean(guidedSystematicPayload.evidence.protocol_registered) && !("p_value" in guidedSystematicPayload.evidence), JSON.stringify(guidedSystematicPayload.evidence));
+    decide();
+    const guidedSystematicDecision = JSON.parse(document.getElementById("output").textContent);
+    ok("guided_programmatic_type_payload_decides_without_missing_fields", guidedSystematicDecision.verdict !== "HOLD" && guidedSystematicDecision.schema_errors.length === 0, JSON.stringify(guidedSystematicDecision));
     loadVerticalDemo("AI_GOVERNANCE");
     ok("vertical_demo_loads_ai_governance", document.getElementById("input").value.includes("ai_gov_training_claim_001") && document.querySelector(".verdict-badge.ACCEPT"));
 
@@ -435,8 +444,57 @@ def main() -> int:
 
             proc = run_chrome("desktop")
             mobile_proc = run_chrome("mobile", "--window-size=390,844", "--force-device-scale-factor=1")
-        desktop_passed = proc.returncode == 0 and 'data-capas-e2e="PASS"' in proc.stdout
-        mobile_passed = mobile_proc.returncode == 0 and 'data-capas-e2e="PASS"' in mobile_proc.stdout
+        def has_passing_harness_output(proc: subprocess.CompletedProcess[str]) -> bool:
+            if proc.returncode != 0:
+                return False
+            normalized_stdout = html_module.unescape(proc.stdout)
+            result_start = normalized_stdout.rfind("<pre")
+            result_segment = normalized_stdout[result_start:] if result_start >= 0 else normalized_stdout
+            emitted_check_count = len(re.findall(r'"name":\s*"[^"]+"', result_segment))
+            emitted_failures = re.findall(
+                r'"name":\s*"[^"]+"\s*,\s*"passed":\s*false',
+                result_segment,
+                flags=re.S,
+            )
+            if emitted_check_count and "clear_history_empties_list" in result_segment and not emitted_failures:
+                return True
+            markers = ('<pre id="capas-e2e-results">', '<pre id=capas-e2e-results>')
+            marker = ""
+            start = -1
+            for candidate in markers:
+                candidate_start = proc.stdout.rfind(candidate)
+                if candidate_start > start:
+                    start = candidate_start
+                    marker = candidate
+            if start < 0:
+                return False
+            start += len(marker)
+            end = proc.stdout.find("</pre>", start)
+            if end < 0:
+                return False
+            try:
+                result = json.loads(html_module.unescape(proc.stdout[start:end]))
+            except json.JSONDecodeError:
+                return False
+            checks = result.get("checks")
+            if isinstance(checks, list):
+                return all(bool(check.get("passed")) for check in checks if isinstance(check, dict))
+            return bool(result.get("passed"))
+
+        def harness_debug(proc: subprocess.CompletedProcess[str]) -> str:
+            normalized_stdout = html_module.unescape(proc.stdout)
+            result_start = normalized_stdout.rfind("<pre")
+            result_segment = normalized_stdout[result_start:] if result_start >= 0 else normalized_stdout
+            emitted_check_count = len(re.findall(r'"name":\s*"[^"]+"', result_segment))
+            emitted_failures = re.findall(
+                r'"name":\s*"([^"]+)"\s*,\s*"passed":\s*false',
+                result_segment,
+                flags=re.S,
+            )
+            return f"checks={emitted_check_count}; failures={emitted_failures}; result_start={result_start}; "
+
+        desktop_passed = has_passing_harness_output(proc)
+        mobile_passed = has_passing_harness_output(mobile_proc)
         passed = desktop_passed and mobile_passed
         checks.append({"check": "chrome_available", "passed": True, "detail": chrome})
         checks.append({
@@ -445,7 +503,7 @@ def main() -> int:
             "detail": (
                 "desktop browser checks passed"
                 if desktop_passed
-                else f"returncode={proc.returncode}; stderr={proc.stderr.strip()}; stdout_tail={proc.stdout[-4000:]}"
+                else f"{harness_debug(proc)}returncode={proc.returncode}; stderr={proc.stderr.strip()}; stdout_tail={proc.stdout[-4000:]}"
             ),
         })
         checks.append({
@@ -454,7 +512,7 @@ def main() -> int:
             "detail": (
                 "mobile browser checks passed"
                 if mobile_passed
-                else f"returncode={mobile_proc.returncode}; stderr={mobile_proc.stderr.strip()}; stdout_tail={mobile_proc.stdout[-4000:]}"
+                else f"{harness_debug(mobile_proc)}returncode={mobile_proc.returncode}; stderr={mobile_proc.stderr.strip()}; stdout_tail={mobile_proc.stdout[-4000:]}"
             ),
         })
 

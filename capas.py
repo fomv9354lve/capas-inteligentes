@@ -3679,6 +3679,10 @@ def _render_ui(sample: dict[str, Any]) -> str:
 
     function buildGuidedPayload() {
       const type = document.getElementById("guided-type").value || "statistical_confidence";
+      const fields = document.getElementById("guided-fields");
+      if (fields && fields.dataset.claimType !== type) {
+        renderGuidedFields();
+      }
       const evidence = {};
       document.querySelectorAll("#guided-fields [data-field]").forEach((element) => {
         evidence[element.dataset.field] = coerceGuidedValue(element);
