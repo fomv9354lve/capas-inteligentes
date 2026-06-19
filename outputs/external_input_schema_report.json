@@ -76,6 +76,138 @@
         "claim.type must be one of: claim_transition, exact_model_solution, physical_accuracy, universal_anchor_claim"
       ],
       "passed": true
+    },
+    {
+      "check": "adversarial_payload:negative_abs_error",
+      "decision": {
+        "fine_tune_ready": false,
+        "input_claim": {
+          "id": "negative_abs_error",
+          "text": "A negative absolute error should not license an exact model claim.",
+          "type": "exact_model_solution"
+        },
+        "licensed_claim": "A negative absolute error should not license an exact model claim.",
+        "missing_fields": [],
+        "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "reason": "input payload failed CAPAS schema validation",
+        "required_fields": [],
+        "rewrite": null,
+        "schema_errors": [
+          "evidence.abs_error must be >= 0"
+        ],
+        "verdict": "HOLD"
+      },
+      "errors": [
+        "evidence.abs_error must be >= 0"
+      ],
+      "expected_error": "evidence.abs_error must be >= 0",
+      "passed": true
+    },
+    {
+      "check": "adversarial_payload:negative_tolerance",
+      "decision": {
+        "fine_tune_ready": false,
+        "input_claim": {
+          "id": "negative_tolerance",
+          "text": "A negative tolerance should not be accepted.",
+          "type": "exact_model_solution"
+        },
+        "licensed_claim": "A negative tolerance should not be accepted.",
+        "missing_fields": [],
+        "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "reason": "input payload failed CAPAS schema validation",
+        "required_fields": [],
+        "rewrite": null,
+        "schema_errors": [
+          "evidence.tolerance must be >= 0"
+        ],
+        "verdict": "HOLD"
+      },
+      "errors": [
+        "evidence.tolerance must be >= 0"
+      ],
+      "expected_error": "evidence.tolerance must be >= 0",
+      "passed": true
+    },
+    {
+      "check": "adversarial_payload:double_negative_exact_solution",
+      "decision": {
+        "fine_tune_ready": false,
+        "input_claim": {
+          "id": "double_negative_exact_solution",
+          "text": "Two negative values must not create a false ACCEPT.",
+          "type": "exact_model_solution"
+        },
+        "licensed_claim": "Two negative values must not create a false ACCEPT.",
+        "missing_fields": [],
+        "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "reason": "input payload failed CAPAS schema validation",
+        "required_fields": [],
+        "rewrite": null,
+        "schema_errors": [
+          "evidence.abs_error must be >= 0",
+          "evidence.tolerance must be >= 0"
+        ],
+        "verdict": "HOLD"
+      },
+      "errors": [
+        "evidence.abs_error must be >= 0",
+        "evidence.tolerance must be >= 0"
+      ],
+      "expected_error": "evidence.abs_error must be >= 0",
+      "passed": true
+    },
+    {
+      "check": "adversarial_payload:boolean_numeric_field",
+      "decision": {
+        "fine_tune_ready": false,
+        "input_claim": {
+          "id": "boolean_numeric_field",
+          "text": "Boolean values must not be accepted as numeric error fields.",
+          "type": "exact_model_solution"
+        },
+        "licensed_claim": "Boolean values must not be accepted as numeric error fields.",
+        "missing_fields": [],
+        "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "reason": "input payload failed CAPAS schema validation",
+        "required_fields": [],
+        "rewrite": null,
+        "schema_errors": [
+          "evidence.abs_error must be a number"
+        ],
+        "verdict": "HOLD"
+      },
+      "errors": [
+        "evidence.abs_error must be a number"
+      ],
+      "expected_error": "evidence.abs_error must be a number",
+      "passed": true
+    },
+    {
+      "check": "adversarial_payload:oversized_claim_id",
+      "decision": {
+        "fine_tune_ready": false,
+        "input_claim": {
+          "id": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+          "text": "Oversized claim ids should be rejected before decision logic.",
+          "type": "universal_anchor_claim"
+        },
+        "licensed_claim": "Oversized claim ids should be rejected before decision logic.",
+        "missing_fields": [],
+        "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "reason": "input payload failed CAPAS schema validation",
+        "required_fields": [],
+        "rewrite": null,
+        "schema_errors": [
+          "claim.id must be at most 256 characters"
+        ],
+        "verdict": "HOLD"
+      },
+      "errors": [
+        "claim.id must be at most 256 characters"
+      ],
+      "expected_error": "claim.id must be at most 256 characters",
+      "passed": true
     }
   ],
   "external_input_schema_ready": true,

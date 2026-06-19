@@ -238,6 +238,12 @@
           errors.push(`claim.${field} must be a non-empty string`);
         }
       }
+      if (typeof safeClaim.id === "string" && safeClaim.id.length > 256) {
+        errors.push("claim.id must be at most 256 characters");
+      }
+      if (typeof safeClaim.text === "string" && safeClaim.text.length > 4000) {
+        errors.push("claim.text must be at most 4000 characters");
+      }
       if (typeof safeClaim.type === "string" && !required[safeClaim.type]) {
         errors.push(`claim.type must be one of: ${claimTypes.join(", ")}`);
       }
@@ -245,6 +251,12 @@
       for (const field of ["abs_error", "tolerance"]) {
         if (Object.prototype.hasOwnProperty.call(safeEvidence, field) && typeof safeEvidence[field] !== "number") {
           errors.push(`evidence.${field} must be a number`);
+        } else if (Object.prototype.hasOwnProperty.call(safeEvidence, field)) {
+          if (!Number.isFinite(safeEvidence[field])) {
+            errors.push(`evidence.${field} must be finite`);
+          } else if (safeEvidence[field] < 0) {
+            errors.push(`evidence.${field} must be >= 0`);
+          }
         }
       }
       for (const field of ["within_chemical_accuracy", "local_property_tests_pass", "universal_anchor_pass", "upgrade_evidence_present"]) {

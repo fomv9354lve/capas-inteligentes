@@ -69,9 +69,9 @@ def external_claim_payload_schema() -> dict[str, Any]:
                 "additionalProperties": True,
                 "required": ["id", "type", "text"],
                 "properties": {
-                    "id": {"type": "string", "minLength": 1},
+                    "id": {"type": "string", "minLength": 1, "maxLength": 256},
                     "type": {"type": "string", "enum": claim_types},
-                    "text": {"type": "string", "minLength": 1},
+                    "text": {"type": "string", "minLength": 1, "maxLength": 4000},
                 },
             },
             "evidence": {
@@ -79,8 +79,8 @@ def external_claim_payload_schema() -> dict[str, Any]:
                 "additionalProperties": True,
                 "description": "Evidence fields are claim-type dependent; unsupported or missing evidence yields HOLD.",
                 "properties": {
-                    "abs_error": {"type": "number"},
-                    "tolerance": {"type": "number"},
+                    "abs_error": {"type": "number", "minimum": 0},
+                    "tolerance": {"type": "number", "minimum": 0},
                     "within_chemical_accuracy": {"type": "boolean"},
                     "anchor_mode": {"type": "string"},
                     "local_property_tests_pass": {"type": "boolean"},
@@ -113,6 +113,10 @@ def validate_external_payload(payload: dict[str, Any]) -> list[str]:
         value = claim.get(field)
         if not isinstance(value, str) or not value.strip():
             errors.append(f"claim.{field} must be a non-empty string")
+    if isinstance(claim.get("id"), str) and len(claim["id"]) > 256:
+        errors.append("claim.id must be at most 256 characters")
+    if isinstance(claim.get("text"), str) and len(claim["text"]) > 4000:
+        errors.append("claim.text must be at most 4000 characters")
 
     claim_type = claim.get("type")
     if isinstance(claim_type, str) and claim_type not in REQUIRED_DECISION_FIELDS:
@@ -123,8 +127,17 @@ def validate_external_payload(payload: dict[str, Any]) -> list[str]:
 
     numeric_fields = ["abs_error", "tolerance"]
     for field in numeric_fields:
-        if field in evidence and not isinstance(evidence[field], (int, float)):
+        if field in evidence and (
+            isinstance(evidence[field], bool)
+            or not isinstance(evidence[field], (int, float))
+        ):
             errors.append(f"evidence.{field} must be a number")
+        elif field in evidence:
+            value = float(evidence[field])
+            if not (value == value and value not in (float("inf"), float("-inf"))):
+                errors.append(f"evidence.{field} must be finite")
+            elif value < 0:
+                errors.append(f"evidence.{field} must be >= 0")
 
     bool_fields = [
         "within_chemical_accuracy",
@@ -684,6 +697,12 @@ def _render_ui(sample: dict[str, Any]) -> str:
           errors.push(`claim.${field} must be a non-empty string`);
         }
       }
+      if (typeof safeClaim.id === "string" && safeClaim.id.length > 256) {
+        errors.push("claim.id must be at most 256 characters");
+      }
+      if (typeof safeClaim.text === "string" && safeClaim.text.length > 4000) {
+        errors.push("claim.text must be at most 4000 characters");
+      }
       if (typeof safeClaim.type === "string" && !required[safeClaim.type]) {
         errors.push(`claim.type must be one of: ${claimTypes.join(", ")}`);
       }
@@ -691,6 +710,12 @@ def _render_ui(sample: dict[str, Any]) -> str:
       for (const field of ["abs_error", "tolerance"]) {
         if (Object.prototype.hasOwnProperty.call(safeEvidence, field) && typeof safeEvidence[field] !== "number") {
           errors.push(`evidence.${field} must be a number`);
+        } else if (Object.prototype.hasOwnProperty.call(safeEvidence, field)) {
+          if (!Number.isFinite(safeEvidence[field])) {
+            errors.push(`evidence.${field} must be finite`);
+          } else if (safeEvidence[field] < 0) {
+            errors.push(`evidence.${field} must be >= 0`);
+          }
         }
       }
       for (const field of ["within_chemical_accuracy", "local_property_tests_pass", "universal_anchor_pass", "upgrade_evidence_present"]) {

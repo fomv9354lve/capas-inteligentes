@@ -7,10 +7,12 @@
       "additionalProperties": true,
       "properties": {
         "id": {
+          "maxLength": 256,
           "minLength": 1,
           "type": "string"
         },
         "text": {
+          "maxLength": 4000,
           "minLength": 1,
           "type": "string"
         },
@@ -36,6 +38,7 @@
       "description": "Evidence fields are claim-type dependent; unsupported or missing evidence yields HOLD.",
       "properties": {
         "abs_error": {
+          "minimum": 0,
           "type": "number"
         },
         "anchor_mode": {
@@ -52,6 +55,7 @@
         },
         "reference_truth": {},
         "tolerance": {
+          "minimum": 0,
           "type": "number"
         },
         "universal_anchor_pass": {

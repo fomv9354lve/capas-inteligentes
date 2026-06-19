@@ -21,6 +21,86 @@ VALID_EXAMPLES = [
 INVALID_EXAMPLE = ROOT / "examples" / "external_claim_invalid.json"
 
 
+ADVERSARIAL_PAYLOADS = [
+    (
+        "negative_abs_error",
+        {
+            "claim": {
+                "id": "negative_abs_error",
+                "type": "exact_model_solution",
+                "text": "A negative absolute error should not license an exact model claim.",
+            },
+            "evidence": {
+                "abs_error": -999.0,
+                "tolerance": 0.01,
+            },
+        },
+        "evidence.abs_error must be >= 0",
+    ),
+    (
+        "negative_tolerance",
+        {
+            "claim": {
+                "id": "negative_tolerance",
+                "type": "exact_model_solution",
+                "text": "A negative tolerance should not be accepted.",
+            },
+            "evidence": {
+                "abs_error": 0.0,
+                "tolerance": -1.0,
+            },
+        },
+        "evidence.tolerance must be >= 0",
+    ),
+    (
+        "double_negative_exact_solution",
+        {
+            "claim": {
+                "id": "double_negative_exact_solution",
+                "type": "exact_model_solution",
+                "text": "Two negative values must not create a false ACCEPT.",
+            },
+            "evidence": {
+                "abs_error": -5.0,
+                "tolerance": -1.0,
+            },
+        },
+        "evidence.abs_error must be >= 0",
+    ),
+    (
+        "boolean_numeric_field",
+        {
+            "claim": {
+                "id": "boolean_numeric_field",
+                "type": "exact_model_solution",
+                "text": "Boolean values must not be accepted as numeric error fields.",
+            },
+            "evidence": {
+                "abs_error": True,
+                "tolerance": 0.01,
+            },
+        },
+        "evidence.abs_error must be a number",
+    ),
+    (
+        "oversized_claim_id",
+        {
+            "claim": {
+                "id": "x" * 257,
+                "type": "universal_anchor_claim",
+                "text": "Oversized claim ids should be rejected before decision logic.",
+            },
+            "evidence": {
+                "anchor_mode": "absolute_anchor",
+                "local_property_tests_pass": True,
+                "universal_anchor_pass": True,
+            },
+        },
+        "claim.id must be at most 256 characters",
+    ),
+]
+
+
 def _run(command: list[str]) -> dict[str, object]:
     proc = subprocess.run(command, cwd=ROOT, text=True, capture_output=True)
     return {
@@ -69,6 +149,21 @@ def main() -> int:
         "cli": invalid_cli,
         "decision": invalid_decision,
     })
+
+    for name, payload, expected_error in ADVERSARIAL_PAYLOADS:
+        errors = capas.validate_external_payload(payload)
+        decision = capas.decide_external_claim(payload)
+        checks.append({
+            "check": f"adversarial_payload:{name}",
+            "passed": (
+                expected_error in errors
+                and decision["verdict"] == "HOLD"
+                and expected_error in decision["schema_errors"]
+            ),
+            "expected_error": expected_error,
+            "errors": errors,
+            "decision": decision,
+        })
 
     passed = all(bool(check["passed"]) for check in checks)
     report = {
