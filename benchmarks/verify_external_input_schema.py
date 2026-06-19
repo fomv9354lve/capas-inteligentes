@@ -99,6 +99,22 @@ ADVERSARIAL_PAYLOADS = [
         "claim.id must be at most 256 characters",
     ),
     (
+        "oversized_claim_text",
+        {
+            "claim": {
+                "id": "oversized_claim_text",
+                "type": "universal_anchor_claim",
+                "text": "x" * 2001,
+            },
+            "evidence": {
+                "anchor_mode": "absolute_anchor",
+                "local_property_tests_pass": True,
+                "universal_anchor_pass": True,
+            },
+        },
+        "claim.text must be at most 2000 characters",
+    ),
+    (
         "current_claim_raw_html",
         {
             "claim": {

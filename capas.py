@@ -173,7 +173,7 @@ def external_claim_payload_schema() -> dict[str, Any]:
                     "text": {
                         "type": "string",
                         "minLength": 1,
-                        "maxLength": 4000,
+                        "maxLength": 2000,
                         "pattern": NO_ANGLE_PATTERN,
                         "description": "Claim text must not contain HTML angle brackets or common Unicode angle-bracket homoglyphs because payloads may be displayed by downstream consumers.",
                     },
@@ -235,8 +235,8 @@ def validate_external_payload(payload: dict[str, Any]) -> list[str]:
     if isinstance(claim.get("id"), str) and len(claim["id"]) > 256:
         errors.append("claim.id must be at most 256 characters")
     _validate_no_angle_like(claim.get("id"), "claim.id", errors)
-    if isinstance(claim.get("text"), str) and len(claim["text"]) > 4000:
-        errors.append("claim.text must be at most 4000 characters")
+    if isinstance(claim.get("text"), str) and len(claim["text"]) > 2000:
+        errors.append("claim.text must be at most 2000 characters")
     _validate_no_angle_like(claim.get("text"), "claim.text", errors)
 
     claim_type = claim.get("type")
@@ -1162,6 +1162,11 @@ def _render_ui(sample: dict[str, Any]) -> str:
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="CAPAS Claim Gate deterministically checks structured scientific claims and returns ACCEPT, REJECT, REWRITE, or HOLD without an LLM at decision time.">
+<meta property="og:title" content="CAPAS Claim Gate">
+<meta property="og:description" content="A deterministic gate for structured scientific claims with schema validation, licensed rewrites, and evidence-aware HOLD decisions.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://fomv9354lve.github.io/capas-inteligentes/">
 <title>CAPAS Claim Gate</title>
 <style>
   /* CAPAS Claim Gate - Design System v9 */
@@ -1174,8 +1179,8 @@ def _render_ui(sample: dict[str, Any]) -> str:
     --border-2: #3f3f46;
     --text-1: #fafafa;
     --text-2: #a1a1aa;
-    --text-3: #71717a;
-    --accent: #6366f1;
+    --text-3: #8d8d99;
+    --accent: #7c7fff;
     --accent-hover: #818cf8;
     --accent-glow: rgba(99, 102, 241, 0.15);
     --green: #22c55e;
@@ -1209,6 +1214,22 @@ def _render_ui(sample: dict[str, Any]) -> str:
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
   }
+  .skip-link {
+    position: absolute;
+    left: 12px;
+    top: 8px;
+    z-index: 100;
+    transform: translateY(-140%);
+    background: var(--accent);
+    color: white;
+    border-radius: var(--radius-sm);
+    padding: 8px 12px;
+    font-size: 12px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: transform var(--t);
+  }
+  .skip-link:focus { transform: translateY(0); }
   .topbar {
     position: sticky;
     top: 0;
@@ -1420,6 +1441,14 @@ def _render_ui(sample: dict[str, Any]) -> str:
   .history-reason { color: var(--text-3); }
   .empty-state, .no-decision { color: var(--text-3); font-size: 13px; }
   .no-decision { padding: 32px 16px; text-align: center; }
+  .app-footer {
+    margin-top: 28px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    color: var(--text-3);
+    font-size: 11px;
+    line-height: 1.6;
+  }
   :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   @media (prefers-color-scheme: light) {
     :root {
@@ -1431,7 +1460,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
       --border-2: #d4d4d8;
       --text-1: #09090b;
       --text-2: #52525b;
-      --text-3: #71717a;
+      --text-3: #6f6f7a;
       --shadow: 0 4px 16px rgba(24, 24, 27, 0.08);
     }
     .topbar { background: rgba(255, 255, 255, 0.9); }
@@ -1450,19 +1479,20 @@ def _render_ui(sample: dict[str, Any]) -> str:
 </head>
 <body>
 
-<div class="topbar">
+<a class="skip-link" href="#main">Skip to claim gate</a>
+<header class="topbar">
   <div class="topbar-left">
-    <h1 class="topbar-logo">
-      <div class="topbar-logo-icon">CG</div>
+    <h1 class="topbar-logo" aria-label="CAPAS Claim Gate">
+      <div class="topbar-logo-icon" aria-hidden="true">CG</div>
       CAPAS Claim Gate
     </h1>
     <div class="topbar-divider"></div>
     <span class="topbar-subtitle">Rule-based via <code>capas.py decide</code> · schema errors → <code>HOLD</code></span>
   </div>
   <span class="topbar-badge">v9 · guided intake</span>
-</div>
+</header>
 
-<main class="app-body">
+<main class="app-body" id="main">
 <div class="samples-bar">
   <span>Load sample:</span>
   <button class="sample-btn accept" title="ACCEPT sample" aria-label="Load ACCEPT sample" onclick="loadSample('ACCEPT')">&#10003; ACCEPT</button>
@@ -1493,7 +1523,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
         <span class="panel-title">Decision</span>
         <button class="copy-btn" id="copy-btn" aria-label="Copy decision JSON" onclick="copyOutput()" disabled>Copy JSON</button>
       </div>
-      <div id="verdict-area"><div class="no-decision">Run a decision to see results.</div></div>
+      <div id="verdict-area" aria-live="polite" aria-atomic="true"><div class="no-decision">Run a decision to see results.</div></div>
       <div class="output-section">
         <div class="output-label"><span>Full output</span></div>
       <pre id="output"></pre>
@@ -1505,12 +1535,15 @@ def _render_ui(sample: dict[str, Any]) -> str:
 <div class="history-section">
   <div class="history-header">
     <h3>Recent decisions</h3>
-    <span class="history-count" id="history-count">0/50 saved</span>
+    <span class="history-count" id="history-count" aria-live="polite" aria-atomic="true">0/50 saved</span>
   </div>
   <div class="history-list" id="history-list">
     <div class="empty-state">No decisions yet.</div>
   </div>
 </div>
+<footer class="app-footer">
+  CAPAS structures and gates supplied claim evidence. It does not infer hidden evidence or certify broad scientific truth.
+</footer>
 </main>
 
 <script>
@@ -1597,8 +1630,8 @@ def _render_ui(sample: dict[str, Any]) -> str:
       if (typeof safeClaim.id === "string" && containsAngleLikeCharacter(safeClaim.id)) {
         errors.push("claim.id must not contain angle brackets or Unicode angle-bracket homoglyphs");
       }
-      if (typeof safeClaim.text === "string" && safeClaim.text.length > 4000) {
-        errors.push("claim.text must be at most 4000 characters");
+      if (typeof safeClaim.text === "string" && safeClaim.text.length > 2000) {
+        errors.push("claim.text must be at most 2000 characters");
       }
       if (typeof safeClaim.text === "string" && containsAngleLikeCharacter(safeClaim.text)) {
         errors.push("claim.text must not contain angle brackets or Unicode angle-bracket homoglyphs");
@@ -1839,7 +1872,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
         claim: {
           id: parsed?.claim?.id || "draft_claim_001",
           type,
-          text: parsed?.claim?.text || (raw && !parsed ? raw.slice(0, 4000) : minimalExamples[type].claim.text)
+          text: parsed?.claim?.text || (raw && !parsed ? raw.slice(0, 2000) : minimalExamples[type].claim.text)
         },
         evidence: {}
       };

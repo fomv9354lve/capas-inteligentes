@@ -41,7 +41,7 @@ measurements.
 The external payload validator now applies:
 
 - `claim.id <= 256`
-- `claim.text <= 4000`
+- `claim.text <= 2000`
 - `evidence.current_claim <= 4000`
 
 The goal is not semantic censorship. It is to keep the static demo and simple
