@@ -121,8 +121,8 @@ def main() -> int:
             "detail": "decide/batch/pipeline",
         },
         {
-            "check": "github_workflow_reusable",
-            "passed": WORKFLOW_PATH.exists() and "workflow_call" in workflow_text and "workflow_dispatch" in workflow_text,
+            "check": "github_workflow_dispatch",
+            "passed": WORKFLOW_PATH.exists() and "workflow_dispatch" in workflow_text and "input_path" in workflow_text,
             "detail": str(WORKFLOW_PATH.relative_to(ROOT)),
         },
     ])
@@ -131,7 +131,7 @@ def main() -> int:
     report = {
         "batch_api_ready": passed,
         "checks": checks,
-        "scope": "Verifies batch CLI, local stdlib HTTP API, and GitHub Action pipeline integration. This is not an externally hosted SaaS endpoint.",
+        "scope": "Verifies batch CLI, local stdlib HTTP API, composite GitHub Action, and manual GitHub workflow integration. This is not an externally hosted SaaS endpoint.",
     }
     REPORT_PATH.parent.mkdir(parents=True, exist_ok=True)
     REPORT_PATH.write_text(json.dumps(report, indent=2, sort_keys=True), encoding="utf-8")

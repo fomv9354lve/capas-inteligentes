@@ -21,20 +21,6 @@ on:
         description: Allow web retrieval in pipeline mode.
         type: boolean
         default: false
-  workflow_call:
-    inputs:
-      mode:
-        type: string
-        default: batch
-      input_path:
-        type: string
-        required: true
-      output_path:
-        type: string
-        default: outputs/capas-action-report.json
-      allow_web:
-        type: boolean
-        default: false
 
 jobs:
   claim-gate:

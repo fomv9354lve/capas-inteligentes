@@ -157,8 +157,9 @@ jobs:
           output: outputs/capas-action-report.json
 ```
 
-The reusable workflow `.github/workflows/claim-gate.yml` can run `decide`,
-`batch`, or `pipeline` through `workflow_dispatch` or `workflow_call`.
+The manual workflow `.github/workflows/claim-gate.yml` can run `decide`,
+`batch`, or `pipeline` through `workflow_dispatch`. Other workflows can reuse
+the composite action directly.
 
 Inspect a trace:
 
