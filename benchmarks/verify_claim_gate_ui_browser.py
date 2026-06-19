@@ -43,6 +43,13 @@ HARNESS = r"""
     ok("shared_payload_loaded", document.getElementById("input").value.includes("shared_claim"));
     ok("share_button_exists", document.getElementById("share-btn"));
     ok("export_button_exists", document.getElementById("export-btn"));
+    ok("theme_button_exists", document.getElementById("theme-toggle"));
+    toggleTheme();
+    ok("theme_toggle_sets_light", document.documentElement.dataset.theme === "light");
+    toggleTheme();
+    ok("theme_toggle_sets_dark", document.documentElement.dataset.theme === "dark");
+    toggleTheme();
+    ok("theme_toggle_returns_system", !document.documentElement.dataset.theme);
     localStorage.removeItem("capas_decision_history_v1");
     document.getElementById("input").value = "";
     decide();

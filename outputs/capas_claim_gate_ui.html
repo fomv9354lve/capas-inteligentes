@@ -72,6 +72,28 @@
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
   }
+  html[data-theme="dark"] {
+    color-scheme: dark;
+  }
+  html[data-theme="light"] {
+    --bg: #ffffff;
+    --bg-2: #fafafa;
+    --bg-3: #f4f4f5;
+    --bg-4: #e4e4e7;
+    --border: #e4e4e7;
+    --border-2: #d4d4d8;
+    --text-1: #09090b;
+    --text-2: #52525b;
+    --text-3: #6f6f7a;
+    --draft: #b45309;
+    --json-key: #1d4ed8;
+    --json-string: #15803d;
+    --json-number: #b45309;
+    --json-boolean: #7c3aed;
+    --json-null: #dc2626;
+    --shadow: 0 4px 16px rgba(24, 24, 27, 0.08);
+    color-scheme: light;
+  }
   .skip-link {
     position: absolute;
     left: 12px;
@@ -133,8 +155,7 @@
     white-space: nowrap;
   }
   .app-body { max-width: 1280px; margin: 0 auto; padding: 24px 28px 60px; }
-  .samples-bar { gap: 6px; margin-bottom: 20px; }
-  .samples-bar { display: flex; flex-wrap: wrap; align-items: center; }
+  .samples-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-bottom: 20px; }
   .samples-bar > span { font-size: 11px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.6px; }
   .sample-btn {
     display: inline-flex;
@@ -332,6 +353,8 @@
     .topbar { background: rgba(255, 255, 255, 0.9); }
     pre#output { background: #f4f4f5; }
   }
+  html[data-theme="light"] .topbar { background: rgba(255, 255, 255, 0.9); }
+  html[data-theme="light"] pre#output { background: #f4f4f5; }
   @media (max-width: 860px) {
     .app-body { padding: 16px 16px 60px; }
     .topbar { padding: 0 16px; }
@@ -355,6 +378,7 @@
     <div class="topbar-divider"></div>
     <span class="topbar-subtitle">Rule-based via <code>capas.py decide</code> · schema errors → <code>HOLD</code></span>
   </div>
+  <button class="copy-btn" id="theme-toggle" aria-label="Toggle light and dark theme" onclick="toggleTheme()">Theme</button>
   <span class="topbar-badge">v9 · guided intake</span>
 </header>
 
@@ -444,7 +468,9 @@
     const claimTypes = Object.keys(required).sort();
     const historyLimit = 50;
     const historyStorageKey = "capas_decision_history_v1";
+    const themeStorageKey = "capas_theme_v1";
     let decisionHistory = loadHistory();
+    let lastOutputJson = "";
     const fineTuneBlockers = [
       "no blind or external inference review is attached",
       "CAPAS gates supplied structured evidence; it does not infer hidden evidence",
@@ -672,12 +698,19 @@
 
     function setOutputJson(value) {
       const json = JSON.stringify(value, null, 2);
+      if (json === lastOutputJson) return;
+      lastOutputJson = json;
       const output = document.getElementById("output");
       if (json.length > 5000) {
         output.textContent = json;
         return;
       }
       output.innerHTML = syntaxHighlight(json);
+    }
+
+    function setOutputEmpty() {
+      lastOutputJson = "";
+      document.getElementById("output").textContent = "";
     }
 
     function syntaxHighlight(json) {
@@ -794,7 +827,7 @@
         `<div>CAPAS prepared a candidate <code>${escHtml(type)}</code> payload. Run Decide only after the missing evidence is real.</div>` +
         (missing.length ? `<ul>${missing.map((field) => `<li><code>${escHtml(field)}</code>: ${escHtml(fieldHelp[field])}</li>`).join("")}</ul>` : `<div class="assist-muted">No required fields are null; the strict gate can now evaluate it.</div>`) +
         `</div>`;
-      document.getElementById("output").textContent = "";
+      setOutputEmpty();
       setCopyEnabled(false);
     }
 
@@ -948,6 +981,34 @@
       URL.revokeObjectURL(url);
     }
 
+    function applyTheme(theme) {
+      const normalized = theme === "light" || theme === "dark" ? theme : "";
+      if (normalized) {
+        document.documentElement.dataset.theme = normalized;
+      } else {
+        delete document.documentElement.dataset.theme;
+      }
+      const button = document.getElementById("theme-toggle");
+      if (button) {
+        button.textContent = normalized === "light" ? "Light" : normalized === "dark" ? "Dark" : "Theme";
+      }
+    }
+
+    function toggleTheme() {
+      const current = document.documentElement.dataset.theme || "";
+      const next = current === "light" ? "dark" : current === "dark" ? "" : "light";
+      if (next) {
+        localStorage.setItem(themeStorageKey, next);
+      } else {
+        localStorage.removeItem(themeStorageKey);
+      }
+      applyTheme(next);
+    }
+
+    function initTheme() {
+      applyTheme(localStorage.getItem(themeStorageKey) || "");
+    }
+
     function escHtml(value) {
       return String(value).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
     }
@@ -990,7 +1051,7 @@
         const raw = document.getElementById("input").value.trim();
         if (!raw) {
           document.getElementById("verdict-area").innerHTML = `<div class="alert-block errors"><div class="alert-title">Input required</div>Please paste a JSON claim/evidence payload first.</div>`;
-          document.getElementById("output").textContent = "";
+          setOutputEmpty();
           setCopyEnabled(false);
           return;
         }
@@ -1010,7 +1071,7 @@
       } catch (error) {
         button.classList.remove("processing");
         document.getElementById("verdict-area").innerHTML = `<div class="alert-block errors"><div class="alert-title">JSON parse error</div>${escHtml(error.message)}</div>`;
-        document.getElementById("output").textContent = "";
+        setOutputEmpty();
         setCopyEnabled(false);
       }
     }
@@ -1048,6 +1109,7 @@
       }
     });
 
+    initTheme();
     maybeLoadSharedPayload();
     onInputChange();
     renderHistory();
