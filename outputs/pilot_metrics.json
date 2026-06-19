@@ -1,0 +1,38 @@
+{
+  "artifact": "CAPAS simulated pilot metrics",
+  "simulated_case_study": true,
+  "claim_count": 1000,
+  "schema_version": "capas-claim-payload-v3",
+  "vertical": "AI governance training-data review",
+  "decision_mix": {
+    "ACCEPT": 620,
+    "REWRITE": 230,
+    "REJECT": 110,
+    "HOLD": 40
+  },
+  "rates": {
+    "accepted": 0.62,
+    "rewritten": 0.23,
+    "rejected": 0.11,
+    "held": 0.04,
+    "fine_tune_ready": 0.04
+  },
+  "fine_tune_ready_count": 40,
+  "review_economics": {
+    "manual_minutes_per_claim": 30,
+    "capas_triage_minutes_per_claim": 5,
+    "minutes_avoided": 25000,
+    "hours_avoided": 416.7
+  },
+  "pilot_design": {
+    "recommended_claim_count": 500,
+    "adjudication_sample": 100,
+    "success_metrics": [
+      ">= 80% reviewer agreement on ACCEPT and REJECT",
+      "<= 5% confirmed false rejects in adjudicated sample",
+      ">= 25% senior-review hours avoided",
+      "100% audit trail for fine_tune_ready positives"
+    ]
+  },
+  "non_claim": "These are simulated pilot metrics for customer discovery and business-case framing, not measured production results."
+}

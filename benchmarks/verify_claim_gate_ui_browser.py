@@ -49,10 +49,16 @@ HARNESS = r"""
     ok("shared_payload_loaded", document.getElementById("input").value.includes("shared_claim"));
     ok("share_button_exists", document.getElementById("share-btn"));
     ok("export_button_exists", document.getElementById("export-btn"));
+    ok("product_hero_exists", document.querySelector(".product-hero")?.textContent.includes("deterministic quality gate"));
+    ok("customer_brief_link_exists", Boolean(document.querySelector('a[href="CUSTOMER_READY_BRIEF.md"]')));
+    ok("executive_dashboard_exists", Boolean(document.getElementById("metric-ft-ready")) && Boolean(document.getElementById("metric-provenance")));
+    ok("guided_builder_exists", Boolean(document.getElementById("guided-type")) && Boolean(document.getElementById("guided-fields")));
+    ok("sensitive_mode_button_exists", Boolean(document.getElementById("sensitive-mode-toggle")));
     ok("theme_button_exists", document.getElementById("theme-toggle"));
     ok("schema_version_badge_exists", document.getElementById("schema-version-badge")?.textContent.includes("schema v3"));
     ok("shared_payload_badge_visible", document.getElementById("shared-payload-badge")?.hidden === false);
     ok("help_button_exists", document.getElementById("help-btn"));
+    ok("help_button_controls_modal", document.getElementById("help-btn").getAttribute("aria-controls") === "help-modal");
     ok("theme_button_initial_system", document.getElementById("theme-toggle").textContent === "System");
     toggleTheme();
     ok("theme_toggle_sets_light", document.documentElement.dataset.theme === "light");
@@ -110,6 +116,15 @@ HARNESS = r"""
     ok("draft_not_decided", document.getElementById("verdict-area").textContent.includes("Draft built, not decided"));
     ok("draft_includes_training_evidence_scaffold", document.getElementById("input").value.includes('"training_evidence"') && document.getElementById("input").value.includes('"source_backed_evidence"'));
     ok("draft_includes_schema_version", document.getElementById("input").value.includes('"schema_version": "capas-claim-payload-v3"'));
+
+    document.getElementById("guided-type").value = "causal_mechanism_claim";
+    renderGuidedFields();
+    buildGuidedPayload();
+    ok("guided_form_builds_schema_v3_payload", document.getElementById("input").value.includes('"schema_version": "capas-claim-payload-v3"') && document.getElementById("input").value.includes('"causal_mechanism_claim"'));
+    decide();
+    ok("guided_payload_decides", document.getElementById("output").textContent.includes('"verdict"'));
+    loadVerticalDemo("AI_GOVERNANCE");
+    ok("vertical_demo_loads_ai_governance", document.getElementById("input").value.includes("ai_gov_training_claim_001") && document.querySelector(".verdict-badge.ACCEPT"));
 
     loadSample("REWRITE");
     ok("rewrite_verdict", document.querySelector(".verdict-badge.REWRITE"));
@@ -266,6 +281,11 @@ HARNESS = r"""
     ok("output_scroll_resets_to_top", document.getElementById("output").scrollTop === 0);
     ok("share_button_privacy_label", document.getElementById("share-btn").getAttribute("aria-label").includes("payload is embedded"));
     ok("share_app_button_exists", document.getElementById("share-app-btn").getAttribute("aria-label").includes("without embedding"));
+    toggleSensitiveMode();
+    ok("sensitive_mode_turns_on", document.getElementById("sensitive-mode-toggle").textContent.includes("On") && document.getElementById("sensitive-mode-toggle").classList.contains("sensitive-active"));
+    ok("sensitive_mode_persists", localStorage.getItem("capas_sensitive_mode_v1") === "true");
+    toggleSensitiveMode();
+    ok("sensitive_mode_turns_off", document.getElementById("sensitive-mode-toggle").textContent.includes("Off") && !localStorage.getItem("capas_sensitive_mode_v1"));
 
     clearHistory();
     ok("clear_history_empties_list", document.getElementById("history-count").textContent.includes("0/50"));

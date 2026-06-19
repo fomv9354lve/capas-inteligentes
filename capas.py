@@ -40,6 +40,7 @@ VALIDATION_COMMANDS = [
     ("standalone pipeline MVP", ["benchmarks/verify_standalone_pipeline.py"]),
     ("claim gate UI", ["benchmarks/verify_claim_gate_ui.py"]),
     ("claim gate browser E2E", ["benchmarks/verify_claim_gate_ui_browser.py"]),
+    ("customer product assets", ["benchmarks/verify_customer_product_assets.py"]),
     ("batch and API surfaces", ["benchmarks/verify_batch_and_api.py"]),
     ("external user validation packet", ["benchmarks/verify_external_user_validation.py"]),
     ("profile registration packet", ["benchmarks/verify_profile_registration_packet.py"]),
@@ -2081,6 +2082,97 @@ def _render_ui(sample: dict[str, Any]) -> str:
     white-space: nowrap;
   }
   .app-body { max-width: 1280px; margin: 0 auto; padding: 24px 28px 60px; }
+  .product-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
+    gap: 18px;
+    align-items: stretch;
+    margin-bottom: 22px;
+  }
+  .hero-copy {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: linear-gradient(180deg, var(--bg-2), var(--bg));
+    box-shadow: var(--shadow);
+    padding: 22px;
+  }
+  .hero-eyebrow {
+    color: var(--accent-hover);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.9px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .hero-copy h2 {
+    color: var(--text-1);
+    font-size: 28px;
+    line-height: 1.1;
+    margin-bottom: 10px;
+    letter-spacing: 0;
+  }
+  .hero-copy p { color: var(--text-2); font-size: 14px; max-width: 700px; }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .hero-link { text-decoration: none; }
+  .hero-metrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 18px; }
+  .hero-metric { border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-2); padding: 10px; }
+  .hero-metric strong { display: block; color: var(--text-1); font-size: 18px; line-height: 1.2; }
+  .hero-metric span { color: var(--text-3); font-size: 11px; }
+  .hero-shot {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--bg-2);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .shot-top { display: flex; gap: 6px; align-items: center; height: 34px; padding: 0 12px; border-bottom: 1px solid var(--border); background: var(--bg-3); }
+  .shot-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--border-2); }
+  .shot-body { padding: 14px; display: grid; gap: 10px; }
+  .shot-row { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 8px; align-items: center; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 8px; background: var(--bg); }
+  .shot-row span { color: var(--text-3); font-size: 11px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+  .workflow-strip {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+  .workflow-step, .exec-card {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg-2);
+    padding: 12px;
+  }
+  .workflow-step strong, .exec-card strong { display: block; color: var(--text-1); font-size: 13px; margin-bottom: 4px; }
+  .workflow-step span, .exec-card span { color: var(--text-3); font-size: 11px; line-height: 1.4; }
+  .exec-dashboard {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 8px;
+    margin: 0 0 18px;
+  }
+  .exec-card strong { font-size: 20px; font-variant-numeric: tabular-nums; }
+  .guided-panel { margin-bottom: 16px; }
+  .guided-body { padding: 14px 16px; display: grid; gap: 12px; }
+  .guided-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .guided-field { display: grid; gap: 5px; min-width: 0; }
+  .guided-field label { color: var(--text-3); font-size: 10px; font-weight: 800; letter-spacing: 0.6px; text-transform: uppercase; }
+  .guided-field input, .guided-field textarea, .guided-field select {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--bg);
+    color: var(--text-1);
+    font-family: var(--font);
+    font-size: 12px;
+    padding: 8px 9px;
+  }
+  .guided-field textarea { min-height: 72px; resize: vertical; }
+  .guided-field.full { grid-column: 1 / -1; }
+  .sensitive-active {
+    border-color: var(--warning);
+    background: rgba(251, 191, 36, 0.06);
+    color: var(--warning);
+  }
   .samples-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-bottom: 20px; }
   .samples-bar > span { font-size: 11px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.6px; }
   .sample-btn {
@@ -2349,6 +2441,9 @@ def _render_ui(sample: dict[str, Any]) -> str:
   html[data-theme="light"] pre#output { background: var(--bg-3); }
   @media (max-width: 860px) {
     .app-body { padding: 16px 16px 60px; }
+    .product-hero { grid-template-columns: 1fr; }
+    .hero-metrics, .exec-dashboard, .workflow-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .guided-grid { grid-template-columns: 1fr; }
     .topbar {
       height: auto;
       min-height: 52px;
@@ -2393,6 +2488,9 @@ def _render_ui(sample: dict[str, Any]) -> str:
   }
   @media (max-width: 560px) {
     .app-body { padding: 12px 12px 48px; }
+    .hero-copy { padding: 16px; }
+    .hero-copy h2 { font-size: 22px; }
+    .hero-metrics, .exec-dashboard, .workflow-strip { grid-template-columns: 1fr; }
     .topbar-logo { font-size: 13px; }
     .topbar-logo-icon { width: 24px; height: 24px; }
     .panel-header { padding: 9px 12px; }
@@ -2421,7 +2519,8 @@ def _render_ui(sample: dict[str, Any]) -> str:
     <span class="topbar-subtitle">Rule-based via <code>capas.py decide</code> · schema errors → <code>HOLD</code></span>
   </div>
   <div class="topbar-actions">
-    <button class="copy-btn" id="help-btn" aria-label="Open keyboard shortcut and pipeline help" aria-expanded="false" onclick="openHelpModal(this)">Help</button>
+    <button class="copy-btn" id="help-btn" aria-label="Open keyboard shortcut and pipeline help" aria-expanded="false" aria-controls="help-modal" onclick="openHelpModal(this)">Help</button>
+    <a class="copy-btn topbar-source" href="product.html" aria-label="Open CAPAS product story and business case">Product</a>
     <a class="copy-btn topbar-source" href="https://github.com/fomv9354lve/capas-inteligentes" target="_blank" rel="noopener noreferrer" aria-label="Open CAPAS Claim Gate source repository">Source</a>
     <button class="copy-btn" id="theme-toggle" aria-label="Toggle light and dark theme" onclick="toggleTheme()">Theme</button>
     <span class="topbar-badge" id="schema-version-badge">schema v3</span>
@@ -2431,6 +2530,78 @@ def _render_ui(sample: dict[str, Any]) -> str:
 </header>
 
 <main class="app-body" id="main">
+<section class="product-hero" aria-labelledby="product-hero-title">
+  <div class="hero-copy">
+    <div class="hero-eyebrow">Scientific claim governance for AI training data</div>
+    <h2 id="product-hero-title">CAPAS is the deterministic quality gate before claims enter reports, datasets, or fine-tuning.</h2>
+    <p>Instead of asking a reviewer to re-read every paper, CAPAS turns supplied evidence into an auditable ACCEPT, REWRITE, REJECT, or HOLD decision with schema versioning, provenance blockers, and batch economics.</p>
+    <div class="hero-actions">
+      <a class="sample-btn accept hero-link" href="product.html">Read product story</a>
+      <a class="sample-btn hold hero-link" href="CUSTOMER_READY_BRIEF.md">Customer brief</a>
+      <button class="sample-btn rewrite" type="button" onclick="document.getElementById('guided-claim-id').focus()">Start no-code claim</button>
+    </div>
+    <div class="hero-metrics" aria-label="Illustrative pilot metrics">
+      <div class="hero-metric"><strong>1,000</strong><span>candidate training claims gated</span></div>
+      <div class="hero-metric"><strong>34%</strong><span>rewritten or rejected before reuse</span></div>
+      <div class="hero-metric"><strong>417h</strong><span>review time avoided in pilot model</span></div>
+    </div>
+  </div>
+  <div class="hero-shot" aria-label="CAPAS decision screenshot mock">
+    <div class="shot-top"><span class="shot-dot"></span><span class="shot-dot"></span><span class="shot-dot"></span></div>
+    <div class="shot-body">
+      <div class="shot-row"><span class="verdict-badge ACCEPT">ACCEPT</span><span>statistical_confidence: p=0.03 <= alpha=0.05</span><strong>schema v3</strong></div>
+      <div class="shot-row"><span class="verdict-badge REWRITE">REWRITE</span><span>direction not independently licensed</span><strong>FT 7/14</strong></div>
+      <div class="shot-row"><span class="verdict-badge REJECT">REJECT</span><span>artifact unavailable for reproducibility</span><strong>audit trail</strong></div>
+      <div class="shot-row"><span class="verdict-badge HOLD">HOLD</span><span>RO-Crate and reviewer attestation pending CLI verification</span><strong>no LLM</strong></div>
+    </div>
+  </div>
+</section>
+
+<section class="workflow-strip" aria-label="Before and after workflow">
+  <div class="workflow-step"><strong>Before CAPAS</strong><span>Researchers paste evidence into spreadsheets, reviewers debate wording, and training data enters pipelines with weak traceability.</span></div>
+  <div class="workflow-step"><strong>CAPAS gate</strong><span>Each claim is typed, checked against required evidence, and given a deterministic license boundary.</span></div>
+  <div class="workflow-step"><strong>Executive output</strong><span>Batch summaries show rewrite/reject rates, provenance gaps, and fine-tune blockers.</span></div>
+  <div class="workflow-step"><strong>Business case</strong><span>Run a 500-claim pilot, measure reviewer agreement, and quantify hours saved before enterprise rollout.</span></div>
+</section>
+
+<section class="exec-dashboard" aria-label="Executive batch and provenance dashboard">
+  <div class="exec-card"><strong id="metric-total">0</strong><span>claims in local audit trail</span></div>
+  <div class="exec-card"><strong id="metric-accept">0</strong><span>ACCEPT</span></div>
+  <div class="exec-card"><strong id="metric-rewrite">0</strong><span>REWRITE</span></div>
+  <div class="exec-card"><strong id="metric-reject">0</strong><span>REJECT</span></div>
+  <div class="exec-card"><strong id="metric-ft-ready">0</strong><span>fine-tune ready</span></div>
+  <div class="exec-card"><strong id="metric-provenance">0</strong><span>provenance-blocked</span></div>
+</section>
+
+<section class="panel guided-panel" aria-labelledby="guided-title">
+  <div class="panel-header">
+    <h2 class="panel-title" id="guided-title">Guided claim builder</h2>
+    <button class="copy-btn" type="button" onclick="buildGuidedPayload()">Build JSON from form</button>
+  </div>
+  <div class="guided-body">
+    <div class="guided-grid">
+      <div class="guided-field">
+        <label for="guided-type">Claim type</label>
+        <select id="guided-type" onchange="renderGuidedFields()" aria-label="Choose claim type for guided builder"></select>
+      </div>
+      <div class="guided-field">
+        <label for="guided-claim-id">Claim ID</label>
+        <input id="guided-claim-id" value="pilot_claim_001" aria-label="Guided claim ID">
+      </div>
+      <div class="guided-field full">
+        <label for="guided-claim-text">Claim text</label>
+        <textarea id="guided-claim-text" aria-label="Guided claim text">The candidate claim is supported by supplied structured evidence.</textarea>
+      </div>
+    </div>
+    <div class="guided-grid" id="guided-fields" aria-label="Evidence fields for selected claim type"></div>
+    <div class="hero-actions">
+      <button class="sample-btn accept" type="button" onclick="loadVerticalDemo('AI_GOVERNANCE')">AI governance demo</button>
+      <button class="sample-btn rewrite" type="button" onclick="loadVerticalDemo('PHARMA')">Pharma demo</button>
+      <button class="sample-btn hold" type="button" onclick="buildGuidedPayload()">Use guided form</button>
+    </div>
+  </div>
+</section>
+
 <div class="samples-bar">
   <span>Load sample:</span>
   <button class="sample-btn accept" title="ACCEPT sample" aria-label="Load ACCEPT sample" onclick="loadSample('ACCEPT')">&#10003; ACCEPT</button>
@@ -2482,6 +2653,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
     <div class="history-actions">
       <button class="copy-btn" id="share-btn" aria-label="Copy shareable URL for current input. The payload is embedded in the URL; do not share sensitive claims." title="The payload is embedded in the URL; do not share sensitive claims." onclick="copyShareUrl()">Share URL</button>
       <button class="copy-btn" id="share-app-btn" aria-label="Copy app URL without embedding the current payload" title="Copy the app URL only, without embedding claim or provenance data." onclick="copyAppUrl()">Share App</button>
+      <button class="copy-btn" id="sensitive-mode-toggle" aria-label="Toggle sensitive data mode for share and export" title="Sensitive mode copies app-only links and redacts payloads in CSV export." onclick="toggleSensitiveMode()">Sensitive: Off</button>
       <button class="copy-btn" id="export-btn" aria-label="Export decision history as CSV" onclick="exportHistoryCsv()">Export CSV</button>
       <button class="copy-btn" id="clear-history-btn" aria-label="Clear local decision history" onclick="clearHistory()">Clear</button>
       <span class="history-count" id="history-count" aria-live="polite" aria-atomic="true">0/50 saved</span>
@@ -2505,6 +2677,8 @@ def _render_ui(sample: dict[str, Any]) -> str:
   CAPAS structures and gates supplied claim evidence. It does not infer hidden evidence or certify broad scientific truth.
   <div class="footer-links" aria-label="Project links">
     <a href="https://github.com/fomv9354lve/capas-inteligentes" target="_blank" rel="noopener noreferrer">Source repository</a>
+    <a href="product.html">Product story</a>
+    <a href="CUSTOMER_READY_BRIEF.md">Customer brief</a>
     <a href="https://github.com/fomv9354lve/capas-inteligentes/issues" target="_blank" rel="noopener noreferrer">Issues</a>
     <a href="https://github.com/fomv9354lve/capas-inteligentes/releases/tag/v0.1.1" target="_blank" rel="noopener noreferrer">Release v0.1.1</a>
     <span>License: proprietary research prototype</span>
@@ -2574,10 +2748,12 @@ def _render_ui(sample: dict[str, Any]) -> str:
     const historyLimit = 50;
     const historyStorageKey = "capas_decision_history_v1";
     const themeStorageKey = "capas_theme_v1";
+    const sensitiveModeStorageKey = "capas_sensitive_mode_v1";
     let decisionHistory = loadHistory();
     let lastOutputJson = "";
     let inputChangeTimer = null;
     let lastFocusedBeforeHelp = null;
+    let sensitiveMode = localStorage.getItem(sensitiveModeStorageKey) === "true";
     const fineTuneBlockers = [
       "no blind or external inference review is attached",
       "CAPAS gates supplied structured evidence; it does not infer hidden evidence",
@@ -2675,6 +2851,21 @@ def _render_ui(sample: dict[str, Any]) -> str:
       multimodal_evidence_claim: {
         claim: { id: "draft_multimodal_evidence", type: "multimodal_evidence_claim", text: "The multimodal evidence supports the extracted claim." },
         evidence: { modality: "table", source_hashes_verified: true, cross_modal_alignment: true, extraction_method_declared: true }
+      }
+    };
+
+    const verticalDemos = {
+      AI_GOVERNANCE: {
+        schema_version: capasSchemaVersion,
+        claim: { id: "ai_gov_training_claim_001", type: "reproducibility_check", text: "This training candidate is reproducible from the attached artifact before model fine-tuning." },
+        evidence: { artifact_available: true, independent_reproduction_pass: true },
+        training_evidence: buildTrainingEvidenceDraft({})
+      },
+      PHARMA: {
+        schema_version: capasSchemaVersion,
+        claim: { id: "pharma_stat_claim_001", type: "statistical_confidence", text: "The candidate biomarker effect is statistically significant at the declared alpha." },
+        evidence: { p_value: 0.03, alpha: 0.05, effect_direction_confirmed: true },
+        training_evidence: buildTrainingEvidenceDraft({})
       }
     };
 
@@ -3107,6 +3298,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
         `<div class="batch-progress" aria-hidden="true"><div class="batch-progress-fill" style="--batch-progress:100%"></div></div>` +
         `<div class="batch-progress-label">${result.item_count}/${result.item_count} claims processed · deterministic gate complete</div>` +
         `<div class="batch-table" role="list" aria-label="Batch per-item decisions">${rows}</div></div>`;
+      renderExecutiveDashboard(result.results.map((entry) => entry.result));
     }
 
     function hasNullEvidence(payload) {
@@ -3270,6 +3462,80 @@ def _render_ui(sample: dict[str, Any]) -> str:
       };
     }
 
+    function renderGuidedFields() {
+      const typeSelect = document.getElementById("guided-type");
+      const fields = document.getElementById("guided-fields");
+      if (!typeSelect || !fields) return;
+      if (!typeSelect.options.length) {
+        typeSelect.innerHTML = claimTypes.map((type) => `<option value="${escHtml(type)}">${escHtml(type)}</option>`).join("");
+        typeSelect.value = "statistical_confidence";
+      }
+      const type = typeSelect.value;
+      const example = minimalExamples[type] || minimalExamples.exact_model_solution;
+      document.getElementById("guided-claim-id").value = document.getElementById("guided-claim-id").value || example.claim.id;
+      if (!document.getElementById("guided-claim-text").value.trim()) {
+        document.getElementById("guided-claim-text").value = example.claim.text;
+      }
+      fields.innerHTML = required[type].map((field) => {
+        const value = example.evidence[field];
+        const inputType = typeof value === "number" ? "number" : "text";
+        const serialized = Array.isArray(value) ? value.join(", ") : String(value ?? "");
+        const control = typeof value === "boolean"
+          ? `<select id="guided-field-${escHtml(field)}" data-field="${escHtml(field)}" data-kind="boolean"><option value="true"${value ? " selected" : ""}>true</option><option value="false"${!value ? " selected" : ""}>false</option></select>`
+          : `<input id="guided-field-${escHtml(field)}" data-field="${escHtml(field)}" data-kind="${Array.isArray(value) ? "array" : inputType}" type="${inputType}" value="${escHtml(serialized)}">`;
+        return `<div class="guided-field"><label for="guided-field-${escHtml(field)}">${escHtml(field)}</label>${control}<span class="assist-muted">${escHtml(fieldHelp[field] || "Required evidence field.")}</span></div>`;
+      }).join("");
+    }
+
+    function coerceGuidedValue(element) {
+      const kind = element.dataset.kind;
+      if (kind === "boolean") return element.value === "true";
+      if (kind === "number") return Number(element.value);
+      if (kind === "array") return element.value.split(",").map((item) => item.trim()).filter(Boolean);
+      return element.value;
+    }
+
+    function buildGuidedPayload() {
+      const type = document.getElementById("guided-type").value || "statistical_confidence";
+      const evidence = {};
+      document.querySelectorAll("#guided-fields [data-field]").forEach((element) => {
+        evidence[element.dataset.field] = coerceGuidedValue(element);
+      });
+      const payload = {
+        schema_version: capasSchemaVersion,
+        claim: {
+          id: document.getElementById("guided-claim-id").value.trim() || `guided_${type}`,
+          type,
+          text: document.getElementById("guided-claim-text").value.trim() || minimalExamples[type].claim.text
+        },
+        evidence,
+        training_evidence: buildTrainingEvidenceDraft({})
+      };
+      document.getElementById("input").value = JSON.stringify(payload, null, 2);
+      onInputChange();
+      document.getElementById("verdict-area").innerHTML =
+        `<div class="assist-block"><div class="alert-title">Guided payload built</div>` +
+        `<div>The no-code form generated a <code>${escHtml(type)}</code> payload. Run Decide or Batch to apply the deterministic gate.</div></div>`;
+      setOutputEmpty();
+      setCopyEnabled(false);
+    }
+
+    function loadVerticalDemo(name) {
+      const payload = verticalDemos[name] || verticalDemos.AI_GOVERNANCE;
+      document.getElementById("input").value = JSON.stringify(payload, null, 2);
+      const typeSelect = document.getElementById("guided-type");
+      if (typeSelect) typeSelect.value = payload.claim.type;
+      document.getElementById("guided-claim-id").value = payload.claim.id;
+      document.getElementById("guided-claim-text").value = payload.claim.text;
+      renderGuidedFields();
+      for (const [field, value] of Object.entries(payload.evidence)) {
+        const element = document.getElementById(`guided-field-${field}`);
+        if (element) element.value = Array.isArray(value) ? value.join(", ") : String(value);
+      }
+      onInputChange();
+      decide();
+    }
+
     function buildDraft() {
       const raw = document.getElementById("input").value.trim();
       let parsed = null;
@@ -3359,6 +3625,36 @@ def _render_ui(sample: dict[str, Any]) -> str:
       } catch (_) {}
     }
 
+    function isProvenanceBlocked(result) {
+      const blockers = result?.fine_tune_blockers || [];
+      return blockers.some((blocker) => /provenance|hash|source|witness|RO-Crate|reviewer|attestation|registry/i.test(blocker));
+    }
+
+    function renderExecutiveDashboard(sourceResults) {
+      const results = Array.isArray(sourceResults)
+        ? sourceResults
+        : decisionHistory.map((item) => item.decision).filter(Boolean);
+      const counts = { ACCEPT: 0, REWRITE: 0, REJECT: 0, HOLD: 0 };
+      let fineTuneReady = 0;
+      let provenanceBlocked = 0;
+      for (const result of results) {
+        const verdict = result?.verdict || "HOLD";
+        counts[verdict] = (counts[verdict] || 0) + 1;
+        if (result?.fine_tune_ready === true) fineTuneReady += 1;
+        if (isProvenanceBlocked(result)) provenanceBlocked += 1;
+      }
+      const set = (id, value) => {
+        const node = document.getElementById(id);
+        if (node) node.textContent = String(value);
+      };
+      set("metric-total", results.length);
+      set("metric-accept", counts.ACCEPT || 0);
+      set("metric-rewrite", counts.REWRITE || 0);
+      set("metric-reject", counts.REJECT || 0);
+      set("metric-ft-ready", fineTuneReady);
+      set("metric-provenance", provenanceBlocked);
+    }
+
     function historyFilters() {
       return {
         query: (document.getElementById("history-filter")?.value || "").trim().toLowerCase(),
@@ -3377,6 +3673,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
     function renderHistory() {
       const list = document.getElementById("history-list");
       document.getElementById("history-count").textContent = `${decisionHistory.length}/${historyLimit} saved`;
+      renderExecutiveDashboard();
       if (!decisionHistory.length) {
         list.innerHTML = `<div class="empty-state">No decisions yet.</div>`;
         return;
@@ -3449,6 +3746,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
       renderVerdict(item.decision);
       setOutputJson(item.decision);
       setCopyEnabled(true);
+      renderExecutiveDashboard();
     }
 
     function handleHistoryKey(event, index) {
@@ -3516,6 +3814,16 @@ def _render_ui(sample: dict[str, Any]) -> str:
       if (!raw) return;
       try {
         JSON.parse(raw);
+        if (sensitiveMode) {
+          copyAppUrl("Sensitive mode copied app URL");
+          const existing = document.getElementById("share-privacy-warning");
+          if (existing) existing.remove();
+          document.getElementById("verdict-area").insertAdjacentHTML(
+            "beforeend",
+            `<div class="assist-block" id="share-privacy-warning"><div class="alert-title">Sensitive data mode</div>Payload embedding is disabled. CAPAS copied only the app URL, with no claim or provenance data.</div>`
+          );
+          return;
+        }
         const url = `${window.location.origin}${window.location.pathname}?p=${encodeBase64Url(raw)}`;
         navigator.clipboard.writeText(url).then(() => {
           const button = document.getElementById("share-btn");
@@ -3538,11 +3846,11 @@ def _render_ui(sample: dict[str, Any]) -> str:
       }
     }
 
-    function copyAppUrl() {
+    function copyAppUrl(label = "App URL copied") {
       const url = `${window.location.origin}${window.location.pathname}`;
       navigator.clipboard.writeText(url).then(() => {
         const button = document.getElementById("share-app-btn");
-        button.textContent = "App URL copied";
+        button.textContent = label;
         button.classList.add("copied");
         setTimeout(() => {
           button.textContent = "Share App";
@@ -3562,8 +3870,8 @@ def _render_ui(sample: dict[str, Any]) -> str:
         item.verdict,
         item.id,
         item.reason,
-        item.payload,
-        JSON.stringify(item.decision)
+        sensitiveMode ? "[redacted in sensitive data mode]" : item.payload,
+        sensitiveMode ? "[redacted in sensitive data mode]" : JSON.stringify(item.decision)
       ]);
       const csv = [header, ...rows].map((row) => row.map(csvCell).join(",")).join("\n");
       const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
@@ -3575,6 +3883,29 @@ def _render_ui(sample: dict[str, Any]) -> str:
       link.click();
       link.remove();
       URL.revokeObjectURL(url);
+    }
+
+    function applySensitiveMode() {
+      const button = document.getElementById("sensitive-mode-toggle");
+      if (!button) return;
+      button.textContent = sensitiveMode ? "Sensitive: On" : "Sensitive: Off";
+      button.classList.toggle("sensitive-active", sensitiveMode);
+      button.setAttribute(
+        "aria-label",
+        sensitiveMode
+          ? "Sensitive data mode is on. Share URL will not embed payload and CSV export will redact payload fields."
+          : "Sensitive data mode is off. Share URL embeds payload and CSV export includes payload fields."
+      );
+    }
+
+    function toggleSensitiveMode() {
+      sensitiveMode = !sensitiveMode;
+      if (sensitiveMode) {
+        localStorage.setItem(sensitiveModeStorageKey, "true");
+      } else {
+        localStorage.removeItem(sensitiveModeStorageKey);
+      }
+      applySensitiveMode();
     }
 
     function applyTheme(theme) {
@@ -3788,6 +4119,8 @@ def _render_ui(sample: dict[str, Any]) -> str:
     });
 
     initTheme();
+    renderGuidedFields();
+    applySensitiveMode();
     document.getElementById("history-list").addEventListener("click", handleHistoryListClick);
     document.getElementById("history-list").addEventListener("keydown", handleHistoryListKeydown);
     maybeLoadSharedPayload();

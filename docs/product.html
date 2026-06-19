@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CAPAS Claim Gate | Deterministic scientific claim governance</title>
+  <meta name="description" content="CAPAS Claim Gate is a deterministic quality gate for scientific claims before reports, datasets, and fine-tuning pipelines.">
+  <style>
+    :root {
+      --bg: #09090b;
+      --surface: #111113;
+      --panel: #18181b;
+      --border: #27272a;
+      --text: #fafafa;
+      --muted: #a1a1aa;
+      --quiet: #8d8d99;
+      --accent: #7c7fff;
+      --green: #22c55e;
+      --orange: #f97316;
+      --red: #ef4444;
+      --radius: 12px;
+      --font: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: var(--font);
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; }
+    header, main, footer { width: min(1180px, calc(100% - 40px)); margin: 0 auto; }
+    header { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; border-bottom: 1px solid var(--border); }
+    .brand { font-weight: 800; letter-spacing: 0; }
+    .nav { display: flex; gap: 10px; flex-wrap: wrap; }
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 34px;
+      padding: 7px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--panel);
+      color: var(--text);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 650;
+    }
+    .button.primary { border-color: rgba(124, 127, 255, 0.45); background: linear-gradient(135deg, var(--accent), #8b5cf6); }
+    .hero { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr); gap: 24px; align-items: center; padding: 54px 0 34px; }
+    .eyebrow { color: var(--accent); font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.9px; }
+    h1 { font-size: clamp(36px, 6vw, 64px); line-height: 1.02; margin: 10px 0 16px; letter-spacing: 0; }
+    h2 { font-size: 24px; margin: 0 0 14px; letter-spacing: 0; }
+    p { color: var(--muted); margin: 0 0 14px; max-width: 760px; }
+    .hero p { font-size: 18px; }
+    .metrics, .grid, .screens { display: grid; gap: 12px; }
+    .metrics { grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 22px; }
+    .metric, .card, .screen {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      padding: 16px;
+    }
+    .metric strong { display: block; font-size: 28px; line-height: 1; }
+    .metric span, .card span { color: var(--quiet); font-size: 13px; }
+    .screen { background: linear-gradient(180deg, var(--surface), #0c0c0e); box-shadow: 0 18px 60px rgba(0,0,0,0.35); }
+    .screen-bar { display: flex; gap: 6px; padding-bottom: 12px; border-bottom: 1px solid var(--border); margin-bottom: 12px; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); }
+    .row { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 10px; border: 1px solid var(--border); border-radius: 8px; margin-top: 8px; }
+    .badge { border-radius: 999px; padding: 3px 9px; font-size: 11px; font-weight: 800; }
+    .accept { color: var(--green); background: rgba(34,197,94,0.08); }
+    .rewrite { color: var(--orange); background: rgba(249,115,22,0.08); }
+    .reject { color: var(--red); background: rgba(239,68,68,0.08); }
+    section { padding: 34px 0; border-top: 1px solid var(--border); }
+    .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .screens { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    footer { color: var(--quiet); padding: 28px 0 44px; border-top: 1px solid var(--border); }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--text); }
+    @media (max-width: 860px) {
+      header, main, footer { width: min(100% - 28px, 1180px); }
+      .hero, .metrics, .grid, .screens { grid-template-columns: 1fr; }
+      header { align-items: flex-start; flex-direction: column; gap: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">CAPAS Claim Gate</div>
+    <nav class="nav" aria-label="Product navigation">
+      <a class="button" href="index.html">Open app</a>
+      <a class="button" href="CUSTOMER_READY_BRIEF.md">Customer brief</a>
+      <a class="button primary" href="https://github.com/fomv9354lve/capas-inteligentes">Source</a>
+    </nav>
+  </header>
+  <main>
+    <section class="hero">
+      <div>
+        <div class="eyebrow">Deterministic evidence gate for scientific AI</div>
+        <h1>Stop weak claims before they enter reports, datasets, or fine-tuning.</h1>
+        <p>CAPAS turns supplied scientific evidence into auditable ACCEPT, REWRITE, REJECT, or HOLD decisions. It is not another LLM fact-checker; it is a typed, deterministic control point for training-data governance.</p>
+        <div class="nav">
+          <a class="button primary" href="index.html">Run the live gate</a>
+          <a class="button" href="CUSTOMER_READY_BRIEF.md">Read pilot plan</a>
+        </div>
+        <div class="metrics">
+          <div class="metric"><strong>1,000</strong><span>candidate training claims in simulated pilot</span></div>
+          <div class="metric"><strong>23%</strong><span>rewritten before reuse</span></div>
+          <div class="metric"><strong>11%</strong><span>rejected before downstream risk</span></div>
+          <div class="metric"><strong>417h</strong><span>review effort avoided vs manual pass</span></div>
+        </div>
+      </div>
+      <div class="screen" aria-label="CAPAS screenshot mock">
+        <div class="screen-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+        <div class="row"><span class="badge accept">ACCEPT</span><span>schema v3 statistical_confidence</span><code>FT 9/14</code></div>
+        <div class="row"><span class="badge rewrite">REWRITE</span><span>direction not externally licensed</span><code>RO-Crate pending</code></div>
+        <div class="row"><span class="badge reject">REJECT</span><span>artifact unavailable for reproducibility</span><code>non-claim</code></div>
+      </div>
+    </section>
+    <section>
+      <h2>The workflow change</h2>
+      <div class="grid">
+        <div class="card"><strong>Before</strong><p>Evidence review happens in spreadsheets and prose. The final claim text can drift away from what the evidence actually licenses.</p></div>
+        <div class="card"><strong>CAPAS gate</strong><p>Each claim gets a type, required evidence fields, schema validation, provenance blockers, and a deterministic decision.</p></div>
+        <div class="card"><strong>After</strong><p>Reviewers focus on HOLD/REWRITE/REJECT queues, while accepted claims carry explicit audit trails into reports and pipelines.</p></div>
+      </div>
+    </section>
+    <section>
+      <h2>Product surfaces buyers can inspect</h2>
+      <div class="screens">
+        <div class="card"><strong>No-code guided form</strong><p>Create a claim without writing raw JSON. CAPAS still emits the full schema payload.</p></div>
+        <div class="card"><strong>Batch/provenance dashboard</strong><p>Track ACCEPT, REWRITE, REJECT, fine-tune-ready, and provenance-blocked counts.</p></div>
+        <div class="card"><strong>Pipeline integration</strong><p>Use the web app for review, CLI/API for verification, and GitHub Actions for CI checks.</p></div>
+      </div>
+    </section>
+    <section>
+      <h2>Primary buyer story</h2>
+      <p>For AI governance and scientific data teams, CAPAS answers the question: which candidate claims are safe enough to reuse, publish, or send into model fine-tuning? The economic case is fewer senior-review hours, fewer unlicensed claims in training sets, and a defensible audit trail when downstream users ask why a claim was accepted.</p>
+    </section>
+  </main>
+  <footer>
+    CAPAS gates supplied evidence. It does not infer hidden evidence, certify broad scientific truth, or replace external review.
+  </footer>
+</body>
+</html>
