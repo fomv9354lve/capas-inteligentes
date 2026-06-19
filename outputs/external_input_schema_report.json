@@ -361,6 +361,62 @@
       "passed": true
     },
     {
+      "check": "adversarial_payload:training_evidence_boolean_string",
+      "decision": {
+        "fine_tune_blockers": [
+          "claim verdict is not ACCEPT",
+          "schema or required-field blockers remain",
+          "source-backed evidence is not attached",
+          "provenance.sources or provenance.source_urls is empty",
+          "external review hash is missing or does not match review_packet",
+          "source URLs are not recoverable with matching hashes",
+          "witness_id is not resolvable in the witness registry",
+          "RO-Crate provenance packet is missing, invalid, or hash-mismatched",
+          "reviewer identity or attestation is not verifiable",
+          "provenance.review_id is missing",
+          "provenance.witness_id is missing"
+        ],
+        "fine_tune_criteria": {
+          "external_review": true,
+          "provenance_sources": false,
+          "review_hash_verified": false,
+          "review_id_present": false,
+          "reviewer_attestation_verified": false,
+          "ro_crate_validated": false,
+          "schema_clean": false,
+          "semantic_alignment": true,
+          "source_backed_evidence": false,
+          "source_urls_recoverable_hashable": false,
+          "verdict_accept": false,
+          "witness_id_present": false,
+          "witness_independence": true,
+          "witness_registry_resolved": false
+        },
+        "fine_tune_ready": false,
+        "input_claim": {
+          "id": "training_evidence_boolean_string",
+          "text": "Training evidence flags must be typed booleans.",
+          "type": "exact_model_solution"
+        },
+        "licensed_claim": "Training evidence flags must be typed booleans.",
+        "missing_fields": [],
+        "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "reason": "input payload failed CAPAS schema validation",
+        "required_fields": [],
+        "rewrite": null,
+        "schema_errors": [
+          "training_evidence.source_backed_evidence must be a boolean"
+        ],
+        "schema_version": "capas-claim-payload-v2",
+        "verdict": "HOLD"
+      },
+      "errors": [
+        "training_evidence.source_backed_evidence must be a boolean"
+      ],
+      "expected_error": "training_evidence.source_backed_evidence must be a boolean",
+      "passed": true
+    },
+    {
       "check": "adversarial_payload:oversized_claim_id",
       "decision": {
         "fine_tune_blockers": [

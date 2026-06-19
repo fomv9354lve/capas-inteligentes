@@ -85,6 +85,27 @@ ADVERSARIAL_PAYLOADS = [
         "evidence.abs_error must be a number",
     ),
     (
+        "training_evidence_boolean_string",
+        {
+            "claim": {
+                "id": "training_evidence_boolean_string",
+                "type": "exact_model_solution",
+                "text": "Training evidence flags must be typed booleans.",
+            },
+            "evidence": {
+                "abs_error": 0.0,
+                "tolerance": 0.01,
+            },
+            "training_evidence": {
+                "source_backed_evidence": "yes",
+                "external_review": True,
+                "semantic_alignment": True,
+                "witness_independence": True,
+            },
+        },
+        "training_evidence.source_backed_evidence must be a boolean",
+    ),
+    (
         "oversized_claim_id",
         {
             "claim": {

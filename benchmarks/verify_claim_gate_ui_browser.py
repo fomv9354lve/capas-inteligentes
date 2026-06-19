@@ -79,6 +79,9 @@ HARNESS = r"""
     ok("help_modal_lists_schema_v2_reproducibility_fields", document.getElementById("help-modal").textContent.includes("reproducibility_check") && document.getElementById("help-modal").textContent.includes("independent_reproduction_pass"));
     ok("help_modal_documents_fine_tune_readiness", document.getElementById("help-modal").textContent.includes("fine_tune_ready") && document.getElementById("help-modal").textContent.includes("hash-verified external review packet"));
     ok("help_modal_documents_cli_provenance_verification", document.getElementById("help-modal").textContent.includes("The static browser UI previews these criteria") && document.getElementById("help-modal").textContent.includes("capas.py"));
+    ok("help_modal_documents_numeric_ranges", document.getElementById("help-modal").textContent.includes("p_value") && document.getElementById("help-modal").textContent.includes("between 0 and 1"));
+    ok("help_modal_documents_training_evidence_types", document.getElementById("help-modal").textContent.includes("training_evidence.source_backed_evidence") && document.getElementById("help-modal").textContent.includes("must be booleans"));
+    ok("help_modal_documents_anchor_mode_boundary", document.getElementById("help-modal").textContent.includes("absolute_anchor") && document.getElementById("help-modal").textContent.includes("Other anchor modes remain"));
     closeHelpModal();
     ok("help_modal_closes", !document.getElementById("help-modal-backdrop").classList.contains("open"));
     ok("help_modal_returns_focus_to_trigger", document.activeElement === helpButton);
@@ -101,6 +104,7 @@ HARNESS = r"""
     buildDraft();
     ok("draft_status_is_amber", document.getElementById("json-status").className.includes("draft"));
     ok("draft_not_decided", document.getElementById("verdict-area").textContent.includes("Draft built, not decided"));
+    ok("draft_includes_training_evidence_scaffold", document.getElementById("input").value.includes('"training_evidence"') && document.getElementById("input").value.includes('"source_backed_evidence"'));
 
     loadSample("REWRITE");
     ok("rewrite_verdict", document.querySelector(".verdict-badge.REWRITE"));
@@ -122,6 +126,7 @@ HARNESS = r"""
     ok("batch_progress_label_visible", document.getElementById("verdict-area").textContent.includes("claims processed"));
     ok("batch_per_item_table_visible", document.querySelectorAll(".batch-row").length === 2);
     ok("batch_per_item_reason_visible", document.querySelector(".batch-row-reason")?.textContent.length > 0);
+    ok("batch_per_item_fine_tune_summary_visible", document.querySelector(".batch-row-ft")?.textContent.includes("FT"));
     ok("batch_output_json", document.getElementById("output").textContent.includes('"batch_mode": "decide"'));
     ok("batch_schema_version", document.getElementById("output").textContent.includes('"schema_version": "capas-claim-payload-v2"'));
     document.getElementById("input").value = JSON.stringify(samples.ACCEPT, null, 2);
@@ -188,6 +193,7 @@ HARNESS = r"""
     ok("browser_fine_tune_ready_requires_cli", document.getElementById("output").textContent.includes('"fine_tune_ready": false') && document.getElementById("output").textContent.includes("Active provenance gates require capas.py CLI/API verification"));
     ok("browser_provenance_gates_blocked", document.getElementById("output").textContent.includes('"review_hash_verified": false') && document.getElementById("output").textContent.includes('"reviewer_attestation_verified": false'));
     ok("fine_tune_criteria_visible", document.getElementById("output").textContent.includes('"fine_tune_criteria"'));
+    ok("fine_tune_status_visible_in_verdict_area", document.getElementById("verdict-area").textContent.includes("Fine-tune readiness") && document.getElementById("verdict-area").textContent.includes("NOT READY"));
 
     const firstHistory = document.querySelector(".history-item");
     ok("history_item_exists", firstHistory);
@@ -195,6 +201,15 @@ HARNESS = r"""
     ok("history_restore_keeps_output", document.getElementById("output").textContent.includes("verdict"));
     ok("history_timestamp_visible", Boolean(document.querySelector(".history-ts")?.textContent.trim()));
     ok("history_delete_button_visible", Boolean(document.querySelector(".history-delete")));
+    document.getElementById("history-filter").value = "finance";
+    renderHistory();
+    ok("history_filter_input_exists", document.getElementById("history-list").textContent.toLowerCase().includes("finance") || document.getElementById("history-list").textContent.includes("No matching decisions"));
+    document.getElementById("history-filter").value = "";
+    document.getElementById("history-verdict-filter").value = "ACCEPT";
+    renderHistory();
+    ok("history_verdict_filter_exists", Boolean(document.getElementById("history-verdict-filter")));
+    document.getElementById("history-verdict-filter").value = "";
+    renderHistory();
     const historyLengthBeforeDelete = decisionHistory.length;
     document.querySelector(".history-delete")?.click();
     ok("history_delete_removes_one_entry", decisionHistory.length === historyLengthBeforeDelete - 1);
@@ -203,6 +218,7 @@ HARNESS = r"""
     decide();
     ok("output_scroll_resets_to_top", document.getElementById("output").scrollTop === 0);
     ok("share_button_privacy_label", document.getElementById("share-btn").getAttribute("aria-label").includes("payload is embedded"));
+    ok("share_app_button_exists", document.getElementById("share-app-btn").getAttribute("aria-label").includes("without embedding"));
 
     clearHistory();
     ok("clear_history_empties_list", document.getElementById("history-count").textContent.includes("0/50"));

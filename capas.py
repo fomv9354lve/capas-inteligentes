@@ -1890,6 +1890,15 @@ def _render_ui(sample: dict[str, Any]) -> str:
   .alert-block { margin: 12px 16px; padding: 12px 14px; border-radius: var(--radius); border: 1px solid; font-size: 12px; line-height: 1.7; }
   .alert-block.missing { background: rgba(251, 191, 36, 0.06); border-color: rgba(251, 191, 36, 0.2); color: var(--warning); }
   .alert-block.errors { background: var(--red-bg); border-color: var(--red-border); color: var(--error-soft); }
+  .fine-tune-block { margin: 12px 16px; padding: 12px 14px; border-radius: var(--radius); border: 1px solid var(--border); background: var(--bg); }
+  .fine-tune-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
+  .fine-tune-title { color: var(--text-1); font-size: 11px; font-weight: 800; letter-spacing: 0.7px; text-transform: uppercase; }
+  .fine-tune-status { border: 1px solid; border-radius: 999px; padding: 2px 8px; font-size: 10px; font-weight: 800; white-space: nowrap; }
+  .fine-tune-status.ready { color: var(--green); background: var(--green-bg); border-color: var(--green-border); }
+  .fine-tune-status.blocked { color: var(--warning); background: rgba(251, 191, 36, 0.06); border-color: rgba(251, 191, 36, 0.2); }
+  .fine-tune-summary { color: var(--text-2); font-size: 12px; line-height: 1.6; }
+  .fine-tune-block ul { margin-top: 8px; padding-left: 18px; color: var(--text-2); font-size: 12px; line-height: 1.6; }
+  .batch-row-ft { justify-self: end; color: var(--text-3); font-size: 10px; font-weight: 800; letter-spacing: 0.4px; text-transform: uppercase; white-space: nowrap; }
   .assist-block { margin: 12px 16px; padding: 12px 14px; border-radius: var(--radius); background: var(--accent-glow); border-color: rgba(99, 102, 241, 0.24); color: var(--assist-text); }
   .assist-block pre { background: var(--bg); border-color: rgba(99, 102, 241, 0.24); color: var(--assist-text); }
   .batch-progress { margin-top: 10px; height: 8px; overflow: hidden; border: 1px solid var(--border); border-radius: 999px; background: var(--bg); }
@@ -1897,7 +1906,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
   .batch-progress-label { margin-top: 6px; color: var(--text-3); font-size: 11px; font-weight: 600; }
   .batch-table { display: grid; gap: 6px; margin-top: 12px; }
   .batch-row { border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--bg); overflow: hidden; }
-  .batch-row summary { display: grid; grid-template-columns: auto minmax(0, 1fr) minmax(0, 1.4fr); gap: 8px; align-items: center; padding: 8px 10px; cursor: pointer; list-style: none; }
+  .batch-row summary { display: grid; grid-template-columns: auto minmax(0, 1fr) minmax(0, 1.4fr) auto; gap: 8px; align-items: center; padding: 8px 10px; cursor: pointer; list-style: none; }
   .batch-row summary::-webkit-details-marker { display: none; }
   .batch-row-id, .batch-row-reason { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .batch-row-id { color: var(--text-1); font-family: var(--mono); font-size: 11px; }
@@ -1924,6 +1933,10 @@ def _render_ui(sample: dict[str, Any]) -> str:
   .history-section { margin-top: 24px; }
   .history-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
   .history-heading { color: var(--text-3); font-size: 11px; font-weight: 700; letter-spacing: 0.7px; text-transform: uppercase; }
+  .history-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .history-filter, .history-select { min-height: 28px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--bg-2); color: var(--text-2); font-family: var(--font); font-size: 11px; font-weight: 600; }
+  .history-filter { flex: 1 1 220px; min-width: 0; padding: 5px 9px; }
+  .history-select { padding: 5px 8px; }
   .history-list { display: flex; flex-direction: column; gap: 4px; }
   .history-count { color: var(--text-3); }
   .history-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px; align-items: stretch; }
@@ -2108,7 +2121,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
         <span class="panel-tag" id="type-label"></span>
       </div>
       <textarea id="input" spellcheck="false" aria-label="Claim and evidence JSON input" aria-describedby="json-status" oninput="scheduleInputChange()">__SAMPLE_JSON__</textarea>
-      <div class="json-status" id="json-status">Waiting for input...</div>
+      <div class="json-status" id="json-status" role="status" aria-live="polite" aria-atomic="true">Waiting for input...</div>
       <div class="action-row">
         <button class="draft-btn" id="draft-btn" aria-label="Build draft claim JSON without deciding" onclick="buildDraft()">Build Draft</button>
         <button class="decide-btn" id="decide-btn" aria-label="Decide claim verdict" onclick="decide()">Decide <span class="decide-hint">⌘↵</span></button>
@@ -2126,7 +2139,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
       <div id="verdict-area" aria-live="polite" aria-atomic="true"><div class="no-decision">Run a decision to see results.</div></div>
       <div class="output-section">
         <div class="output-label"><span>Full output</span></div>
-      <pre id="output"></pre>
+      <pre id="output" role="log" aria-live="polite" aria-atomic="true" tabindex="0" aria-label="Full CAPAS decision JSON output"></pre>
       </div>
     </div>
   </div>
@@ -2137,12 +2150,23 @@ def _render_ui(sample: dict[str, Any]) -> str:
     <h2 class="history-heading">Recent decisions</h2>
     <div class="history-actions">
       <button class="copy-btn" id="share-btn" aria-label="Copy shareable URL for current input. The payload is embedded in the URL; do not share sensitive claims." title="The payload is embedded in the URL; do not share sensitive claims." onclick="copyShareUrl()">Share URL</button>
+      <button class="copy-btn" id="share-app-btn" aria-label="Copy app URL without embedding the current payload" title="Copy the app URL only, without embedding claim or provenance data." onclick="copyAppUrl()">Share App</button>
       <button class="copy-btn" id="export-btn" aria-label="Export decision history as CSV" onclick="exportHistoryCsv()">Export CSV</button>
       <button class="copy-btn" id="clear-history-btn" aria-label="Clear local decision history" onclick="clearHistory()">Clear</button>
       <span class="history-count" id="history-count" aria-live="polite" aria-atomic="true">0/50 saved</span>
     </div>
   </div>
-  <div class="history-list" id="history-list">
+  <div class="history-tools" aria-label="History filters">
+    <input class="history-filter" id="history-filter" type="search" placeholder="Search claim ID, type, reason" aria-label="Search decision history by claim ID, type, or reason" oninput="renderHistory()">
+    <select class="history-select" id="history-verdict-filter" aria-label="Filter decision history by verdict" onchange="renderHistory()">
+      <option value="">All verdicts</option>
+      <option value="ACCEPT">ACCEPT</option>
+      <option value="REWRITE">REWRITE</option>
+      <option value="REJECT">REJECT</option>
+      <option value="HOLD">HOLD</option>
+    </select>
+  </div>
+  <div class="history-list" id="history-list" role="list" aria-label="Decision history">
     <div class="empty-state">No decisions yet.</div>
   </div>
 </div>
@@ -2187,6 +2211,9 @@ def _render_ui(sample: dict[str, Any]) -> str:
       <li><code>statistical_confidence</code>: <code>p_value</code>, <code>alpha</code>, <code>effect_direction_confirmed</code></li>
       <li><code>universal_anchor_claim</code>: <code>anchor_mode</code>, <code>local_property_tests_pass</code>, <code>universal_anchor_pass</code></li>
     </ul>
+    <p>Numeric validation ranges: <code>p_value</code> and <code>alpha</code> must be between <code>0</code> and <code>1</code>; <code>abs_error</code> and <code>tolerance</code> must be greater than or equal to <code>0</code>.</p>
+    <p><code>training_evidence.source_backed_evidence</code>, <code>external_review</code>, <code>semantic_alignment</code>, and <code>witness_independence</code> must be booleans. Wrong types produce schema errors instead of silent blockers.</p>
+    <p><code>universal_anchor_claim</code> currently supports <code>absolute_anchor</code>. Other anchor modes remain <code>HOLD</code> until their witness semantics are defined.</p>
   </div>
 </div>
 
@@ -2245,7 +2272,8 @@ def _render_ui(sample: dict[str, Any]) -> str:
       "independent_reproduction_pass": "Whether an independent reproduction attempt passed.",
       "reported_value": "Numeric value stated by the claim.",
       "reference_value": "Trusted numeric reference value used for comparison.",
-      "metric_period_match": "Whether the reported metric and reference are from the same reporting period."
+      "metric_period_match": "Whether the reported metric and reference are from the same reporting period.",
+      "current_claim": "Exact weaker claim text currently licensed before the proposed upgrade."
     };
 
     const minimalExamples = {
@@ -2263,7 +2291,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
       },
       claim_transition: {
         claim: { id: "draft_claim_transition", type: "claim_transition", text: "The stronger claim is licensed by explicit upgrade evidence." },
-        evidence: { upgrade_evidence_present: false, current_claim: "weaker current claim only" }
+        evidence: { upgrade_evidence_present: false, current_claim: "Replace with the exact weaker claim text currently licensed." }
       },
       statistical_confidence: {
         claim: { id: "draft_statistical_confidence", type: "statistical_confidence", text: "The observed effect is statistically significant at the declared alpha." },
@@ -2561,6 +2589,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
     function renderVerdict(result) {
       const verdict = result.verdict;
       let html = `<div class="verdict-banner"><span class="verdict-badge ${verdict}">${verdict}</span><span class="verdict-reason">${escHtml(result.reason)}</span></div>`;
+      html += renderFineTuneStatus(result);
       if (result.schema_errors && result.schema_errors.length) {
         html += `<div class="alert-block errors"><div class="alert-title">Schema errors</div><ul>${result.schema_errors.map((e) => `<li>${escHtml(e)}</li>`).join("")}</ul></div>`;
         html += renderSchemaAssistant(result.schema_errors);
@@ -2617,9 +2646,12 @@ def _render_ui(sample: dict[str, Any]) -> str:
         const claim = entry.result.input_claim || {};
         const verdict = entry.result.verdict || "UNKNOWN";
         const id = claim.id || `item_${entry.index + 1}`;
+        const ft = fineTuneSummary(entry.result);
+        const ftLabel = entry.result.fine_tune_ready ? "FT READY" : `FT ${ft.passed}/${ft.total}`;
         return (
-          `<details class="batch-row">` +
-          `<summary><span class="verdict-badge ${escHtml(verdict)}">${escHtml(verdict)}</span><span class="batch-row-id">#${entry.index + 1} ${escHtml(id)}</span><span class="batch-row-reason">${escHtml(entry.result.reason || "")}</span></summary>` +
+          `<details class="batch-row" role="listitem">` +
+          `<summary aria-label="Batch item ${entry.index + 1}: ${escHtml(verdict)} for ${escHtml(id)}; fine-tune ${escHtml(ftLabel)}">` +
+          `<span class="verdict-badge ${escHtml(verdict)}">${escHtml(verdict)}</span><span class="batch-row-id">#${entry.index + 1} ${escHtml(id)}</span><span class="batch-row-reason">${escHtml(entry.result.reason || "")}</span><span class="batch-row-ft">${escHtml(ftLabel)}</span></summary>` +
           `<pre>${escHtml(JSON.stringify(entry.result, null, 2))}</pre>` +
           `</details>`
         );
@@ -2629,7 +2661,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
         `<div class="assist-block"><div class="alert-title">Batch summary</div><div style="display:flex;gap:8px;flex-wrap:wrap">${summary}</div>` +
         `<div class="batch-progress" aria-hidden="true"><div class="batch-progress-fill" style="--batch-progress:100%"></div></div>` +
         `<div class="batch-progress-label">${result.item_count}/${result.item_count} claims processed · deterministic gate complete</div>` +
-        `<div class="batch-table" aria-label="Batch per-item decisions">${rows}</div></div>`;
+        `<div class="batch-table" role="list" aria-label="Batch per-item decisions">${rows}</div></div>`;
     }
 
     function hasNullEvidence(payload) {
@@ -2715,7 +2747,33 @@ def _render_ui(sample: dict[str, Any]) -> str:
       if (error.includes("local_property_tests_pass")) return fieldHelp.local_property_tests_pass;
       if (error.includes("universal_anchor_pass")) return fieldHelp.universal_anchor_pass;
       if (error.includes("upgrade_evidence_present")) return fieldHelp.upgrade_evidence_present;
+      if (error.includes("training_evidence")) return "Use typed training_evidence fields: readiness flags must be booleans and provenance must be an object.";
       return "Fix this schema issue before the strict gate can evaluate the claim.";
+    }
+
+    function fineTuneSummary(result) {
+      const criteria = result.fine_tune_criteria || {};
+      const total = Object.keys(criteria).length;
+      const passed = Object.values(criteria).filter(Boolean).length;
+      return { total, passed };
+    }
+
+    function renderFineTuneStatus(result) {
+      if (!result || typeof result.fine_tune_ready !== "boolean") return "";
+      const summary = fineTuneSummary(result);
+      const blockers = Array.isArray(result.fine_tune_blockers) ? result.fine_tune_blockers : [];
+      const statusClass = result.fine_tune_ready ? "ready" : "blocked";
+      const statusText = result.fine_tune_ready ? "READY" : "NOT READY";
+      const body = result.fine_tune_ready
+        ? `<div class="fine-tune-summary">All ${summary.total} fine-tune readiness criteria passed.</div>`
+        : `<div class="fine-tune-summary">${summary.passed}/${summary.total} fine-tune readiness criteria passed. ${escHtml(result.fine_tune_note || "Review blockers before using this output for training.")}</div>` +
+          (blockers.length ? `<ul>${blockers.slice(0, 5).map((blocker) => `<li>${escHtml(blocker)}</li>`).join("")}${blockers.length > 5 ? `<li>${blockers.length - 5} more blockers in Full output JSON.</li>` : ""}</ul>` : "");
+      return (
+        `<div class="fine-tune-block" aria-label="Fine-tune readiness status">` +
+        `<div class="fine-tune-head"><div class="fine-tune-title">Fine-tune readiness</div><div class="fine-tune-status ${statusClass}">${statusText}</div></div>` +
+        body +
+        `</div>`
+      );
     }
 
     function inferClaimType(raw, parsed) {
@@ -2730,6 +2788,37 @@ def _render_ui(sample: dict[str, Any]) -> str:
     function extractNumbers(raw) {
       const matches = raw.match(/-?\d+(?:\.\d+)?(?:e[+-]?\d+)?/gi) || [];
       return matches.map(Number).filter(Number.isFinite);
+    }
+
+    function buildTrainingEvidenceDraft(existing) {
+      const source = existing && typeof existing === "object" && !Array.isArray(existing) ? existing : {};
+      const provenance = source.provenance && typeof source.provenance === "object" && !Array.isArray(source.provenance) ? source.provenance : {};
+      const reviewer = provenance.reviewer && typeof provenance.reviewer === "object" && !Array.isArray(provenance.reviewer) ? provenance.reviewer : {};
+      return {
+        source_backed_evidence: typeof source.source_backed_evidence === "boolean" ? source.source_backed_evidence : false,
+        external_review: typeof source.external_review === "boolean" ? source.external_review : false,
+        semantic_alignment: typeof source.semantic_alignment === "boolean" ? source.semantic_alignment : false,
+        witness_independence: typeof source.witness_independence === "boolean" ? source.witness_independence : false,
+        provenance: {
+          source_urls: Array.isArray(provenance.source_urls) ? provenance.source_urls : [],
+          source_hashes: provenance.source_hashes && typeof provenance.source_hashes === "object" && !Array.isArray(provenance.source_hashes) ? provenance.source_hashes : {},
+          review_id: typeof provenance.review_id === "string" ? provenance.review_id : "",
+          review_sha256: typeof provenance.review_sha256 === "string" ? provenance.review_sha256 : "",
+          review_packet: provenance.review_packet && typeof provenance.review_packet === "object" && !Array.isArray(provenance.review_packet) ? provenance.review_packet : {},
+          witness_id: typeof provenance.witness_id === "string" ? provenance.witness_id : "",
+          witness_registry_path: typeof provenance.witness_registry_path === "string" ? provenance.witness_registry_path : "docs/witness_registry.json",
+          witness_registry_sha256: typeof provenance.witness_registry_sha256 === "string" ? provenance.witness_registry_sha256 : "",
+          ro_crate_path: typeof provenance.ro_crate_path === "string" ? provenance.ro_crate_path : "",
+          ro_crate_sha256: typeof provenance.ro_crate_sha256 === "string" ? provenance.ro_crate_sha256 : "",
+          reviewer: {
+            reviewer_id: typeof reviewer.reviewer_id === "string" ? reviewer.reviewer_id : "",
+            attestation: typeof reviewer.attestation === "string" ? reviewer.attestation : "",
+            attestation_sha256: typeof reviewer.attestation_sha256 === "string" ? reviewer.attestation_sha256 : ""
+          },
+          reviewer_registry_path: typeof provenance.reviewer_registry_path === "string" ? provenance.reviewer_registry_path : "docs/reviewer_registry.json",
+          reviewer_registry_sha256: typeof provenance.reviewer_registry_sha256 === "string" ? provenance.reviewer_registry_sha256 : ""
+        }
+      };
     }
 
     function buildDraft() {
@@ -2748,7 +2837,8 @@ def _render_ui(sample: dict[str, Any]) -> str:
           type,
           text: parsed?.claim?.text || (raw && !parsed ? raw.slice(0, 2000) : minimalExamples[type].claim.text)
         },
-        evidence: {}
+        evidence: {},
+        training_evidence: buildTrainingEvidenceDraft(parsed?.training_evidence)
       };
       const sourceEvidence = parsed?.evidence && typeof parsed.evidence === "object" && !Array.isArray(parsed.evidence) ? parsed.evidence : {};
       for (const field of required[type]) {
@@ -2767,7 +2857,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
         }
       }
       if (type === "claim_transition" && !Object.prototype.hasOwnProperty.call(draft.evidence, "current_claim")) {
-        draft.evidence.current_claim = sourceEvidence.current_claim || "weaker current claim only";
+        draft.evidence.current_claim = sourceEvidence.current_claim || "Replace with the exact weaker claim text currently licensed.";
       }
       document.getElementById("input").value = JSON.stringify(draft, null, 2);
       onInputChange();
@@ -2819,6 +2909,21 @@ def _render_ui(sample: dict[str, Any]) -> str:
       } catch (_) {}
     }
 
+    function historyFilters() {
+      return {
+        query: (document.getElementById("history-filter")?.value || "").trim().toLowerCase(),
+        verdict: document.getElementById("history-verdict-filter")?.value || ""
+      };
+    }
+
+    function historyMatches(item, filters) {
+      if (filters.verdict && item.verdict !== filters.verdict) return false;
+      if (!filters.query) return true;
+      const payloadType = item.decision?.input_claim?.type || "";
+      const haystack = `${item.id} ${payloadType} ${item.verdict} ${item.reason}`.toLowerCase();
+      return haystack.includes(filters.query);
+    }
+
     function renderHistory() {
       const list = document.getElementById("history-list");
       document.getElementById("history-count").textContent = `${decisionHistory.length}/${historyLimit} saved`;
@@ -2826,8 +2931,16 @@ def _render_ui(sample: dict[str, Any]) -> str:
         list.innerHTML = `<div class="empty-state">No decisions yet.</div>`;
         return;
       }
-      list.innerHTML = decisionHistory.map((item, index) => (
-        `<div class="history-row">` +
+      const filters = historyFilters();
+      const visible = decisionHistory
+        .map((item, index) => ({ item, index }))
+        .filter(({ item }) => historyMatches(item, filters));
+      if (!visible.length) {
+        list.innerHTML = `<div class="empty-state">No matching decisions.</div>`;
+        return;
+      }
+      list.innerHTML = visible.map(({ item, index }) => (
+        `<div class="history-row" role="listitem">` +
         `<button type="button" class="history-item" data-history-index="${index}" aria-label="Restore decision ${escHtml(item.id)} from ${escHtml(formatHistoryTimestamp(item.timestamp))}">` +
         `<span class="history-badge ${item.verdict}">${item.verdict}</span>` +
         `<span class="history-id">${escHtml(item.id)}</span>` +
@@ -2973,6 +3086,19 @@ def _render_ui(sample: dict[str, Any]) -> str:
         document.getElementById("verdict-area").innerHTML =
           `<div class="alert-block errors"><div class="alert-title">Share URL error</div>Only valid JSON payloads can be shared.</div>`;
       }
+    }
+
+    function copyAppUrl() {
+      const url = `${window.location.origin}${window.location.pathname}`;
+      navigator.clipboard.writeText(url).then(() => {
+        const button = document.getElementById("share-app-btn");
+        button.textContent = "App URL copied";
+        button.classList.add("copied");
+        setTimeout(() => {
+          button.textContent = "Share App";
+          button.classList.remove("copied");
+        }, 1600);
+      });
     }
 
     function csvCell(value) {
