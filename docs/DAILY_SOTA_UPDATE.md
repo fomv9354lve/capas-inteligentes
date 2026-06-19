@@ -6,6 +6,20 @@ CAPAS keeps market and literature positioning current through a daily local watc
 run. The watchlist is not a novelty claim and not a CAPAS verdict. It is an
 intake queue for human review.
 
+## Operating model
+
+There are two repo copies on the Mac:
+
+1. **Working repo**: the normal development checkout under Desktop. This is
+   where code edits, commits, reviews, and manual promotion happen.
+2. **Operational clone**:
+   `~/Library/Application Support/CAPAS/capas-inteligentes`. The macOS
+   LaunchAgent runs from this clone so the daily job is isolated from Desktop
+   privacy prompts, open editor state, and unfinished working-tree changes.
+
+The LaunchAgent updates the operational clone with `git pull --ff-only` before
+running the watch script. It does not edit the Desktop checkout directly.
+
 ## What runs daily
 
 The daily job runs:
@@ -57,6 +71,17 @@ Without an API key, the watcher still falls back to arXiv and records any
 Semantic Scholar rate-limit response in the dated JSON artifact instead of
 silently hiding it.
 
+For the scheduled LaunchAgent, shell exports are not automatically inherited.
+Use one of these options:
+
+```bash
+launchctl setenv SEMANTIC_SCHOLAR_API_KEY "..."
+launchctl kickstart -k gui/$(id -u)/com.capas.sota-daily
+```
+
+or add an `EnvironmentVariables` entry to
+`~/Library/LaunchAgents/com.capas.sota-daily.plist` and reload the agent.
+
 ## Install daily macOS schedule
 
 Copy the LaunchAgent:
@@ -102,6 +127,23 @@ review records:
 
 This keeps CAPAS fresh without turning search results into unverified marketing
 claims.
+
+## Commit and PR policy
+
+Default policy: **local watch only**. The daily LaunchAgent writes artifacts in
+the operational clone and logs what changed. It does not auto-commit and it does
+not push to GitHub.
+
+Manual promotion policy:
+
+1. review the dated watch artifact,
+2. copy or cherry-pick only the source-backed updates worth keeping,
+3. run `python3 capas.py validate`,
+4. commit from the working repo with a human-written message.
+
+Optional future policy: a separate workflow may open a draft PR with daily watch
+artifacts, but it must remain review-gated. CAPAS should not automatically turn
+fresh search results into durable SOTA or market claims.
 
 ## Recommended daily operating loop
 

@@ -2249,6 +2249,23 @@ def _render_ui(sample: dict[str, Any]) -> str:
   }
   .samples-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-bottom: 20px; }
   .samples-bar > span { font-size: 11px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.6px; }
+  .mode-tabs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-bottom: 16px; }
+  .mode-tab {
+    min-height: 40px;
+    padding: 9px 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg-2);
+    color: var(--text-2);
+    font-family: var(--font);
+    font-size: 12px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all var(--t);
+  }
+  .mode-tab:hover { background: var(--bg-3); border-color: var(--border-2); color: var(--text-1); }
+  .mode-tab[aria-selected="true"] { color: var(--accent); border-color: rgba(124, 127, 255, 0.36); background: var(--accent-glow); }
+  .mode-note { margin: -8px 0 16px; color: var(--text-3); font-size: 12px; }
   .sample-btn {
     display: inline-flex;
     align-items: center;
@@ -2405,6 +2422,19 @@ def _render_ui(sample: dict[str, Any]) -> str:
   .batch-row-id { color: var(--text-1); font-family: var(--mono); font-size: 11px; }
   .batch-row-reason { color: var(--text-3); font-size: 11px; }
   .batch-row pre { margin: 0; border-top: 1px solid var(--border); border-radius: 0; max-height: 220px; overflow: auto; }
+  .output-inspector { display: grid; gap: 8px; margin-bottom: 10px; }
+  .inspector-card { border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg); overflow: hidden; }
+  .inspector-card summary { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 36px; padding: 9px 12px; color: var(--text-2); font-size: 11px; font-weight: 800; letter-spacing: 0.6px; text-transform: uppercase; cursor: pointer; list-style: none; }
+  .inspector-card summary::-webkit-details-marker { display: none; }
+  .inspector-card summary::after { content: "Open"; color: var(--text-3); font-size: 10px; }
+  .inspector-card[open] summary { border-bottom: 1px solid var(--border); }
+  .inspector-card[open] summary::after { content: "Close"; }
+  .inspector-body { padding: 10px 12px; color: var(--text-2); font-size: 12px; line-height: 1.6; }
+  .inspector-body dl { display: grid; grid-template-columns: minmax(110px, 0.45fr) minmax(0, 1fr); gap: 6px 10px; margin: 0; }
+  .inspector-body dt { color: var(--text-3); font-weight: 800; text-transform: uppercase; font-size: 10px; letter-spacing: 0.5px; }
+  .inspector-body dd { margin: 0; overflow-wrap: anywhere; }
+  .inspector-body ul { margin: 0; padding-left: 18px; }
+  .inspector-empty { color: var(--text-3); }
   .rewrite-block { margin: 12px 16px; padding: 12px 14px; border-radius: var(--radius); background: var(--orange-bg); border-color: var(--orange-border); }
   .rewrite-text { color: var(--text-1); }
   .rewrite-diff { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
@@ -2469,8 +2499,11 @@ def _render_ui(sample: dict[str, Any]) -> str:
   .history-select { padding: 5px 8px; }
   .history-list { display: flex; flex-direction: column; gap: 4px; }
   .history-count { color: var(--text-3); }
-  .history-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px; align-items: stretch; }
-  .history-item { display: flex; align-items: center; gap: 10px; width: 100%; padding: 9px 14px; background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--radius); color: var(--text-1); font-family: var(--font); transition: all var(--t); cursor: pointer; text-align: left; }
+  .audit-table { display: grid; gap: 4px; }
+  .audit-row { display: grid; grid-template-columns: 92px minmax(140px, 1fr) 150px minmax(190px, 1.5fr) 116px 110px; gap: 8px; align-items: stretch; }
+  .audit-row.header { padding: 0 8px; color: var(--text-3); font-size: 10px; font-weight: 800; letter-spacing: 0.6px; text-transform: uppercase; }
+  .history-row { display: contents; }
+  .history-item { display: grid; grid-template-columns: subgrid; grid-column: 1 / 6; align-items: center; gap: 8px; width: 100%; padding: 9px 8px; background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--radius); color: var(--text-1); font-family: var(--font); transition: all var(--t); cursor: pointer; text-align: left; }
   .history-item:hover { background: var(--bg-3); border-color: var(--border-2); transform: translateX(2px); }
   .history-delete { padding: 0 10px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-2); color: var(--text-3); font-family: var(--font); font-size: 11px; font-weight: 700; cursor: pointer; }
   .history-delete:hover { color: var(--red); border-color: var(--red-border); background: var(--red-bg); }
@@ -2480,6 +2513,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
   .history-badge.REWRITE { color: var(--orange); background: var(--orange-bg); border-color: var(--orange-border); }
   .history-badge.HOLD { color: var(--slate); background: var(--slate-bg); border-color: var(--slate-border); }
   .history-id { color: var(--text-1); }
+  .history-type { color: var(--text-3); font-family: var(--mono); font-size: 10px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .history-reason { color: var(--text-3); }
   .history-ts { margin-left: auto; color: var(--text-3); font-size: 10px; font-variant-numeric: tabular-nums; white-space: nowrap; }
   .empty-state, .no-decision { color: var(--text-3); font-size: 13px; }
@@ -2597,6 +2631,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
     }
     .samples-bar::-webkit-scrollbar { display: none; }
     .sample-btn { flex: 0 0 auto; }
+    .mode-tabs { grid-template-columns: 1fr; }
     .grid { grid-template-columns: 1fr; }
     #input { min-height: 260px; }
     pre#output { max-height: 280px; }
@@ -2605,8 +2640,10 @@ def _render_ui(sample: dict[str, Any]) -> str:
     .help-modal { width: 100%; max-height: calc(100vh - 24px); }
     .history-header { align-items: flex-start; gap: 12px; }
     .history-actions { flex-wrap: wrap; justify-content: flex-end; }
-    .history-item { align-items: flex-start; flex-wrap: wrap; }
-    .history-reason { flex-basis: 100%; overflow-wrap: anywhere; }
+    .audit-row { grid-template-columns: 1fr; }
+    .audit-row.header { display: none; }
+    .history-item { grid-template-columns: 1fr; grid-column: auto; align-items: flex-start; }
+    .history-reason { overflow-wrap: anywhere; }
   }
   @media (max-width: 560px) {
     .app-body { padding: 12px 12px 48px; }
@@ -2661,6 +2698,9 @@ def _render_ui(sample: dict[str, Any]) -> str:
     <p>Instead of asking a reviewer to re-read every paper, CAPAS turns supplied evidence into an auditable ACCEPT, REWRITE, REJECT, or HOLD decision with schema versioning, provenance blockers, and batch economics.</p>
     <div class="hero-actions">
       <button class="sample-btn accept hero-primary" type="button" onclick="scrollToGate()">Try the gate →</button>
+      <a class="sample-btn accept hero-link" href="https://github.com/fomv9354lve/capas-inteligentes/issues/new?title=CAPAS%20pilot%20conversation" target="_blank" rel="noopener noreferrer">Talk to pilot owner</a>
+      <a class="sample-btn hold hero-link" href="CUSTOMER_READY_BRIEF.md">Open customer brief</a>
+      <a class="sample-btn rewrite hero-link" href="PARTNER_DECK.md">Download pilot packet</a>
       <button class="sample-btn hold" type="button" onclick="document.getElementById('roi-calculator-title').scrollIntoView({behavior:'smooth', block:'start'})">See business case</button>
       <a class="sample-btn accept hero-link" href="product.html">Read product story</a>
       <button class="sample-btn rewrite" type="button" onclick="document.getElementById('guided-claim-id').focus()">Start no-code claim</button>
@@ -2819,6 +2859,13 @@ def _render_ui(sample: dict[str, Any]) -> str:
   <button class="sample-btn hold" title="Batch demo with multiple claim types" aria-label="Load batch demo sample" onclick="loadBatchDemo()">Batch demo</button>
 </div>
 
+<div class="mode-tabs" role="tablist" aria-label="CAPAS operating modes">
+  <button class="mode-tab" id="mode-single" role="tab" aria-selected="true" type="button" onclick="setGateMode('single')">Single claim</button>
+  <button class="mode-tab" id="mode-batch" role="tab" aria-selected="false" type="button" onclick="setGateMode('batch')">Batch claims</button>
+  <button class="mode-tab" id="mode-ingestion" role="tab" aria-selected="false" type="button" onclick="setGateMode('ingestion')">Ingestion</button>
+</div>
+<div class="mode-note" id="mode-note" role="status" aria-live="polite">Single claim mode: evaluate one structured payload with the deterministic CAPAS gate.</div>
+
 <section class="gate-section" id="gate" aria-labelledby="gate-title">
 <h2 class="sr-only" id="gate-title">CAPAS deterministic claim gate</h2>
 <div class="grid">
@@ -2847,6 +2894,9 @@ def _render_ui(sample: dict[str, Any]) -> str:
       </div>
       <div id="verdict-area" aria-live="polite" aria-atomic="true"><div class="no-decision">Run a decision to see results.</div></div>
       <div class="output-section">
+        <div class="output-inspector" id="output-inspector" aria-label="Decision inspector">
+          <div class="empty-state">Decision inspector will summarize the verdict, fine-tune readiness, schema errors, provenance, and raw JSON.</div>
+        </div>
         <details class="output-details" id="output-details">
           <summary>Full output JSON</summary>
           <pre id="output" role="log" aria-live="polite" aria-atomic="true" tabindex="0" aria-label="Full CAPAS decision JSON output"></pre>
@@ -3518,6 +3568,60 @@ def _render_ui(sample: dict[str, Any]) -> str:
       renderExecutiveDashboard(result.results.map((entry) => entry.result));
     }
 
+    function inspectorList(items, emptyText) {
+      const values = (items || []).filter(Boolean);
+      if (!values.length) return `<div class="inspector-empty">${escHtml(emptyText)}</div>`;
+      return `<ul>${values.map((item) => `<li>${escHtml(item)}</li>`).join("")}</ul>`;
+    }
+
+    function inspectorDl(rows) {
+      return `<dl>${rows.map(([key, value]) => `<dt>${escHtml(key)}</dt><dd>${escHtml(value ?? "-")}</dd>`).join("")}</dl>`;
+    }
+
+    function renderInspectorCard(title, body, open = false) {
+      return `<details class="inspector-card"${open ? " open" : ""}><summary>${escHtml(title)}</summary><div class="inspector-body">${body}</div></details>`;
+    }
+
+    function renderOutputInspector(value) {
+      const inspector = document.getElementById("output-inspector");
+      if (!inspector) return;
+      if (!value || typeof value !== "object") {
+        inspector.innerHTML = `<div class="empty-state">Decision inspector will summarize the verdict, fine-tune readiness, schema errors, provenance, and raw JSON.</div>`;
+        return;
+      }
+      const firstResult = Array.isArray(value.results) ? value.results[0]?.result : value;
+      const claim = firstResult?.input_claim || {};
+      const criteria = firstResult?.fine_tune_criteria || {};
+      const criteriaPassed = Object.values(criteria).filter(Boolean).length;
+      const criteriaTotal = Object.keys(criteria).length;
+      const provenance = firstResult?.training_evidence?.provenance || {};
+      const schemaErrors = firstResult?.schema_errors || [];
+      const missingFields = firstResult?.missing_fields || [];
+      const cards = [];
+      cards.push(renderInspectorCard("Decision", inspectorDl([
+        ["mode", value.batch_mode ? `batch · ${value.item_count} items` : "single claim"],
+        ["verdict", firstResult?.verdict || value.report_type || "-"],
+        ["claim id", claim.id || "-"],
+        ["claim type", claim.type || "-"],
+        ["reason", firstResult?.reason || value.non_claim || "-"]
+      ]), true));
+      cards.push(renderInspectorCard("Fine-tune readiness", inspectorDl([
+        ["ready", value.batch_mode ? String(value.fine_tune_ready === true) : String(firstResult?.fine_tune_ready === true)],
+        ["criteria", criteriaTotal ? `${criteriaPassed}/${criteriaTotal}` : value.batch_mode ? "batch AND-gate; expand per item for criteria" : "-"],
+        ["blockers", (value.fine_tune_blockers || firstResult?.fine_tune_blockers || []).length]
+      ]) + inspectorList(value.fine_tune_blockers || firstResult?.fine_tune_blockers || [], "No active fine-tune blockers.")));
+      cards.push(renderInspectorCard("Schema errors", inspectorList(schemaErrors.concat(missingFields.map((field) => `missing field: ${field}`)), "No schema errors or missing fields.")));
+      cards.push(renderInspectorCard("Provenance", inspectorDl([
+        ["review id", provenance.review_id || "-"],
+        ["review hash", provenance.review_sha256 || "-"],
+        ["witness id", provenance.witness_id || "-"],
+        ["RO-Crate", provenance.ro_crate_path || "-"],
+        ["source URLs", Array.isArray(provenance.source_urls) ? provenance.source_urls.length : 0]
+      ])));
+      cards.push(renderInspectorCard("Raw JSON", `<div class="inspector-empty">Full structured output remains available below for copy/export.</div>`));
+      inspector.innerHTML = cards.join("");
+    }
+
     function hasNullEvidence(payload) {
       const evidence = payload?.evidence;
       if (!evidence || typeof evidence !== "object" || Array.isArray(evidence)) return false;
@@ -3525,6 +3629,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
     }
 
     function setOutputJson(value) {
+      renderOutputInspector(value);
       const json = JSON.stringify(value, null, 2);
       const output = document.getElementById("output");
       if (json === lastOutputJson) {
@@ -3547,6 +3652,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
     function setOutputEmpty() {
       lastOutputJson = "";
       document.getElementById("output").textContent = "";
+      renderOutputInspector(null);
     }
 
     function syntaxHighlight(json) {
@@ -3745,6 +3851,25 @@ def _render_ui(sample: dict[str, Any]) -> str:
     function scrollToGate() {
       const gate = document.getElementById("gate");
       if (gate) gate.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function setGateMode(mode) {
+      const labels = {
+        single: "Single claim mode: evaluate one structured payload with the deterministic CAPAS gate.",
+        batch: "Batch claims mode: paste an array or object with items/claims, then run the batch gate.",
+        ingestion: "Ingestion mode: extract candidate claims from paper text, confirm spans, then gate the payload."
+      };
+      for (const key of Object.keys(labels)) {
+        const tab = document.getElementById(`mode-${key}`);
+        if (tab) tab.setAttribute("aria-selected", key === mode ? "true" : "false");
+      }
+      const note = document.getElementById("mode-note");
+      if (note) note.textContent = labels[mode] || labels.single;
+      if (mode === "ingestion") {
+        document.getElementById("ingest-title")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      } else {
+        scrollToGate();
+      }
     }
 
     function markPayloadLoaded({ scroll = true } = {}) {
@@ -4237,17 +4362,30 @@ def _render_ui(sample: dict[str, Any]) -> str:
         list.innerHTML = `<div class="empty-state">No matching decisions.</div>`;
         return;
       }
-      list.innerHTML = visible.map(({ item, index }) => (
+      const rows = visible.map(({ item, index }) => {
+        let payloadType = "-";
+        try {
+          const parsed = JSON.parse(item.payload || "{}");
+          payloadType = parsed?.claim?.type || "-";
+        } catch (_) {}
+        return (
         `<div class="history-row" role="listitem">` +
         `<button type="button" class="history-item" data-history-index="${index}" aria-label="Restore decision ${escHtml(item.id)} from ${escHtml(formatHistoryTimestamp(item.timestamp))}">` +
         `<span class="history-badge ${item.verdict}">${item.verdict}</span>` +
         `<span class="history-id">${escHtml(item.id)}</span>` +
+        `<span class="history-type">${escHtml(payloadType)}</span>` +
         `<span class="history-reason">${escHtml(item.reason)}</span>` +
         `<time class="history-ts" datetime="${escHtml(item.timestamp || "")}">${escHtml(formatHistoryTimestamp(item.timestamp))}</time>` +
         `</button>` +
         `<button type="button" class="history-delete" data-history-index="${index}" aria-label="Delete decision ${escHtml(item.id)}">Delete</button>` +
         `</div>`
-      )).join("");
+        );
+      }).join("");
+      list.innerHTML =
+        `<div class="audit-table" role="table" aria-label="Governance decision audit log">` +
+        `<div class="audit-row header" role="row"><span>Verdict</span><span>Claim ID</span><span>Type</span><span>Reason</span><span>Timestamp</span><span>Actions</span></div>` +
+        rows +
+        `</div>`;
     }
 
     function formatHistoryTimestamp(value) {
