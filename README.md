@@ -157,9 +157,9 @@ jobs:
           output: outputs/capas-action-report.json
 ```
 
-The manual workflow `.github/workflows/claim-gate.yml` can run `decide`,
-`batch`, or `pipeline` through `workflow_dispatch`. Other workflows can reuse
-the composite action directly.
+The manual workflow `.github/workflows/claim-gate.yml` runs a batch smoke check
+through `workflow_dispatch`. Other workflows can reuse the composite action
+directly with `mode: decide`, `mode: batch`, or `mode: pipeline`.
 
 Inspect a trace:
 

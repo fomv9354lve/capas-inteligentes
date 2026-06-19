@@ -2,25 +2,6 @@ name: CAPAS Claim Gate Action
 
 on:
   workflow_dispatch:
-    inputs:
-      mode:
-        description: Operation to run: decide, batch, or pipeline.
-        type: choice
-        options:
-          - decide
-          - batch
-          - pipeline
-        default: batch
-      input_path:
-        description: Input JSON path.
-        default: examples/external_claim_batch.json
-      output_path:
-        description: Output report path.
-        default: outputs/capas-action-report.json
-      allow_web:
-        description: Allow web retrieval in pipeline mode.
-        type: boolean
-        default: false
 
 jobs:
   claim-gate:
@@ -32,12 +13,11 @@ jobs:
           python-version: "3.11"
       - uses: ./.github/actions/capas-claim-gate
         with:
-          mode: ${{ inputs.mode }}
-          input: ${{ inputs.input_path }}
-          output: ${{ inputs.output_path }}
-          allow_web: ${{ inputs.allow_web }}
+          mode: batch
+          input: examples/external_claim_batch.json
+          output: outputs/capas-action-report.json
       - name: Upload CAPAS report
         uses: actions/upload-artifact@v4
         with:
           name: capas-claim-gate-report
-          path: ${{ inputs.output_path }}
+          path: outputs/capas-action-report.json

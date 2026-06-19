@@ -122,7 +122,7 @@ def main() -> int:
         },
         {
             "check": "github_workflow_dispatch",
-            "passed": WORKFLOW_PATH.exists() and "workflow_dispatch" in workflow_text and "input_path" in workflow_text,
+            "passed": WORKFLOW_PATH.exists() and "workflow_dispatch" in workflow_text and "examples/external_claim_batch.json" in workflow_text,
             "detail": str(WORKFLOW_PATH.relative_to(ROOT)),
         },
     ])
