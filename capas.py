@@ -3448,7 +3448,8 @@ def _render_ui(sample: dict[str, Any]) -> str:
         `<div class="assist-block"><div class="alert-title">Batch summary</div><div style="display:flex;gap:8px;flex-wrap:wrap">${summary}</div>` +
         `<div class="batch-progress" aria-hidden="true"><div class="batch-progress-fill" style="--batch-progress:100%"></div></div>` +
         `<div class="batch-progress-label">${result.item_count}/${result.item_count} claims processed · deterministic gate complete</div>` +
-        `<div class="batch-table" role="list" aria-label="Batch per-item decisions">${rows}</div></div>`;
+        `<div class="batch-table" role="list" aria-label="Batch per-item decisions">${rows}</div></div>` +
+        renderBatchFineTuneStatus(result);
       renderExecutiveDashboard(result.results.map((entry) => entry.result));
     }
 
@@ -3559,6 +3560,26 @@ def _render_ui(sample: dict[str, Any]) -> str:
       return (
         `<div class="fine-tune-block" role="status" aria-live="polite" aria-atomic="true" tabindex="0" aria-label="Fine-tune readiness status">` +
         `<div class="fine-tune-head"><div class="fine-tune-title">Fine-tune readiness</div><div class="fine-tune-status ${statusClass}">${statusText}</div></div>` +
+        body +
+        `</div>`
+      );
+    }
+
+    function renderBatchFineTuneStatus(result) {
+      const itemResults = Array.isArray(result?.results) ? result.results.map((entry) => entry.result) : [];
+      const readyCount = itemResults.filter((entry) => entry?.fine_tune_ready === true).length;
+      const total = itemResults.length;
+      const provenanceBlocked = itemResults.filter(isProvenanceBlocked).length;
+      const blockers = Array.isArray(result.fine_tune_blockers) ? result.fine_tune_blockers : [];
+      const statusClass = result.fine_tune_ready ? "ready" : "blocked";
+      const statusText = result.fine_tune_ready ? "READY" : "NOT READY";
+      const body = result.fine_tune_ready
+        ? `<div class="fine-tune-summary">All ${total} batch items are fine-tune ready.</div>`
+        : `<div class="fine-tune-summary">${readyCount}/${total} batch items are fine-tune ready. ${provenanceBlocked} items have active provenance blockers.</div>` +
+          (blockers.length ? `<ul>${blockers.map((blocker) => `<li>${escHtml(blocker)}</li>`).join("")}</ul>` : "");
+      return (
+        `<div class="fine-tune-block" role="status" aria-live="polite" aria-atomic="true" tabindex="0" aria-label="Batch fine-tune readiness status">` +
+        `<div class="fine-tune-head"><div class="fine-tune-title">Batch fine-tune readiness</div><div class="fine-tune-status ${statusClass}">${statusText}</div></div>` +
         body +
         `</div>`
       );
@@ -3802,7 +3823,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
         const numberPattern = new RegExp(`\\b${fieldName}\\b\\s*(?:[:=]|is|was|=)?\\s*(-?\\d+(?:\\.\\d+)?(?:e[+-]?\\d+)?)`, "i");
         const numberMatch = normalized.match(numberPattern);
         if (!numberMatch) return null;
-        const value = Number(numberMatch[1]);
+        const value = parseFloat(numberMatch[1]);
         return Number.isFinite(value) ? value : null;
       }
       const pattern = new RegExp(`\\b${fieldName}\\b\\s*(?:[:=]|is|was|=)\\s*([^.;\\n]+)`, "i");
@@ -3890,7 +3911,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
           `<div class="candidate-row" role="listitem">` +
           `<div class="candidate-summary"><span class="verdict-badge HOLD">${escHtml(candidate.claim.type)}</span><span class="candidate-text">${escHtml(candidate.claim.text)}</span>` +
           `<button class="copy-btn" type="button" onclick="confirmCandidateClaim(${index})">Confirm & build payload</button></div>` +
-          `<div class="candidate-spans" aria-label="Evidence spans for candidate ${index + 1}"><div class="alert-title">Evidence spans</div>${spanHtml}</div>` +
+          `<details class="candidate-spans" aria-label="Evidence spans for candidate ${index + 1}" open><summary>Evidence spans</summary>${spanHtml}</details>` +
           `</div>`
         );
       }).join("");

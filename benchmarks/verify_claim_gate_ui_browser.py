@@ -160,6 +160,7 @@ HARNESS = r"""
     ok("paper_ingestion_numeric_parser_handles_statistical_sentence", statisticalCandidate && statisticalCandidate.evidence.p_value === 0.03 && statisticalCandidate.evidence.alpha === 0.05 && statisticalCandidate.evidence.effect_direction_confirmed === true, JSON.stringify(statisticalCandidate?.evidence || {}));
     ok("paper_ingestion_shows_evidence_spans", document.querySelector(".candidate-span")?.textContent.includes("line"));
     ok("paper_ingestion_labels_evidence_spans", document.querySelector(".candidate-spans")?.textContent.includes("Evidence spans"));
+    ok("paper_ingestion_uses_expandable_evidence_spans", document.querySelector(".candidate-spans")?.tagName === "DETAILS" && Boolean(document.querySelector(".candidate-spans summary")));
     confirmCandidateClaim(0);
     ok("paper_ingestion_confirm_builds_payload", document.getElementById("input").value.includes('"ingestion"') && document.getElementById("input").value.includes('"human_confirmed": true'));
     decide();
@@ -215,6 +216,8 @@ HARNESS = r"""
     ok("batch_per_item_table_visible", document.querySelectorAll(".batch-row").length === 2);
     ok("batch_per_item_reason_visible", document.querySelector(".batch-row-reason")?.textContent.length > 0);
     ok("batch_per_item_fine_tune_summary_visible", document.querySelector(".batch-row-ft")?.textContent.includes("FT"));
+    ok("batch_fine_tune_status_visible", document.querySelector(".fine-tune-block")?.textContent.includes("Batch fine-tune readiness"));
+    ok("batch_fine_tune_status_is_live_region", document.querySelector(".fine-tune-block")?.getAttribute("aria-label") === "Batch fine-tune readiness status" && document.querySelector(".fine-tune-block")?.getAttribute("aria-live") === "polite");
     ok("batch_output_json", document.getElementById("output").textContent.includes('"batch_mode": "decide"'));
     ok("batch_schema_version", document.getElementById("output").textContent.includes('"schema_version": "capas-claim-payload-v3"'));
     document.getElementById("input").value = JSON.stringify(samples.ACCEPT, null, 2);
