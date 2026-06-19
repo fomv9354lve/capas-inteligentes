@@ -50,3 +50,8 @@ jobs:
           input: ${{ inputs.input }}
           output: ${{ inputs.output }}
           allow_web: ${{ inputs.allow_web }}
+      - name: Upload CAPAS report
+        uses: actions/upload-artifact@v4
+        with:
+          name: capas-claim-gate-report
+          path: ${{ inputs.output }}

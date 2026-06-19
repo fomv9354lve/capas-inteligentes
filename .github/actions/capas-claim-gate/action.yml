@@ -38,8 +38,3 @@ runs:
           echo "Unsupported CAPAS mode: ${{ inputs.mode }}" >&2
           exit 2
         fi
-    - name: Upload CAPAS report
-      uses: actions/upload-artifact@v4
-      with:
-        name: capas-claim-gate-report
-        path: ${{ inputs.output }}
