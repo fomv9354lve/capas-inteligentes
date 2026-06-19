@@ -163,7 +163,6 @@ REQUIRED_SNIPPETS = [
     "claims processed · deterministic gate complete",
     "id=\"help-btn\"",
     "aria-controls=\"help-modal\"",
-    "href=\"product.html\"",
     "openHelpModal(this)",
     "help-modal-backdrop",
     "id=\"help-modal\" role=\"dialog\" aria-modal=\"true\"",
@@ -277,9 +276,11 @@ REQUIRED_SNIPPETS = [
     "sensitiveModeStorageKey",
     "Sensitive: Off",
     "redacted in sensitive data mode",
+    "Overview",
+    "Gate",
     "customer-brief.html",
     "pilot-packet.html",
-    "Product",
+    "Audit",
 ]
 
 FORBIDDEN_SNIPPETS = [
