@@ -6,6 +6,19 @@ CAPAS is a deterministic quality gate for scientific claims before they enter re
 
 The business value is senior-review leverage: reviewers stop re-reading every candidate claim from scratch and instead focus on the claims CAPAS identifies as missing evidence, over-claiming, contradicted, or provenance-blocked.
 
+Category framing: CAPAS is **Training Data Assurance for Scientific AI**. It is the control layer between retrieval/extraction systems and model fine-tuning, preventing unsupported scientific claims from entering governed datasets.
+
+## Executive so what
+
+The risk is not only hallucination at inference time. The upstream risk is that plausible but unsupported scientific claims enter fine-tuning data and become part of the model's learned behavior. CAPAS addresses that earlier control point.
+
+Executive outcome:
+
+- Reduce senior-review hours by routing reviewers to exceptions.
+- Reduce dataset rework by catching overclaims before fine-tuning.
+- Improve auditability by attaching schema, decision reason, source spans, provenance blockers, and `non_claim` markers to every output.
+- Give model-risk, research-integrity, and AI-governance teams a measurable approval gate.
+
 ## Primary persona and buyer
 
 Primary user: AI governance lead or scientific data steward responsible for training-data quality.
@@ -62,6 +75,27 @@ Illustrative run: CAPAS gated 1,000 candidate training claims.
 
 Assumption model: 30 minutes of manual review per claim vs. 5 minutes of triage review after CAPAS. That is 25,000 minutes avoided, or roughly 417 senior-review hours.
 
+At an illustrative USD 180/hour expert review rate, the same pilot model represents about USD 75k of senior-review capacity redirected to exceptions, adjudication, and provenance resolution.
+
+## ROI calculator assumptions
+
+Core formula:
+
+`hours avoided = claims * (manual_minutes_per_claim - capas_triage_minutes_per_claim) / 60`
+
+`capacity value = hours avoided * expert_hourly_rate`
+
+Default pilot model:
+
+- 1,000 claims.
+- 30 manual minutes per claim.
+- 5 CAPAS-guided triage minutes per claim.
+- USD 180/hour senior reviewer loaded cost.
+- 417 hours avoided.
+- About USD 75k review capacity avoided.
+
+This is a capacity model, not a promise of booked savings. The pilot should measure actual baseline review time, adjudication time, false reject rate, and downstream rework avoided.
+
 ## Vertical demo: AI governance
 
 Demo story: an AI governance team wants to curate high-confidence scientific claims for model fine-tuning. CAPAS receives candidate claims, checks typed evidence, blocks claims without verified provenance, and exports a CSV audit trail for review committee signoff.
@@ -100,6 +134,16 @@ Upstream integration story:
 - Semantic Scholar, PubMed, Elicit, or internal retrieval can prepare candidate evidence.
 - The browser includes a local paper/text ingestion preview: pasted text or local files become candidate claims with spans, and no candidate can be decided until a human confirms it.
 - CAPAS remains the deterministic final gate: retrieve and extract upstream, then decide with CAPAS.
+
+## Partner-ready workflow view
+
+1. Ingest: paper text, theorem notes, metadata exports, or local corpus snippets.
+2. Confirm: human reviewer accepts candidate evidence spans.
+3. Gate: schema v3 plus claim-type rules emit ACCEPT/REWRITE/REJECT/HOLD.
+4. Provenance: source hashes, RO-Crate, reviewer attestation, and witness registry blockers are resolved through CLI/API surfaces.
+5. Approve: only fine-tune-ready positives enter governed training datasets.
+
+This lets a consulting or enterprise AI team sell a concrete operating model, not only a technical validator.
 
 ## Paper/theory ingestion boundary
 

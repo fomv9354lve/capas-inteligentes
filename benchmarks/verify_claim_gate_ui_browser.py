@@ -52,6 +52,14 @@ HARNESS = r"""
     ok("product_hero_exists", document.querySelector(".product-hero")?.textContent.includes("deterministic quality gate"));
     ok("customer_brief_link_exists", Boolean(document.querySelector('a[href="CUSTOMER_READY_BRIEF.md"]')));
     ok("executive_dashboard_exists", Boolean(document.getElementById("metric-ft-ready")) && Boolean(document.getElementById("metric-provenance")));
+    ok("workflow_view_exists", document.getElementById("workflow-view-title")?.textContent.includes("Training data assurance workflow"));
+    ok("roi_calculator_exists", Boolean(document.getElementById("roi-claims")) && Boolean(document.getElementById("roi-hours")));
+    document.getElementById("roi-claims").value = "1200";
+    document.getElementById("roi-manual").value = "40";
+    document.getElementById("roi-triage").value = "10";
+    document.getElementById("roi-rate").value = "200";
+    updateRoiCalculator();
+    ok("roi_calculator_updates", document.getElementById("roi-hours").textContent === "600h" && document.getElementById("roi-value").textContent.includes("$120,000"));
     ok("guided_builder_exists", Boolean(document.getElementById("guided-type")) && Boolean(document.getElementById("guided-fields")));
     ok("paper_ingestion_ui_exists", Boolean(document.getElementById("ingest-source-text")) && Boolean(document.getElementById("candidate-claims-list")));
     ok("sensitive_mode_button_exists", Boolean(document.getElementById("sensitive-mode-toggle")));

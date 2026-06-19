@@ -2151,6 +2151,42 @@ def _render_ui(sample: dict[str, Any]) -> str:
     margin: 0 0 18px;
   }
   .exec-card strong { font-size: 20px; font-variant-numeric: tabular-nums; }
+  .business-system {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(320px, 0.85fr);
+    gap: 16px;
+    margin-bottom: 18px;
+  }
+  .workflow-board {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 8px;
+    padding: 14px;
+  }
+  .workflow-stage {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg);
+    padding: 10px;
+    min-height: 112px;
+  }
+  .workflow-stage strong { display: block; color: var(--text-1); font-size: 12px; margin-bottom: 5px; }
+  .workflow-stage span { display: block; color: var(--text-3); font-size: 11px; line-height: 1.45; }
+  .roi-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    padding: 14px;
+  }
+  .roi-result {
+    grid-column: 1 / -1;
+    border: 1px solid var(--green-border);
+    border-radius: var(--radius);
+    background: var(--green-bg);
+    padding: 12px;
+  }
+  .roi-result strong { display: block; color: var(--green); font-size: 24px; font-variant-numeric: tabular-nums; }
+  .roi-result span { color: var(--text-2); font-size: 12px; }
   .guided-panel { margin-bottom: 16px; }
   .guided-body { padding: 14px 16px; display: grid; gap: 12px; }
   .guided-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
@@ -2471,8 +2507,8 @@ def _render_ui(sample: dict[str, Any]) -> str:
   html[data-theme="light"] pre#output { background: var(--bg-3); }
   @media (max-width: 860px) {
     .app-body { padding: 16px 16px 60px; }
-    .product-hero { grid-template-columns: 1fr; }
-    .hero-metrics, .exec-dashboard, .workflow-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .product-hero, .business-system { grid-template-columns: 1fr; }
+    .hero-metrics, .exec-dashboard, .workflow-strip, .workflow-board { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .guided-grid { grid-template-columns: 1fr; }
     .topbar {
       height: auto;
@@ -2520,7 +2556,8 @@ def _render_ui(sample: dict[str, Any]) -> str:
     .app-body { padding: 12px 12px 48px; }
     .hero-copy { padding: 16px; }
     .hero-copy h2 { font-size: 22px; }
-    .hero-metrics, .exec-dashboard, .workflow-strip { grid-template-columns: 1fr; }
+    .hero-metrics, .exec-dashboard, .workflow-strip, .workflow-board, .roi-grid { grid-template-columns: 1fr; }
+    .roi-result { grid-column: auto; }
     .topbar-logo { font-size: 13px; }
     .topbar-logo-icon { width: 24px; height: 24px; }
     .panel-header { padding: 9px 12px; }
@@ -2601,6 +2638,50 @@ def _render_ui(sample: dict[str, Any]) -> str:
   <div class="exec-card"><strong id="metric-reject">0</strong><span>REJECT</span></div>
   <div class="exec-card"><strong id="metric-ft-ready">0</strong><span>fine-tune ready</span></div>
   <div class="exec-card"><strong id="metric-provenance">0</strong><span>provenance-blocked</span></div>
+</section>
+
+<section class="business-system" aria-label="Training data assurance business system">
+  <div class="panel" aria-labelledby="workflow-view-title">
+    <div class="panel-header">
+      <h2 class="panel-title" id="workflow-view-title">Training data assurance workflow</h2>
+      <span class="panel-tag">extracted to ready</span>
+    </div>
+    <div class="workflow-board" aria-label="Operational claim review stages">
+      <div class="workflow-stage"><strong>1. Ingest</strong><span>Paste paper text, theorem notes, metadata exports, or local corpus snippets.</span></div>
+      <div class="workflow-stage"><strong>2. Confirm</strong><span>Human reviewer accepts candidate spans before CAPAS will decide.</span></div>
+      <div class="workflow-stage"><strong>3. Gate</strong><span>Schema v3 and claim-type rules return ACCEPT, REWRITE, REJECT, or HOLD.</span></div>
+      <div class="workflow-stage"><strong>4. Provenance</strong><span>Review hash, witness registry, source URLs, RO-Crate, and attestation blockers surface before training.</span></div>
+      <div class="workflow-stage"><strong>5. Approve</strong><span>Only fine-tune-ready claims move into governed datasets or downstream reports.</span></div>
+    </div>
+  </div>
+  <div class="panel" aria-labelledby="roi-calculator-title">
+    <div class="panel-header">
+      <h2 class="panel-title" id="roi-calculator-title">Pilot ROI calculator</h2>
+      <span class="panel-tag">review hours</span>
+    </div>
+    <div class="roi-grid">
+      <div class="guided-field">
+        <label for="roi-claims">Candidate claims</label>
+        <input id="roi-claims" type="number" min="1" value="1000" aria-label="ROI candidate claim count" oninput="updateRoiCalculator()">
+      </div>
+      <div class="guided-field">
+        <label for="roi-manual">Manual min / claim</label>
+        <input id="roi-manual" type="number" min="1" value="30" aria-label="Manual review minutes per claim" oninput="updateRoiCalculator()">
+      </div>
+      <div class="guided-field">
+        <label for="roi-triage">CAPAS min / claim</label>
+        <input id="roi-triage" type="number" min="1" value="5" aria-label="CAPAS triage minutes per claim" oninput="updateRoiCalculator()">
+      </div>
+      <div class="guided-field">
+        <label for="roi-rate">Expert rate / hour</label>
+        <input id="roi-rate" type="number" min="1" value="180" aria-label="Expert reviewer hourly rate" oninput="updateRoiCalculator()">
+      </div>
+      <div class="roi-result" role="status" aria-live="polite">
+        <strong id="roi-hours">417h</strong>
+        <span id="roi-value">~$75,060 senior-review capacity avoided in the pilot model.</span>
+      </div>
+    </div>
+  </div>
 </section>
 
 <section class="panel guided-panel" aria-labelledby="guided-title">
@@ -3993,6 +4074,24 @@ def _render_ui(sample: dict[str, Any]) -> str:
       set("metric-provenance", provenanceBlocked);
     }
 
+    function updateRoiCalculator() {
+      const readNumber = (id, fallback) => {
+        const value = Number(document.getElementById(id)?.value);
+        return Number.isFinite(value) && value >= 0 ? value : fallback;
+      };
+      const claims = readNumber("roi-claims", 1000);
+      const manualMinutes = readNumber("roi-manual", 30);
+      const capasMinutes = readNumber("roi-triage", 5);
+      const hourlyRate = readNumber("roi-rate", 180);
+      const avoidedMinutes = Math.max(0, claims * (manualMinutes - capasMinutes));
+      const avoidedHours = avoidedMinutes / 60;
+      const avoidedValue = avoidedHours * hourlyRate;
+      const hoursNode = document.getElementById("roi-hours");
+      const valueNode = document.getElementById("roi-value");
+      if (hoursNode) hoursNode.textContent = `${Math.round(avoidedHours).toLocaleString()}h`;
+      if (valueNode) valueNode.textContent = `~$${Math.round(avoidedValue).toLocaleString()} senior-review capacity avoided in the pilot model.`;
+    }
+
     function historyFilters() {
       return {
         query: (document.getElementById("history-filter")?.value || "").trim().toLowerCase(),
@@ -4458,6 +4557,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
 
     initTheme();
     renderGuidedFields();
+    updateRoiCalculator();
     applySensitiveMode();
     document.getElementById("history-list").addEventListener("click", handleHistoryListClick);
     document.getElementById("history-list").addEventListener("keydown", handleHistoryListKeydown);

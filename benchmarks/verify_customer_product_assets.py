@@ -7,27 +7,34 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 PRODUCT = ROOT / "docs" / "product.html"
 BRIEF = ROOT / "docs" / "CUSTOMER_READY_BRIEF.md"
+DECK = ROOT / "docs" / "PARTNER_DECK.md"
 METRICS = ROOT / "outputs" / "pilot_metrics.json"
 UI = ROOT / "outputs" / "capas_claim_gate_ui.html"
 REPORT = ROOT / "outputs" / "customer_product_assets_report.json"
 
 
 REQUIRED = {
-    "landing page with narrative": (PRODUCT, ["Stop weak claims", "Read pilot plan", "workflow change"]),
+    "landing page with narrative": (PRODUCT, ["Training Data Assurance for Scientific AI", "Stop weak scientific claims", "Big 3 consulting wedge"]),
     "landing page screenshots": (PRODUCT, ["CAPAS screenshot mock", "ACCEPT", "RO-Crate pending"]),
+    "product business case": (PRODUCT, ["The so what", "Business case model", "417 senior-review hours"]),
     "guided no-code form": (UI, ["Guided claim builder", "The no-code builder redraws required evidence fields", "buildGuidedPayload", "Build JSON from form", "evidence field for"]),
     "paper text ingestion": (UI, ["Paper / text ingestion", "extractCandidateClaims", "candidate claims extracted from paper or text", "Evidence spans", "evidence_spans", "parseBooleanEvidenceValue", "numberPattern"]),
     "human in the loop": (UI, ["Confirm & build payload", "human_confirmed", "CAPAS will not decide unconfirmed candidates"]),
     "local metadata adapter": (UI, ["normalizeLocalMetadataExport", "local_semantic_scholar_pubmed_metadata_adapter", "DOI / external ID", "Paper title"]),
     "paper ingestion report": (UI, ["paper_ingestion_preview", "buildIngestionReport", "source_metadata"]),
     "executive dashboard": (UI, ["Executive batch and provenance dashboard", "metric-ft-ready", "metric-provenance"]),
-    "pilot metrics": (METRICS, ["fine_tune_ready_count", "hours_avoided", "simulated_case_study"]),
+    "pilot roi calculator": (UI, ["Pilot ROI calculator", "updateRoiCalculator", "roi-hours", "senior-review capacity avoided"]),
+    "workflow view": (UI, ["Training data assurance workflow", "Operational claim review stages", "Only fine-tune-ready claims move into governed datasets"]),
+    "pilot metrics": (METRICS, ["fine_tune_ready_count", "hours_avoided", "capacity_value_avoided_usd", "simulated_case_study"]),
     "vertical demo": (BRIEF, ["Vertical demo: AI governance", "pharma evidence review", "model-risk"]),
+    "executive so what": (BRIEF, ["Executive so what", "Training Data Assurance for Scientific AI", "Reduce senior-review hours"]),
+    "roi assumptions": (BRIEF, ["ROI calculator assumptions", "capacity value", "USD 180/hour"]),
     "pricing hypothesis": (BRIEF, ["Pricing hypothesis", "Two-week pilot", "Enterprise/API tier"]),
     "customer-facing docs": (BRIEF, ["One-page value proposition", "Customer-facing caveat", "Integration story"]),
     "sensitive data mode": (UI, ["sensitive-mode-toggle", "Sensitive mode", "redacted in sensitive data mode"]),
     "integration story": (BRIEF, ["GitHub Action", "Semantic Scholar", "Elicit"]),
-    "case study": (BRIEF, ["CAPAS gated 1,000 candidate training claims", "230 rewritten", "110 rejected"])
+    "case study": (BRIEF, ["CAPAS gated 1,000 candidate training claims", "230 rewritten", "110 rejected"]),
+    "partner deck": (DECK, ["Training Data Assurance for Scientific AI", "two-week pilot", "ROI model", "Buyer ask"])
 }
 
 
@@ -55,6 +62,13 @@ def main() -> int:
         "passed": metrics.get("rates", {}).get("rewritten") == 0.23
         and metrics.get("rates", {}).get("rejected") == 0.11
         and metrics.get("rates", {}).get("fine_tune_ready") == 0.04,
+        "path": str(METRICS.relative_to(ROOT)),
+        "missing": [],
+    })
+    checks.append({
+        "check": "roi model matches brief",
+        "passed": metrics.get("review_economics", {}).get("capacity_value_avoided_usd") == 75060
+        and metrics.get("review_economics", {}).get("expert_hourly_rate_usd") == 180,
         "path": str(METRICS.relative_to(ROOT)),
         "missing": [],
     })
