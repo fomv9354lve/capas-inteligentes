@@ -2114,6 +2114,13 @@ def _render_ui(sample: dict[str, Any]) -> str:
   }
   .hero-copy p { color: var(--text-2); font-size: 14px; max-width: 700px; }
   .hero-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .hero-primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: white;
+    box-shadow: 0 6px 18px rgba(124, 127, 255, 0.25);
+  }
+  .hero-primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
   .hero-link { text-decoration: none; }
   .hero-metrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 18px; }
   .hero-metric { border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-2); padding: 10px; }
@@ -2407,7 +2414,44 @@ def _render_ui(sample: dict[str, Any]) -> str:
   .output-section { padding: 12px 16px; }
   .output-label { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.7px; color: var(--text-3); }
   .output-label::after { content: ""; flex: 1; height: 1px; background: var(--border); }
+  .output-details { border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg); overflow: hidden; }
+  .output-details summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 36px;
+    padding: 9px 12px;
+    color: var(--text-2);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+  .output-details summary::after { content: "Expand"; color: var(--text-3); font-size: 10px; font-weight: 700; }
+  .output-details[open] summary { border-bottom: 1px solid var(--border); }
+  .output-details[open] summary::after { content: "Collapse"; }
   pre#output { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); color: var(--text-2); max-width: 100%; min-width: 0; max-height: 360px; padding: 14px; font-size: 11.5px; font-family: var(--mono); line-height: 1.7; overflow: auto; white-space: pre; }
+  .output-details pre#output { border: 0; border-radius: 0; margin: 0; }
+  .gate-section { scroll-margin-top: 76px; }
+  #input.payload-flash { animation: payload-flash 1.1s ease-out; }
+  @keyframes payload-flash {
+    0% { box-shadow: inset 0 0 0 999px rgba(124, 127, 255, 0.10), inset 3px 0 0 var(--accent); }
+    100% { box-shadow: inset 3px 0 0 var(--green); }
+  }
+  .payload-loaded-badge {
+    display: none;
+    padding: 3px 8px;
+    border: 1px solid var(--green-border);
+    border-radius: 999px;
+    background: var(--green-bg);
+    color: var(--green);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .payload-loaded-badge.show { display: inline-flex; }
   .json-key { color: var(--json-key); }
   .json-string { color: var(--json-string); }
   .json-number { color: var(--json-number); }
@@ -2418,7 +2462,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
   pre#output::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 3px; }
   .history-section { margin-top: 24px; }
   .history-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
-  .history-heading { color: var(--text-3); font-size: 11px; font-weight: 700; letter-spacing: 0.7px; text-transform: uppercase; }
+  .history-heading { color: var(--text-2); font-size: 12px; font-weight: 800; letter-spacing: 0.7px; text-transform: uppercase; }
   .history-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 10px; }
   .history-filter, .history-select { min-height: 28px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--bg-2); color: var(--text-2); font-family: var(--font); font-size: 11px; font-weight: 600; }
   .history-filter { flex: 1 1 220px; min-width: 0; padding: 5px 9px; }
@@ -2479,6 +2523,17 @@ def _render_ui(sample: dict[str, Any]) -> str:
   .app-footer a { color: var(--accent); text-decoration: none; }
   .app-footer a:hover { text-decoration: underline; }
   .footer-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
   :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   @media (prefers-color-scheme: light) {
     :root {
@@ -2588,6 +2643,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
   </div>
   <div class="topbar-actions">
     <button class="copy-btn" id="help-btn" aria-label="Open keyboard shortcut and pipeline help" aria-expanded="false" aria-controls="help-modal" onclick="openHelpModal(this)">Help</button>
+    <button class="copy-btn" type="button" aria-label="Jump to CAPAS gate" onclick="scrollToGate()">Gate</button>
     <a class="copy-btn topbar-source" href="product.html" aria-label="Open CAPAS product story and business case">Product</a>
     <a class="copy-btn topbar-source" href="https://github.com/fomv9354lve/capas-inteligentes" target="_blank" rel="noopener noreferrer" aria-label="Open CAPAS Claim Gate source repository">Source</a>
     <button class="copy-btn" id="theme-toggle" aria-label="Toggle light and dark theme" onclick="toggleTheme()">Theme</button>
@@ -2604,8 +2660,9 @@ def _render_ui(sample: dict[str, Any]) -> str:
     <h2 id="product-hero-title">CAPAS is the deterministic quality gate before claims enter reports, datasets, or fine-tuning.</h2>
     <p>Instead of asking a reviewer to re-read every paper, CAPAS turns supplied evidence into an auditable ACCEPT, REWRITE, REJECT, or HOLD decision with schema versioning, provenance blockers, and batch economics.</p>
     <div class="hero-actions">
+      <button class="sample-btn accept hero-primary" type="button" onclick="scrollToGate()">Try the gate →</button>
+      <button class="sample-btn hold" type="button" onclick="document.getElementById('roi-calculator-title').scrollIntoView({behavior:'smooth', block:'start'})">See business case</button>
       <a class="sample-btn accept hero-link" href="product.html">Read product story</a>
-      <a class="sample-btn hold hero-link" href="CUSTOMER_READY_BRIEF.md">Customer brief</a>
       <button class="sample-btn rewrite" type="button" onclick="document.getElementById('guided-claim-id').focus()">Start no-code claim</button>
     </div>
     <div class="hero-metrics" aria-label="Illustrative pilot metrics">
@@ -2759,8 +2816,11 @@ def _render_ui(sample: dict[str, Any]) -> str:
   <button class="sample-btn accept" title="Systematic review sample" aria-label="Load SYSTEMATIC sample" onclick="loadSample('SYSTEMATIC')">Review</button>
   <button class="sample-btn accept" title="Evidence conflict sample" aria-label="Load CONFLICT sample" onclick="loadSample('CONFLICT')">Conflict</button>
   <button class="sample-btn accept" title="Multimodal evidence sample" aria-label="Load MULTIMODAL sample" onclick="loadSample('MULTIMODAL')">Multimodal</button>
+  <button class="sample-btn hold" title="Batch demo with multiple claim types" aria-label="Load batch demo sample" onclick="loadBatchDemo()">Batch demo</button>
 </div>
 
+<section class="gate-section" id="gate" aria-labelledby="gate-title">
+<h2 class="sr-only" id="gate-title">CAPAS deterministic claim gate</h2>
 <div class="grid">
   <div>
     <div class="panel">
@@ -2774,7 +2834,8 @@ def _render_ui(sample: dict[str, Any]) -> str:
         <button class="draft-btn" id="draft-btn" aria-label="Build draft claim JSON without deciding" onclick="buildDraft()">Build Draft</button>
         <button class="decide-btn" id="decide-btn" aria-label="Decide claim verdict" onclick="decide()">Decide <span class="decide-hint">⌘↵</span></button>
       </div>
-      <button class="draft-btn" id="batch-btn" title="Batch input: JSON array, object with items/claims, or one claim payload auto-wrapped as a one-item batch" aria-label="Evaluate a batch of claim payloads" onclick="decideBatch()">Batch</button>
+      <button class="draft-btn" id="batch-btn" title="Batch input: JSON array, object with items/claims, or one claim payload auto-wrapped as a one-item batch" aria-label="Evaluate a batch of claim payloads" onclick="decideBatch()">Run Batch</button>
+      <div class="json-status"><span class="payload-loaded-badge" id="payload-loaded-badge" role="status" aria-live="polite">Payload loaded</span></div>
     </div>
   </div>
 
@@ -2786,16 +2847,19 @@ def _render_ui(sample: dict[str, Any]) -> str:
       </div>
       <div id="verdict-area" aria-live="polite" aria-atomic="true"><div class="no-decision">Run a decision to see results.</div></div>
       <div class="output-section">
-        <div class="output-label"><span>Full output</span></div>
-      <pre id="output" role="log" aria-live="polite" aria-atomic="true" tabindex="0" aria-label="Full CAPAS decision JSON output"></pre>
+        <details class="output-details" id="output-details">
+          <summary>Full output JSON</summary>
+          <pre id="output" role="log" aria-live="polite" aria-atomic="true" tabindex="0" aria-label="Full CAPAS decision JSON output"></pre>
+        </details>
       </div>
     </div>
   </div>
 </div>
+</section>
 
 <div class="history-section">
   <div class="history-header">
-    <h2 class="history-heading">Recent decisions</h2>
+    <h2 class="history-heading">Audit log</h2>
     <div class="history-actions">
       <button class="copy-btn" id="share-btn" aria-label="Copy shareable URL for current input. The payload is embedded in the URL; do not share sensitive claims." title="The payload is embedded in the URL; do not share sensitive claims." onclick="copyShareUrl()">Share URL</button>
       <button class="copy-btn" id="share-app-btn" aria-label="Copy app URL without embedding the current payload" title="Copy the app URL only, without embedding claim or provenance data." onclick="copyAppUrl()">Share App</button>
@@ -3678,6 +3742,26 @@ def _render_ui(sample: dict[str, Any]) -> str:
       return element.value;
     }
 
+    function scrollToGate() {
+      const gate = document.getElementById("gate");
+      if (gate) gate.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function markPayloadLoaded({ scroll = true } = {}) {
+      const input = document.getElementById("input");
+      const badge = document.getElementById("payload-loaded-badge");
+      if (badge) {
+        badge.classList.add("show");
+        setTimeout(() => badge.classList.remove("show"), 2600);
+      }
+      if (input) {
+        input.classList.remove("payload-flash");
+        void input.offsetWidth;
+        input.classList.add("payload-flash");
+      }
+      if (scroll) scrollToGate();
+    }
+
     function buildGuidedPayload() {
       const type = document.getElementById("guided-type").value || "statistical_confidence";
       const fields = document.getElementById("guided-fields");
@@ -3700,6 +3784,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
       };
       document.getElementById("input").value = JSON.stringify(payload, null, 2);
       onInputChange();
+      markPayloadLoaded();
       document.getElementById("verdict-area").innerHTML =
         `<div class="assist-block"><div class="alert-title">Guided payload built</div>` +
         `<div>The no-code form generated a <code>${escHtml(type)}</code> payload. Run Decide or Batch to apply the deterministic gate.</div></div>`;
@@ -3710,6 +3795,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
     function loadVerticalDemo(name) {
       const payload = verticalDemos[name] || verticalDemos.AI_GOVERNANCE;
       document.getElementById("input").value = JSON.stringify(payload, null, 2);
+      markPayloadLoaded({ scroll: false });
       const typeSelect = document.getElementById("guided-type");
       if (typeSelect) typeSelect.value = payload.claim.type;
       document.getElementById("guided-claim-id").value = payload.claim.id;
@@ -3950,6 +4036,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
       const payload = payloadFromCandidate(candidate);
       document.getElementById("input").value = JSON.stringify(payload, null, 2);
       onInputChange();
+      markPayloadLoaded();
       renderCandidateClaims();
       document.getElementById("verdict-area").innerHTML =
         `<div class="assist-block"><div class="alert-title">Candidate confirmed</div>` +
@@ -4022,6 +4109,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
       }
       document.getElementById("input").value = JSON.stringify(draft, null, 2);
       onInputChange();
+      markPayloadLoaded();
       const missing = required[type].filter((field) => draft.evidence[field] === null || draft.evidence[field] === "unknown");
       document.getElementById("verdict-area").innerHTML =
         `<div class="assist-block"><div class="alert-title">Draft built, not decided</div>` +
@@ -4505,6 +4593,20 @@ def _render_ui(sample: dict[str, Any]) -> str:
       document.getElementById("input").value = JSON.stringify(samples[name], null, 2);
       onInputChange();
       decide();
+    }
+
+    function loadBatchDemo() {
+      const batch = [
+        samples.ACCEPT,
+        samples.CAUSAL,
+        samples.SYSTEMATIC,
+        samples.CONFLICT,
+        samples.MULTIMODAL
+      ].filter(Boolean);
+      document.getElementById("input").value = JSON.stringify(batch, null, 2);
+      onInputChange();
+      markPayloadLoaded({ scroll: true });
+      decideBatch();
     }
 
     function copyOutput() {
