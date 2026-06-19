@@ -2734,6 +2734,9 @@ def _render_ui(sample: dict[str, Any]) -> str:
     background: var(--accent-glow);
     color: var(--accent-hover);
   }
+  .topbar-site-link {
+    display: inline-flex;
+  }
 
   .product-hero { order: 1; }
   .guided-panel { order: 2; }
@@ -3115,9 +3118,12 @@ def _render_ui(sample: dict[str, Any]) -> str:
     <span class="topbar-subtitle">Rule-based via <code>capas.py decide</code> · schema errors → <code>HOLD</code></span>
   </div>
   <div class="topbar-actions">
-    <a class="copy-btn topbar-home" href="index.html" aria-label="Return to CAPAS landing page">Home</a>
+    <a class="copy-btn topbar-home" href="index.html" aria-label="Open CAPAS home page">Home</a>
+    <button class="copy-btn topbar-site-link" type="button" aria-label="Jump to the CAPAS gate app workspace" onclick="scrollToGate()">Gate app</button>
+    <a class="copy-btn topbar-site-link" href="customer-brief.html" aria-label="Open CAPAS customer brief">Customer brief</a>
+    <a class="copy-btn topbar-site-link" href="pilot-packet.html" aria-label="Open CAPAS pilot packet">Pilot packet</a>
+    <a class="copy-btn topbar-site-link" href="product.html" aria-label="Open CAPAS product story">Product story</a>
     <button class="copy-btn" id="help-btn" aria-label="Open keyboard shortcut and pipeline help" aria-expanded="false" aria-controls="help-modal" onclick="openHelpModal(this)">Help</button>
-    <button class="copy-btn" type="button" aria-label="Jump to CAPAS gate" onclick="scrollToGate()">Gate</button>
     <button class="copy-btn" id="history-toggle" type="button" aria-label="Open audit log" aria-expanded="false" onclick="toggleHistoryPanel()">History</button>
     <a class="copy-btn topbar-source" href="product.html" aria-label="Open CAPAS product story and business case">Product</a>
     <a class="copy-btn topbar-source" href="https://github.com/fomv9354lve/capas-inteligentes" target="_blank" rel="noopener noreferrer" aria-label="Open CAPAS Claim Gate source repository">Source</a>
