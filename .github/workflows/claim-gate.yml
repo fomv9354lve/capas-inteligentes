@@ -17,7 +17,7 @@ on:
       output:
         description: Output report path.
         default: outputs/capas-action-report.json
-      allow-web:
+      allow_web:
         description: Allow web retrieval in pipeline mode.
         type: boolean
         default: false
@@ -32,7 +32,7 @@ on:
       output:
         type: string
         default: outputs/capas-action-report.json
-      allow-web:
+      allow_web:
         type: boolean
         default: false
 
@@ -49,4 +49,4 @@ jobs:
           mode: ${{ inputs.mode }}
           input: ${{ inputs.input }}
           output: ${{ inputs.output }}
-          allow-web: ${{ inputs.allow-web }}
+          allow_web: ${{ inputs.allow_web }}

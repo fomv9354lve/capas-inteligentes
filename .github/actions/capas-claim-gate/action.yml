@@ -12,7 +12,7 @@ inputs:
     description: Path to write the CAPAS JSON report.
     required: false
     default: outputs/capas-action-report.json
-  allow-web:
+  allow_web:
     description: Allow web retrieval for pipeline mode.
     required: false
     default: "false"
@@ -29,7 +29,7 @@ runs:
         elif [[ "${{ inputs.mode }}" == "batch" ]]; then
           python3 capas.py batch --input "${{ inputs.input }}" --output "${{ inputs.output }}"
         elif [[ "${{ inputs.mode }}" == "pipeline" ]]; then
-          if [[ "${{ inputs.allow-web }}" == "true" ]]; then
+          if [[ "${{ inputs.allow_web }}" == "true" ]]; then
             python3 capas.py pipeline --input "${{ inputs.input }}" --output "${{ inputs.output }}" --allow-web
           else
             python3 capas.py pipeline --input "${{ inputs.input }}" --output "${{ inputs.output }}"
