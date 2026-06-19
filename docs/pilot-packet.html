@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CAPAS Pilot Packet | Evidence Gate Deployment</title>
-  <meta name="description" content="Pilot packet for deploying CAPAS as a two-week scientific training-data assurance workflow.">
+  <title>CAPAS Pilot Packet | Claim Admissibility Deployment</title>
+  <meta name="description" content="Pilot packet for deploying CAPAS as a two-week deterministic claim admissibility workflow.">
   <style>
     :root { --bg:#09090b; --surface:#111113; --panel:#18181b; --border:#27272a; --text:#fafafa; --muted:#a1a1aa; --quiet:#8d8d99; --accent:#7c7fff; --green:#22c55e; --orange:#f97316; --radius:12px; --font:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
     * { box-sizing:border-box; }
@@ -23,12 +23,15 @@
     p, li { color:var(--muted); }
     section { padding:28px 0; border-bottom:1px solid var(--border); }
     .timeline { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:10px; }
+    .plan { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
     .step, .card { border:1px solid var(--border); border-radius:var(--radius); background:var(--surface); padding:15px; }
     .step strong { display:block; color:var(--accent); margin-bottom:6px; }
     .grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; }
+    .grid.two { grid-template-columns:repeat(2,minmax(0,1fr)); }
+    .card ul { margin:10px 0 0; padding-left:18px; }
     .note { color:var(--quiet); font-size:12px; }
     footer { padding:24px 0 40px; color:var(--quiet); font-size:12px; }
-    @media (max-width:860px) { header { flex-direction:column; align-items:flex-start; } .timeline, .grid { grid-template-columns:1fr; } }
+    @media (max-width:860px) { header { flex-direction:column; align-items:flex-start; } .timeline, .grid, .grid.two, .plan { grid-template-columns:1fr; } }
   </style>
 </head>
 <body>
@@ -45,8 +48,9 @@
   <main>
     <section class="hero">
       <div class="eyebrow">Two-week deployment packet</div>
-      <h1>Stand up a governed evidence-gating workflow without pretending the browser certifies truth.</h1>
-      <p>CAPAS packages claim typing, deterministic gating, human confirmation, batch reporting, and provenance blockers into a pilot that a technical team can measure and a steering committee can understand.</p>
+      <h1>Measure claim drift before it contaminates scientific datasets, reports, or fine-tuning runs.</h1>
+      <p>CAPAS packages claim admissibility, deterministic gating, human confirmation, batch reporting, and provenance blockers into a pilot that a technical team can measure and a steering committee can understand.</p>
+      <p>This is not a truth-certification engagement. It is a controlled operating test: can the organization identify which claims are licensed, which must be rewritten, which must be rejected, and which require more evidence before reuse?</p>
     </section>
     <section>
       <h2>Delivery path</h2>
@@ -54,8 +58,31 @@
         <div class="step"><strong>1. Scope</strong><span>Select corpus, owner, reviewer, and baseline review process.</span></div>
         <div class="step"><strong>2. Ingest</strong><span>Bring paper text, metadata exports, theorem notes, or structured records.</span></div>
         <div class="step"><strong>3. Confirm</strong><span>Human reviewer approves candidate spans before CAPAS decides.</span></div>
-        <div class="step"><strong>4. Gate</strong><span>Run single/batch CAPAS decisions with schema v3 evidence contracts.</span></div>
+        <div class="step"><strong>4. Gate</strong><span>Run single and batch CAPAS decisions with explicit evidence contracts.</span></div>
         <div class="step"><strong>5. Read out</strong><span>Deliver decision mix, exception queue, provenance blockers, and ROI model.</span></div>
+      </div>
+    </section>
+    <section>
+      <h2>Two-week operating plan</h2>
+      <div class="plan">
+        <div class="card">
+          <strong>Week 1 — Calibrate the gate</strong>
+          <ul>
+            <li>Select a controlled corpus of candidate scientific claims.</li>
+            <li>Map source material to claim categories and evidence fields.</li>
+            <li>Establish baseline reviewer workflow and decision taxonomy.</li>
+            <li>Confirm sensitive-data handling, licensing constraints, and export boundaries.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <strong>Week 2 — Run, adjudicate, read out</strong>
+          <ul>
+            <li>Run single and batch gates on the selected records.</li>
+            <li>Review HOLD, REWRITE, REJECT, and provenance-blocked exceptions.</li>
+            <li>Measure decision mix, reviewer agreement, and evidence gaps.</li>
+            <li>Deliver executive summary, audit packet, exception queue, and deployment backlog.</li>
+          </ul>
+        </div>
       </div>
     </section>
     <section>
@@ -63,7 +90,52 @@
       <div class="grid">
         <div class="card"><strong>Audit export</strong><p>CSV/JSON with verdict, reason, schema version, record ID, evidence fields, and provenance blockers.</p></div>
         <div class="card"><strong>Exception queue</strong><p>HOLD/REWRITE/REJECT records routed for expert adjudication and wording repair.</p></div>
-        <div class="card"><strong>Capacity model</strong><p>Baseline review minutes compared with CAPAS-guided triage minutes and measured pilot deltas.</p></div>
+        <div class="card"><strong>Provenance report</strong><p>Open review hashes, source URL hashes, witness IDs, reviewer attestations, and RO-Crate blockers.</p></div>
+        <div class="card"><strong>Decision mix</strong><p>ACCEPT, REWRITE, REJECT, HOLD, fine-tune-ready, and provenance-blocked counts by corpus slice.</p></div>
+        <div class="card"><strong>Claim contamination register</strong><p>Examples where source evidence supported a weaker claim than the candidate record asserted.</p></div>
+        <div class="card"><strong>Executive readout</strong><p>What can be reused, what needs rewrite, what cannot be reused, and what operational control is required next.</p></div>
+      </div>
+    </section>
+    <section>
+      <h2>Roles and decision rights</h2>
+      <div class="grid">
+        <div class="card"><strong>AI Governance Lead</strong><p>Owns risk framing, success criteria, and decision policy for controlled reuse.</p></div>
+        <div class="card"><strong>Research Ops / Data Lead</strong><p>Owns corpus selection, source access, metadata hygiene, and export workflow.</p></div>
+        <div class="card"><strong>Subject-Matter Reviewer</strong><p>Confirms evidence spans, adjudicates exceptions, and approves claim rewrites.</p></div>
+        <div class="card"><strong>Technical Owner</strong><p>Runs browser/CLI/API surfaces, preserves audit exports, and maps integration backlog.</p></div>
+        <div class="card"><strong>Legal / Provenance Reviewer</strong><p>Reviews licensing, confidentiality, source reuse, attestation, and sensitive-payload handling.</p></div>
+        <div class="card"><strong>Executive Sponsor</strong><p>Receives decision mix, contamination examples, and go/no-go recommendation for rollout.</p></div>
+      </div>
+    </section>
+    <section>
+      <h2>Success criteria</h2>
+      <div class="grid two">
+        <div class="card">
+          <strong>Operational success</strong>
+          <ul>
+            <li>Every pilot record has a traceable decision and source context.</li>
+            <li>HOLD/REWRITE/REJECT records produce an actionable exception queue.</li>
+            <li>Reviewers can explain why accepted claims are licensed for controlled reuse.</li>
+            <li>Exported audit artifacts are complete enough for governance review.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <strong>Commercial success</strong>
+          <ul>
+            <li>The buyer sees a measurable claim contamination rate on its own corpus.</li>
+            <li>The team identifies repeatable provenance blockers and schema gaps.</li>
+            <li>The pilot produces a next-step integration backlog instead of a one-off demo.</li>
+            <li>The sponsor can decide whether to expand to CLI/API or workflow integration.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+    <section>
+      <h2>Governance model</h2>
+      <div class="grid">
+        <div class="card"><strong>CAPAS gates supplied evidence only</strong><p>The engine does not infer hidden evidence, perform broad paper understanding, or certify scientific truth.</p></div>
+        <div class="card"><strong>Humans confirm spans</strong><p>Candidate extraction is an aid. A reviewer must confirm claim wording and evidence spans before the gate is treated as operational output.</p></div>
+        <div class="card"><strong>External provenance is verified outside the static browser</strong><p>Active checks for hashes, attestations, witness registries, and provenance packets require CLI/API verification.</p></div>
       </div>
     </section>
     <section>

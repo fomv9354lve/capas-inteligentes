@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CAPAS Claim Gate | Deterministic scientific claim gate</title>
-  <meta name="description" content="CAPAS Claim Gate is a deterministic claim-to-evidence gate that decides whether supplied evidence licenses a scientific claim for controlled reuse.">
+  <title>CAPAS Claim Gate | Deterministic Claim Admissibility Engine</title>
+  <meta name="description" content="CAPAS is a deterministic claim admissibility engine that decides whether supplied evidence licenses a scientific claim for controlled reuse.">
   <style>
     :root {
       --bg: #09090b;
@@ -69,6 +69,11 @@
     .footnotes { color: var(--quiet); font-size: 12px; line-height: 1.6; }
     .footnotes ol { margin: 8px 0 0; padding-left: 18px; }
     .screen { background: linear-gradient(180deg, var(--surface), #0c0c0e); box-shadow: 0 18px 60px rgba(0,0,0,0.35); }
+    .claim-flow { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; align-items: stretch; }
+    .claim-flow .card { min-height: 170px; }
+    .claim-flow small { display: block; color: var(--quiet); font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 10px; }
+    .decision-card { border-color: rgba(249,115,22,0.35); background: rgba(249,115,22,0.06); }
+    .decision-card .badge { display: inline-flex; margin-bottom: 10px; }
     .nav-hub { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     .nav-card {
       min-height: 132px;
@@ -119,32 +124,32 @@
   <main>
     <section class="hero">
       <div>
-        <div class="eyebrow">Deterministic Scientific Claim Gate</div>
-        <h1>Compile scientific claims before they enter reports, datasets, or fine-tuning.</h1>
-        <p>CAPAS decides whether supplied evidence licenses a claim for controlled reuse. It returns ACCEPT, REWRITE, REJECT, or HOLD with schema errors, provenance blockers, and audit-ready reasoning.</p>
-        <p>It does not certify scientific truth. It prevents unsupported or over-scoped claims from becoming governed training examples.</p>
+        <div class="eyebrow">Deterministic Claim Admissibility Engine</div>
+        <h1>Stop claim drift before scientific claims enter datasets or fine-tuning.</h1>
+        <p>CAPAS decides whether supplied evidence licenses a scientific claim for controlled reuse. It returns ACCEPT, REWRITE, REJECT, or HOLD with provenance blockers and audit-ready reasoning.</p>
+        <p>It does not certify scientific truth. It prevents a paper's limited evidence from turning into an over-scoped training example, report sentence, or governed dataset record.</p>
         <div class="nav">
           <a class="button primary" href="app.html">Run sample claim</a>
           <a class="button" href="pilot-packet.html">See pilot package</a>
         </div>
         <div class="metrics">
-          <div class="metric"><strong>10k</strong><span>structured payload validations<sup>1</sup></span></div>
-          <div class="metric"><strong>23%</strong><span>rewritten before reuse</span></div>
-          <div class="metric"><strong>11%</strong><span>rejected before downstream risk</span></div>
-          <div class="metric"><strong>417h</strong><span>modeled review capacity<sup>2</sup></span></div>
+          <div class="metric"><strong>Claim</strong><span>one scientific statement</span></div>
+          <div class="metric"><strong>Evidence</strong><span>supplied fields and spans</span></div>
+          <div class="metric"><strong>Gate</strong><span>deterministic rules</span></div>
+          <div class="metric"><strong>Audit</strong><span>exportable decision trail</span></div>
         </div>
       </div>
       <div class="screen" aria-label="CAPAS screenshot mock">
         <div class="screen-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
-        <div class="row"><span class="badge accept">ACCEPT</span><span>schema v3 statistical_confidence</span><code>FT 9/14</code></div>
-        <div class="row"><span class="badge rewrite">REWRITE</span><span>direction not externally licensed</span><code>RO-Crate pending</code></div>
+        <div class="row"><span class="badge accept">ACCEPT</span><span>evidence licenses the claim boundary</span><code>audit ready</code></div>
+        <div class="row"><span class="badge rewrite">REWRITE</span><span>association supported; causality not licensed</span><code>revise</code></div>
         <div class="row"><span class="badge reject">REJECT</span><span>artifact unavailable for reproducibility</span><code>non-claim</code></div>
       </div>
     </section>
     <section>
       <h2>Navigate CAPAS</h2>
       <div class="grid nav-hub" aria-label="CAPAS site index">
-        <a class="card nav-card primary" href="app.html"><strong>Run the gate</strong><span>Open the working app: guided evidence constructor, raw JSON gate, batch mode, ingestion, and audit log.</span></a>
+        <a class="card nav-card primary" href="app.html"><strong>Run a sample claim</strong><span>Open the working app: select a workflow mode, supply evidence, run the deterministic gate, and export the audit trail.</span></a>
         <a class="card nav-card" href="pilot-packet.html"><strong>Pilot</strong><span>Two-week delivery path, artifacts, governance assumptions, footnotes, and rollout framing.</span></a>
         <a class="card nav-card" href="customer-brief.html"><strong>Methodology</strong><span>Why CAPAS exists, where it sits against the state of the art, and what it does not claim.</span></a>
       </div>
@@ -152,9 +157,9 @@
     <section>
       <h2>The so what</h2>
       <div class="grid">
-        <div class="card"><strong>Risk avoided</strong><p>Unsupported or over-claimed scientific statements are blocked before they become training examples, report language, or downstream model behavior.</p></div>
-        <div class="card"><strong>Review leverage</strong><p>Senior reviewers focus on HOLD, REWRITE, REJECT, and provenance exceptions instead of re-reading every candidate claim from scratch.</p></div>
-        <div class="card"><strong>Audit-ready evidence</strong><p>Each accepted claim carries schema version, decision reason, source spans, reviewer/witness provenance, and a non-LLM decision marker.</p></div>
+        <div class="card"><strong>Claim contamination avoided</strong><p>The cost is not only reviewer time. It is unsupported claims entering datasets, reports, and model behavior as if the evidence licensed them.</p></div>
+        <div class="card"><strong>Exception queue created</strong><p>Reviewers focus on HOLD, REWRITE, REJECT, and provenance exceptions instead of treating every candidate claim as equally risky.</p></div>
+        <div class="card"><strong>Audit-ready evidence trail</strong><p>Each accepted claim carries a decision reason, source spans, reviewer/witness provenance, and a non-LLM decision marker.</p></div>
       </div>
     </section>
     <section>
@@ -166,14 +171,39 @@
         <div class="card"><strong>After</strong><p>Reviewers focus on HOLD/REWRITE/REJECT queues, while accepted claims carry explicit audit trails into reports and pipelines.</p></div>
       </div>
     </section>
+    <section>
+      <h2>Claim Drift Example</h2>
+      <p>A strong buyer does not need more schema language. They need to see the failure mode CAPAS prevents.</p>
+      <div class="claim-flow" aria-label="Claim drift example">
+        <div class="card"><small>Paper evidence</small><strong>Association observed</strong><p>The source reports a directional association under limited conditions. It does not establish intervention, temporal order, or confounder control.</p></div>
+        <div class="card"><small>Dataset claim drift</small><strong>Causal improvement stated</strong><p>The candidate training record says the treatment causes improvement, turning a limited finding into a stronger reusable claim.</p></div>
+        <div class="card decision-card"><small>CAPAS decision</small><span class="badge rewrite">REWRITE</span><p>Evidence supports association. It does not license causality. Rewrite the claim boundary before reuse.</p></div>
+      </div>
+    </section>
     <section id="business-case">
       <h2>Internal validation model</h2>
-      <p>For a 1,000-record scientific corpus, the model compares 30 minutes of manual expert review per record with 5 minutes of CAPAS-guided triage. That yields roughly 417 senior-review hours redirected toward exceptions, adjudication, provenance resolution, and dataset remediation.</p>
+      <p>These are planning assumptions for a controlled pilot, not customer production claims. The point of the pilot is to measure claim contamination risk, decision mix, reviewer agreement, and provenance blockers on the buyer's own corpus.</p>
       <div class="metrics">
         <div class="metric"><strong>34%</strong><span>rewritten or rejected before reuse</span></div>
         <div class="metric"><strong>40</strong><span>fine-tune-ready positives after provenance verification</span></div>
-        <div class="metric"><strong>2 weeks</strong><span>recommended first pilot window</span></div>
+        <div class="metric"><strong>10k</strong><span>structured validation records stress-tested<sup>1</sup></span></div>
         <div class="metric"><strong>500</strong><span>records for first controlled pilot</span></div>
+      </div>
+    </section>
+    <section>
+      <h2>Why now</h2>
+      <div class="grid">
+        <div class="card"><strong>Scientific AI is moving faster than review workflows</strong><p>Foundation-model teams, research groups, and domain-data owners are turning source material into reusable training and evaluation records.</p></div>
+        <div class="card"><strong>Synthetic and curated data amplify small wording errors</strong><p>A single over-scoped claim can be copied, transformed, and learned as if it were licensed fact.</p></div>
+        <div class="card"><strong>Training-data scrutiny is becoming operational</strong><p>Governance teams increasingly need evidence trails, decision criteria, and documented controls before reuse.</p></div>
+      </div>
+    </section>
+    <section>
+      <h2>The moat</h2>
+      <div class="grid">
+        <div class="card"><strong>Deterministic</strong><p>The decision is rule-based over supplied evidence fields, not another model judging a model.</p></div>
+        <div class="card"><strong>Claim-level</strong><p>CAPAS works at the sentence-level boundary where drift actually happens.</p></div>
+        <div class="card"><strong>Evidence contracts</strong><p>Each claim type has explicit admissibility criteria, blockers, and exportable reasoning.</p></div>
       </div>
     </section>
     <section>
@@ -186,8 +216,8 @@
     </section>
     <section>
       <h2>Primary buyer story</h2>
-      <p>For AI governance and scientific data teams, CAPAS answers the question: which structured evidence records are sufficiently licensed for reuse, publication workflows, or fine-tuning preparation? The economic case is fewer senior-review hours spent on routine cases, fewer unlicensed claims in training sets, and a defensible audit trail when downstream users ask why a claim was accepted.</p>
-      <p>The product is best understood as a deterministic compiler for claim admissibility: claim plus evidence goes in; a licensed decision boundary comes out.</p>
+      <p>For AI governance, research operations, and scientific data teams, CAPAS answers the question: which structured evidence records are sufficiently licensed for reuse, publication workflows, or fine-tuning preparation?</p>
+      <p>The product is best understood as a deterministic claim admissibility engine: claim plus evidence goes in; a licensed decision boundary comes out.</p>
     </section>
     <section>
       <h2>Advisory delivery wedge</h2>

@@ -26,11 +26,11 @@ ARGILLA_EXAMPLE = ROOT / "examples" / "argilla_capas_record.json"
 
 
 REQUIRED = {
-    "landing page with narrative": (PRODUCT, ["Deterministic Scientific Claim Gate", "Compile scientific claims", "Advisory delivery wedge"]),
-    "landing page screenshots": (PRODUCT, ["CAPAS screenshot mock", "ACCEPT", "RO-Crate pending"]),
-    "product business case": (PRODUCT, ["The so what", "Internal validation model", "417 senior-review hours", "10k", "Modeling notes"]),
-    "designed methodology page": (BRIEF_HTML, ["Methodology", "Training-data assurance", "Planning metrics", "Disclaimers"]),
-    "designed pilot packet": (PACKET_HTML, ["CAPAS Pilot Packet", "Delivery path", "Buyer-ready artifacts", "Required footnotes"]),
+    "landing page with narrative": (PRODUCT, ["Deterministic Claim Admissibility Engine", "Stop claim drift", "Claim Drift Example", "The moat"]),
+    "landing page screenshots": (PRODUCT, ["CAPAS screenshot mock", "ACCEPT", "association supported; causality not licensed"]),
+    "product business case": (PRODUCT, ["The so what", "Internal validation model", "claim contamination", "10k", "Modeling notes"]),
+    "designed methodology page": (BRIEF_HTML, ["Methodology", "Deterministic claim admissibility", "Pilot model assumptions", "Disclaimers"]),
+    "designed pilot packet": (PACKET_HTML, ["CAPAS Pilot Packet", "Two-week operating plan", "Roles and decision rights", "Success criteria", "Governance model", "Required footnotes"]),
     "guided no-code form": (UI, ["CAPAS workflow", "Guided Claim Builder", "Evidence contract", "builder-preview", "buildGuidedPayload", "Build guided payload", "evidence field for"]),
     "paper text ingestion": (UI, ["Candidate extraction aid", "extractCandidateClaims", "candidate claims extracted from paper or text", "Evidence spans", "evidence_spans", "parseBooleanEvidenceValue", "numberPattern", "parseFloat"]),
     "human in the loop": (UI, ["Confirm & build payload", "human_confirmed", "CAPAS will not decide unconfirmed candidates"]),
