@@ -1,0 +1,132 @@
+{
+  "checks": [
+    {
+      "actual": {
+        "alignment_issues": [],
+        "alignment_status": "ALIGNED",
+        "extracted_evidence": {
+          "abs_error": 0.0,
+          "bound_scope": "exact_model_energy",
+          "physical_evidence_level": "analytic",
+          "tolerance": 0.0,
+          "verification_independence": "exact_reference_no_solver"
+        },
+        "extraction_status": "complete",
+        "final_reason": "abs_error 0.0 <= tolerance 0.0",
+        "final_verdict": "ACCEPT",
+        "gate_verdict": "ACCEPT"
+      },
+      "check": "accept_from_explicit_solver_log",
+      "cli": {
+        "command": "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3 capas.py pipeline --input examples/standalone_pipeline_accept.json --json",
+        "returncode": 0,
+        "stderr_tail": "",
+        "stdout_tail": "eference_no_solver\"\n    },\n    \"extraction_notes\": [],\n    \"extraction_status\": \"complete\",\n    \"missing_fields_after_extraction\": [],\n    \"non_claim\": \"This parser extracts explicit local assignments only; it does not retrieve literature or infer hidden evidence.\",\n    \"required_fields\": [\n      \"abs_error\",\n      \"tolerance\"\n    ]\n  },\n  \"final_decision\": {\n    \"fine_tune_ready\": false,\n    \"input_claim\": {\n      \"id\": \"standalone_exact_model_accept\",\n      \"text\": \"The exact model solution matches the Hamiltonian reference within the declared error tolerance.\",\n      \"type\": \"exact_model_solution\"\n    },\n    \"licensed_claim\": \"The exact model solution matches the Hamiltonian reference within the declared error tolerance.\",\n    \"missing_fields\": [],\n    \"non_claim\": \"This decision is rule-based over supplied evidence fields, not an LLM judgment.\",\n    \"reason\": \"abs_error 0.0 <= tolerance 0.0\",\n    \"required_fields\": [\n      \"abs_error\",\n      \"tolerance\"\n    ],\n    \"rewrite\": null,\n    \"schema_errors\": [],\n    \"verdict\": \"ACCEPT\"\n  },\n  \"fine_tune_ready\": false,\n  \"non_claims\": [\n    \"local extraction is regex-based and explicit-only\",\n    \"semantic alignment is deterministic lexical/scope checking, not general scientific reasoning\",\n    \"CAPAS still requires external scientific witnesses for new claim types\"\n  ],\n  \"pipeline_status\": \"PASS\",\n  \"semantic_alignment\": {\n    \"alignment_pass\": true,\n    \"alignment_status\": \"ALIGNED\",\n    \"claim_type_terms_found\": [\n      \"exact\",\n      \"model\",\n      \"solution\",\n      \"error\",\n      \"tolerance\",\n      \"hamiltonian\"\n    ],\n    \"experiment_scope_patterns_found\": [],\n    \"issues\": [],\n    \"model_scope_patterns_found\": [\n      \"\\\\bmodel\\\\b\",\n      \"\\\\bhamiltonian\\\\b\"\n    ],\n    \"non_claim\": \"This is deterministic lexical/scope alignment, not broad language understanding.\",\n    \"reason\": \"claim.text is aligned with claim.type and supplied evidence scope\",\n    \"strong_physical_patterns_found\": [],\n    \"warnings\": []\n  }\n}\n"
+      },
+      "expected": {
+        "alignment_status": "ALIGNED",
+        "extraction_status": "complete",
+        "final_verdict": "ACCEPT"
+      },
+      "passed": true
+    },
+    {
+      "actual": {
+        "alignment_issues": [
+          "claim.type exact_model_solution licenses truth within a model, but claim.text uses experimental/real-world scope"
+        ],
+        "alignment_status": "MISALIGNED",
+        "extracted_evidence": {
+          "abs_error": 0.0,
+          "bound_scope": "exact_model_energy",
+          "physical_evidence_level": "analytic",
+          "tolerance": 0.0,
+          "verification_independence": "exact_model_same_hamiltonian"
+        },
+        "extraction_status": "complete",
+        "final_reason": "semantic alignment failed before an ACCEPT claim can be licensed",
+        "final_verdict": "HOLD",
+        "gate_verdict": "ACCEPT"
+      },
+      "check": "semantic_scope_mismatch_blocks_accept",
+      "cli": {
+        "command": "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3 capas.py pipeline --input examples/standalone_pipeline_semantic_hold.json --json",
+        "returncode": 0,
+        "stderr_tail": "",
+        "stdout_tail": "n\": [],\n    \"non_claim\": \"This parser extracts explicit local assignments only; it does not retrieve literature or infer hidden evidence.\",\n    \"required_fields\": [\n      \"abs_error\",\n      \"tolerance\"\n    ]\n  },\n  \"final_decision\": {\n    \"fine_tune_ready\": false,\n    \"input_claim\": {\n      \"id\": \"standalone_scope_mismatch\",\n      \"text\": \"This calculation is experimentally accurate for the real molecule.\",\n      \"type\": \"exact_model_solution\"\n    },\n    \"licensed_claim\": null,\n    \"missing_fields\": [],\n    \"non_claim\": \"This decision is rule-based over supplied evidence fields, not an LLM judgment.\",\n    \"reason\": \"semantic alignment failed before an ACCEPT claim can be licensed\",\n    \"required_fields\": [\n      \"abs_error\",\n      \"tolerance\"\n    ],\n    \"rewrite\": null,\n    \"schema_errors\": [],\n    \"verdict\": \"HOLD\"\n  },\n  \"fine_tune_ready\": false,\n  \"non_claims\": [\n    \"local extraction is regex-based and explicit-only\",\n    \"semantic alignment is deterministic lexical/scope checking, not general scientific reasoning\",\n    \"CAPAS still requires external scientific witnesses for new claim types\"\n  ],\n  \"pipeline_status\": \"PASS\",\n  \"semantic_alignment\": {\n    \"alignment_pass\": false,\n    \"alignment_status\": \"MISALIGNED\",\n    \"claim_type_terms_found\": [],\n    \"experiment_scope_patterns_found\": [\n      \"\\\\breal molecule\\\\b\"\n    ],\n    \"issues\": [\n      \"claim.type exact_model_solution licenses truth within a model, but claim.text uses experimental/real-world scope\"\n    ],\n    \"model_scope_patterns_found\": [],\n    \"non_claim\": \"This is deterministic lexical/scope alignment, not broad language understanding.\",\n    \"reason\": \"claim.text overstates or changes the scope licensed by structured evidence\",\n    \"strong_physical_patterns_found\": [\n      \"\\\\bexperimental(?:ly)? accurate\\\\b\"\n    ],\n    \"warnings\": [\n      \"claim.text does not mention expected concepts for exact_model_solution: ['exact', 'model', 'solution', 'error', 'tolerance', 'hamiltonian', 'fci']\"\n    ]\n  }\n}\n"
+      },
+      "expected": {
+        "alignment_status": "MISALIGNED",
+        "extraction_status": "complete",
+        "final_verdict": "HOLD"
+      },
+      "passed": true
+    },
+    {
+      "actual": {
+        "alignment_issues": [
+          "claim.text uses strong physical-correctness language, but universal_anchor_pass is false"
+        ],
+        "alignment_status": "MISALIGNED",
+        "extracted_evidence": {
+          "anchor_mode": "absolute_anchor",
+          "local_property_tests_pass": true,
+          "physical_evidence_level": "scaling_law_anchor",
+          "universal_anchor_pass": false,
+          "verification_independence": "theory_scaling_law_no_solver"
+        },
+        "extraction_status": "complete",
+        "final_reason": "local checks pass, but the universal anchor fails; semantic alignment also found overclaim",
+        "final_verdict": "REWRITE",
+        "gate_verdict": "REWRITE"
+      },
+      "check": "universal_anchor_overclaim_rewrites",
+      "cli": {
+        "command": "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3 capas.py pipeline --input examples/standalone_pipeline_anchor_rewrite.json --json",
+        "returncode": 0,
+        "stderr_tail": "",
+        "stdout_tail": "ce.\",\n    \"required_fields\": [\n      \"anchor_mode\",\n      \"local_property_tests_pass\",\n      \"universal_anchor_pass\"\n    ]\n  },\n  \"final_decision\": {\n    \"fine_tune_ready\": false,\n    \"input_claim\": {\n      \"id\": \"standalone_anchor_overclaim\",\n      \"text\": \"Local monotonicity proves physical correctness against the universal anchor.\",\n      \"type\": \"universal_anchor_claim\"\n    },\n    \"licensed_claim\": \"local plausibility only; universal physical correctness is not licensed\",\n    \"missing_fields\": [],\n    \"non_claim\": \"This decision is rule-based over supplied evidence fields, not an LLM judgment.\",\n    \"reason\": \"local checks pass, but the universal anchor fails; semantic alignment also found overclaim\",\n    \"required_fields\": [\n      \"anchor_mode\",\n      \"local_property_tests_pass\",\n      \"universal_anchor_pass\"\n    ],\n    \"rewrite\": \"local plausibility only; universal physical correctness is not licensed\",\n    \"schema_errors\": [],\n    \"verdict\": \"REWRITE\"\n  },\n  \"fine_tune_ready\": false,\n  \"non_claims\": [\n    \"local extraction is regex-based and explicit-only\",\n    \"semantic alignment is deterministic lexical/scope checking, not general scientific reasoning\",\n    \"CAPAS still requires external scientific witnesses for new claim types\"\n  ],\n  \"pipeline_status\": \"PASS\",\n  \"semantic_alignment\": {\n    \"alignment_pass\": false,\n    \"alignment_status\": \"MISALIGNED\",\n    \"claim_type_terms_found\": [\n      \"universal\",\n      \"anchor\",\n      \"physical\"\n    ],\n    \"experiment_scope_patterns_found\": [],\n    \"issues\": [\n      \"claim.text uses strong physical-correctness language, but universal_anchor_pass is false\"\n    ],\n    \"model_scope_patterns_found\": [],\n    \"non_claim\": \"This is deterministic lexical/scope alignment, not broad language understanding.\",\n    \"reason\": \"claim.text overstates or changes the scope licensed by structured evidence\",\n    \"strong_physical_patterns_found\": [\n      \"\\\\bphysical correctness\\\\b\",\n      \"\\\\bproves?\\\\b\"\n    ],\n    \"warnings\": []\n  }\n}\n"
+      },
+      "expected": {
+        "alignment_status": "MISALIGNED",
+        "extraction_status": "complete",
+        "final_verdict": "REWRITE"
+      },
+      "passed": true
+    },
+    {
+      "actual": {
+        "candidate_payload": {
+          "claim": {
+            "id": "no_hidden_inference",
+            "text": "The exact model solution is within tolerance.",
+            "type": "exact_model_solution"
+          },
+          "evidence": {}
+        },
+        "extracted_evidence": {},
+        "extraction_notes": [],
+        "extraction_status": "none",
+        "missing_fields_after_extraction": [
+          "abs_error",
+          "tolerance"
+        ],
+        "non_claim": "This parser extracts explicit local assignments only; it does not retrieve literature or infer hidden evidence.",
+        "required_fields": [
+          "abs_error",
+          "tolerance"
+        ]
+      },
+      "check": "extractor_does_not_infer_hidden_evidence",
+      "passed": true
+    }
+  ],
+  "non_claims": [
+    "does not retrieve remote evidence",
+    "does not parse PDFs",
+    "does not perform broad scientific reasoning",
+    "does not use an LLM at runtime"
+  ],
+  "scope": "local explicit extraction + deterministic semantic alignment + CAPAS gate",
+  "standalone_pipeline_mvp_ready": true
+}

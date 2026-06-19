@@ -40,6 +40,18 @@ CAPAS does not currently retrieve evidence or semantically verify arbitrary
 claim prose. It assumes structured evidence has been supplied, then makes the
 claim decision auditable and repeatable.
 
+The standalone direction has started with a local upstream MVP:
+
+```text
+local text / solver log / code excerpt
+        -> explicit evidence extraction
+        -> deterministic claim-text alignment
+        -> CAPAS claim gate
+```
+
+It is intentionally explicit-only and deterministic. See
+`docs/STANDALONE_PRODUCT_ROADMAP.md`.
+
 ## External Review Packet
 
 For reviewers and potential users:
@@ -63,6 +75,7 @@ computation result, or are they already covered by existing artifacts?
 ```bash
 python -m pip install -e .
 capas decide --input examples/external_claim_rewrite.json
+capas pipeline --input examples/standalone_pipeline_semantic_hold.json
 capas inspect trace_039
 capas validate
 ```
@@ -70,6 +83,8 @@ capas validate
 Expected behavior:
 
 - `decide` returns `REWRITE` when local checks pass but a universal anchor fails.
+- `pipeline` can block a numeric `ACCEPT` when `claim.text` overstates the scope
+  of the evidence.
 - `inspect trace_039` shows a motor-backed claim-transition trace.
 - `validate` runs the product gates and profile/RO-Crate checks.
 
@@ -125,6 +140,18 @@ capas decide --input examples/external_claim_accept.json
 capas decide --input examples/external_claim_rewrite.json
 capas decide --input examples/external_claim_hold.json
 ```
+
+Run the standalone upstream MVP:
+
+```bash
+capas extract --input examples/standalone_pipeline_accept.json
+capas align --input examples/standalone_pipeline_semantic_hold.json
+capas pipeline --input examples/standalone_pipeline_semantic_hold.json
+python3 benchmarks/verify_standalone_pipeline.py
+```
+
+This is not broad scientific reasoning. It is local explicit parsing plus a
+deterministic semantic-scope guard before the CAPAS gate.
 
 The published MVP input contract is
 `docs/schema/capas_claim_payload.schema.json`. `check-input` validates the

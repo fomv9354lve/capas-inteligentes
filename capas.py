@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 import subprocess
 import sys
 from collections import Counter
@@ -29,6 +30,7 @@ EXTERNAL_CLAIM_SCHEMA_PATH = ROOT / "docs" / "schema" / "capas_claim_payload.sch
 
 VALIDATION_COMMANDS = [
     ("external input schema", ["benchmarks/verify_external_input_schema.py"]),
+    ("standalone pipeline MVP", ["benchmarks/verify_standalone_pipeline.py"]),
     ("claim gate UI", ["benchmarks/verify_claim_gate_ui.py"]),
     ("external user validation packet", ["benchmarks/verify_external_user_validation.py"]),
     ("profile registration packet", ["benchmarks/verify_profile_registration_packet.py"]),
@@ -52,6 +54,72 @@ REQUIRED_DECISION_FIELDS = {
     "universal_anchor_claim": ["anchor_mode", "local_property_tests_pass", "universal_anchor_pass"],
     "claim_transition": ["upgrade_evidence_present"],
 }
+
+CLAIM_TYPE_TERMS = {
+    "exact_model_solution": [
+        "exact",
+        "model",
+        "solution",
+        "error",
+        "tolerance",
+        "hamiltonian",
+        "fci",
+    ],
+    "physical_accuracy": [
+        "physical",
+        "experiment",
+        "experimental",
+        "accuracy",
+        "chemical",
+        "real",
+    ],
+    "universal_anchor_claim": [
+        "universal",
+        "anchor",
+        "invariant",
+        "scaling",
+        "physical",
+        "consistent",
+    ],
+    "claim_transition": [
+        "claim",
+        "evidence",
+        "upgrade",
+        "supports",
+        "rewrite",
+        "stronger",
+    ],
+}
+
+STRONG_PHYSICAL_PATTERNS = [
+    r"\bphysically correct\b",
+    r"\bphysical correctness\b",
+    r"\bproves?\b",
+    r"\bguarantees?\b",
+    r"\bcertif(?:y|ies|ied)\b",
+    r"\bmatches? experiment\b",
+    r"\bexperimental(?:ly)? accurate\b",
+    r"\btrue in the real molecule\b",
+]
+
+MODEL_SCOPE_PATTERNS = [
+    r"\bmodel\b",
+    r"\bhamiltonian\b",
+    r"\bfci\b",
+    r"\bexact diagonalization\b",
+]
+
+EXPERIMENT_SCOPE_PATTERNS = [
+    r"\bexperiment\b",
+    r"\bexperimental\b",
+    r"\breal world\b",
+    r"\breal molecule\b",
+    r"\blaboratory\b",
+    r"\bchemical accuracy\b",
+]
+
+NUMBER_PATTERN = r"[-+]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][-+]?\d+)?"
+BOOLEAN_PATTERN = r"(true|false|yes|no|pass|fail|passed|failed|1|0)"
 
 
 def external_claim_payload_schema() -> dict[str, Any]:
@@ -353,6 +421,272 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
         "schema_errors": [],
         "fine_tune_ready": False,
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+    }
+
+
+def _lower_words(text: str) -> str:
+    return re.sub(r"\s+", " ", text.lower()).strip()
+
+
+def _contains_any(text: str, patterns: list[str]) -> list[str]:
+    found: list[str] = []
+    for pattern in patterns:
+        if re.search(pattern, text):
+            found.append(pattern)
+    return found
+
+
+def align_claim_text(payload: dict[str, Any]) -> dict[str, Any]:
+    """Check whether claim prose is aligned with the structured CAPAS payload.
+
+    This is deliberately a small deterministic guardrail, not general semantic
+    understanding. It catches common overclaims before a structurally valid JSON
+    can be mistaken for a semantically valid scientific claim.
+    """
+
+    schema_errors = validate_external_payload(payload)
+    claim = payload.get("claim", {}) if isinstance(payload, dict) else {}
+    evidence = payload.get("evidence", {}) if isinstance(payload, dict) else {}
+    if schema_errors:
+        return {
+            "alignment_status": "HOLD_SCHEMA",
+            "alignment_pass": False,
+            "reason": "input payload failed CAPAS schema validation before semantic alignment",
+            "issues": schema_errors,
+            "claim_type_terms_found": [],
+            "non_claim": "This is deterministic lexical/scope alignment, not broad language understanding.",
+        }
+
+    claim_type = str(claim.get("type"))
+    text = _lower_words(str(claim.get("text", "")))
+    issues: list[str] = []
+    warnings: list[str] = []
+    terms = CLAIM_TYPE_TERMS.get(claim_type, [])
+    terms_found = [term for term in terms if term in text]
+    strong_patterns = _contains_any(text, STRONG_PHYSICAL_PATTERNS)
+    model_terms = _contains_any(text, MODEL_SCOPE_PATTERNS)
+    experiment_terms = _contains_any(text, EXPERIMENT_SCOPE_PATTERNS)
+
+    if not terms_found:
+        warnings.append(
+            f"claim.text does not mention expected concepts for {claim_type}: {terms}"
+        )
+
+    if claim_type == "exact_model_solution" and experiment_terms:
+        issues.append(
+            "claim.type exact_model_solution licenses truth within a model, but claim.text uses experimental/real-world scope"
+        )
+
+    if claim_type == "physical_accuracy" and model_terms and not experiment_terms:
+        warnings.append(
+            "physical_accuracy claim text mentions model scope but does not clearly mention experiment or physical accuracy"
+        )
+
+    if claim_type == "universal_anchor_claim":
+        anchor_pass = evidence.get("universal_anchor_pass")
+        local_pass = evidence.get("local_property_tests_pass")
+        if local_pass is True and anchor_pass is False and strong_patterns:
+            issues.append(
+                "claim.text uses strong physical-correctness language, but universal_anchor_pass is false"
+            )
+        if evidence.get("anchor_mode") != "absolute_anchor":
+            warnings.append(
+                "universal_anchor_claim is strongest when anchor_mode is absolute_anchor"
+            )
+
+    if claim_type == "claim_transition":
+        if evidence.get("upgrade_evidence_present") is False and strong_patterns:
+            issues.append(
+                "claim.text uses proof/certification language, but upgrade_evidence_present is false"
+            )
+
+    if issues:
+        status = "MISALIGNED"
+        reason = "claim.text overstates or changes the scope licensed by structured evidence"
+    elif warnings:
+        status = "WARN"
+        reason = "claim.text is structurally usable but weakly aligned with expected claim vocabulary"
+    else:
+        status = "ALIGNED"
+        reason = "claim.text is aligned with claim.type and supplied evidence scope"
+
+    return {
+        "alignment_status": status,
+        "alignment_pass": not issues,
+        "reason": reason,
+        "issues": issues,
+        "warnings": warnings,
+        "claim_type_terms_found": terms_found,
+        "strong_physical_patterns_found": strong_patterns,
+        "model_scope_patterns_found": model_terms,
+        "experiment_scope_patterns_found": experiment_terms,
+        "non_claim": "This is deterministic lexical/scope alignment, not broad language understanding.",
+    }
+
+
+def _source_text(payload: dict[str, Any]) -> str:
+    source = payload.get("source")
+    if isinstance(source, dict):
+        if isinstance(source.get("text"), str):
+            return source["text"]
+        if isinstance(source.get("path"), str):
+            path = (ROOT / source["path"]).resolve()
+            try:
+                path.relative_to(ROOT.resolve())
+            except ValueError:
+                raise ValueError("source.path must stay inside the CAPAS repository")
+            return path.read_text(encoding="utf-8")
+    sources = payload.get("sources")
+    if isinstance(sources, list):
+        chunks: list[str] = []
+        for item in sources:
+            if isinstance(item, dict) and isinstance(item.get("text"), str):
+                chunks.append(item["text"])
+            elif isinstance(item, dict) and isinstance(item.get("path"), str):
+                path = (ROOT / item["path"]).resolve()
+                try:
+                    path.relative_to(ROOT.resolve())
+                except ValueError:
+                    raise ValueError("source.path must stay inside the CAPAS repository")
+                chunks.append(path.read_text(encoding="utf-8"))
+        return "\n".join(chunks)
+    return ""
+
+
+def _extract_number(text: str, field: str) -> float | None:
+    field_pattern = field.replace("_", r"[_\s-]?")
+    match = re.search(rf"\b{field_pattern}\b\s*[:=]\s*({NUMBER_PATTERN})", text, re.IGNORECASE)
+    if not match:
+        return None
+    return float(match.group(1))
+
+
+def _parse_bool(raw: str) -> bool:
+    return raw.lower() in {"true", "yes", "pass", "passed", "1"}
+
+
+def _extract_bool(text: str, field: str) -> bool | None:
+    field_pattern = field.replace("_", r"[_\s-]?")
+    match = re.search(rf"\b{field_pattern}\b\s*[:=]\s*{BOOLEAN_PATTERN}", text, re.IGNORECASE)
+    if not match:
+        return None
+    return _parse_bool(match.group(1))
+
+
+def _extract_string(text: str, field: str) -> str | None:
+    field_pattern = field.replace("_", r"[_\s-]?")
+    match = re.search(
+        rf"\b{field_pattern}\b\s*[:=]\s*([A-Za-z0-9_.:/-]+)",
+        text,
+        re.IGNORECASE,
+    )
+    if not match:
+        return None
+    return match.group(1)
+
+
+def extract_evidence(payload: dict[str, Any]) -> dict[str, Any]:
+    """Extract explicit evidence assignments from local text/code/log sources."""
+
+    claim = payload.get("claim", {}) if isinstance(payload, dict) else {}
+    text = _source_text(payload)
+    extracted: dict[str, Any] = {}
+    extraction_notes: list[str] = []
+
+    for field in ("abs_error", "tolerance"):
+        value = _extract_number(text, field)
+        if value is not None:
+            extracted[field] = value
+
+    for field in (
+        "within_chemical_accuracy",
+        "local_property_tests_pass",
+        "universal_anchor_pass",
+        "upgrade_evidence_present",
+    ):
+        value = _extract_bool(text, field)
+        if value is not None:
+            extracted[field] = value
+
+    for field in (
+        "anchor_mode",
+        "physical_evidence_level",
+        "verification_independence",
+        "bound_scope",
+    ):
+        value = _extract_string(text, field)
+        if value is not None:
+            extracted[field] = value
+
+    if not text:
+        extraction_notes.append("no source text was supplied")
+
+    claim_type = claim.get("type") if isinstance(claim, dict) else None
+    required = REQUIRED_DECISION_FIELDS.get(str(claim_type), [])
+    missing = [
+        field
+        for field in required
+        if field not in extracted or extracted.get(field) in {None, "unknown"}
+    ]
+    if not extracted:
+        status = "none"
+    elif missing:
+        status = "partial"
+    else:
+        status = "complete"
+
+    candidate_payload = {
+        "claim": claim,
+        "evidence": {
+            **(payload.get("evidence", {}) if isinstance(payload.get("evidence"), dict) else {}),
+            **extracted,
+        },
+    }
+
+    return {
+        "extraction_status": status,
+        "extracted_evidence": extracted,
+        "candidate_payload": candidate_payload,
+        "required_fields": required,
+        "missing_fields_after_extraction": missing,
+        "extraction_notes": extraction_notes,
+        "non_claim": "This parser extracts explicit local assignments only; it does not retrieve literature or infer hidden evidence.",
+    }
+
+
+def standalone_pipeline(payload: dict[str, Any]) -> dict[str, Any]:
+    """Run the local standalone MVP: extract -> align -> deterministic gate."""
+
+    extraction = extract_evidence(payload)
+    candidate = extraction["candidate_payload"]
+    alignment = align_claim_text(candidate)
+    gate_decision = decide_external_claim(candidate)
+
+    final_decision = dict(gate_decision)
+    if alignment["alignment_status"] == "MISALIGNED" and gate_decision["verdict"] == "ACCEPT":
+        final_decision.update(
+            {
+                "verdict": "HOLD",
+                "reason": "semantic alignment failed before an ACCEPT claim can be licensed",
+                "licensed_claim": None,
+                "rewrite": None,
+            }
+        )
+    elif alignment["alignment_status"] == "MISALIGNED" and gate_decision["verdict"] == "REWRITE":
+        final_decision["reason"] = f"{gate_decision['reason']}; semantic alignment also found overclaim"
+
+    return {
+        "pipeline_status": "PASS" if final_decision["verdict"] in {"ACCEPT", "REWRITE", "REJECT", "HOLD"} else "ERROR",
+        "extraction": extraction,
+        "semantic_alignment": alignment,
+        "capas_gate_decision": gate_decision,
+        "final_decision": final_decision,
+        "fine_tune_ready": False,
+        "non_claims": [
+            "local extraction is regex-based and explicit-only",
+            "semantic alignment is deterministic lexical/scope checking, not general scientific reasoning",
+            "CAPAS still requires external scientific witnesses for new claim types",
+        ],
     }
 
 
@@ -975,6 +1309,51 @@ def cmd_decide(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_align(args: argparse.Namespace) -> int:
+    payload = _load_json(Path(args.input))
+    if not isinstance(payload.get("evidence"), dict) and (
+        isinstance(payload.get("source"), dict) or isinstance(payload.get("sources"), list)
+    ):
+        payload = extract_evidence(payload)["candidate_payload"]
+    report = align_claim_text(payload)
+    if args.output:
+        _write_json(Path(args.output), report)
+    if args.json or not args.output:
+        print(json.dumps(report, indent=2, sort_keys=True))
+    else:
+        print(f"{report['alignment_status']}: {report['reason']}")
+        print(f"wrote {args.output}")
+    return 0
+
+
+def cmd_extract(args: argparse.Namespace) -> int:
+    payload = _load_json(Path(args.input))
+    report = extract_evidence(payload)
+    if args.output:
+        _write_json(Path(args.output), report)
+    if args.json or not args.output:
+        print(json.dumps(report, indent=2, sort_keys=True))
+    else:
+        fields = ", ".join(sorted(report["extracted_evidence"])) or "none"
+        print(f"{report['extraction_status']}: extracted {fields}")
+        print(f"wrote {args.output}")
+    return 0
+
+
+def cmd_pipeline(args: argparse.Namespace) -> int:
+    payload = _load_json(Path(args.input))
+    report = standalone_pipeline(payload)
+    if args.output:
+        _write_json(Path(args.output), report)
+    if args.json or not args.output:
+        print(json.dumps(report, indent=2, sort_keys=True))
+    else:
+        decision = report["final_decision"]
+        print(f"{decision['verdict']}: {decision['reason']}")
+        print(f"wrote {args.output}")
+    return 0
+
+
 def cmd_schema(args: argparse.Namespace) -> int:
     schema = external_claim_payload_schema()
     if args.output:
@@ -1043,6 +1422,24 @@ def main(argv: list[str] | None = None) -> int:
     decide.add_argument("--output", help="optional path for decision JSON")
     decide.add_argument("--json", action="store_true", help="print JSON even when --output is supplied")
     decide.set_defaults(func=cmd_decide)
+
+    align = subparsers.add_parser("align", help="check claim.text alignment against structured evidence")
+    align.add_argument("--input", required=True, help="path to claim/evidence JSON")
+    align.add_argument("--output", help="optional alignment report path")
+    align.add_argument("--json", action="store_true", help="print JSON even when --output is supplied")
+    align.set_defaults(func=cmd_align)
+
+    extract = subparsers.add_parser("extract", help="extract explicit evidence assignments from local text/code/log input")
+    extract.add_argument("--input", required=True, help="path to extraction input JSON")
+    extract.add_argument("--output", help="optional extraction report path")
+    extract.add_argument("--json", action="store_true", help="print JSON even when --output is supplied")
+    extract.set_defaults(func=cmd_extract)
+
+    pipeline = subparsers.add_parser("pipeline", help="run extract -> semantic alignment -> deterministic claim gate")
+    pipeline.add_argument("--input", required=True, help="path to standalone pipeline input JSON")
+    pipeline.add_argument("--output", help="optional pipeline report path")
+    pipeline.add_argument("--json", action="store_true", help="print JSON even when --output is supplied")
+    pipeline.set_defaults(func=cmd_pipeline)
 
     schema = subparsers.add_parser("schema", help="print or write the external claim/evidence JSON schema")
     schema.add_argument("--output", help="optional schema output path")
