@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 import os
 import re
@@ -34,6 +35,8 @@ VALIDATION_COMMANDS = [
     ("external input schema", ["benchmarks/verify_external_input_schema.py"]),
     ("standalone pipeline MVP", ["benchmarks/verify_standalone_pipeline.py"]),
     ("claim gate UI", ["benchmarks/verify_claim_gate_ui.py"]),
+    ("claim gate browser E2E", ["benchmarks/verify_claim_gate_ui_browser.py"]),
+    ("batch and API surfaces", ["benchmarks/verify_batch_and_api.py"]),
     ("external user validation packet", ["benchmarks/verify_external_user_validation.py"]),
     ("profile registration packet", ["benchmarks/verify_profile_registration_packet.py"]),
     ("claim gate", ["benchmarks/validate_evidence_claims.py"]),
@@ -56,6 +59,12 @@ REQUIRED_DECISION_FIELDS = {
     "universal_anchor_claim": ["anchor_mode", "local_property_tests_pass", "universal_anchor_pass"],
     "claim_transition": ["upgrade_evidence_present"],
 }
+
+FINE_TUNE_BLOCKERS = [
+    "no blind or external inference review is attached",
+    "CAPAS gates supplied structured evidence; it does not infer hidden evidence",
+    "training readiness requires source-backed evidence, semantic alignment, witness independence, and review",
+]
 
 CLAIM_TYPE_TERMS = {
     "exact_model_solution": [
@@ -393,6 +402,7 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
             "required_fields": [],
             "schema_errors": schema_errors,
             "fine_tune_ready": False,
+            "fine_tune_blockers": FINE_TUNE_BLOCKERS,
             "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
         }
 
@@ -466,7 +476,56 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
         "required_fields": required or [],
         "schema_errors": [],
         "fine_tune_ready": False,
+        "fine_tune_blockers": FINE_TUNE_BLOCKERS,
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+    }
+
+
+def _batch_items(payload: Any) -> list[dict[str, Any]]:
+    if isinstance(payload, list):
+        items = payload
+    elif isinstance(payload, dict) and isinstance(payload.get("items"), list):
+        items = payload["items"]
+    elif isinstance(payload, dict) and isinstance(payload.get("claims"), list):
+        items = payload["claims"]
+    else:
+        raise ValueError("batch input must be a JSON array or an object with items/claims array")
+    if not all(isinstance(item, dict) for item in items):
+        raise ValueError("every batch item must be a JSON object")
+    return items
+
+
+def run_batch(payload: Any, *, mode: str = "decide", allow_web: bool = False) -> dict[str, Any]:
+    items = _batch_items(payload)
+    results: list[dict[str, Any]] = []
+    for index, item in enumerate(items):
+        if mode == "decide":
+            result = decide_external_claim(item)
+        elif mode == "align":
+            result = align_claim_text(item)
+        elif mode == "pipeline":
+            result = standalone_pipeline(item, allow_web=allow_web)
+        else:
+            raise ValueError(f"unsupported batch mode {mode!r}")
+        results.append({"index": index, "result": result})
+
+    verdicts = Counter()
+    for entry in results:
+        result = entry["result"]
+        verdict = result.get("verdict") or result.get("final_decision", {}).get("verdict") or result.get("alignment_status")
+        verdicts[str(verdict)] += 1
+
+    return {
+        "batch_mode": mode,
+        "item_count": len(items),
+        "results": results,
+        "summary": dict(sorted(verdicts.items())),
+        "fine_tune_ready": False,
+        "fine_tune_blockers": [
+            "batch decisions are not blind-reviewed",
+            "CAPAS gates supplied structured evidence; it does not infer hidden evidence",
+        ],
+        "non_claim": "Batch mode applies the same deterministic per-claim gates; it does not create new scientific evidence.",
     }
 
 
@@ -1468,6 +1527,11 @@ def _render_ui(sample: dict[str, Any]) -> str:
     const historyLimit = 50;
     const historyStorageKey = "capas_decision_history_v1";
     let decisionHistory = loadHistory();
+    const fineTuneBlockers = [
+      "no blind or external inference review is attached",
+      "CAPAS gates supplied structured evidence; it does not infer hidden evidence",
+      "training readiness requires source-backed evidence, semantic alignment, witness independence, and review"
+    ];
 
     const fieldHelp = {
       "payload": "Paste one JSON object at the root, not an array or loose text, before the strict gate can decide.",
@@ -1597,6 +1661,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
           required_fields: [],
           schema_errors: schemaErrors,
           fine_tune_ready: false,
+          fine_tune_blockers: fineTuneBlockers,
           non_claim: "This decision is rule-based over supplied evidence fields, not an LLM judgment."
         };
       }
@@ -1615,6 +1680,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
         required_fields: fields || [],
         schema_errors: [],
         fine_tune_ready: false,
+        fine_tune_blockers: fineTuneBlockers,
         non_claim: "This decision is rule-based over supplied evidence fields, not an LLM judgment."
       };
       if (!fields) {
@@ -2020,6 +2086,88 @@ def cmd_decide(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_batch(args: argparse.Namespace) -> int:
+    payload = _load_json(Path(args.input))
+    try:
+        report = run_batch(payload, mode=args.mode, allow_web=args.allow_web)
+    except ValueError as exc:
+        report = {
+            "batch_mode": args.mode,
+            "item_count": 0,
+            "results": [],
+            "summary": {"ERROR": 1},
+            "error": str(exc),
+            "fine_tune_ready": False,
+        }
+        exit_code = 1
+    else:
+        exit_code = 0
+    if args.output:
+        _write_json(Path(args.output), report)
+    if args.json or not args.output:
+        print(json.dumps(report, indent=2, sort_keys=True))
+    else:
+        print(f"batch {report['batch_mode']}: {report['item_count']} items")
+        print(f"summary: {report['summary']}")
+        print(f"wrote {args.output}")
+    return exit_code
+
+
+def _read_request_json(handler: BaseHTTPRequestHandler) -> Any:
+    length = int(handler.headers.get("content-length", "0"))
+    raw = handler.rfile.read(length) if length else b"{}"
+    return json.loads(raw.decode("utf-8"))
+
+
+def _write_response_json(handler: BaseHTTPRequestHandler, status: int, payload: dict[str, Any]) -> None:
+    body = json.dumps(payload, indent=2, sort_keys=True).encode("utf-8")
+    handler.send_response(status)
+    handler.send_header("content-type", "application/json; charset=utf-8")
+    handler.send_header("content-length", str(len(body)))
+    handler.end_headers()
+    handler.wfile.write(body)
+
+
+class CapasApiHandler(BaseHTTPRequestHandler):
+    server_version = "CAPASClaimGate/0.1"
+
+    def log_message(self, format: str, *args: Any) -> None:  # noqa: A003 - stdlib callback name
+        return
+
+    def do_GET(self) -> None:  # noqa: N802 - stdlib callback name
+        if self.path == "/health":
+            _write_response_json(self, 200, {"status": "ok", "service": "capas-claim-gate"})
+        else:
+            _write_response_json(self, 404, {"error": "not found", "available": ["/health", "/decide", "/batch"]})
+
+    def do_POST(self) -> None:  # noqa: N802 - stdlib callback name
+        try:
+            payload = _read_request_json(self)
+            if self.path == "/decide":
+                if not isinstance(payload, dict):
+                    raise ValueError("/decide expects one JSON object")
+                _write_response_json(self, 200, decide_external_claim(payload))
+            elif self.path == "/batch":
+                _write_response_json(self, 200, run_batch(payload, mode="decide"))
+            else:
+                _write_response_json(self, 404, {"error": "not found", "available": ["/health", "/decide", "/batch"]})
+        except (json.JSONDecodeError, ValueError) as exc:
+            _write_response_json(self, 400, {"error": str(exc), "fine_tune_ready": False})
+
+
+def cmd_serve(args: argparse.Namespace) -> int:
+    server = HTTPServer((args.host, args.port), CapasApiHandler)
+    print(f"CAPAS API listening on http://{args.host}:{args.port}")
+    print("endpoints: GET /health, POST /decide, POST /batch")
+    try:
+        server.serve_forever()
+    except KeyboardInterrupt:
+        print("\nshutting down")
+    finally:
+        server.server_close()
+    return 0
+
+
 def cmd_align(args: argparse.Namespace) -> int:
     payload = _load_json(Path(args.input))
     if not isinstance(payload.get("evidence"), dict) and (
@@ -2166,6 +2314,19 @@ def main(argv: list[str] | None = None) -> int:
     decide.add_argument("--output", help="optional path for decision JSON")
     decide.add_argument("--json", action="store_true", help="print JSON even when --output is supplied")
     decide.set_defaults(func=cmd_decide)
+
+    batch = subparsers.add_parser("batch", help="run deterministic gates over multiple claim/evidence JSON objects")
+    batch.add_argument("--input", required=True, help="path to JSON array or object with items/claims array")
+    batch.add_argument("--output", help="optional batch report path")
+    batch.add_argument("--mode", choices=["decide", "align", "pipeline"], default="decide", help="per-item operation")
+    batch.add_argument("--json", action="store_true", help="print JSON even when --output is supplied")
+    batch.add_argument("--allow-web", action="store_true", help="allow fetching source.url for pipeline mode")
+    batch.set_defaults(func=cmd_batch)
+
+    serve = subparsers.add_parser("serve", help="run a local HTTP API for /decide and /batch")
+    serve.add_argument("--host", default="127.0.0.1", help="bind host")
+    serve.add_argument("--port", type=int, default=8765, help="bind port")
+    serve.set_defaults(func=cmd_serve)
 
     align = subparsers.add_parser("align", help="check claim.text alignment against structured evidence")
     align.add_argument("--input", required=True, help="path to claim/evidence JSON")

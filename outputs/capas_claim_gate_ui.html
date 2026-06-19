@@ -381,6 +381,11 @@
     const historyLimit = 50;
     const historyStorageKey = "capas_decision_history_v1";
     let decisionHistory = loadHistory();
+    const fineTuneBlockers = [
+      "no blind or external inference review is attached",
+      "CAPAS gates supplied structured evidence; it does not infer hidden evidence",
+      "training readiness requires source-backed evidence, semantic alignment, witness independence, and review"
+    ];
 
     const fieldHelp = {
       "payload": "Paste one JSON object at the root, not an array or loose text, before the strict gate can decide.",
@@ -510,6 +515,7 @@
           required_fields: [],
           schema_errors: schemaErrors,
           fine_tune_ready: false,
+          fine_tune_blockers: fineTuneBlockers,
           non_claim: "This decision is rule-based over supplied evidence fields, not an LLM judgment."
         };
       }
@@ -528,6 +534,7 @@
         required_fields: fields || [],
         schema_errors: [],
         fine_tune_ready: false,
+        fine_tune_blockers: fineTuneBlockers,
         non_claim: "This decision is rule-based over supplied evidence fields, not an LLM judgment."
       };
       if (!fields) {

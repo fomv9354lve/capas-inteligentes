@@ -21,6 +21,7 @@ REQUIRED_SNIPPETS = [
     "INVALID sample",
     "claim.type must be one of",
     "fine_tune_ready",
+    "fine_tune_blockers",
     "not an LLM judgment",
     "aria-label=\"Claim and evidence JSON input\"",
     "aria-label=\"Copy decision JSON\"",

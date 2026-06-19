@@ -1,0 +1,39 @@
+{
+  "batch_api_ready": true,
+  "checks": [
+    {
+      "check": "batch_cli_runs",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "check": "batch_cli_summary",
+      "detail": {
+        "ACCEPT": 1,
+        "HOLD": 1,
+        "REWRITE": 1
+      },
+      "passed": true
+    },
+    {
+      "check": "api_health",
+      "detail": "port 8766",
+      "passed": true
+    },
+    {
+      "check": "api_decide_accept",
+      "detail": "local checks and universal anchor both pass",
+      "passed": true
+    },
+    {
+      "check": "api_batch_summary",
+      "detail": {
+        "ACCEPT": 1,
+        "HOLD": 1,
+        "REWRITE": 1
+      },
+      "passed": true
+    }
+  ],
+  "scope": "Verifies batch CLI and local stdlib HTTP API. This is not an externally hosted SaaS endpoint."
+}

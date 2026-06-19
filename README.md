@@ -62,6 +62,7 @@ For reviewers and potential users:
 - Global SotA / market audit: `docs/GLOBAL_SOTA_MARKET_AUDIT.md`
 - Hybrid pipeline positioning: `docs/HYBRID_PIPELINE_POSITIONING.md`
 - Input hardening notes: `docs/INPUT_HARDENING.md`
+- Product scope and debt status: `docs/PRODUCT_SCOPE_AND_DEBTS.md`
 - Public demo: `https://fomv9354lve.github.io/capas-inteligentes/`
 - Current release: `https://github.com/fomv9354lve/capas-inteligentes/releases/tag/v0.1.1`
 - Public feedback issue: `https://github.com/fomv9354lve/capas-inteligentes/issues/1`
@@ -75,6 +76,7 @@ computation result, or are they already covered by existing artifacts?
 ```bash
 python -m pip install -e .
 capas decide --input examples/external_claim_rewrite.json
+capas batch --input examples/external_claim_batch.json --json
 capas pipeline --input examples/standalone_pipeline_semantic_hold.json
 capas inspect trace_039
 capas validate
@@ -83,6 +85,7 @@ capas validate
 Expected behavior:
 
 - `decide` returns `REWRITE` when local checks pass but a universal anchor fails.
+- `batch` applies the same deterministic gate to multiple claim/evidence objects.
 - `pipeline` can block a numeric `ACCEPT` when `claim.text` overstates the scope
   of the evidence.
 - `inspect trace_039` shows a motor-backed claim-transition trace.
@@ -124,6 +127,16 @@ Run the core product validators:
 ```bash
 capas validate
 ```
+
+Run the local integration API:
+
+```bash
+capas serve --host 127.0.0.1 --port 8765
+curl http://127.0.0.1:8765/health
+```
+
+The API is local and deterministic. It exposes `POST /decide` and `POST /batch`.
+It is not a hosted SaaS service.
 
 Inspect a trace:
 

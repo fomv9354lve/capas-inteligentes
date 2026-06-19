@@ -51,6 +51,11 @@
         "stdout_tail": "INVALID: examples/external_claim_invalid.json\n- evidence must be an object\n- claim.id must be a non-empty string\n- claim.type must be one of: claim_transition, exact_model_solution, physical_accuracy, universal_anchor_claim\n"
       },
       "decision": {
+        "fine_tune_blockers": [
+          "no blind or external inference review is attached",
+          "CAPAS gates supplied structured evidence; it does not infer hidden evidence",
+          "training readiness requires source-backed evidence, semantic alignment, witness independence, and review"
+        ],
         "fine_tune_ready": false,
         "input_claim": {
           "id": "",
@@ -80,6 +85,11 @@
     {
       "check": "adversarial_payload:negative_abs_error",
       "decision": {
+        "fine_tune_blockers": [
+          "no blind or external inference review is attached",
+          "CAPAS gates supplied structured evidence; it does not infer hidden evidence",
+          "training readiness requires source-backed evidence, semantic alignment, witness independence, and review"
+        ],
         "fine_tune_ready": false,
         "input_claim": {
           "id": "negative_abs_error",
@@ -106,6 +116,11 @@
     {
       "check": "adversarial_payload:negative_tolerance",
       "decision": {
+        "fine_tune_blockers": [
+          "no blind or external inference review is attached",
+          "CAPAS gates supplied structured evidence; it does not infer hidden evidence",
+          "training readiness requires source-backed evidence, semantic alignment, witness independence, and review"
+        ],
         "fine_tune_ready": false,
         "input_claim": {
           "id": "negative_tolerance",
@@ -132,6 +147,11 @@
     {
       "check": "adversarial_payload:double_negative_exact_solution",
       "decision": {
+        "fine_tune_blockers": [
+          "no blind or external inference review is attached",
+          "CAPAS gates supplied structured evidence; it does not infer hidden evidence",
+          "training readiness requires source-backed evidence, semantic alignment, witness independence, and review"
+        ],
         "fine_tune_ready": false,
         "input_claim": {
           "id": "double_negative_exact_solution",
@@ -160,6 +180,11 @@
     {
       "check": "adversarial_payload:boolean_numeric_field",
       "decision": {
+        "fine_tune_blockers": [
+          "no blind or external inference review is attached",
+          "CAPAS gates supplied structured evidence; it does not infer hidden evidence",
+          "training readiness requires source-backed evidence, semantic alignment, witness independence, and review"
+        ],
         "fine_tune_ready": false,
         "input_claim": {
           "id": "boolean_numeric_field",
@@ -186,6 +211,11 @@
     {
       "check": "adversarial_payload:oversized_claim_id",
       "decision": {
+        "fine_tune_blockers": [
+          "no blind or external inference review is attached",
+          "CAPAS gates supplied structured evidence; it does not infer hidden evidence",
+          "training readiness requires source-backed evidence, semantic alignment, witness independence, and review"
+        ],
         "fine_tune_ready": false,
         "input_claim": {
           "id": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
@@ -212,6 +242,11 @@
     {
       "check": "adversarial_payload:current_claim_raw_html",
       "decision": {
+        "fine_tune_blockers": [
+          "no blind or external inference review is attached",
+          "CAPAS gates supplied structured evidence; it does not infer hidden evidence",
+          "training readiness requires source-backed evidence, semantic alignment, witness independence, and review"
+        ],
         "fine_tune_ready": false,
         "input_claim": {
           "id": "current_claim_raw_html",
@@ -238,6 +273,11 @@
     {
       "check": "adversarial_payload:current_claim_unicode_angle_homoglyph",
       "decision": {
+        "fine_tune_blockers": [
+          "no blind or external inference review is attached",
+          "CAPAS gates supplied structured evidence; it does not infer hidden evidence",
+          "training readiness requires source-backed evidence, semantic alignment, witness independence, and review"
+        ],
         "fine_tune_ready": false,
         "input_claim": {
           "id": "current_claim_unicode_angle_homoglyph",
@@ -264,6 +304,11 @@
     {
       "check": "adversarial_payload:claim_id_raw_html",
       "decision": {
+        "fine_tune_blockers": [
+          "no blind or external inference review is attached",
+          "CAPAS gates supplied structured evidence; it does not infer hidden evidence",
+          "training readiness requires source-backed evidence, semantic alignment, witness independence, and review"
+        ],
         "fine_tune_ready": false,
         "input_claim": {
           "id": "<script>",
@@ -290,6 +335,11 @@
     {
       "check": "adversarial_payload:claim_text_raw_html",
       "decision": {
+        "fine_tune_blockers": [
+          "no blind or external inference review is attached",
+          "CAPAS gates supplied structured evidence; it does not infer hidden evidence",
+          "training readiness requires source-backed evidence, semantic alignment, witness independence, and review"
+        ],
         "fine_tune_ready": false,
         "input_claim": {
           "id": "claim_text_raw_html",
@@ -316,6 +366,11 @@
     {
       "check": "adversarial_payload:claim_text_unicode_angle_homoglyph",
       "decision": {
+        "fine_tune_blockers": [
+          "no blind or external inference review is attached",
+          "CAPAS gates supplied structured evidence; it does not infer hidden evidence",
+          "training readiness requires source-backed evidence, semantic alignment, witness independence, and review"
+        ],
         "fine_tune_ready": false,
         "input_claim": {
           "id": "claim_text_unicode_angle_homoglyph",
@@ -342,6 +397,11 @@
     {
       "check": "adversarial_payload:claim_text_second_generation_angle_homoglyphs",
       "decision": {
+        "fine_tune_blockers": [
+          "no blind or external inference review is attached",
+          "CAPAS gates supplied structured evidence; it does not infer hidden evidence",
+          "training readiness requires source-backed evidence, semantic alignment, witness independence, and review"
+        ],
         "fine_tune_ready": false,
         "input_claim": {
           "id": "claim_text_second_generation_angle_homoglyphs",
@@ -368,6 +428,11 @@
     {
       "check": "adversarial_payload:anchor_mode_unicode_angle_homoglyph",
       "decision": {
+        "fine_tune_blockers": [
+          "no blind or external inference review is attached",
+          "CAPAS gates supplied structured evidence; it does not infer hidden evidence",
+          "training readiness requires source-backed evidence, semantic alignment, witness independence, and review"
+        ],
         "fine_tune_ready": false,
         "input_claim": {
           "id": "anchor_mode_unicode_angle_homoglyph",
@@ -394,6 +459,11 @@
     {
       "check": "adversarial_payload:physical_evidence_level_angle_homoglyph",
       "decision": {
+        "fine_tune_blockers": [
+          "no blind or external inference review is attached",
+          "CAPAS gates supplied structured evidence; it does not infer hidden evidence",
+          "training readiness requires source-backed evidence, semantic alignment, witness independence, and review"
+        ],
         "fine_tune_ready": false,
         "input_claim": {
           "id": "physical_evidence_level_angle_homoglyph",
@@ -420,6 +490,11 @@
     {
       "check": "semantic_payload:zero_tolerance_exact_accept",
       "decision": {
+        "fine_tune_blockers": [
+          "no blind or external inference review is attached",
+          "CAPAS gates supplied structured evidence; it does not infer hidden evidence",
+          "training readiness requires source-backed evidence, semantic alignment, witness independence, and review"
+        ],
         "fine_tune_ready": false,
         "input_claim": {
           "id": "zero_tolerance_exact_accept",
@@ -445,6 +520,11 @@
     {
       "check": "semantic_payload:anchor_mode_unknown_missing",
       "decision": {
+        "fine_tune_blockers": [
+          "no blind or external inference review is attached",
+          "CAPAS gates supplied structured evidence; it does not infer hidden evidence",
+          "training readiness requires source-backed evidence, semantic alignment, witness independence, and review"
+        ],
         "fine_tune_ready": false,
         "input_claim": {
           "id": "anchor_mode_unknown_missing",
