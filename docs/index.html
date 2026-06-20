@@ -70,7 +70,7 @@
     .footnotes { color: var(--quiet); font-size: 12px; line-height: 1.6; }
     .footnotes ol { margin: 8px 0 0; padding-left: 18px; }
     .screen { background: linear-gradient(180deg, var(--surface), #0c0c0e); box-shadow: 0 18px 60px rgba(0,0,0,0.35); }
-    .hero-visual { display: grid; gap: 14px; min-width: 0; justify-items: end; align-self: start; }
+    .hero-visual { display: grid; gap: 14px; min-width: 0; justify-items: end; align-self: start; margin-top: 28px; }
     .hero-logo-card {
       position: relative;
       overflow: hidden;
@@ -369,7 +369,7 @@
 
       const initialSize = getLogoSize();
       const camera = new THREE.PerspectiveCamera(45, initialSize.width / initialSize.height, 0.1, 1000);
-      camera.position.set(0, 10, 80);
+      camera.position.set(0, 0, 4);
 
       const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
       renderer.setSize(initialSize.width, initialSize.height);
@@ -384,8 +384,8 @@
       controls.autoRotate = true;
       controls.autoRotateSpeed = 0.8;
       controls.enablePan = false;
-      controls.minDistance = 30;
-      controls.maxDistance = 150;
+      controls.minDistance = 1;
+      controls.maxDistance = 8;
 
       const matrixGroup = new THREE.Group();
       scene.add(matrixGroup);
@@ -514,7 +514,6 @@
       function animate() {
         requestAnimationFrame(animate);
         controls.update();
-        matrixGroup.position.y = Math.sin(Date.now() * 0.001) * 1.5;
         renderer.render(scene, camera);
       }
 
