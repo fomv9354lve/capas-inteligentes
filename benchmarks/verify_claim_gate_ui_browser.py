@@ -234,8 +234,8 @@ HARNESS = r"""
     ok("batch_per_item_table_visible", document.querySelectorAll(".batch-row").length === 2);
     ok("batch_per_item_reason_visible", document.querySelector(".batch-row-reason")?.textContent.length > 0);
     ok("batch_per_item_fine_tune_summary_visible", document.querySelector(".batch-row-ft")?.textContent.includes("FT"));
-    ok("batch_fine_tune_status_visible", document.querySelector(".fine-tune-block")?.textContent.includes("Batch fine-tune readiness"));
-    ok("batch_fine_tune_status_is_live_region", document.querySelector(".fine-tune-block")?.getAttribute("aria-label") === "Batch fine-tune readiness status" && document.querySelector(".fine-tune-block")?.getAttribute("aria-live") === "polite");
+    ok("batch_training_readiness_preview_visible", document.querySelector(".fine-tune-block")?.textContent.includes("Batch training readiness preview"));
+    ok("batch_training_readiness_preview_is_live_region", document.querySelector(".fine-tune-block")?.getAttribute("aria-label") === "Batch training readiness preview status" && document.querySelector(".fine-tune-block")?.getAttribute("aria-live") === "polite");
     ok("batch_output_json", document.getElementById("output").textContent.includes('"batch_mode": "decide"'));
     ok("batch_schema_version", document.getElementById("output").textContent.includes('"schema_version": "capas-claim-payload-v3"'));
     document.getElementById("input").value = JSON.stringify(samples.ACCEPT, null, 2);
@@ -326,8 +326,8 @@ HARNESS = r"""
     ok("browser_fine_tune_ready_requires_cli", document.getElementById("output").textContent.includes('"fine_tune_ready": false') && document.getElementById("output").textContent.includes("Active provenance gates require capas.py CLI/API verification"));
     ok("browser_provenance_gates_blocked", document.getElementById("output").textContent.includes('"review_hash_verified": false') && document.getElementById("output").textContent.includes('"reviewer_attestation_verified": false'));
     ok("fine_tune_criteria_visible", document.getElementById("output").textContent.includes('"fine_tune_criteria"'));
-    ok("fine_tune_status_visible_in_verdict_area", document.getElementById("verdict-area").textContent.includes("Fine-tune readiness") && document.getElementById("verdict-area").textContent.includes("NOT READY"));
-    ok("fine_tune_status_is_live_region", document.querySelector(".fine-tune-block")?.getAttribute("role") === "status" && document.querySelector(".fine-tune-block")?.getAttribute("aria-live") === "polite");
+    ok("training_readiness_preview_visible_in_verdict_area", document.getElementById("verdict-area").textContent.includes("Training readiness preview") && document.getElementById("verdict-area").textContent.includes("NOT READY"));
+    ok("training_readiness_preview_is_live_region", document.querySelector(".fine-tune-block")?.getAttribute("role") === "status" && document.querySelector(".fine-tune-block")?.getAttribute("aria-live") === "polite");
     ok("type_label_is_live_region", document.getElementById("type-label")?.getAttribute("role") === "status" && document.getElementById("type-label")?.getAttribute("aria-live") === "polite");
 
     document.getElementById("input").value = JSON.stringify({
