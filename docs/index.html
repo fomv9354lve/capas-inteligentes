@@ -53,9 +53,9 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;padding:0 
 .vp-row{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:10px 12px}
 .verdict-chip{font-size:10px;font-weight:800;padding:3px 9px;border-radius:4px;letter-spacing:0.04em;white-space:nowrap;flex-shrink:0}
 .vc-accept{background:rgba(72,187,120,0.15);color:#48bb78;border:1px solid rgba(72,187,120,0.3)}
-.vc-rewrite{background:rgba(246,173,85,0.15);color:#f6ad55;border:1px solid rgba(246,173,85,0.3)}
+.vc-rewrite{background:rgba(0,200,200,0.15);color:#00c8c8;border:1px solid rgba(0,200,200,0.35)}
 .vc-reject{background:rgba(232,24,93,0.15);color:#e8185d;border:1px solid rgba(232,24,93,0.3)}
-.vc-hold{background:rgba(79,94,247,0.15);color:#7c8ffa;border:1px solid rgba(79,94,247,0.3)}
+.vc-hold{background:rgba(200,150,10,0.15);color:#d4a820;border:1px solid rgba(200,150,10,0.35)}
 .vp-row-text{font-size:11px;color:rgba(255,255,255,0.5);font-family:monospace;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .vp-row-tag{margin-left:auto;font-size:10px;color:rgba(255,255,255,0.22);white-space:nowrap;flex-shrink:0}
 /* ── STAT BAR ── */
@@ -343,8 +343,8 @@ footer{border-top:1px solid rgba(255,255,255,0.06);padding:32px 48px;display:fle
         <p>All schema constraints pass. Evidence fully supports the claim as stated. No licensing or reproducibility blockers found.</p>
         <div class="verdict-card-ex">p=0.03 &lt;= alpha=0.05<br>artifact: available<br>license: CC-BY-4.0</div>
       </div>
-      <div class="verdict-card" style="border-color:rgba(246,173,85,0.18)">
-        <span class="verdict-card-badge" style="background:rgba(246,173,85,0.12);color:#f6ad55;border:1px solid rgba(246,173,85,0.3)">REWRITE</span>
+      <div class="verdict-card" style="border-color:rgba(0,200,200,0.18)">
+        <span class="verdict-card-badge" style="background:rgba(0,200,200,0.12);color:#00c8c8;border:1px solid rgba(0,200,200,0.35)">REWRITE</span>
         <h4>Claim needs adjustment</h4>
         <p>Evidence is present but the claim overreaches. Direction, scope, or causal language must be corrected before resubmission.</p>
         <div class="verdict-card-ex">blocker: direction_not_licensed<br>training: 7 of 14 pass<br>suggest: hedge_causality</div>
@@ -355,8 +355,8 @@ footer{border-top:1px solid rgba(255,255,255,0.06);padding:32px 48px;display:fle
         <p>Critical evidence is missing, contradicted, or irreproducible. The claim cannot be licensed in its current form.</p>
         <div class="verdict-card-ex">blocker: artifact_unavailable<br>reproducibility: FAIL<br>schema_errors: 3</div>
       </div>
-      <div class="verdict-card" style="border-color:rgba(79,94,247,0.18)">
-        <span class="verdict-card-badge" style="background:rgba(79,94,247,0.12);color:#7c8ffa;border:1px solid rgba(79,94,247,0.3)">HOLD</span>
+      <div class="verdict-card" style="border-color:rgba(200,150,10,0.18)">
+        <span class="verdict-card-badge" style="background:rgba(200,150,10,0.12);color:#d4a820;border:1px solid rgba(200,150,10,0.35)">HOLD</span>
         <h4>Pending verification</h4>
         <p>Gate cannot complete without external attestation — RO-Crate, CLI verification, or third-party confirmation still required.</p>
         <div class="verdict-card-ex">pending: ro_crate_attestation<br>cli_verify: required<br>no_llm: true</div>
