@@ -54,7 +54,9 @@ HARNESS = r"""
     if (typeof initTheme === "function") initTheme();
     if (typeof applySensitiveMode === "function") applySensitiveMode();
     if (typeof renderHistory === "function") renderHistory();
-    ok("shared_payload_loaded", document.getElementById("input").value.includes("shared_claim"));
+    ok("shared_payload_loaded", document.getElementById("input").value.includes("shared_claim_rewrite"));
+    ok("shared_payload_autoruns_rewrite", document.querySelector(".verdict-badge.REWRITE") && document.getElementById("output").textContent.includes('"verdict": "REWRITE"'));
+    ok("shared_payload_starts_on_gate_phase", document.body.dataset.workflowMode === "raw" && document.body.dataset.flowPhase === "gate");
     ok("share_button_exists", document.getElementById("share-btn"));
     ok("export_button_exists", document.getElementById("export-btn"));
     ok("product_hero_exists", document.querySelector(".product-hero")?.textContent.includes("claim admissibility decision"));
@@ -430,12 +432,19 @@ def main() -> int:
             harness_path = Path(tmpdir) / "capas-e2e.html"
             harness_path.write_text(html, encoding="utf-8")
             shared_payload = {
+                "schema_version": "capas-claim-payload-v3",
                 "claim": {
-                    "id": "shared_claim",
-                    "type": "exact_model_solution",
-                    "text": "The shared model solution is within tolerance.",
+                    "id": "shared_claim_rewrite",
+                    "type": "universal_anchor_claim",
+                    "text": "Local monotonicity proves universal physical correctness.",
                 },
-                "evidence": {"abs_error": 0.0, "tolerance": 0.001},
+                "evidence": {
+                    "anchor_mode": "absolute_anchor",
+                    "local_property_tests_pass": True,
+                    "physical_evidence_level": "scaling_law_anchor",
+                    "universal_anchor_pass": False,
+                    "verification_independence": "theory_scaling_law_no_solver",
+                },
             }
             encoded = base64.urlsafe_b64encode(
                 json.dumps(shared_payload, sort_keys=True).encode("utf-8")

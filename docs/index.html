@@ -143,7 +143,7 @@
           <span class="pill">Scientific Data Teams</span>
         </div>
         <div class="nav">
-          <a class="button primary" href="app.html">Run sample claim</a>
+          <a class="button primary" href="app.html?p=ewogICJjbGFpbSI6IHsKICAgICJpZCI6ICJzYW1wbGVfc2NhbGluZ19jbGFpbV9yZXdyaXRlIiwKICAgICJ0ZXh0IjogIkxvY2FsIG1vbm90b25pY2l0eSBwcm92ZXMgdW5pdmVyc2FsIHBoeXNpY2FsIGNvcnJlY3RuZXNzLiIsCiAgICAidHlwZSI6ICJ1bml2ZXJzYWxfYW5jaG9yX2NsYWltIgogIH0sCiAgImV2aWRlbmNlIjogewogICAgImFuY2hvcl9tb2RlIjogImFic29sdXRlX2FuY2hvciIsCiAgICAibG9jYWxfcHJvcGVydHlfdGVzdHNfcGFzcyI6IHRydWUsCiAgICAicGh5c2ljYWxfZXZpZGVuY2VfbGV2ZWwiOiAic2NhbGluZ19sYXdfYW5jaG9yIiwKICAgICJ1bml2ZXJzYWxfYW5jaG9yX3Bhc3MiOiBmYWxzZSwKICAgICJ2ZXJpZmljYXRpb25faW5kZXBlbmRlbmNlIjogInRoZW9yeV9zY2FsaW5nX2xhd19ub19zb2x2ZXIiCiAgfSwKICAic2NoZW1hX3ZlcnNpb24iOiAiY2FwYXMtY2xhaW0tcGF5bG9hZC12MyIKfQ">Run sample REWRITE</a>
           <a class="button" href="pilot-packet.html">See pilot package</a>
         </div>
       </div>
@@ -175,7 +175,7 @@
     </section>
     <section>
       <h2>Contamination Cascade</h2>
-      <p>Without a claim-level gate, a small sentence-level drift can survive preprocessing, enter a corpus, and reappear later as governed training evidence.</p>
+      <p>Without a claim-level gate, drift can survive source review, metadata review, and provenance review because none of those controls evaluate the claim boundary itself.</p>
       <div class="cascade" aria-label="Claim contamination cascade">
         <div class="card"><span>1. Paper</span><strong>Association observed</strong><p>Limited evidence, cautious wording, narrow conditions.</p></div>
         <div class="card"><span>2. Drift</span><strong>Causality stated</strong><p>The reusable sentence says more than the source licenses.</p></div>
@@ -183,6 +183,7 @@
         <div class="card"><span>4. Model</span><strong>Pattern learned</strong><p>The stronger claim can be reproduced downstream.</p></div>
         <div class="card decision-card"><span>CAPAS</span><strong>Stops it here</strong><p>REWRITE before the drift becomes governed evidence.</p></div>
       </div>
+      <p>In internal pilot modeling, nearly one third of candidate reusable claims required rewrite or exclusion before reuse.</p>
     </section>
     <section>
       <h2>Why not a fact-checker or provenance tool?</h2>
@@ -211,19 +212,19 @@
       </div>
     </section>
     <section>
-      <h2>Navigate CAPAS</h2>
-      <div class="grid nav-hub" aria-label="CAPAS site index">
-        <a class="card nav-card primary" href="app.html"><strong>Run a sample claim</strong><span>Open the working app: select a workflow mode, supply evidence, run the deterministic gate, and export the audit trail.</span></a>
-        <a class="card nav-card" href="pilot-packet.html"><strong>Pilot</strong><span>Two-week delivery path, artifacts, governance assumptions, footnotes, and rollout framing.</span></a>
-        <a class="card nav-card" href="customer-brief.html"><strong>Methodology</strong><span>Why CAPAS exists, where it sits against the state of the art, and what it does not claim.</span></a>
-      </div>
-    </section>
-    <section>
       <h2>The moat</h2>
       <div class="grid">
         <div class="card"><strong>Deterministic</strong><p>The decision is rule-based over supplied evidence fields, not another model judging a model.</p></div>
         <div class="card"><strong>Claim boundary</strong><p>CAPAS works at the exact sentence boundary where drift actually happens.</p></div>
         <div class="card"><strong>Evidence contracts</strong><p>Each claim type has explicit admissibility criteria, blockers, and exportable reasoning.</p></div>
+      </div>
+    </section>
+    <section>
+      <h2>Navigate CAPAS</h2>
+      <div class="grid nav-hub" aria-label="CAPAS site index">
+        <a class="card nav-card primary" href="app.html?p=ewogICJjbGFpbSI6IHsKICAgICJpZCI6ICJzYW1wbGVfc2NhbGluZ19jbGFpbV9yZXdyaXRlIiwKICAgICJ0ZXh0IjogIkxvY2FsIG1vbm90b25pY2l0eSBwcm92ZXMgdW5pdmVyc2FsIHBoeXNpY2FsIGNvcnJlY3RuZXNzLiIsCiAgICAidHlwZSI6ICJ1bml2ZXJzYWxfYW5jaG9yX2NsYWltIgogIH0sCiAgImV2aWRlbmNlIjogewogICAgImFuY2hvcl9tb2RlIjogImFic29sdXRlX2FuY2hvciIsCiAgICAibG9jYWxfcHJvcGVydHlfdGVzdHNfcGFzcyI6IHRydWUsCiAgICAicGh5c2ljYWxfZXZpZGVuY2VfbGV2ZWwiOiAic2NhbGluZ19sYXdfYW5jaG9yIiwKICAgICJ1bml2ZXJzYWxfYW5jaG9yX3Bhc3MiOiBmYWxzZSwKICAgICJ2ZXJpZmljYXRpb25faW5kZXBlbmRlbmNlIjogInRoZW9yeV9zY2FsaW5nX2xhd19ub19zb2x2ZXIiCiAgfSwKICAic2NoZW1hX3ZlcnNpb24iOiAiY2FwYXMtY2xhaW0tcGF5bG9hZC12MyIKfQ"><strong>Run a sample REWRITE</strong><span>Open the app with a preloaded drift case and run the deterministic gate.</span></a>
+        <a class="card nav-card" href="pilot-packet.html"><strong>Pilot</strong><span>Two-week delivery path, artifacts, governance assumptions, footnotes, and rollout framing.</span></a>
+        <a class="card nav-card" href="customer-brief.html"><strong>Methodology</strong><span>Why CAPAS exists, where it sits against the state of the art, and what it does not claim.</span></a>
       </div>
     </section>
     <section id="business-case">
