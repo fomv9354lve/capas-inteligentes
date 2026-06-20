@@ -75,6 +75,13 @@
     .claim-flow small { display: block; color: var(--quiet); font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 10px; }
     .decision-card { border-color: rgba(249,115,22,0.35); background: rgba(249,115,22,0.06); }
     .decision-card .badge { display: inline-flex; margin-bottom: 10px; }
+    .compare-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .compare-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+    .compare-list li { border: 1px solid var(--border); border-radius: 8px; padding: 10px; color: var(--muted); background: rgba(255,255,255,0.015); }
+    .loop { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; }
+    .loop-step { border: 1px solid var(--border); border-radius: 10px; background: var(--surface); padding: 12px; min-height: 120px; }
+    .loop-step span { display: block; color: var(--accent); font-size: 11px; font-weight: 800; letter-spacing: .6px; text-transform: uppercase; margin-bottom: 8px; }
+    .loop-step strong { display: block; color: var(--text); margin-bottom: 6px; }
     .cascade { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
     .cascade .card { min-height: 150px; padding: 14px; }
     .cascade strong { display: block; color: var(--text); margin-bottom: 8px; }
@@ -114,6 +121,7 @@
     @media (max-width: 860px) {
       header, main, footer { width: min(100% - 28px, 1180px); }
       .hero, .metrics, .grid, .screens, .nav-hub { grid-template-columns: 1fr; }
+      .compare-grid, .loop { grid-template-columns: 1fr; }
       .cascade { grid-template-columns: 1fr; }
       header { align-items: flex-start; flex-direction: column; gap: 12px; }
     }
@@ -194,6 +202,42 @@
       </div>
     </section>
     <section>
+      <h2>Why not just use human review?</h2>
+      <p>CAPAS does not replace expert review. It turns expert review into a reusable decision system: explicit criteria, repeatable boundaries, and exportable exceptions.</p>
+      <div class="compare-grid" aria-label="Human review alone versus CAPAS">
+        <div class="card">
+          <h3>Human review alone</h3>
+          <ul class="compare-list">
+            <li>Criteria live in reviewer memory, SOP prose, or spreadsheet comments.</li>
+            <li>Wording decisions vary by reviewer, queue pressure, and local precedent.</li>
+            <li>Exceptions are hard to reuse across batches, teams, and audits.</li>
+            <li>Review creates judgment, but not always a structured decision artifact.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>CAPAS + reviewers</h3>
+          <ul class="compare-list">
+            <li>Evidence contracts make admissibility criteria explicit by claim type.</li>
+            <li>ACCEPT, REWRITE, REJECT, and HOLD are deterministic and repeatable.</li>
+            <li>Every exception becomes a queue item with blockers and rationale.</li>
+            <li>Review produces an exportable audit artifact, not only a one-off opinion.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+    <section>
+      <h2>The operating loop</h2>
+      <p>CAPAS ends when the claim boundary is resolved. A REWRITE is not a dead end; it is the handoff into reviewer edit, resubmission, and governed reuse.</p>
+      <div class="loop" aria-label="CAPAS rewrite to accept operating loop">
+        <div class="loop-step"><span>1</span><strong>Candidate claim</strong><p>Evidence and wording enter as a reusable record candidate.</p></div>
+        <div class="loop-step"><span>2</span><strong>CAPAS gate</strong><p>The deterministic engine checks the evidence contract.</p></div>
+        <div class="loop-step decision-card"><span>3</span><strong>REWRITE</strong><p>The claim boundary is too strong for the supplied evidence.</p></div>
+        <div class="loop-step"><span>4</span><strong>Reviewer edit</strong><p>The sentence is narrowed to the licensed scope.</p></div>
+        <div class="loop-step"><span>5</span><strong>Resubmit</strong><p>The edited record runs through the same gate again.</p></div>
+        <div class="loop-step"><span>6</span><strong>ACCEPT</strong><p>The accepted claim enters the dataset with an audit trail.</p></div>
+      </div>
+    </section>
+    <section>
       <h2>Audit artifact</h2>
       <p>CAPAS does not just label a record. It produces a decision object that reviewers can inspect, export, and challenge.</p>
       <pre class="audit-snippet" aria-label="Example CAPAS audit JSON">{
@@ -228,14 +272,14 @@
       </div>
     </section>
     <section id="business-case">
-      <h2>Example pilot corpus</h2>
-      <p>A controlled 500-record pilot makes the operation visible: what can be accepted, what needs rewrite, what must be rejected, and what lacks enough evidence to decide.</p>
+      <h2>Example pilot output</h2>
+      <p>A controlled pilot should prove the operation, not decorate the page with percentages. The output is a decision package: what passed, what drifted, what failed, and what needs human adjudication.</p>
       <div class="grid">
-        <div class="card"><strong>ACCEPT · 58%</strong><p>Evidence licenses the claim boundary for controlled reuse.</p></div>
-        <div class="card"><strong>REWRITE · 23%</strong><p>Evidence supports a weaker or narrower sentence than the candidate claim.</p></div>
-        <div class="card"><strong>REJECT/HOLD · 19%</strong><p>Claims are unsupported, blocked by missing evidence, or require adjudication.</p></div>
+        <div class="card"><strong>Decision mix</strong><p>ACCEPT, REWRITE, REJECT, and HOLD counts with claim IDs, claim types, and reasons.</p></div>
+        <div class="card"><strong>Exception queue</strong><p>Every REWRITE/HOLD becomes a reviewer work item with evidence blockers and a proposed boundary.</p></div>
+        <div class="card"><strong>Audit export</strong><p>Structured records for source review, metadata review, provenance review, and claim-boundary review.</p></div>
       </div>
-      <p class="footnotes">Illustrative planning mix only. Actual rates are corpus-dependent and must be measured in pilot. Internal stress tests used 10k structured validation records to exercise schema and decision paths, not to claim production deployment.</p>
+      <p class="footnotes">Planning examples can include observed rewrite, reject, and hold rates, but those rates are not product claims. They must be measured against the buyer's corpus. Internal stress tests used 10k structured validation records to exercise schema and decision paths, not to claim production deployment.</p>
     </section>
     <section class="footnotes" aria-label="Modeling notes and disclaimers">
       <h2>Modeling notes</h2>
