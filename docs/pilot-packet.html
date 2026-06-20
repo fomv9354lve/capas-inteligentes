@@ -1,205 +1,165 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CAPAS Pilot Packet | Claim Admissibility Deployment</title>
-  <meta name="description" content="Pilot packet for deploying CAPAS as a two-week deterministic claim admissibility workflow.">
-  <style>
-    :root { --bg:#09090b; --surface:#111113; --panel:#18181b; --border:#27272a; --text:#fafafa; --muted:#a1a1aa; --quiet:#8d8d99; --accent:#7c7fff; --green:#22c55e; --orange:#f97316; --radius:12px; --font:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
-    * { box-sizing:border-box; }
-    body { margin:0; background:var(--bg); color:var(--text); font-family:var(--font); line-height:1.5; }
-    header, main, footer { width:min(1120px, calc(100% - 40px)); margin:0 auto; }
-    header { min-height:44px; display:flex; justify-content:space-between; align-items:center; gap:14px; padding:0; border-bottom:1px solid var(--border); }
-    .brand { font-size:13px; font-weight:800; }
-    .nav { display:flex; flex-wrap:wrap; gap:2px; }
-    .utility-links { display:flex; flex-wrap:wrap; gap:12px; margin-top:10px; }
-    .utility-links a { color:var(--quiet); text-decoration:none; }
-    .utility-links a:hover { color:var(--text); }
-    a { color:inherit; }
-    .button { display:inline-flex; align-items:center; justify-content:center; min-height:28px; padding:4px 10px; border:1px solid var(--border); border-radius:6px; background:var(--panel); color:var(--muted); text-decoration:none; font-size:12px; font-weight:700; }
-    .button.primary { background:rgba(124,127,255,.12); border-color:rgba(124,127,255,.45); color:#a5b4fc; }
-    .hero { padding:44px 0 28px; border-bottom:1px solid var(--border); }
-    .hero-copy { position:relative; z-index:20; width:min(680px, calc(50vw - 24px)); max-width:680px; }
-    .hero-visual { position:absolute; z-index:1; inset:0; display:block; width:100%; height:100%; overflow:hidden; opacity:.9; filter:saturate(1.18) contrast(1.12); pointer-events:none; zoom:1; transform:none; transform-origin:43.125% 50%; }
-    .logo-iframe { position:absolute; left:calc(43.125% - 130.1625vw); top:calc(50% - 127.96875vh); width:260.325vw; height:255.9375vh; border:0; display:block; background:#05060a; pointer-events:none; zoom:1; transform:none; transform-origin:center center; }
-    .logo-veil { position:absolute; inset:0; z-index:3; pointer-events:none; background:linear-gradient(90deg, rgba(10,10,10,.92), rgba(10,10,10,.74) 32%, rgba(10,10,10,.34) 58%, transparent 78%), linear-gradient(180deg, rgba(10,10,10,.18), transparent 34%, rgba(10,10,10,.12)); }
-    .eyebrow { color:var(--accent); font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:.9px; }
-    h1 { max-width:880px; margin:10px 0 14px; font-size:clamp(34px,6vw,58px); line-height:1.02; }
-    h2 { margin:0 0 12px; font-size:22px; }
-    p, li { color:var(--muted); }
-    section { padding:28px 0; border-bottom:1px solid var(--border); }
-    .timeline { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:10px; }
-    .plan { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
-    .step, .card { border:1px solid var(--border); border-radius:var(--radius); background:var(--surface); padding:15px; }
-    .step strong { display:block; color:var(--accent); margin-bottom:6px; }
-    .grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; }
-    .grid.two { grid-template-columns:repeat(2,minmax(0,1fr)); }
-    .card ul { margin:10px 0 0; padding-left:18px; }
-    .note { color:var(--quiet); font-size:12px; }
-    footer { padding:24px 0 40px; color:var(--quiet); font-size:12px; }
-    /* Approved hero mockup: exact rotating HTML logo as full-bleed background. */
-    .hero {
-      position:relative;
-      width:100vw;
-      min-height:76vh;
-      margin-left:calc(50% - 50vw);
-      display:grid;
-      grid-template-columns:minmax(0, 1fr) minmax(0, 1fr);
-      align-items:center;
-      padding:58px max(20px, calc((100vw - 1120px) / 2)) 48px;
-      overflow:hidden;
-      background:
-        linear-gradient(90deg, rgba(10,10,10,.94) 0%, rgba(10,10,10,.82) 44%, rgba(10,10,10,.36) 68%, rgba(10,10,10,.06) 100%),
-        #0a0a0a;
-    }
-    .hero::before {
-      content:"";
-      position:absolute;
-      left:34%;
-      right:-8%;
-      top:14%;
-      height:1px;
-      background:rgba(255,255,255,.22);
-      z-index:5;
-    }
-    .hero h1 { font-size:clamp(42px, 5vw, 70px); line-height:1.03; }
-    .hero p { max-width:640px; font-size:16px; line-height:1.6; }
-    @media (max-width:860px) {
-      header { flex-direction:column; align-items:flex-start; }
-      .timeline, .grid, .grid.two, .plan { grid-template-columns:1fr; }
-      .hero { display:block; width:auto; min-height:78vh; margin-left:0; padding:42px 16px 26px; }
-      .hero-copy { width:100%; max-width:none; }
-      .hero h1 { font-size:44px; }
-      .hero-visual { inset:24vh -48vw auto 4vw; height:58vh; }
-    }
-  </style>
-</head>
-<body>
-  <header>
-    <div class="brand">CAPAS Pilot Packet</div>
-    <nav class="nav" aria-label="CAPAS primary navigation">
-      <a class="button" href="index.html">Home</a>
-      <a class="button" href="app.html">Gate App</a>
-      <a class="button" href="customer-brief.html">Methodology</a>
-      <a class="button primary" href="pilot-packet.html" aria-current="page">Pilot</a>
-    </nav>
-  </header>
-  <main>
-    <section class="hero">
-      <div class="hero-copy">
-        <div class="eyebrow">Two-week deployment packet</div>
-        <h1>Measure claim drift before it contaminates scientific datasets, reports, or fine-tuning runs.</h1>
-        <p>CAPAS packages claim admissibility, deterministic gating, human confirmation, batch reporting, and provenance blockers into a pilot that a technical team can measure and a steering committee can understand.</p>
-        <p>This is not a truth-certification engagement. It is a controlled operating test: can the organization identify which claims are licensed, which must be rewritten, which must be rejected, and which require more evidence before reuse?</p>
-      </div>
-      <div class="hero-visual">
-        <iframe class="logo-iframe" src="gemini-code-1781935819867.html" title="Exact rotating CAPAS transition network logo"></iframe>
-        <div class="logo-veil"></div>
-      </div>
-    </section>
-    <section>
-      <h2>Delivery path</h2>
-      <div class="timeline">
-        <div class="step"><strong>1. Scope</strong><span>Select corpus, owner, reviewer, and baseline review process.</span></div>
-        <div class="step"><strong>2. Ingest</strong><span>Bring paper text, metadata exports, theorem notes, or structured records.</span></div>
-        <div class="step"><strong>3. Confirm</strong><span>Human reviewer approves candidate spans before CAPAS decides.</span></div>
-        <div class="step"><strong>4. Gate</strong><span>Run single and batch CAPAS decisions with explicit evidence contracts.</span></div>
-        <div class="step"><strong>5. Read out</strong><span>Deliver decision mix, exception queue, provenance blockers, and ROI model.</span></div>
-      </div>
-    </section>
-    <section>
-      <h2>Two-week operating plan</h2>
-      <div class="plan">
-        <div class="card">
-          <strong>Week 1 — Calibrate the gate</strong>
-          <ul>
-            <li>Select a controlled corpus of candidate scientific claims.</li>
-            <li>Map source material to claim categories and evidence fields.</li>
-            <li>Establish baseline reviewer workflow and decision taxonomy.</li>
-            <li>Confirm sensitive-data handling, licensing constraints, and export boundaries.</li>
-          </ul>
-        </div>
-        <div class="card">
-          <strong>Week 2 — Run, adjudicate, read out</strong>
-          <ul>
-            <li>Run single and batch gates on the selected records.</li>
-            <li>Review HOLD, REWRITE, REJECT, and provenance-blocked exceptions.</li>
-            <li>Measure decision mix, reviewer agreement, and evidence gaps.</li>
-            <li>Deliver executive summary, audit packet, exception queue, and deployment backlog.</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-    <section>
-      <h2>Buyer-ready artifacts</h2>
-      <div class="grid">
-        <div class="card"><strong>Audit export</strong><p>CSV/JSON with verdict, reason, schema version, record ID, evidence fields, and provenance blockers.</p></div>
-        <div class="card"><strong>Exception queue</strong><p>HOLD/REWRITE/REJECT records routed for expert adjudication and wording repair.</p></div>
-        <div class="card"><strong>Provenance report</strong><p>Open review hashes, source URL hashes, witness IDs, reviewer attestations, and RO-Crate blockers.</p></div>
-        <div class="card"><strong>Decision mix</strong><p>ACCEPT, REWRITE, REJECT, HOLD, fine-tune-ready, and provenance-blocked counts by corpus slice.</p></div>
-        <div class="card"><strong>Claim contamination register</strong><p>Examples where source evidence supported a weaker claim than the candidate record asserted.</p></div>
-        <div class="card"><strong>Executive readout</strong><p>What can be reused, what needs rewrite, what cannot be reused, and what operational control is required next.</p></div>
-      </div>
-    </section>
-    <section>
-      <h2>Roles and decision rights</h2>
-      <div class="grid">
-        <div class="card"><strong>AI Governance Lead</strong><p>Owns risk framing, success criteria, and decision policy for controlled reuse.</p></div>
-        <div class="card"><strong>Research Ops / Data Lead</strong><p>Owns corpus selection, source access, metadata hygiene, and export workflow.</p></div>
-        <div class="card"><strong>Subject-Matter Reviewer</strong><p>Confirms evidence spans, adjudicates exceptions, and approves claim rewrites.</p></div>
-        <div class="card"><strong>Technical Owner</strong><p>Runs browser/CLI/API surfaces, preserves audit exports, and maps integration backlog.</p></div>
-        <div class="card"><strong>Legal / Provenance Reviewer</strong><p>Reviews licensing, confidentiality, source reuse, attestation, and sensitive-payload handling.</p></div>
-        <div class="card"><strong>Executive Sponsor</strong><p>Receives decision mix, contamination examples, and go/no-go recommendation for rollout.</p></div>
-      </div>
-    </section>
-    <section>
-      <h2>Success criteria</h2>
-      <div class="grid two">
-        <div class="card">
-          <strong>Operational success</strong>
-          <ul>
-            <li>Every pilot record has a traceable decision and source context.</li>
-            <li>HOLD/REWRITE/REJECT records produce an actionable exception queue.</li>
-            <li>Reviewers can explain why accepted claims are licensed for controlled reuse.</li>
-            <li>Exported audit artifacts are complete enough for governance review.</li>
-          </ul>
-        </div>
-        <div class="card">
-          <strong>Commercial success</strong>
-          <ul>
-            <li>The buyer sees a measurable claim contamination rate on its own corpus.</li>
-            <li>The team identifies repeatable provenance blockers and schema gaps.</li>
-            <li>The pilot produces a next-step integration backlog instead of a one-off demo.</li>
-            <li>The sponsor can decide whether to expand to CLI/API or workflow integration.</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-    <section>
-      <h2>Governance model</h2>
-      <div class="grid">
-        <div class="card"><strong>CAPAS gates supplied evidence only</strong><p>The engine does not infer hidden evidence, perform broad paper understanding, or certify scientific truth.</p></div>
-        <div class="card"><strong>Humans confirm spans</strong><p>Candidate extraction is an aid. A reviewer must confirm claim wording and evidence spans before the gate is treated as operational output.</p></div>
-        <div class="card"><strong>External provenance is verified outside the static browser</strong><p>Active checks for hashes, attestations, witness registries, and provenance packets require CLI/API verification.</p></div>
-      </div>
-    </section>
-    <section>
-      <h2>Required footnotes</h2>
-      <ul class="note">
-        <li>CAPAS outputs are deterministic gates over supplied evidence fields, not LLM judgments.</li>
-        <li>Fine-tune readiness requires CLI/API provenance checks for source hashes, RO-Crate packets, witness registries, review hashes, and reviewer attestations.</li>
-        <li>All third-party source materials remain subject to their original license, confidentiality, copyright, and database-right constraints.</li>
-        <li>Stress-test and planning metrics are not customer production claims unless separately measured and approved.</li>
-      </ul>
-    </section>
-  </main>
-  <footer>
-    Use this packet with the methodology brief, ROI assumptions, and the live CAPAS app.
-    <div class="utility-links" aria-label="CAPAS utility links">
-      <a href="audit.html">Audit log</a>
-      <a href="https://github.com/fomv9354lve/capas-inteligentes" target="_blank" rel="noopener noreferrer">Source repository</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CAPAS · Pilot Packet</title><style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--pink:#e8185d;--pink2:#c4125a;--bg:#050507;--surface:rgba(255,255,255,.04);--border:rgba(255,255,255,.08);--text:rgba(255,255,255,.88);--muted:rgba(255,255,255,.44);--accent:#4f5ef7;--green:#48bb78;--amber:#f6ad55;--purple:#a855f7}
+html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;overflow-x:hidden}
+nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;padding:0 48px;height:60px;border-bottom:1px solid rgba(255,255,255,.06);background:rgba(8,8,16,.92);backdrop-filter:blur(12px)}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;margin-right:40px;flex-shrink:0}
+.nav-logo img{width:32px;height:32px;object-fit:contain;display:block}
+.nav-logo-title{font-size:14px;font-weight:800;color:#fff;letter-spacing:-.01em;line-height:1.1}
+.nav-logo-sub{font-size:9px;font-weight:500;color:#444;letter-spacing:.1em;text-transform:uppercase}
+.nav-links{display:flex;align-items:center;gap:4px}
+.nav-links a{display:inline-flex;align-items:center;gap:6px;color:rgba(255,255,255,.5);text-decoration:none;font-size:13px;padding:7px 14px;border-radius:6px;white-space:nowrap;transition:color .15s}
+.nav-links a:hover{color:rgba(255,255,255,.85)}
+.nav-links a.active{color:#fff;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.05)}
+.nav-sep{flex:1}
+.nav-cta{background:linear-gradient(135deg,#e8185d,#c4125a);color:#fff;font-size:13px;font-weight:700;padding:9px 20px;border-radius:7px;text-decoration:none;box-shadow:0 2px 14px rgba(232,24,93,.35);white-space:nowrap}
+.bg-logo{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;opacity:.65}
+.bg-logo iframe{width:100%;height:100%;border:0;display:block;background:#000;transform:scale(3.35);transform-origin:center center}
+.bg-veil{position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(circle at 60% 35%,transparent 0%,rgba(5,5,7,.28) 40%,rgba(5,5,7,.72) 100%),linear-gradient(rgba(5,5,7,.45),rgba(5,5,7,.12) 30%,rgba(5,5,7,.60))}
+.page{position:relative;z-index:2}
+.section{padding:88px 48px}
+.section.alt{background:rgba(255,255,255,.015);border-top:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06)}
+.si{max-width:1200px;margin:0 auto}
+.label{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--pink);margin-bottom:14px}
+.h1{font-size:clamp(38px,5vw,64px);font-weight:900;line-height:1.05;letter-spacing:-.03em;color:#fff;margin-bottom:12px}
+.h1 em{font-style:normal;background:linear-gradient(135deg,#e8185d,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.h2{font-size:clamp(26px,3vw,40px);font-weight:900;letter-spacing:-.03em;color:#fff;margin-bottom:14px;line-height:1.1}
+.h3{font-size:18px;font-weight:800;color:#fff;margin-bottom:10px;letter-spacing:-.01em}
+.sub{font-size:16px;color:rgba(255,255,255,.5);line-height:1.7;margin-bottom:40px;max-width:580px}
+.sub-wide{max-width:760px}
+.card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:28px;backdrop-filter:blur(8px);transition:border-color .2s,background .2s}
+.card:hover{border-color:rgba(255,255,255,.13);background:rgba(255,255,255,.05)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:32px}
+.btn{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:700;padding:13px 26px;border-radius:8px;text-decoration:none;border:none;cursor:pointer}
+.btn-pink{background:linear-gradient(135deg,#e8185d,#c4125a);color:#fff;box-shadow:0 2px 20px rgba(232,24,93,.4)}
+.btn-ghost{background:transparent;color:rgba(255,255,255,.75);border:1px solid rgba(255,255,255,.15)}
+.vc{display:inline-block;font-size:10px;font-weight:800;padding:3px 9px;border-radius:4px;letter-spacing:.04em;white-space:nowrap}
+.vc-accept{background:rgba(72,187,120,.15);color:#48bb78;border:1px solid rgba(72,187,120,.3)}
+.vc-rewrite{background:rgba(246,173,85,.15);color:#f6ad55;border:1px solid rgba(246,173,85,.3)}
+.vc-reject{background:rgba(232,24,93,.15);color:#e8185d;border:1px solid rgba(232,24,93,.3)}
+.vc-hold{background:rgba(79,94,247,.15);color:#7c8ffa;border:1px solid rgba(79,94,247,.3)}
+.mono{background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:22px;font-family:monospace;font-size:12px;line-height:1.8;color:rgba(255,255,255,.55)}
+.mono .k{color:rgba(255,255,255,.32)}
+.mono .vr{color:#e8185d;font-weight:700}
+.mono .va{color:#f6ad55}
+.mono .vg{color:#48bb78}
+.mono .vs{color:rgba(255,255,255,.7)}
+hr{border:none;border-top:1px solid rgba(255,255,255,.06);margin:0}
+footer{padding:32px 48px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid rgba(255,255,255,.06)}
+footer a{color:rgba(255,255,255,.35);text-decoration:none;font-size:12px}
+.foot-copy{font-size:12px;color:rgba(255,255,255,.2)}
+.disclaimer{max-width:1200px;margin:0 auto;padding:0 48px 40px}
+.disclaimer li{font-size:11px;color:rgba(255,255,255,.22);padding:4px 0 4px 14px;position:relative;line-height:1.6;list-style:none}
+.disclaimer li::before{content:"·";position:absolute;left:0}
+</style></head><body><div class="bg-logo"><iframe src="logo_kreniq_volum_trico.html" scrolling="no" tabindex="-1" aria-hidden="true"></iframe></div><div class="bg-veil"></div><div class="page"><nav><a class="nav-logo" href="index.html"><img src="krenniq-logo.png" alt="Krenn-IQ"><div><div class="nav-logo-title">CAPAS</div><div class="nav-logo-sub">by Krenn-IQ</div></div></a><div class="nav-links"><a href="index.html"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Home</a><a href="app.html"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/></svg>Gate App</a><a href="customer-brief.html"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Methodology</a><a href="pilot-packet.html" class="active"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>Pilot</a><a href="audit.html"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Audit</a></div><div class="nav-sep"></div><a class="nav-cta" href="app.html">Test a Claim</a></nav>
+<!-- HERO -->
+<section class="section" style="padding-bottom:60px">
+<div class="si">
+  <div class="label">Two-week deployment packet</div>
+  <h1 class="h1" style="font-size:clamp(32px,4vw,52px)">Measure claim drift before it<br>contaminates scientific datasets.</h1>
+  <p class="sub sub-wide">CAPAS packages claim admissibility, deterministic gating, human confirmation, batch reporting, and provenance blockers into a pilot that a technical team can measure and a steering committee can understand.</p>
+  <div style="padding:14px 20px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:8px;font-size:13px;color:rgba(255,255,255,.45);line-height:1.6;max-width:680px;margin-bottom:32px">
+    This is not a truth-certification engagement. It is a controlled operating test: can the organization identify which claims are licensed, which must be rewritten, which must be rejected, and which require more evidence before reuse?
+  </div>
+  <div class="actions" style="margin-top:0">
+    <a class="btn btn-pink" href="app.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>Open Gate App</a>
+    <a class="btn btn-ghost" href="customer-brief.html">Read Methodology →</a>
+  </div>
+</div>
+</section>
+
+<!-- DELIVERY PATH -->
+<section class="section alt">
+<div class="si">
+  <div class="label">Delivery path</div>
+  <h2 class="h2">Five steps, two weeks.</h2>
+  <div style="display:flex;flex-direction:column;gap:0;margin-top:32px;position:relative">
+    <div style="position:absolute;left:19px;top:20px;bottom:20px;width:2px;background:linear-gradient(to bottom,#e8185d,#4f5ef7,#48bb78)"></div>
+    <div style="display:flex;gap:24px;padding:20px 0;align-items:flex-start"><div style="width:40px;height:40px;border-radius:50%;background:#e8185d;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;flex-shrink:0;position:relative;z-index:1">1</div><div style="padding:16px 20px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:10px;flex:1"><h4 style="font-size:15px;font-weight:700;color:#fff;margin-bottom:6px">Scope</h4><p style="font-size:13px;color:rgba(255,255,255,.5);line-height:1.6">Select corpus, owner, reviewer, and baseline review process.</p></div></div><div style="display:flex;gap:24px;padding:20px 0;align-items:flex-start"><div style="width:40px;height:40px;border-radius:50%;background:#a855f7;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;flex-shrink:0;position:relative;z-index:1">2</div><div style="padding:16px 20px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:10px;flex:1"><h4 style="font-size:15px;font-weight:700;color:#fff;margin-bottom:6px">Ingest</h4><p style="font-size:13px;color:rgba(255,255,255,.5);line-height:1.6">Bring paper text, metadata exports, theorem notes, or structured records.</p></div></div><div style="display:flex;gap:24px;padding:20px 0;align-items:flex-start"><div style="width:40px;height:40px;border-radius:50%;background:#4f5ef7;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;flex-shrink:0;position:relative;z-index:1">3</div><div style="padding:16px 20px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:10px;flex:1"><h4 style="font-size:15px;font-weight:700;color:#fff;margin-bottom:6px">Confirm</h4><p style="font-size:13px;color:rgba(255,255,255,.5);line-height:1.6">Human reviewer approves candidate spans before CAPAS decides.</p></div></div><div style="display:flex;gap:24px;padding:20px 0;align-items:flex-start"><div style="width:40px;height:40px;border-radius:50%;background:#f6ad55;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;flex-shrink:0;position:relative;z-index:1">4</div><div style="padding:16px 20px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:10px;flex:1"><h4 style="font-size:15px;font-weight:700;color:#fff;margin-bottom:6px">Gate</h4><p style="font-size:13px;color:rgba(255,255,255,.5);line-height:1.6">Run single and batch CAPAS decisions with explicit evidence contracts.</p></div></div><div style="display:flex;gap:24px;padding:20px 0;align-items:flex-start"><div style="width:40px;height:40px;border-radius:50%;background:#48bb78;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;flex-shrink:0;position:relative;z-index:1">5</div><div style="padding:16px 20px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:10px;flex:1"><h4 style="font-size:15px;font-weight:700;color:#fff;margin-bottom:6px">Read out</h4><p style="font-size:13px;color:rgba(255,255,255,.5);line-height:1.6">Deliver decision mix, exception queue, provenance blockers, and ROI model.</p></div></div>
+  </div>
+</div>
+</section>
+
+<!-- TWO-WEEK PLAN -->
+<section class="section">
+<div class="si">
+  <div class="label">Two-week operating plan</div>
+  <h2 class="h2">Week by week.</h2>
+  <div class="g2" style="margin-top:32px">
+    <div class="card">
+      <div style="font-size:11px;font-weight:700;color:#e8185d;letter-spacing:.08em;text-transform:uppercase;margin-bottom:16px">Week 1 — Calibrate the gate</div>
+      <div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px;color:rgba(255,255,255,.55);line-height:1.55;align-items:flex-start"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#e8185d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:2px"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Select a controlled corpus of candidate scientific claims.</div><div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px;color:rgba(255,255,255,.55);line-height:1.55;align-items:flex-start"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#e8185d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:2px"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Map source material to claim categories and evidence fields.</div><div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px;color:rgba(255,255,255,.55);line-height:1.55;align-items:flex-start"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#e8185d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:2px"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Establish baseline reviewer workflow and decision taxonomy.</div><div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px;color:rgba(255,255,255,.55);line-height:1.55;align-items:flex-start"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#e8185d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:2px"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Confirm sensitive-data handling, licensing constraints, and export boundaries.</div>
     </div>
-  </footer>
-</body>
-</html>
+    <div class="card">
+      <div style="font-size:11px;font-weight:700;color:#48bb78;letter-spacing:.08em;text-transform:uppercase;margin-bottom:16px">Week 2 — Run, adjudicate, read out</div>
+      <div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px;color:rgba(255,255,255,.55);line-height:1.55;align-items:flex-start"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#48bb78" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:2px"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Run single and batch gates on the selected records.</div><div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px;color:rgba(255,255,255,.55);line-height:1.55;align-items:flex-start"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#48bb78" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:2px"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Review HOLD, REWRITE, REJECT, and provenance-blocked exceptions.</div><div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px;color:rgba(255,255,255,.55);line-height:1.55;align-items:flex-start"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#48bb78" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:2px"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Measure decision mix, reviewer agreement, and evidence gaps.</div><div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px;color:rgba(255,255,255,.55);line-height:1.55;align-items:flex-start"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#48bb78" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:2px"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Deliver executive summary, audit packet, exception queue, and deployment backlog.</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- BUYER ARTIFACTS -->
+<section class="section alt">
+<div class="si">
+  <div class="label">Buyer-ready artifacts</div>
+  <h2 class="h2">What you receive at the end.</h2>
+  <div class="g2" style="margin-top:32px">
+    <div class="card"><div style="font-size:22px;margin-bottom:12px">📊</div><h4 style="font-size:15px;font-weight:700;color:#fff;margin-bottom:8px">Audit export</h4><p style="font-size:13px;color:rgba(255,255,255,.48);line-height:1.6">CSV/JSON with verdict, reason, schema version, record ID, evidence fields, and provenance blockers.</p></div><div class="card"><div style="font-size:22px;margin-bottom:12px">🔀</div><h4 style="font-size:15px;font-weight:700;color:#fff;margin-bottom:8px">Exception queue</h4><p style="font-size:13px;color:rgba(255,255,255,.48);line-height:1.6">HOLD/REWRITE/REJECT records routed for expert adjudication and wording repair.</p></div><div class="card"><div style="font-size:22px;margin-bottom:12px">🔍</div><h4 style="font-size:15px;font-weight:700;color:#fff;margin-bottom:8px">Provenance report</h4><p style="font-size:13px;color:rgba(255,255,255,.48);line-height:1.6">Open review hashes, source URL hashes, witness IDs, reviewer attestations, and RO-Crate blockers.</p></div><div class="card"><div style="font-size:22px;margin-bottom:12px">📈</div><h4 style="font-size:15px;font-weight:700;color:#fff;margin-bottom:8px">Decision mix</h4><p style="font-size:13px;color:rgba(255,255,255,.48);line-height:1.6">ACCEPT, REWRITE, REJECT, HOLD, fine-tune-ready, and provenance-blocked counts by corpus slice.</p></div><div class="card"><div style="font-size:22px;margin-bottom:12px">⚠️</div><h4 style="font-size:15px;font-weight:700;color:#fff;margin-bottom:8px">Claim contamination register</h4><p style="font-size:13px;color:rgba(255,255,255,.48);line-height:1.6">Examples where source evidence supported a weaker claim than the candidate record asserted.</p></div><div class="card"><div style="font-size:22px;margin-bottom:12px">📋</div><h4 style="font-size:15px;font-weight:700;color:#fff;margin-bottom:8px">Executive readout</h4><p style="font-size:13px;color:rgba(255,255,255,.48);line-height:1.6">What can be reused, what needs rewrite, what cannot be reused, and what operational control is required next.</p></div>
+  </div>
+</div>
+</section>
+
+<!-- ROLES -->
+<section class="section">
+<div class="si">
+  <div class="label">Roles and decision rights</div>
+  <h2 class="h2">Who owns what.</h2>
+  <div style="display:flex;flex-direction:column;gap:12px;margin-top:32px">
+    <div style="display:flex;gap:16px;padding:16px 20px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:10px;align-items:flex-start"><div style="width:4px;border-radius:2px;background:#e8185d;align-self:stretch;flex-shrink:0"></div><div><div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:4px">AI Governance Lead</div><div style="font-size:13px;color:rgba(255,255,255,.45);line-height:1.55">Owns risk framing, success criteria, and decision policy for controlled reuse.</div></div></div><div style="display:flex;gap:16px;padding:16px 20px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:10px;align-items:flex-start"><div style="width:4px;border-radius:2px;background:#4f5ef7;align-self:stretch;flex-shrink:0"></div><div><div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:4px">Research Ops / Data Lead</div><div style="font-size:13px;color:rgba(255,255,255,.45);line-height:1.55">Owns corpus selection, source access, metadata hygiene, and export workflow.</div></div></div><div style="display:flex;gap:16px;padding:16px 20px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:10px;align-items:flex-start"><div style="width:4px;border-radius:2px;background:#a855f7;align-self:stretch;flex-shrink:0"></div><div><div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:4px">Subject-Matter Reviewer</div><div style="font-size:13px;color:rgba(255,255,255,.45);line-height:1.55">Confirms evidence spans, adjudicates exceptions, and approves claim rewrites.</div></div></div><div style="display:flex;gap:16px;padding:16px 20px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:10px;align-items:flex-start"><div style="width:4px;border-radius:2px;background:#f6ad55;align-self:stretch;flex-shrink:0"></div><div><div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:4px">Technical Owner</div><div style="font-size:13px;color:rgba(255,255,255,.45);line-height:1.55">Runs browser/CLI/API surfaces, preserves audit exports, and maps integration backlog.</div></div></div><div style="display:flex;gap:16px;padding:16px 20px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:10px;align-items:flex-start"><div style="width:4px;border-radius:2px;background:#48bb78;align-self:stretch;flex-shrink:0"></div><div><div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:4px">Legal / Provenance Reviewer</div><div style="font-size:13px;color:rgba(255,255,255,.45);line-height:1.55">Reviews licensing, confidentiality, source reuse, attestation, and sensitive-payload handling.</div></div></div><div style="display:flex;gap:16px;padding:16px 20px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:10px;align-items:flex-start"><div style="width:4px;border-radius:2px;background:rgba(255,255,255,.4);align-self:stretch;flex-shrink:0"></div><div><div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:4px">Executive Sponsor</div><div style="font-size:13px;color:rgba(255,255,255,.45);line-height:1.55">Receives decision mix, contamination examples, and go/no-go recommendation for rollout.</div></div></div>
+  </div>
+</div>
+</section>
+
+<!-- SUCCESS CRITERIA -->
+<section class="section alt">
+<div class="si">
+  <div class="label">Success criteria</div>
+  <h2 class="h2">How we know it worked.</h2>
+  <div class="g2" style="margin-top:32px">
+    <div class="card">
+      <div style="font-size:11px;font-weight:700;color:#4f5ef7;letter-spacing:.08em;text-transform:uppercase;margin-bottom:16px">Operational success</div>
+      <div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px;color:rgba(255,255,255,.55);line-height:1.55;align-items:flex-start"><span style="color:#4f5ef7;font-size:14px;flex-shrink:0">✓</span>Every pilot record has a traceable decision and source context.</div><div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px;color:rgba(255,255,255,.55);line-height:1.55;align-items:flex-start"><span style="color:#4f5ef7;font-size:14px;flex-shrink:0">✓</span>HOLD/REWRITE/REJECT records produce an actionable exception queue.</div><div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px;color:rgba(255,255,255,.55);line-height:1.55;align-items:flex-start"><span style="color:#4f5ef7;font-size:14px;flex-shrink:0">✓</span>Reviewers can explain why accepted claims are licensed for controlled reuse.</div><div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px;color:rgba(255,255,255,.55);line-height:1.55;align-items:flex-start"><span style="color:#4f5ef7;font-size:14px;flex-shrink:0">✓</span>Exported audit artifacts are complete enough for governance review.</div>
+    </div>
+    <div class="card">
+      <div style="font-size:11px;font-weight:700;color:#48bb78;letter-spacing:.08em;text-transform:uppercase;margin-bottom:16px">Commercial success</div>
+      <div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px;color:rgba(255,255,255,.55);line-height:1.55;align-items:flex-start"><span style="color:#48bb78;font-size:14px;flex-shrink:0">✓</span>The buyer sees a measurable claim contamination rate on its own corpus.</div><div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px;color:rgba(255,255,255,.55);line-height:1.55;align-items:flex-start"><span style="color:#48bb78;font-size:14px;flex-shrink:0">✓</span>The team identifies repeatable provenance blockers and schema gaps.</div><div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px;color:rgba(255,255,255,.55);line-height:1.55;align-items:flex-start"><span style="color:#48bb78;font-size:14px;flex-shrink:0">✓</span>The pilot produces a next-step integration backlog instead of a one-off demo.</div><div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px;color:rgba(255,255,255,.55);line-height:1.55;align-items:flex-start"><span style="color:#48bb78;font-size:14px;flex-shrink:0">✓</span>The sponsor can decide whether to expand to CLI/API or workflow integration.</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- GOVERNANCE MODEL -->
+<section class="section">
+<div class="si">
+  <div class="label">Governance model</div>
+  <h2 class="h2">How CAPAS stays in its lane.</h2>
+  <div class="g3" style="margin-top:32px">
+    <div class="card">
+      <div style="font-size:10px;font-weight:700;color:#e8185d;letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px">CAPAS gates supplied evidence only</div>
+      <p style="font-size:13px;color:rgba(255,255,255,.5);line-height:1.65">The engine does not infer hidden evidence, perform broad paper understanding, or certify scientific truth.</p>
+    </div>
+    <div class="card">
+      <div style="font-size:10px;font-weight:700;color:#f6ad55;letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px">Humans confirm spans</div>
+      <p style="font-size:13px;color:rgba(255,255,255,.5);line-height:1.65">Candidate extraction is an aid. A reviewer must confirm claim wording and evidence spans before the gate is treated as operational output.</p>
+    </div>
+    <div class="card">
+      <div style="font-size:10px;font-weight:700;color:#4f5ef7;letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px">External provenance verified outside browser</div>
+      <p style="font-size:13px;color:rgba(255,255,255,.5);line-height:1.65">Active checks for hashes, attestations, witness registries, and provenance packets require CLI/API verification.</p>
+    </div>
+  </div>
+</div>
+</section>
+<hr><div class="disclaimer"><ul><li>CAPAS gates supplied evidence fields; it does not infer hidden evidence, provide legal advice, certify broad scientific truth, or replace external review.</li><li>Decision examples shown here are illustrative. Schema, evidence contracts, and blockers are emitted by the deterministic gate, not by hidden model judgment.</li><li>Pilot and capacity figures are planning models, not booked production deployments, and must be calibrated against the organization's own review baseline.</li></ul></div><footer><a class="nav-logo" href="index.html"><img src="krenniq-logo.png" alt=""><span style="font-size:13px;font-weight:700;color:#fff;margin-left:8px">CAPAS · by Krenn-IQ</span></a><div style="display:flex;gap:20px"><a href="index.html">Home</a><a href="app.html">Gate App</a><a href="customer-brief.html">Methodology</a><a href="pilot-packet.html">Pilot</a><a href="audit.html">Audit</a></div><span class="foot-copy">© 2026 Krenn-IQ · CAPAS Schema v3</span></footer></div></body></html>

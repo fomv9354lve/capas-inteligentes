@@ -1,0 +1,20 @@
+/* CAPAS shared shell — the single nav/brand the whole site loads.
+   The "frontal": one definition, both views (Home + Gate App) hang off it. */
+nav {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 20px 48px; border-bottom: 1px solid rgba(255,255,255,0.06);
+  backdrop-filter: blur(12px); background: rgba(5,5,7,0.78);
+  position: sticky; top: 0; z-index: 100;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+.nav-logo { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; color: #fff; }
+.nav-logo-mark { height: 34px; width: auto; display: block; }
+.nav-logo-wm { display: inline-flex; flex-direction: column; line-height: 1.05; font-size: 15px; font-weight: 700; letter-spacing: 0.08em; }
+.nav-logo-wm small { font-size: 8px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.42); margin-top: 2px; }
+.nav-links { display: flex; gap: 4px; flex-wrap: wrap; }
+.nav-links a { color: rgba(255,255,255,0.5); text-decoration: none; font-size: 13px; letter-spacing: 0.04em; padding: 8px 16px; border-radius: 6px; transition: color 0.2s, background 0.2s; }
+.nav-links a:hover { color: #fff; background: rgba(255,255,255,0.07); }
+.nav-links a.active { color: #fff; border: 1px solid rgba(255,255,255,0.18); background: rgba(255,255,255,0.05); }
+.nav-cta { background: linear-gradient(135deg, #e8185d, #c4125a); color: #fff; font-size: 13px; font-weight: 600; padding: 9px 20px; border-radius: 6px; text-decoration: none; letter-spacing: 0.03em; transition: opacity 0.2s, transform 0.2s; }
+.nav-cta:hover { opacity: 0.85; transform: translateY(-1px); }
+@media (max-width: 900px) { nav { padding: 14px 18px; gap: 12px; flex-wrap: wrap; } .nav-links { gap: 2px; } .nav-links a { padding: 6px 10px; font-size: 12px; } }

@@ -42,6 +42,7 @@ VALIDATION_COMMANDS = [
     ("claim gate UI", ["benchmarks/verify_claim_gate_ui.py"]),
     ("claim gate browser E2E", ["benchmarks/verify_claim_gate_ui_browser.py"]),
     ("customer product assets", ["benchmarks/verify_customer_product_assets.py"]),
+    ("gate contracts single source", ["benchmarks/verify_gate_contracts_match.py"]),
     ("batch and API surfaces", ["benchmarks/verify_batch_and_api.py"]),
     ("external user validation packet", ["benchmarks/verify_external_user_validation.py"]),
     ("profile registration packet", ["benchmarks/verify_profile_registration_packet.py"]),
@@ -418,6 +419,18 @@ def _validate_no_angle_like(value: Any, field_name: str, errors: list[str]) -> N
         errors.append(f"{field_name} must not contain angle brackets or Unicode angle-bracket homoglyphs")
 
 
+DISALLOWED_CONTROL_REGEX = re.compile(r"[\u0000-\u001f\u007f]")
+
+
+def _contains_control_character(value: str) -> bool:
+    return bool(DISALLOWED_CONTROL_REGEX.search(value))
+
+
+def _validate_no_control_char(value: Any, field_name: str, errors: list[str]) -> None:
+    if isinstance(value, str) and _contains_control_character(value):
+        errors.append(f"{field_name} must not contain control characters")
+
+
 def external_claim_payload_schema() -> dict[str, Any]:
     claim_types = sorted(REQUIRED_DECISION_FIELDS)
     anchor_modes = sorted(ANCHOR_MODE_CONTRACTS)
@@ -616,9 +629,11 @@ def validate_external_payload(payload: dict[str, Any]) -> list[str]:
     if isinstance(claim.get("id"), str) and len(claim["id"]) > 256:
         errors.append("claim.id must be at most 256 characters")
     _validate_no_angle_like(claim.get("id"), "claim.id", errors)
+    _validate_no_control_char(claim.get("id"), "claim.id", errors)
     if isinstance(claim.get("text"), str) and len(claim["text"]) > 2000:
         errors.append("claim.text must be at most 2000 characters")
     _validate_no_angle_like(claim.get("text"), "claim.text", errors)
+    _validate_no_control_char(claim.get("text"), "claim.text", errors)
 
     claim_type = claim.get("type")
     if isinstance(claim_type, str) and claim_type not in REQUIRED_DECISION_FIELDS:

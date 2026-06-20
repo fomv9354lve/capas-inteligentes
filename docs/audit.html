@@ -1,62 +1,83 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CAPAS Audit Log</title>
-  <meta name="description" content="Local CAPAS decision audit log with filters and CSV export.">
-  <style>
-    :root { --bg:#09090b; --surface:#111113; --panel:#18181b; --border:#27272a; --text:#fafafa; --muted:#a1a1aa; --quiet:#8d8d99; --accent:#7c7fff; --green:#22c55e; --orange:#f97316; --red:#ef4444; --slate:#94a3b8; --radius:8px; --font:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; --mono:ui-monospace,SFMono-Regular,Menlo,monospace; }
-    * { box-sizing:border-box; }
-    body { max-width:1100px; margin:0 auto; background:var(--bg); color:var(--text); font-family:var(--font); line-height:1.5; -webkit-font-smoothing:antialiased; }
-    header { height:44px; display:flex; align-items:center; justify-content:space-between; gap:16px; padding:0 20px; border-bottom:1px solid var(--border); }
-    .brand { font-size:13px; font-weight:800; }
-    nav { display:flex; align-items:center; gap:2px; overflow-x:auto; scrollbar-width:none; }
-    nav::-webkit-scrollbar { display:none; }
-    .utility-label { color:var(--quiet); font-size:11px; font-weight:800; letter-spacing:.7px; text-transform:uppercase; }
-    a, button, select, input { font:inherit; }
-    .nav-link, button { min-height:28px; display:inline-flex; align-items:center; justify-content:center; padding:4px 10px; border:1px solid var(--border); border-radius:6px; background:var(--panel); color:var(--muted); text-decoration:none; font-size:12px; font-weight:700; white-space:nowrap; cursor:pointer; }
-    .nav-link[aria-current="page"] { border-color:rgba(124,127,255,.45); background:rgba(124,127,255,.12); color:#a5b4fc; }
-    main { padding:20px; }
-    .hero { border-bottom:1px solid var(--border); padding:18px 0 20px; }
-    h1 { margin:0 0 8px; font-size:28px; line-height:1.1; letter-spacing:0; }
-    p { max-width:760px; margin:0; color:var(--muted); font-size:13px; }
-    .toolbar { display:flex; flex-wrap:wrap; align-items:center; gap:8px; padding:14px 0; }
-    input, select { min-height:32px; border:1px solid var(--border); border-radius:6px; background:var(--panel); color:var(--text); padding:6px 9px; font-size:12px; }
-    input { flex:1 1 260px; min-width:0; }
-    .count { margin-left:auto; color:var(--quiet); font-size:12px; font-variant-numeric:tabular-nums; }
-    .table-wrap { overflow-x:auto; border:1px solid var(--border); border-radius:10px; background:var(--surface); }
-    table { width:100%; min-width:860px; border-collapse:collapse; }
-    th, td { padding:10px 12px; border-bottom:1px solid var(--border); text-align:left; font-size:12px; vertical-align:top; }
-    th { color:var(--quiet); font-size:10px; text-transform:uppercase; letter-spacing:.7px; background:var(--panel); }
-    tr:last-child td { border-bottom:0; }
-    .badge { display:inline-flex; padding:2px 8px; border:1px solid; border-radius:999px; font-size:10px; font-weight:900; letter-spacing:.6px; }
-    .ACCEPT { color:var(--green); border-color:rgba(34,197,94,.35); background:rgba(34,197,94,.08); }
-    .REWRITE { color:var(--orange); border-color:rgba(249,115,22,.35); background:rgba(249,115,22,.08); }
-    .REJECT { color:var(--red); border-color:rgba(239,68,68,.35); background:rgba(239,68,68,.08); }
-    .HOLD { color:var(--slate); border-color:rgba(148,163,184,.35); background:rgba(148,163,184,.08); }
-    .mono { font-family:var(--mono); }
-    .empty { padding:28px; color:var(--quiet); text-align:center; }
-    @media (max-width:860px) { header { height:auto; align-items:flex-start; flex-direction:column; padding:10px 16px; } main { padding:16px; } }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CAPAS Audit Log</title>
+<meta name="description" content="Local CAPAS decision audit log with filters and CSV export.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="capas-shell.css">
+<link rel="stylesheet" href="capas.css">
+<style>
+  .audit-main { max-width: 1180px; margin: 0 auto; padding: 0 48px 64px; }
+  .audit-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 18px 0; }
+  .audit-toolbar input, .audit-toolbar select {
+    min-height: 36px; border: 1px solid rgba(255,255,255,0.12); border-radius: 8px;
+    background: rgba(5,5,7,0.7); color: #fff; padding: 6px 11px; font-size: 13px; font-family: 'Inter', sans-serif;
+  }
+  .audit-toolbar input { flex: 1 1 260px; min-width: 0; }
+  button {
+    min-height: 36px; display: inline-flex; align-items: center; justify-content: center;
+    padding: 6px 14px; border: 1px solid rgba(255,255,255,0.14); border-radius: 8px;
+    background: rgba(5,5,7,0.7); color: rgba(255,255,255,0.8); font-size: 13px; font-weight: 600;
+    cursor: pointer; font-family: 'Inter', sans-serif; transition: border-color 0.2s, color 0.2s;
+  }
+  button:hover { color: #fff; border-color: rgba(232,24,93,0.5); }
+  .count { margin-left: auto; color: rgba(255,255,255,0.4); font-size: 12px; font-variant-numeric: tabular-nums; }
+  .table-wrap { overflow-x: auto; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; background: rgba(8,8,11,0.72); }
+  table { width: 100%; min-width: 860px; border-collapse: collapse; }
+  th, td { padding: 12px 14px; border-bottom: 1px solid rgba(255,255,255,0.06); text-align: left; font-size: 13px; vertical-align: top; }
+  th { color: rgba(255,255,255,0.4); font-size: 10px; text-transform: uppercase; letter-spacing: 0.7px; background: rgba(255,255,255,0.03); font-weight: 700; }
+  tr:last-child td { border-bottom: 0; }
+  td button { min-height: 28px; padding: 4px 12px; font-size: 12px; }
+  .badge { display: inline-flex; padding: 3px 10px; border: 1px solid; border-radius: 999px; font-size: 10px; font-weight: 800; letter-spacing: 0.6px; }
+  .ACCEPT { color: #28c840; border-color: rgba(40,200,100,0.35); background: rgba(40,200,100,0.08); }
+  .REWRITE { color: #00c8c8; border-color: rgba(0,200,200,0.4); background: rgba(0,200,200,0.1); }
+  .REJECT { color: #e8185a; border-color: rgba(232,24,90,0.45); background: rgba(232,24,90,0.1); }
+  .HOLD { color: #d4a820; border-color: rgba(200,150,10,0.45); background: rgba(200,150,10,0.12); }
+  .mono { font-family: 'Space Mono', monospace; }
+  .empty { padding: 28px; color: rgba(255,255,255,0.4); text-align: center; }
+  @media (max-width: 900px) { .audit-main { padding: 0 18px 48px; } }
+  .audit-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0 4px}
+  .audit-stat{background:rgba(14,14,24,0.7);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:16px 18px}
+  .audit-stat .as-num{font-size:26px;font-weight:800;line-height:1}
+  .audit-stat .as-label{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-top:8px}
+  .audit-stat.accept .as-num{color:#22c55e}.audit-stat.rewrite .as-num{color:#00c8c8}.audit-stat.reject .as-num{color:#e8185a}.audit-stat.hold .as-num{color:#d4a820}
+  @media(max-width:720px){.audit-stats{grid-template-columns:repeat(2,1fr)}}
+</style>
 </head>
 <body>
-  <header>
-    <div class="brand">CAPAS Claim Gate</div>
-    <nav aria-label="CAPAS primary navigation">
-      <a class="nav-link" href="index.html">Home</a>
-      <a class="nav-link" href="app.html">Gate App</a>
-      <a class="nav-link" href="customer-brief.html">Methodology</a>
-      <a class="nav-link" href="pilot-packet.html">Pilot</a>
-      <span class="utility-label" aria-current="page">Utility: Audit Log</span>
-    </nav>
-  </header>
-  <main>
-    <section class="hero">
-      <h1>Decision audit log</h1>
-      <p>This page reads the same local browser history used by the CAPAS Gate app. It is local to this browser unless exported.</p>
+<div class="bg-logo"><iframe src="logo_kreniq_volum_trico.html" title="CAPAS transition network logo" scrolling="no" tabindex="-1" aria-hidden="true"></iframe></div>
+<div class="bg-veil"></div>
+<div class="page">
+  <nav>
+    <a class="nav-logo" href="index.html"><img class="nav-logo-mark" src="krenniq-logo.png" alt="Krenn-IQ"><span class="nav-logo-wm">CAPAS<small>by Krenn-IQ</small></span></a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="app.html">Gate App</a>
+      <a href="customer-brief.html">Methodology</a>
+      <a href="pilot-packet.html">Pilot</a>
+      <a href="audit.html" class="active">Audit</a>
+    </div>
+    <a href="app.html" class="nav-cta">Test a Claim</a>
+  </nav>
+
+  <div class="section page-hero">
+    <div class="section-label">Utility · Audit log</div>
+    <h2 class="section-title">Decision audit log</h2>
+    <p class="section-sub">This page reads the same local browser history used by the CAPAS Gate app. It is local to this browser unless exported.</p>
+  </div>
+
+  <main class="audit-main">
+    <section class="audit-stats" aria-label="Verdict counts">
+      <div class="audit-stat accept"><div class="as-num" id="stat-ACCEPT">0</div><div class="as-label">ACCEPT</div></div>
+      <div class="audit-stat rewrite"><div class="as-num" id="stat-REWRITE">0</div><div class="as-label">REWRITE</div></div>
+      <div class="audit-stat reject"><div class="as-num" id="stat-REJECT">0</div><div class="as-label">REJECT</div></div>
+      <div class="audit-stat hold"><div class="as-num" id="stat-HOLD">0</div><div class="as-label">HOLD</div></div>
     </section>
-    <section class="toolbar" aria-label="Audit log controls">
+    <section class="audit-toolbar" aria-label="Audit log controls">
       <input id="filter" type="search" placeholder="Search claim ID, type, reason" aria-label="Search audit log">
       <select id="verdict" aria-label="Filter by verdict">
         <option value="">All verdicts</option>
@@ -76,6 +97,7 @@
       </table>
     </section>
   </main>
+</div>
   <script>
     const key = "capas_decision_history_v1";
     let historyRows = load();
@@ -103,6 +125,7 @@
     function render() {
       const visible = historyRows.filter(matches);
       document.getElementById("count").textContent = `${visible.length}/${historyRows.length} decisions`;
+      ["ACCEPT","REWRITE","REJECT","HOLD"].forEach(function(v){var el=document.getElementById("stat-"+v);if(el)el.textContent=historyRows.filter(function(x){return x.verdict===v;}).length;});
       const rows = document.getElementById("rows");
       if (!visible.length) {
         rows.innerHTML = `<tr><td colspan="6"><div class="empty">No matching decisions.</div></td></tr>`;
@@ -140,7 +163,7 @@
         item.id || "",
         payloadType(item),
         item.reason || ""
-      ].map((value) => `"${String(value).replace(/"/g, '""')}"`).join(","))).join("\n");
+      ].map((value) => { let s = String(value); if (/^[=+\-@\t\r]/.test(s)) s = "'" + s; return '"' + s.replace(/"/g, '""') + '"'; }).join(","))).join("\n");
       const blob = new Blob([csv], { type: "text/csv" });
       const link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
