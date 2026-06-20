@@ -75,6 +75,10 @@
     .claim-flow small { display: block; color: var(--quiet); font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 10px; }
     .decision-card { border-color: rgba(249,115,22,0.35); background: rgba(249,115,22,0.06); }
     .decision-card .badge { display: inline-flex; margin-bottom: 10px; }
+    .cascade { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
+    .cascade .card { min-height: 150px; padding: 14px; }
+    .cascade strong { display: block; color: var(--text); margin-bottom: 8px; }
+    .cascade span { color: var(--accent); font-size: 11px; font-weight: 800; letter-spacing: .6px; text-transform: uppercase; }
     .nav-hub { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     .nav-card {
       min-height: 132px;
@@ -110,6 +114,7 @@
     @media (max-width: 860px) {
       header, main, footer { width: min(100% - 28px, 1180px); }
       .hero, .metrics, .grid, .screens, .nav-hub { grid-template-columns: 1fr; }
+      .cascade { grid-template-columns: 1fr; }
       header { align-items: flex-start; flex-direction: column; gap: 12px; }
     }
   </style>
@@ -151,14 +156,6 @@
       </div>
     </section>
     <section>
-      <h2>Without CAPAS</h2>
-      <div class="grid">
-        <div class="card"><strong>Association becomes causality</strong><p>A cautious source sentence turns into a stronger claim boundary than the evidence supports.</p></div>
-        <div class="card"><strong>Pilot data becomes training data</strong><p>Candidate records move downstream before anyone separates licensed claims from rewrite/reject exceptions.</p></div>
-        <div class="card"><strong>Weak evidence becomes governed knowledge</strong><p>The drift is small at the sentence level. The downstream impact is not.</p></div>
-      </div>
-    </section>
-    <section>
       <h2>Claim Drift Example</h2>
       <p>CAPAS is built for the moment where a sourced scientific statement becomes a reusable data record. That is where wording drift creates downstream risk.</p>
       <div class="claim-flow" aria-label="Claim drift example">
@@ -174,6 +171,17 @@
         <div class="card"><strong>Record-level tools miss wording drift</strong><p>A dataset can have a source, license, and lineage while still containing a claim that says more than the source supports.</p></div>
         <div class="card"><strong>Fact-checkers answer a different question</strong><p>CAPAS does not ask whether the world is true. It asks whether this evidence packet licenses this claim boundary.</p></div>
         <div class="card"><strong>Governance needs a decision artifact</strong><p>ACCEPT, REWRITE, REJECT, and HOLD create an exception queue, not just another annotation or confidence score.</p></div>
+      </div>
+    </section>
+    <section>
+      <h2>Contamination Cascade</h2>
+      <p>Without a claim-level gate, a small sentence-level drift can survive preprocessing, enter a corpus, and reappear later as governed training evidence.</p>
+      <div class="cascade" aria-label="Claim contamination cascade">
+        <div class="card"><span>1. Paper</span><strong>Association observed</strong><p>Limited evidence, cautious wording, narrow conditions.</p></div>
+        <div class="card"><span>2. Drift</span><strong>Causality stated</strong><p>The reusable sentence says more than the source licenses.</p></div>
+        <div class="card"><span>3. Dataset</span><strong>Record accepted</strong><p>The claim now looks like a clean training datum.</p></div>
+        <div class="card"><span>4. Model</span><strong>Pattern learned</strong><p>The stronger claim can be reproduced downstream.</p></div>
+        <div class="card decision-card"><span>CAPAS</span><strong>Stops it here</strong><p>REWRITE before the drift becomes governed evidence.</p></div>
       </div>
     </section>
     <section>
@@ -219,13 +227,14 @@
       </div>
     </section>
     <section id="business-case">
-      <h2>Internal validation model</h2>
-      <p>These are planning assumptions for a controlled pilot, not customer production claims. Keep them below the product thesis: the pilot should measure claim contamination risk, decision mix, reviewer agreement, and provenance blockers on the buyer's own corpus.</p>
+      <h2>Example pilot corpus</h2>
+      <p>A controlled 500-record pilot makes the operation visible: what can be accepted, what needs rewrite, what must be rejected, and what lacks enough evidence to decide.</p>
       <div class="grid">
-        <div class="card"><strong>Internal stress test</strong><p>10k structured validation records were used to exercise schema and decision paths. This is not a public production deployment claim.</p></div>
-        <div class="card"><strong>Modeled decision mix</strong><p>34% rewritten or rejected in the internal validation model. Actual rate is corpus-dependent and must be measured in pilot.</p></div>
-        <div class="card"><strong>First pilot size</strong><p>Start with 500 records, then report decision mix, claim contamination examples, and provenance blockers.</p></div>
+        <div class="card"><strong>ACCEPT · 58%</strong><p>Evidence licenses the claim boundary for controlled reuse.</p></div>
+        <div class="card"><strong>REWRITE · 23%</strong><p>Evidence supports a weaker or narrower sentence than the candidate claim.</p></div>
+        <div class="card"><strong>REJECT/HOLD · 19%</strong><p>Claims are unsupported, blocked by missing evidence, or require adjudication.</p></div>
       </div>
+      <p class="footnotes">Illustrative planning mix only. Actual rates are corpus-dependent and must be measured in pilot. Internal stress tests used 10k structured validation records to exercise schema and decision paths, not to claim production deployment.</p>
     </section>
     <section class="footnotes" aria-label="Modeling notes and disclaimers">
       <h2>Modeling notes</h2>

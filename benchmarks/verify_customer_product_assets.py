@@ -26,9 +26,9 @@ ARGILLA_EXAMPLE = ROOT / "examples" / "argilla_capas_record.json"
 
 
 REQUIRED = {
-    "landing page with narrative": (PRODUCT, ["Deterministic Claim Admissibility Engine", "Stop claim drift", "Why claim admissibility?", "Why not a fact-checker or provenance tool?", "The moat"]),
+    "landing page with narrative": (PRODUCT, ["Deterministic Claim Admissibility Engine", "Stop claim drift", "Why claim admissibility?", "Contamination Cascade", "Why not a fact-checker or provenance tool?", "The moat"]),
     "landing page screenshots": (PRODUCT, ["CAPAS screenshot mock", "Claim drift example", "Association supported; causality not licensed"]),
-    "product business case": (PRODUCT, ["Without CAPAS", "Audit artifact", "Internal validation model", "claim contamination", "10k", "Modeling notes"]),
+    "product business case": (PRODUCT, ["Contamination Cascade", "Audit artifact", "Example pilot corpus", "ACCEPT · 58%", "10k", "Modeling notes"]),
     "designed methodology page": (BRIEF_HTML, ["Methodology", "Deterministic claim admissibility", "Pilot model assumptions", "Disclaimers"]),
     "designed pilot packet": (PACKET_HTML, ["CAPAS Pilot Packet", "Two-week operating plan", "Roles and decision rights", "Success criteria", "Governance model", "Required footnotes"]),
     "guided no-code form": (UI, ["CAPAS workflow", "Guided Claim Builder", "Evidence contract", "builder-preview", "buildGuidedPayload", "Build guided payload", "evidence field for"]),
