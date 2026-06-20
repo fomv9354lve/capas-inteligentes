@@ -49,7 +49,7 @@ REQUIRED = {
     "paper ingestion report": (UI, ["paper_ingestion_preview", "buildIngestionReport", "source_metadata"]),
     "executive dashboard": (UI, ["Executive batch and provenance dashboard", "metric-ft-ready", "metric-provenance", "Batch training readiness preview"]),
     "pilot roi calculator": (UI, ["Pilot capacity model", "updateRoiCalculator", "roi-hours", "review capacity planning estimate"]),
-    "workflow view": (UI, ["Claim admissibility workflow", "Operational claim review stages", "Export audit trail"]),
+    "workflow view": (UI, ["Claim admissibility workflow", "Select mode", "Inspect decision"]),
     "pilot metrics": (METRICS, ["fine_tune_ready_count", "hours_avoided", "capacity_value_avoided_usd", "simulated_case_study"]),
     "vertical demo": (BRIEF, ["Vertical demo: AI governance", "pharma evidence review", "model-risk"]),
     "executive so what": (BRIEF, ["Executive so what", "Training Data Assurance for Scientific AI", "Reduce senior-review hours"]),

@@ -200,3 +200,51 @@ body { background: #080810; }
 .shot-row.rewrite{background:rgba(0,200,200,0.07)!important;border-color:rgba(0,200,200,0.18)!important}
 .shot-row.reject{background:rgba(232,24,90,0.07)!important;border-color:rgba(232,24,90,0.18)!important}
 .shot-row.hold{background:rgba(200,150,10,0.07)!important;border-color:rgba(200,150,10,0.18)!important}
+
+/* ═══ MOCK 2-COLUMN LAYOUT + RIGHT SIDEBAR (Bloomberg-terminal shell) ═══
+   Main workflow on the left, a sticky operational sidebar on the right —
+   Local Audit Trail metrics, Pilot capacity model (ROI), Workspace Settings.
+   Pure presentation: every element keeps its original id, so the engine's
+   getElementById() bindings are unchanged. */
+/* app.app-body is a flex column whose sections carry explicit `order`
+   (hero=1, workflow-strip=2, footer high). The wrapper must sit between the
+   strip and the footer, so it needs an explicit order too. */
+.app-layout { order: 5; display: grid; grid-template-columns: minmax(0,1fr) 320px; gap: 20px; align-items: start; padding: 8px 0 48px; }
+.app-main { min-width: 0; display: flex; flex-direction: column; gap: 20px; }
+.app-main > section, .app-main > .history-section { margin: 0 !important; }
+.sidebar { display: flex; flex-direction: column; gap: 16px; position: sticky; top: 76px; }
+.side-card { background: rgba(14,14,24,0.92); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 16px; backdrop-filter: blur(8px); }
+.side-card-title { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: rgba(255,255,255,0.3); margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.schema-badge { font-size: 9px; font-weight: 700; color: #7c7fff; border: 1px solid rgba(124,127,255,0.3); padding: 2px 7px; border-radius: 4px; letter-spacing: .05em; }
+.audit-row { display: flex; align-items: center; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.audit-row:last-child { border-bottom: none; }
+.audit-label { display: flex; align-items: center; gap: 8px; font-size: 12px; color: rgba(255,255,255,0.5); }
+.audit-val { font-size: 14px; font-weight: 800; color: #fff; }
+.dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; background: rgba(255,255,255,0.2); }
+.dot-neutral { background: rgba(255,255,255,0.2); }
+.dot-accept { background: #22c55e; } .val-accept { color: #22c55e; }
+.dot-rewrite { background: #00c8c8; } .val-rewrite { color: #00c8c8; }
+.dot-reject { background: #e8185a; } .val-reject { color: #e8185a; }
+.dot-hold { background: #d4a820; }
+.side-card .roi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+.roi-field { display: flex; flex-direction: column; gap: 4px; }
+.roi-field label { font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.3); letter-spacing: .03em; }
+.roi-field input { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 7px 9px; font-size: 13px; font-weight: 700; color: #e2e2f0; outline: none; width: 100%; }
+.roi-field input:focus { border-color: rgba(232,24,93,0.4); }
+.side-card .roi-result { background: rgba(232,24,93,0.06); border: 1px solid rgba(232,24,93,0.16); border-radius: 8px; padding: 12px; display: flex; flex-direction: column; gap: 4px; }
+.side-card .roi-result strong { font-size: 22px; font-weight: 800; color: #e8185d; }
+.side-card .roi-result span { font-size: 10.5px; color: rgba(255,255,255,0.42); line-height: 1.5; }
+.settings-row { display: flex; align-items: center; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.settings-row:last-child { border-bottom: none; }
+.settings-label { font-size: 12px; color: rgba(255,255,255,0.45); }
+.settings-val { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 4px; background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.4); }
+.settings-val.val-none { color: #e8185a; background: rgba(232,24,90,0.08); }
+.side-btns { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.side-btn { font-size: 11px; color: rgba(255,255,255,0.45); border: 1px solid rgba(255,255,255,0.1); padding: 5px 10px; border-radius: 5px; background: transparent; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; }
+.side-btn:hover { color: #fff; border-color: rgba(232,24,93,0.4); }
+@media (max-width: 1080px) {
+  .app-layout { grid-template-columns: 1fr; }
+  .sidebar { position: static; flex-direction: row; flex-wrap: wrap; }
+  .sidebar .side-card { flex: 1 1 280px; }
+}
+@media (max-width: 640px) { .sidebar { flex-direction: column; } }

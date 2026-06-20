@@ -2022,59 +2022,8 @@
   <button class="workflow-step" data-flow-jump="gate" type="button" onclick="goToPhase('gate')" aria-label="Inspect the CAPAS decision"><strong>Inspect decision</strong><span>Read the verdict, blockers, fine-tune readiness, and next operational action.</span></button>
 </section>
 
-<section class="exec-dashboard" aria-label="Executive batch and provenance dashboard">
-  <div class="exec-card"><strong id="metric-total">0</strong><span>claims in local audit trail</span></div>
-  <div class="exec-card"><strong id="metric-accept">0</strong><span>ACCEPT</span></div>
-  <div class="exec-card"><strong id="metric-rewrite">0</strong><span>REWRITE</span></div>
-  <div class="exec-card"><strong id="metric-reject">0</strong><span>REJECT</span></div>
-  <div class="exec-card"><strong id="metric-ft-ready">0</strong><span>CLI-verified training ready</span></div>
-  <div class="exec-card"><strong id="metric-provenance">0</strong><span>provenance-blocked</span></div>
-</section>
-
-<section class="business-system" aria-label="Scientific claim admissibility system">
-  <div class="panel" aria-labelledby="workflow-view-title">
-    <div class="panel-header">
-      <h2 class="panel-title" id="workflow-view-title">Claim admissibility workflow</h2>
-      <span class="panel-tag">mode to audit trail</span>
-    </div>
-    <div class="workflow-board" aria-label="Operational claim review stages">
-      <div class="workflow-stage"><strong>1. Select mode</strong><span>Choose guided builder, raw JSON, batch evaluation, or paper/text ingestion.</span></div>
-      <div class="workflow-stage"><strong>2. Build evidence</strong><span>Provide typed evidence fields or confirm extracted candidate spans.</span></div>
-      <div class="workflow-stage"><strong>3. Run gate</strong><span>Schema v3 and claim-type rules return ACCEPT, REWRITE, REJECT, or HOLD.</span></div>
-      <div class="workflow-stage"><strong>4. Inspect decision</strong><span>Review reason, schema errors, provenance blockers, and fine-tune readiness.</span></div>
-      <div class="workflow-stage"><strong>5. Export audit trail</strong><span>Export CSV or share app links without embedding sensitive payloads.</span></div>
-    </div>
-  </div>
-  <div class="panel" aria-labelledby="roi-calculator-title">
-    <div class="panel-header">
-      <h2 class="panel-title" id="roi-calculator-title">Pilot capacity model</h2>
-      <span class="panel-tag">planning estimate</span>
-    </div>
-    <div class="roi-grid">
-      <div class="guided-field">
-        <label for="roi-claims">Candidate claims</label>
-        <input id="roi-claims" type="number" min="1" value="1000" aria-label="Pilot candidate claim count" oninput="updateRoiCalculator()">
-      </div>
-      <div class="guided-field">
-        <label for="roi-manual">Manual min / claim</label>
-        <input id="roi-manual" type="number" min="1" value="30" aria-label="Manual review minutes per claim" oninput="updateRoiCalculator()">
-      </div>
-      <div class="guided-field">
-        <label for="roi-triage">CAPAS min / claim</label>
-        <input id="roi-triage" type="number" min="1" value="5" aria-label="CAPAS triage minutes per claim" oninput="updateRoiCalculator()">
-      </div>
-      <div class="guided-field">
-        <label for="roi-rate">Expert rate / hour</label>
-        <input id="roi-rate" type="number" min="1" value="180" aria-label="Expert reviewer hourly rate" oninput="updateRoiCalculator()">
-      </div>
-      <div class="roi-result" role="status" aria-live="polite">
-        <strong id="roi-hours">417h</strong>
-        <span id="roi-value">~$75,060 review capacity planning estimate. Calibrate against the buyer baseline; this is not booked savings.</span>
-      </div>
-    </div>
-  </div>
-</section>
-
+<div class="app-layout" aria-label="Claim admissibility workflow">
+<div class="app-main">
 <section class="panel guided-panel" aria-labelledby="guided-title">
   <div class="panel-header">
     <h2 class="panel-title" id="guided-title">CAPAS workflow</h2>
@@ -2349,43 +2298,44 @@
     <div class="empty-state">No decisions yet.</div>
   </div>
 </div>
-<section class="settings-panel" aria-labelledby="workspace-settings-title">
-  <div class="panel-header">
-    <h2 class="panel-title" id="workspace-settings-title">Workspace settings</h2>
-    <div class="settings-badge-row" aria-label="System status">
-      <span class="topbar-badge" id="schema-version-badge">schema v3</span>
-      <span class="topbar-badge" id="shared-payload-badge" hidden>shared payload</span>
-      <span class="topbar-badge">v13 · end-to-end gaps</span>
+</div>
+<aside class="sidebar" aria-label="Workspace sidebar">
+  <div class="side-card" aria-label="Executive batch and provenance dashboard">
+    <div class="side-card-title">Local Audit Trail <span class="schema-badge">V13</span></div>
+    <div class="audit-row"><span class="audit-label"><span class="dot dot-neutral"></span>Total claims</span><span class="audit-val" id="metric-total">0</span></div>
+    <div class="audit-row"><span class="audit-label"><span class="dot dot-accept"></span>ACCEPT</span><span class="audit-val val-accept" id="metric-accept">0</span></div>
+    <div class="audit-row"><span class="audit-label"><span class="dot dot-rewrite"></span>REWRITE</span><span class="audit-val val-rewrite" id="metric-rewrite">0</span></div>
+    <div class="audit-row"><span class="audit-label"><span class="dot dot-reject"></span>REJECT</span><span class="audit-val val-reject" id="metric-reject">0</span></div>
+    <div class="audit-row"><span class="audit-label"><span class="dot dot-hold"></span>CLI-verified training ready</span><span class="audit-val" id="metric-ft-ready">0</span></div>
+    <div class="audit-row"><span class="audit-label"><span class="dot dot-reject"></span>Provenance blocked</span><span class="audit-val" id="metric-provenance">0</span></div>
+  </div>
+  <div class="side-card" aria-labelledby="roi-calculator-title">
+    <div class="side-card-title" id="roi-calculator-title">Pilot capacity model</div>
+    <div class="roi-grid">
+      <div class="roi-field"><label for="roi-claims">Candidate claims</label><input id="roi-claims" type="number" min="1" value="1000" aria-label="Pilot candidate claim count" oninput="updateRoiCalculator()"></div>
+      <div class="roi-field"><label for="roi-manual">Manual min / claim</label><input id="roi-manual" type="number" min="1" value="30" aria-label="Manual review minutes per claim" oninput="updateRoiCalculator()"></div>
+      <div class="roi-field"><label for="roi-triage">CAPAS min / claim</label><input id="roi-triage" type="number" min="1" value="5" aria-label="CAPAS triage minutes per claim" oninput="updateRoiCalculator()"></div>
+      <div class="roi-field"><label for="roi-rate">Expert rate / hour</label><input id="roi-rate" type="number" min="1" value="180" aria-label="Expert reviewer hourly rate" oninput="updateRoiCalculator()"></div>
+    </div>
+    <div class="roi-result" role="status" aria-live="polite"><strong id="roi-hours">417h</strong><span id="roi-value">~$75,060 review capacity planning estimate. Calibrate against the buyer baseline; this is not booked savings.</span></div>
+  </div>
+  <div class="side-card">
+    <div class="side-card-title">Workspace Settings</div>
+    <div class="settings-row"><span class="settings-label">Schema</span><span class="settings-val" id="schema-version-badge">schema v3</span></div>
+    <div class="settings-row"><span class="settings-label">Shared payload</span><span class="settings-val" id="shared-payload-badge" hidden>shared payload</span></div>
+    <div class="settings-row"><span class="settings-label">Version</span><span class="settings-val">v13</span></div>
+    <div class="settings-row"><span class="settings-label">LLM in gate</span><span class="settings-val val-none">NONE</span></div>
+    <div class="side-btns">
+      <button class="side-btn" id="help-btn" aria-label="Open keyboard shortcut and pipeline help" aria-expanded="false" aria-controls="help-modal" onclick="openHelpModal(this)">Help</button>
+      <a class="side-btn" id="history-toggle" href="audit.html" aria-label="Open audit trail page">Audit Log</a>
+      <button class="side-btn" id="sensitive-mode-toggle" aria-label="Toggle sensitive data mode for share and export" title="Sensitive mode copies app-only links and redacts payloads in CSV export." onclick="toggleSensitiveMode()">Sensitive: Off</button>
+      <button class="side-btn" id="theme-toggle" aria-label="Toggle light and dark theme" onclick="toggleTheme()">Theme</button>
+      <a class="side-btn" href="https://github.com/fomv9354lve/capas-inteligentes" target="_blank" rel="noopener noreferrer" aria-label="Open CAPAS Claim Gate source repository">Source repository</a>
+      <a class="side-btn" href="https://github.com/fomv9354lve/capas-inteligentes/issues" target="_blank" rel="noopener noreferrer">Issues</a>
     </div>
   </div>
-  <div class="settings-grid">
-    <div class="settings-card">
-      <strong>Help</strong>
-      <p>Open shortcuts, schema rules, workflow modes, and provenance limits without mixing them into product navigation.</p>
-      <div class="settings-actions">
-        <button class="copy-btn" id="help-btn" aria-label="Open keyboard shortcut and pipeline help" aria-expanded="false" aria-controls="help-modal" onclick="openHelpModal(this)">Open Help</button>
-      </div>
-    </div>
-    <div class="settings-card">
-      <strong>Audit</strong>
-      <p>Local browser history, CSV export, sensitive mode, and app-only sharing live here as operational controls.</p>
-      <div class="settings-actions">
-        <a class="copy-btn" id="history-toggle" href="audit.html" aria-label="Open audit trail page">Open Audit Log</a>
-        <button class="copy-btn" id="sensitive-mode-toggle" aria-label="Toggle sensitive data mode for share and export" title="Sensitive mode copies app-only links and redacts payloads in CSV export." onclick="toggleSensitiveMode()">Sensitive: Off</button>
-      </div>
-    </div>
-    <div class="settings-card">
-      <strong>System</strong>
-      <p>Theme, source repository, issues, release, and implementation references. These are utilities, not site sections.</p>
-      <div class="settings-actions">
-        <button class="copy-btn" id="theme-toggle" aria-label="Toggle light and dark theme" onclick="toggleTheme()">Theme</button>
-        <a class="copy-btn" href="https://github.com/fomv9354lve/capas-inteligentes" target="_blank" rel="noopener noreferrer" aria-label="Open CAPAS Claim Gate source repository">Source repository</a>
-        <a class="copy-btn" href="https://github.com/fomv9354lve/capas-inteligentes/issues" target="_blank" rel="noopener noreferrer">Issues</a>
-        <a class="copy-btn" href="https://github.com/fomv9354lve/capas-inteligentes/releases/tag/v0.1.1" target="_blank" rel="noopener noreferrer">Release v0.1.1</a>
-      </div>
-    </div>
-  </div>
-</section>
+</aside>
+</div>
 <footer class="app-footer">
   CAPAS structures and gates supplied claim evidence. It does not infer hidden evidence or certify broad scientific truth.
   <div class="footer-links" aria-label="Project links">
