@@ -102,16 +102,17 @@ HARNESS = r"""
     ok("help_modal_has_aria_modal", document.getElementById("help-modal").getAttribute("aria-modal") === "true");
     ok("help_modal_focuses_inside", document.getElementById("help-modal").contains(document.activeElement));
     ok("help_modal_mentions_pipeline", document.getElementById("help-modal-backdrop").textContent.includes("retrieve"));
-    ok("help_modal_lists_claim_type_requirements", document.querySelectorAll("#help-modal .claim-type-list li").length === 11);
+    ok("help_modal_lists_claim_type_requirements", document.querySelectorAll("#help-modal .claim-type-list li").length === 12);
     ok("help_modal_lists_schema_v2_financial_fields", document.getElementById("help-modal").textContent.includes("financial_metric_claim") && document.getElementById("help-modal").textContent.includes("metric_period_match"));
     ok("help_modal_lists_schema_v2_statistical_fields", document.getElementById("help-modal").textContent.includes("statistical_confidence") && document.getElementById("help-modal").textContent.includes("effect_direction_confirmed"));
     ok("help_modal_lists_schema_v2_reproducibility_fields", document.getElementById("help-modal").textContent.includes("reproducibility_check") && document.getElementById("help-modal").textContent.includes("independent_reproduction_pass"));
     ok("help_modal_lists_schema_v3_gap_fields", document.getElementById("help-modal").textContent.includes("causal_mechanism_claim") && document.getElementById("help-modal").textContent.includes("multimodal_evidence_claim"));
+    ok("help_modal_lists_programming_contract", document.getElementById("help-modal").textContent.includes("programming_language_behavior_claim") && document.getElementById("help-modal").textContent.includes("code_snippet"));
     ok("help_modal_documents_fine_tune_readiness", document.getElementById("help-modal").textContent.includes("fine_tune_ready") && document.getElementById("help-modal").textContent.includes("hash-verified external review packet"));
     ok("help_modal_documents_cli_provenance_verification", document.getElementById("help-modal").textContent.includes("The static browser UI previews these criteria") && document.getElementById("help-modal").textContent.includes("capas.py"));
     ok("help_modal_documents_numeric_ranges", document.getElementById("help-modal").textContent.includes("p_value") && document.getElementById("help-modal").textContent.includes("between 0 and 1"));
     ok("help_modal_documents_training_evidence_types", document.getElementById("help-modal").textContent.includes("training_evidence.source_backed_evidence") && document.getElementById("help-modal").textContent.includes("must be booleans"));
-    ok("help_modal_documents_anchor_mode_boundary", document.getElementById("help-modal").textContent.includes("absolute_anchor") && document.getElementById("help-modal").textContent.includes("Other anchor modes remain"));
+    ok("help_modal_documents_anchor_mode_boundary", document.getElementById("help-modal").textContent.includes("absolute_anchor") && document.getElementById("help-modal").textContent.includes("relative_anchor") && document.getElementById("help-modal").textContent.includes("bounded"));
     ok("help_modal_documents_guided_builder", document.getElementById("help-modal").textContent.includes("Guided claim builder") && document.getElementById("help-modal").textContent.includes("redraws required evidence fields"));
     closeHelpModal();
     ok("help_modal_closes", !document.getElementById("help-modal-backdrop").classList.contains("open"));
@@ -168,6 +169,11 @@ HARNESS = r"""
     decide();
     const guidedSystematicDecision = JSON.parse(document.getElementById("output").textContent);
     ok("guided_programmatic_type_payload_decides_without_missing_fields", guidedSystematicDecision.verdict !== "HOLD" && guidedSystematicDecision.schema_errors.length === 0, JSON.stringify(guidedSystematicDecision));
+    ok("guided_decision_emits_admissibility_certificate",
+      guidedSystematicDecision.admissibility_certificate?.calculus_version === "capas-admissibility-calculus-v1" &&
+      guidedSystematicDecision.admissibility_certificate?.lattice?.reuse_boundary === "claim_licensed" &&
+      guidedSystematicDecision.admissibility_certificate?.next_action?.kind === "verify_provenance_for_training",
+      JSON.stringify(guidedSystematicDecision.admissibility_certificate || {}));
     loadVerticalDemo("AI_GOVERNANCE");
     ok("vertical_demo_loads_ai_governance", document.getElementById("input").value.includes("ai_gov_training_claim_001") && document.querySelector(".verdict-badge.ACCEPT"));
 
@@ -207,7 +213,9 @@ HARNESS = r"""
     loadSample("REWRITE");
     ok("rewrite_verdict", document.querySelector(".verdict-badge.REWRITE"));
     ok("rewrite_diff_visible", document.querySelector(".rewrite-diff"));
-    ok("syntax_highlight_visible", document.querySelector("#output .json-key"));
+    ok("rewrite_resolution_path_visible", document.getElementById("verdict-area").textContent.includes("Operational resolution") && document.getElementById("verdict-area").textContent.includes("edit_and_resubmit"));
+    ok("rewrite_resolution_path_is_live_region", document.querySelector(".action-block")?.getAttribute("aria-label") === "Operational resolution path" && document.querySelector(".action-block")?.getAttribute("aria-live") === "polite");
+    ok("syntax_highlight_function_available", syntaxHighlight('{"verdict":"REWRITE"}').includes("json-key"));
 
     loadSample("REJECT");
     ok("reject_verdict", document.querySelector(".verdict-badge.REJECT"));
@@ -225,6 +233,8 @@ HARNESS = r"""
     ok("conflict_sample_button_accepts", document.querySelector(".verdict-badge.ACCEPT") && document.getElementById("type-label").textContent === "evidence_conflict_claim");
     loadSample("MULTIMODAL");
     ok("multimodal_sample_button_accepts", document.querySelector(".verdict-badge.ACCEPT") && document.getElementById("type-label").textContent === "multimodal_evidence_claim");
+    loadSample("CODE");
+    ok("programming_sample_button_accepts", document.querySelector(".verdict-badge.ACCEPT") && document.getElementById("type-label").textContent === "programming_language_behavior_claim" && document.getElementById("output").textContent.includes("observed execution matches expected output"));
 
     document.getElementById("input").value = JSON.stringify([samples.ACCEPT, samples.REJECT], null, 2);
     decideBatch();
@@ -234,10 +244,18 @@ HARNESS = r"""
     ok("batch_per_item_table_visible", document.querySelectorAll(".batch-row").length === 2);
     ok("batch_per_item_reason_visible", document.querySelector(".batch-row-reason")?.textContent.length > 0);
     ok("batch_per_item_fine_tune_summary_visible", document.querySelector(".batch-row-ft")?.textContent.includes("FT"));
+    ok("batch_resolution_queue_visible", document.getElementById("verdict-area").textContent.includes("Batch resolution queue") && document.getElementById("verdict-area").textContent.includes("Exception queue"));
     ok("batch_training_readiness_preview_visible", document.querySelector(".fine-tune-block")?.textContent.includes("Batch training readiness preview"));
     ok("batch_training_readiness_preview_is_live_region", document.querySelector(".fine-tune-block")?.getAttribute("aria-label") === "Batch training readiness preview status" && document.querySelector(".fine-tune-block")?.getAttribute("aria-live") === "polite");
     ok("batch_output_json", document.getElementById("output").textContent.includes('"batch_mode": "decide"'));
     ok("batch_schema_version", document.getElementById("output").textContent.includes('"schema_version": "capas-claim-payload-v3"'));
+    const batchDecision = JSON.parse(document.getElementById("output").textContent);
+    ok("batch_emits_admissibility_summary_and_exception_queue",
+      batchDecision.admissibility_summary?.reuse_boundaries?.claim_licensed === 1 &&
+      batchDecision.admissibility_summary?.reuse_boundaries?.claim_excluded === 1 &&
+      Array.isArray(batchDecision.exception_queue) &&
+      batchDecision.exception_queue.length === 2,
+      JSON.stringify(batchDecision.admissibility_summary || {}));
     document.getElementById("input").value = JSON.stringify(samples.ACCEPT, null, 2);
     decideBatch();
     ok("batch_single_object_autowrap", document.getElementById("output").textContent.includes('"item_count": 1'));

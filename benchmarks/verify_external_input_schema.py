@@ -113,6 +113,83 @@ ADVERSARIAL_PAYLOADS = [
         "training_evidence.source_backed_evidence must be a boolean",
     ),
     (
+        "training_evidence_nested_in_evidence",
+        {
+            "claim": {
+                "id": "training_evidence_nested_in_evidence",
+                "type": "universal_anchor_claim",
+                "text": "Readiness evidence must live at the payload root, not inside evidence.",
+            },
+            "evidence": {
+                "anchor_mode": "absolute_anchor",
+                "local_property_tests_pass": True,
+                "universal_anchor_pass": True,
+                "training_evidence": {
+                    "source_backed_evidence": True,
+                    "external_review": "false",
+                    "semantic_alignment": True,
+                    "witness_independence": True,
+                },
+            },
+        },
+        "evidence.training_evidence is not allowed; move training_evidence to the payload root",
+    ),
+    (
+        "unknown_root_field",
+        {
+            "claim": {
+                "id": "unknown_root_field",
+                "type": "exact_model_solution",
+                "text": "Root-level unregistered metadata must not be silently accepted.",
+            },
+            "evidence": {"abs_error": 0.0, "tolerance": 0.01},
+            "silent_bypass": True,
+        },
+        "payload.silent_bypass is not allowed by capas-claim-payload-v3",
+    ),
+    (
+        "unknown_claim_field",
+        {
+            "claim": {
+                "id": "unknown_claim_field",
+                "type": "exact_model_solution",
+                "text": "Claim objects must not carry unregistered control fields.",
+                "verdict": "ACCEPT",
+            },
+            "evidence": {"abs_error": 0.0, "tolerance": 0.01},
+        },
+        "claim.verdict is not allowed by capas-claim-payload-v3",
+    ),
+    (
+        "unknown_evidence_field_for_type",
+        {
+            "claim": {
+                "id": "unknown_evidence_field_for_type",
+                "type": "statistical_confidence",
+                "text": "Statistical confidence claims must not borrow unrelated evidence fields.",
+            },
+            "evidence": {
+                "p_value": 0.01,
+                "alpha": 0.05,
+                "effect_direction_confirmed": True,
+                "universal_anchor_pass": True,
+            },
+        },
+        "evidence.universal_anchor_pass is not allowed for claim.type statistical_confidence",
+    ),
+    (
+        "unsupported_claim_type_registry_gap",
+        {
+            "claim": {
+                "id": "unsupported_claim_type_registry_gap",
+                "type": "quantum_oracle_claim",
+                "text": "Unknown claim types require a registered evidence contract.",
+            },
+            "evidence": {"oracle_pass": True},
+        },
+        "requires a registered evidence contract before CAPAS can decide it",
+    ),
+    (
         "oversized_claim_id",
         {
             "claim": {
@@ -331,6 +408,62 @@ SEMANTIC_PAYLOADS = [
         "anchor_mode",
     ),
     (
+        "relative_anchor_rewrite_limited",
+        {
+            "claim": {
+                "id": "relative_anchor_rewrite_limited",
+                "type": "universal_anchor_claim",
+                "text": "The result is universally physically correct because it matches another benchmark.",
+            },
+            "evidence": {
+                "anchor_mode": "relative_anchor",
+                "local_property_tests_pass": True,
+                "relative_anchor_reference": "benchmark_model_v1",
+                "relative_anchor_comparison_pass": True,
+            },
+        },
+        "REWRITE",
+        "not universal physical correctness",
+    ),
+    (
+        "empirical_anchor_rewrite_limited",
+        {
+            "claim": {
+                "id": "empirical_anchor_rewrite_limited",
+                "type": "universal_anchor_claim",
+                "text": "The result is universally physically correct because it agrees with empirical data.",
+            },
+            "evidence": {
+                "anchor_mode": "empirical_anchor",
+                "local_property_tests_pass": True,
+                "empirical_reference_present": True,
+                "empirical_tolerance": 0.02,
+                "empirical_anchor_pass": True,
+            },
+        },
+        "REWRITE",
+        "bounded empirical agreement",
+    ),
+    (
+        "benchmark_anchor_rewrite_limited",
+        {
+            "claim": {
+                "id": "benchmark_anchor_rewrite_limited",
+                "type": "universal_anchor_claim",
+                "text": "The result is universally physically correct because it passes a benchmark.",
+            },
+            "evidence": {
+                "anchor_mode": "benchmark_anchor",
+                "local_property_tests_pass": True,
+                "benchmark_name": "capas_benchmark_suite",
+                "benchmark_metric": "pass_rate",
+                "benchmark_pass": True,
+            },
+        },
+        "REWRITE",
+        "benchmark-limited",
+    ),
+    (
         "statistical_confidence_accept",
         {
             "claim": {
@@ -454,6 +587,94 @@ SEMANTIC_PAYLOADS = [
         "cross-modal alignment",
     ),
     (
+        "programming_language_behavior_claim_accept",
+        {
+            "claim": {
+                "id": "programming_language_behavior_claim_accept",
+                "type": "programming_language_behavior_claim",
+                "text": "Python list.append adds the new element to the end of the list.",
+            },
+            "evidence": {
+                "language": "Python",
+                "language_version": "3.12",
+                "claim_api": "list.append",
+                "code_snippet": "items = ['a', 'b']\nitems.append('c')\nprint(items)",
+                "expected_output": "['a', 'b', 'c']",
+                "observed_output": "['a', 'b', 'c']",
+                "execution_observed": True,
+                "runtime_environment_declared": True,
+                "docs_reference": "https://docs.python.org/3/tutorial/datastructures.html",
+            },
+        },
+        "ACCEPT",
+        "observed execution matches expected output",
+    ),
+    (
+        "programming_language_behavior_claim_rewrite_docs_only",
+        {
+            "claim": {
+                "id": "programming_language_behavior_claim_rewrite_docs_only",
+                "type": "programming_language_behavior_claim",
+                "text": "Python list.remove removes the first matching value.",
+            },
+            "evidence": {
+                "language": "Python",
+                "language_version": "3.12",
+                "claim_api": "list.remove",
+                "code_snippet": "items = ['a', 'b', 'a']\nitems.remove('a')\nprint(items)",
+                "expected_output": "['b', 'a']",
+                "observed_output": "['b', 'a']",
+                "execution_observed": False,
+                "runtime_environment_declared": True,
+                "docs_reference": "https://docs.python.org/3/tutorial/datastructures.html",
+            },
+        },
+        "REWRITE",
+        "execution was not observed",
+    ),
+    (
+        "programming_language_behavior_claim_reject_mismatch",
+        {
+            "claim": {
+                "id": "programming_language_behavior_claim_reject_mismatch",
+                "type": "programming_language_behavior_claim",
+                "text": "Python list.append inserts the new element at the beginning of the list.",
+            },
+            "evidence": {
+                "language": "Python",
+                "language_version": "3.12",
+                "claim_api": "list.append",
+                "code_snippet": "items = ['a', 'b']\nitems.append('c')\nprint(items)",
+                "expected_output": "['c', 'a', 'b']",
+                "observed_output": "['a', 'b', 'c']",
+                "execution_observed": True,
+                "runtime_environment_declared": True,
+            },
+        },
+        "REJECT",
+        "does not match expected_output",
+    ),
+    (
+        "programming_language_behavior_claim_hold_missing_output",
+        {
+            "claim": {
+                "id": "programming_language_behavior_claim_hold_missing_output",
+                "type": "programming_language_behavior_claim",
+                "text": "Python list.pop returns the removed item.",
+            },
+            "evidence": {
+                "language": "Python",
+                "language_version": "3.12",
+                "claim_api": "list.pop",
+                "code_snippet": "items = ['a', 'b']\nprint(items.pop())",
+                "execution_observed": True,
+                "runtime_environment_declared": True,
+            },
+        },
+        "HOLD",
+        "expected_output",
+    ),
+    (
         "fine_tune_ready_positive",
         json.loads((ROOT / "examples" / "external_claim_fine_tune_ready.json").read_text(encoding="utf-8")),
         "ACCEPT",
@@ -566,12 +787,14 @@ def main() -> int:
         payload = _with_schema(payload)
         errors = capas.validate_external_payload(payload)
         decision = capas.decide_external_claim(payload)
+        error_found = any(expected_error in error for error in errors)
+        decision_error_found = any(expected_error in error for error in decision["schema_errors"])
         checks.append({
             "check": f"adversarial_payload:{name}",
             "passed": (
-                expected_error in errors
+                error_found
                 and decision["verdict"] == "HOLD"
-                and expected_error in decision["schema_errors"]
+                and decision_error_found
             ),
             "expected_error": expected_error,
             "errors": errors,
@@ -597,6 +820,77 @@ def main() -> int:
             "expected_detail": expected_detail,
             "decision": decision,
         })
+
+    relative_decision = capas.decide_external_claim(_with_schema({
+        "claim": {
+            "id": "relative_anchor_certificate",
+            "type": "universal_anchor_claim",
+            "text": "Relative benchmark agreement proves universal physical correctness.",
+        },
+        "evidence": {
+            "anchor_mode": "relative_anchor",
+            "local_property_tests_pass": True,
+            "relative_anchor_reference": "benchmark_model_v1",
+            "relative_anchor_comparison_pass": True,
+        },
+    }))
+    relative_certificate = relative_decision.get("admissibility_certificate", {})
+    checks.append({
+        "check": "admissibility_calculus:relative_anchor_rewrite_certificate",
+        "passed": (
+            relative_decision["verdict"] == "REWRITE"
+            and relative_certificate.get("calculus_version") == capas.ADMISSIBILITY_CALCULUS_VERSION
+            and relative_certificate.get("lattice", {}).get("reuse_boundary") == "bounded_rewrite"
+            and relative_certificate.get("next_action", {}).get("kind") == "edit_and_resubmit"
+            and any(
+                "non-absolute anchors cannot license universal correctness as ACCEPT" in item
+                for item in relative_certificate.get("proof_obligations", [])
+            )
+        ),
+        "decision": relative_decision,
+    })
+
+    unsupported_decision = capas.decide_external_claim(_with_schema({
+        "claim": {
+            "id": "unsupported_certificate",
+            "type": "quantum_oracle_claim",
+            "text": "Unknown claims require a contract before CAPAS can decide them.",
+        },
+        "evidence": {"oracle_pass": True},
+    }))
+    unsupported_certificate = unsupported_decision.get("admissibility_certificate", {})
+    checks.append({
+        "check": "admissibility_calculus:unsupported_claim_register_contract",
+        "passed": (
+            unsupported_decision["verdict"] == "HOLD"
+            and unsupported_certificate.get("claim_contract", {}).get("registered") is False
+            and unsupported_certificate.get("next_action", {}).get("kind") == "register_claim_type"
+            and any("registered evidence contract" in item for item in unsupported_certificate.get("proof_obligations", []))
+        ),
+        "decision": unsupported_decision,
+    })
+
+    batch_with_exceptions = capas.run_batch({
+        "claims": [
+            _with_schema({
+                "claim": {"id": "batch_accept", "type": "exact_model_solution", "text": "The solution is within tolerance."},
+                "evidence": {"abs_error": 0.0, "tolerance": 0.01},
+            }),
+            _with_schema({
+                "claim": {"id": "batch_rewrite", "type": "reproducibility_check", "text": "The result is independently reproduced."},
+                "evidence": {"artifact_available": True, "independent_reproduction_pass": False},
+            }),
+        ]
+    })
+    checks.append({
+        "check": "admissibility_calculus:batch_exception_queue",
+        "passed": (
+            batch_with_exceptions.get("admissibility_summary", {}).get("reuse_boundaries", {}).get("claim_licensed") == 1
+            and batch_with_exceptions.get("admissibility_summary", {}).get("reuse_boundaries", {}).get("bounded_rewrite") == 1
+            and any(entry.get("next_action") == "edit_and_resubmit" for entry in batch_with_exceptions.get("exception_queue", []))
+        ),
+        "batch": batch_with_exceptions,
+    })
 
     ready_payload = _load(ROOT / "examples" / "external_claim_fine_tune_ready.json")
     fine_tune_negative_cases = [

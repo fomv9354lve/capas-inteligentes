@@ -59,39 +59,207 @@ EXAMPLE_KEYS = [
     ("HOLD", "regional_cono_sur_ambiguous_experiment", "matches_experiment"),
 ]
 
-REQUIRED_DECISION_FIELDS = {
-    "exact_model_solution": ["abs_error", "tolerance"],
-    "physical_accuracy": ["within_chemical_accuracy"],
-    "universal_anchor_claim": ["anchor_mode", "local_property_tests_pass", "universal_anchor_pass"],
-    "claim_transition": ["upgrade_evidence_present"],
-    "statistical_confidence": ["p_value", "alpha", "effect_direction_confirmed"],
-    "reproducibility_check": ["artifact_available", "independent_reproduction_pass"],
-    "financial_metric_claim": ["reported_value", "reference_value", "tolerance", "metric_period_match"],
-    "causal_mechanism_claim": [
-        "intervention_or_natural_experiment",
-        "temporal_order_established",
-        "confounders_controlled",
-        "mechanism_evidence_present",
-    ],
-    "systematic_review_claim": [
-        "protocol_registered",
-        "inclusion_criteria_declared",
-        "risk_of_bias_assessed",
-        "effect_consistency",
-    ],
-    "evidence_conflict_claim": [
-        "supporting_sources",
-        "contradicting_sources",
-        "conflict_resolution_method",
-        "resolution_pre_registered",
-    ],
-    "multimodal_evidence_claim": [
-        "modality",
-        "source_hashes_verified",
-        "cross_modal_alignment",
-        "extraction_method_declared",
-    ],
+ANCHOR_MODE_CONTRACTS = {
+    "absolute_anchor": {
+        "required": ["anchor_mode", "local_property_tests_pass", "universal_anchor_pass"],
+        "optional": ["physical_evidence_level", "verification_independence"],
+        "license": "universal-anchor claim boundary",
+    },
+    "relative_anchor": {
+        "required": ["anchor_mode", "local_property_tests_pass", "relative_anchor_reference", "relative_anchor_comparison_pass"],
+        "optional": ["physical_evidence_level", "verification_independence"],
+        "license": "comparison-only claim boundary",
+    },
+    "empirical_anchor": {
+        "required": ["anchor_mode", "local_property_tests_pass", "empirical_reference_present", "empirical_tolerance", "empirical_anchor_pass"],
+        "optional": ["physical_evidence_level", "verification_independence"],
+        "license": "bounded empirical-agreement claim boundary",
+    },
+    "benchmark_anchor": {
+        "required": ["anchor_mode", "local_property_tests_pass", "benchmark_name", "benchmark_metric", "benchmark_pass"],
+        "optional": ["physical_evidence_level", "verification_independence"],
+        "license": "benchmark-limited claim boundary",
+    },
 }
+
+CLAIM_TYPE_REGISTRY = {
+    "exact_model_solution": {
+        "required": ["abs_error", "tolerance"],
+        "optional": ["bound_scope", "physical_evidence_level", "verification_independence"],
+        "description": "Exact or bounded-error model solution claims.",
+    },
+    "physical_accuracy": {
+        "required": ["within_chemical_accuracy"],
+        "optional": ["physical_evidence_level", "reference_truth"],
+        "description": "Direct physical or chemical-accuracy claims.",
+    },
+    "universal_anchor_claim": {
+        "required": ["anchor_mode", "local_property_tests_pass", "universal_anchor_pass"],
+        "optional": sorted(
+            {
+                field
+                for contract in ANCHOR_MODE_CONTRACTS.values()
+                for field in contract["required"] + contract["optional"]
+            }
+            - {"anchor_mode", "local_property_tests_pass", "universal_anchor_pass"}
+        ),
+        "description": "Claims that require an explicit anchor-mode evidence contract.",
+    },
+    "claim_transition": {
+        "required": ["upgrade_evidence_present"],
+        "optional": ["current_claim"],
+        "description": "Claims that upgrade a weaker licensed statement to a stronger one.",
+    },
+    "statistical_confidence": {
+        "required": ["p_value", "alpha", "effect_direction_confirmed"],
+        "optional": [],
+        "description": "Statistical threshold and effect-direction claims.",
+    },
+    "reproducibility_check": {
+        "required": ["artifact_available", "independent_reproduction_pass"],
+        "optional": [],
+        "description": "Artifact availability and independent reproduction claims.",
+    },
+    "financial_metric_claim": {
+        "required": ["reported_value", "reference_value", "tolerance", "metric_period_match"],
+        "optional": ["metric_name", "audit_trail"],
+        "description": "Financial metric claims against a reference value and period.",
+    },
+    "causal_mechanism_claim": {
+        "required": [
+            "intervention_or_natural_experiment",
+            "temporal_order_established",
+            "confounders_controlled",
+            "mechanism_evidence_present",
+        ],
+        "optional": ["verification_independence"],
+        "description": "Causal-mechanism claims requiring design, temporal, confounder, and mechanism evidence.",
+    },
+    "systematic_review_claim": {
+        "required": [
+            "protocol_registered",
+            "inclusion_criteria_declared",
+            "risk_of_bias_assessed",
+            "effect_consistency",
+        ],
+        "optional": [],
+        "description": "Systematic-review claims requiring protocol, inclusion, bias, and consistency evidence.",
+    },
+    "evidence_conflict_claim": {
+        "required": [
+            "supporting_sources",
+            "contradicting_sources",
+            "conflict_resolution_method",
+            "resolution_pre_registered",
+        ],
+        "optional": [],
+        "description": "Claims that resolve disclosed supporting and contradicting evidence.",
+    },
+    "multimodal_evidence_claim": {
+        "required": [
+            "modality",
+            "source_hashes_verified",
+            "cross_modal_alignment",
+            "extraction_method_declared",
+        ],
+        "optional": [],
+        "description": "Claims supported by declared multimodal evidence and extraction method.",
+    },
+    "programming_language_behavior_claim": {
+        "required": [
+            "language",
+            "language_version",
+            "claim_api",
+            "code_snippet",
+            "expected_output",
+            "observed_output",
+            "execution_observed",
+            "runtime_environment_declared",
+        ],
+        "optional": ["docs_reference"],
+        "description": "Executable programming-language behavior claims requiring snippet, runtime, and observed output evidence.",
+    },
+}
+
+REQUIRED_DECISION_FIELDS = {
+    claim_type: list(spec["required"])
+    for claim_type, spec in CLAIM_TYPE_REGISTRY.items()
+}
+
+ALLOWED_ROOT_FIELDS = {
+    "schema_version",
+    "claim",
+    "evidence",
+    "training_evidence",
+    "provenance",
+    "source",
+}
+ALLOWED_CLAIM_FIELDS = {"id", "type", "text"}
+ALLOWED_TRAINING_EVIDENCE_FIELDS = {
+    "source_backed_evidence",
+    "external_review",
+    "semantic_alignment",
+    "witness_independence",
+    "provenance",
+}
+ALLOWED_PROVENANCE_FIELDS = {
+    "sources",
+    "source_urls",
+    "source_hashes",
+    "review_id",
+    "review_sha256",
+    "review_hash",
+    "review_packet",
+    "witness_id",
+    "witness_registry_path",
+    "witness_registry_sha256",
+    "ro_crate_path",
+    "ro_crate_sha256",
+    "reviewer",
+    "reviewer_registry_path",
+    "reviewer_registry_sha256",
+}
+ALLOWED_REVIEWER_FIELDS = {"reviewer_id", "attestation", "attestation_sha256"}
+GLOBAL_EVIDENCE_FIELDS = sorted(
+    {
+        field
+        for spec in CLAIM_TYPE_REGISTRY.values()
+        for field in spec["required"] + spec["optional"]
+    }
+)
+
+
+def required_fields_for_claim(claim_type: str, evidence: dict[str, Any] | None = None) -> list[str] | None:
+    """Return the registered evidence contract for a claim type.
+
+    Universal-anchor claims are contract-versioned by anchor_mode. Non-absolute
+    anchors are supported, but they license only bounded/relative rewrites.
+    """
+
+    if claim_type == "universal_anchor_claim" and isinstance(evidence, dict):
+        anchor_mode = evidence.get("anchor_mode")
+        if isinstance(anchor_mode, str) and anchor_mode in ANCHOR_MODE_CONTRACTS:
+            return list(ANCHOR_MODE_CONTRACTS[anchor_mode]["required"])
+    spec = CLAIM_TYPE_REGISTRY.get(claim_type)
+    return list(spec["required"]) if spec else None
+
+
+def allowed_evidence_fields_for_claim(claim_type: str) -> set[str] | None:
+    spec = CLAIM_TYPE_REGISTRY.get(claim_type)
+    if spec is None:
+        return None
+    return set(spec["required"]) | set(spec["optional"])
+
+
+def _append_unknown_field_errors(
+    value: dict[str, Any],
+    *,
+    allowed: set[str],
+    prefix: str,
+    errors: list[str],
+) -> None:
+    for field in sorted(set(value) - allowed):
+        errors.append(f"{prefix}.{field} is not allowed by {CAPAS_CLAIM_SCHEMA_VERSION}")
 
 FINE_TUNE_BLOCKERS = [
     "no blind or external inference review is attached",
@@ -193,6 +361,16 @@ CLAIM_TYPE_TERMS = {
         "video",
         "alignment",
     ],
+    "programming_language_behavior_claim": [
+        "python",
+        "list",
+        "append",
+        "pop",
+        "remove",
+        "code",
+        "runtime",
+        "output",
+    ],
 }
 
 STRONG_PHYSICAL_PATTERNS = [
@@ -242,13 +420,47 @@ def _validate_no_angle_like(value: Any, field_name: str, errors: list[str]) -> N
 
 def external_claim_payload_schema() -> dict[str, Any]:
     claim_types = sorted(REQUIRED_DECISION_FIELDS)
+    anchor_modes = sorted(ANCHOR_MODE_CONTRACTS)
+    reviewer_schema = {
+        "type": "object",
+        "additionalProperties": False,
+        "properties": {
+            "reviewer_id": {"type": "string", "minLength": 1},
+            "attestation": {"type": "string", "minLength": 1},
+            "attestation_sha256": {"type": "string", "minLength": 64, "maxLength": 64},
+        },
+    }
+    provenance_schema = {
+        "type": "object",
+        "additionalProperties": False,
+        "properties": {
+            "sources": {"type": "array", "items": {"type": "string"}},
+            "source_urls": {"type": "array", "items": {"type": "string"}},
+            "source_hashes": {
+                "type": "object",
+                "additionalProperties": {"type": "string"},
+            },
+            "review_id": {"type": "string", "minLength": 1},
+            "review_sha256": {"type": "string", "minLength": 64, "maxLength": 64},
+            "review_hash": {"type": "string", "minLength": 64, "maxLength": 64},
+            "review_packet": {"type": "object", "additionalProperties": True},
+            "witness_id": {"type": "string", "minLength": 1},
+            "witness_registry_path": {"type": "string"},
+            "witness_registry_sha256": {"type": "string", "minLength": 64, "maxLength": 64},
+            "ro_crate_path": {"type": "string"},
+            "ro_crate_sha256": {"type": "string", "minLength": 64, "maxLength": 64},
+            "reviewer": reviewer_schema,
+            "reviewer_registry_path": {"type": "string"},
+            "reviewer_registry_sha256": {"type": "string", "minLength": 64, "maxLength": 64},
+        },
+    }
     return {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "$id": CANONICAL_SCHEMA_ID,
         "title": "CAPAS external claim/evidence payload",
         "x-capas-schema-version": CAPAS_CLAIM_SCHEMA_VERSION,
         "type": "object",
-        "additionalProperties": True,
+        "additionalProperties": False,
         "required": ["schema_version", "claim", "evidence"],
         "properties": {
             "schema_version": {
@@ -258,7 +470,7 @@ def external_claim_payload_schema() -> dict[str, Any]:
             },
             "claim": {
                 "type": "object",
-                "additionalProperties": True,
+                "additionalProperties": False,
                 "required": ["id", "type", "text"],
                 "properties": {
                     "id": {
@@ -280,18 +492,27 @@ def external_claim_payload_schema() -> dict[str, Any]:
             },
             "evidence": {
                 "type": "object",
-                "additionalProperties": True,
-                "description": "Evidence fields are claim-type dependent; unsupported or missing evidence yields HOLD.",
+                "additionalProperties": False,
+                "description": "Evidence fields are claim-type dependent and strict. Misplaced training_evidence, unknown fields, or missing registered evidence yields HOLD.",
                 "properties": {
                     "abs_error": {"type": "number", "minimum": 0},
                     "tolerance": {"type": "number", "minimum": 0},
                     "within_chemical_accuracy": {"type": "boolean"},
                     "anchor_mode": {
                         "type": "string",
+                        "enum": anchor_modes,
                         "pattern": NO_ANGLE_PATTERN,
                     },
                     "local_property_tests_pass": {"type": "boolean"},
                     "universal_anchor_pass": {"type": "boolean"},
+                    "relative_anchor_reference": {"type": "string", "minLength": 1, "pattern": NO_ANGLE_PATTERN},
+                    "relative_anchor_comparison_pass": {"type": "boolean"},
+                    "empirical_reference_present": {"type": "boolean"},
+                    "empirical_tolerance": {"type": "number", "minimum": 0},
+                    "empirical_anchor_pass": {"type": "boolean"},
+                    "benchmark_name": {"type": "string", "minLength": 1, "pattern": NO_ANGLE_PATTERN},
+                    "benchmark_metric": {"type": "string", "minLength": 1, "pattern": NO_ANGLE_PATTERN},
+                    "benchmark_pass": {"type": "boolean"},
                     "upgrade_evidence_present": {"type": "boolean"},
                     "p_value": {"type": "number", "minimum": 0, "maximum": 1},
                     "alpha": {"type": "number", "minimum": 0, "maximum": 1},
@@ -301,6 +522,9 @@ def external_claim_payload_schema() -> dict[str, Any]:
                     "reported_value": {"type": "number"},
                     "reference_value": {"type": "number"},
                     "metric_period_match": {"type": "boolean"},
+                    "metric_name": {"type": "string", "pattern": NO_ANGLE_PATTERN},
+                    "audit_trail": {},
+                    "bound_scope": {"type": "string", "pattern": NO_ANGLE_PATTERN},
                     "intervention_or_natural_experiment": {"type": "boolean"},
                     "temporal_order_established": {"type": "boolean"},
                     "confounders_controlled": {"type": "boolean"},
@@ -317,6 +541,20 @@ def external_claim_payload_schema() -> dict[str, Any]:
                     "source_hashes_verified": {"type": "boolean"},
                     "cross_modal_alignment": {"type": "boolean"},
                     "extraction_method_declared": {"type": "boolean"},
+                    "language": {"type": "string", "minLength": 1, "pattern": NO_ANGLE_PATTERN},
+                    "language_version": {"type": "string", "minLength": 1, "pattern": NO_ANGLE_PATTERN},
+                    "claim_api": {"type": "string", "minLength": 1, "pattern": NO_ANGLE_PATTERN},
+                    "code_snippet": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 4000,
+                        "description": "Executable snippet used to check a programming-language behavior claim. Snippets are escaped when rendered; they are not executed by the browser gate.",
+                    },
+                    "expected_output": {"type": "string", "maxLength": 4000},
+                    "observed_output": {"type": "string", "maxLength": 4000},
+                    "execution_observed": {"type": "boolean"},
+                    "runtime_environment_declared": {"type": "boolean"},
+                    "docs_reference": {"type": "string", "pattern": NO_ANGLE_PATTERN},
                     "physical_evidence_level": {
                         "type": "string",
                         "pattern": NO_ANGLE_PATTERN,
@@ -336,47 +574,18 @@ def external_claim_payload_schema() -> dict[str, Any]:
             },
             "training_evidence": {
                 "type": "object",
-                "additionalProperties": True,
+                "additionalProperties": False,
                 "description": "Optional positive-readiness packet. It never changes ACCEPT/REJECT/REWRITE/HOLD; it only controls fine_tune_ready after an ACCEPT verdict.",
                 "properties": {
                     "source_backed_evidence": {"type": "boolean"},
                     "external_review": {"type": "boolean"},
                     "semantic_alignment": {"type": "boolean"},
                     "witness_independence": {"type": "boolean"},
-                    "provenance": {
-                        "type": "object",
-                        "additionalProperties": True,
-                        "properties": {
-                            "sources": {"type": "array", "items": {"type": "string"}},
-                            "source_urls": {"type": "array", "items": {"type": "string"}},
-                            "source_hashes": {
-                                "type": "object",
-                                "additionalProperties": {"type": "string"},
-                            },
-                            "review_id": {"type": "string", "minLength": 1},
-                            "review_sha256": {"type": "string", "minLength": 64, "maxLength": 64},
-                            "review_hash": {"type": "string", "minLength": 64, "maxLength": 64},
-                            "review_packet": {"type": "object", "additionalProperties": True},
-                            "witness_id": {"type": "string", "minLength": 1},
-                            "witness_registry_path": {"type": "string"},
-                            "witness_registry_sha256": {"type": "string", "minLength": 64, "maxLength": 64},
-                            "ro_crate_path": {"type": "string"},
-                            "ro_crate_sha256": {"type": "string", "minLength": 64, "maxLength": 64},
-                            "reviewer": {
-                                "type": "object",
-                                "additionalProperties": True,
-                                "properties": {
-                                    "reviewer_id": {"type": "string", "minLength": 1},
-                                    "attestation": {"type": "string", "minLength": 1},
-                                    "attestation_sha256": {"type": "string", "minLength": 64, "maxLength": 64},
-                                },
-                            },
-                            "reviewer_registry_path": {"type": "string"},
-                            "reviewer_registry_sha256": {"type": "string", "minLength": 64, "maxLength": 64},
-                        },
-                    },
+                    "provenance": provenance_schema,
                 },
             },
+            "provenance": provenance_schema,
+            "source": {"type": "object", "additionalProperties": True},
         },
     }
 
@@ -385,6 +594,9 @@ def validate_external_payload(payload: dict[str, Any]) -> list[str]:
     errors: list[str] = []
     if not isinstance(payload, dict):
         return ["payload must be a JSON object"]
+    _append_unknown_field_errors(payload, allowed=ALLOWED_ROOT_FIELDS, prefix="payload", errors=errors)
+    if "source" in payload and not isinstance(payload["source"], dict):
+        errors.append("payload.source must be an object")
     if payload.get("schema_version") != CAPAS_CLAIM_SCHEMA_VERSION:
         errors.append(f"schema_version must be {CAPAS_CLAIM_SCHEMA_VERSION}")
     claim = payload.get("claim")
@@ -395,6 +607,7 @@ def validate_external_payload(payload: dict[str, Any]) -> list[str]:
     if not isinstance(evidence, dict):
         errors.append("evidence must be an object")
         evidence = {}
+    _append_unknown_field_errors(claim, allowed=ALLOWED_CLAIM_FIELDS, prefix="claim", errors=errors)
 
     for field in ("id", "type", "text"):
         value = claim.get(field)
@@ -412,9 +625,26 @@ def validate_external_payload(payload: dict[str, Any]) -> list[str]:
         errors.append(
             "claim.type must be one of: "
             + ", ".join(sorted(REQUIRED_DECISION_FIELDS))
+            + f"; unsupported claim type {claim_type!r} requires a registered evidence contract before CAPAS can decide it"
         )
+    if isinstance(claim_type, str) and claim_type in REQUIRED_DECISION_FIELDS:
+        allowed_evidence = allowed_evidence_fields_for_claim(claim_type) or set()
+        unknown_evidence = sorted(set(evidence) - allowed_evidence)
+        if "training_evidence" in unknown_evidence:
+            errors.append("evidence.training_evidence is not allowed; move training_evidence to the payload root")
+            unknown_evidence.remove("training_evidence")
+        for field in unknown_evidence:
+            errors.append(f"evidence.{field} is not allowed for claim.type {claim_type}")
 
-    numeric_fields = ["abs_error", "tolerance", "p_value", "alpha", "reported_value", "reference_value"]
+    numeric_fields = [
+        "abs_error",
+        "tolerance",
+        "p_value",
+        "alpha",
+        "reported_value",
+        "reference_value",
+        "empirical_tolerance",
+    ]
     for field in numeric_fields:
         if field in evidence and (
             isinstance(evidence[field], bool)
@@ -425,7 +655,7 @@ def validate_external_payload(payload: dict[str, Any]) -> list[str]:
             value = float(evidence[field])
             if not (value == value and value not in (float("inf"), float("-inf"))):
                 errors.append(f"evidence.{field} must be finite")
-            elif field in {"abs_error", "tolerance"} and value < 0:
+            elif field in {"abs_error", "tolerance", "empirical_tolerance"} and value < 0:
                 errors.append(f"evidence.{field} must be >= 0")
             elif field in {"p_value", "alpha"} and not 0 <= value <= 1:
                 errors.append(f"evidence.{field} must be between 0 and 1")
@@ -439,6 +669,10 @@ def validate_external_payload(payload: dict[str, Any]) -> list[str]:
         "artifact_available",
         "independent_reproduction_pass",
         "metric_period_match",
+        "relative_anchor_comparison_pass",
+        "empirical_reference_present",
+        "empirical_anchor_pass",
+        "benchmark_pass",
         "intervention_or_natural_experiment",
         "temporal_order_established",
         "confounders_controlled",
@@ -451,6 +685,8 @@ def validate_external_payload(payload: dict[str, Any]) -> list[str]:
         "source_hashes_verified",
         "cross_modal_alignment",
         "extraction_method_declared",
+        "execution_observed",
+        "runtime_environment_declared",
     ]
     for field in bool_fields:
         if field in evidence and not isinstance(evidence[field], bool):
@@ -458,15 +694,27 @@ def validate_external_payload(payload: dict[str, Any]) -> list[str]:
 
     string_fields = [
         "anchor_mode",
+        "relative_anchor_reference",
+        "benchmark_name",
+        "benchmark_metric",
+        "metric_name",
+        "bound_scope",
         "physical_evidence_level",
         "verification_independence",
         "conflict_resolution_method",
         "modality",
+        "language",
+        "language_version",
+        "claim_api",
+        "docs_reference",
     ]
     for field in string_fields:
         if field in evidence and not isinstance(evidence[field], str):
             errors.append(f"evidence.{field} must be a string")
         _validate_no_angle_like(evidence.get(field), f"evidence.{field}", errors)
+    anchor_mode = evidence.get("anchor_mode")
+    if isinstance(anchor_mode, str) and anchor_mode not in ANCHOR_MODE_CONTRACTS:
+        errors.append("evidence.anchor_mode must be one of: " + ", ".join(sorted(ANCHOR_MODE_CONTRACTS)))
     if "current_claim" in evidence:
         current_claim = evidence["current_claim"]
         if not isinstance(current_claim, str):
@@ -475,6 +723,13 @@ def validate_external_payload(payload: dict[str, Any]) -> list[str]:
             if len(current_claim) > 4000:
                 errors.append("evidence.current_claim must be at most 4000 characters")
             _validate_no_angle_like(current_claim, "evidence.current_claim", errors)
+    for field in ("code_snippet", "expected_output", "observed_output"):
+        if field in evidence:
+            value = evidence[field]
+            if not isinstance(value, str):
+                errors.append(f"evidence.{field} must be a string")
+            elif len(value) > 4000:
+                errors.append(f"evidence.{field} must be at most 4000 characters")
     for field in ("supporting_sources", "contradicting_sources"):
         if field in evidence:
             value = evidence[field]
@@ -489,6 +744,7 @@ def validate_external_payload(payload: dict[str, Any]) -> list[str]:
         if not isinstance(provenance, dict) or isinstance(provenance, list):
             errors.append(f"{prefix} must be an object")
             return
+        _append_unknown_field_errors(provenance, allowed=ALLOWED_PROVENANCE_FIELDS, prefix=prefix, errors=errors)
         for field in (
             "review_id",
             "review_sha256",
@@ -518,6 +774,12 @@ def validate_external_payload(payload: dict[str, Any]) -> list[str]:
             if not isinstance(reviewer, dict) or isinstance(reviewer, list):
                 errors.append(f"{prefix}.reviewer must be an object")
             else:
+                _append_unknown_field_errors(
+                    reviewer,
+                    allowed=ALLOWED_REVIEWER_FIELDS,
+                    prefix=f"{prefix}.reviewer",
+                    errors=errors,
+                )
                 for field in ("reviewer_id", "attestation", "attestation_sha256"):
                     if field in reviewer and not isinstance(reviewer[field], str):
                         errors.append(f"{prefix}.reviewer.{field} must be a string")
@@ -527,6 +789,12 @@ def validate_external_payload(payload: dict[str, Any]) -> list[str]:
         if not isinstance(training_evidence, dict) or isinstance(training_evidence, list):
             errors.append("training_evidence must be an object")
         else:
+            _append_unknown_field_errors(
+                training_evidence,
+                allowed=ALLOWED_TRAINING_EVIDENCE_FIELDS,
+                prefix="training_evidence",
+                errors=errors,
+            )
             for field in FINE_TUNE_REQUIRED_FIELDS:
                 if field in training_evidence and not isinstance(training_evidence[field], bool):
                     errors.append(f"training_evidence.{field} must be a boolean")
@@ -727,6 +995,267 @@ def evaluate_fine_tune_readiness(
     }
 
 
+ADMISSIBILITY_CALCULUS_VERSION = "capas-admissibility-calculus-v1"
+
+ADMISSIBILITY_AXIS_LEVELS = {
+    "contract": ["unregistered", "registered", "schema_clean", "contract_complete"],
+    "evidence": ["none", "declared", "complete", "supports_bounded_claim", "supports_claim_boundary"],
+    "boundary": ["none", "schema_blocked", "claim_excluded", "bounded_rewrite", "claim_licensed", "training_ready"],
+    "provenance": ["none", "declared", "source_backed", "externally_reviewed", "externally_verified"],
+    "defeaters": ["open_defeaters", "schema_undercut", "burden_gap", "bounded_defeater", "no_active_defeater"],
+}
+
+
+def _axis(axis: str, score: int) -> dict[str, Any]:
+    levels = ADMISSIBILITY_AXIS_LEVELS[axis]
+    bounded = max(0, min(score, len(levels) - 1))
+    return {"score": bounded, "level": levels[bounded]}
+
+
+def _registered_contract_for_claim(claim_type: str, evidence: dict[str, Any]) -> dict[str, Any]:
+    spec = CLAIM_TYPE_REGISTRY.get(claim_type)
+    anchor_mode = evidence.get("anchor_mode")
+    if claim_type == "universal_anchor_claim" and isinstance(anchor_mode, str) and anchor_mode in ANCHOR_MODE_CONTRACTS:
+        contract = ANCHOR_MODE_CONTRACTS[anchor_mode]
+        return {
+            "registered": True,
+            "claim_type": claim_type,
+            "description": spec["description"] if spec else "",
+            "required_fields": list(contract["required"]),
+            "optional_fields": sorted(set(contract["optional"]) | (set(spec["optional"]) if spec else set())),
+            "anchor_mode": anchor_mode,
+            "anchor_license": contract["license"],
+            "absolute_accept_only": anchor_mode != "absolute_anchor",
+        }
+    if spec is None:
+        return {
+            "registered": False,
+            "claim_type": claim_type,
+            "description": "",
+            "required_fields": [],
+            "optional_fields": [],
+            "anchor_mode": anchor_mode if isinstance(anchor_mode, str) else None,
+            "anchor_license": None,
+            "absolute_accept_only": False,
+        }
+    return {
+        "registered": True,
+        "claim_type": claim_type,
+        "description": spec["description"],
+        "required_fields": list(spec["required"]),
+        "optional_fields": list(spec["optional"]),
+        "anchor_mode": anchor_mode if isinstance(anchor_mode, str) else None,
+        "anchor_license": None,
+        "absolute_accept_only": False,
+    }
+
+
+def _provenance_axis_score(criteria: dict[str, bool]) -> int:
+    if not criteria:
+        return 0
+    if all(criteria.values()):
+        return 4
+    if criteria.get("external_review") and criteria.get("semantic_alignment") and criteria.get("witness_independence"):
+        return 3
+    if criteria.get("source_backed_evidence") and criteria.get("provenance_sources"):
+        return 2
+    if criteria.get("provenance_sources") or criteria.get("review_id_present") or criteria.get("witness_id_present"):
+        return 1
+    return 0
+
+
+def _next_action_for_result(result: dict[str, Any], contract_registered: bool) -> dict[str, str]:
+    verdict = result.get("verdict")
+    schema_errors = result.get("schema_errors") or []
+    if not contract_registered and any(
+        "registered evidence contract" in error or "claim.type must be one of" in error
+        for error in schema_errors
+    ):
+        return {"kind": "register_claim_type", "label": "Register a claim type and evidence contract before deciding."}
+    if schema_errors:
+        return {"kind": "repair_schema", "label": "Repair schema and field placement before CAPAS can decide."}
+    if not contract_registered:
+        return {"kind": "register_claim_type", "label": "Register a claim type and evidence contract before deciding."}
+    if result.get("missing_fields"):
+        return {"kind": "supply_evidence", "label": "Supply the missing evidence fields, then run the gate again."}
+    if verdict == "REWRITE":
+        return {"kind": "edit_and_resubmit", "label": "Replace claim.text with the licensed weaker claim and resubmit."}
+    if verdict == "REJECT":
+        return {"kind": "exclude_or_replace_evidence", "label": "Exclude this claim or provide new evidence that changes the contract outcome."}
+    if verdict == "ACCEPT" and result.get("fine_tune_ready") is not True:
+        return {"kind": "verify_provenance_for_training", "label": "Claim is licensed; verify provenance before using as fine-tuning data."}
+    if verdict == "ACCEPT" and result.get("fine_tune_ready") is True:
+        return {"kind": "approve_for_controlled_reuse", "label": "Approve this claim boundary for controlled reuse."}
+    return {"kind": "hold_for_review", "label": "Resolve open proof obligations before reuse."}
+
+
+def build_admissibility_certificate(payload: dict[str, Any], result: dict[str, Any]) -> dict[str, Any]:
+    """Build the formal claim-boundary certificate emitted by the gate.
+
+    This is a finite lattice/argument certificate, not a probabilistic truth
+    score. It makes the hidden compiler state explicit: contract, evidence,
+    boundary, provenance, defeaters, proof obligations, and next action.
+    """
+
+    claim = payload.get("claim", {}) if isinstance(payload, dict) else {}
+    evidence = payload.get("evidence", {}) if isinstance(payload, dict) else {}
+    if not isinstance(claim, dict):
+        claim = {}
+    if not isinstance(evidence, dict):
+        evidence = {}
+    claim_type = str(claim.get("type", ""))
+    contract = _registered_contract_for_claim(claim_type, evidence)
+    schema_errors = list(result.get("schema_errors") or [])
+    missing_fields = list(result.get("missing_fields") or [])
+    required_fields = list(result.get("required_fields") or contract["required_fields"])
+    provided_required = [
+        field
+        for field in required_fields
+        if field in evidence and evidence.get(field) is not None and evidence.get(field) != "unknown"
+    ]
+    provided_optional = [
+        field
+        for field in contract["optional_fields"]
+        if field in evidence and evidence.get(field) is not None and evidence.get(field) != "unknown"
+    ]
+    verdict = str(result.get("verdict", "HOLD"))
+    fine_tune_criteria = result.get("fine_tune_criteria") if isinstance(result.get("fine_tune_criteria"), dict) else {}
+
+    contract_score = 0
+    if contract["registered"]:
+        contract_score = 1
+    if contract["registered"] and not schema_errors:
+        contract_score = 2
+    if contract["registered"] and not schema_errors and not missing_fields:
+        contract_score = 3
+
+    if schema_errors or not contract["registered"]:
+        evidence_score = 0
+    elif missing_fields:
+        evidence_score = 1
+    elif verdict in {"REWRITE", "ACCEPT"}:
+        evidence_score = 3 if verdict == "REWRITE" else 4
+    elif verdict == "REJECT":
+        evidence_score = 2
+    else:
+        evidence_score = 1
+
+    if result.get("fine_tune_ready") is True:
+        boundary_score = 5
+        reuse_boundary = "training_ready"
+    elif verdict == "ACCEPT":
+        boundary_score = 4
+        reuse_boundary = "claim_licensed"
+    elif verdict == "REWRITE":
+        boundary_score = 3
+        reuse_boundary = "bounded_rewrite"
+    elif verdict == "REJECT":
+        boundary_score = 2
+        reuse_boundary = "claim_excluded"
+    elif schema_errors:
+        boundary_score = 1
+        reuse_boundary = "schema_blocked"
+    else:
+        boundary_score = 0
+        reuse_boundary = "none"
+
+    if schema_errors:
+        defeater_score = 1
+    elif missing_fields or not contract["registered"]:
+        defeater_score = 2
+    elif verdict == "REWRITE":
+        defeater_score = 3
+    elif verdict in {"ACCEPT", "REJECT"}:
+        defeater_score = 4
+    else:
+        defeater_score = 0
+
+    axes = {
+        "contract": _axis("contract", contract_score),
+        "evidence": _axis("evidence", evidence_score),
+        "boundary": _axis("boundary", boundary_score),
+        "provenance": _axis("provenance", _provenance_axis_score(fine_tune_criteria)),
+        "defeaters": _axis("defeaters", defeater_score),
+    }
+    controlled_reuse_meet = min(
+        axes["contract"]["score"],
+        axes["evidence"]["score"],
+        axes["boundary"]["score"],
+        axes["defeaters"]["score"],
+    )
+    training_reuse_meet = min(controlled_reuse_meet, axes["provenance"]["score"])
+
+    proof_obligations: list[str] = []
+    proof_obligations.extend(f"schema: {error}" for error in schema_errors)
+    proof_obligations.extend(f"evidence: provide {field}" for field in missing_fields)
+    if not contract["registered"]:
+        proof_obligations.append(f"contract: register evidence contract for claim.type {claim_type!r}")
+    if verdict == "REWRITE":
+        proof_obligations.append("boundary: edit claim.text to the licensed_claim and resubmit before ACCEPT")
+    if contract.get("absolute_accept_only"):
+        proof_obligations.append("boundary: non-absolute anchors cannot license universal correctness as ACCEPT")
+    if verdict == "ACCEPT" and result.get("fine_tune_ready") is not True:
+        proof_obligations.extend(f"training: {blocker}" for blocker in result.get("fine_tune_blockers", []))
+
+    supports = [f"evidence.{field}" for field in provided_required]
+    rebuttals: list[str] = []
+    undercutters: list[str] = []
+    if schema_errors:
+        undercutters.extend(schema_errors)
+    if missing_fields:
+        undercutters.extend(f"missing {field}" for field in missing_fields)
+    if verdict == "REWRITE":
+        rebuttals.append(str(result.get("reason", "")))
+    if verdict == "REJECT":
+        rebuttals.append(str(result.get("reason", "")))
+
+    next_action = _next_action_for_result(result, bool(contract["registered"]))
+    return {
+        "calculus_version": ADMISSIBILITY_CALCULUS_VERSION,
+        "metaphor": "compiler_certificate",
+        "claim_contract": contract,
+        "lattice": {
+            "axes": axes,
+            "controlled_reuse_meet": controlled_reuse_meet,
+            "training_reuse_meet": training_reuse_meet,
+            "reuse_boundary": reuse_boundary,
+            "non_claim": "This lattice orders admissibility of supplied evidence, not scientific truth.",
+        },
+        "dialectic": {
+            "thesis": claim.get("text"),
+            "licensed_thesis": result.get("licensed_claim"),
+            "warrant": result.get("reason"),
+            "supports": supports,
+            "optional_supports": [f"evidence.{field}" for field in provided_optional],
+            "undercutters": undercutters,
+            "rebuttals": rebuttals,
+            "burden_of_proof": proof_obligations,
+        },
+        "proof_obligations": proof_obligations,
+        "next_action": next_action,
+    }
+
+
+def exception_queue_entry(index: int, result: dict[str, Any]) -> dict[str, Any] | None:
+    certificate = result.get("admissibility_certificate")
+    if not isinstance(certificate, dict):
+        return None
+    next_action = certificate.get("next_action", {})
+    if result.get("verdict") == "ACCEPT" and result.get("fine_tune_ready") is True:
+        return None
+    claim = result.get("input_claim") if isinstance(result.get("input_claim"), dict) else {}
+    return {
+        "index": index,
+        "claim_id": claim.get("id"),
+        "claim_type": claim.get("type"),
+        "verdict": result.get("verdict"),
+        "reuse_boundary": certificate.get("lattice", {}).get("reuse_boundary"),
+        "next_action": next_action.get("kind"),
+        "next_action_label": next_action.get("label"),
+        "proof_obligations": list(certificate.get("proof_obligations", []))[:8],
+    }
+
+
 def _load_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
@@ -835,7 +1364,7 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
             missing_fields=[],
             schema_errors=schema_errors,
         )
-        return {
+        result = {
             "schema_version": CAPAS_CLAIM_SCHEMA_VERSION,
             "input_claim": claim if isinstance(claim, dict) else {},
             "verdict": "HOLD",
@@ -848,9 +1377,14 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
             **fine_tune,
             "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
         }
+        result["admissibility_certificate"] = build_admissibility_certificate(
+            payload if isinstance(payload, dict) else {},
+            result,
+        )
+        return result
 
     claim_type = claim.get("type")
-    required = REQUIRED_DECISION_FIELDS.get(str(claim_type))
+    required = required_fields_for_claim(str(claim_type), evidence)
     missing = [
         field
         for field in (required or [])
@@ -883,22 +1417,52 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
             verdict = "REJECT"
             reason = "within_chemical_accuracy is false"
     elif claim_type == "universal_anchor_claim":
+        anchor_mode = evidence["anchor_mode"]
         local_pass = evidence["local_property_tests_pass"] is True
-        anchor_pass = evidence["universal_anchor_pass"] is True
-        if evidence["anchor_mode"] != "absolute_anchor":
+        if anchor_mode == "absolute_anchor":
+            anchor_pass = evidence["universal_anchor_pass"] is True
+        elif anchor_mode == "relative_anchor":
+            anchor_pass = evidence["relative_anchor_comparison_pass"] is True
+        elif anchor_mode == "empirical_anchor":
+            anchor_pass = evidence["empirical_reference_present"] is True and evidence["empirical_anchor_pass"] is True
+        elif anchor_mode == "benchmark_anchor":
+            anchor_pass = evidence["benchmark_pass"] is True
+        else:
             verdict = "HOLD"
-            reason = "claim requires an absolute_anchor, but evidence has another anchor mode"
-        elif local_pass and anchor_pass:
+            reason = f"unsupported anchor_mode {anchor_mode!r}; register an anchor contract before CAPAS can decide it"
+            anchor_pass = False
+        if anchor_mode not in ANCHOR_MODE_CONTRACTS:
+            pass
+        elif anchor_mode == "absolute_anchor" and local_pass and anchor_pass:
             verdict = "ACCEPT"
             reason = "local checks and universal anchor both pass"
-        elif local_pass and not anchor_pass:
+        elif anchor_mode == "absolute_anchor" and local_pass and not anchor_pass:
             verdict = "REWRITE"
             reason = "local checks pass, but the universal anchor fails"
             rewrite = "local plausibility only; universal physical correctness is not licensed"
             licensed_claim = rewrite
+        elif anchor_mode == "relative_anchor" and local_pass and anchor_pass:
+            verdict = "REWRITE"
+            reference = str(evidence["relative_anchor_reference"]).strip()
+            reason = f"relative_anchor supports comparison against {reference}, not universal physical correctness"
+            rewrite = f"relative comparison against {reference} only; universal physical correctness is not licensed"
+            licensed_claim = rewrite
+        elif anchor_mode == "empirical_anchor" and local_pass and anchor_pass:
+            verdict = "REWRITE"
+            tolerance = float(evidence["empirical_tolerance"])
+            reason = f"empirical_anchor supports bounded empirical agreement within tolerance {tolerance}, not universal correctness"
+            rewrite = "bounded empirical agreement only; universal physical correctness is not licensed"
+            licensed_claim = rewrite
+        elif anchor_mode == "benchmark_anchor" and local_pass and anchor_pass:
+            verdict = "REWRITE"
+            benchmark = str(evidence["benchmark_name"]).strip()
+            metric = str(evidence["benchmark_metric"]).strip()
+            reason = f"benchmark_anchor supports {benchmark} / {metric}, not universal physical correctness"
+            rewrite = f"benchmark-limited claim for {benchmark} / {metric}; universal physical correctness is not licensed"
+            licensed_claim = rewrite
         else:
             verdict = "REJECT"
-            reason = "local checks fail before the universal-anchor claim is licensed"
+            reason = f"{anchor_mode} evidence fails before the universal-anchor claim is licensed"
     elif claim_type == "claim_transition":
         if evidence["upgrade_evidence_present"] is True:
             verdict = "ACCEPT"
@@ -1017,6 +1581,31 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
         else:
             verdict = "REJECT"
             reason = "multimodal claim lacks verified source hashes or declared modality"
+    elif claim_type == "programming_language_behavior_claim":
+        expected = str(evidence["expected_output"]).strip()
+        observed = str(evidence["observed_output"]).strip()
+        execution_observed = evidence["execution_observed"] is True
+        runtime_declared = evidence["runtime_environment_declared"] is True
+        docs_reference = str(evidence.get("docs_reference", "")).strip()
+        language = str(evidence["language"]).strip()
+        version = str(evidence["language_version"]).strip()
+        api = str(evidence["claim_api"]).strip()
+        if expected != observed:
+            verdict = "REJECT"
+            reason = f"observed_output does not match expected_output for {language} {api}"
+        elif execution_observed and runtime_declared:
+            verdict = "ACCEPT"
+            reason = f"observed execution matches expected output for {language} {version} {api}"
+        elif docs_reference and runtime_declared:
+            verdict = "REWRITE"
+            reason = "documentation reference and runtime boundary are supplied, but execution was not observed"
+            rewrite = "documented programming-language behavior; execution trace is not independently observed"
+            licensed_claim = rewrite
+        else:
+            verdict = "REWRITE"
+            reason = "programming behavior evidence is structurally complete but lacks observed execution or runtime boundary"
+            rewrite = "programming-language behavior candidate; runtime/execution evidence is not fully licensed"
+            licensed_claim = rewrite
 
     fine_tune = evaluate_fine_tune_readiness(
         payload,
@@ -1025,7 +1614,7 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
         schema_errors=[],
     )
 
-    return {
+    result = {
         "schema_version": CAPAS_CLAIM_SCHEMA_VERSION,
         "input_claim": claim,
         "verdict": verdict,
@@ -1038,6 +1627,8 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
         **fine_tune,
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
     }
+    result["admissibility_certificate"] = build_admissibility_certificate(payload, result)
+    return result
 
 
 def _batch_items(payload: Any) -> list[dict[str, Any]]:
@@ -1071,10 +1662,24 @@ def run_batch(payload: Any, *, mode: str = "decide", allow_web: bool = False) ->
         results.append({"index": index, "result": result})
 
     verdicts = Counter()
+    boundaries = Counter()
+    next_actions = Counter()
+    exception_queue: list[dict[str, Any]] = []
     for entry in results:
         result = entry["result"]
         verdict = result.get("verdict") or result.get("final_decision", {}).get("verdict") or result.get("alignment_status")
         verdicts[str(verdict)] += 1
+        certificate = result.get("admissibility_certificate") if isinstance(result, dict) else None
+        if isinstance(certificate, dict):
+            boundary = certificate.get("lattice", {}).get("reuse_boundary")
+            action = certificate.get("next_action", {}).get("kind")
+            if boundary:
+                boundaries[str(boundary)] += 1
+            if action:
+                next_actions[str(action)] += 1
+        queued = exception_queue_entry(int(entry["index"]), result) if isinstance(result, dict) else None
+        if queued:
+            exception_queue.append(queued)
 
     batch_blockers = []
     if not results:
@@ -1090,6 +1695,11 @@ def run_batch(payload: Any, *, mode: str = "decide", allow_web: bool = False) ->
         "item_count": len(items),
         "results": results,
         "summary": dict(sorted(verdicts.items())),
+        "admissibility_summary": {
+            "reuse_boundaries": dict(sorted(boundaries.items())),
+            "next_actions": dict(sorted(next_actions.items())),
+        },
+        "exception_queue": exception_queue,
         "fine_tune_ready": not batch_blockers,
         "fine_tune_blockers": batch_blockers,
         "non_claim": "Batch mode applies the same deterministic per-claim gates; it does not create new scientific evidence.",
@@ -1896,6 +2506,25 @@ def _ui_samples() -> dict[str, dict[str, Any]]:
                 "extraction_method_declared": True,
             },
         },
+        "CODE": {
+            "schema_version": CAPAS_CLAIM_SCHEMA_VERSION,
+            "claim": {
+                "id": "sample_python_list_append",
+                "type": "programming_language_behavior_claim",
+                "text": "Python list.append adds the new element to the end of the list.",
+            },
+            "evidence": {
+                "language": "Python",
+                "language_version": "3.12",
+                "claim_api": "list.append",
+                "code_snippet": "items = ['a', 'b']\nitems.append('c')\nprint(items)",
+                "expected_output": "['a', 'b', 'c']",
+                "observed_output": "['a', 'b', 'c']",
+                "execution_observed": True,
+                "runtime_environment_declared": True,
+                "docs_reference": "https://docs.python.org/3/tutorial/datastructures.html",
+            },
+        },
     }
 
 
@@ -2060,8 +2689,8 @@ def _render_ui(sample: dict[str, Any]) -> str:
     position: sticky;
     top: 0;
     z-index: 50;
-    height: 52px;
-    padding: 0 28px;
+    height: 48px;
+    padding: 0 24px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -2070,20 +2699,28 @@ def _render_ui(sample: dict[str, Any]) -> str:
     backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border);
   }
-  .topbar-left { display: flex; align-items: center; gap: 12px; min-width: 0; }
-  .topbar-logo { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 800; color: var(--text-1); white-space: nowrap; }
+  .topbar-left { display: flex; align-items: center; height: 100%; gap: 12px; min-width: 0; }
+  .topbar-logo { display: flex; align-items: center; height: 100%; gap: 8px; font-size: 14px; font-weight: 800; color: var(--text-1); white-space: nowrap; }
   .topbar-logo-icon {
-    width: 26px;
-    height: 26px;
-    border-radius: 7px;
-    background: linear-gradient(135deg, var(--accent-start), var(--accent-end));
+    width: auto;
+    height: 100%;
+    border-radius: 50%;
+    background: transparent;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 12px;
-    font-weight: 800;
-    color: white;
-    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.4);
+    overflow: visible;
+    box-shadow: none;
+    flex: 0 0 auto;
+  }
+  .topbar-logo-icon img {
+    height: 32px;
+    width: auto;
+    object-fit: contain;
+    vertical-align: middle;
+    margin-top: 0;
+    position: static;
+    display: block;
   }
   .topbar-divider { width: 1px; height: 18px; background: var(--border); flex-shrink: 0; }
   .topbar-subtitle { font-size: 12px; color: var(--text-3); font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -2650,6 +3287,15 @@ def _render_ui(sample: dict[str, Any]) -> str:
   .fine-tune-status.blocked { color: var(--warning); background: rgba(251, 191, 36, 0.06); border-color: rgba(251, 191, 36, 0.2); }
   .fine-tune-summary { color: var(--text-2); font-size: 12px; line-height: 1.6; }
   .fine-tune-block ul { margin-top: 8px; padding-left: 18px; color: var(--text-2); font-size: 12px; line-height: 1.6; }
+  .action-block { margin: 12px 16px; padding: 12px 14px; border-radius: var(--radius); border: 1px solid rgba(124, 127, 255, 0.26); background: rgba(124, 127, 255, 0.07); }
+  .action-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
+  .action-title { color: var(--text-1); font-size: 11px; font-weight: 800; letter-spacing: 0.7px; text-transform: uppercase; }
+  .action-kind { border: 1px solid rgba(124, 127, 255, 0.34); border-radius: 999px; padding: 2px 8px; color: #c4b5fd; background: rgba(124, 127, 255, 0.08); font-family: var(--mono); font-size: 10px; font-weight: 800; white-space: nowrap; }
+  .action-summary { color: var(--text-2); font-size: 12px; line-height: 1.6; }
+  .action-path { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin-top: 10px; }
+  .action-step { border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--bg); padding: 8px; color: var(--text-2); font-size: 11px; line-height: 1.45; }
+  .action-step strong { display: block; color: var(--text-1); font-size: 10px; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 4px; }
+  .action-list { margin: 8px 0 0; padding-left: 18px; color: var(--text-2); font-size: 12px; line-height: 1.6; }
   .batch-row-ft { justify-self: end; color: var(--text-3); font-size: 10px; font-weight: 800; letter-spacing: 0.4px; text-transform: uppercase; white-space: nowrap; }
   .assist-block { margin: 12px 16px; padding: 12px 14px; border-radius: var(--radius); background: var(--accent-glow); border-color: rgba(99, 102, 241, 0.24); color: var(--assist-text); }
   .assist-block pre { background: var(--bg); border-color: rgba(99, 102, 241, 0.24); color: var(--assist-text); }
@@ -2853,12 +3499,12 @@ def _render_ui(sample: dict[str, Any]) -> str:
     .guided-grid { grid-template-columns: 1fr; }
     .builder-shell, .builder-contract { grid-template-columns: 1fr; }
     .topbar {
-      height: auto;
-      min-height: 52px;
-      align-items: flex-start;
-      flex-wrap: wrap;
+      height: 48px;
+      min-height: 48px;
+      align-items: center;
+      flex-wrap: nowrap;
       gap: 8px;
-      padding: 8px 16px;
+      padding: 0 24px;
     }
     .topbar-left { flex: 1 1 auto; max-width: 100%; }
     .topbar-actions {
@@ -2904,7 +3550,8 @@ def _render_ui(sample: dict[str, Any]) -> str:
     .hero-metrics, .exec-dashboard, .workflow-strip, .workflow-board, .roi-grid { grid-template-columns: 1fr; }
     .roi-result { grid-column: auto; }
     .topbar-logo { font-size: 13px; }
-    .topbar-logo-icon { width: 24px; height: 24px; }
+    .topbar-logo-icon { width: auto; height: 100%; }
+    .topbar-logo-icon img { height: 32px; width: auto; object-fit: contain; vertical-align: middle; margin-top: 0; position: static; }
     .panel-header { padding: 9px 12px; }
     #input { min-height: 220px; padding: 12px; font-size: 12px; }
     .action-row { grid-template-columns: 1fr; }
@@ -2925,14 +3572,18 @@ def _render_ui(sample: dict[str, Any]) -> str:
   body { max-width: 1100px; margin: 0 auto; }
   main.app-body { display: flex; flex-direction: column; gap: 0; padding: 0; }
   .topbar {
-    height: 44px;
-    padding: 0 20px;
+    height: 48px;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     background: var(--bg);
     backdrop-filter: none;
   }
   .topbar-divider, .topbar-subtitle { display: none; }
-  .topbar-logo { font-size: 13px; font-weight: 700; }
-  .topbar-logo-icon { width: 22px; height: 22px; border-radius: 5px; font-size: 10px; }
+  .topbar-logo { display: flex; align-items: center; height: 100%; font-size: 13px; font-weight: 700; }
+  .topbar-logo-icon { display: flex; align-items: center; height: 100%; width: auto; border-radius: 5px; font-size: 10px; }
+  .topbar-logo-icon img { height: 32px; width: auto; object-fit: contain; vertical-align: middle; margin-top: 0; position: static; }
   .topbar-actions { gap: 2px; }
   .topbar-actions .copy-btn { min-height: 28px; padding: 4px 10px; font-size: 12px; }
   .topbar-badge { font-size: 10px; padding: 2px 7px; }
@@ -3246,6 +3897,8 @@ def _render_ui(sample: dict[str, Any]) -> str:
     border-top: 1px solid var(--border);
     background: var(--bg-3);
   }
+  .action-block { margin: 10px 0 0; }
+  .action-path { grid-template-columns: 1fr; }
   .output-section {
     min-width: 0;
     max-width: 100%;
@@ -3324,7 +3977,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
 
   @media (max-width: 860px) {
     body { max-width: none; }
-    .topbar { height: auto; padding: 8px 16px; }
+    .topbar { height: 48px; padding: 0 24px; align-items: center; justify-content: space-between; }
     .product-hero { align-items: flex-start; padding: 10px 16px; }
     .hero-copy { align-items: flex-start; flex-direction: column; gap: 8px; }
     .hero-copy > h2 { max-width: none; -webkit-line-clamp: 2; }
@@ -3368,21 +4021,18 @@ def _render_ui(sample: dict[str, Any]) -> str:
 <header class="topbar">
   <div class="topbar-left">
     <h1 class="topbar-logo" aria-label="CAPAS Claim Gate">
-      <div class="topbar-logo-icon" aria-hidden="true">CG</div>
       CAPAS Claim Gate
     </h1>
     <div class="topbar-divider"></div>
     <span class="topbar-subtitle">Rule-based via <code>capas.py decide</code> · schema errors → <code>HOLD</code></span>
   </div>
   <div class="topbar-actions">
-    <a class="copy-btn topbar-home" href="index.html" aria-label="Open CAPAS home page">Home</a>
-    <button class="copy-btn topbar-site-link" type="button" aria-label="Jump to the CAPAS gate app workspace" onclick="scrollToGate()">Gate app</button>
-    <a class="copy-btn topbar-site-link" href="customer-brief.html" aria-label="Open CAPAS customer brief">Customer brief</a>
-    <a class="copy-btn topbar-site-link" href="pilot-packet.html" aria-label="Open CAPAS pilot packet">Pilot packet</a>
-    <a class="copy-btn topbar-site-link" href="product.html" aria-label="Open CAPAS product story">Product story</a>
+    <a class="copy-btn topbar-site-link" href="index.html" aria-label="Open CAPAS home page">Home</a>
+    <button class="copy-btn topbar-site-link topbar-current" type="button" aria-label="Jump to the CAPAS gate app workspace" onclick="scrollToGate()" aria-current="page">Gate App</button>
+    <a class="copy-btn topbar-site-link" href="customer-brief.html" aria-label="Open CAPAS methodology brief">Methodology</a>
+    <a class="copy-btn topbar-site-link" href="pilot-packet.html" aria-label="Open CAPAS pilot package">Pilot</a>
     <button class="copy-btn" id="help-btn" aria-label="Open keyboard shortcut and pipeline help" aria-expanded="false" aria-controls="help-modal" onclick="openHelpModal(this)">Help</button>
-    <a class="copy-btn topbar-site-link" id="history-toggle" href="audit.html" aria-label="Open audit log page">Audit log</a>
-    <a class="copy-btn topbar-source" href="product.html" aria-label="Open CAPAS product story and business case">Product</a>
+    <a class="copy-btn topbar-site-link" id="history-toggle" href="audit.html" aria-label="Open audit trail page">Audit</a>
     <a class="copy-btn topbar-source" href="https://github.com/fomv9354lve/capas-inteligentes" target="_blank" rel="noopener noreferrer" aria-label="Open CAPAS Claim Gate source repository">Source</a>
     <button class="copy-btn" id="theme-toggle" aria-label="Toggle light and dark theme" onclick="toggleTheme()">Theme</button>
     <span class="topbar-badge" id="schema-version-badge">schema v3</span>
@@ -3582,6 +4232,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
               <button class="sample-btn accept" title="Systematic review sample" aria-label="Load SYSTEMATIC sample" onclick="loadSample('SYSTEMATIC')">Review</button>
               <button class="sample-btn accept" title="Evidence conflict sample" aria-label="Load CONFLICT sample" onclick="loadSample('CONFLICT')">Conflict</button>
               <button class="sample-btn accept" title="Multimodal evidence sample" aria-label="Load MULTIMODAL sample" onclick="loadSample('MULTIMODAL')">Multimodal</button>
+              <button class="sample-btn accept" title="Programming behavior sample" aria-label="Load CODE sample" onclick="loadSample('CODE')">Code</button>
               <button class="sample-btn hold" title="Batch demo with multiple claim types" aria-label="Load batch demo sample" onclick="loadBatchDemo()">Batch demo</button>
             </div>
           </div>
@@ -3699,6 +4350,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
     <a href="https://github.com/fomv9354lve/capas-inteligentes" target="_blank" rel="noopener noreferrer">Source repository</a>
     <a href="product.html">Product story</a>
     <a href="customer-brief.html">Customer brief</a>
+    <a href="CLAIM_ADMISSIBILITY_CALCULUS.md">Admissibility calculus</a>
     <a href="pilot-packet.html">Pilot packet</a>
     <a href="https://github.com/fomv9354lve/capas-inteligentes/issues" target="_blank" rel="noopener noreferrer">Issues</a>
     <a href="https://github.com/fomv9354lve/capas-inteligentes/releases/tag/v0.1.1" target="_blank" rel="noopener noreferrer">Release v0.1.1</a>
@@ -3730,6 +4382,9 @@ def _render_ui(sample: dict[str, Any]) -> str:
     <h3>Fine-tune readiness</h3>
     <p><code>fine_tune_ready</code> is a strict positive gate. It becomes <code>true</code> only after an <code>ACCEPT</code> verdict plus source-backed evidence, semantic alignment, witness independence, a hash-verified external review packet, recoverable/hashable source URLs, a resolvable witness registry entry, a valid RO-Crate provenance packet, and a verifiable reviewer attestation. CAPAS gates claims; it does not silently certify training data.</p>
     <p>The static browser UI previews these criteria but cannot perform active provenance I/O. The five provenance gates require <code>capas.py</code> CLI/API verification to resolve registries, hash sources, and validate RO-Crate packets.</p>
+    <h3>Admissibility certificate</h3>
+    <p>Every decision includes an <code>admissibility_certificate</code>: a deterministic compiler-style certificate over five ordered axes (<code>contract</code>, <code>evidence</code>, <code>boundary</code>, <code>provenance</code>, and <code>defeaters</code>). The certificate records the licensed reuse boundary, open proof obligations, dialectical undercutters/rebuttals, and the next operational action such as <code>repair_schema</code>, <code>edit_and_resubmit</code>, or <code>verify_provenance_for_training</code>.</p>
+    <p>Batch mode aggregates these certificates into an <code>admissibility_summary</code> and <code>exception_queue</code>, so review work is routed by formal boundary rather than by raw verdict alone.</p>
     <h3>Schema</h3>
     <p>Current payload schema: <code>capas-claim-payload-v3</code>. Outputs include <code>schema_version</code> for audit trails.</p>
     <p>Supported claim types and minimum evidence fields:</p>
@@ -3740,15 +4395,16 @@ def _render_ui(sample: dict[str, Any]) -> str:
       <li><code>physical_accuracy</code>: <code>within_chemical_accuracy</code></li>
       <li><code>reproducibility_check</code>: <code>artifact_available</code>, <code>independent_reproduction_pass</code></li>
       <li><code>statistical_confidence</code>: <code>p_value</code>, <code>alpha</code>, <code>effect_direction_confirmed</code></li>
-      <li><code>universal_anchor_claim</code>: <code>anchor_mode</code>, <code>local_property_tests_pass</code>, <code>universal_anchor_pass</code></li>
+      <li><code>universal_anchor_claim</code>: <code>anchor_mode</code>, <code>local_property_tests_pass</code>, plus the selected anchor contract (<code>absolute_anchor</code>, <code>relative_anchor</code>, <code>empirical_anchor</code>, or <code>benchmark_anchor</code>)</li>
       <li><code>causal_mechanism_claim</code>: <code>intervention_or_natural_experiment</code>, <code>temporal_order_established</code>, <code>confounders_controlled</code>, <code>mechanism_evidence_present</code></li>
       <li><code>systematic_review_claim</code>: <code>protocol_registered</code>, <code>inclusion_criteria_declared</code>, <code>risk_of_bias_assessed</code>, <code>effect_consistency</code></li>
       <li><code>evidence_conflict_claim</code>: <code>supporting_sources</code>, <code>contradicting_sources</code>, <code>conflict_resolution_method</code>, <code>resolution_pre_registered</code></li>
       <li><code>multimodal_evidence_claim</code>: <code>modality</code>, <code>source_hashes_verified</code>, <code>cross_modal_alignment</code>, <code>extraction_method_declared</code></li>
+      <li><code>programming_language_behavior_claim</code>: <code>language</code>, <code>language_version</code>, <code>claim_api</code>, <code>code_snippet</code>, <code>expected_output</code>, <code>observed_output</code>, <code>execution_observed</code>, <code>runtime_environment_declared</code></li>
     </ul>
-    <p>Numeric validation ranges: <code>p_value</code> and <code>alpha</code> must be between <code>0</code> and <code>1</code>; <code>abs_error</code> and <code>tolerance</code> must be greater than or equal to <code>0</code>.</p>
-    <p><code>training_evidence.source_backed_evidence</code>, <code>external_review</code>, <code>semantic_alignment</code>, and <code>witness_independence</code> must be booleans. Wrong types produce schema errors instead of silent blockers.</p>
-    <p><code>universal_anchor_claim</code> currently supports <code>absolute_anchor</code>. Other anchor modes remain <code>HOLD</code> until their witness semantics are defined.</p>
+    <p>Numeric validation ranges: <code>p_value</code> and <code>alpha</code> must be between <code>0</code> and <code>1</code>; <code>abs_error</code>, <code>tolerance</code>, and <code>empirical_tolerance</code> must be greater than or equal to <code>0</code>.</p>
+    <p><code>training_evidence.source_backed_evidence</code>, <code>external_review</code>, <code>semantic_alignment</code>, and <code>witness_independence</code> must be booleans and must live at the payload root. Nesting <code>training_evidence</code> inside <code>evidence</code> is a schema error.</p>
+    <p><code>absolute_anchor</code> is the only anchor mode that can license a universal-anchor <code>ACCEPT</code>. <code>relative_anchor</code>, <code>empirical_anchor</code>, and <code>benchmark_anchor</code> are versioned contracts that can produce bounded <code>REWRITE</code> decisions but not universal correctness.</p>
   </div>
 </div>
 
@@ -3768,8 +4424,44 @@ def _render_ui(sample: dict[str, Any]) -> str:
       causal_mechanism_claim: ["intervention_or_natural_experiment", "temporal_order_established", "confounders_controlled", "mechanism_evidence_present"],
       systematic_review_claim: ["protocol_registered", "inclusion_criteria_declared", "risk_of_bias_assessed", "effect_consistency"],
       evidence_conflict_claim: ["supporting_sources", "contradicting_sources", "conflict_resolution_method", "resolution_pre_registered"],
-      multimodal_evidence_claim: ["modality", "source_hashes_verified", "cross_modal_alignment", "extraction_method_declared"]
+      multimodal_evidence_claim: ["modality", "source_hashes_verified", "cross_modal_alignment", "extraction_method_declared"],
+      programming_language_behavior_claim: ["language", "language_version", "claim_api", "code_snippet", "expected_output", "observed_output", "execution_observed", "runtime_environment_declared"]
     };
+    const anchorModeContracts = {
+      absolute_anchor: ["anchor_mode", "local_property_tests_pass", "universal_anchor_pass"],
+      relative_anchor: ["anchor_mode", "local_property_tests_pass", "relative_anchor_reference", "relative_anchor_comparison_pass"],
+      empirical_anchor: ["anchor_mode", "local_property_tests_pass", "empirical_reference_present", "empirical_tolerance", "empirical_anchor_pass"],
+      benchmark_anchor: ["anchor_mode", "local_property_tests_pass", "benchmark_name", "benchmark_metric", "benchmark_pass"]
+    };
+    const optionalByType = {
+      exact_model_solution: ["bound_scope", "physical_evidence_level", "verification_independence"],
+      physical_accuracy: ["physical_evidence_level", "reference_truth"],
+      universal_anchor_claim: ["physical_evidence_level", "verification_independence", "relative_anchor_reference", "relative_anchor_comparison_pass", "empirical_reference_present", "empirical_tolerance", "empirical_anchor_pass", "benchmark_name", "benchmark_metric", "benchmark_pass"],
+      claim_transition: ["current_claim"],
+      financial_metric_claim: ["metric_name", "audit_trail"],
+      causal_mechanism_claim: ["verification_independence"],
+      programming_language_behavior_claim: ["docs_reference"]
+    };
+    const rootFields = new Set(["schema_version", "claim", "evidence", "training_evidence", "provenance", "source"]);
+    const claimFields = new Set(["id", "type", "text"]);
+    const trainingEvidenceFields = new Set(["source_backed_evidence", "external_review", "semantic_alignment", "witness_independence", "provenance"]);
+    const provenanceFields = new Set(["sources", "source_urls", "source_hashes", "review_id", "review_sha256", "review_hash", "review_packet", "witness_id", "witness_registry_path", "witness_registry_sha256", "ro_crate_path", "ro_crate_sha256", "reviewer", "reviewer_registry_path", "reviewer_registry_sha256"]);
+    const reviewerFields = new Set(["reviewer_id", "attestation", "attestation_sha256"]);
+    function requiredFieldsForClaim(type, evidence = {}) {
+      if (type === "universal_anchor_claim" && typeof evidence.anchor_mode === "string" && anchorModeContracts[evidence.anchor_mode]) {
+        return anchorModeContracts[evidence.anchor_mode];
+      }
+      return required[type] || null;
+    }
+    function allowedEvidenceFieldsForClaim(type) {
+      if (!required[type]) return null;
+      return new Set([...(required[type] || []), ...(optionalByType[type] || [])]);
+    }
+    function addUnknownFieldErrors(object, allowed, prefix, errors) {
+      Object.keys(object || {}).sort().forEach((field) => {
+        if (!allowed.has(field)) errors.push(`${prefix}.${field} is not allowed by ${capasSchemaVersion}`);
+      });
+    }
     const claimTypes = Object.keys(required).sort();
     const claimTypeHelp = {
       causal_mechanism_claim: "Use for claims that assert a mechanism causes an outcome. CAPAS expects intervention or natural experiment evidence, temporal order, confounder control, and mechanism evidence.",
@@ -3779,10 +4471,11 @@ def _render_ui(sample: dict[str, Any]) -> str:
       financial_metric_claim: "Use for reported financial metrics. CAPAS compares reported and reference values within tolerance and checks period alignment.",
       multimodal_evidence_claim: "Use when evidence comes from multiple modalities such as text, table, image, or extracted artifact. CAPAS checks hashes, alignment, and extraction method.",
       physical_accuracy: "Use for physical or chemistry accuracy claims where the evidence layer already determined whether the relevant accuracy threshold was met.",
+      programming_language_behavior_claim: "Use for programming tutorial or API behavior claims. CAPAS checks language/runtime, executable snippet, expected output, observed output, and execution evidence.",
       reproducibility_check: "Use for reproducibility claims. CAPAS checks that artifacts are available and independent reproduction passed.",
       statistical_confidence: "Use for statistical claims. CAPAS checks p-value, alpha, and whether the effect direction matches the claim wording.",
       systematic_review_claim: "Use for systematic-review claims. CAPAS checks protocol, inclusion criteria, risk-of-bias assessment, and effect consistency.",
-      universal_anchor_claim: "Use for claims that require an absolute anchor or invariant witness beyond local checks. CAPAS only supports absolute_anchor here."
+      universal_anchor_claim: "Use for claims that require an explicit anchor-mode evidence contract. Only absolute_anchor can ACCEPT a universal claim; relative, empirical, and benchmark anchors license bounded rewrites."
     };
     const historyLimit = 50;
     const historyStorageKey = "capas_decision_history_v1";
@@ -3844,7 +4537,16 @@ def _render_ui(sample: dict[str, Any]) -> str:
       "modality": "Primary evidence modality, such as image, table, audio, video, or figure.",
       "source_hashes_verified": "Whether source media/data hashes match declared provenance.",
       "cross_modal_alignment": "Whether text, table, image, or other modalities align with each other.",
-      "extraction_method_declared": "Whether the method used to extract multimodal evidence is declared."
+      "extraction_method_declared": "Whether the method used to extract multimodal evidence is declared.",
+      "language": "Programming language whose behavior is being claimed.",
+      "language_version": "Runtime or language version used to bound the behavior claim.",
+      "claim_api": "API, method, syntax, or behavior under test, such as list.append.",
+      "code_snippet": "Executable snippet used as behavior evidence. CAPAS records it but does not execute code in the browser.",
+      "expected_output": "Output the claim expects from the snippet.",
+      "observed_output": "Output actually observed from running or reproducing the snippet.",
+      "execution_observed": "Whether the snippet execution was observed or reproduced.",
+      "runtime_environment_declared": "Whether OS/runtime/IDE or execution context is declared.",
+      "docs_reference": "Optional official documentation or authoritative reference for the behavior."
     };
 
     const minimalExamples = {
@@ -3891,6 +4593,10 @@ def _render_ui(sample: dict[str, Any]) -> str:
       multimodal_evidence_claim: {
         claim: { id: "draft_multimodal_evidence", type: "multimodal_evidence_claim", text: "The multimodal evidence supports the extracted claim." },
         evidence: { modality: "table", source_hashes_verified: true, cross_modal_alignment: true, extraction_method_declared: true }
+      },
+      programming_language_behavior_claim: {
+        claim: { id: "draft_python_list_append", type: "programming_language_behavior_claim", text: "Python list.append adds the new element to the end of the list." },
+        evidence: { language: "Python", language_version: "3.12", claim_api: "list.append", code_snippet: "items = ['a', 'b']\nitems.append('c')\nprint(items)", expected_output: "['a', 'b', 'c']", observed_output: "['a', 'b', 'c']", execution_observed: true, runtime_environment_declared: true, docs_reference: "https://docs.python.org/3/tutorial/datastructures.html" }
       }
     };
 
@@ -3918,6 +4624,10 @@ def _render_ui(sample: dict[str, Any]) -> str:
       if (payload === null || typeof payload !== "object" || Array.isArray(payload)) {
         return ["payload must be a JSON object"];
       }
+      addUnknownFieldErrors(payload, rootFields, "payload", errors);
+      if (Object.prototype.hasOwnProperty.call(payload, "source") && (payload.source === null || typeof payload.source !== "object" || Array.isArray(payload.source))) {
+        errors.push("payload.source must be an object");
+      }
       if (payload.schema_version !== capasSchemaVersion) {
         errors.push(`schema_version must be ${capasSchemaVersion}`);
       }
@@ -3930,6 +4640,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
         errors.push("evidence must be an object");
       }
       const safeClaim = claim && typeof claim === "object" && !Array.isArray(claim) ? claim : {};
+      addUnknownFieldErrors(safeClaim, claimFields, "claim", errors);
       for (const field of ["id", "type", "text"]) {
         if (typeof safeClaim[field] !== "string" || safeClaim[field].trim() === "") {
           errors.push(`claim.${field} must be a non-empty string`);
@@ -3948,23 +4659,33 @@ def _render_ui(sample: dict[str, Any]) -> str:
         errors.push("claim.text must not contain angle brackets or Unicode angle-bracket homoglyphs");
       }
       if (typeof safeClaim.type === "string" && !required[safeClaim.type]) {
-        errors.push(`claim.type must be one of: ${claimTypes.join(", ")}`);
+        errors.push(`claim.type must be one of: ${claimTypes.join(", ")}; unsupported claim type ${JSON.stringify(safeClaim.type)} requires a registered evidence contract before CAPAS can decide it`);
       }
       const safeEvidence = evidence && typeof evidence === "object" && !Array.isArray(evidence) ? evidence : {};
-      for (const field of ["abs_error", "tolerance", "p_value", "alpha", "reported_value", "reference_value"]) {
+      if (typeof safeClaim.type === "string" && required[safeClaim.type]) {
+        const allowedEvidence = allowedEvidenceFieldsForClaim(safeClaim.type);
+        Object.keys(safeEvidence).sort().forEach((field) => {
+          if (field === "training_evidence" && !allowedEvidence.has(field)) {
+            errors.push("evidence.training_evidence is not allowed; move training_evidence to the payload root");
+          } else if (!allowedEvidence.has(field)) {
+            errors.push(`evidence.${field} is not allowed for claim.type ${safeClaim.type}`);
+          }
+        });
+      }
+      for (const field of ["abs_error", "tolerance", "p_value", "alpha", "reported_value", "reference_value", "empirical_tolerance"]) {
         if (Object.prototype.hasOwnProperty.call(safeEvidence, field) && typeof safeEvidence[field] !== "number") {
           errors.push(`evidence.${field} must be a number`);
         } else if (Object.prototype.hasOwnProperty.call(safeEvidence, field)) {
           if (!Number.isFinite(safeEvidence[field])) {
             errors.push(`evidence.${field} must be finite`);
-          } else if (["abs_error", "tolerance"].includes(field) && safeEvidence[field] < 0) {
+          } else if (["abs_error", "tolerance", "empirical_tolerance"].includes(field) && safeEvidence[field] < 0) {
             errors.push(`evidence.${field} must be >= 0`);
           } else if (["p_value", "alpha"].includes(field) && (safeEvidence[field] < 0 || safeEvidence[field] > 1)) {
             errors.push(`evidence.${field} must be between 0 and 1`);
           }
         }
       }
-      for (const field of ["within_chemical_accuracy", "local_property_tests_pass", "universal_anchor_pass", "upgrade_evidence_present", "effect_direction_confirmed", "artifact_available", "independent_reproduction_pass", "metric_period_match"]) {
+      for (const field of ["within_chemical_accuracy", "local_property_tests_pass", "universal_anchor_pass", "relative_anchor_comparison_pass", "empirical_reference_present", "empirical_anchor_pass", "benchmark_pass", "upgrade_evidence_present", "effect_direction_confirmed", "artifact_available", "independent_reproduction_pass", "metric_period_match", "execution_observed", "runtime_environment_declared"]) {
         if (Object.prototype.hasOwnProperty.call(safeEvidence, field) && typeof safeEvidence[field] !== "boolean") {
           errors.push(`evidence.${field} must be a boolean`);
         }
@@ -3974,13 +4695,16 @@ def _render_ui(sample: dict[str, Any]) -> str:
           errors.push(`evidence.${field} must be a boolean`);
         }
       }
-      for (const field of ["anchor_mode", "physical_evidence_level", "verification_independence", "conflict_resolution_method", "modality"]) {
+      for (const field of ["anchor_mode", "relative_anchor_reference", "benchmark_name", "benchmark_metric", "metric_name", "bound_scope", "physical_evidence_level", "verification_independence", "conflict_resolution_method", "modality", "language", "language_version", "claim_api", "docs_reference"]) {
         if (Object.prototype.hasOwnProperty.call(safeEvidence, field) && typeof safeEvidence[field] !== "string") {
           errors.push(`evidence.${field} must be a string`);
         }
         if (typeof safeEvidence[field] === "string" && containsAngleLikeCharacter(safeEvidence[field])) {
           errors.push(`evidence.${field} must not contain angle brackets or Unicode angle-bracket homoglyphs`);
         }
+      }
+      if (typeof safeEvidence.anchor_mode === "string" && !anchorModeContracts[safeEvidence.anchor_mode]) {
+        errors.push(`evidence.anchor_mode must be one of: ${Object.keys(anchorModeContracts).sort().join(", ")}`);
       }
       for (const field of ["supporting_sources", "contradicting_sources"]) {
         if (Object.prototype.hasOwnProperty.call(safeEvidence, field)) {
@@ -4004,10 +4728,20 @@ def _render_ui(sample: dict[str, Any]) -> str:
           }
         }
       }
+      for (const field of ["code_snippet", "expected_output", "observed_output"]) {
+        if (Object.prototype.hasOwnProperty.call(safeEvidence, field)) {
+          if (typeof safeEvidence[field] !== "string") {
+            errors.push(`evidence.${field} must be a string`);
+          } else if (safeEvidence[field].length > 4000) {
+            errors.push(`evidence.${field} must be at most 4000 characters`);
+          }
+        }
+      }
       if (Object.prototype.hasOwnProperty.call(payload, "training_evidence")) {
         if (payload.training_evidence === null || typeof payload.training_evidence !== "object" || Array.isArray(payload.training_evidence)) {
           errors.push("training_evidence must be an object");
         } else {
+          addUnknownFieldErrors(payload.training_evidence, trainingEvidenceFields, "training_evidence", errors);
           for (const field of fineTuneRequiredFields) {
             if (Object.prototype.hasOwnProperty.call(payload.training_evidence, field) && typeof payload.training_evidence[field] !== "boolean") {
               errors.push(`training_evidence.${field} must be a boolean`);
@@ -4017,6 +4751,11 @@ def _render_ui(sample: dict[str, Any]) -> str:
             const provenance = payload.training_evidence.provenance;
             if (provenance === null || typeof provenance !== "object" || Array.isArray(provenance)) {
               errors.push("training_evidence.provenance must be an object");
+            } else {
+              addUnknownFieldErrors(provenance, provenanceFields, "training_evidence.provenance", errors);
+              if (provenance.reviewer && typeof provenance.reviewer === "object" && !Array.isArray(provenance.reviewer)) {
+                addUnknownFieldErrors(provenance.reviewer, reviewerFields, "training_evidence.provenance.reviewer", errors);
+              }
             }
           }
         }
@@ -4024,6 +4763,11 @@ def _render_ui(sample: dict[str, Any]) -> str:
       if (Object.prototype.hasOwnProperty.call(payload, "provenance")) {
         if (payload.provenance === null || typeof payload.provenance !== "object" || Array.isArray(payload.provenance)) {
           errors.push("provenance must be an object when supplied at the payload root");
+        } else {
+          addUnknownFieldErrors(payload.provenance, provenanceFields, "provenance", errors);
+          if (payload.provenance.reviewer && typeof payload.provenance.reviewer === "object" && !Array.isArray(payload.provenance.reviewer)) {
+            addUnknownFieldErrors(payload.provenance.reviewer, reviewerFields, "provenance.reviewer", errors);
+          }
         }
       }
       return errors;
@@ -4094,6 +4838,121 @@ def _render_ui(sample: dict[str, Any]) -> str:
       };
     }
 
+    const admissibilityCalculusVersion = "capas-admissibility-calculus-v1";
+    const axisLevels = {
+      contract: ["unregistered", "registered", "schema_clean", "contract_complete"],
+      evidence: ["none", "declared", "complete", "supports_bounded_claim", "supports_claim_boundary"],
+      boundary: ["none", "schema_blocked", "claim_excluded", "bounded_rewrite", "claim_licensed", "training_ready"],
+      provenance: ["none", "declared", "source_backed", "externally_reviewed", "externally_verified"],
+      defeaters: ["open_defeaters", "schema_undercut", "burden_gap", "bounded_defeater", "no_active_defeater"]
+    };
+    function axis(axisName, score) {
+      const levels = axisLevels[axisName];
+      const bounded = Math.max(0, Math.min(score, levels.length - 1));
+      return { score: bounded, level: levels[bounded] };
+    }
+    function registeredContractForClaim(type, evidence = {}) {
+      const registered = !!required[type];
+      const anchorMode = evidence.anchor_mode;
+      const requiredFields = type === "universal_anchor_claim" && anchorModeContracts[anchorMode]
+        ? anchorModeContracts[anchorMode]
+        : (required[type] || []);
+      return {
+        registered,
+        claim_type: type,
+        required_fields: requiredFields,
+        optional_fields: optionalByType[type] || [],
+        anchor_mode: typeof anchorMode === "string" ? anchorMode : null,
+        absolute_accept_only: type === "universal_anchor_claim" && anchorMode && anchorMode !== "absolute_anchor",
+        description: claimTypeHelp[type] || ""
+      };
+    }
+    function provenanceAxisScore(criteria = {}) {
+      const values = Object.values(criteria);
+      if (!values.length) return 0;
+      if (values.every(Boolean)) return 4;
+      if (criteria.external_review && criteria.semantic_alignment && criteria.witness_independence) return 3;
+      if (criteria.source_backed_evidence && criteria.provenance_sources) return 2;
+      if (criteria.provenance_sources || criteria.review_id_present || criteria.witness_id_present) return 1;
+      return 0;
+    }
+    function nextActionForResult(result, registered) {
+      const schemaErrors = result.schema_errors || [];
+      if (!registered && schemaErrors.some((error) => error.includes("registered evidence contract") || error.includes("claim.type must be one of"))) {
+        return { kind: "register_claim_type", label: "Register a claim type and evidence contract before deciding." };
+      }
+      if (schemaErrors.length) return { kind: "repair_schema", label: "Repair schema and field placement before CAPAS can decide." };
+      if (!registered) return { kind: "register_claim_type", label: "Register a claim type and evidence contract before deciding." };
+      if ((result.missing_fields || []).length) return { kind: "supply_evidence", label: "Supply the missing evidence fields, then run the gate again." };
+      if (result.verdict === "REWRITE") return { kind: "edit_and_resubmit", label: "Replace claim.text with the licensed weaker claim and resubmit." };
+      if (result.verdict === "REJECT") return { kind: "exclude_or_replace_evidence", label: "Exclude this claim or provide new evidence that changes the contract outcome." };
+      if (result.verdict === "ACCEPT" && result.fine_tune_ready !== true) return { kind: "verify_provenance_for_training", label: "Claim is licensed; verify provenance before using as fine-tuning data." };
+      if (result.verdict === "ACCEPT" && result.fine_tune_ready === true) return { kind: "approve_for_controlled_reuse", label: "Approve this claim boundary for controlled reuse." };
+      return { kind: "hold_for_review", label: "Resolve open proof obligations before reuse." };
+    }
+    function buildAdmissibilityCertificate(payload, result) {
+      const claim = payload && typeof payload.claim === "object" && !Array.isArray(payload.claim) ? payload.claim : {};
+      const evidence = payload && typeof payload.evidence === "object" && !Array.isArray(payload.evidence) ? payload.evidence : {};
+      const contract = registeredContractForClaim(String(claim.type || ""), evidence);
+      const schemaErrors = result.schema_errors || [];
+      const missing = result.missing_fields || [];
+      const requiredFields = result.required_fields || contract.required_fields || [];
+      const providedRequired = requiredFields.filter((field) => evidence[field] !== undefined && evidence[field] !== null && evidence[field] !== "unknown");
+      const providedOptional = (contract.optional_fields || []).filter((field) => evidence[field] !== undefined && evidence[field] !== null && evidence[field] !== "unknown");
+      let contractScore = contract.registered ? 1 : 0;
+      if (contract.registered && !schemaErrors.length) contractScore = 2;
+      if (contract.registered && !schemaErrors.length && !missing.length) contractScore = 3;
+      let evidenceScore = 0;
+      if (!schemaErrors.length && contract.registered && missing.length) evidenceScore = 1;
+      if (!schemaErrors.length && contract.registered && !missing.length) evidenceScore = result.verdict === "ACCEPT" ? 4 : result.verdict === "REWRITE" ? 3 : result.verdict === "REJECT" ? 2 : 1;
+      const boundaryScore = result.fine_tune_ready === true ? 5 : result.verdict === "ACCEPT" ? 4 : result.verdict === "REWRITE" ? 3 : result.verdict === "REJECT" ? 2 : schemaErrors.length ? 1 : 0;
+      const reuseBoundary = ["none", "schema_blocked", "claim_excluded", "bounded_rewrite", "claim_licensed", "training_ready"][boundaryScore];
+      const defeaterScore = schemaErrors.length ? 1 : missing.length || !contract.registered ? 2 : result.verdict === "REWRITE" ? 3 : ["ACCEPT", "REJECT"].includes(result.verdict) ? 4 : 0;
+      const axes = {
+        contract: axis("contract", contractScore),
+        evidence: axis("evidence", evidenceScore),
+        boundary: axis("boundary", boundaryScore),
+        provenance: axis("provenance", provenanceAxisScore(result.fine_tune_criteria || {})),
+        defeaters: axis("defeaters", defeaterScore)
+      };
+      const controlledMeet = Math.min(axes.contract.score, axes.evidence.score, axes.boundary.score, axes.defeaters.score);
+      const trainingMeet = Math.min(controlledMeet, axes.provenance.score);
+      const obligations = [
+        ...schemaErrors.map((error) => `schema: ${error}`),
+        ...missing.map((field) => `evidence: provide ${field}`)
+      ];
+      if (!contract.registered) obligations.push(`contract: register evidence contract for claim.type ${JSON.stringify(claim.type)}`);
+      if (result.verdict === "REWRITE") obligations.push("boundary: edit claim.text to the licensed_claim and resubmit before ACCEPT");
+      if (contract.absolute_accept_only) obligations.push("boundary: non-absolute anchors cannot license universal correctness as ACCEPT");
+      if (result.verdict === "ACCEPT" && result.fine_tune_ready !== true) {
+        obligations.push(...(result.fine_tune_blockers || []).map((blocker) => `training: ${blocker}`));
+      }
+      return {
+        calculus_version: admissibilityCalculusVersion,
+        metaphor: "compiler_certificate",
+        claim_contract: contract,
+        lattice: {
+          axes,
+          controlled_reuse_meet: controlledMeet,
+          training_reuse_meet: trainingMeet,
+          reuse_boundary: reuseBoundary,
+          non_claim: "This lattice orders admissibility of supplied evidence, not scientific truth."
+        },
+        dialectic: {
+          thesis: claim.text,
+          licensed_thesis: result.licensed_claim,
+          warrant: result.reason,
+          supports: providedRequired.map((field) => `evidence.${field}`),
+          optional_supports: providedOptional.map((field) => `evidence.${field}`),
+          undercutters: [...schemaErrors, ...missing.map((field) => `missing ${field}`)],
+          rebuttals: ["REWRITE", "REJECT"].includes(result.verdict) ? [result.reason] : [],
+          burden_of_proof: obligations
+        },
+        proof_obligations: obligations,
+        next_action: nextActionForResult(result, contract.registered)
+      };
+    }
+
     function rule(payload) {
       const schemaErrors = validatePayload(payload);
       const claim = payload && typeof payload.claim === "object" && !Array.isArray(payload.claim) ? payload.claim : {};
@@ -4113,9 +4972,11 @@ def _render_ui(sample: dict[str, Any]) -> str:
           fine_tune_blockers: fineTuneBlockers,
           non_claim: "This decision is rule-based over supplied evidence fields, not an LLM judgment."
         };
-        return { ...invalidResult, ...evaluateFineTuneReadiness(payload, invalidResult) };
+        const invalidWithReadiness = { ...invalidResult, ...evaluateFineTuneReadiness(payload, invalidResult) };
+        invalidWithReadiness.admissibility_certificate = buildAdmissibilityCertificate(payload, invalidWithReadiness);
+        return invalidWithReadiness;
       }
-      const fields = required[claim.type];
+      const fields = requiredFieldsForClaim(claim.type, evidence);
       let missing = [];
       if (fields) {
         missing = fields.filter((field) => evidence[field] === undefined || evidence[field] === null || evidence[field] === "unknown");
@@ -4145,20 +5006,42 @@ def _render_ui(sample: dict[str, Any]) -> str:
         result.verdict = evidence.within_chemical_accuracy === true ? "ACCEPT" : "REJECT";
         result.reason = `within_chemical_accuracy is ${evidence.within_chemical_accuracy}`;
       } else if (claim.type === "universal_anchor_claim") {
-        if (evidence.anchor_mode !== "absolute_anchor") {
+        const anchorMode = evidence.anchor_mode;
+        const localPass = evidence.local_property_tests_pass === true;
+        let anchorPass = false;
+        if (anchorMode === "absolute_anchor") anchorPass = evidence.universal_anchor_pass === true;
+        if (anchorMode === "relative_anchor") anchorPass = evidence.relative_anchor_comparison_pass === true;
+        if (anchorMode === "empirical_anchor") anchorPass = evidence.empirical_reference_present === true && evidence.empirical_anchor_pass === true;
+        if (anchorMode === "benchmark_anchor") anchorPass = evidence.benchmark_pass === true;
+        if (!anchorModeContracts[anchorMode]) {
           result.verdict = "HOLD";
-          result.reason = "claim requires an absolute_anchor, but evidence has another anchor mode";
-        } else if (evidence.local_property_tests_pass === true && evidence.universal_anchor_pass === true) {
+          result.reason = `unsupported anchor_mode ${JSON.stringify(anchorMode)}; register an anchor contract before CAPAS can decide it`;
+        } else if (anchorMode === "absolute_anchor" && localPass && anchorPass) {
           result.verdict = "ACCEPT";
           result.reason = "local checks and universal anchor both pass";
-        } else if (evidence.local_property_tests_pass === true && evidence.universal_anchor_pass !== true) {
+        } else if (anchorMode === "absolute_anchor" && localPass && !anchorPass) {
           result.verdict = "REWRITE";
           result.reason = "local checks pass, but the universal anchor fails";
           result.rewrite = "local plausibility only; universal physical correctness is not licensed";
           result.licensed_claim = result.rewrite;
+        } else if (anchorMode === "relative_anchor" && localPass && anchorPass) {
+          result.verdict = "REWRITE";
+          result.reason = `relative_anchor supports comparison against ${evidence.relative_anchor_reference}, not universal physical correctness`;
+          result.rewrite = `relative comparison against ${evidence.relative_anchor_reference} only; universal physical correctness is not licensed`;
+          result.licensed_claim = result.rewrite;
+        } else if (anchorMode === "empirical_anchor" && localPass && anchorPass) {
+          result.verdict = "REWRITE";
+          result.reason = `empirical_anchor supports bounded empirical agreement within tolerance ${evidence.empirical_tolerance}, not universal correctness`;
+          result.rewrite = "bounded empirical agreement only; universal physical correctness is not licensed";
+          result.licensed_claim = result.rewrite;
+        } else if (anchorMode === "benchmark_anchor" && localPass && anchorPass) {
+          result.verdict = "REWRITE";
+          result.reason = `benchmark_anchor supports ${evidence.benchmark_name} / ${evidence.benchmark_metric}, not universal physical correctness`;
+          result.rewrite = `benchmark-limited claim for ${evidence.benchmark_name} / ${evidence.benchmark_metric}; universal physical correctness is not licensed`;
+          result.licensed_claim = result.rewrite;
         } else {
           result.verdict = "REJECT";
-          result.reason = "local checks fail before the universal-anchor claim is licensed";
+          result.reason = `${anchorMode} evidence fails before the universal-anchor claim is licensed`;
         }
       } else if (claim.type === "claim_transition") {
         if (evidence.upgrade_evidence_present === true) {
@@ -4266,13 +5149,134 @@ def _render_ui(sample: dict[str, Any]) -> str:
           result.verdict = "REJECT";
           result.reason = "multimodal claim lacks verified source hashes or declared modality";
         }
+      } else if (claim.type === "programming_language_behavior_claim") {
+        const expected = String(evidence.expected_output || "").trim();
+        const observed = String(evidence.observed_output || "").trim();
+        const language = String(evidence.language || "").trim();
+        const version = String(evidence.language_version || "").trim();
+        const api = String(evidence.claim_api || "").trim();
+        const docsReference = String(evidence.docs_reference || "").trim();
+        if (expected !== observed) {
+          result.verdict = "REJECT";
+          result.reason = `observed_output does not match expected_output for ${language} ${api}`;
+        } else if (evidence.execution_observed === true && evidence.runtime_environment_declared === true) {
+          result.verdict = "ACCEPT";
+          result.reason = `observed execution matches expected output for ${language} ${version} ${api}`;
+        } else if (docsReference && evidence.runtime_environment_declared === true) {
+          result.verdict = "REWRITE";
+          result.reason = "documentation reference and runtime boundary are supplied, but execution was not observed";
+          result.rewrite = "documented programming-language behavior; execution trace is not independently observed";
+          result.licensed_claim = result.rewrite;
+        } else {
+          result.verdict = "REWRITE";
+          result.reason = "programming behavior evidence is structurally complete but lacks observed execution or runtime boundary";
+          result.rewrite = "programming-language behavior candidate; runtime/execution evidence is not fully licensed";
+          result.licensed_claim = result.rewrite;
+        }
       }
-      return { ...result, ...evaluateFineTuneReadiness(payload, result) };
+      result = { ...result, ...evaluateFineTuneReadiness(payload, result) };
+      result.admissibility_certificate = buildAdmissibilityCertificate(payload, result);
+      return result;
+    }
+
+    function resolutionPathForAction(kind, result) {
+      const licensed = result.licensed_claim || result.rewrite || "licensed claim boundary";
+      const paths = {
+        register_claim_type: [
+          ["Register contract", "Define the claim family, required evidence, and admissibility policy."],
+          ["Rebuild payload", "Move the candidate claim into that registered evidence contract."],
+          ["Run gate", "Execute the deterministic decision again."],
+          ["Route decision", "Only accepted or resolved records proceed to reuse."]
+        ],
+        repair_schema: [
+          ["Repair schema", "Fix schema_version, field placement, types, and ranges."],
+          ["Run gate", "Re-evaluate after the payload is structurally clean."],
+          ["Inspect blockers", "Confirm evidence and provenance obligations."],
+          ["Route decision", "Send ACCEPT, REWRITE, REJECT, or HOLD into the audit trail."]
+        ],
+        supply_evidence: [
+          ["Supply evidence", "Add the missing required fields for this claim contract."],
+          ["Run gate", "Re-evaluate the same claim boundary."],
+          ["Resolve blockers", "Address remaining proof obligations."],
+          ["Route decision", "Only licensed boundaries move forward."]
+        ],
+        edit_and_resubmit: [
+          ["Edit claim", `Replace claim.text with: ${licensed}`],
+          ["Resubmit", "Run the corrected record through the same deterministic gate."],
+          ["Accept boundary", "If licensed, keep both original decision and correction history."],
+          ["Export audit", "Attach the decision trail before dataset reuse."]
+        ],
+        exclude_or_replace_evidence: [
+          ["Exclude claim", "Remove the candidate from controlled reuse."],
+          ["Or replace evidence", "Provide stronger evidence that changes the contract outcome."],
+          ["Run gate", "Re-evaluate only after the evidence packet changes."],
+          ["Archive decision", "Keep the rejection in the audit trail."]
+        ],
+        verify_provenance_for_training: [
+          ["Controlled reuse", "The claim boundary is licensed for non-training reuse."],
+          ["Verify provenance", "Resolve review hash, source hash, witness, RO-Crate, and attestation checks."],
+          ["Run CLI/API", "Use active provenance verification before fine-tuning."],
+          ["Approve training", "Only then mark the record training-ready."]
+        ],
+        approve_for_controlled_reuse: [
+          ["Approve", "The claim boundary and training-readiness gates passed."],
+          ["Attach audit", "Keep the certificate, provenance, and decision output with the record."],
+          ["Reuse", "Move the claim into the governed dataset or workflow."],
+          ["Monitor", "Retain the decision trail for audit and later review."]
+        ],
+        hold_for_review: [
+          ["Review obligations", "Inspect open proof obligations and blockers."],
+          ["Repair record", "Add evidence, rewrite the claim, or update provenance."],
+          ["Run gate", "Re-evaluate after the record changes."],
+          ["Route decision", "Do not reuse until the boundary is resolved."]
+        ]
+      };
+      return paths[kind] || paths.hold_for_review;
+    }
+
+    function renderOperationalAction(result) {
+      const certificate = result?.admissibility_certificate || {};
+      const action = certificate.next_action || {};
+      const kind = action.kind || "hold_for_review";
+      const label = action.label || "Resolve open proof obligations before reuse.";
+      const boundary = certificate.lattice?.reuse_boundary || "unresolved";
+      const obligations = Array.isArray(certificate.proof_obligations) ? certificate.proof_obligations : [];
+      const path = resolutionPathForAction(kind, result || {});
+      return (
+        `<div class="action-block" role="status" aria-live="polite" aria-atomic="true" tabindex="0" aria-label="Operational resolution path">` +
+        `<div class="action-head"><div class="action-title">Operational resolution</div><div class="action-kind">${escHtml(kind)}</div></div>` +
+        `<div class="action-summary">${escHtml(label)} Reuse boundary: <code>${escHtml(boundary)}</code>.</div>` +
+        `<div class="action-path" aria-label="Decision to resolution path">${path.map(([title, text]) => `<div class="action-step"><strong>${escHtml(title)}</strong>${escHtml(text)}</div>`).join("")}</div>` +
+        (obligations.length ? `<ul class="action-list">${obligations.slice(0, 4).map((item) => `<li>${escHtml(item)}</li>`).join("")}${obligations.length > 4 ? `<li>${obligations.length - 4} more proof obligations in Full output JSON.</li>` : ""}</ul>` : "") +
+        `</div>`
+      );
+    }
+
+    function renderBatchResolution(result) {
+      const queue = Array.isArray(result?.exception_queue) ? result.exception_queue : [];
+      const actions = Object.entries(result?.admissibility_summary?.next_actions || {});
+      const rows = queue.slice(0, 5).map((entry) => (
+        `<li>#${entry.index + 1} ${escHtml(entry.claim_id || "item")} · ${escHtml(entry.verdict || "UNKNOWN")} · ${escHtml(entry.next_action || "hold_for_review")}</li>`
+      )).join("");
+      return (
+        `<div class="action-block" role="status" aria-live="polite" aria-atomic="true" tabindex="0" aria-label="Batch operational resolution queue">` +
+        `<div class="action-head"><div class="action-title">Batch resolution queue</div><div class="action-kind">${queue.length} exceptions</div></div>` +
+        `<div class="action-summary">Batch does not end at summary counts. Non-ready records route into reviewer actions before controlled reuse.</div>` +
+        `<div class="action-path" aria-label="Batch decision to resolution path">` +
+        `<div class="action-step"><strong>Decision mix</strong>${escHtml(JSON.stringify(result.summary || {}))}</div>` +
+        `<div class="action-step"><strong>Next actions</strong>${escHtml(actions.length ? actions.map(([k, v]) => `${k}:${v}`).join(", ") : "none")}</div>` +
+        `<div class="action-step"><strong>Exception queue</strong>${queue.length} records need correction, exclusion, evidence, or provenance work.</div>` +
+        `<div class="action-step"><strong>Resolution</strong>Correct, resubmit, approve, and export the audit trail.</div>` +
+        `</div>` +
+        (rows ? `<ul class="action-list">${rows}${queue.length > 5 ? `<li>${queue.length - 5} more exceptions in Full output JSON.</li>` : ""}</ul>` : "") +
+        `</div>`
+      );
     }
 
     function renderVerdict(result) {
       const verdict = result.verdict;
       let html = `<div class="verdict-banner"><span class="verdict-badge ${verdict}">${verdict}</span><span class="verdict-reason">${escHtml(result.reason)}</span></div>`;
+      html += renderOperationalAction(result);
       html += renderFineTuneStatus(result);
       if (result.schema_errors && result.schema_errors.length) {
         html += `<div class="alert-block errors"><div class="alert-title">Schema errors</div><ul>${result.schema_errors.map((e) => `<li>${escHtml(e)}</li>`).join("")}</ul></div>`;
@@ -4306,9 +5310,29 @@ def _render_ui(sample: dict[str, Any]) -> str:
       const items = batchItems(payload);
       const results = items.map((item, index) => ({ index, result: rule(item) }));
       const summary = {};
+      const boundaries = {};
+      const actions = {};
+      const exceptionQueue = [];
       for (const entry of results) {
         const verdict = entry.result.verdict || "UNKNOWN";
         summary[verdict] = (summary[verdict] || 0) + 1;
+        const certificate = entry.result.admissibility_certificate || {};
+        const boundary = certificate.lattice?.reuse_boundary;
+        const action = certificate.next_action?.kind;
+        if (boundary) boundaries[boundary] = (boundaries[boundary] || 0) + 1;
+        if (action) actions[action] = (actions[action] || 0) + 1;
+        if (!(entry.result.verdict === "ACCEPT" && entry.result.fine_tune_ready === true)) {
+          exceptionQueue.push({
+            index: entry.index,
+            claim_id: entry.result.input_claim?.id,
+            claim_type: entry.result.input_claim?.type,
+            verdict: entry.result.verdict,
+            reuse_boundary: boundary,
+            next_action: action,
+            next_action_label: certificate.next_action?.label,
+            proof_obligations: (certificate.proof_obligations || []).slice(0, 8)
+          });
+        }
       }
       return {
         schema_version: capasSchemaVersion,
@@ -4316,6 +5340,8 @@ def _render_ui(sample: dict[str, Any]) -> str:
         item_count: items.length,
         results,
         summary,
+        admissibility_summary: { reuse_boundaries: boundaries, next_actions: actions },
+        exception_queue: exceptionQueue,
         fine_tune_ready: results.length > 0 && results.every((entry) => entry.result.fine_tune_ready === true),
         fine_tune_blockers: results.length > 0 && results.every((entry) => entry.result.fine_tune_ready === true)
           ? []
@@ -4346,6 +5372,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
         `<div class="batch-progress" aria-hidden="true"><div class="batch-progress-fill" style="--batch-progress:100%"></div></div>` +
         `<div class="batch-progress-label">${result.item_count}/${result.item_count} claims processed · deterministic gate complete</div>` +
         `<div class="batch-table" role="list" aria-label="Batch per-item decisions">${rows}</div></div>` +
+        renderBatchResolution(result) +
         renderBatchFineTuneStatus(result);
       renderExecutiveDashboard(result.results.map((entry) => entry.result));
     }
@@ -4379,6 +5406,9 @@ def _render_ui(sample: dict[str, Any]) -> str:
       const provenance = firstResult?.training_evidence?.provenance || {};
       const schemaErrors = firstResult?.schema_errors || [];
       const missingFields = firstResult?.missing_fields || [];
+      const certificate = firstResult?.admissibility_certificate || {};
+      const lattice = certificate.lattice || {};
+      const axes = lattice.axes || {};
       const cards = [];
       cards.push(renderInspectorCard("Decision", inspectorDl([
         ["mode", value.batch_mode ? `batch · ${value.item_count} items` : "single claim"],
@@ -4387,11 +5417,26 @@ def _render_ui(sample: dict[str, Any]) -> str:
         ["claim type", claim.type || "-"],
         ["reason", firstResult?.reason || value.non_claim || "-"]
       ]), true));
-      cards.push(renderInspectorCard("Fine-tune readiness", inspectorDl([
+      cards.push(renderInspectorCard("Admissibility certificate", inspectorDl([
+        ["calculus", certificate.calculus_version || "-"],
+        ["boundary", lattice.reuse_boundary || "-"],
+        ["next action", certificate.next_action?.kind || "-"],
+        ["contract", axes.contract?.level || "-"],
+        ["evidence", axes.evidence?.level || "-"],
+        ["defeaters", axes.defeaters?.level || "-"]
+      ]) + inspectorList(certificate.proof_obligations || [], "No open proof obligations for the current claim boundary."), true));
+      if (value.batch_mode) {
+        cards.push(renderInspectorCard("Exception queue", inspectorDl([
+          ["exceptions", Array.isArray(value.exception_queue) ? value.exception_queue.length : 0],
+          ["boundaries", JSON.stringify(value.admissibility_summary?.reuse_boundaries || {})],
+          ["next actions", JSON.stringify(value.admissibility_summary?.next_actions || {})]
+        ]) + inspectorList((value.exception_queue || []).map((entry) => `#${entry.index + 1} ${entry.claim_id || "item"} · ${entry.verdict} · ${entry.next_action}`), "No exception queue items.")));
+      }
+      cards.push(renderInspectorCard("Training readiness preview", inspectorDl([
         ["ready", value.batch_mode ? String(value.fine_tune_ready === true) : String(firstResult?.fine_tune_ready === true)],
         ["criteria", criteriaTotal ? `${criteriaPassed}/${criteriaTotal}` : value.batch_mode ? "batch AND-gate; expand per item for criteria" : "-"],
         ["blockers", (value.fine_tune_blockers || firstResult?.fine_tune_blockers || []).length]
-      ]) + inspectorList(value.fine_tune_blockers || firstResult?.fine_tune_blockers || [], "No active fine-tune blockers.")));
+      ]) + inspectorList(value.fine_tune_blockers || firstResult?.fine_tune_blockers || [], "No active training-readiness blockers on the active verification surface.")));
       cards.push(renderInspectorCard("Schema errors", inspectorList(schemaErrors.concat(missingFields.map((field) => `missing field: ${field}`)), "No schema errors or missing fields.")));
       cards.push(renderInspectorCard("Provenance", inspectorDl([
         ["review id", provenance.review_id || "-"],
@@ -4547,6 +5592,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
       if (text.includes("systematic review") || text.includes("risk_of_bias") || text.includes("inclusion criteria")) return "systematic_review_claim";
       if (text.includes("contradict") || text.includes("conflict_resolution") || text.includes("supporting_sources")) return "evidence_conflict_claim";
       if (text.includes("multimodal") || text.includes("cross_modal") || text.includes("modality")) return "multimodal_evidence_claim";
+      if (text.includes("python") || text.includes("append(") || text.includes("pop(") || text.includes("remove(") || text.includes("code_snippet") || text.includes("expected_output")) return "programming_language_behavior_claim";
       if (text.includes("p_value") || text.includes("alpha") || text.includes("statistical")) return "statistical_confidence";
       if (text.includes("artifact") || text.includes("reproduction") || text.includes("reproducib")) return "reproducibility_check";
       if (text.includes("reported_value") || text.includes("reference_value") || text.includes("metric")) return "financial_metric_claim";
@@ -4925,6 +5971,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
       if (text.includes("systematic review") || text.includes("risk_of_bias") || text.includes("inclusion")) return "systematic_review_claim";
       if (text.includes("conflict") || text.includes("contradict")) return "evidence_conflict_claim";
       if (text.includes("figure") || text.includes("table") || text.includes("image") || text.includes("multimodal")) return "multimodal_evidence_claim";
+      if (text.includes("python") || text.includes("append(") || text.includes("pop(") || text.includes("remove(") || text.includes("code_snippet") || text.includes("expected_output")) return "programming_language_behavior_claim";
       if (text.includes("metric") || text.includes("reported_value") || text.includes("reference_value")) return "financial_metric_claim";
       if (text.includes("abs_error") || text.includes("tolerance") || text.includes("accuracy")) return "exact_model_solution";
       return "claim_transition";
@@ -5703,7 +6750,8 @@ def _render_ui(sample: dict[str, Any]) -> str:
         samples.CAUSAL,
         samples.SYSTEMATIC,
         samples.CONFLICT,
-        samples.MULTIMODAL
+        samples.MULTIMODAL,
+        samples.CODE
       ].filter(Boolean);
       document.getElementById("input").value = JSON.stringify(batch, null, 2);
       onInputChange();

@@ -1,10 +1,10 @@
 {
   "$id": "https://fomv9354lve.github.io/capas-inteligentes/schema/v3/capas_claim_payload.schema.json",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "additionalProperties": true,
+  "additionalProperties": false,
   "properties": {
     "claim": {
-      "additionalProperties": true,
+      "additionalProperties": false,
       "properties": {
         "id": {
           "description": "Claim ids must not contain HTML angle brackets or common Unicode angle-bracket homoglyphs.",
@@ -29,6 +29,7 @@
             "financial_metric_claim",
             "multimodal_evidence_claim",
             "physical_accuracy",
+            "programming_language_behavior_claim",
             "reproducibility_check",
             "statistical_confidence",
             "systematic_review_claim",
@@ -45,8 +46,8 @@
       "type": "object"
     },
     "evidence": {
-      "additionalProperties": true,
-      "description": "Evidence fields are claim-type dependent; unsupported or missing evidence yields HOLD.",
+      "additionalProperties": false,
+      "description": "Evidence fields are claim-type dependent and strict. Misplaced training_evidence, unknown fields, or missing registered evidence yields HOLD.",
       "properties": {
         "abs_error": {
           "minimum": 0,
@@ -58,11 +59,46 @@
           "type": "number"
         },
         "anchor_mode": {
+          "enum": [
+            "absolute_anchor",
+            "benchmark_anchor",
+            "empirical_anchor",
+            "relative_anchor"
+          ],
           "pattern": "^[^<>\u02c2\u02c3\u2039\u203a\u2329-\u232a\u276c-\u276d\u27e8-\u27e9\u29fc-\u29fd\u3008-\u3009\ufe64-\ufe65\uff1c-\uff1e]*$",
           "type": "string"
         },
         "artifact_available": {
           "type": "boolean"
+        },
+        "audit_trail": {},
+        "benchmark_metric": {
+          "minLength": 1,
+          "pattern": "^[^<>\u02c2\u02c3\u2039\u203a\u2329-\u232a\u276c-\u276d\u27e8-\u27e9\u29fc-\u29fd\u3008-\u3009\ufe64-\ufe65\uff1c-\uff1e]*$",
+          "type": "string"
+        },
+        "benchmark_name": {
+          "minLength": 1,
+          "pattern": "^[^<>\u02c2\u02c3\u2039\u203a\u2329-\u232a\u276c-\u276d\u27e8-\u27e9\u29fc-\u29fd\u3008-\u3009\ufe64-\ufe65\uff1c-\uff1e]*$",
+          "type": "string"
+        },
+        "benchmark_pass": {
+          "type": "boolean"
+        },
+        "bound_scope": {
+          "pattern": "^[^<>\u02c2\u02c3\u2039\u203a\u2329-\u232a\u276c-\u276d\u27e8-\u27e9\u29fc-\u29fd\u3008-\u3009\ufe64-\ufe65\uff1c-\uff1e]*$",
+          "type": "string"
+        },
+        "claim_api": {
+          "minLength": 1,
+          "pattern": "^[^<>\u02c2\u02c3\u2039\u203a\u2329-\u232a\u276c-\u276d\u27e8-\u27e9\u29fc-\u29fd\u3008-\u3009\ufe64-\ufe65\uff1c-\uff1e]*$",
+          "type": "string"
+        },
+        "code_snippet": {
+          "description": "Executable snippet used to check a programming-language behavior claim. Snippets are escaped when rendered; they are not executed by the browser gate.",
+          "maxLength": 4000,
+          "minLength": 1,
+          "type": "string"
         },
         "conflict_resolution_method": {
           "pattern": "^[^<>\u02c2\u02c3\u2039\u203a\u2329-\u232a\u276c-\u276d\u27e8-\u27e9\u29fc-\u29fd\u3008-\u3009\ufe64-\ufe65\uff1c-\uff1e]*$",
@@ -86,11 +122,32 @@
           "pattern": "^[^<>\u02c2\u02c3\u2039\u203a\u2329-\u232a\u276c-\u276d\u27e8-\u27e9\u29fc-\u29fd\u3008-\u3009\ufe64-\ufe65\uff1c-\uff1e]*$",
           "type": "string"
         },
+        "docs_reference": {
+          "pattern": "^[^<>\u02c2\u02c3\u2039\u203a\u2329-\u232a\u276c-\u276d\u27e8-\u27e9\u29fc-\u29fd\u3008-\u3009\ufe64-\ufe65\uff1c-\uff1e]*$",
+          "type": "string"
+        },
         "effect_consistency": {
           "type": "boolean"
         },
         "effect_direction_confirmed": {
           "type": "boolean"
+        },
+        "empirical_anchor_pass": {
+          "type": "boolean"
+        },
+        "empirical_reference_present": {
+          "type": "boolean"
+        },
+        "empirical_tolerance": {
+          "minimum": 0,
+          "type": "number"
+        },
+        "execution_observed": {
+          "type": "boolean"
+        },
+        "expected_output": {
+          "maxLength": 4000,
+          "type": "string"
         },
         "extraction_method_declared": {
           "type": "boolean"
@@ -104,17 +161,35 @@
         "intervention_or_natural_experiment": {
           "type": "boolean"
         },
+        "language": {
+          "minLength": 1,
+          "pattern": "^[^<>\u02c2\u02c3\u2039\u203a\u2329-\u232a\u276c-\u276d\u27e8-\u27e9\u29fc-\u29fd\u3008-\u3009\ufe64-\ufe65\uff1c-\uff1e]*$",
+          "type": "string"
+        },
+        "language_version": {
+          "minLength": 1,
+          "pattern": "^[^<>\u02c2\u02c3\u2039\u203a\u2329-\u232a\u276c-\u276d\u27e8-\u27e9\u29fc-\u29fd\u3008-\u3009\ufe64-\ufe65\uff1c-\uff1e]*$",
+          "type": "string"
+        },
         "local_property_tests_pass": {
           "type": "boolean"
         },
         "mechanism_evidence_present": {
           "type": "boolean"
         },
+        "metric_name": {
+          "pattern": "^[^<>\u02c2\u02c3\u2039\u203a\u2329-\u232a\u276c-\u276d\u27e8-\u27e9\u29fc-\u29fd\u3008-\u3009\ufe64-\ufe65\uff1c-\uff1e]*$",
+          "type": "string"
+        },
         "metric_period_match": {
           "type": "boolean"
         },
         "modality": {
           "pattern": "^[^<>\u02c2\u02c3\u2039\u203a\u2329-\u232a\u276c-\u276d\u27e8-\u27e9\u29fc-\u29fd\u3008-\u3009\ufe64-\ufe65\uff1c-\uff1e]*$",
+          "type": "string"
+        },
+        "observed_output": {
+          "maxLength": 4000,
           "type": "string"
         },
         "p_value": {
@@ -133,6 +208,14 @@
         "reference_value": {
           "type": "number"
         },
+        "relative_anchor_comparison_pass": {
+          "type": "boolean"
+        },
+        "relative_anchor_reference": {
+          "minLength": 1,
+          "pattern": "^[^<>\u02c2\u02c3\u2039\u203a\u2329-\u232a\u276c-\u276d\u27e8-\u27e9\u29fc-\u29fd\u3008-\u3009\ufe64-\ufe65\uff1c-\uff1e]*$",
+          "type": "string"
+        },
         "reported_value": {
           "type": "number"
         },
@@ -140,6 +223,9 @@
           "type": "boolean"
         },
         "risk_of_bias_assessed": {
+          "type": "boolean"
+        },
+        "runtime_environment_declared": {
           "type": "boolean"
         },
         "source_hashes_verified": {
@@ -174,20 +260,113 @@
       },
       "type": "object"
     },
+    "provenance": {
+      "additionalProperties": false,
+      "properties": {
+        "review_hash": {
+          "maxLength": 64,
+          "minLength": 64,
+          "type": "string"
+        },
+        "review_id": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "review_packet": {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        "review_sha256": {
+          "maxLength": 64,
+          "minLength": 64,
+          "type": "string"
+        },
+        "reviewer": {
+          "additionalProperties": false,
+          "properties": {
+            "attestation": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "attestation_sha256": {
+              "maxLength": 64,
+              "minLength": 64,
+              "type": "string"
+            },
+            "reviewer_id": {
+              "minLength": 1,
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "reviewer_registry_path": {
+          "type": "string"
+        },
+        "reviewer_registry_sha256": {
+          "maxLength": 64,
+          "minLength": 64,
+          "type": "string"
+        },
+        "ro_crate_path": {
+          "type": "string"
+        },
+        "ro_crate_sha256": {
+          "maxLength": 64,
+          "minLength": 64,
+          "type": "string"
+        },
+        "source_hashes": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "type": "object"
+        },
+        "source_urls": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "sources": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "witness_id": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "witness_registry_path": {
+          "type": "string"
+        },
+        "witness_registry_sha256": {
+          "maxLength": 64,
+          "minLength": 64,
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
     "schema_version": {
       "const": "capas-claim-payload-v3",
       "description": "Payload schema version required for migration-safe CAPAS decisions.",
       "type": "string"
     },
-    "training_evidence": {
+    "source": {
       "additionalProperties": true,
+      "type": "object"
+    },
+    "training_evidence": {
+      "additionalProperties": false,
       "description": "Optional positive-readiness packet. It never changes ACCEPT/REJECT/REWRITE/HOLD; it only controls fine_tune_ready after an ACCEPT verdict.",
       "properties": {
         "external_review": {
           "type": "boolean"
         },
         "provenance": {
-          "additionalProperties": true,
+          "additionalProperties": false,
           "properties": {
             "review_hash": {
               "maxLength": 64,
@@ -208,7 +387,7 @@
               "type": "string"
             },
             "reviewer": {
-              "additionalProperties": true,
+              "additionalProperties": false,
               "properties": {
                 "attestation": {
                   "minLength": 1,

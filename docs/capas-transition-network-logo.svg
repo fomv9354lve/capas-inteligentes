@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title desc">
+  <title id="title">CAPAS transition network logo</title>
+  <desc id="desc">A scalable transition network sphere with gold nodes, cyan licensed paths, and magenta drift paths.</desc>
+  <defs>
+    <radialGradient id="shell" cx="34%" cy="28%" r="72%">
+      <stop offset="0%" stop-color="#1f2937"/>
+      <stop offset="58%" stop-color="#09090b"/>
+      <stop offset="100%" stop-color="#05060a"/>
+    </radialGradient>
+    <linearGradient id="cyan" x1="18" y1="28" x2="108" y2="92" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#67e8f9"/>
+      <stop offset="52%" stop-color="#00e5ff"/>
+      <stop offset="100%" stop-color="#2563eb"/>
+    </linearGradient>
+    <linearGradient id="magenta" x1="28" y1="96" x2="102" y2="34" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#fb7185"/>
+      <stop offset="54%" stop-color="#e61062"/>
+      <stop offset="100%" stop-color="#a855f7"/>
+    </linearGradient>
+    <radialGradient id="node" cx="38%" cy="32%" r="68%">
+      <stop offset="0%" stop-color="#fff7ad"/>
+      <stop offset="44%" stop-color="#f5a623"/>
+      <stop offset="100%" stop-color="#ff5722"/>
+    </radialGradient>
+    <filter id="glow" x="-45%" y="-45%" width="190%" height="190%">
+      <feGaussianBlur stdDeviation="2.4" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <circle cx="64" cy="64" r="58" fill="url(#shell)"/>
+  <circle cx="64" cy="64" r="53" fill="none" stroke="#444c56" stroke-opacity=".28" stroke-width=".8"/>
+  <ellipse cx="64" cy="64" rx="53" ry="17" fill="none" stroke="#444c56" stroke-opacity=".16" stroke-width=".7"/>
+  <ellipse cx="64" cy="64" rx="17" ry="53" fill="none" stroke="#444c56" stroke-opacity=".13" stroke-width=".7" transform="rotate(-24 64 64)"/>
+  <ellipse cx="64" cy="64" rx="17" ry="53" fill="none" stroke="#444c56" stroke-opacity=".13" stroke-width=".7" transform="rotate(42 64 64)"/>
+
+  <g fill="none" stroke-linecap="round" filter="url(#glow)">
+    <path d="M24 62 Q50 34 91 25" stroke="url(#cyan)" stroke-width="2.1" stroke-opacity=".76"/>
+    <path d="M35 97 Q56 68 106 71" stroke="url(#cyan)" stroke-width="2.1" stroke-opacity=".68"/>
+    <path d="M26 42 Q61 58 91 101" stroke="url(#cyan)" stroke-width="1.4" stroke-opacity=".48"/>
+    <path d="M51 20 Q74 57 109 49" stroke="url(#cyan)" stroke-width="1.2" stroke-opacity=".4"/>
+    <path d="M19 82 Q55 73 78 29" stroke="url(#cyan)" stroke-width="1" stroke-opacity=".32"/>
+    <path d="M42 37 Q72 77 96 91" stroke="url(#cyan)" stroke-width="1" stroke-opacity=".3"/>
+    <path d="M30 52 Q62 88 102 40" stroke="url(#magenta)" stroke-width="2.8" stroke-opacity=".88"/>
+    <path d="M102 40 Q86 19 56 25" stroke="url(#magenta)" stroke-width="2.3" stroke-opacity=".72"/>
+    <path d="M56 25 Q42 61 30 52" stroke="url(#magenta)" stroke-width="2.1" stroke-opacity=".72"/>
+  </g>
+
+  <g filter="url(#glow)">
+    <circle cx="24" cy="62" r="3.2" fill="url(#node)"/>
+    <circle cx="35" cy="97" r="3" fill="url(#node)"/>
+    <circle cx="91" cy="25" r="3.4" fill="url(#node)"/>
+    <circle cx="106" cy="71" r="3" fill="url(#node)"/>
+    <circle cx="26" cy="42" r="2.3" fill="#f5a623"/>
+    <circle cx="91" cy="101" r="2.7" fill="#f5a623"/>
+    <circle cx="51" cy="20" r="2.2" fill="#f5a623"/>
+    <circle cx="109" cy="49" r="2.4" fill="#f5a623"/>
+    <circle cx="19" cy="82" r="2" fill="#f5a623"/>
+    <circle cx="78" cy="29" r="2.2" fill="#f5a623"/>
+    <circle cx="42" cy="37" r="2" fill="#f5a623"/>
+    <circle cx="96" cy="91" r="2.2" fill="#f5a623"/>
+    <circle cx="30" cy="52" r="4.2" fill="#ff5722"/>
+    <circle cx="102" cy="40" r="4" fill="#ff5722"/>
+    <circle cx="56" cy="25" r="3.6" fill="#ff5722"/>
+    <circle cx="64" cy="64" r="2.1" fill="#f5a623" opacity=".86"/>
+  </g>
+</svg>

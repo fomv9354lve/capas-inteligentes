@@ -32,9 +32,10 @@
     }
     a { color: inherit; }
     header, main, footer { width: min(1180px, calc(100% - 40px)); margin: 0 auto; }
-    header { min-height: 44px; display: flex; justify-content: space-between; align-items: center; padding: 0; border-bottom: 1px solid var(--border); }
-    .brand { font-size: 13px; font-weight: 800; letter-spacing: 0; }
-    .nav { display: flex; gap: 2px; flex-wrap: wrap; }
+    header { height: 48px; min-height: 48px; display: flex; justify-content: space-between; align-items: center; padding: 0 24px; border-bottom: 1px solid var(--border); }
+    .brand { display: flex; align-items: center; height: 100%; gap: 9px; font-size: 13px; font-weight: 800; letter-spacing: 0; }
+    .brand-logo { height: 32px; width: auto; object-fit: contain; vertical-align: middle; margin-top: 0; position: static; flex: 0 0 auto; display: block; }
+    .nav { display: flex; align-items: center; justify-content: flex-end; height: 100%; gap: 2px; flex-wrap: wrap; }
     .button {
       display: inline-flex;
       align-items: center;
@@ -50,7 +51,7 @@
       font-weight: 700;
     }
     .button.primary { border-color: rgba(124, 127, 255, 0.45); background: rgba(124,127,255,.12); color: #a5b4fc; }
-    .hero { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr); gap: 24px; align-items: center; padding: 54px 0 34px; }
+    .hero { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr); gap: 24px; align-items: start; padding: 54px 0 34px; }
     .eyebrow { color: var(--accent); font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.9px; }
     h1 { font-size: clamp(36px, 6vw, 64px); line-height: 1.02; margin: 10px 0 16px; letter-spacing: 0; }
     h2 { font-size: 24px; margin: 0 0 14px; letter-spacing: 0; }
@@ -69,6 +70,34 @@
     .footnotes { color: var(--quiet); font-size: 12px; line-height: 1.6; }
     .footnotes ol { margin: 8px 0 0; padding-left: 18px; }
     .screen { background: linear-gradient(180deg, var(--surface), #0c0c0e); box-shadow: 0 18px 60px rgba(0,0,0,0.35); }
+    .hero-visual { display: grid; gap: 14px; min-width: 0; justify-items: end; align-self: start; }
+    .hero-logo-card {
+      position: relative;
+      overflow: hidden;
+      width: min(100%, 420px);
+      min-height: 300px;
+      aspect-ratio: 1 / 1;
+      border: 1px solid rgba(124, 127, 255, 0.24);
+      border-radius: var(--radius);
+      background: #05060A;
+      box-shadow: 0 18px 60px rgba(0,0,0,0.35);
+      cursor: grab;
+      justify-self: end;
+    }
+    .hero-logo-card:active { cursor: grabbing; }
+    .capas-3d-logo {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      background: #05060A;
+    }
+    .capas-3d-logo canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
     .demo-title { color: var(--muted); font-size: 12px; font-weight: 800; letter-spacing: .8px; text-transform: uppercase; margin-bottom: 12px; }
     .claim-flow { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; align-items: stretch; }
     .claim-flow .card { min-height: 170px; }
@@ -123,7 +152,9 @@
       .hero, .metrics, .grid, .screens, .nav-hub { grid-template-columns: 1fr; }
       .compare-grid, .loop { grid-template-columns: 1fr; }
       .cascade { grid-template-columns: 1fr; }
-      header { align-items: flex-start; flex-direction: column; gap: 12px; }
+      .hero-visual { justify-items: stretch; }
+      .hero-logo-card { width: 100%; min-height: 280px; aspect-ratio: 1 / 1; }
+      header { align-items: center; flex-direction: row; justify-content: space-between; gap: 12px; overflow-x: auto; }
     }
   </style>
 </head>
@@ -145,22 +176,28 @@
         <h1>Stop claim drift before scientific claims enter datasets or fine-tuning.</h1>
         <p>CAPAS decides whether supplied evidence licenses a scientific claim for controlled reuse. It returns ACCEPT, REWRITE, REJECT, or HOLD with provenance blockers and audit-ready reasoning.</p>
         <p>It does not certify scientific truth. It prevents a paper's limited evidence from turning into an over-scoped training example, report sentence, or governed dataset record.</p>
+        <p class="footnotes">Humans decide what evidence is supplied. CAPAS decides whether that evidence licenses the claim boundary. Current release includes 12 reference claim families; new domains extend through evidence contracts and decision policies, not hidden model judgment.</p>
         <div class="pill-row" aria-label="Primary buyers">
           <span class="pill">AI Governance</span>
           <span class="pill">Research Operations</span>
           <span class="pill">Scientific Data Teams</span>
         </div>
         <div class="nav">
-          <a class="button primary" href="app.html?p=ewogICJjbGFpbSI6IHsKICAgICJpZCI6ICJzYW1wbGVfc2NhbGluZ19jbGFpbV9yZXdyaXRlIiwKICAgICJ0ZXh0IjogIkxvY2FsIG1vbm90b25pY2l0eSBwcm92ZXMgdW5pdmVyc2FsIHBoeXNpY2FsIGNvcnJlY3RuZXNzLiIsCiAgICAidHlwZSI6ICJ1bml2ZXJzYWxfYW5jaG9yX2NsYWltIgogIH0sCiAgImV2aWRlbmNlIjogewogICAgImFuY2hvcl9tb2RlIjogImFic29sdXRlX2FuY2hvciIsCiAgICAibG9jYWxfcHJvcGVydHlfdGVzdHNfcGFzcyI6IHRydWUsCiAgICAicGh5c2ljYWxfZXZpZGVuY2VfbGV2ZWwiOiAic2NhbGluZ19sYXdfYW5jaG9yIiwKICAgICJ1bml2ZXJzYWxfYW5jaG9yX3Bhc3MiOiBmYWxzZSwKICAgICJ2ZXJpZmljYXRpb25faW5kZXBlbmRlbmNlIjogInRoZW9yeV9zY2FsaW5nX2xhd19ub19zb2x2ZXIiCiAgfSwKICAic2NoZW1hX3ZlcnNpb24iOiAiY2FwYXMtY2xhaW0tcGF5bG9hZC12MyIKfQ">Run sample REWRITE</a>
+          <a class="button primary" href="app.html?p=ewogICJjbGFpbSI6IHsKICAgICJpZCI6ICJzYW1wbGVfc2NhbGluZ19jbGFpbV9yZXdyaXRlIiwKICAgICJ0ZXh0IjogIkxvY2FsIG1vbm90b25pY2l0eSBwcm92ZXMgdW5pdmVyc2FsIHBoeXNpY2FsIGNvcnJlY3RuZXNzLiIsCiAgICAidHlwZSI6ICJ1bml2ZXJzYWxfYW5jaG9yX2NsYWltIgogIH0sCiAgImV2aWRlbmNlIjogewogICAgImFuY2hvcl9tb2RlIjogImFic29sdXRlX2FuY2hvciIsCiAgICAibG9jYWxfcHJvcGVydHlfdGVzdHNfcGFzcyI6IHRydWUsCiAgICAicGh5c2ljYWxfZXZpZGVuY2VfbGV2ZWwiOiAic2NhbGluZ19sYXdfYW5jaG9yIiwKICAgICJ1bml2ZXJzYWxfYW5jaG9yX3Bhc3MiOiBmYWxzZSwKICAgICJ2ZXJpZmljYXRpb25faW5kZXBlbmRlbmNlIjogInRoZW9yeV9zY2FsaW5nX2xhd19ub19zb2x2ZXIiCiAgfSwKICAic2NoZW1hX3ZlcnNpb24iOiAiY2FwYXMtY2xhaW0tcGF5bG9hZC12MyIKfQ">Run a Claim Drift Example</a>
           <a class="button" href="pilot-packet.html">See pilot package</a>
         </div>
       </div>
-      <div class="screen" aria-label="CAPAS screenshot mock">
-        <div class="screen-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
-        <div class="demo-title">Claim drift example</div>
-        <div class="row"><span>Paper</span><span>Association observed under limited conditions</span><code>source</code></div>
-        <div class="row"><span>Dataset</span><span>Treatment causes improvement</span><code>drift</code></div>
-        <div class="row"><span class="badge rewrite">REWRITE</span><span>Association supported; causality not licensed</span><code>gate</code></div>
+      <div class="hero-visual">
+        <div class="hero-logo-card" role="img" aria-label="CAPAS transition network 3D logo">
+          <div id="capas-3d-logo" class="capas-3d-logo"></div>
+        </div>
+        <div class="screen" aria-label="CAPAS screenshot mock">
+          <div class="screen-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+          <div class="demo-title">Claim drift example</div>
+          <div class="row"><span>Paper</span><span>Association observed under limited conditions</span><code>source</code></div>
+          <div class="row"><span>Dataset</span><span>Treatment causes improvement</span><code>drift</code></div>
+          <div class="row"><span class="badge rewrite">REWRITE</span><span>Association supported; causality not licensed</span><code>gate</code></div>
+        </div>
       </div>
     </section>
     <section>
@@ -175,11 +212,13 @@
     <section>
       <h2>Why claim admissibility?</h2>
       <p>Datasets govern records. Provenance systems govern sources. CAPAS governs the claim itself: the exact reusable sentence and whether the supplied evidence licenses it.</p>
+      <p>Governance systems govern objects. CAPAS governs semantic admissibility: whether a reusable sentence stays inside its licensed claim boundary.</p>
       <div class="grid">
         <div class="card"><strong>Record-level tools miss wording drift</strong><p>A dataset can have a source, license, and lineage while still containing a claim that says more than the source supports.</p></div>
         <div class="card"><strong>Fact-checkers answer a different question</strong><p>CAPAS does not ask whether the world is true. It asks whether this evidence packet licenses this claim boundary.</p></div>
         <div class="card"><strong>Governance needs a decision artifact</strong><p>ACCEPT, REWRITE, REJECT, and HOLD create an exception queue, not just another annotation or confidence score.</p></div>
       </div>
+      <p class="footnotes">The app ships with 12 reference claim families. That is not a closed taxonomy: unsupported domains should HOLD until the team defines a new evidence contract, admissibility policy, and audit artifact.</p>
     </section>
     <section>
       <h2>Contamination Cascade</h2>
@@ -204,6 +243,7 @@
     <section>
       <h2>Why not just use human review?</h2>
       <p>CAPAS does not replace expert review. It turns expert review into a reusable decision system: explicit criteria, repeatable boundaries, and exportable exceptions.</p>
+      <p>Humans decide evidence. CAPAS decides admissibility. The gate makes reviewer judgment operational by routing every REWRITE/HOLD into a reusable work item.</p>
       <div class="compare-grid" aria-label="Human review alone versus CAPAS">
         <div class="card">
           <h3>Human review alone</h3>
@@ -226,6 +266,15 @@
       </div>
     </section>
     <section>
+      <h2>Why not an LLM reviewer?</h2>
+      <p>LLMs can assist retrieval, extraction, summarization, and candidate drafting. They should not be the final admissibility authority for governed training data.</p>
+      <div class="grid">
+        <div class="card"><strong>LLMs generate opinions</strong><p>Their judgments can vary by model, prompt, temperature, context window, and provider release.</p></div>
+        <div class="card"><strong>CAPAS generates decision artifacts</strong><p>The output is tied to schema errors, evidence contracts, proof obligations, blockers, and exception routing.</p></div>
+        <div class="card"><strong>Use both deliberately</strong><p>Let LLMs propose candidates. Let humans confirm evidence. Let CAPAS issue the deterministic boundary decision.</p></div>
+      </div>
+    </section>
+    <section>
       <h2>The operating loop</h2>
       <p>CAPAS ends when the claim boundary is resolved. A REWRITE is not a dead end; it is the handoff into correction, resubmission, ACCEPT, and governed reuse.</p>
       <div class="loop" aria-label="CAPAS rewrite to accept operating loop">
@@ -241,32 +290,37 @@
       <h2>Audit artifact</h2>
       <p>CAPAS does not just label a record. It produces a decision object that reviewers can inspect, export, and challenge.</p>
       <pre class="audit-snippet" aria-label="Example CAPAS audit JSON">{
+  "claim_id": "claim_drift_001",
+  "claim_type": "causal_mechanism_claim",
   "decision": "REWRITE",
   "reason": "Association supported. Causality not licensed.",
+  "evidence_contract": "intervention_or_natural_experiment + temporal_order + confounders + mechanism",
   "blocker": "No intervention or natural-experiment evidence.",
+  "reviewer_action": "edit_and_resubmit",
+  "audit_hash": "sha256:example-review-packet-hash",
   "non_claim": "Rule-based over supplied evidence fields, not an LLM judgment."
 }</pre>
     </section>
     <section>
       <h2>Why now</h2>
       <div class="grid">
-        <div class="card"><strong>Scientific AI is moving faster than review workflows</strong><p>Teams are turning source material into reusable training and evaluation records.</p></div>
-        <div class="card"><strong>Small wording errors compound</strong><p>A single over-scoped claim can be copied, transformed, and learned as if it were licensed fact.</p></div>
-        <div class="card"><strong>Governance needs pre-ingestion controls</strong><p>Evidence trails, decision criteria, and exception queues matter before reuse.</p></div>
+        <div class="card"><strong>Training datasets are becoming governed assets</strong><p>Teams are turning source material into reusable training and evaluation records that must survive audit.</p></div>
+        <div class="card"><strong>Current controls miss the claim boundary</strong><p>Most governance systems inspect sources, lineage, licenses, and records. Almost none inspect whether the sentence says more than the evidence permits.</p></div>
+        <div class="card"><strong>Pre-ingestion controls are cheaper than cleanup</strong><p>Evidence trails, decision criteria, and exception queues matter before drift becomes reusable training data.</p></div>
       </div>
     </section>
     <section>
       <h2>The moat</h2>
       <div class="grid">
-        <div class="card"><strong>Deterministic</strong><p>The decision is rule-based over supplied evidence fields, not another model judging a model.</p></div>
-        <div class="card"><strong>Claim boundary</strong><p>CAPAS works at the exact sentence boundary where drift actually happens.</p></div>
+        <div class="card"><strong>Claim ontology</strong><p>CAPAS encodes reusable claim families and the distinct proof obligations each one needs.</p></div>
         <div class="card"><strong>Evidence contracts</strong><p>Each claim type has explicit admissibility criteria, blockers, and exportable reasoning.</p></div>
+        <div class="card"><strong>Exception lifecycle</strong><p>Every REWRITE/HOLD becomes a reviewer work item, correction path, resubmission, and audit trail.</p></div>
       </div>
     </section>
     <section>
       <h2>Navigate CAPAS</h2>
       <div class="grid nav-hub" aria-label="CAPAS site index">
-        <a class="card nav-card primary" href="app.html?p=ewogICJjbGFpbSI6IHsKICAgICJpZCI6ICJzYW1wbGVfc2NhbGluZ19jbGFpbV9yZXdyaXRlIiwKICAgICJ0ZXh0IjogIkxvY2FsIG1vbm90b25pY2l0eSBwcm92ZXMgdW5pdmVyc2FsIHBoeXNpY2FsIGNvcnJlY3RuZXNzLiIsCiAgICAidHlwZSI6ICJ1bml2ZXJzYWxfYW5jaG9yX2NsYWltIgogIH0sCiAgImV2aWRlbmNlIjogewogICAgImFuY2hvcl9tb2RlIjogImFic29sdXRlX2FuY2hvciIsCiAgICAibG9jYWxfcHJvcGVydHlfdGVzdHNfcGFzcyI6IHRydWUsCiAgICAicGh5c2ljYWxfZXZpZGVuY2VfbGV2ZWwiOiAic2NhbGluZ19sYXdfYW5jaG9yIiwKICAgICJ1bml2ZXJzYWxfYW5jaG9yX3Bhc3MiOiBmYWxzZSwKICAgICJ2ZXJpZmljYXRpb25faW5kZXBlbmRlbmNlIjogInRoZW9yeV9zY2FsaW5nX2xhd19ub19zb2x2ZXIiCiAgfSwKICAic2NoZW1hX3ZlcnNpb24iOiAiY2FwYXMtY2xhaW0tcGF5bG9hZC12MyIKfQ"><strong>Run a sample REWRITE</strong><span>Open the app with a preloaded drift case and run the deterministic gate.</span></a>
+        <a class="card nav-card primary" href="app.html?p=ewogICJjbGFpbSI6IHsKICAgICJpZCI6ICJzYW1wbGVfc2NhbGluZ19jbGFpbV9yZXdyaXRlIiwKICAgICJ0ZXh0IjogIkxvY2FsIG1vbm90b25pY2l0eSBwcm92ZXMgdW5pdmVyc2FsIHBoeXNpY2FsIGNvcnJlY3RuZXNzLiIsCiAgICAidHlwZSI6ICJ1bml2ZXJzYWxfYW5jaG9yX2NsYWltIgogIH0sCiAgImV2aWRlbmNlIjogewogICAgImFuY2hvcl9tb2RlIjogImFic29sdXRlX2FuY2hvciIsCiAgICAibG9jYWxfcHJvcGVydHlfdGVzdHNfcGFzcyI6IHRydWUsCiAgICAicGh5c2ljYWxfZXZpZGVuY2VfbGV2ZWwiOiAic2NhbGluZ19sYXdfYW5jaG9yIiwKICAgICJ1bml2ZXJzYWxfYW5jaG9yX3Bhc3MiOiBmYWxzZSwKICAgICJ2ZXJpZmljYXRpb25faW5kZXBlbmRlbmNlIjogInRoZW9yeV9zY2FsaW5nX2xhd19ub19zb2x2ZXIiCiAgfSwKICAic2NoZW1hX3ZlcnNpb24iOiAiY2FwYXMtY2xhaW0tcGF5bG9hZC12MyIKfQ"><strong>Run a Claim Drift Example</strong><span>Open the app with a preloaded drift case and run the deterministic gate.</span></a>
         <a class="card nav-card" href="pilot-packet.html"><strong>Pilot</strong><span>Two-week delivery path, artifacts, governance assumptions, footnotes, and rollout framing.</span></a>
         <a class="card nav-card" href="customer-brief.html"><strong>Methodology</strong><span>Why CAPAS exists, where it sits against the state of the art, and what it does not claim.</span></a>
       </div>
@@ -279,7 +333,7 @@
         <div class="card"><strong>Exception queue</strong><p>Every REWRITE/HOLD becomes a reviewer work item with evidence blockers and a proposed boundary.</p></div>
         <div class="card"><strong>Audit export</strong><p>Structured records for source review, metadata review, provenance review, and claim-boundary review.</p></div>
       </div>
-      <p class="footnotes">Planning examples can include observed rewrite, reject, and hold rates, but those rates are not product claims. They must be measured against the buyer's corpus. Internal stress tests used 10k structured validation records to exercise schema and decision paths, not to claim production deployment.</p>
+      <p class="footnotes">Planning examples can include observed rewrite, reject, and hold rates, but those rates are not product claims. They must be measured against the buyer's corpus. Internal stress tests used 10k structured validation records to exercise schema and decision paths, not to claim production deployment. See the <a href="CLAIM_DRIFT_VALIDATION_PROTOCOL.md">Claim Drift validation protocol</a> for how CAPAS should be tested on a real corpus.</p>
     </section>
     <section class="footnotes" aria-label="Modeling notes and disclaimers">
       <h2>Modeling notes</h2>
@@ -294,5 +348,177 @@
   <footer>
     CAPAS gates supplied evidence. It does not infer hidden evidence, certify broad scientific truth, or replace external review.
   </footer>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  <script>
+    (function initTransitionLogo() {
+      const container = document.getElementById('capas-3d-logo');
+      if (!container || !window.THREE || !THREE.OrbitControls) return;
+
+      const scene = new THREE.Scene();
+      scene.background = new THREE.Color('#05060A');
+      scene.fog = new THREE.FogExp2('#05060A', 0.008);
+
+      function getLogoSize() {
+        return {
+          width: Math.max(container.clientWidth || 0, 320),
+          height: Math.max(container.clientHeight || 0, 280)
+        };
+      }
+
+      const initialSize = getLogoSize();
+      const camera = new THREE.PerspectiveCamera(45, initialSize.width / initialSize.height, 0.1, 1000);
+      camera.position.set(0, 10, 80);
+
+      const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer.setSize(initialSize.width, initialSize.height);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 1.2;
+      container.appendChild(renderer.domElement);
+
+      const controls = new THREE.OrbitControls(camera, renderer.domElement);
+      controls.enableDamping = true;
+      controls.dampingFactor = 0.04;
+      controls.autoRotate = true;
+      controls.autoRotateSpeed = 0.8;
+      controls.enablePan = false;
+      controls.minDistance = 30;
+      controls.maxDistance = 150;
+
+      const matrixGroup = new THREE.Group();
+      scene.add(matrixGroup);
+
+      const COLOR_NODE_GOLD = 0xF5A623;
+      const COLOR_NODE_ORANGE = 0xFF5722;
+      const COLOR_EDGE_CYAN = 0x00E5FF;
+      const COLOR_EDGE_MAGENTA = 0xE61062;
+
+      const RADIUS = 25;
+      const TOTAL_NODES = 36;
+
+      const nodes = [];
+      const phi = Math.PI * (3 - Math.sqrt(5));
+
+      for (let i = 0; i < TOTAL_NODES; i++) {
+        const y = 1 - (i / (TOTAL_NODES - 1)) * 2;
+        const radiusAtY = Math.sqrt(1 - y * y);
+        const theta = phi * i;
+
+        const x = Math.cos(theta) * radiusAtY;
+        const z = Math.sin(theta) * radiusAtY;
+        const pos = new THREE.Vector3(x * RADIUS, y * RADIUS, z * RADIUS);
+
+        let weight = Math.random();
+        let isAttractor = weight > 0.85;
+        let nodeSize = isAttractor ? (Math.random() * 1.5 + 1.5) : (Math.random() * 0.8 + 0.4);
+
+        nodes.push({ pos, isAttractor, size: nodeSize, id: i });
+      }
+
+      const nodeMatStandard = new THREE.MeshBasicMaterial({ color: COLOR_NODE_GOLD });
+      const nodeMatAttractor = new THREE.MeshBasicMaterial({ color: COLOR_NODE_ORANGE });
+
+      nodes.forEach(node => {
+        const group = new THREE.Group();
+        group.position.copy(node.pos);
+
+        const coreMaterial = node.isAttractor ? nodeMatAttractor : nodeMatStandard;
+        const core = new THREE.Mesh(new THREE.SphereGeometry(node.size, 16, 16), coreMaterial);
+
+        group.add(core);
+        matrixGroup.add(group);
+      });
+
+      const thickCyanMat = new THREE.MeshBasicMaterial({ color: COLOR_EDGE_CYAN, transparent: true, opacity: 0.8 });
+      const thickMagentaMat = new THREE.MeshBasicMaterial({ color: COLOR_EDGE_MAGENTA, transparent: true, opacity: 0.9 });
+      const thinCyanMat = new THREE.LineBasicMaterial({ color: COLOR_EDGE_CYAN, transparent: true, opacity: 0.25 });
+
+      function createTransitionEdge(nodeA, nodeB, type) {
+        const midPoint = new THREE.Vector3().addVectors(nodeA.pos, nodeB.pos).multiplyScalar(0.5);
+        midPoint.multiplyScalar(0.3);
+
+        const curve = new THREE.QuadraticBezierCurve3(nodeA.pos, midPoint, nodeB.pos);
+
+        if (type === 'thick_cyan' || type === 'magenta') {
+          const tubeGeo = new THREE.TubeGeometry(curve, 32, type === 'magenta' ? 0.4 : 0.25, 6, false);
+          const mat = type === 'magenta' ? thickMagentaMat : thickCyanMat;
+          const mesh = new THREE.Mesh(tubeGeo, mat);
+          matrixGroup.add(mesh);
+        } else {
+          const points = curve.getPoints(20);
+          const lineGeo = new THREE.BufferGeometry().setFromPoints(points);
+          const line = new THREE.Line(lineGeo, thinCyanMat);
+          matrixGroup.add(line);
+        }
+      }
+
+      const attractors = nodes.filter(n => n.isAttractor);
+
+      for (let i = 0; i < attractors.length; i++) {
+        for (let j = i + 1; j < attractors.length; j++) {
+          if (Math.random() > 0.3) {
+            createTransitionEdge(attractors[i], attractors[j], 'thick_cyan');
+          }
+        }
+      }
+
+      const magentaLoopLength = 8;
+      const magentaLoopNodes = [];
+
+      for (let i = 0; i < magentaLoopLength; i++) {
+        magentaLoopNodes.push(nodes[Math.floor(Math.random() * nodes.length)]);
+      }
+
+      for (let i = 0; i < magentaLoopLength; i++) {
+        let nA = magentaLoopNodes[i];
+        let nB = magentaLoopNodes[(i + 1) % magentaLoopLength];
+        if (nA !== nB) {
+          createTransitionEdge(nA, nB, 'magenta');
+        }
+      }
+
+      for (let i = 0; i < TOTAL_NODES; i++) {
+        let connections = Math.floor(Math.random() * 3) + 2;
+        for (let c = 0; c < connections; c++) {
+          let target = nodes[Math.floor(Math.random() * nodes.length)];
+          if (nodes[i] !== target) {
+            createTransitionEdge(nodes[i], target, 'thin');
+          }
+        }
+      }
+
+      const shellGeometry = new THREE.SphereGeometry(RADIUS, 24, 24);
+      const shellMaterial = new THREE.MeshBasicMaterial({
+        color: 0x444C56,
+        transparent: true,
+        opacity: 0.03,
+        wireframe: true
+      });
+      const shellMesh = new THREE.Mesh(shellGeometry, shellMaterial);
+      matrixGroup.add(shellMesh);
+
+      function onLogoResize() {
+        const size = getLogoSize();
+        camera.aspect = size.width / size.height;
+        camera.updateProjectionMatrix();
+        renderer.setSize(size.width, size.height);
+      }
+
+      if ('ResizeObserver' in window) {
+        new ResizeObserver(onLogoResize).observe(container);
+      }
+      window.addEventListener('resize', onLogoResize, false);
+
+      function animate() {
+        requestAnimationFrame(animate);
+        controls.update();
+        matrixGroup.position.y = Math.sin(Date.now() * 0.001) * 1.5;
+        renderer.render(scene, camera);
+      }
+
+      animate();
+    })();
+  </script>
 </body>
 </html>

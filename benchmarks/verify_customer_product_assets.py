@@ -19,6 +19,8 @@ PROVENANCE_OPS = ROOT / "docs" / "PROVENANCE_REGISTRY_OPERATIONS.md"
 SECURITY_APPENDIX = ROOT / "docs" / "SECURITY_COMPLIANCE_APPENDIX.md"
 PILOT_ROI = ROOT / "docs" / "PILOT_ROI_BUSINESS_CASE.md"
 PAPER_CONNECTORS = ROOT / "docs" / "PAPER_INGESTION_CONNECTORS.md"
+CLAIM_DRIFT_VALIDATION = ROOT / "docs" / "CLAIM_DRIFT_VALIDATION_PROTOCOL.md"
+LOGO = ROOT / "docs" / "capas-transition-network-logo.svg"
 CANONICAL_SCHEMA = ROOT / "docs" / "schema" / "v3" / "capas_claim_payload.schema.json"
 HF_EXAMPLE = ROOT / "examples" / "huggingface_dataset_capas_metadata.json"
 LABEL_STUDIO_EXAMPLE = ROOT / "examples" / "label_studio_capas_task.json"
@@ -26,9 +28,12 @@ ARGILLA_EXAMPLE = ROOT / "examples" / "argilla_capas_record.json"
 
 
 REQUIRED = {
-    "landing page with narrative": (PRODUCT, ["Deterministic Claim Admissibility Engine", "Stop claim drift", "Run sample REWRITE", "Why claim admissibility?", "Contamination Cascade", "Why not just use human review?", "The operating loop", "Why not a fact-checker or provenance tool?", "The moat"]),
+    "landing page with narrative": (PRODUCT, ["Deterministic Claim Admissibility Engine", "Stop claim drift", "Run a Claim Drift Example", "Why claim admissibility?", "Current release includes 12 reference claim families", "Humans decide evidence. CAPAS decides admissibility.", "Contamination Cascade", "Why not an LLM reviewer?", "Why not just use human review?", "The operating loop", "Why not a fact-checker or provenance tool?", "The moat"]),
+    "scalable transition-network logo": (LOGO, ["viewBox=\"0 0 128 128\"", "CAPAS transition network logo", "cyan licensed paths", "magenta drift paths"]),
+    "landing page logo placement": (PRODUCT, ["id=\"capas-3d-logo\"", "CAPAS transition network 3D logo", "initTransitionLogo", "new THREE.Scene()", "THREE.OrbitControls", "COLOR_EDGE_CYAN = 0x00E5FF", "COLOR_EDGE_MAGENTA = 0xE61062", "TOTAL_NODES = 36", "THREE.TubeGeometry", "matrixGroup.position.y = Math.sin(Date.now() * 0.001) * 1.5"]),
+    "gate app header without discarded logo": (UI, ["<h1 class=\"topbar-logo\" aria-label=\"CAPAS Claim Gate\">", "CAPAS Claim Gate", "Gate App", "topbar-current"]),
     "landing page screenshots": (PRODUCT, ["CAPAS screenshot mock", "Claim drift example", "Association supported; causality not licensed"]),
-    "product business case": (PRODUCT, ["Contamination Cascade", "nearly one third", "Audit artifact", "Example pilot output", "Exception queue", "Audit export", "10k", "Modeling notes"]),
+    "product business case": (PRODUCT, ["Contamination Cascade", "nearly one third", "Audit artifact", "claim_id", "evidence_contract", "reviewer_action", "audit_hash", "Example pilot output", "Exception queue", "Audit export", "10k", "Modeling notes", "Claim Drift validation protocol"]),
     "designed methodology page": (BRIEF_HTML, ["Methodology", "Deterministic claim admissibility", "Pilot model assumptions", "Disclaimers"]),
     "designed pilot packet": (PACKET_HTML, ["CAPAS Pilot Packet", "Two-week operating plan", "Roles and decision rights", "Success criteria", "Governance model", "Required footnotes"]),
     "guided no-code form": (UI, ["CAPAS workflow", "Guided Claim Builder", "Evidence contract", "builder-preview", "buildGuidedPayload", "Build guided payload", "evidence field for"]),
@@ -56,6 +61,7 @@ REQUIRED = {
     "security compliance appendix": (SECURITY_APPENDIX, ["Optional bearer token", "Workspace-scoped JSONL audit log", "training-data provenance"]),
     "pilot ROI business case": (PILOT_ROI, ["1,000 structured records", "417 hours", "USD 83,400", "10,000 structured CAPAS payload records"]),
     "paper ingestion connectors": (PAPER_CONNECTORS, ["browser preview", "local CLI pipeline", "Semantic Scholar/PubMed-like metadata"]),
+    "claim drift validation protocol": (CLAIM_DRIFT_VALIDATION, ["claim drift occurs often enough", "drift_rate", "rewrite_to_accept_conversion_rate", "Claim contamination register", "Non-Claims"]),
     "huggingface metadata example": (HF_EXAMPLE, ["capas_schema_version", "capas_decision_json"]),
     "label studio handoff example": (LABEL_STUDIO_EXAMPLE, ["claim_type", "source_span", "capas_schema_version"]),
     "argilla handoff example": (ARGILLA_EXAMPLE, ["required_evidence_fields", "reproducibility_check"])

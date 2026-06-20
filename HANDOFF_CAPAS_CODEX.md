@@ -2,6 +2,68 @@
 
 Fecha: 2026-06-19
 
+## Actualización crítica — 2026-06-19 23:58 CST
+
+Carpeta activa:
+
+```bash
+cd "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/CAPAS INTELIGENTES"
+```
+
+Estado inmediato antes de continuar:
+
+- El usuario aprobó el render exacto del logo 3D de `/Users/kreniq/Downloads/red_de_transiciones_3d (2).html`.
+- Ese logo ya fue integrado en `docs/index.html` como escena Three.js real, no como SVG aproximado.
+- La escena usa Three.js r128 + OrbitControls desde CDN, conserva 36 nodos, tubos cian/magenta, shell wireframe, fog, auto-rotación y oscilación.
+- El SVG `docs/capas-transition-network-logo.svg` todavía existe y se usa en la app/header pequeño, pero en la Home el logo importante debe ser el render Three.js exacto.
+- El usuario pidió corregir la colocación: el logo 3D debe quedar en desktop del lado derecho, arriba, alineado al techo del hero según mockup. La línea amarilla del mockup marca el espacio del logo.
+- El cambio anterior lo movió a la izquierda por una instrucción posterior, pero ahora el usuario pidió revertir esa colocación: “ESTÁ BIEN A LA DERECHA”.
+- No tocar la escena Three.js ni volver a recrearla como SVG. Solo ajustar layout/orden/alineación del hero.
+
+Archivos relevantes:
+
+- `docs/index.html`: Home pública y hero con `#capas-3d-logo`.
+- `benchmarks/verify_customer_product_assets.py`: verifica que la Home contenga `id="capas-3d-logo"`, `initTransitionLogo`, `THREE.OrbitControls`, `TOTAL_NODES = 36`, `THREE.TubeGeometry`, etc.
+- `docs/app.html`, `outputs/capas_claim_gate_ui.html`, `capas.py`: contienen topbar/logo pequeño de la app; no son el problema actual salvo si el usuario vuelve a mencionar navbar.
+
+Últimos checks que pasaron antes de esta corrección:
+
+```bash
+python3 capas.py validate
+python3 benchmarks/verify_customer_product_assets.py
+python3 benchmarks/verify_claim_gate_ui.py
+git diff --check
+```
+
+Pendiente exacto:
+
+1. En `docs/index.html`, volver a hero desktop con texto a la izquierda y `.hero-visual` a la derecha.
+2. Mantener `.hero { align-items: start; }`.
+3. Mantener `.hero-visual { justify-items: end; align-self: start; }`.
+4. Mantener `.hero-logo-card { width: min(100%, 420px); aspect-ratio: 1 / 1; min-height: 300px; }`.
+5. En DOM, el bloque de texto debe ir primero y el bloque `.hero-visual` después.
+6. En mobile, puede apilarse a una columna; no importa si el logo queda arriba o abajo, pero desktop debe respetar mockup: logo arriba/derecha.
+
+Resultado aplicado después de esta nota:
+
+- `docs/index.html` ya volvió a texto izquierda + logo 3D exacto derecha en desktop.
+- El App (`docs/app.html` y `outputs/capas_claim_gate_ui.html`) ya no debe cargar `capas-transition-network-logo.svg` en el topbar. Ese SVG fue el logo descartado que el usuario no quiere ver al entrar a Gate App.
+- La causa del App renderizado como texto plano fue CSP desincronizado: `docs/app.html` actúa como plantilla para `_render_ui()` si existe, y si se toca CSS/HTML hay que regenerar con:
+
+```bash
+python3 capas.py ui --output docs/app.html
+python3 capas.py ui
+```
+
+- Verificaciones posteriores que pasaron:
+
+```bash
+python3 benchmarks/verify_claim_gate_ui.py
+python3 benchmarks/verify_claim_gate_ui_browser.py
+python3 benchmarks/verify_customer_product_assets.py
+git diff --check
+```
+
 ## Carpeta exacta para reanudar
 
 ```bash
@@ -347,4 +409,3 @@ screenshots/captura.png
 ```
 
 El asistente puede inspeccionarla con `view_image`.
-
