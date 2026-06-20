@@ -13,6 +13,9 @@
     header { min-height:44px; display:flex; justify-content:space-between; align-items:center; gap:14px; padding:0; border-bottom:1px solid var(--border); }
     .brand { font-size:13px; font-weight:800; }
     .nav { display:flex; flex-wrap:wrap; gap:2px; }
+    .utility-links { display:flex; flex-wrap:wrap; gap:12px; margin-top:10px; }
+    .utility-links a { color:var(--quiet); text-decoration:none; }
+    .utility-links a:hover { color:var(--text); }
     a { color:inherit; }
     .button { display:inline-flex; align-items:center; justify-content:center; min-height:28px; padding:4px 10px; border:1px solid var(--border); border-radius:6px; background:var(--panel); color:var(--muted); text-decoration:none; font-size:12px; font-weight:700; }
     .button.primary { background:rgba(124,127,255,.12); border-color:rgba(124,127,255,.45); color:#a5b4fc; }
@@ -42,7 +45,6 @@
       <a class="button" href="app.html">Gate App</a>
       <a class="button" href="customer-brief.html">Methodology</a>
       <a class="button primary" href="pilot-packet.html" aria-current="page">Pilot</a>
-      <a class="button" href="audit.html">Audit</a>
     </nav>
   </header>
   <main>
@@ -148,6 +150,12 @@
       </ul>
     </section>
   </main>
-  <footer>Use this packet with the customer brief, ROI assumptions, and the live CAPAS app. Source markdown is kept in the repository for auditability.</footer>
+  <footer>
+    Use this packet with the methodology brief, ROI assumptions, and the live CAPAS app.
+    <div class="utility-links" aria-label="CAPAS utility links">
+      <a href="audit.html">Audit log</a>
+      <a href="https://github.com/fomv9354lve/capas-inteligentes" target="_blank" rel="noopener noreferrer">Source repository</a>
+    </div>
+  </footer>
 </body>
 </html>

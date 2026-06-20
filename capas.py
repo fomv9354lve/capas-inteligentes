@@ -3587,10 +3587,7 @@ def _render_ui(sample: dict[str, Any]) -> str:
   .topbar-actions { gap: 2px; }
   .topbar-actions .copy-btn { min-height: 28px; padding: 4px 10px; font-size: 12px; }
   .topbar-badge { font-size: 10px; padding: 2px 7px; }
-  .topbar-source,
-  #schema-version-badge,
-  .topbar-actions > .topbar-badge:not(#shared-payload-badge) { display: none; }
-  .topbar-home {
+  .topbar-current {
     border-color: rgba(124, 127, 255, 0.32);
     background: var(--accent-glow);
     color: var(--accent-hover);
@@ -3607,7 +3604,8 @@ def _render_ui(sample: dict[str, Any]) -> str:
   .history-section { order: 99; display: none; }
   .workflow-strip { order: 9; }
   .exec-dashboard, .business-system { order: 99; display: none; }
-  footer, .app-footer { order: 100; }
+  .settings-panel { order: 100; }
+  footer, .app-footer { order: 101; }
 
   body.onboarded .product-hero {
     padding-top: 6px;
@@ -3974,6 +3972,62 @@ def _render_ui(sample: dict[str, Any]) -> str:
     color: var(--text-3);
     font-size: 10px;
   }
+  .settings-panel {
+    margin: 0 20px 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--bg-2);
+    overflow: hidden;
+  }
+  .settings-panel .panel-header {
+    min-height: 38px;
+    padding: 0 14px;
+    background: var(--bg-3);
+    border-bottom: 1px solid var(--border);
+  }
+  .settings-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0;
+  }
+  .settings-card {
+    padding: 12px 14px;
+    border-right: 1px solid var(--border);
+  }
+  .settings-card:last-child { border-right: 0; }
+  .settings-card strong {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--text-1);
+    font-size: 12px;
+  }
+  .settings-card p {
+    margin-bottom: 8px;
+    color: var(--text-3);
+    font-size: 11px;
+  }
+  .settings-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+  }
+  .settings-badge-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .settings-panel .topbar-badge {
+    display: inline-flex;
+    align-items: center;
+    min-height: 24px;
+  }
+  .settings-panel .topbar-badge[hidden] {
+    display: none;
+  }
+  .settings-panel a.copy-btn {
+    text-decoration: none;
+  }
 
   @media (max-width: 860px) {
     body { max-width: none; }
@@ -3989,7 +4043,10 @@ def _render_ui(sample: dict[str, Any]) -> str:
     .grid { grid-template-columns: 1fr; }
     .grid > div { border-right: 0; border-bottom: 1px solid var(--border); }
     .grid > div:last-child { border-bottom: 0; }
-    section.guided-panel, section.ingest-panel, .history-section { margin-left: 16px; margin-right: 16px; }
+    section.guided-panel, section.ingest-panel, .history-section, .settings-panel { margin-left: 16px; margin-right: 16px; }
+    .settings-grid { grid-template-columns: 1fr; }
+    .settings-card { border-right: 0; border-bottom: 1px solid var(--border); }
+    .settings-card:last-child { border-bottom: 0; }
   }
 
   /* Hard gate-step visibility.
@@ -4031,13 +4088,6 @@ def _render_ui(sample: dict[str, Any]) -> str:
     <button class="copy-btn topbar-site-link topbar-current" type="button" aria-label="Jump to the CAPAS gate app workspace" onclick="scrollToGate()" aria-current="page">Gate App</button>
     <a class="copy-btn topbar-site-link" href="customer-brief.html" aria-label="Open CAPAS methodology brief">Methodology</a>
     <a class="copy-btn topbar-site-link" href="pilot-packet.html" aria-label="Open CAPAS pilot package">Pilot</a>
-    <button class="copy-btn" id="help-btn" aria-label="Open keyboard shortcut and pipeline help" aria-expanded="false" aria-controls="help-modal" onclick="openHelpModal(this)">Help</button>
-    <a class="copy-btn topbar-site-link" id="history-toggle" href="audit.html" aria-label="Open audit trail page">Audit</a>
-    <a class="copy-btn topbar-source" href="https://github.com/fomv9354lve/capas-inteligentes" target="_blank" rel="noopener noreferrer" aria-label="Open CAPAS Claim Gate source repository">Source</a>
-    <button class="copy-btn" id="theme-toggle" aria-label="Toggle light and dark theme" onclick="toggleTheme()">Theme</button>
-    <span class="topbar-badge" id="schema-version-badge">schema v3</span>
-    <span class="topbar-badge" id="shared-payload-badge" hidden>shared payload</span>
-    <span class="topbar-badge">__UI_VERSION__</span>
   </div>
 </header>
 
@@ -4324,7 +4374,6 @@ def _render_ui(sample: dict[str, Any]) -> str:
     <div class="history-actions">
       <button class="copy-btn" id="share-btn" aria-label="Copy shareable URL for current input. The payload is embedded in the URL; do not share sensitive claims." title="The payload is embedded in the URL; do not share sensitive claims." onclick="copyShareUrl()">Share URL</button>
       <button class="copy-btn" id="share-app-btn" aria-label="Copy app URL without embedding the current payload" title="Copy the app URL only, without embedding claim or provenance data." onclick="copyAppUrl()">Share App</button>
-      <button class="copy-btn" id="sensitive-mode-toggle" aria-label="Toggle sensitive data mode for share and export" title="Sensitive mode copies app-only links and redacts payloads in CSV export." onclick="toggleSensitiveMode()">Sensitive: Off</button>
       <button class="copy-btn" id="export-btn" aria-label="Export decision history as CSV" onclick="exportHistoryCsv()">Export CSV</button>
       <button class="copy-btn" id="clear-history-btn" aria-label="Clear local decision history" onclick="clearHistory()">Clear</button>
       <span class="history-count" id="history-count" aria-live="polite" aria-atomic="true">0/50 saved</span>
@@ -4344,16 +4393,50 @@ def _render_ui(sample: dict[str, Any]) -> str:
     <div class="empty-state">No decisions yet.</div>
   </div>
 </div>
+<section class="settings-panel" aria-labelledby="workspace-settings-title">
+  <div class="panel-header">
+    <h2 class="panel-title" id="workspace-settings-title">Workspace settings</h2>
+    <div class="settings-badge-row" aria-label="System status">
+      <span class="topbar-badge" id="schema-version-badge">schema v3</span>
+      <span class="topbar-badge" id="shared-payload-badge" hidden>shared payload</span>
+      <span class="topbar-badge">__UI_VERSION__</span>
+    </div>
+  </div>
+  <div class="settings-grid">
+    <div class="settings-card">
+      <strong>Help</strong>
+      <p>Open shortcuts, schema rules, workflow modes, and provenance limits without mixing them into product navigation.</p>
+      <div class="settings-actions">
+        <button class="copy-btn" id="help-btn" aria-label="Open keyboard shortcut and pipeline help" aria-expanded="false" aria-controls="help-modal" onclick="openHelpModal(this)">Open Help</button>
+      </div>
+    </div>
+    <div class="settings-card">
+      <strong>Audit</strong>
+      <p>Local browser history, CSV export, sensitive mode, and app-only sharing live here as operational controls.</p>
+      <div class="settings-actions">
+        <a class="copy-btn" id="history-toggle" href="audit.html" aria-label="Open audit trail page">Open Audit Log</a>
+        <button class="copy-btn" id="sensitive-mode-toggle" aria-label="Toggle sensitive data mode for share and export" title="Sensitive mode copies app-only links and redacts payloads in CSV export." onclick="toggleSensitiveMode()">Sensitive: Off</button>
+      </div>
+    </div>
+    <div class="settings-card">
+      <strong>System</strong>
+      <p>Theme, source repository, issues, release, and implementation references. These are utilities, not site sections.</p>
+      <div class="settings-actions">
+        <button class="copy-btn" id="theme-toggle" aria-label="Toggle light and dark theme" onclick="toggleTheme()">Theme</button>
+        <a class="copy-btn" href="https://github.com/fomv9354lve/capas-inteligentes" target="_blank" rel="noopener noreferrer" aria-label="Open CAPAS Claim Gate source repository">Source repository</a>
+        <a class="copy-btn" href="https://github.com/fomv9354lve/capas-inteligentes/issues" target="_blank" rel="noopener noreferrer">Issues</a>
+        <a class="copy-btn" href="https://github.com/fomv9354lve/capas-inteligentes/releases/tag/v0.1.1" target="_blank" rel="noopener noreferrer">Release v0.1.1</a>
+      </div>
+    </div>
+  </div>
+</section>
 <footer class="app-footer">
   CAPAS structures and gates supplied claim evidence. It does not infer hidden evidence or certify broad scientific truth.
   <div class="footer-links" aria-label="Project links">
-    <a href="https://github.com/fomv9354lve/capas-inteligentes" target="_blank" rel="noopener noreferrer">Source repository</a>
-    <a href="product.html">Product story</a>
-    <a href="customer-brief.html">Customer brief</a>
+    <a href="index.html">Home</a>
+    <a href="customer-brief.html">Methodology</a>
     <a href="CLAIM_ADMISSIBILITY_CALCULUS.md">Admissibility calculus</a>
-    <a href="pilot-packet.html">Pilot packet</a>
-    <a href="https://github.com/fomv9354lve/capas-inteligentes/issues" target="_blank" rel="noopener noreferrer">Issues</a>
-    <a href="https://github.com/fomv9354lve/capas-inteligentes/releases/tag/v0.1.1" target="_blank" rel="noopener noreferrer">Release v0.1.1</a>
+    <a href="pilot-packet.html">Pilot</a>
     <span>License: proprietary research prototype</span>
   </div>
 </footer>

@@ -36,6 +36,9 @@
     .brand { display: flex; align-items: center; height: 100%; gap: 9px; font-size: 13px; font-weight: 800; letter-spacing: 0; }
     .brand-logo { height: 32px; width: auto; object-fit: contain; vertical-align: middle; margin-top: 0; position: static; flex: 0 0 auto; display: block; }
     .nav { display: flex; align-items: center; justify-content: flex-end; height: 100%; gap: 2px; flex-wrap: wrap; }
+    .utility-links { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 10px; }
+    .utility-links a { color: var(--quiet); text-decoration: none; font-size: 12px; }
+    .utility-links a:hover { color: var(--text); }
     .button {
       display: inline-flex;
       align-items: center;
@@ -354,7 +357,6 @@
       <a class="button" href="app.html">Gate App</a>
       <a class="button" href="customer-brief.html">Methodology</a>
       <a class="button" href="pilot-packet.html">Pilot</a>
-      <a class="button" href="audit.html">Audit</a>
     </nav>
   </header>
   <main>
@@ -534,6 +536,10 @@
   </main>
   <footer>
     CAPAS gates supplied evidence. It does not infer hidden evidence, certify broad scientific truth, or replace external review.
+    <div class="utility-links" aria-label="CAPAS utility links">
+      <a href="audit.html">Audit log</a>
+      <a href="https://github.com/fomv9354lve/capas-inteligentes" target="_blank" rel="noopener noreferrer">Source repository</a>
+    </div>
   </footer>
 </body>
 </html>

@@ -13,6 +13,7 @@
     .brand { font-size:13px; font-weight:800; }
     nav { display:flex; align-items:center; gap:2px; overflow-x:auto; scrollbar-width:none; }
     nav::-webkit-scrollbar { display:none; }
+    .utility-label { color:var(--quiet); font-size:11px; font-weight:800; letter-spacing:.7px; text-transform:uppercase; }
     a, button, select, input { font:inherit; }
     .nav-link, button { min-height:28px; display:inline-flex; align-items:center; justify-content:center; padding:4px 10px; border:1px solid var(--border); border-radius:6px; background:var(--panel); color:var(--muted); text-decoration:none; font-size:12px; font-weight:700; white-space:nowrap; cursor:pointer; }
     .nav-link[aria-current="page"] { border-color:rgba(124,127,255,.45); background:rgba(124,127,255,.12); color:#a5b4fc; }
@@ -47,7 +48,7 @@
       <a class="nav-link" href="app.html">Gate App</a>
       <a class="nav-link" href="customer-brief.html">Methodology</a>
       <a class="nav-link" href="pilot-packet.html">Pilot</a>
-      <a class="nav-link" href="audit.html" aria-current="page">Audit</a>
+      <span class="utility-label" aria-current="page">Utility: Audit Log</span>
     </nav>
   </header>
   <main>
