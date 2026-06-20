@@ -78,10 +78,10 @@
       max-width: 100%;
       min-height: 300px;
       aspect-ratio: 1 / 1;
-      border: none;
+      border: 1px solid rgba(124, 127, 255, 0.24);
       border-radius: var(--radius);
       background: #05060A;
-      box-shadow: none;
+      box-shadow: 0 18px 60px rgba(0,0,0,0.35);
       cursor: grab;
       justify-self: end;
     }
@@ -383,11 +383,9 @@
       controls.dampingFactor = 0.04;
       controls.autoRotate = true;
       controls.autoRotateSpeed = 0.8;
-      controls.enableZoom = false;
       controls.enablePan = false;
-      controls.minDistance = camera.position.z;
-      controls.maxDistance = camera.position.z;
-      renderer.domElement.addEventListener('wheel', event => event.preventDefault(), { passive: false });
+      controls.minDistance = 30;
+      controls.maxDistance = 150;
 
       const matrixGroup = new THREE.Group();
       scene.add(matrixGroup);
