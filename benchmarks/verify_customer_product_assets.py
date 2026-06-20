@@ -21,6 +21,9 @@ PILOT_ROI = ROOT / "docs" / "PILOT_ROI_BUSINESS_CASE.md"
 PAPER_CONNECTORS = ROOT / "docs" / "PAPER_INGESTION_CONNECTORS.md"
 CLAIM_DRIFT_VALIDATION = ROOT / "docs" / "CLAIM_DRIFT_VALIDATION_PROTOCOL.md"
 LOGO = ROOT / "docs" / "capas-transition-network-logo.svg"
+LOGO_HTML = ROOT / "docs" / "gemini-code-1781935819867.html"
+THREE_JS = ROOT / "docs" / "vendor" / "three-r128" / "three.min.js"
+ORBIT_CONTROLS = ROOT / "docs" / "vendor" / "three-r128" / "OrbitControls.js"
 CANONICAL_SCHEMA = ROOT / "docs" / "schema" / "v3" / "capas_claim_payload.schema.json"
 HF_EXAMPLE = ROOT / "examples" / "huggingface_dataset_capas_metadata.json"
 LABEL_STUDIO_EXAMPLE = ROOT / "examples" / "label_studio_capas_task.json"
@@ -30,7 +33,10 @@ ARGILLA_EXAMPLE = ROOT / "examples" / "argilla_capas_record.json"
 REQUIRED = {
     "landing page with narrative": (PRODUCT, ["Deterministic Claim Admissibility Engine", "Stop claim drift", "Run a Claim Drift Example", "Why claim admissibility?", "Current release includes 12 reference claim families", "Humans decide evidence. CAPAS decides admissibility.", "Contamination Cascade", "Why not an LLM reviewer?", "Why not just use human review?", "The operating loop", "Why not a fact-checker or provenance tool?", "The moat"]),
     "scalable transition-network logo": (LOGO, ["viewBox=\"0 0 128 128\"", "CAPAS transition network logo", "cyan licensed paths", "magenta drift paths"]),
-    "landing page logo placement": (PRODUCT, ["id=\"capas-3d-logo\"", "CAPAS transition network 3D logo", "initTransitionLogo", "new THREE.Scene()", "THREE.OrbitControls", "COLOR_EDGE_CYAN = 0x00E5FF", "COLOR_EDGE_MAGENTA = 0xE61062", "TOTAL_NODES = 36", "THREE.TubeGeometry", ".hero-visual { display: grid; gap: 14px; min-width: 0; justify-items: end; align-self: start; margin-top: 28px; }", "camera.position.set(0, 0, 4)", "controls.minDistance = 1", "controls.maxDistance = 8"]),
+    "landing page logo placement": (PRODUCT, ["class=\"hero-visual\"", "class=\"logo-iframe\"", "src=\"gemini-code-1781935819867.html\"", "pointer-events: none", "transform-origin: 43.125% 50%", "width: 260.325vw", "height: 255.9375vh", "class=\"screen hero-claim-card\""]),
+    "exact dynamic html logo": (LOGO_HTML, ["Kreniq - Red de Transiciones 3D", "vendor/three-r128/three.min.js", "vendor/three-r128/OrbitControls.js", "new THREE.Scene()", "THREE.OrbitControls", "COLOR_EDGE_CYAN = 0x00E5FF", "COLOR_EDGE_MAGENTA = 0xE61062", "TOTAL_NODES = 36", "THREE.TubeGeometry", "camera.position.set(0, 10, 80)", "matrixGroup.position.y = Math.sin(Date.now() * 0.001) * 1.5"]),
+    "local three.js dependency": (THREE_JS, ["Three.js Authors", "THREE={}"]),
+    "local orbit controls dependency": (ORBIT_CONTROLS, ["THREE.OrbitControls", "OrbitControls"]),
     "gate app header without discarded logo": (UI, ["<h1 class=\"topbar-logo\" aria-label=\"CAPAS Claim Gate\">", "CAPAS Claim Gate", "Gate App", "topbar-current"]),
     "landing page screenshots": (PRODUCT, ["CAPAS screenshot mock", "Claim drift example", "Association supported; causality not licensed"]),
     "product business case": (PRODUCT, ["Contamination Cascade", "nearly one third", "Audit artifact", "claim_id", "evidence_contract", "reviewer_action", "audit_hash", "Example pilot output", "Exception queue", "Audit export", "10k", "Modeling notes", "Claim Drift validation protocol"]),
