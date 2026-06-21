@@ -1,14 +1,24 @@
 """Containment gate: Cara 1 (product) is decoupled from Cara 2 (research/cognitive).
 
-Enforces the load-bearing rule — the dependency arrow never reverses (Cara 1 never
-imports Cara 2) — and the honesty firewall — the product certificate surface carries
-no consciousness-style overclaim. Wired into `capas validate` so the product cannot
-ship coupled to, or over-claiming from, the cognitive layer.
+The rule governs PRODUCT SOURCE MODULES at RUNTIME, not tests. What it enforces:
+  (1) no Cara-1 product module imports a Cara-2 module (static), AND
+  (2) the product actually LOADS with every Cara-2 module blocked (runtime proof),
+      so the product ships and runs without the cognitive layer; AND
+  (3) the honesty firewall — the product certificate surface carries no
+      consciousness-style overclaim, and Φ is always disclosed as a proxy.
+
+What it does NOT forbid: TEST / BENCHMARK files importing BOTH layers to
+cross-validate (e.g. using the Cara-2 braid to catch a cross-inconsistency among
+Cara-1 verdicts). Test-time coupling is legitimate "test and check"; the only hard
+constraints are runtime decoupling of the product and no overclaim on its surface.
+Such cross-tests live OUTSIDE the product gate (so `validate` still runs Cara-2-free).
+Wired into `capas validate`.
 """
 from __future__ import annotations
 
 import ast
 import json
+import subprocess
 import sys
 from pathlib import Path
 
@@ -51,10 +61,17 @@ def run() -> int:
     print(f"{'✅' if not fails else '❌'} dependency direction: Cara 1 never imports Cara 2 "
           f"({len(CARA1)} product modules scanned)")
 
-    # 2. product ships without Cara 2: Cara 1 modules import-load with the cognitive layer absent
-    #    (static check: their imports resolve only within Cara 1 + stdlib/third-party, never Cara 2)
-    leaks = [m for m in CARA1 if (ROOT / f"{m}.py").exists() and (_imports(ROOT / f"{m}.py") & CARA2)]
-    print(f"{'✅' if not leaks else '❌'} product is Cara-2-optional: no Cara-1 module needs the cognitive layer")
+    # 2. RUNTIME proof: the product LOADS with every Cara-2 module blocked. Stronger
+    #    than the static scan — even a test importing both layers cannot make the
+    #    shipped product depend on Cara 2 at runtime.
+    blocked = "; ".join(f"sys.modules['{m}']=None" for m in sorted(CARA2))
+    imports = ", ".join(sorted(CARA1))
+    code = f"import sys; {blocked}; import {imports}; print('LOADED')"
+    out = subprocess.run([sys.executable, "-c", code], cwd=str(ROOT), capture_output=True, text=True)
+    runtime_ok = "LOADED" in out.stdout
+    if not runtime_ok:
+        fails.append(f"RUNTIME COUPLING: product did not load with Cara 2 blocked: {out.stderr.strip()[:200]}")
+    print(f"{'✅' if runtime_ok else '❌'} product runs WITHOUT Cara 2 (all product modules load with the cognitive layer blocked)")
 
     # 3. honesty firewall: the product certificate surface carries no overclaim
     import capas_rcc
@@ -77,7 +94,7 @@ def run() -> int:
     if not ok_proxy:
         fails.append("Φ not disclosed as a proxy")
 
-    ok = not fails and not leaks
+    ok = not fails
     if fails:
         for x in fails:
             print("   ", x)

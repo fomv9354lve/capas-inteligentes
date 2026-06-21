@@ -41,6 +41,37 @@ TRUE = [(_src(ca, cl, round(ca / cl, 2)), round(ca / cl, 2)) for ca, cl in
 LIES = [(_src(ca, cl, bad), round(ca / cl, 2)) for ca, cl, bad in
         [(200000, 100000, 5.0), (450000, 150000, 9.0), (320000, 160000, 1.0), (510000, 170000, 7.0), (240000, 120000, 0.5)]]
 
+
+# HARD sources (CARA2_HARD=1): the current-asset/liability figures are BURIED among
+# distractors (property, goodwill, long-term debt) and written verbatim in varied
+# formats, so a one-shot extraction tends to pick the wrong figure or mis-cite the
+# span -> CAPAS HOLDs -> the feedback loop has headroom to correct.
+def _hard(prop, goodwill, ca, cl, ltd, claimed):
+    return (f"In fiscal 2024 the balance sheet showed property of {prop}, goodwill of {goodwill}, "
+            f"and inventory plus receivables comprising total current assets of {ca}, against "
+            f"accounts payable and short-term borrowings totaling current liabilities of {cl}, "
+            f"with long-term debt of {ltd}. The board cited a current ratio of {claimed}.")
+
+HARD_TRUE = [
+    (_hard("$3,400,000", "$1,100,000", "$1,800,000", "$900,000", "$2,200,000", 2.0), 2.0),
+    (_hard("$5.6 million", "$2.0 million", "$4,500,000", "$1,500,000", "$3.0 million", 3.0), 3.0),
+    (_hard("$890,000", "$120,000", "$640,000", "$320,000", "$410,000", 2.0), 2.0),
+    (_hard("$12,000,000", "$3,300,000", "$7,200,000", "$2,400,000", "$5,000,000", 3.0), 3.0),
+    (_hard("$2,750,000", "$600,000", "$1,250,000", "$1,000,000", "$1,900,000", 1.25), 1.25),
+    (_hard("$430,000", "$75,000", "$510,000", "$170,000", "$260,000", 3.0), 3.0),
+    (_hard("$8,100,000", "$1,900,000", "$3,600,000", "$1,800,000", "$4,400,000", 2.0), 2.0),
+    (_hard("$1,050,000", "$240,000", "$960,000", "$640,000", "$770,000", 1.5), 1.5),
+]
+HARD_LIES = [
+    (_hard("$3,400,000", "$1,100,000", "$1,800,000", "$900,000", "$2,200,000", 6.0), 2.0),
+    (_hard("$5.6 million", "$2.0 million", "$4,500,000", "$1,500,000", "$3.0 million", 8.0), 3.0),
+    (_hard("$890,000", "$120,000", "$640,000", "$320,000", "$410,000", 0.5), 2.0),
+    (_hard("$12,000,000", "$3,300,000", "$7,200,000", "$2,400,000", "$5,000,000", 1.0), 3.0),
+]
+
+if os.environ.get("CARA2_HARD"):
+    TRUE, LIES = HARD_TRUE, HARD_LIES
+
 _PROMPT = """Read the source and PROPOSE a structured claim for a deterministic verifier.
 Return STRICT JSON: {{"claim":{{"type":"financial_metric_claim","text":"..."}},
 "evidence":{{"accounting":{{"identity":"financial_ratio","ratio":"current_ratio",
