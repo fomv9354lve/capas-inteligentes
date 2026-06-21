@@ -77,6 +77,12 @@ class Braid:
         return {"added": True, "claim_id": cid, "corresponds": corresponds,
                 "contradicts": contradicts, "braid_fault": bool(contradicts), "root": self.root()}
 
+    def couple(self, a: str, b: str) -> None:
+        """Explicit cross-layer reciprocity edge — couple two nodes that constrain
+        each other even across different targets/layers (deepens integration)."""
+        if a in self.nodes and b in self.nodes:
+            self.edges.append({"a": a, "b": b, "type": "corresponds"})
+
     def reciprocal_support(self, cid: str) -> int:
         return sum(1 for e in self.edges if e["type"] == "corresponds" and cid in (e["a"], e["b"]))
 
