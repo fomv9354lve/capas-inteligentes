@@ -818,6 +818,37 @@ def rederive_accounting(evidence: dict[str, Any]) -> dict[str, Any] | None:
     return {"identity": ident, "status": "UNKNOWN_IDENTITY", "match": False}
 
 
+def rederive_xbrl(evidence: dict[str, Any]) -> dict[str, Any] | None:
+    """Re-derive a financial ratio whose components are pulled from a filed XBRL
+    instance via Arelle (not hand-typed). evidence['xbrl'] = {instance, ratio,
+    reported, tolerance?}. Delegates the actual check to rederive_accounting so the
+    same bounded-tolerance / GIGO guards apply. Returns match None (-> ATTEST) when
+    Arelle is unavailable or the filing lacks the needed concepts: a filing we
+    cannot fully extract is not silently accepted."""
+    x = evidence.get("xbrl")
+    if not isinstance(x, dict):
+        return None
+    instance = x.get("instance") or x.get("instance_path")
+    ratio, reported = x.get("ratio"), x.get("reported")
+    if not (instance and ratio and reported is not None):
+        return {"status": "MALFORMED", "match": False}
+    try:
+        import capas_xbrl
+    except Exception:
+        return {"status": "ARELLE_UNAVAILABLE", "match": None}
+    try:
+        acc = capas_xbrl.build_accounting_evidence(instance, str(ratio), float(reported), x.get("tolerance"))
+    except Exception as e:
+        return {"status": "EXTRACTION_ERROR", "detail": repr(e), "match": None}
+    if acc.get("status") not in ("OK", None) and "match" not in acc:
+        return {"status": acc.get("status"), "ratio": acc.get("ratio"), "match": None,
+                "xbrl_extraction": acc.get("xbrl_extraction")}
+    r = rederive_accounting({"accounting": acc})
+    if isinstance(r, dict):
+        r["xbrl_sources"] = acc.get("xbrl_sources")
+    return r
+
+
 # SI base dimensions as exponent vectors [M, L, T, I, Θ, N, J] (kg,m,s,A,K,mol,cd).
 _DIM_BASE = ("M", "L", "T", "I", "Θ", "N", "J")
 _UNIT_DIM: dict[str, tuple[int, ...]] = {
@@ -927,7 +958,7 @@ def _artifact_hash(evidence: dict[str, Any]) -> str | None:
     re-check against the exact same inputs."""
     keys = ("raw_data", "raw", "computation", "derivation", "environment",
             "registry", "integration", "zk_proof", "quantum_circuit", "quantum_proof",
-            "crypto", "accounting", "dimensions", "reproduction")
+            "crypto", "accounting", "dimensions", "reproduction", "xbrl")
     artifacts = {k: evidence[k] for k in keys if k in evidence}
     if not artifacts:
         return None
@@ -973,7 +1004,7 @@ def _receipt(payload, base_verdict, final, scope, tier, checks, rationale) -> di
 # (which rejects unknown fields) and consumed by this layer instead.
 _EXTENSION_KEYS = {"raw_data", "raw", "computation", "derivation", "environment",
                    "registry", "integration", "zk_proof", "quantum_circuit", "quantum_proof",
-                   "crypto", "accounting", "dimensions", "reproduction",
+                   "crypto", "accounting", "dimensions", "reproduction", "xbrl",
                    *PROVENANCE_KEYS}
 
 try:  # quantum re-derivation rung (needs numpy); deterministic statevector + frontier
@@ -1231,6 +1262,30 @@ def verify(payload: dict[str, Any]) -> dict[str, Any]:
                 rationale.append(
                     f"Accounting identity '{ac['identity']}' is violated: {ac.get('lhs')} ≠ "
                     f"{ac.get('rhs')} — the books do not balance; rejected.")
+
+    # XBRL loop: components pulled from a filed instance (Arelle), re-derived by the
+    # same bounded-tolerance accounting check — no hand-typed numbers.
+    if final == "ACCEPT" and evidence.get("xbrl") is not None:
+        xb = rederive_xbrl(evidence)
+        if xb and xb.get("match") is True:
+            checks.append({"check": "xbrl_ratio_rederivation", "status": "VERIFIED", "detail": xb})
+            rationale.append(
+                f"Financial ratio '{xb.get('ratio')}' re-derives from the XBRL filing's own line "
+                f"items ({xb.get('xbrl_sources')}): reported {xb.get('lhs')} = re-computed {xb.get('rhs')}. "
+                "Components read from the filing via Arelle, not supplied by the producer.")
+        elif xb and xb.get("match") is False:
+            checks.append({"check": "xbrl_ratio_rederivation", "status": "FAIL", "detail": xb})
+            final = "REJECT"
+            rationale.append(
+                f"Financial ratio '{xb.get('ratio')}' does NOT re-derive from the XBRL filing "
+                f"(reported {xb.get('lhs')} ≠ re-computed {xb.get('rhs')}) — rejected.")
+        elif xb and xb.get("match") is None:
+            scope = "ATTEST"; final = "HOLD"
+            checks.append({"check": "xbrl_ratio_rederivation", "status": xb.get("status", "UNRESOLVED"), "detail": xb})
+            rationale.append(
+                f"Could not re-derive from the XBRL filing ({xb.get('status')}: e.g. Arelle missing "
+                "or the filing lacks the needed concepts). Not silently accepted — held for a complete "
+                "filing or attestation.")
 
     if final == "ACCEPT" and evidence.get("dimensions") is not None:
         dm = rederive_dimensions(evidence)
