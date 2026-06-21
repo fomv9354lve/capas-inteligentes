@@ -77,12 +77,16 @@ def current_hashes(html: str) -> tuple[set[str], set[str]]:
 
 
 def build_csp(style_hashes: list[str], script_hashes: list[str]) -> str:
-    style_src = " ".join(["style-src 'self' 'unsafe-hashes'"] + style_hashes)
+    # style-src must allow the Google Fonts stylesheet; font-src must allow the
+    # gstatic font files. Dropping these blocks Inter / Space Mono and the app
+    # silently falls back to system fonts.
+    style_src = " ".join(["style-src 'self' 'unsafe-hashes' https://fonts.googleapis.com"] + style_hashes)
     script_src = " ".join(["script-src 'self' 'unsafe-hashes'"] + script_hashes)
     return (
         "default-src 'self'; img-src 'self' data:; "
         + style_src + "; "
         + script_src + "; "
+        + "font-src 'self' https://fonts.gstatic.com; "
         + "object-src 'none'; base-uri 'none'; form-action 'none'; connect-src 'none'"
     )
 
