@@ -68,7 +68,8 @@ def think(payload: dict[str, Any], _seen: frozenset[str] | None = None, _depth: 
     deps = ev.get("depends_on") or []
     children = [think(d, _seen, _depth + 1) for d in deps]
 
-    own_payload = {**payload, "evidence": {k: v for k, v in ev.items() if k != "depends_on"}}
+    own_payload = {**payload, "evidence": {k: v for k, v in ev.items()
+                                           if k not in ("depends_on", "target", "value")}}
     adm = capas_admissibility.admissibility(own_payload)
     own_class = adm["class"]
     composed = _compose(own_class, [c["composed_class"] for c in children])
