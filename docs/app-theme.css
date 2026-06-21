@@ -95,6 +95,24 @@
 .ld-badge.HOLD { color: #94a3b8; background: rgba(148, 163, 184, 0.12); }
 .ledger-nonclaim { margin-top: 10px; font-size: 10.5px; color: rgba(255, 255, 255, 0.32); letter-spacing: 0.02em; }
 
+/* Collapsed rule-ledger disclosure — keeps the DECISION card clean (mock parity)
+   while the deterministic engine stays one click away. */
+.ledger-details { margin-top: 14px; border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; background: rgba(255,255,255,0.02); overflow: hidden; }
+.ledger-summary { padding: 11px 14px; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(255,255,255,0.42); cursor: pointer; list-style: none; display: flex; align-items: center; gap: 8px; }
+.ledger-summary::-webkit-details-marker { display: none; }
+.ledger-summary::before { content: '\203a'; font-size: 15px; line-height: 1; transition: transform .2s; color: #e8185d; }
+.ledger-details[open] .ledger-summary::before { transform: rotate(90deg); }
+.ledger-summary:hover { color: rgba(255,255,255,0.7); }
+.ledger-details .capas-ledger { margin-top: 0; border: none; border-top: 1px solid rgba(255,255,255,0.06); border-radius: 0; background: transparent; padding-top: 12px; }
+
+/* Collapsed operational-resolution disclosure (mock parity — clean DECISION) */
+details.action-block > summary.action-head { cursor: pointer; list-style: none; display: flex; align-items: center; gap: 10px; margin: 0; }
+details.action-block > summary.action-head::-webkit-details-marker { display: none; }
+details.action-block > summary.action-head::after { content: '\203a'; font-size: 15px; line-height: 1; color: #7c7fff; transition: transform .2s; margin-left: auto; }
+details.action-block[open] > summary.action-head::after { transform: rotate(90deg); }
+details.action-block:not([open]) > summary.action-head { margin-bottom: 0; }
+details.action-block > *:not(summary) { margin-top: 10px; }
+
 /* ─── Brand mark in the gate-app topbar ─── */
 .topbar-mark { height: 26px; width: auto; display: block; border-radius: 4px; }
 .topbar-by { font-size: 8px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-left: 5px; }

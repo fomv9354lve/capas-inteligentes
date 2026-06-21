@@ -81,7 +81,18 @@
 
     box.appendChild(el("div", "ledger-nonclaim",
       "Rule-based over supplied evidence fields. Deterministic — not an LLM judgment."));
-    return box;
+
+    // Wrap in a collapsed disclosure so the DECISION card stays clean like the
+    // mock (badge + reason + blockers); the deterministic rule ledger is one
+    // click away rather than dumped inline.
+    var details = el("details", "ledger-details");
+    var passedCount = Math.max(0, required.length - missing.length);
+    var summaryText = required.length
+      ? ("Rule ledger · " + passedCount + "/" + required.length + " obligations met")
+      : "Rule ledger · show the deterministic engine";
+    details.appendChild(el("summary", "ledger-summary", summaryText));
+    details.appendChild(box);
+    return details;
   }
 
   function currentResult() {
@@ -100,7 +111,7 @@
     var area = document.getElementById("verdict-area");
     if (!area) return;
     var result = currentResult();
-    var existing = area.querySelector(".capas-ledger");
+    var existing = area.querySelector(".ledger-details");
     // single-claim decisions only (batch results lack input_claim/required_fields)
     if (!result || !result.input_claim || !Array.isArray(result.required_fields)) {
       if (existing) existing.parentNode.removeChild(existing);
