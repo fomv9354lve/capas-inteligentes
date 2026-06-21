@@ -53,6 +53,76 @@ _CLOSE = {
 }
 
 
+def _key(payload: dict[str, Any]) -> str:
+    c = payload.get("claim") or {}
+    return str(c.get("id") or c.get("text"))
+
+
+def bridge_multihop(goal: dict[str, Any], substrate: set | None = None, max_depth: int = 8,
+                    _anc: frozenset | None = None, _depth: int = 0) -> dict[str, Any]:
+    """Deep multi-hop bridge: decompose a goal's dependency chain bottom-up (HTN —
+    decompose until every leaf is primitive), reusing the verified SUBSTRATE as a
+    cross-call cache (a verified claim is a primitive leaf). Returns the minimal
+    grounding chain (leaves -> goal, topologically ordered) or the irreducible
+    residual (the deepest leaves only the subject can close). Guards: substrate
+    reuse (tabling), explicit cycle detection (no circular dependency), depth cap.
+    Mutates `substrate` so later goals reuse grounded sub-claims (the cache grows).
+    """
+    substrate = substrate if substrate is not None else set()
+    _anc = _anc or frozenset()
+    k = _key(goal)
+    if k in _anc:
+        return {"node": k, "status": "CYCLE", "chain": [], "residual": [{"claim": k, "why": "circular dependency"}], "reused": [], "depth": _depth}
+    if k in substrate:                                   # tabling / substrate cache hit
+        return {"node": k, "status": "REUSED", "chain": [], "residual": [], "reused": [k], "depth": _depth}
+    if _depth > max_depth:
+        return {"node": k, "status": "DEPTH_CAPPED", "chain": [], "residual": [{"claim": k, "why": "exceeds max_depth"}], "reused": [], "depth": _depth}
+
+    ev = goal.get("evidence") or {}
+    deps = ev.get("depends_on") or []
+    children = [bridge_multihop(d, substrate, max_depth, _anc | {k}, _depth + 1) for d in deps]
+    chain = [c for ch in children for c in ch["chain"]]
+    residual = [r for ch in children for r in ch["residual"]]
+    reused = [u for ch in children for u in ch["reused"]]
+    depth = max([_depth] + [ch["depth"] for ch in children])
+
+    own = {**goal, "evidence": {kk: v for kk, v in ev.items() if kk not in ("depends_on", "target", "value")}}
+    own_class = capas_admissibility.admissibility(own)["class"]
+
+    if own_class == "REFUTED":
+        return {"node": k, "status": "REFUTED", "chain": chain, "residual": residual + [{"claim": k, "why": "contradicts a grounded invariant"}], "reused": reused, "depth": depth}
+
+    deps_ok = all(ch["status"] in ("GROUNDED", "REUSED") for ch in children)
+    if own_class == "VERIFIED" and deps_ok:
+        substrate.add(k)                                 # the substrate grows (cache)
+        return {"node": k, "status": "GROUNDED", "chain": chain + [k], "residual": residual, "reused": reused, "depth": depth}
+    if not deps and own_class != "VERIFIED":             # primitive but not re-derivable -> subject
+        b = bridge(own)
+        return {"node": k, "status": "IRREDUCIBLE", "chain": chain,
+                "residual": residual + [{"claim": k, "why": (b.get("next_step") or {}).get("action", "defer to the subject"), "terminates": "subject"}],
+                "reused": reused, "depth": depth}
+    return {"node": k, "status": "OPEN", "chain": chain, "residual": residual, "reused": reused, "depth": depth}
+
+
+def compile_bridge(goal: dict[str, Any], substrate: set | None = None) -> dict[str, Any]:
+    """Compile and summarise the multi-hop bridge for a goal."""
+    r = bridge_multihop(goal, substrate)
+    grounded = r["status"] in ("GROUNDED", "REUSED") and not r["residual"]
+    has_cycle = any("circular" in str(x.get("why", "")) for x in r["residual"]) or r["status"] == "CYCLE"
+    return {
+        "target": (goal.get("claim") or {}).get("id"),
+        "status": "GROUNDED — the full chain re-derives" if grounded else
+                  ("REFUTED" if r["status"] == "REFUTED" else
+                   ("CYCLE — circular dependency detected" if has_cycle else
+                    "OPEN — residual deferred to the subject")),
+        "minimal_chain": r["chain"],                    # leaves -> goal, the lemma order to ground
+        "chain_length": len(r["chain"]),
+        "hops": r["depth"],
+        "reused_from_substrate": sorted(set(r["reused"])),
+        "irreducible_residual": r["residual"],          # only the subject closes these
+    }
+
+
 def bridge(payload: dict[str, Any]) -> dict[str, Any]:
     """Compile the minimal bridge that would ground a conjecture."""
     adm = capas_admissibility.admissibility(payload)
