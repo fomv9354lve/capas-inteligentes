@@ -310,3 +310,9 @@ body[data-flow-phase="gate"] .step-tab[data-step="complete"] .step-num { backgro
 #phase-next { flex: 0 0 auto; font-size: 12px; padding: 9px 16px; }
 #phase-back { font-size: 12px; padding: 9px 16px; }
 #phase-run { flex: 1 1 auto; justify-content: center; padding: 14px 24px; font-size: 15px; border-radius: 9px; box-shadow: 0 6px 22px rgba(232,24,93,.38); }
+
+
+/* App hero title equivalent to the marketing page heroes (canonical 36-58 / 900 Inter).
+   Was 28px/750; the onboarded-compact override on mobile is preserved. */
+#product-hero-title { font-size: clamp(36px,4.5vw,58px); font-weight: 900; letter-spacing: -0.03em; line-height: 1.05; }
+@media (max-width: 560px) { body.onboarded #product-hero-title { font-size: 15px; font-weight: 600; } }
