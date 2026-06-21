@@ -371,6 +371,12 @@ try:  # real arithmetic-circuit (R1CS) backend — the SNARK front-end made runn
 except Exception:  # pragma: no cover
     pass
 
+try:  # production succinct/ZK backend via EZKL (KZG/halo2), if installed
+    from capas_ezkl import ezkl_backend as _ezkl_backend
+    TRUSTED_ZK_BACKENDS["ezkl"] = _ezkl_backend
+except Exception:  # pragma: no cover
+    pass
+
 
 def register_zk_backend(vk_id: str, verifier) -> None:
     """Register a production verifying backend (e.g. an EZKL/groth16 verifier)."""
