@@ -365,6 +365,12 @@ def _ref_commitment_backend(proof: dict[str, Any], public_inputs: dict[str, Any]
 
 TRUSTED_ZK_BACKENDS: dict[str, Any] = {"capas-ref-commitment": _ref_commitment_backend}
 
+try:  # real arithmetic-circuit (R1CS) backend — the SNARK front-end made runnable
+    from capas_circuits import r1cs_backend as _r1cs_backend
+    TRUSTED_ZK_BACKENDS["capas-r1cs"] = _r1cs_backend
+except Exception:  # pragma: no cover
+    pass
+
 
 def register_zk_backend(vk_id: str, verifier) -> None:
     """Register a production verifying backend (e.g. an EZKL/groth16 verifier)."""
