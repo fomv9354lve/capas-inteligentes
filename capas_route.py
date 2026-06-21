@@ -72,6 +72,8 @@ def route(payload: dict[str, Any], jurisdiction: str | None = None) -> dict[str,
         add("re-execution", "an XBRL filing is present (ratio components re-derived from the filing via Arelle)")
     if ev.get("dimensions") is not None:
         add("re-execution", "a dimensional-consistency claim is present (SI exponent check)")
+    if ev.get("physical") is not None:
+        add("re-execution", "a structured physical claim is present (law re-derived from fields, not prose)")
     if any(k in ev for k in ("computation", "integration")):
         add("re-execution", "a deterministic computation/integration artifact is present")
     rep = ev.get("reproduction")

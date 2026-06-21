@@ -355,6 +355,91 @@ def anchor_contradictions(claim_text: str) -> list[dict[str, Any]]:
     return out
 
 
+# ── Structured physical-claim check (robust path; no prose parsing) ───────────
+# The anchor scans above read English claim text — convenient but evadable
+# (spelled-out numbers, inverted order, other languages). The structured path
+# evaluates the SAME laws (Antoine, the c ceiling, absolute zero, Holevo) from
+# explicit fields, so a producer states quantity/value/unit/conditions and the
+# engine decides deterministically. evidence['physical'] =
+#   {quantity, value, unit, conditions:{pressure_mmHg|altitude_m|medium|
+#    qubits|copies|entanglement}}. Same contradiction/abstain taxonomy.
+_TEMP_C = {"°c", "c", "celsius", "degc", "deg_c"}
+_TEMP_K = {"k", "kelvin"}
+
+
+def check_physical(physical: Any) -> list[dict[str, Any]]:
+    if not isinstance(physical, dict):
+        return []
+    q = str(physical.get("quantity", "")).lower().strip()
+    unit = str(physical.get("unit", "")).lower().strip()
+    cond = physical.get("conditions") or {}
+    try:
+        val = float(physical.get("value"))
+    except (TypeError, ValueError):
+        return []
+    out: list[dict[str, Any]] = []
+
+    # Universal temperature floor (absolute zero) — any temperature quantity.
+    if unit in _TEMP_C and val < -273.15 - _EPS:
+        return [{"anchor": "absolute_zero_floor_C", "kind": "contradiction", "asserted": val,
+                 "truth": -273.15, "unit": "°C", "desc": "Temperature below absolute zero is impossible",
+                 "re_derived_from": "third law of thermodynamics"}]
+    if unit in _TEMP_K and val < -_EPS:
+        return [{"anchor": "absolute_zero_floor_K", "kind": "contradiction", "asserted": val,
+                 "truth": 0.0, "unit": "K", "desc": "Absolute temperature cannot be negative",
+                 "re_derived_from": "third law of thermodynamics"}]
+
+    if q in ("boiling_point", "boiling point") and unit in _TEMP_C:
+        p = cond.get("pressure_mmHg")
+        if p is None and cond.get("altitude_m") is not None:
+            p = _altitude_to_mmHg(float(cond["altitude_m"]), "m")
+        if p is not None and abs(float(p) - _P0_MMHG) > 1.0:
+            expected = _antoine_boiling_C(float(p))
+            if abs(val - expected) > 5.0:
+                out.append({"anchor": "water_boiling_point_C", "kind": "contradiction", "asserted": val,
+                            "truth": round(expected, 1), "unit": "°C", "pressure_mmHg": round(float(p), 1),
+                            "desc": f"At {round(float(p))} mmHg water boils at {round(expected, 1)}°C (Antoine)",
+                            "re_derived_from": "Antoine equation"})
+        elif cond.get("off_baseline") and p is None:
+            out.append({"anchor": "water_boiling_point_C", "kind": "abstain", "asserted": val, "unit": "°C",
+                        "desc": "Boiling point off 1 atm", "reason": "a non-standard condition is named but "
+                        "no pressure/altitude is quantified; the 1 atm constant does not apply."})
+        elif p is None and not cond.get("off_baseline") and abs(val - 100.0) > 3.0:
+            out.append({"anchor": "water_boiling_point_C", "kind": "contradiction", "asserted": val,
+                        "truth": 100.0, "unit": "°C", "desc": "Boiling point of water at 1 atm is 100°C"})
+
+    if q in ("speed", "velocity") and unit in ("m/s", "m s-1", "ms-1"):
+        if cond.get("medium"):
+            out.append({"anchor": "speed_of_light_m_s", "kind": "abstain", "asserted": val, "unit": "m/s",
+                        "desc": "speed in a medium", "reason": f"in {cond['medium']} light travels at c/n (< c); "
+                        "the vacuum ceiling does not directly apply."})
+        elif val > _C_LIGHT + 1.0:
+            out.append({"anchor": "lightspeed_ceiling_massive", "kind": "contradiction", "asserted": val,
+                        "truth": _C_LIGHT, "unit": "m/s", "desc": "Nothing massive travels at or above c",
+                        "re_derived_from": "special relativity"})
+
+    if q in ("accessible_information", "information", "info_per_qubit", "bits_per_qubit", "holevo"):
+        qubits = float(cond.get("qubits", 1) or 1)
+        if qubits > 0:
+            if val <= qubits + _EPS:
+                pass  # within Holevo
+            elif cond.get("entanglement") and val <= 2.0 * qubits + _EPS:
+                pass  # superdense, still consumes the qubits it claims
+            elif cond.get("copies") and float(cond.get("copies", 0)) > 1:
+                out.append({"anchor": "holevo_accessible_information", "kind": "abstain", "asserted": val,
+                            "unit": "bits", "desc": "Holevo accessible-information bound",
+                            "reason": "state reconstruction via copies/tomography, not single-shot accessible "
+                            "information; the copy budget (qubits spent) must be pinned/attested."})
+            else:
+                truth = 2.0 * qubits if cond.get("entanglement") else qubits
+                out.append({"anchor": "holevo_accessible_information", "kind": "contradiction", "asserted": val,
+                            "truth": truth, "unit": "bits",
+                            "desc": f"Holevo: at most {truth:g} accessible bit(s) from {qubits:g} qubit(s)"
+                                    + (" even with entanglement (superdense)" if cond.get("entanglement") else ""),
+                            "re_derived_from": "Holevo (1973) + no-cloning"})
+    return out
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # Scope partition (#3): which evidence is RE-DERIVABLE (GATE) vs ATTEST-class.
 # Study-design / unobservable booleans cannot be re-derived by computation; they
@@ -958,7 +1043,7 @@ def _artifact_hash(evidence: dict[str, Any]) -> str | None:
     re-check against the exact same inputs."""
     keys = ("raw_data", "raw", "computation", "derivation", "environment",
             "registry", "integration", "zk_proof", "quantum_circuit", "quantum_proof",
-            "crypto", "accounting", "dimensions", "reproduction", "xbrl")
+            "crypto", "accounting", "dimensions", "reproduction", "xbrl", "physical")
     artifacts = {k: evidence[k] for k in keys if k in evidence}
     if not artifacts:
         return None
@@ -1004,7 +1089,7 @@ def _receipt(payload, base_verdict, final, scope, tier, checks, rationale) -> di
 # (which rejects unknown fields) and consumed by this layer instead.
 _EXTENSION_KEYS = {"raw_data", "raw", "computation", "derivation", "environment",
                    "registry", "integration", "zk_proof", "quantum_circuit", "quantum_proof",
-                   "crypto", "accounting", "dimensions", "reproduction", "xbrl",
+                   "crypto", "accounting", "dimensions", "reproduction", "xbrl", "physical",
                    *PROVENANCE_KEYS}
 
 try:  # quantum re-derivation rung (needs numpy); deterministic statevector + frontier
@@ -1038,7 +1123,7 @@ def verify(payload: dict[str, Any]) -> dict[str, Any]:
     # Universal bounds (hold in every condition) are checked first and override:
     # a physical impossibility cannot be saved by any context.
     hits = (universal_bound_violations(text) + anchor_contradictions(text)
-            + holevo_information_contradictions(text))
+            + holevo_information_contradictions(text) + check_physical(evidence.get("physical")))
     contradictions = [h for h in hits if h.get("kind") != "abstain"]
     abstentions = [h for h in hits if h.get("kind") == "abstain"]
     if contradictions:
