@@ -64,8 +64,11 @@ def run() -> int:
     checks.append(("signed (Ed25519) + certificate_id",
                    c.get("signature", {}).get("algorithm") == "Ed25519" and bool(c.get("certificate_id"))))
     checks.append(("standing Löbian self-limitation present",
-                   "cannot certify its own soundness" in c["loebian_clause"]
+                   "cannot certify its own grounding" in c["loebian_clause"]
                    and "names but cannot enter" in c["loebian_clause"]))
+    checks.append(("Žižek sharpening: parallax self-bar present (unknowable not a new big Other)",
+                   "parallactic, not a container" in c["parallax_self_bar"]
+                   and "unmarked place" in c["parallax_self_bar"]))
 
     ok = True
     for label, good in checks:

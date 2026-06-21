@@ -120,6 +120,22 @@ def rcc(payload: dict[str, Any]) -> dict[str, Any]:
                             "its own UNKNOWABLE stratum; it does NOT certify the unknowable, and it "
                             "cannot certify its own soundness. That is not a defect — it is the "
                             "constitutive condition (the certifier that names what it cannot reach)."),
+        # Žižek sharpening: keep {unknowable} PARALLACTIC, not substantive, so the
+        # certificate of its own limit does not become a new guarantor (a 'big Other'
+        # / fetishistic disavowal). The unknowable is NOT hidden content the system
+        # lacks (no Other of the Other holds it); it is the registered NON-COINCIDENCE
+        # between re-derivation (GATE) and attestation (ATTEST). And the certifier bars
+        # ITSELF: the criteria by which it sorts grounded/generated/unknowable are
+        # themselves ungrounded within it — that sorting axiom is the certifier's own
+        # unknown-known, the unmarked place it tags FROM but cannot tag. Included as
+        # content so this very certificate is not mistaken for a final ground.
+        "parallax_self_bar": (
+            "The UNKNOWABLE stratum is parallactic, not a container: it is the non-coincidence "
+            "between GATE (re-derivation) and ATTEST (the subject), not content a hidden Other "
+            "possesses. The act of sorting grounded/generated/unknowable rests on this engine's "
+            "own axioms, which it cannot certify from within (its unknown-known). This clause is "
+            "included so the certificate of a limit is not itself taken as the final ground — the "
+            "Real has shifted to the unmarked place from which this tagging is done."),
         "engine_digest": receipt.get("engine_digest"),
         "decision_path": "deterministic; no LLM in the verdict",
     }
