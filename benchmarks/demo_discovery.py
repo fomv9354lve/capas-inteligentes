@@ -50,6 +50,21 @@ def run() -> int:
     checks.append(("reinterpretation with no novel prediction -> SPECULATIVE (not a discovery)",
                    "SPECULATIVE" in D.certify_novel(REINTERP)["headline"]))
 
+    # THE KNOWLEDGE-CREATION ASYMMETRY (Popper): corroboration shrinks but never closes;
+    # one refutation is definitive. This is how the world's response ENTERS.
+    cand, residuals = REAL, []
+    for src in ("HESS", "VERITAS", "CTA"):                     # the world keeps corroborating
+        upd = D.ingest_world_response(cand, {"experiment": src, "outcome": "corroborated", "group": src})
+        cand = upd["updated_candidate"]
+        residuals.append(upd["corroboration"]["fabrication_resistance_residual"])
+    shrinks_never_zero = all(residuals[i] > residuals[i + 1] for i in range(len(residuals) - 1)) and residuals[-1] > 0
+    checks.append((f"world corroborates -> residual shrinks {residuals} but NEVER 0 (induction never closes)",
+                   shrinks_never_zero))
+
+    refute = D.ingest_world_response(REAL, {"experiment": "GRB time-of-flight", "outcome": "refuted"})
+    checks.append(("ONE refutation -> REFUTED, definite knowledge (Popperian asymmetry)",
+                   refute["status"] == "REFUTED" and "DEFINITE" in refute["knowledge_created"]))
+
     ok = all(c for _, c in checks)
     for label, c in checks:
         print(f"{'✅' if c else '❌'} {label}")

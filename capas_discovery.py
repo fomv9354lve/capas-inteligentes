@@ -31,6 +31,35 @@ import capas_consilience
 import capas_sequential
 
 
+def ingest_world_response(candidate: dict[str, Any], response: dict[str, Any]) -> dict[str, Any]:
+    """The ERROR-CORRECTION step — how the world's response ENTERS (knowledge creation).
+
+    The world is exogenous: CAPAS does not know its answer, it RECEIVES one (an experiment
+    outcome) and re-certifies. response = {experiment, outcome:'refuted'|'corroborated'|
+    'inconclusive', group, e_value?}.
+
+    The Popperian asymmetry is the engine of knowledge creation, and it is explicit here:
+      - ONE refutation -> REFUTED. Definite knowledge created: the conjecture is FALSE
+        (one disagreeing experiment suffices), modulo experiment honesty (GIGO).
+      - corroboration -> the residual shrinks but NEVER closes: no finite number of
+        confirmations proves a universal claim (induction). Knowledge grows, certainty never.
+    """
+    outcome = response.get("outcome")
+    if outcome == "refuted":
+        return {"status": "REFUTED", "by": response.get("experiment"),
+                "knowledge_created": "DEFINITE — the world fired the killer test; the conjecture is FALSE "
+                                     "(one refutation suffices — the Popperian asymmetry), modulo experiment honesty (GIGO)",
+                "next": "the refuted conjecture is not waste — its boundary is now known; the search resumes from it"}
+    if outcome == "corroborated":
+        updated = {**candidate, "corroborations": (candidate.get("corroborations") or [])
+                   + [{"group": response.get("group"), "agrees": True, "e_value": response.get("e_value", 3.0)}]}
+        cert = certify_novel(updated)
+        return {"status": "STILL FALSIFIABLE — more corroborated, not proven",
+                "knowledge_created": "PARTIAL — fabrication-resistance rose; certainty NOT reached (induction never closes)",
+                "corroboration": cert["strata"]["corroboration"], "updated_candidate": updated}
+    return {"status": "UNCHANGED", "knowledge_created": "none — the experiment was inconclusive"}
+
+
 def certify_novel(candidate: dict[str, Any]) -> dict[str, Any]:
     """Issue a stratified certificate for a genuinely new theoretical claim. It certifies
     the FORM of a discovery (reduces-to-known + consistent + falsifiable + corroboration-
