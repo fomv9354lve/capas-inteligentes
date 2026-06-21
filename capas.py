@@ -43,6 +43,7 @@ VALIDATION_COMMANDS = [
     ("claim gate browser E2E", ["benchmarks/verify_claim_gate_ui_browser.py"]),
     ("customer product assets", ["benchmarks/verify_customer_product_assets.py"]),
     ("gate contracts single source", ["benchmarks/verify_gate_contracts_match.py"]),
+    ("proof-carrying verification", ["benchmarks/verify_proof_carrying.py"]),
     ("batch and API surfaces", ["benchmarks/verify_batch_and_api.py"]),
     ("external user validation packet", ["benchmarks/verify_external_user_validation.py"]),
     ("profile registration packet", ["benchmarks/verify_profile_registration_packet.py"]),
