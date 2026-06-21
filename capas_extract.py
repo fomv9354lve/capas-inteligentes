@@ -189,6 +189,24 @@ def propose(source_text: str, model: str = "deepseek-v4-flash", key: str | None 
         os.unlink(bf)
 
 
+def semantic_agreement(proposals: list[dict[str, Any]]) -> dict[str, Any]:
+    """Calibration via self-consistency (semantic-entropy style), absorbed as an
+    ATTEST-class flag — NEVER the verdict. Multi-sample the proposer; measure how
+    much its extracted input values AGREE. Disagreement = the model's OWN
+    uncertainty, surfaced to the human (the white-box reality-monitor SOTA without
+    white-box access, and without touching the deterministic decision)."""
+    sigs = [tuple(sorted(str(c.get("value")) for c in (p.get("citations") or [])))
+            for p in (proposals or [])]
+    if not sigs:
+        return {"agreement": 0.0, "n": 0, "flag": "no_proposals"}
+    from collections import Counter
+    modal, count = Counter(sigs).most_common(1)[0]
+    agreement = count / len(sigs)
+    flag = ("high_confidence" if agreement >= 0.8 else
+            "ATTEST: proposer is uncertain (self-inconsistent across samples) — defer to the subject")
+    return {"agreement": round(agreement, 3), "n": len(sigs), "modal_signature": list(modal), "flag": flag}
+
+
 def extract_and_verify(source_text: str, model: str = "deepseek-v4-flash",
                        key: str | None = None) -> dict[str, Any]:
     """End to end: LLM proposes from prose -> CAPAS re-verifies spans + re-derives."""

@@ -1122,7 +1122,7 @@ def _artifact_hash(evidence: dict[str, Any]) -> str | None:
     re-check against the exact same inputs."""
     keys = ("raw_data", "raw", "computation", "derivation", "environment",
             "registry", "integration", "zk_proof", "quantum_circuit", "quantum_proof",
-            "crypto", "accounting", "dimensions", "reproduction", "xbrl", "physical", "stoichiometry")
+            "crypto", "accounting", "dimensions", "reproduction", "xbrl", "physical", "stoichiometry", "sql")
     artifacts = {k: evidence[k] for k in keys if k in evidence}
     if not artifacts:
         return None
@@ -1272,7 +1272,7 @@ def _receipt(payload, base_verdict, final, scope, tier, checks, rationale) -> di
 # (which rejects unknown fields) and consumed by this layer instead.
 _EXTENSION_KEYS = {"raw_data", "raw", "computation", "derivation", "environment",
                    "registry", "integration", "zk_proof", "quantum_circuit", "quantum_proof",
-                   "crypto", "accounting", "dimensions", "reproduction", "xbrl", "physical", "stoichiometry",
+                   "crypto", "accounting", "dimensions", "reproduction", "xbrl", "physical", "stoichiometry", "sql",
                    *PROVENANCE_KEYS}
 
 try:  # quantum re-derivation rung (needs numpy); deterministic statevector + frontier
@@ -1613,6 +1613,30 @@ def verify(payload: dict[str, Any], use_cache: bool = True) -> dict[str, Any]:
             rationale.append(
                 f"Equation does NOT balance — atoms not conserved: {sx['imbalanced']} "
                 "(reactant vs product counts). Rejected by atom conservation.")
+
+    # SQL-aggregate rung: re-derive a claimed aggregate from rows (small data CAPAS
+    # owns; large data grounds via a registered Proof-of-SQL proof on the ZK rung).
+    if final == "ACCEPT" and evidence.get("sql") is not None:
+        try:
+            import capas_sql
+            sq = capas_sql.rederive_sql(evidence)
+        except Exception:
+            sq = None
+        if sq and sq.get("match") is True:
+            checks.append({"check": "sql_aggregate", "status": "VERIFIED", "detail": sq})
+            rationale.append(
+                f"SQL {sq.get('op')} re-derives from the rows (= {sq.get('re_derived')}, "
+                f"{sq.get('rows_scanned')} rows scanned). Verified by recomputation, not trusted.")
+        elif sq and sq.get("match") is False and sq.get("status") == "MALFORMED":
+            scope = "ATTEST"; final = "HOLD"
+            checks.append({"check": "sql_aggregate", "status": "MALFORMED", "detail": sq})
+            rationale.append("SQL claim malformed/unsupported; not re-derivable — held, not accepted.")
+        elif sq and sq.get("match") is False:
+            checks.append({"check": "sql_aggregate", "status": "FAIL", "detail": sq})
+            final = "REJECT"
+            rationale.append(
+                f"SQL {sq.get('op')} does NOT re-derive: rows give {sq.get('re_derived')} vs "
+                f"reported {sq.get('reported')} — rejected.")
 
     # ZK rung: verify a result over HIDDEN data via a registered zero-knowledge backend.
     if final == "ACCEPT" and evidence.get("zk_proof") is not None:
