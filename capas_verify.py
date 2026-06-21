@@ -22,6 +22,7 @@ import hashlib
 import json
 import math
 import operator
+import os
 import re
 from typing import Any
 
@@ -1132,6 +1133,106 @@ def _artifact_hash(evidence: dict[str, Any]) -> str | None:
 # ─────────────────────────────────────────────────────────────────────────────
 # Receipt (#2): portable, hash-bound, re-checkable verdict artifact.
 # ─────────────────────────────────────────────────────────────────────────────
+# ── Secure receipt: engine pinning + Ed25519 signature (SCITT / VC 2.0 style) ──
+# A receipt bound only by a hash proves integrity but not authorship — anyone can
+# forge one. Following IETF SCITT (signed statement -> receipt) and W3C VC 2.0
+# (Ed25519 Data Integrity), CAPAS signs the canonical receipt with an Ed25519 key
+# and pins the exact engine digest, so a verifier checks WHO issued it and WHICH
+# engine produced it. Signing degrades gracefully if `cryptography` is absent.
+_ENGINE_DIGEST: str | None = None
+_SIGNING_KEY = None  # cached Ed25519 private key for this process
+
+
+def _engine_digest() -> str:
+    global _ENGINE_DIGEST
+    if _ENGINE_DIGEST is None:
+        try:
+            src = open(__file__, "rb").read()
+            _ENGINE_DIGEST = "sha256:" + hashlib.sha256(src).hexdigest()
+        except Exception:
+            _ENGINE_DIGEST = "sha256:unknown"
+    return _ENGINE_DIGEST
+
+
+def _get_signing_key():
+    """Ed25519 key for this CAPAS instance. From env CAPAS_SIGNING_SEED (64 hex
+    chars = 32-byte seed) for a stable, publishable identity; else an ephemeral
+    per-process key. Returns None if `cryptography` is unavailable."""
+    global _SIGNING_KEY
+    if _SIGNING_KEY is not None:
+        return _SIGNING_KEY
+    try:
+        from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
+        seed = os.environ.get("CAPAS_SIGNING_SEED", "")
+        if len(seed) == 64:
+            _SIGNING_KEY = Ed25519PrivateKey.from_private_bytes(bytes.fromhex(seed))
+        else:
+            _SIGNING_KEY = Ed25519PrivateKey.generate()
+        return _SIGNING_KEY
+    except Exception:
+        return None
+
+
+def _sign_receipt(canonical: str) -> dict[str, Any] | None:
+    key = _get_signing_key()
+    if key is None:
+        return None
+    from cryptography.hazmat.primitives import serialization
+    pub = key.public_key().public_bytes(
+        encoding=serialization.Encoding.Raw, format=serialization.PublicFormat.Raw)
+    sig = key.sign(canonical.encode())
+    return {"algorithm": "Ed25519", "public_key": pub.hex(), "signature": sig.hex(),
+            "standard": "IETF SCITT / W3C VC 2.0 (Data Integrity EdDSA)"}
+
+
+def verify_receipt(receipt: dict[str, Any]) -> dict[str, Any]:
+    """Independently verify a CAPAS receipt's signature against its own body.
+    Returns {signature_valid, engine_digest_pinned, verdict, ...}."""
+    sigblock = receipt.get("signature")
+    body = {k: v for k, v in receipt.items() if k not in ("signature", "receipt_id")}
+    canonical = json.dumps(body, sort_keys=True, separators=(",", ":"))
+    out = {"verdict": receipt.get("verified_verdict"), "scope": receipt.get("scope"),
+           "engine_digest": receipt.get("engine_digest"), "engine_digest_pinned": bool(receipt.get("engine_digest")),
+           "receipt_id_matches": receipt.get("receipt_id") ==
+           "sha256:" + hashlib.sha256(canonical.encode()).hexdigest()[:32]}
+    if not sigblock:
+        out["signature_valid"] = None
+        return out
+    try:
+        from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PublicKey
+        pub = Ed25519PublicKey.from_public_bytes(bytes.fromhex(sigblock["public_key"]))
+        pub.verify(bytes.fromhex(sigblock["signature"]), canonical.encode())
+        out["signature_valid"] = True
+    except Exception:
+        out["signature_valid"] = False
+    return out
+
+
+# Fail-closed by construction: a verdict may be ACCEPT only if a rung resolved it
+# POSITIVELY (re-derived or attested). If re-derivable evidence was supplied but no
+# rung returned a positive status, the verdict cannot stay ACCEPT — a forgotten /
+# unhandled case can never become a false-accept by architecture, not by discipline.
+_POSITIVE_STATUSES = {"VERIFIED", "ATTESTED", "ATTESTED_SURFACED", "PRECOMMITTED_SEED", "RECONCILED"}
+_RE_DERIVABLE_KEYS = {"raw_data", "raw", "computation", "derivation", "integration", "registry",
+                      "zk_proof", "quantum_circuit", "crypto", "accounting", "dimensions",
+                      "xbrl", "physical", "stoichiometry"}
+
+
+def _fail_closed(final: str, scope: str, checks: list, evidence: dict, rationale: list) -> tuple[str, str]:
+    if final != "ACCEPT":
+        return final, scope
+    if not (set(evidence) & _RE_DERIVABLE_KEYS):
+        return final, scope  # no re-derivable artifact supplied -> base-gate accept stands
+    if any(c.get("status") in _POSITIVE_STATUSES for c in checks):
+        return final, scope  # something resolved it positively -> ACCEPT stands
+    rationale.append(
+        "Fail-closed: re-derivable evidence was supplied but no rung resolved it (re-derived "
+        "or attested). The verdict is held rather than accepted — absence of a passed check is "
+        "never treated as a passed check.")
+    checks.append({"check": "fail_closed_guard", "status": "UNRESOLVED_EVIDENCE"})
+    return "HOLD", "ATTEST"
+
+
 def _receipt(payload, base_verdict, final, scope, tier, checks, rationale) -> dict[str, Any]:
     claim = payload.get("claim", {}) or {}
     body = {
@@ -1150,12 +1251,16 @@ def _receipt(payload, base_verdict, final, scope, tier, checks, rationale) -> di
             "and bound, never marketed as verified."
         ),
         "decision_path": "deterministic; no LLM",
+        "engine_digest": _engine_digest(),   # pin EXACTLY which engine decided
     }
     artifact_hash = _artifact_hash(payload.get("evidence", {}) or {})
     if artifact_hash:
         body["evidence_artifact_hash"] = artifact_hash
     canonical = json.dumps(body, sort_keys=True, separators=(",", ":"))
     body["receipt_id"] = "sha256:" + hashlib.sha256(canonical.encode()).hexdigest()[:32]
+    sig = _sign_receipt(canonical)
+    if sig is not None:
+        body["signature"] = sig            # Ed25519 over the canonical body (SCITT/VC 2.0 style)
     return body
 
 
@@ -1181,7 +1286,22 @@ def _base_payload(payload: dict[str, Any]) -> dict[str, Any]:
     return {**payload, "evidence": evidence}
 
 
-def verify(payload: dict[str, Any]) -> dict[str, Any]:
+_VERIFY_CACHE: dict[str, dict[str, Any]] = {}
+_VERIFY_CACHE_CAP = 512
+
+
+def _payload_key(payload: dict[str, Any]) -> str:
+    return hashlib.sha256(
+        json.dumps(payload, sort_keys=True, separators=(",", ":"), default=str).encode()).hexdigest()
+
+
+def verify(payload: dict[str, Any], use_cache: bool = True) -> dict[str, Any]:
+    # Memoize by content hash: an identical payload re-derives to an identical
+    # verdict, so re-verification is O(1) (idempotent). Disable with use_cache=False.
+    cache_key = _payload_key(payload) if use_cache else None
+    if cache_key is not None and cache_key in _VERIFY_CACHE:
+        return _VERIFY_CACHE[cache_key]
+
     base = capas.decide_external_claim(_base_payload(payload))
     base_verdict = base.get("verdict") if isinstance(base, dict) else getattr(base, "verdict", "HOLD")
 
@@ -1622,7 +1742,18 @@ def verify(payload: dict[str, Any]) -> dict[str, Any]:
         else "ATTEST" if scope == "ATTEST"
         else "FORM"
     )
-    return _receipt(payload, base_verdict, final, scope, tier, checks, rationale)
+    # Fail-closed backstop (secure by construction) before sealing the receipt.
+    final, scope = _fail_closed(final, scope, checks, evidence, rationale)
+    if final != "ACCEPT" and tier == "RE-DERIVED" and not any(
+            c.get("status") == "VERIFIED" for c in checks):
+        tier = "ATTEST" if scope == "ATTEST" else "FORM"
+
+    receipt = _receipt(payload, base_verdict, final, scope, tier, checks, rationale)
+    if cache_key is not None:
+        if len(_VERIFY_CACHE) >= _VERIFY_CACHE_CAP:
+            _VERIFY_CACHE.clear()
+        _VERIFY_CACHE[cache_key] = receipt
+    return receipt
 
 
 if __name__ == "__main__":  # pragma: no cover

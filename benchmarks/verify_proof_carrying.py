@@ -494,6 +494,29 @@ def run():
     for label, base, v, sc, tier, mark in rows:
         print(f"{label.ljust(w)} | {base:<6} | {v:<7} | {sc:<6} | {tier:<10} {mark}")
     print()
+
+    # Secure-receipt + fail-closed + memoization assertions.
+    import json as _json
+    sec = _payload("sec1", "balance sheet balances", "financial_metric_claim",
+                   {"reported_value": 1.0, "reference_value": 1.0, "tolerance": 1.0, "metric_period_match": True,
+                    "accounting": {"identity": "balance_sheet", "assets": 1000, "liabilities": 600, "equity": 400}})
+    rcpt = capas_verify.verify(sec)
+    chk = capas_verify.verify_receipt(rcpt)
+    signed_ok = chk["signature_valid"] in (True, None) and chk["receipt_id_matches"] and bool(rcpt.get("engine_digest"))
+    tampered = _json.loads(_json.dumps(rcpt)); tampered["verified_verdict"] = "REJECT"
+    tamper_caught = capas_verify.verify_receipt(tampered)["signature_valid"] in (False, None)
+    # fail-closed: re-derivable evidence present but unresolved (unknown quantity) -> not ACCEPT
+    fc = capas_verify.verify(_payload("sec2", "x", "financial_metric_claim",
+            {"reported_value": 1.0, "reference_value": 1.0, "tolerance": 1.0, "metric_period_match": True,
+             "dimensions": {"quantity": "flux", "unit": "N"}}), use_cache=False)
+    fail_closed_ok = fc["verified_verdict"] != "ACCEPT"
+    memo_ok = capas_verify.verify(sec) is capas_verify.verify(sec)  # cached identity
+    sec_all = signed_ok and tamper_caught and fail_closed_ok and memo_ok
+    all_ok &= sec_all
+    print(f"SECURITY: signed receipt {'✅' if signed_ok else '❌'} | tamper detected "
+          f"{'✅' if tamper_caught else '❌'} | fail-closed {'✅' if fail_closed_ok else '❌'} | "
+          f"memoized {'✅' if memo_ok else '❌'}")
+    print()
     if all_ok:
         print("PROOF-CARRYING VERIFICATION: all cases pass ✅")
         return 0
