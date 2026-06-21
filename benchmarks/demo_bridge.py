@@ -56,6 +56,18 @@ def run() -> int:
     checks.append((f"third independent agreer shrinks residual ({r2['semantic_residual']} -> {r3['semantic_residual']}, never 0)",
                    r3["semantic_residual"] < r2["semantic_residual"] and r3["semantic_residual"] > 0))
 
+    # C3 CLOSED: active probe SELECTION finds the discriminator that fixed probes missed.
+    F_correct = {"name": "all", "group": "A", "fn": lambda p: all(x < LIMIT for x in p["values"])}
+    F_wrong = {"name": "exists", "group": "B", "fn": lambda p: any(x < LIMIT for x in p["values"])}
+    fixed_no_discriminator = [{"values": [10, 20]}, {"values": [50, 99]}]      # all-below only -> agree -> false TRUST
+    weak = B.triangulate([F_correct, F_wrong], fixed_no_discriminator)
+    pool = [{"values": [10, 20]}, {"values": [50, 200]}, {"values": [300]}]    # pool contains a mixed (discriminating) case
+    sel = B.select_discriminating_probes([F_correct, F_wrong], pool)
+    strong = B.triangulate([F_correct, F_wrong], sel["discriminating_probes"])
+    checks.append(("C3: fixed probes miss the discriminator -> false TRUST", weak["decision"] == "TRUST"))
+    checks.append(("C3 CLOSED: active selection finds the discriminating probe -> DEFER (illusion caught)",
+                   sel["found"] >= 1 and strong["decision"] == "DEFER"))
+
     ok = all(c for _, c in checks)
     for label, c in checks:
         print(f"{'✅' if c else '❌'} {label}")

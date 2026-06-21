@@ -31,6 +31,33 @@ from collections import Counter
 from typing import Any, Callable
 
 
+def select_discriminating_probes(formalizations: list[dict[str, Any]],
+                                 candidate_pool: list[dict[str, Any]],
+                                 max_probes: int | None = None) -> dict[str, Any]:
+    """C3 attack (optimal experimental design, discrete): from a POOL of candidate probe
+    inputs, SELECT exactly those on which the formalizations DISAGREE — the inputs that
+    maximally discriminate candidate formalizations — instead of relying on whatever probes
+    happened to be supplied. This closes the 'probe selection is not optimal' half of the
+    bridge residual: a discriminating boundary case (e.g. x == limit, exposing <= vs <) is
+    now actively sought, not hoped for.
+
+    Honest caveat kept: it can only find a discriminator that EXISTS in the pool. If every
+    formalization shares a systematic error and no pool input exposes it, C2 (correlated
+    mis-translation) still survives — named, not hidden."""
+    chosen = []
+    for p in candidate_pool:
+        outs = {bool(f["fn"](p)) for f in formalizations}
+        if len(outs) > 1:                       # this input splits the formalizations
+            chosen.append(p)
+    return {
+        "discriminating_probes": chosen[:max_probes] if max_probes else chosen,
+        "found": len(chosen),
+        "pool_size": len(candidate_pool),
+        "note": "feed these to triangulate() for a far stronger test; finds only discriminators "
+                "present in the pool (residual C2: a pool-wide-invisible systematic error survives).",
+    }
+
+
 def triangulate(formalizations: list[dict[str, Any]], probes: list[dict[str, Any]],
                 back_translation: list[dict[str, Any]] | None = None,
                 bt_threshold: float = 0.6) -> dict[str, Any]:
