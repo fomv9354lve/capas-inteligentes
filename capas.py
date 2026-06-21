@@ -6988,6 +6988,25 @@ def cmd_decide(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_verify(args: argparse.Namespace) -> int:
+    import capas_verify
+
+    payload = _load_json(Path(args.input))
+    receipt = capas_verify.verify(payload)
+    if args.output:
+        _write_json(Path(args.output), receipt)
+    if args.json or not args.output:
+        print(json.dumps(receipt, indent=2, sort_keys=True))
+    else:
+        print(f"{receipt['verified_verdict']} [{receipt['scope']}/{receipt['verification_tier']}]")
+        for line in receipt.get("rationale", []):
+            print(f"  - {line}")
+        print(f"receipt {receipt['receipt_id']}")
+        if args.output:
+            print(f"wrote {args.output}")
+    return 0 if receipt.get("verified_verdict") != "REJECT" else 2
+
+
 def cmd_batch(args: argparse.Namespace) -> int:
     payload = _load_json(Path(args.input))
     try:
@@ -7336,6 +7355,12 @@ def main(argv: list[str] | None = None) -> int:
     decide.add_argument("--output", help="optional path for decision JSON")
     decide.add_argument("--json", action="store_true", help="print JSON even when --output is supplied")
     decide.set_defaults(func=cmd_decide)
+
+    verify = subparsers.add_parser("verify", help="proof-carrying verification: re-derive the evidence instead of trusting it (Rung 3+)")
+    verify.add_argument("--input", required=True, help="path to claim/evidence JSON (may carry raw_data / computation / derivation+environment / registry / provenance)")
+    verify.add_argument("--output", help="optional verification receipt path")
+    verify.add_argument("--json", action="store_true", help="print JSON even when --output is supplied")
+    verify.set_defaults(func=cmd_verify)
 
     batch = subparsers.add_parser("batch", help="run deterministic gates over multiple claim/evidence JSON objects")
     batch.add_argument("--input", required=True, help="path to JSON array or object with items/claims array")
