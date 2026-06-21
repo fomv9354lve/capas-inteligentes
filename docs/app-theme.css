@@ -113,6 +113,14 @@ details.action-block[open] > summary.action-head::after { transform: rotate(90de
 details.action-block:not([open]) > summary.action-head { margin-bottom: 0; }
 details.action-block > *:not(summary) { margin-top: 10px; }
 
+/* Step 2 · EVIDENCE CONTRACT as a horizontal card above the form (mock parity) */
+.phase-pane[data-phase="complete"] .builder-shell { display: flex; flex-direction: column; gap: 16px; }
+.phase-pane[data-phase="complete"] .builder-rail { order: -1; background: rgba(79,94,247,0.05); border: 1px solid rgba(79,94,247,0.16); border-radius: 10px; padding: 13px 16px; }
+.phase-pane[data-phase="complete"] .builder-rail h3 { font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: rgba(124,127,255,0.78); margin: 0 0 10px; }
+.phase-pane[data-phase="complete"] .builder-contract { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; }
+.phase-pane[data-phase="complete"] .builder-rail ul,
+.phase-pane[data-phase="complete"] .builder-preview { display: none; }
+
 /* ─── Brand mark in the gate-app topbar ─── */
 .topbar-mark { height: 26px; width: auto; display: block; border-radius: 4px; }
 .topbar-by { font-size: 8px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-left: 5px; }
