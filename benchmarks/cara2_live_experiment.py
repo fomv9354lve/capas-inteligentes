@@ -69,7 +69,39 @@ HARD_LIES = [
     (_hard("$12,000,000", "$3,300,000", "$7,200,000", "$2,400,000", "$5,000,000", 1.0), 3.0),
 ]
 
-if os.environ.get("CARA2_HARD"):
+def _fmt(n: int, style: int) -> str:
+    return f"${n:,}" if style == 0 else (f"${n/1e6:.2f} million" if style == 1 else f"USD {n:,}")
+
+
+# Larger hard set (CARA2_BIG=1): 30 true + 10 lies, current assets/liabilities cited
+# verbatim as "$N,NNN,NNN" but buried among mixed-format distractors.
+_PAIRS = [(1800000, 900000), (4500000, 1500000), (640000, 320000), (7200000, 2400000),
+          (1250000, 1000000), (510000, 170000), (3600000, 1800000), (960000, 640000),
+          (2200000, 1100000), (880000, 440000), (3300000, 1100000), (5400000, 1800000),
+          (720000, 360000), (1500000, 750000), (2700000, 900000), (4000000, 2000000),
+          (330000, 220000), (6300000, 2100000), (1440000, 720000), (990000, 330000),
+          (2100000, 1050000), (560000, 280000), (8800000, 4400000), (1700000, 850000),
+          (450000, 150000), (3900000, 1300000), (1200000, 600000), (770000, 385000),
+          (5100000, 1700000), (2400000, 1200000), (1360000, 680000), (920000, 460000),
+          (6600000, 2200000), (1080000, 540000), (480000, 240000), (3150000, 1050000),
+          (840000, 280000), (2520000, 1260000), (1620000, 810000), (700000, 350000)]
+
+
+def _gen(pairs, lie=False):
+    out = []
+    for i, (ca, cl) in enumerate(pairs):
+        prop = _fmt(int(ca * 1.9), i % 3)
+        gw = _fmt(int(cl * 1.2), (i + 1) % 3)
+        ltd = _fmt(int(ca * 1.3), (i + 2) % 3)
+        true_r = round(ca / cl, 2)
+        claimed = round(true_r * (2.5 if i % 2 else 0.4), 2) if lie else true_r
+        out.append((_hard(prop, gw, f"${ca:,}", f"${cl:,}", ltd, claimed), true_r))
+    return out
+
+
+if os.environ.get("CARA2_BIG"):
+    TRUE, LIES = _gen(_PAIRS[:30]), _gen(_PAIRS[30:40], lie=True)
+elif os.environ.get("CARA2_HARD"):
     TRUE, LIES = HARD_TRUE, HARD_LIES
 
 _PROMPT = """Read the source and PROPOSE a structured claim for a deterministic verifier.
