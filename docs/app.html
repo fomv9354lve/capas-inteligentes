@@ -1967,8 +1967,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="capas-shell.css?v=030">
-<link rel="stylesheet" href="app-theme.css?v=030">
+<link rel="stylesheet" href="capas-shell.css?v=031">
+<link rel="stylesheet" href="app-theme.css?v=031">
 </head>
 <body>
 <div class="bg-logo"><iframe src="logo_kreniq_volum_trico.html" title="CAPAS transition network logo" scrolling="no" tabindex="-1" aria-hidden="true"></iframe></div>
@@ -1978,11 +1978,11 @@
 <nav>
     <a class="nav-logo" href="index.html" aria-label="CAPAS Claim Gate"><img class="nav-logo-mark" src="krenniq-logo.png" alt="Krenn-IQ"><span class="nav-logo-wm">CAPAS<small>by Krenn-IQ</small></span></a>
     <div class="nav-links">
-      <a href="index.html">Home</a>
-      <a href="app.html" class="active">Gate App</a>
-      <a href="customer-brief.html">Methodology</a>
-      <a href="pilot-packet.html">Pilot</a>
-      <a href="audit.html">Audit</a>
+      <a href="index.html"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>Home</a>
+      <a href="app.html" class="active"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"></path></svg>Gate App</a>
+      <a href="customer-brief.html"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>Methodology</a>
+      <a href="pilot-packet.html"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20V10"></path><path d="M12 20V4"></path><path d="M6 20v-6"></path></svg>Pilot</a>
+      <a href="audit.html"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>Audit</a>
     </div>
     <a href="#gate-title" class="nav-cta">Test a Claim</a>
   </nav>
@@ -2397,7 +2397,7 @@
   </div>
 </div>
 
-<script src="capas-contracts.js?v=030"></script>
+<script src="capas-contracts.js?v=031"></script>
 <script>
     const sample = {"claim": {"id": "sample_scaling_claim", "text": "The generated scaling result is physically consistent with the universal z=1 anchor.", "type": "universal_anchor_claim"}, "evidence": {"anchor_mode": "absolute_anchor", "local_property_tests_pass": true, "physical_evidence_level": "scaling_law_anchor", "universal_anchor_pass": true, "verification_independence": "theory_scaling_law_no_solver"}, "schema_version": "capas-claim-payload-v3"};
     const samples = {"ACCEPT": {"claim": {"id": "sample_scaling_claim", "text": "The generated scaling result is physically consistent with the universal z=1 anchor.", "type": "universal_anchor_claim"}, "evidence": {"anchor_mode": "absolute_anchor", "local_property_tests_pass": true, "physical_evidence_level": "scaling_law_anchor", "universal_anchor_pass": true, "verification_independence": "theory_scaling_law_no_solver"}, "schema_version": "capas-claim-payload-v3"}, "CAUSAL": {"claim": {"id": "sample_causal_mechanism", "text": "The intervention causally changes the measured outcome through the declared mechanism.", "type": "causal_mechanism_claim"}, "evidence": {"confounders_controlled": true, "intervention_or_natural_experiment": true, "mechanism_evidence_present": true, "temporal_order_established": true}, "schema_version": "capas-claim-payload-v3"}, "CONFLICT": {"claim": {"id": "sample_evidence_conflict", "text": "The conflicting evidence is resolved by the declared pre-registered method.", "type": "evidence_conflict_claim"}, "evidence": {"conflict_resolution_method": "pre-registered hierarchy", "contradicting_sources": ["source_b"], "resolution_pre_registered": true, "supporting_sources": ["source_a"]}, "schema_version": "capas-claim-payload-v3"}, "HOLD": {"claim": {"id": "sample_experiment_hold", "text": "The simulation matches experiment.", "type": "physical_accuracy"}, "evidence": {"physical_evidence_level": "experimental", "reference_truth": "external experimental reference supplied without tolerance verdict"}, "schema_version": "capas-claim-payload-v3"}, "INVALID": {"claim": {"id": "", "text": "This payload is structurally invalid because the claim id is empty.", "type": "unsupported_claim_type"}, "evidence": "not an object", "schema_version": "capas-claim-payload-v3"}, "MULTIMODAL": {"claim": {"id": "sample_multimodal_evidence", "text": "The multimodal evidence supports the extracted claim.", "type": "multimodal_evidence_claim"}, "evidence": {"cross_modal_alignment": true, "extraction_method_declared": true, "modality": "table", "source_hashes_verified": true}, "schema_version": "capas-claim-payload-v3"}, "REJECT": {"claim": {"id": "sample_scaling_claim_reject", "text": "The generated result is physically consistent.", "type": "universal_anchor_claim"}, "evidence": {"anchor_mode": "absolute_anchor", "local_property_tests_pass": false, "physical_evidence_level": "failed_local_checks", "universal_anchor_pass": false, "verification_independence": "local_properties_no_anchor_needed"}, "schema_version": "capas-claim-payload-v3"}, "REWRITE": {"claim": {"id": "sample_scaling_claim_rewrite", "text": "Local monotonicity proves universal physical correctness.", "type": "universal_anchor_claim"}, "evidence": {"anchor_mode": "absolute_anchor", "local_property_tests_pass": true, "physical_evidence_level": "scaling_law_anchor", "universal_anchor_pass": false, "verification_independence": "theory_scaling_law_no_solver"}, "schema_version": "capas-claim-payload-v3"}, "SYSTEMATIC": {"claim": {"id": "sample_systematic_review", "text": "The systematic review supports the reported effect across included studies.", "type": "systematic_review_claim"}, "evidence": {"effect_consistency": true, "inclusion_criteria_declared": true, "protocol_registered": true, "risk_of_bias_assessed": true}, "schema_version": "capas-claim-payload-v3"}};

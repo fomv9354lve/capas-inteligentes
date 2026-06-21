@@ -104,12 +104,14 @@
 .app-body { max-width: 1400px; padding-left: 48px; padding-right: 48px; }
 .topbar { padding-left: 48px; padding-right: 48px; }
 
-/* ─── Persistent 3D logo background (subtle for the workspace) ─── */
-.bg-logo { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; opacity: 0.4; }
+/* ─── Persistent 3D logo background (VISIBLE, matches the mock stacking) ─── */
+.bg-logo { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; opacity: 0.65; }
 .bg-logo iframe { width: 100%; height: 100%; border: 0; display: block; background: #000; transform: scale(3.35); transform-origin: center center; }
-.bg-veil { position: fixed; inset: 0; z-index: -1; pointer-events: none;
-  background: radial-gradient(circle at 70% 38%, transparent 0%, rgba(5,5,7,0.45) 42%, rgba(5,5,7,0.82) 100%),
-              linear-gradient(180deg, rgba(5,5,7,0.6), rgba(5,5,7,0.35) 30%, rgba(5,5,7,0.6)); }
+.bg-veil { position: fixed; inset: 0; z-index: 1; pointer-events: none;
+  background: radial-gradient(circle at 68% 40%, transparent 0%, rgba(5,5,7,0.28) 46%, rgba(5,5,7,0.70) 100%),
+              linear-gradient(rgba(5,5,7,0.42), rgba(5,5,7,0.12) 30%, rgba(5,5,7,0.58)); }
+/* content above the background/veil (mock uses .page{z-index:2}) */
+nav, main.app-body, .app-body { position: relative; z-index: 2; }
 
 /* ─── Contrast + RGYB homogenization (logo: Black>Magenta>Cyan>Gold>Green) ─── */
 :root { --text-2: #cbd5e1; --text-3: #94a3b8; }
