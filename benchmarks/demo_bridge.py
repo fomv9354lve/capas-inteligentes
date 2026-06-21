@@ -59,6 +59,23 @@ def run() -> int:
     ok = all(c for _, c in checks)
     for label, c in checks:
         print(f"{'✅' if c else '❌'} {label}")
+
+    # ── DOCUMENTED LIMIT (the new frontier after the attack — named, not hidden) ──
+    # If every formalization shares the SAME systematic error (here <= vs <) AND no probe hits
+    # the discriminating instance (x == 100), they all agree and the bridge FALSELY trusts.
+    # The two holes: (C2) independence is SUPPLIED not MEASURED -> correlated mis-translation
+    # survives; (C3) probe selection is not optimal -> the discriminating instance can be absent
+    # (Bayesian experimental design, unbuilt). The frontier moved here; it did not vanish.
+    P_no_boundary = [{"values": [10, 20]}, {"values": [50, 99]}, {"values": [50, 200]}, {"values": [300]}]
+    Fle1 = {"name": "le1", "group": "mA", "fn": lambda p: all(x <= LIMIT for x in p["values"])}
+    Fle2 = {"name": "le2", "group": "mB", "fn": lambda p: max(p["values"]) <= LIMIT}
+    Fle3 = {"name": "le3", "group": "mC", "fn": lambda p: sum(1 for x in p["values"] if x > LIMIT) == 0}
+    r_lim = B.triangulate([Fle1, Fle2, Fle3], P_no_boundary)
+    limit_holds = r_lim["decision"] == "TRUST"   # the KNOWN miss (documented, not a pass)
+    print(f"⚠️  documented limit: shared systematic error + no discriminating probe -> "
+          f"FALSE {r_lim['decision']} (conf {r_lim['bridge_confidence']}). New frontier = C2 (measured "
+          f"independence) + C3 (optimal probe selection). {'limit reproduced' if limit_holds else 'LIMIT CLOSED?'}")
+
     print("BRIDGE-FRONTIER ATTACK (triangulation catches the semantic illusion): pass ✅" if ok
           else "BRIDGE: FAILURES ❌")
     return 0 if ok else 1
