@@ -17,9 +17,11 @@ Deterministic and reproducible. No LLM in the decision path. Mirrors the moat:
 """
 from __future__ import annotations
 
+import ast
 import hashlib
 import json
 import math
+import operator
 import re
 from typing import Any
 
@@ -141,6 +143,80 @@ def rederive_statistical(evidence: dict[str, Any]) -> dict[str, Any] | None:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# Calculation re-derivation — Passage Point A (pharma CDS / spreadsheet math) and
+# the shared primitive behind ADaM derivations: RE-COMPUTE a reported number from
+# its raw inputs via a whitelisted deterministic operation. No vendor kernel, no
+# arbitrary code: this is exactly the "reported value vs raw data" fraud surface
+# the spreadsheet-integrity FDA 483s live on — and what Empower/Pinnacle 21
+# structurally do NOT do (they manage trust heuristics / check conformance).
+# ─────────────────────────────────────────────────────────────────────────────
+_SAFE_BINOPS = {ast.Add: operator.add, ast.Sub: operator.sub, ast.Mult: operator.mul,
+                ast.Div: operator.truediv, ast.Pow: operator.pow, ast.Mod: operator.mod}
+_SAFE_UNARY = {ast.UAdd: operator.pos, ast.USub: operator.neg}
+
+
+def _safe_eval(expr: str, names: dict[str, Any]) -> float:
+    """Evaluate a pure arithmetic expression over named numeric inputs. No calls,
+    attributes, subscripts, or names outside `inputs` — deterministic and safe."""
+    def ev(n: ast.AST) -> float:
+        if isinstance(n, ast.Constant) and isinstance(n.value, (int, float)):
+            return float(n.value)
+        if isinstance(n, ast.Name):
+            if n.id in names:
+                return float(names[n.id])
+            raise ValueError(f"unknown input '{n.id}'")
+        if isinstance(n, ast.BinOp) and type(n.op) in _SAFE_BINOPS:
+            return _SAFE_BINOPS[type(n.op)](ev(n.left), ev(n.right))
+        if isinstance(n, ast.UnaryOp) and type(n.op) in _SAFE_UNARY:
+            return _SAFE_UNARY[type(n.op)](ev(n.operand))
+        raise ValueError("disallowed expression element")
+    return ev(ast.parse(str(expr), mode="eval").body)
+
+
+def rederive_calculation(evidence: dict[str, Any]) -> dict[str, Any] | None:
+    """Re-compute evidence['computation'] = {operation, inputs, reported_value,
+    tolerance}. Returns None when no computation artifact is supplied."""
+    comp = evidence.get("computation")
+    if not isinstance(comp, dict):
+        return None
+    op = comp.get("operation")
+    inp = comp.get("inputs") or {}
+    reported = comp.get("reported_value")
+    tol = float(comp.get("tolerance", 0) or 0)
+    try:
+        if op == "linear_calibration":      # concentration from signal: x=(y-b)/m
+            val = (float(inp["signal"]) - float(inp["intercept"])) / float(inp["slope"])
+        elif op == "mean":
+            xs = [float(x) for x in inp["values"]]; val = sum(xs) / len(xs)
+        elif op == "sum":
+            val = sum(float(x) for x in inp["values"])
+        elif op == "ratio":
+            val = float(inp["numerator"]) / float(inp["denominator"])
+        elif op == "percent_recovery":
+            val = float(inp["measured"]) / float(inp["expected"]) * 100.0
+        elif op == "expression":
+            val = _safe_eval(comp.get("expression", ""), inp)
+        else:
+            return {"operation": op, "status": "UNSUPPORTED_OP", "match": None}
+    except Exception as e:  # malformed artifact -> cannot re-derive
+        return {"operation": op, "status": "ERROR", "error": str(e), "match": False}
+    reported_f = float(reported) if isinstance(reported, (int, float)) else None
+    match = reported_f is not None and abs(val - reported_f) <= max(tol, 1e-9)
+    return {"operation": op, "re_derived": round(val, 6), "reported": reported,
+            "tolerance": tol, "match": bool(match)}
+
+
+def _artifact_hash(evidence: dict[str, Any]) -> str | None:
+    """Bind the re-derivable artifacts (raw_data / computation) into the receipt so
+    a third party can re-check against the exact same inputs."""
+    artifacts = {k: evidence[k] for k in ("raw_data", "raw", "computation") if k in evidence}
+    if not artifacts:
+        return None
+    canonical = json.dumps(artifacts, sort_keys=True, separators=(",", ":"), default=str)
+    return "sha256:" + hashlib.sha256(canonical.encode()).hexdigest()
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # Receipt (#2): portable, hash-bound, re-checkable verdict artifact.
 # ─────────────────────────────────────────────────────────────────────────────
 def _receipt(payload, base_verdict, final, scope, tier, checks, rationale) -> dict[str, Any]:
@@ -162,6 +238,9 @@ def _receipt(payload, base_verdict, final, scope, tier, checks, rationale) -> di
         ),
         "decision_path": "deterministic; no LLM",
     }
+    artifact_hash = _artifact_hash(payload.get("evidence", {}) or {})
+    if artifact_hash:
+        body["evidence_artifact_hash"] = artifact_hash
     canonical = json.dumps(body, sort_keys=True, separators=(",", ":"))
     body["receipt_id"] = "sha256:" + hashlib.sha256(canonical.encode()).hexdigest()[:32]
     return body
@@ -173,7 +252,7 @@ def _receipt(payload, base_verdict, final, scope, tier, checks, rationale) -> di
 # Evidence keys that are CAPAS-verify EXTENSIONS (re-derivable artifacts / provenance),
 # not part of the base evidence contract. They are stripped before the base gate runs
 # (which rejects unknown fields) and consumed by this layer instead.
-_EXTENSION_KEYS = {"raw_data", "raw", *PROVENANCE_KEYS}
+_EXTENSION_KEYS = {"raw_data", "raw", "computation", *PROVENANCE_KEYS}
 
 
 def _base_payload(payload: dict[str, Any]) -> dict[str, Any]:
@@ -207,6 +286,27 @@ def verify(payload: dict[str, Any]) -> dict[str, Any]:
 
     # The base gate already rejects/holds the self-failing cases (p>alpha, missing,
     # required-boolean-false). We only ADD scrutiny where the base said ACCEPT.
+    if final == "ACCEPT":
+        # Passage Point A primitive: re-derive a reported NUMBER from its raw inputs.
+        # Applies to any claim type (CDS calibration/assay, ADaM derivations, financial
+        # metrics). A reported value that does not re-derive is fabricated -> REJECT.
+        calc = rederive_calculation(evidence)
+        if calc is not None:
+            if calc.get("match") is True:
+                checks.append({"check": "calculation_rederivation", "status": "VERIFIED", "detail": calc})
+                rationale.append(
+                    f"Reported value {calc['reported']} re-derives from its raw inputs via "
+                    f"{calc['operation']} (= {calc['re_derived']}). Verified by re-computation, not trusted."
+                )
+            elif calc.get("match") is False:
+                checks.append({"check": "calculation_rederivation", "status": "FAIL", "detail": calc})
+                final = "REJECT"
+                rationale.append(
+                    f"Reported value {calc['reported']} does NOT re-derive from its raw inputs "
+                    f"({calc['operation']} gives {calc.get('re_derived')}). The reported number is "
+                    "fabricated relative to the raw data — rejected (spreadsheet-integrity pattern)."
+                )
+
     if final == "ACCEPT":
         if ctype == "statistical_confidence":
             rd = rederive_statistical(evidence)
