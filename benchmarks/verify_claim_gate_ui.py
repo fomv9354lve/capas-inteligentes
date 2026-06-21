@@ -244,7 +244,7 @@ REQUIRED_SNIPPETS = [
     "Workspace Settings",
     "id=\"type-label\" role=\"status\" aria-live=\"polite\" aria-atomic=\"true\"",
     "product-hero",
-    "CAPAS compiles supplied evidence into a claim admissibility decision",
+    "CAPAS compiles supplied evidence into a claim",
     "Deterministic scientific claim gate",
     "Executive batch and provenance dashboard",
     "metric-ft-ready",
