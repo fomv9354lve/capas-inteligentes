@@ -39,43 +39,147 @@ except Exception:  # pragma: no cover
 # scan of the claim text; a value that contradicts a known anchor is REJECTED
 # regardless of how clean the declared statistics are. Auditable + extensible.
 # ─────────────────────────────────────────────────────────────────────────────
+# ── Physical laws behind the anchors (real math, used to RE-DERIVE in-domain) ──
+# An anchor constant (water boils at 100°C) is only the value of a LAW evaluated
+# at a canonical condition (1 atm). Re-aggregating the layer: model the law and
+# its domain of validity, so the engine RE-DERIVES the true value when the claim
+# pins the condition, and ABSTAINS (does not reject) when the condition is named
+# but unquantified. This pushes the determinism frontier honestly instead of
+# bolting on brittle per-case regex exceptions.
+
+# Antoine equation for water, P in mmHg, T in °C (valid ~1-100°C):
+#   log10(P) = A - B/(C+T)  =>  T_boil(P) = B/(A - log10(P)) - C
+_ANTOINE_WATER = (8.07131, 1730.63, 233.426)
+_P0_MMHG = 760.0  # 1 atm
+
+# Pressure units -> mmHg.
+_PRESSURE_TO_MMHG = {"mmhg": 1.0, "torr": 1.0, "atm": 760.0, "bar": 750.062,
+                     "mbar": 0.750062, "kpa": 7.50062, "hpa": 0.750062,
+                     "pa": 0.00750062, "psi": 51.7149}
+_PRESSURE_RE = re.compile(
+    r"(-?\d+(?:\.\d+)?)\s*(mmhg|torr|atm|atmospheres?|mbar|hpa|kpa|bar|psi|pa)\b")
+_ALTITUDE_RE = re.compile(r"(-?\d+(?:\.\d+)?)\s*(km|kilomet(?:er|re)s?|m|met(?:er|re)s?|ft|feet)\b")
+# Qualitative conditions that move OFF the 1-atm baseline (boiling/freezing) but
+# do not pin a number -> domain undefined -> abstain.
+_OFF_BASELINE_PT = re.compile(
+    r"high\s+altitude|altitude|elevation|mountain|summit|everest|denver|"
+    r"thin\s+air|vacuum|reduced\s+pressure|low\s+pressure|high\s+pressure|"
+    r"pressure\s+cooker|under\s+pressure")
+_BASELINE_PT = re.compile(r"sea\s*level|1\s*atm\b|standard\s+pressure|stp\b")
+# Light through a medium is slower than c (v=c/n) -> vacuum anchor does not apply.
+_OFF_BASELINE_LIGHT = re.compile(r"\bin\s+(?:water|glass|a?\s*medium|media|fib(?:er|re)|"
+                                 r"air|diamond|matter|crystal|liquid)")
+
+
+def _antoine_boiling_C(p_mmhg: float) -> float:
+    A, B, C = _ANTOINE_WATER
+    return B / (A - math.log10(p_mmhg)) - C
+
+
+def _altitude_to_mmHg(value: float, unit: str) -> float:
+    h_m = value * 1000.0 if unit.startswith("k") else (value * 0.3048 if unit in ("ft", "feet") else value)
+    return _P0_MMHG * (1.0 - 2.25577e-5 * h_m) ** 5.25588  # ISA barometric formula
+
+
+def _parse_pressure_mmHg(text: str) -> float | None:
+    m = _PRESSURE_RE.search(text)
+    if not m:
+        return None
+    unit = m.group(2)
+    unit = "atm" if unit.startswith("atm") else unit
+    return float(m.group(1)) * _PRESSURE_TO_MMHG.get(unit, 1.0)
+
+
 ANCHORS: list[dict[str, Any]] = [
     {
-        "id": "water_boiling_point_1atm_C",
-        "truth": 100.0, "tol": 3.0, "unit": "°C",
+        "id": "water_boiling_point_C",
+        "truth": 100.0, "tol": 3.0, "tol_law": 5.0, "unit": "°C",
         "pattern": r"water\s+boils?\s+at\s+(-?\d+(?:\.\d+)?)\s*°?\s*c\b",
-        "desc": "Boiling point of water at 1 atm is 100°C",
+        "desc": "Boiling point of water (1 atm: 100°C; lower at reduced pressure)",
+        "domain": "pressure_temp", "law": "antoine_boiling",
     },
     {
         "id": "speed_of_light_m_s",
         "truth": 299_792_458.0, "tol": 1000.0, "unit": "m/s",
         "pattern": r"speed\s+of\s+light\s+(?:is|=|of)\s*(-?\d+(?:\.\d+)?)\s*m/?s",
-        "desc": "Speed of light in vacuum is 299,792,458 m/s",
+        "desc": "Speed of light in vacuum is 299,792,458 m/s (slower in any medium)",
+        "domain": "medium_light",
     },
     {
-        "id": "water_freezing_point_1atm_C",
+        "id": "water_freezing_point_C",
         "truth": 0.0, "tol": 3.0, "unit": "°C",
         "pattern": r"water\s+freezes?\s+at\s+(-?\d+(?:\.\d+)?)\s*°?\s*c\b",
         "desc": "Freezing point of water at 1 atm is 0°C",
+        "domain": "pressure_temp",  # weak P-dependence: abstain off-baseline, no re-derivation
     },
 ]
 
 
 def anchor_contradictions(claim_text: str) -> list[dict[str, Any]]:
-    """Deterministic scan: return anchors the claim text contradicts."""
+    """Deterministic, domain-aware anchor scan.
+
+    Returns findings with ``kind``:
+      * "contradiction" -> the claim is INSIDE the anchor's domain and asserts a
+        value the law/constant refutes (verify() -> REJECT).
+      * "abstain"       -> the claim names a condition outside the anchor's
+        canonical domain but does not quantify it, so the constant does not apply
+        and the law cannot be evaluated (verify() -> HOLD, route up; never REJECT).
+    An empty list means no anchor is engaged (claim flows on normally)."""
     text = (claim_text or "").lower()
-    hits: list[dict[str, Any]] = []
+    out: list[dict[str, Any]] = []
     for a in ANCHORS:
         m = re.search(a["pattern"], text)
         if not m:
             continue
         asserted = float(m.group(1))
-        if abs(asserted - a["truth"]) > a["tol"]:
-            hits.append({
-                "anchor": a["id"], "asserted": asserted,
-                "truth": a["truth"], "unit": a["unit"], "desc": a["desc"],
-            })
-    return hits
+
+        if a.get("domain") == "medium_light":
+            if _OFF_BASELINE_LIGHT.search(text):  # light in a medium: c does not apply
+                out.append({"anchor": a["id"], "kind": "abstain", "asserted": asserted,
+                            "unit": a["unit"], "desc": a["desc"],
+                            "reason": "light through a medium travels at c/n (< c); the vacuum "
+                                      "constant does not apply — re-derive needs the refractive index."})
+                continue
+            if abs(asserted - a["truth"]) > a["tol"]:
+                out.append({"anchor": a["id"], "kind": "contradiction", "asserted": asserted,
+                            "truth": a["truth"], "unit": a["unit"], "desc": a["desc"]})
+            continue
+
+        if a.get("domain") == "pressure_temp":
+            # 1) condition numerically pinned -> RE-DERIVE the true value from the law.
+            p = _parse_pressure_mmHg(text)
+            if p is None:
+                alt = _ALTITUDE_RE.search(text)
+                if alt and not _BASELINE_PT.search(text):
+                    p = _altitude_to_mmHg(float(alt.group(1)), alt.group(2))
+            if p is not None and abs(p - _P0_MMHG) > 1.0:
+                if a.get("law") == "antoine_boiling":
+                    expected = _antoine_boiling_C(p)
+                    if abs(asserted - expected) > a.get("tol_law", 5.0):
+                        out.append({"anchor": a["id"], "kind": "contradiction", "asserted": asserted,
+                                    "truth": round(expected, 1), "unit": a["unit"],
+                                    "desc": f"{a['desc']}; at {round(p)} mmHg the law gives {round(expected, 1)}°C",
+                                    "re_derived_from": "Antoine equation", "pressure_mmHg": round(p, 1)})
+                    # within tol -> claim is physically consistent: no finding.
+                    continue
+                # law not modelled at this condition (e.g. freezing): abstain.
+                out.append({"anchor": a["id"], "kind": "abstain", "asserted": asserted,
+                            "unit": a["unit"], "desc": a["desc"],
+                            "reason": "condition is off-baseline; this anchor has no re-derivation law for it."})
+                continue
+            # 2) condition named qualitatively but not quantified -> abstain.
+            if _OFF_BASELINE_PT.search(text) and not _BASELINE_PT.search(text):
+                out.append({"anchor": a["id"], "kind": "abstain", "asserted": asserted,
+                            "unit": a["unit"], "desc": a["desc"],
+                            "reason": "claim scopes to a non-standard condition (e.g. altitude/"
+                                      "pressure) but does not quantify it; the 1 atm constant does "
+                                      "not apply and the law cannot be evaluated."})
+                continue
+            # 3) baseline (1 atm, explicit or default) -> the constant holds.
+            if abs(asserted - a["truth"]) > a["tol"]:
+                out.append({"anchor": a["id"], "kind": "contradiction", "asserted": asserted,
+                            "truth": a["truth"], "unit": a["unit"], "desc": a["desc"]})
+    return out
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -476,15 +580,30 @@ def verify(payload: dict[str, Any]) -> dict[str, Any]:
     final = base_verdict
     scope = "GATE"
 
-    # (1) Anchor contradiction — a known physical/math truth overrides clean stats.
+    # (1) Anchor scan — domain-aware. A known law refutes a claim only INSIDE its
+    # domain (REJECT); a claim that names an off-baseline condition without
+    # quantifying it leaves the constant inapplicable -> abstain (HOLD, route up).
     hits = anchor_contradictions(text)
-    if hits:
-        checks.append({"check": "anchor_contradiction", "status": "FAIL", "detail": hits})
-        rationale.append(
-            f"Claim contradicts a known anchor: {hits[0]['desc']} "
-            f"(asserted {hits[0]['asserted']}{hits[0]['unit']}). Rejected by re-derivation."
-        )
+    contradictions = [h for h in hits if h.get("kind") != "abstain"]
+    abstentions = [h for h in hits if h.get("kind") == "abstain"]
+    if contradictions:
+        h = contradictions[0]
+        checks.append({"check": "anchor_contradiction", "status": "FAIL", "detail": contradictions})
+        detail = (f" (asserted {h['asserted']}{h['unit']} vs {h.get('truth')}{h['unit']}"
+                  + (f" re-derived via {h['re_derived_from']} at {h['pressure_mmHg']} mmHg"
+                     if h.get("re_derived_from") else "") + ")")
+        rationale.append(f"Claim contradicts a known anchor: {h['desc']}{detail}. Rejected by re-derivation.")
         final = "REJECT"
+    elif abstentions:
+        h = abstentions[0]
+        checks.append({"check": "anchor_domain_undefined", "status": "ABSTAIN", "detail": abstentions})
+        rationale.append(
+            f"Anchor '{h['anchor']}' does not apply: {h['reason']} CAPAS does not reject a "
+            "possibly-true claim on a context-blind constant, nor accept it without the "
+            "condition; held for the condition to be quantified or attested.")
+        scope = "ATTEST"
+        if final == "ACCEPT":
+            final = "HOLD"
 
     # The base gate already rejects/holds the self-failing cases (p>alpha, missing,
     # required-boolean-false). We only ADD scrutiny where the base said ACCEPT.
