@@ -206,10 +206,89 @@ def rederive_calculation(evidence: dict[str, Any]) -> dict[str, Any] | None:
             "tolerance": tol, "match": bool(match)}
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# Dataset re-derivation — Passage Point B (clinical DB-lock -> ADaM/TLF submission).
+# Re-derive a SUBMITTED derived dataset (ADaM-style) from its SOURCE (SDTM-style)
+# via declared per-column deterministic rules, and DIFF re-derived vs submitted
+# within a declared tolerance. A row that does not re-derive is the 74%-discrepancy
+# fraud Pinnacle 21 cannot see (it checks conformance, not numbers). Re-derivation
+# is only honest inside a PINNED environment, so an unpinned run is ATTEST-only.
+# ─────────────────────────────────────────────────────────────────────────────
+_REQUIRED_ENV = ("language", "version", "os", "locale")
+
+
+def environment_pinned(evidence: dict[str, Any]) -> dict[str, Any] | None:
+    env = evidence.get("environment")
+    if not isinstance(env, dict):
+        return None
+    missing = [k for k in _REQUIRED_ENV if not env.get(k)]
+    return {"pinned": not missing, "missing": missing, "env": env}
+
+
+def rederive_dataset(evidence: dict[str, Any]) -> dict[str, Any] | None:
+    """Re-derive submitted rows from source rows via per-column rules; diff."""
+    d = evidence.get("derivation")
+    if not isinstance(d, dict):
+        return None
+    source = d.get("source") or []
+    submitted = d.get("submitted") or []
+    rules = d.get("rules") or {}
+    tol = float(d.get("tolerance", 0) or 0)
+    if not (isinstance(source, list) and isinstance(submitted, list) and rules
+            and len(source) == len(submitted) and source):
+        return {"status": "MALFORMED", "match": False}
+    mismatches: list[dict[str, Any]] = []
+    checks = 0
+    for i, (s, sub) in enumerate(zip(source, submitted)):
+        for col, rule in rules.items():
+            op = rule.get("operation")
+            try:
+                if op == "expression":
+                    val: Any = _safe_eval(rule.get("expression", ""), s)
+                elif op == "ratio":
+                    val = float(s[rule["numerator"]]) / float(s[rule["denominator"]])
+                elif op == "sum":
+                    val = sum(float(s[c]) for c in rule["columns"])
+                elif op == "copy":
+                    val = s[rule["column"]]
+                else:
+                    return {"status": "UNSUPPORTED_OP", "op": op, "match": None}
+            except Exception as e:
+                mismatches.append({"row": i, "col": col, "error": str(e)})
+                continue
+            checks += 1
+            sval = sub.get(col)
+            try:
+                ok = abs(float(val) - float(sval)) <= max(tol, 1e-9)
+            except Exception:
+                ok = val == sval
+            if not ok:
+                mismatches.append({"row": i, "col": col, "re_derived": val, "submitted": sval})
+    return {"rows": len(submitted), "checks": checks,
+            "mismatches": mismatches[:20], "mismatch_count": len(mismatches),
+            "match": len(mismatches) == 0}
+
+
+def reconcile_registry(evidence: dict[str, Any]) -> dict[str, Any] | None:
+    """Compare a public-registry-posted figure against the re-derived value."""
+    reg = evidence.get("registry")
+    if not isinstance(reg, dict):
+        return None
+    posted, rederived = reg.get("posted_value"), reg.get("rederived_value")
+    tol = float(reg.get("tolerance", 0) or 0)
+    try:
+        match = abs(float(posted) - float(rederived)) <= max(tol, 1e-9)
+    except Exception:
+        match = posted == rederived
+    return {"posted": posted, "rederived": rederived, "match": bool(match),
+            "source_id": reg.get("source_id")}
+
+
 def _artifact_hash(evidence: dict[str, Any]) -> str | None:
-    """Bind the re-derivable artifacts (raw_data / computation) into the receipt so
-    a third party can re-check against the exact same inputs."""
-    artifacts = {k: evidence[k] for k in ("raw_data", "raw", "computation") if k in evidence}
+    """Bind the re-derivable artifacts into the receipt so a third party can
+    re-check against the exact same inputs."""
+    keys = ("raw_data", "raw", "computation", "derivation", "environment", "registry")
+    artifacts = {k: evidence[k] for k in keys if k in evidence}
     if not artifacts:
         return None
     canonical = json.dumps(artifacts, sort_keys=True, separators=(",", ":"), default=str)
@@ -252,7 +331,7 @@ def _receipt(payload, base_verdict, final, scope, tier, checks, rationale) -> di
 # Evidence keys that are CAPAS-verify EXTENSIONS (re-derivable artifacts / provenance),
 # not part of the base evidence contract. They are stripped before the base gate runs
 # (which rejects unknown fields) and consumed by this layer instead.
-_EXTENSION_KEYS = {"raw_data", "raw", "computation", *PROVENANCE_KEYS}
+_EXTENSION_KEYS = {"raw_data", "raw", "computation", "derivation", "environment", "registry", *PROVENANCE_KEYS}
 
 
 def _base_payload(payload: dict[str, Any]) -> dict[str, Any]:
@@ -306,6 +385,52 @@ def verify(payload: dict[str, Any]) -> dict[str, Any]:
                     f"({calc['operation']} gives {calc.get('re_derived')}). The reported number is "
                     "fabricated relative to the raw data — rejected (spreadsheet-integrity pattern)."
                 )
+
+    # Passage Point B: re-derive a submitted derived dataset (ADaM) from its source
+    # (SDTM) inside a pinned environment, and reconcile against the public registry.
+    if final == "ACCEPT" and evidence.get("derivation") is not None:
+        env = environment_pinned(evidence)
+        if env is not None and not env["pinned"]:
+            checks.append({"check": "environment_pinning", "status": "UNPINNED",
+                           "detail": {"missing": env["missing"]}})
+            scope = "ATTEST"; final = "HOLD"
+            rationale.append(
+                "Dataset re-derivation requires a fully pinned environment "
+                f"(missing: {', '.join(env['missing'])}). Without it the result is not "
+                "reproducible — ATTEST only, not gated."
+            )
+        else:
+            ds = rederive_dataset(evidence)
+            if ds and ds.get("match") is True:
+                checks.append({"check": "dataset_rederivation", "status": "VERIFIED", "detail":
+                               {"rows": ds["rows"], "checks": ds["checks"]}})
+                rationale.append(
+                    f"All {ds['checks']} derived values across {ds['rows']} submitted rows "
+                    "re-derive from source within tolerance: the derived dataset is verified, "
+                    "not conformance-checked."
+                )
+            elif ds and ds.get("match") is False:
+                checks.append({"check": "dataset_rederivation", "status": "FAIL", "detail":
+                               {"mismatch_count": ds.get("mismatch_count"), "examples": ds.get("mismatches")}})
+                final = "REJECT"
+                rationale.append(
+                    f"{ds.get('mismatch_count')} submitted value(s) do NOT re-derive from source "
+                    "(e.g. " + json.dumps((ds.get("mismatches") or [{}])[0]) + "). The derived "
+                    "dataset diverges from its raw data — rejected (the discrepancy Pinnacle 21 misses)."
+                )
+    # Registry reconciliation (Passage Point B): posted figure vs re-derived figure.
+    if final == "ACCEPT" and evidence.get("registry") is not None:
+        reg = reconcile_registry(evidence)
+        if reg is not None and not reg["match"]:
+            checks.append({"check": "registry_reconciliation", "status": "DISCREPANCY", "detail": reg})
+            final = "HOLD"
+            rationale.append(
+                f"Registry-posted value {reg['posted']} diverges from the re-derived value "
+                f"{reg['rederived']} (source {reg.get('source_id')}). Reconcile before reuse."
+            )
+        elif reg is not None:
+            checks.append({"check": "registry_reconciliation", "status": "RECONCILED", "detail": reg})
+            rationale.append(f"Registry-posted value reconciles with the re-derived value (source {reg.get('source_id')}).")
 
     if final == "ACCEPT":
         if ctype == "statistical_confidence":
