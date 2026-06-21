@@ -211,7 +211,7 @@ body { background: #080810; }
 /* app.app-body is a flex column whose sections carry explicit `order`
    (hero=1, workflow-strip=2, footer high). The wrapper must sit between the
    strip and the footer, so it needs an explicit order too. */
-.app-layout { order: 5; display: grid; grid-template-columns: minmax(0,1fr) 320px; gap: 20px; align-items: start; padding: 8px 0 48px; }
+.app-layout { order: 5; display: grid; grid-template-columns: minmax(0,1fr) 300px; gap: 20px; align-items: start; padding: 8px 0 48px; }
 .app-main { min-width: 0; display: flex; flex-direction: column; gap: 20px; }
 .app-main > section, .app-main > .history-section { margin: 0 !important; }
 .sidebar { display: flex; flex-direction: column; gap: 16px; position: sticky; top: 76px; }
@@ -247,12 +247,12 @@ body { background: #080810; }
 .side-btns { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
 .side-btn { font-size: 11px; color: rgba(255,255,255,0.45); border: 1px solid rgba(255,255,255,0.1); padding: 5px 10px; border-radius: 5px; background: transparent; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; }
 .side-btn:hover { color: #fff; border-color: rgba(232,24,93,0.4); }
-@media (max-width: 1080px) {
+/* Keep the sidebar on the RIGHT down to 560px, exactly like the mock
+   (the mock's only app-layout breakpoint is 560px). Below that it stacks. */
+@media (max-width: 560px) {
   .app-layout { grid-template-columns: 1fr; }
-  .sidebar { position: static; flex-direction: row; flex-wrap: wrap; }
-  .sidebar .side-card { flex: 1 1 280px; }
+  .sidebar { position: static; flex-direction: column; }
 }
-@media (max-width: 640px) { .sidebar { flex-direction: column; } }
 
 /* ═══ MOCK STEP-TABS (1 Select Mode · 2 Build Evidence · 3 Run Gate) ═══
    Replaces the verbose starter-guide. Active/done states are driven purely
