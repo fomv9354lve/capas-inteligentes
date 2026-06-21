@@ -44,6 +44,7 @@ VALIDATION_COMMANDS = [
     ("customer product assets", ["benchmarks/verify_customer_product_assets.py"]),
     ("gate contracts single source", ["benchmarks/verify_gate_contracts_match.py"]),
     ("proof-carrying verification", ["benchmarks/verify_proof_carrying.py"]),
+    ("Cara 1 product acceptance", ["benchmarks/cara1_acceptance.py"]),
     ("batch and API surfaces", ["benchmarks/verify_batch_and_api.py"]),
     ("external user validation packet", ["benchmarks/verify_external_user_validation.py"]),
     ("profile registration packet", ["benchmarks/verify_profile_registration_packet.py"]),
