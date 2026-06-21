@@ -114,6 +114,62 @@ ANCHORS: list[dict[str, Any]] = [
     },
 ]
 
+# ── Universal bounds: laws that hold in EVERY condition (no domain lifts them) ──
+# Distinct from condition-laws above: a condition-law (boiling point) abstains
+# off-baseline, but a universal bound has no off-baseline — violating it is
+# impossible under any pressure/medium/context, so it REJECTs unconditionally and
+# never abstains. This extends the engine's deterministic domain to "hard limit"
+# claims that previously fell through to an unhelpful HOLD.
+_C_LIGHT = 299_792_458.0
+UNIVERSAL_BOUNDS: list[dict[str, Any]] = [
+    {
+        "id": "absolute_zero_floor_C", "direction": "min", "limit": -273.15, "unit": "°C",
+        # any temperature reading; the floor only trips on physically-impossible values,
+        # so a normal "90°C" never misfires.
+        "pattern": r"(-?\d+(?:\.\d+)?)\s*°\s*c\b",
+        "desc": "Temperature cannot fall below absolute zero (-273.15°C = 0 K)",
+        "basis": "third law of thermodynamics",
+    },
+    {
+        "id": "absolute_zero_floor_K", "direction": "min", "limit": 0.0, "unit": "K",
+        "pattern": r"(-?\d+(?:\.\d+)?)\s*k(?:elvin)?\b",
+        "desc": "Absolute temperature cannot be negative (0 K is the floor)",
+        "basis": "third law of thermodynamics",
+    },
+    {
+        "id": "lightspeed_ceiling_massive", "direction": "max", "limit": _C_LIGHT, "unit": "m/s",
+        # a moving object's speed; massive carriers of energy/information cannot reach c.
+        "pattern": r"(?:travel(?:s|l?ing)?|mov(?:es|ing)|velocity|going)\D{0,24}?"
+                   r"(\d+(?:\.\d+)?(?:e\d+)?)\s*m/?s",
+        "desc": "A massive object / signal cannot travel at or above c (299,792,458 m/s)",
+        "basis": "special relativity",
+    },
+    {
+        "id": "probability_unit_interval", "direction": "max", "limit": 1.0, "unit": "",
+        "pattern": r"probability\s+(?:of\s+[\w\s-]{1,30}?\s+)?(?:is|=|of)\s*(\d+(?:\.\d+)?)\b(?!\s*%)",
+        "desc": "A probability must lie in [0, 1]",
+        "basis": "Kolmogorov axioms",
+    },
+]
+
+
+def universal_bound_violations(claim_text: str) -> list[dict[str, Any]]:
+    """Scan for claims that violate a universal bound (true in every condition).
+    Always a contradiction (-> REJECT); never an abstention."""
+    text = (claim_text or "").lower()
+    out: list[dict[str, Any]] = []
+    for b in UNIVERSAL_BOUNDS:
+        for m in re.finditer(b["pattern"], text):
+            val = float(m.group(1))
+            violated = (b["direction"] == "min" and val < b["limit"]) or \
+                       (b["direction"] == "max" and val > b["limit"])
+            if violated:
+                out.append({"anchor": b["id"], "kind": "contradiction", "asserted": val,
+                            "truth": b["limit"], "unit": b["unit"], "desc": b["desc"],
+                            "re_derived_from": b["basis"]})
+                break
+    return out
+
 
 def anchor_contradictions(claim_text: str) -> list[dict[str, Any]]:
     """Deterministic, domain-aware anchor scan.
@@ -583,15 +639,19 @@ def verify(payload: dict[str, Any]) -> dict[str, Any]:
     # (1) Anchor scan — domain-aware. A known law refutes a claim only INSIDE its
     # domain (REJECT); a claim that names an off-baseline condition without
     # quantifying it leaves the constant inapplicable -> abstain (HOLD, route up).
-    hits = anchor_contradictions(text)
+    # Universal bounds (hold in every condition) are checked first and override:
+    # a physical impossibility cannot be saved by any context.
+    hits = universal_bound_violations(text) + anchor_contradictions(text)
     contradictions = [h for h in hits if h.get("kind") != "abstain"]
     abstentions = [h for h in hits if h.get("kind") == "abstain"]
     if contradictions:
         h = contradictions[0]
         checks.append({"check": "anchor_contradiction", "status": "FAIL", "detail": contradictions})
-        detail = (f" (asserted {h['asserted']}{h['unit']} vs {h.get('truth')}{h['unit']}"
-                  + (f" re-derived via {h['re_derived_from']} at {h['pressure_mmHg']} mmHg"
-                     if h.get("re_derived_from") else "") + ")")
+        prov = ""
+        if h.get("re_derived_from"):
+            prov = (f" re-derived via {h['re_derived_from']} at {h['pressure_mmHg']} mmHg"
+                    if h.get("pressure_mmHg") is not None else f" ({h['re_derived_from']})")
+        detail = f" (asserted {h['asserted']}{h['unit']} vs {h.get('truth')}{h['unit']}{prov})"
         rationale.append(f"Claim contradicts a known anchor: {h['desc']}{detail}. Rejected by re-derivation.")
         final = "REJECT"
     elif abstentions:
