@@ -198,8 +198,8 @@ def universal_bound_violations(claim_text: str) -> list[dict[str, Any]]:
 _HOLEVO_BITS_PER_QUBIT = re.compile(
     r"(?:store|stor(?:e|ing)|encode|encoding|pack(?:ing)?|recover(?:ing)?|read(?:ing)?\s+out|"
     r"retriev(?:e|ing)|extract(?:ing)?|transmit(?:ting)?|send(?:ing)?)\D{0,40}?"
-    r"(\d+(?:\.\d+)?)\s*(?:classical\s+)?bits?\b\D{0,40}?(?:per|in|from|out\s+of|/)\s*"
-    r"(?:an?\s+)?(?:(\d+(?:\.\d+)?)\s*)?(?:single\s+|one\s+|1\s+)?qu?[\s-]*bits?\b")
+    r"(\d+(?:\.\d+)?)\s*(?:classical\s+)?bits?\b\D{0,40}?(?:per|inside|into|in|from|out\s+of|/)\s+"
+    r"(?:just\s+)?(?:an?\s+)?(?:(\d+(?:\.\d+)?)\s*)?(?:single\s+|one\s+|1\s+)?qu?[\s-]*bits?\b")
 # Resources that legitimately appear when >1 bit/qubit is claimed.
 _HOLEVO_ENTANGLEMENT = re.compile(
     r"entangl|superdense|super[\s-]?dense|pre[\s-]?shared|bell\s+pair|epr\s+pair|shared\s+pair")
@@ -208,6 +208,21 @@ _HOLEVO_ENTANGLEMENT = re.compile(
 _HOLEVO_COPIES = re.compile(
     r"\b(\d+(?:\.\d+)?)\s*(?:identical\s+|fresh\s+)?copies\b|"
     r"tomograph|classical\s+shadows?|shadow\s+tomograph|many\s+copies|multiple\s+copies|n\s+copies")
+# Inverted word order: "per/in (a) qubit ... N bits" (e.g. "per qubit we store 5 bits").
+_HOLEVO_INVERTED = re.compile(
+    r"(?:per|in|into|inside)\s+(?:an?\s+)?(?:single\s+|one\s+|1\s+)?qu?[\s-]*bits?\b\D{0,40}?"
+    r"(\d+(?:\.\d+)?)\s*(?:classical\s+)?bits?\b")
+# Spelled-out small integers — adversaries write "five bits" to dodge a digit-only regex.
+_NUM_WORDS = {"zero": "0", "one": "1", "two": "2", "three": "3", "four": "4", "five": "5",
+              "six": "6", "seven": "7", "eight": "8", "nine": "9", "ten": "10",
+              "eleven": "11", "twelve": "12", "twenty": "20", "fifty": "50", "hundred": "100"}
+_NUM_WORD_RE = re.compile(r"\b(" + "|".join(_NUM_WORDS) + r")\b")
+
+
+def _normalize_number_words(text: str) -> str:
+    """Replace spelled-out integers with digits so the digit-based anchors cannot be
+    evaded by writing the number in words ('five bits' -> '5 bits')."""
+    return _NUM_WORD_RE.sub(lambda mo: _NUM_WORDS[mo.group(1)], text)
 
 
 def holevo_information_contradictions(claim_text: str) -> list[dict[str, Any]]:
@@ -224,12 +239,18 @@ def holevo_information_contradictions(claim_text: str) -> list[dict[str, Any]]:
         route up to pin/attest how many copies (qubits) were spent.
     Entanglement-gated 2-bit/qubit (superdense) within ≤ n bits per n qubits is NOT
     flagged. An empty list means no Holevo claim is engaged."""
-    text = (claim_text or "").lower()
+    text = _normalize_number_words((claim_text or "").lower())
     m = _HOLEVO_BITS_PER_QUBIT.search(text)
-    if not m:
-        return []
-    bits = float(m.group(1))
-    qubits = float(m.group(2)) if m.group(2) else 1.0
+    if m:
+        bits = float(m.group(1))
+        qubits = float(m.group(2)) if m.group(2) else 1.0
+    else:
+        # Inverted word order ("per qubit we store 5 bits"): qubit count not captured,
+        # default to 1 qubit (the bound the inverted phrasing always implies).
+        mi = _HOLEVO_INVERTED.search(text)
+        if not mi:
+            return []
+        bits, qubits = float(mi.group(1)), 1.0
     if qubits <= 0:
         return []
     bound = qubits  # Holevo: accessible bits ≤ number of qubits
@@ -688,35 +709,79 @@ def rederive_crypto(evidence: dict[str, Any]) -> dict[str, Any] | None:
             "claimed": _norm(c.get("claimed_digest")), "match": digest == _norm(c.get("claimed_digest"))}
 
 
+def _bounded_tol(raw: Any, scale: float, default: float, cap_frac: float = 0.01) -> float | None:
+    """Bound a producer-declared tolerance so it cannot be weaponised: a huge
+    tolerance must never let an unbalanced ledger / mis-stated ratio pass. Returns
+    None (malformed) for NaN/negative; otherwise min(declared, cap_frac·magnitude)
+    — at most cap_frac of the figures compared, regardless of what is declared.
+    This is the adversarial-gaming guard for every producer-controlled tolerance."""
+    if raw is None:
+        raw = default
+    try:
+        r = float(raw)
+    except (TypeError, ValueError):
+        return None
+    if not math.isfinite(r) or r < 0:
+        return None
+    return min(r, cap_frac * max(abs(scale), 1.0))
+
+
 def rederive_accounting(evidence: dict[str, Any]) -> dict[str, Any] | None:
     """Re-derive a fundamental accounting identity. evidence['accounting'] =
-    {identity: 'debits_equal_credits'|'balance_sheet'|'cash_flow', ...inputs, tolerance}."""
+    {identity: 'debits_equal_credits'|'balance_sheet'|'cash_flow'|'financial_ratio',
+    ...inputs, tolerance}. Every comparison tolerance is BOUNDED (see _bounded_tol)
+    so a producer cannot pass a false figure by declaring a giant tolerance."""
     a = evidence.get("accounting")
     if not isinstance(a, dict):
         return None
     ident = str(a.get("identity", "")).lower()
-    tol = float(a.get("tolerance", 0.01) or 0.0)
+    raw_tol = a.get("tolerance")
     try:
         if ident in ("debits_equal_credits", "double_entry"):
             d, cr = sum(map(float, a.get("debits", []))), sum(map(float, a.get("credits", [])))
+            tol = _bounded_tol(raw_tol, max(abs(d), abs(cr)), 0.01)
+            if tol is None:
+                return {"identity": ident, "status": "MALFORMED", "match": False}
             return {"identity": ident, "lhs": round(d, 6), "rhs": round(cr, 6),
                     "match": abs(d - cr) <= tol}
         if ident in ("balance_sheet", "accounting_equation"):
             assets = float(a["assets"]); le = float(a["liabilities"]) + float(a["equity"])
+            tol = _bounded_tol(raw_tol, max(abs(assets), abs(le)), 0.01)
+            if tol is None:
+                return {"identity": ident, "status": "MALFORMED", "match": False}
             return {"identity": ident, "lhs": round(assets, 6), "rhs": round(le, 6),
                     "match": abs(assets - le) <= tol}
         if ident in ("cash_flow", "cash_reconciliation"):
             end = float(a["beginning"]) + float(a.get("operating", 0)) + float(a.get("investing", 0)) + float(a.get("financing", 0))
-            return {"identity": ident, "lhs": round(end, 6), "rhs": round(float(a["ending"]), 6),
-                    "match": abs(end - float(a["ending"])) <= tol}
+            ending = float(a["ending"])
+            tol = _bounded_tol(raw_tol, max(abs(end), abs(ending)), 0.01)
+            if tol is None:
+                return {"identity": ident, "status": "MALFORMED", "match": False}
+            return {"identity": ident, "lhs": round(end, 6), "rhs": round(ending, 6),
+                    "match": abs(end - ending) <= tol}
         if ident in ("financial_ratio", "ratio"):
             # RE-DERIVE a reported ratio from its raw components — never trust the
             # declared value. The one judgement seam (which line items go in the
             # numerator/denominator) is PINNED by ``ratio`` + the named components,
-            # so re-derivation gives a single right answer. Default tolerance is a
-            # relative 0.5% (ratios are unitless) unless the claim pins one.
+            # so re-derivation gives a single right answer.
             rname = str(a.get("ratio", "")).lower().replace("-", "_").replace(" ", "_")
-            rtol = float(a.get("tolerance", 0.005) or 0.0)  # relative, ratios are unitless
+            # Relative tolerance, bounded so it cannot be weaponised (cap 5%; ratios
+            # are unitless so the magnitude scale is 1). NaN/negative -> malformed.
+            rtol = _bounded_tol(raw_tol, 1.0, 0.005, cap_frac=0.05)
+            if rtol is None:
+                return {"identity": ident, "ratio": rname, "status": "MALFORMED", "match": False}
+            # A denominator must be a POSITIVE economic magnitude. Non-positive
+            # denominators make the ratio undefined/economically meaningless
+            # (negative-equity "debt/equity" is not a clean re-derivation) -> route to
+            # attest, do not accept an arithmetically-valid but spurious number.
+            _POS = {
+                "current_ratio": "current_liabilities", "quick_ratio": "current_liabilities",
+                "debt_to_equity": "total_equity", "debt_to_equity_ratio": "total_equity",
+                "return_on_equity": "total_equity", "roe": "total_equity",
+                "return_on_assets": "total_assets", "roa": "total_assets",
+                "gross_margin": "revenue", "net_margin": "revenue",
+                "eps": "shares_outstanding", "earnings_per_share": "shares_outstanding",
+            }
             f = lambda k: float(a[k])  # noqa: E731 — KeyError -> MALFORMED below
             _RATIOS = {
                 "current_ratio":        lambda: f("current_assets") / f("current_liabilities"),
@@ -734,9 +799,16 @@ def rederive_accounting(evidence: dict[str, Any]) -> dict[str, Any] | None:
             }
             if rname not in _RATIOS:
                 return {"identity": ident, "ratio": rname, "status": "UNKNOWN_RATIO", "match": False}
+            denom_field = _POS.get(rname)
+            if denom_field is not None and float(a[denom_field]) <= 0:
+                return {"identity": ident, "ratio": rname, "status": "NONPOSITIVE_DENOMINATOR", "match": False}
             recomputed = _RATIOS[rname]()
             declared = float(a["reported"])
-            denom = abs(recomputed) or 1.0
+            if not (math.isfinite(recomputed) and math.isfinite(declared)):
+                return {"identity": ident, "ratio": rname, "status": "MALFORMED", "match": False}
+            # Hybrid relative scale: max(|recomputed|,|declared|) so a near-zero true
+            # value cannot let an absolute lie hide as a "small relative error".
+            denom = max(abs(recomputed), abs(declared), 1e-9)
             ok = abs(recomputed - declared) / denom <= rtol
             return {"identity": ident, "ratio": rname, "lhs": round(declared, 6),
                     "rhs": round(recomputed, 6), "re_derived": round(recomputed, 6),
@@ -1017,6 +1089,16 @@ def verify(payload: dict[str, Any]) -> dict[str, Any]:
                     f"({calc['operation']} gives {calc.get('re_derived')}). The reported number is "
                     "fabricated relative to the raw data — rejected (spreadsheet-integrity pattern)."
                 )
+            elif calc.get("match") is None:
+                # Unsupported operation -> the engine cannot re-derive it; must not pass
+                # as GATE-verified. Absence of a check is not a passed check (GIGO guard).
+                scope = "ATTEST"; final = "HOLD"
+                checks.append({"check": "calculation_rederivation", "status": calc.get("status", "UNRESOLVED"), "detail": calc})
+                rationale.append(
+                    f"Computation not re-derivable ({calc.get('status', 'unresolved')}: operation "
+                    f"{calc.get('operation')!r} is not supported by the engine) — held for a supported "
+                    "operation or attestation, not accepted."
+                )
 
     # Passage Point B: re-derive a submitted derived dataset (ADaM) from its source
     # (SDTM) inside a pinned environment, and reconcile against the public registry.
@@ -1040,6 +1122,23 @@ def verify(payload: dict[str, Any]) -> dict[str, Any]:
                     f"All {ds['checks']} derived values across {ds['rows']} submitted rows "
                     "re-derive from source within tolerance: the derived dataset is verified, "
                     "not conformance-checked."
+                )
+            elif ds and ds.get("match") is False and ds.get("status") in ("UNSUPPORTED_OP", "MALFORMED"):
+                # Cannot re-derive (unsupported rule op / ill-formed source-submitted) ->
+                # not GATE-verifiable. Absence of a check is not a passed check (GIGO guard).
+                scope = "ATTEST"; final = "HOLD"
+                checks.append({"check": "dataset_rederivation", "status": ds.get("status"), "detail": ds})
+                rationale.append(
+                    f"Derived dataset not re-derivable ({ds.get('status')}: e.g. rule operation "
+                    f"{ds.get('op')!r}); the engine cannot reproduce it — held for supported rules or "
+                    "attestation, not accepted."
+                )
+            elif ds and ds.get("match") is None:
+                scope = "ATTEST"; final = "HOLD"
+                checks.append({"check": "dataset_rederivation", "status": ds.get("status", "UNRESOLVED"), "detail": ds})
+                rationale.append(
+                    f"Derived dataset not re-derivable ({ds.get('status', 'unresolved')}); held for "
+                    "supported rules or attestation, not accepted."
                 )
             elif ds and ds.get("match") is False:
                 checks.append({"check": "dataset_rederivation", "status": "FAIL", "detail":
@@ -1113,7 +1212,8 @@ def verify(payload: dict[str, Any]) -> dict[str, Any]:
                 rationale.append(
                     f"Accounting identity '{ac['identity']}' holds: {ac['lhs']} = {ac['rhs']} "
                     "(re-derived, not trusted).")
-        elif ac and ac.get("match") is False and ac.get("status") in ("UNKNOWN_RATIO", "UNKNOWN_IDENTITY", "MALFORMED"):
+        elif ac and ac.get("match") is False and ac.get("status") in (
+                "UNKNOWN_RATIO", "UNKNOWN_IDENTITY", "MALFORMED", "NONPOSITIVE_DENOMINATOR"):
             # Cannot re-derive (unrecognised/ill-formed) -> do not silently accept; hold to attest.
             scope = "ATTEST"; final = "HOLD"
             checks.append({"check": "accounting_identity", "status": ac.get("status"), "detail": ac})
@@ -1145,6 +1245,15 @@ def verify(payload: dict[str, Any]) -> dict[str, Any]:
             rationale.append(
                 f"Dimensional error: '{dm['quantity']}' requires {dm['expected_dim']} but the unit "
                 f"{dm['unit']} is {dm['unit_dim']}. The quantity and its unit are incommensurable — rejected.")
+        elif dm and dm.get("match") is None:
+            # Unknown quantity/unit (or empty) is NOT re-derivable -> must not pass as
+            # GATE-verified. Absence of a check is not a passed check (GIGO guard).
+            scope = "ATTEST"; final = "HOLD"
+            checks.append({"check": "dimensional_consistency", "status": dm.get("status", "UNRESOLVED"), "detail": dm})
+            rationale.append(
+                f"Dimensional claim not re-derivable ({dm.get('status', 'unresolved')}: "
+                f"quantity={dm.get('quantity')!r}, unit={dm.get('unit')!r}); the engine has no "
+                "dimension for it — held for a recognised quantity+unit or attestation, not accepted.")
 
     # ZK rung: verify a result over HIDDEN data via a registered zero-knowledge backend.
     if final == "ACCEPT" and evidence.get("zk_proof") is not None:
