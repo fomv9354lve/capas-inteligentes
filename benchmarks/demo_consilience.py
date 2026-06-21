@@ -61,6 +61,26 @@ def run_recursive() -> int:
     print(f"{'✅' if ok else '❌'} recursive flattening: residual shrinks geometrically "
           f"({r1['total_residual']} -> {r2['total_residual']} -> {r3['total_residual']}) but never 0 "
           f"(floor {r3['irreducible_floor']} = the subject)")
+    # trialectic view: same geometric shrink, exposed as triads (thesis/antithesis/synthesis)
+    t = CO.trialectic(levels)
+    tri_ok = (len(t["triads"]) == 3 and t["total_residual"] == r3["total_residual"]
+              and t["triads"][-1]["residual_after"] == r3["total_residual"]
+              and all("corroborated" in x["synthesis"] for x in t["triads"]))
+    print(f"{'✅' if tri_ok else '❌'} trialectic: 3 open-forward triads, residual_after matches the geometric product "
+          f"(synthesis opens the next thesis)")
+
+    # from_braid: a claim's independent adjacencies auto-gathered from the verified braid
+    class _StubBraid:  # duck-typed (no import -> no braid<->rcc<->consilience cycle)
+        nodes = {"n1": {"target": "mass", "value": 2.0, "method": "scale"},
+                 "n2": {"target": "mass", "value": 2.0, "method": "stoichiometry"},
+                 "n3": {"target": "mass", "value": 2.0, "method": "balance"},
+                 "n4": {"target": "volume", "value": 9.9, "method": "scale"}}
+    fb = CO.from_braid("mass", 2.0, _StubBraid())
+    fb_ok = (fb["gathered_from_braid"] == 3 and fb["fabrication_resistance"] == 3 and "ANCHORED" in fb["status"])
+    print(f"{'✅' if fb_ok else '❌'} from_braid: 3 same-target/different-method nodes auto-joined as independent "
+          f"corroborations (volume node ignored)")
+
+    ok = ok and tri_ok and fb_ok
     print("RECURSIVE CONSILIENCE: pass ✅" if ok else "RECURSIVE: FAIL ❌")
     return 0 if ok else 1
 

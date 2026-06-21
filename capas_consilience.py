@@ -107,3 +107,41 @@ def consilience_recursive(levels: list[dict[str, Any]], tol: float = 1e-6) -> di
                 "the residual shrinks geometrically toward the irreducible subject but never reaches 0 — "
                 "the unknown-unknown is moved up a level per recursion, not closed.",
     }
+
+
+def from_braid(target: str, claimed: float, braid: Any, tol: float = 1e-6) -> dict[str, Any]:
+    """Auto-gather a claim's independent adjacencies from the verified BRAID: every
+    node grounding the same `target` by a DIFFERENT method is an independent
+    corroboration (method = independence group). The braid IS the adjacency graph;
+    consilience reads it. (braid is duck-typed — any object with a .nodes dict of
+    {target, value, method}; no import, to avoid the braid<->rcc<->consilience cycle.)"""
+    adjacencies = [{"value": n.get("value"), "group": n.get("method"), "source": cid}
+                   for cid, n in getattr(braid, "nodes", {}).items() if n.get("target") == target]
+    out = consilience(claimed, adjacencies, tol)
+    out["gathered_from_braid"] = len(adjacencies)
+    return out
+
+
+def trialectic(levels: list[dict[str, Any]], tol: float = 1e-6) -> dict[str, Any]:
+    """Trialectic (triadic, open-forward) view of the recursive renormalization: at
+    each level a TRIAD — thesis (the claim/question), antithesis (the independent
+    adjacencies that could refute it), synthesis (corroborated, or contradicted) —
+    and the synthesis's own independence OPENS the next thesis (closes forward). The
+    residual shrinks geometrically toward the subject; the triad never closes back."""
+    r = consilience_recursive(levels, tol)
+    triads, running = [], 1.0
+    for i, lv in enumerate(levels):
+        pl = r["per_level"][i]
+        running *= pl["residual"]
+        triads.append({
+            "level": i,
+            "thesis": lv.get("question") or f"claim at level {i}",
+            "antithesis": f"{len(lv.get('adjacencies') or [])} independent adjacencies that could refute",
+            "synthesis": ("CONTRADICTED — the web breaks it" if pl["contradicted"]
+                          else f"corroborated by {pl['resistance']} independent group(s)"),
+            "residual_after": round(running, 6),
+        })
+    return {**r, "triads": triads,
+            "shape": "trialectic recursion — each triad (thesis/antithesis/synthesis) renormalizes the "
+                     "residual; the synthesis opens the next thesis (open-forward, never closes back); "
+                     "geometric shrink toward the subject, the floor it never crosses."}
