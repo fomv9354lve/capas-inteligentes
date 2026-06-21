@@ -132,6 +132,43 @@ def intake(claim_text: str, claim_type: str, source_text: str, extractor: Extrac
     }
 
 
+def _extract_prompt(field: str, claim_text: str, source_text: str) -> str:
+    return (f"Source:\n{source_text}\n\nClaim: {claim_text}\n\nDoes the SOURCE explicitly support the "
+            f"evidence field '{field}'? Answer STRICT JSON {{\"supported\":true|false,\"span\":\"<exact quote "
+            f"from the source, or empty>\"}}. Only true if a quotable span grounds it.")
+
+
+def gemini_extractor(field: str, claim_text: str, source_text: str, idx: int,
+                     key: str | None = None, model: str = "gemini-2.0-flash") -> dict[str, Any]:
+    """Live extractor on GOOGLE GEMINI — a DISTINCT lab from DeepSeek, so the two are
+    genuinely independent for C2-resistant triangulation. Key from env (GEMINI_KEY), triage
+    role, never stored; no key -> abstain (fail-closed)."""
+    import json
+    import os
+    import subprocess
+    import tempfile
+    key = key or os.environ.get("GEMINI_KEY") or os.environ.get("GOOGLE_API_KEY")
+    if not key:
+        return {"supported": None, "span": None}
+    body = json.dumps({"contents": [{"parts": [{"text": _extract_prompt(field, claim_text, source_text)}]}],
+                       "generationConfig": {"temperature": 0.4 + 0.2 * idx, "responseMimeType": "application/json"}})
+    with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False) as f:
+        f.write(body); bf = f.name
+    try:
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={key}"
+        out = subprocess.run(["curl", "-s", "-m", "60", url, "-H", "Content-Type: application/json",
+                              "--data", f"@{bf}"], capture_output=True, text=True)
+        txt = json.loads(out.stdout)["candidates"][0]["content"]["parts"][0]["text"]
+        r = json.loads(txt)
+        span = r.get("span") or None
+        return {"supported": r.get("supported"), "span": span if (span and span.strip()) else None}
+    except Exception:
+        return {"supported": None, "span": None}
+    finally:
+        import os as _os
+        _os.unlink(bf)
+
+
 def deepseek_extractor(field: str, claim_text: str, source_text: str, idx: int,
                        key: str | None = None, model: str = "deepseek-v4-flash") -> dict[str, Any]:
     """Live extractor (proposer, triage role). Asks whether the SOURCE supports the field and
