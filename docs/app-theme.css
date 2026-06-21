@@ -248,3 +248,31 @@ body { background: #080810; }
   .sidebar .side-card { flex: 1 1 280px; }
 }
 @media (max-width: 640px) { .sidebar { flex-direction: column; } }
+
+/* ═══ MOCK STEP-TABS (1 Select Mode · 2 Build Evidence · 3 Run Gate) ═══
+   Replaces the verbose starter-guide. Active/done states are driven purely
+   by the engine's existing body[data-flow-phase] attribute — no JS added. */
+.starter-guide { background: transparent !important; border: none !important; padding: 0 !important; margin: 0 !important; }
+.step-tabs { display: flex; align-items: stretch; gap: 2px; border-bottom: 1px solid rgba(255,255,255,0.08); margin: 4px 0 0; flex-wrap: wrap; }
+.step-tab { display: inline-flex; align-items: center; gap: 8px; padding: 13px 22px; font-size: 12.5px; font-weight: 600; color: rgba(255,255,255,0.32); background: none; border: none; border-bottom: 2px solid transparent; cursor: pointer; white-space: nowrap; transition: color .15s; margin-bottom: -1px; }
+.step-tab:hover { color: rgba(255,255,255,0.7); }
+.step-num { width: 20px; height: 20px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; background: rgba(255,255,255,0.07); color: inherit; flex-shrink: 0; }
+/* active step (current phase) */
+body[data-flow-phase="choose"] .step-tab[data-step="choose"],
+body[data-flow-phase="complete"] .step-tab[data-step="complete"],
+body[data-flow-phase="gate"] .step-tab[data-step="gate"] { color: #fff; border-bottom-color: #e8185d; }
+body[data-flow-phase="choose"] .step-tab[data-step="choose"] .step-num,
+body[data-flow-phase="complete"] .step-tab[data-step="complete"] .step-num,
+body[data-flow-phase="gate"] .step-tab[data-step="gate"] .step-num { background: rgba(232,24,93,0.2); color: #e8185d; }
+/* completed steps (earlier than current phase) */
+body[data-flow-phase="complete"] .step-tab[data-step="choose"],
+body[data-flow-phase="gate"] .step-tab[data-step="choose"],
+body[data-flow-phase="gate"] .step-tab[data-step="complete"] { color: #22c55e; border-bottom-color: rgba(34,197,94,0.3); }
+body[data-flow-phase="complete"] .step-tab[data-step="choose"] .step-num,
+body[data-flow-phase="gate"] .step-tab[data-step="choose"] .step-num,
+body[data-flow-phase="gate"] .step-tab[data-step="complete"] .step-num { background: rgba(34,197,94,0.15); color: #22c55e; }
+
+/* Prominent run button + clean phase-controls bar (mock parity) */
+.phase-controls { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 0 2px; border-top: none; flex-wrap: wrap; }
+#phase-run { padding: 12px 26px; font-size: 14px; border-radius: 8px; }
+#phase-back, #phase-next { font-size: 12px; padding: 8px 14px; }

@@ -2031,11 +2031,11 @@
   </div>
   <div class="guided-body">
     <div class="starter-guide" role="note" aria-label="CAPAS quick start">
-      <strong>Mode selection is Step 1. Evidence construction is Step 2. Gate execution is Step 3.</strong>
-      <div class="starter-steps">
-        <div class="starter-step"><button class="starter-step-button" type="button" onclick="goToPhase('choose')"><span>1. Select mode</span>Choose one workflow: guided, raw JSON, batch, or paper ingestion.</button></div>
-        <div class="starter-step"><button class="starter-step-button" type="button" onclick="goToPhase('complete')"><span>2. Build evidence</span>Only the controls for the selected workflow appear here.</button></div>
-        <div class="starter-step"><button class="starter-step-button" type="button" onclick="goToPhase('gate')"><span>3. Run gate</span>Execute CAPAS and inspect the deterministic decision output.</button></div>
+      <strong class="sr-only">Mode selection is Step 1. Evidence construction is Step 2. Gate execution is Step 3.</strong>
+      <div class="step-tabs" role="tablist" aria-label="CAPAS workflow steps">
+        <button class="step-tab" data-step="choose" type="button" onclick="goToPhase('choose')"><span class="step-num">1</span>Select Mode</button>
+        <button class="step-tab" data-step="complete" type="button" onclick="goToPhase('complete')"><span class="step-num">2</span>Build Evidence</button>
+        <button class="step-tab" data-step="gate" type="button" onclick="goToPhase('gate')"><span class="step-num">3</span>Run Gate</button>
       </div>
     </div>
     <div class="phase-controls" aria-label="Guided claim workflow controls">
