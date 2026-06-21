@@ -97,6 +97,35 @@ def sequential_test(experiments: list[dict[str, Any]], alpha: float = 0.05) -> d
     }
 
 
+def evalue_process(evalues: list[float], alpha: float = 0.05) -> dict[str, Any]:
+    """ANYTIME-VALID sequential e-process — the POPPER-grade rigor for the weld.
+
+    The running PRODUCT of (independent) e-values is a test martingale under the null
+    (each e-value has E[e] <= 1), so by VILLE'S INEQUALITY
+        P( sup_t  product_t  >= 1/alpha  |  null )  <=  alpha .
+    You may therefore STOP AND REJECT the instant the process crosses 1/alpha, at ANY
+    time and after ANY number of observations, with Type-I error controlled at alpha —
+    no fixed sample size, no multiple-testing penalty. (Demonstrated by Monte-Carlo in
+    benchmarks/demo_sequential_typeI.py: the empirical ever-cross rate under the null
+    stays <= alpha.)"""
+    thresh = 1.0 / float(alpha)
+    running, first, trace = 1.0, None, []
+    for i, e in enumerate(evalues):
+        running *= max(float(e), 0.0)
+        trace.append(round(running, 4))
+        if first is None and running >= thresh:
+            first = i
+    return {
+        "final_e": round(running, 6),
+        "reject_threshold": round(thresh, 4),
+        "crossed": first is not None,
+        "first_crossing_index": first,          # stop here — valid at this stopping time
+        "trace": trace,
+        "guarantee": "anytime-valid: P(ever cross 1/alpha | null) <= alpha (Ville's inequality "
+                     "on the e-value test martingale); reject at the first crossing, any time.",
+    }
+
+
 def from_consilience_levels(levels: list[dict[str, Any]], alpha: float = 0.05) -> dict[str, Any]:
     """Bridge: read a consilience-style adjacency set ([{value, group}...] under
     `adjacencies`) as falsification experiments. Each corroborating adjacency that
