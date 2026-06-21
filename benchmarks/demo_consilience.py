@@ -45,5 +45,25 @@ def run() -> int:
     return 0 if ok else 1
 
 
+def run_recursive() -> int:
+    import capas_consilience as CO
+    # geometric shrink: each recursion moves the unknown-unknown up a level
+    levels = [
+        {"claimed": 2.0, "question": "is the fact real?", "adjacencies": [{"value": 2.0, "group": g} for g in "ABC"]},
+        {"claimed": 1.0, "question": "are those sources independent?", "adjacencies": [{"value": 1.0, "group": g} for g in "XYZ"]},
+        {"claimed": 1.0, "question": "is that independence real (separate custody)?", "adjacencies": [{"value": 1.0, "group": g} for g in "PQ"]},
+    ]
+    r1 = CO.consilience_recursive(levels[:1])
+    r2 = CO.consilience_recursive(levels[:2])
+    r3 = CO.consilience_recursive(levels[:3])
+    ok = (r2["total_residual"] < r1["total_residual"] and r3["total_residual"] < r2["total_residual"]
+          and r3["total_residual"] > 0 and r3["irreducible_floor"] > 0)
+    print(f"{'✅' if ok else '❌'} recursive flattening: residual shrinks geometrically "
+          f"({r1['total_residual']} -> {r2['total_residual']} -> {r3['total_residual']}) but never 0 "
+          f"(floor {r3['irreducible_floor']} = the subject)")
+    print("RECURSIVE CONSILIENCE: pass ✅" if ok else "RECURSIVE: FAIL ❌")
+    return 0 if ok else 1
+
+
 if __name__ == "__main__":
-    raise SystemExit(run())
+    raise SystemExit(run_recursive() if "--recursive" in sys.argv else run())

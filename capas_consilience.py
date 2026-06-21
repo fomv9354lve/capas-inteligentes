@@ -74,3 +74,36 @@ def consilience(claimed: float, adjacencies: list[dict[str, Any]], tol: float = 
                 "and count once; a fabrication must corrupt every independent adjacency consistently. "
                 "This bounds the GIGO residual; it does not verify evidence↔reality.",
     }
+
+
+def consilience_recursive(levels: list[dict[str, Any]], tol: float = 1e-6) -> dict[str, Any]:
+    """Renormalize the GIGO residual: apply consilience to the residual itself, level
+    by level. Each level answers the previous level's open question with its OWN
+    independent adjacencies — level 0: is the fact real? level 1: are its adjacencies
+    independent? level 2: is THAT independence real (separate custody / provenance)?
+    The total residual is the PRODUCT of per-level residuals (the unverifiable must
+    fail at every level), so it shrinks GEOMETRICALLY toward the irreducible subject
+    (Löb) — never to 0. The unknown-unknown is MOVED up one level per recursion, not
+    eliminated; the deepest level is the floor the subject still holds.
+
+    levels: list of {claimed, adjacencies, question}.
+    """
+    per, total = [], 1.0
+    for lv in levels:
+        r = consilience(lv["claimed"], lv.get("adjacencies") or [], tol)
+        contradicted = r["status"].startswith("CONTRADICTED")
+        per.append({"question": lv.get("question"), "residual": r["reality_gap_residual"],
+                    "resistance": r["fabrication_resistance"], "contradicted": contradicted})
+        total *= r["reality_gap_residual"]
+    floor = per[-1]["residual"] if per else 1.0
+    return {
+        "depth": len(levels),
+        "per_level": per,
+        "total_residual": round(total, 6),          # geometric product — the moved, thinned {unknowable}
+        "irreducible_floor": floor,                  # the deepest open level -> the subject's remaining judgment
+        "moved_to": per[-1]["question"] if per else None,
+        "any_contradiction": any(p["contradicted"] for p in per),
+        "note": "each level is a renormalization step (a flattener applied to the unknowable itself); "
+                "the residual shrinks geometrically toward the irreducible subject but never reaches 0 — "
+                "the unknown-unknown is moved up a level per recursion, not closed.",
+    }

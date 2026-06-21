@@ -1122,7 +1122,7 @@ def _artifact_hash(evidence: dict[str, Any]) -> str | None:
     re-check against the exact same inputs."""
     keys = ("raw_data", "raw", "computation", "derivation", "environment",
             "registry", "integration", "zk_proof", "quantum_circuit", "quantum_proof",
-            "crypto", "accounting", "dimensions", "reproduction", "xbrl", "physical", "stoichiometry", "sql")
+            "crypto", "accounting", "dimensions", "reproduction", "xbrl", "physical", "stoichiometry", "sql", "consilience")
     artifacts = {k: evidence[k] for k in keys if k in evidence}
     if not artifacts:
         return None
@@ -1272,7 +1272,7 @@ def _receipt(payload, base_verdict, final, scope, tier, checks, rationale) -> di
 # (which rejects unknown fields) and consumed by this layer instead.
 _EXTENSION_KEYS = {"raw_data", "raw", "computation", "derivation", "environment",
                    "registry", "integration", "zk_proof", "quantum_circuit", "quantum_proof",
-                   "crypto", "accounting", "dimensions", "reproduction", "xbrl", "physical", "stoichiometry", "sql",
+                   "crypto", "accounting", "dimensions", "reproduction", "xbrl", "physical", "stoichiometry", "sql", "consilience",
                    *PROVENANCE_KEYS}
 
 try:  # quantum re-derivation rung (needs numpy); deterministic statevector + frontier

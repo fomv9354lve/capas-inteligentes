@@ -90,6 +90,28 @@ def rcc(payload: dict[str, Any]) -> dict[str, Any]:
     # The generated stratum carries its minimal bridge (what would ground it).
     bridge = adm.get("next_obligations", [])
 
+    # GIGO residual, graded by INDEPENDENT adjacency (consilience). Re-derivation never
+    # reaches evidence<->reality; if the claim carries independent corroborations, we
+    # don't close that gap — we MEASURE how tightly the verifiable web pins it, and
+    # recursion moves the unknown-unknown up a level (it never reaches 0; Löb).
+    consilience_report = None
+    cons = (payload.get("evidence") or {}).get("consilience")
+    if cons:
+        import capas_consilience
+        try:
+            r = capas_consilience.consilience_recursive(cons)
+            consilience_report = {
+                "fabrication_resistance_total_residual": r["total_residual"],
+                "depth": r["depth"], "moved_to": r["moved_to"],
+                "irreducible_floor": r["irreducible_floor"],
+                "contradicted_by_independent_adjacency": r["any_contradiction"],
+                "meaning": "the GIGO residual graded by independent adjacency; does NOT verify "
+                           "reality, measures how much room is left in the {unknowable} (shrinks "
+                           "geometrically with recursion, never to 0 — the subject holds the floor).",
+            }
+        except Exception:
+            consilience_report = None
+
     verdict = receipt.get("verified_verdict")
     if refuted:
         headline = "REFUTED — contradicts a grounded invariant (inadmissible-because-false)"
@@ -115,6 +137,7 @@ def rcc(payload: dict[str, Any]) -> dict[str, Any]:
         "refuted": refuted,
         "boundary": ([u["why_unreachable"] for u in unknowable]
                      or ["none specific to this claim; the standing Löbian limit below always holds"]),
+        "gigo_consilience": consilience_report,   # graded reality-anchoring (None if no adjacencies supplied)
         "loebian_clause": _LOEBIAN_CLAUSE,
         "self_limitation": ("This certificate certifies the GROUNDED stratum and the LOCATION of "
                             "its own UNKNOWABLE stratum; it does NOT certify the unknowable, and it "
