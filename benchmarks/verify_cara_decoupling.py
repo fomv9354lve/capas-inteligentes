@@ -27,7 +27,8 @@ sys.path.insert(0, str(ROOT))
 
 CARA1 = {"capas_verify", "capas_route", "capas_rcc", "capas_admissibility", "capas_conformal",
          "capas_braid", "capas_extract", "capas_sql", "capas_xbrl", "capas_quantum",
-         "capas_circuits", "capas_ezkl", "capas_consilience", "capas_falsify", "capas_sequential"}
+         "capas_circuits", "capas_ezkl", "capas_consilience", "capas_falsify", "capas_sequential",
+         "capas_bridge"}
 CARA2 = {"capas_conjecture", "capas_loop", "capas_hierarchy", "capas_think", "capas_integration",
          "capas_value", "capas_process", "capas_mind"}
 
