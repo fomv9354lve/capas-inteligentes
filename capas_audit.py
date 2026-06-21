@@ -19,6 +19,19 @@ Protocol
 
 Key from env DEEPSEEK_KEY / CAPAS_TRIAGE_KEY. No key -> the protocol SKIPS (it does
 not fabricate an audit).
+
+HONESTY CAVEAT (load-bearing — do not strip):
+  `audit_milestone` is a CONSISTENCY PROBE, not a correctness/moat measurement. Its
+  "ground truth" is the auditor's self-declared intent and the engine's own verdict,
+  so "0 breaches" is TAUTOLOGICAL: the engine agreeing with the only oracle present
+  (itself) proves internal consistency, NOT that the verdicts are right. A low
+  auditor-anticipation number is equally compatible with a strong engine and with one
+  that returns consistent nonsense — it does NOT discriminate. The ONLY non-tautological
+  evidence is `audit_against_truth`: an INDEPENDENT, externally-known truth per case
+  (arithmetic, a physical constant, a known-false claim — authored outside both the
+  engine and the auditor), measuring (a) engine accuracy vs that truth, and (b) the
+  discriminating subset where the auditor PREDICTED one verdict, the engine CONTRADICTED
+  it, and the independent truth confirmed the engine. That subset is the real signal.
 """
 from __future__ import annotations
 
@@ -88,11 +101,66 @@ def audit_milestone(name: str, claim: str, judge: Callable[[dict], str] | None =
     n_att = len(attacks) or 1
     return {
         "milestone": name, "claim": claim,
-        "attacks": len(attacks), "breaches": len(landed), "caught": len(caught), "errors": len(errors),
-        "breach_detail": landed,
-        "moat_holds": len(landed) == 0,
-        "auditor_calibration": round(pred_hits / n_att, 3),    # how often DeepSeek predicted the real verdict
-        "verdict": "PASS — engine withstood the audit (0 breaches)" if not landed else
-                   f"BREACH — {len(landed)} attack(s) landed; review {[b['name'] for b in landed]}",
+        "attacks": len(attacks), "self_inconsistencies": len(landed), "consistent": len(caught), "errors": len(errors),
+        "inconsistency_detail": landed,
+        # NOT a moat/correctness claim. The only oracle here is the engine + the auditor's
+        # self-declared intent, so this measures INTERNAL CONSISTENCY, not whether the
+        # verdicts are right. Real evidence requires audit_against_truth (independent truth).
+        "self_consistent": len(landed) == 0,
+        "auditor_anticipation": round(pred_hits / n_att, 3),   # how often the auditor's model matched the engine
+        "anticipation_note": "this number says NOTHING about engine correctness: a low value is equally "
+                             "consistent with a strong engine and with consistent nonsense. It only measures "
+                             "whether the auditor anticipated a deterministic function. NOT evidence of a moat.",
+        "verdict": "SELF-CONSISTENT (tautological — engine agrees with itself; not a correctness claim)"
+                   if not landed else
+                   f"SELF-INCONSISTENCY — {len(landed)} case(s); review {[b['name'] for b in landed]}",
+        "caveat": "consistency probe only; run audit_against_truth for non-tautological evidence",
         "protocol": "auditor proposes (DeepSeek), engine judges (deterministic), subject reads the residual",
+    }
+
+
+def audit_against_truth(cases: list[dict[str, Any]], judge: Callable[[dict], str] | None = None,
+                        key: str | None = None, model: str = "deepseek-v4-flash") -> dict[str, Any]:
+    """The NON-TAUTOLOGICAL test. Each case carries an INDEPENDENT truth verdict
+    (authored from external fact — arithmetic, a physical constant, a known-false
+    claim — NOT from the engine or the auditor). We measure:
+      (a) engine accuracy vs that independent truth (the real number), and
+      (b) the DISCRIMINATING subset: cases where the auditor PREDICTED verdict P, the
+          engine produced V != P, and the independent truth confirmed V. Only this
+          subset distinguishes 'brilliant engine' from 'consistent nonsense' — it is
+          the test the consistency probe cannot give.
+    case: {name, claim, evidence, truth:'ACCEPT|REJECT|HOLD'}. Auditor prediction is
+    optional (needs a key); without it, only engine accuracy (a) is reported.
+    """
+    judge = judge or (lambda p: capas_verify.verify(p).get("verified_verdict"))
+    key = key or os.environ.get("DEEPSEEK_KEY") or os.environ.get("CAPAS_TRIAGE_KEY")
+    rows, correct, discriminators = [], 0, []
+    for c in cases:
+        payload = {"schema_version": "capas-claim-payload-v3",
+                   "claim": {"id": c.get("name", "case"), **(c.get("claim") or {})},
+                   "evidence": c.get("evidence") or {}}
+        v = judge(payload)
+        truth = c.get("truth")
+        engine_right = (v == truth)
+        correct += int(engine_right)
+        pred = None
+        if key:
+            p = _ask(f"Predict CAPAS's deterministic verdict (ACCEPT/REJECT/HOLD only) for this claim+evidence, "
+                     f"as STRICT JSON {{\"verdict\":\"...\"}}: {json.dumps(payload)}", key, model)
+            pred = (p or {}).get("verdict") if p else None
+        # the discriminating case: auditor wrong, engine contradicts it, independent truth confirms engine
+        if pred and pred != v and engine_right:
+            discriminators.append({"name": c.get("name"), "auditor_said": pred, "engine_said": v, "truth": truth})
+        rows.append({"name": c.get("name"), "engine": v, "truth": truth, "engine_right": engine_right,
+                     "auditor_pred": pred})
+    n = len(cases) or 1
+    return {
+        "cases": len(cases),
+        "engine_accuracy_vs_independent_truth": round(correct / n, 3),   # (a) the real number
+        "discriminating_cases": discriminators,                          # (b) the only moat-relevant evidence
+        "discriminator_count": len(discriminators),
+        "rows": rows,
+        "reading": "engine_accuracy is the honest correctness number (independent oracle). "
+                   "discriminating_cases are the only ones that distinguish a strong engine from "
+                   "consistent nonsense: auditor predicted X, engine did Y!=X, independent truth confirmed Y.",
     }
