@@ -1,21 +1,17 @@
-/* CAPAS shared shell — the single nav/brand the whole site loads.
-   The "frontal": one definition, both views (Home + Gate App) hang off it. */
-nav {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 20px 48px; border-bottom: 1px solid rgba(255,255,255,0.06);
-  backdrop-filter: blur(12px); background: rgba(5,5,7,0.78);
-  position: sticky; top: 0; z-index: 100;
-  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-}
-.nav-logo { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; color: #fff; }
-.nav-logo-mark { height: 34px; width: auto; display: block; }
-.nav-logo-wm { display: inline-flex; flex-direction: column; line-height: 1.05; font-size: 15px; font-weight: 700; letter-spacing: 0.08em; }
-.nav-logo-wm small { font-size: 8px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.42); margin-top: 2px; }
-.nav-links { display: flex; gap: 4px; flex-wrap: wrap; }
-.nav-links a { display: inline-flex; align-items: center; gap: 6px; color: rgba(255,255,255,0.5); text-decoration: none; font-size: 13px; letter-spacing: 0.04em; padding: 8px 14px; border-radius: 6px; white-space: nowrap; transition: color 0.2s, background 0.2s; }
+/* CAPAS shared shell — the CANONICAL nav, byte-for-byte the same rules as the
+   Home page (index.html). Loaded by app.html and audit.html so every page's
+   top bar is identical (the marketing pages inline these same rules). */
+nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; padding: 0 48px; height: 60px; border-bottom: 1px solid rgba(255,255,255,0.06); background: rgba(8,8,16,0.92); backdrop-filter: blur(12px); font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif; }
+.nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; margin-right: 40px; flex-shrink: 0; }
+.nav-logo img { width: 32px; height: 32px; object-fit: contain; display: block; }
+.nav-logo-title { font-size: 14px; font-weight: 800; color: #fff; letter-spacing: -0.01em; line-height: 1.1; }
+.nav-logo-sub { font-size: 9px; font-weight: 500; color: #444; letter-spacing: 0.1em; text-transform: uppercase; }
+.nav-links { display: flex; align-items: center; gap: 4px; }
+.nav-links a { display: inline-flex; align-items: center; gap: 6px; color: rgba(255,255,255,0.5); text-decoration: none; font-size: 13px; padding: 7px 14px; border-radius: 6px; white-space: nowrap; transition: color .15s; }
 .nav-links a svg { flex-shrink: 0; }
-.nav-links a:hover { color: #fff; background: rgba(255,255,255,0.07); }
+.nav-links a:hover { color: rgba(255,255,255,0.85); }
 .nav-links a.active { color: #fff; border: 1px solid rgba(255,255,255,0.18); background: rgba(255,255,255,0.05); }
-.nav-cta { background: linear-gradient(135deg, #e8185d, #c4125a); color: #fff; font-size: 13px; font-weight: 600; padding: 9px 20px; border-radius: 6px; text-decoration: none; letter-spacing: 0.03em; transition: opacity 0.2s, transform 0.2s; }
-.nav-cta:hover { opacity: 0.85; transform: translateY(-1px); }
-@media (max-width: 900px) { nav { padding: 14px 18px; gap: 12px; flex-wrap: wrap; } .nav-links { gap: 2px; } .nav-links a { padding: 6px 10px; font-size: 12px; } }
+.nav-sep { flex: 1; }
+.nav-cta { background: linear-gradient(135deg,#e8185d,#c4125a); color: #fff; font-size: 13px; font-weight: 700; padding: 9px 20px; border-radius: 7px; text-decoration: none; box-shadow: 0 2px 14px rgba(232,24,93,0.35); white-space: nowrap; transition: opacity .15s; }
+.nav-cta:hover { opacity: 0.88; }
+@media (max-width: 900px) { nav { padding: 0 18px; } .nav-links a { padding: 6px 10px; font-size: 12px; } }
