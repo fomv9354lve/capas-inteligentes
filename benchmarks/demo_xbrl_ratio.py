@@ -15,8 +15,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import capas_verify
 
 SV = "capas-claim-payload-v3"
-FIXTURE = str(Path(__file__).resolve().parent / "fixtures" / "xbrl" / "inst.xbrl")
-# Fixture facts: AssetsCurrent=200000, LiabilitiesCurrent=100000 -> current_ratio = 2.0
+_FX = Path(__file__).resolve().parent / "fixtures" / "xbrl"
+FIXTURE = str(_FX / "inst.xbrl")       # US-GAAP: AssetsCurrent=200000, LiabilitiesCurrent=100000 -> 2.0
+IFRS = str(_FX / "ifrs.xbrl")          # IFRS: CurrentAssets=300000, CurrentLiabilities=150000 -> 2.0; PL/Rev -> 0.10
 
 
 def _verdict(xbrl: dict) -> tuple[str, str]:
@@ -40,6 +41,9 @@ def run() -> int:
         ("LIE current_ratio=5.0 contradicts the filing",    {"instance": FIXTURE, "ratio": "current_ratio", "reported": 5.0}, "REJECT", "GATE"),
         ("missing components (roe needs NI/equity)",         {"instance": FIXTURE, "ratio": "roe", "reported": 0.1}, "HOLD", "ATTEST"),
         ("unknown ratio (sharpe) not re-derivable",          {"instance": FIXTURE, "ratio": "sharpe", "reported": 1.2}, "HOLD", "ATTEST"),
+        ("IFRS taxonomy: current_ratio=2.0 re-derived (ifrs-full concepts)", {"instance": IFRS, "ratio": "current_ratio", "reported": 2.0}, "ACCEPT", "GATE"),
+        ("IFRS taxonomy: net_margin=0.10 (ProfitLoss/Revenue)", {"instance": IFRS, "ratio": "net_margin", "reported": 0.10}, "ACCEPT", "GATE"),
+        ("IFRS taxonomy: net_margin lie (0.50) -> REJECT",   {"instance": IFRS, "ratio": "net_margin", "reported": 0.50}, "REJECT", "GATE"),
     ]
     ok = True
     for label, xbrl, exp_v, exp_s in cases:

@@ -14,23 +14,32 @@ from __future__ import annotations
 
 from typing import Any
 
-# Each ratio's components -> the candidate US-GAAP concept localNames a filer may
-# use (first match wins). rederive_accounting consumes the left-hand component keys.
+# Each ratio's component -> candidate concept localNames a filer may use, across
+# BOTH taxonomies: US-GAAP (us-gaap:) and IFRS (ifrs-full:, used in EU ESEF and
+# most non-US filings). First match wins, so the same extractor serves either.
+# rederive_accounting consumes the left-hand component keys.
 _CONCEPTS: dict[str, list[str]] = {
-    "current_assets": ["AssetsCurrent"],
-    "current_liabilities": ["LiabilitiesCurrent"],
-    "total_assets": ["Assets"],
+    # component: [US-GAAP ..., IFRS ...]
+    "current_assets": ["AssetsCurrent", "CurrentAssets"],
+    "current_liabilities": ["LiabilitiesCurrent", "CurrentLiabilities"],
+    "total_assets": ["Assets"],  # both taxonomies use "Assets"
     "total_equity": ["StockholdersEquity",
-                     "StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"],
-    "total_debt": ["Liabilities", "LongTermDebtNoncurrent", "DebtLongtermAndShorttermCombinedAmount"],
-    "net_income": ["NetIncomeLoss", "ProfitLoss"],
-    "revenue": ["Revenues", "RevenueFromContractWithCustomerExcludingAssessedTax", "SalesRevenueNet"],
-    "inventory": ["InventoryNet"],
-    "cogs": ["CostOfGoodsAndServicesSold", "CostOfRevenue", "CostOfGoodsSold"],
+                     "StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest",
+                     "Equity", "EquityAttributableToOwnersOfParent"],
+    "total_debt": ["Liabilities", "LongTermDebtNoncurrent", "DebtLongtermAndShorttermCombinedAmount",
+                   "Borrowings", "NoncurrentLiabilities"],
+    "net_income": ["NetIncomeLoss", "ProfitLoss"],  # ProfitLoss is the IFRS concept
+    "revenue": ["Revenues", "RevenueFromContractWithCustomerExcludingAssessedTax", "SalesRevenueNet",
+                "Revenue", "RevenueFromContractsWithCustomers"],
+    "inventory": ["InventoryNet", "Inventories"],
+    "cogs": ["CostOfGoodsAndServicesSold", "CostOfRevenue", "CostOfGoodsSold", "CostOfSales"],
     "shares_outstanding": ["WeightedAverageNumberOfSharesOutstandingBasic",
                            "WeightedAverageNumberOfDilutedSharesOutstanding",
-                           "EntityCommonStockSharesOutstanding"],
-    "preferred_dividends": ["PreferredStockDividendsAndOtherAdjustments"],
+                           "EntityCommonStockSharesOutstanding",
+                           "WeightedAverageShares", "NumberOfSharesOutstanding",
+                           "WeightedAverageNumberOfOrdinarySharesOutstanding"],
+    "preferred_dividends": ["PreferredStockDividendsAndOtherAdjustments",
+                            "DividendsRecognisedAsDistributionsToOwnersOfParentRelatingToPreferenceShares"],
 }
 # Components each ratio needs (mirrors rederive_accounting's _RATIOS).
 RATIO_COMPONENTS: dict[str, list[str]] = {
