@@ -979,6 +979,84 @@ def rederive_dimensions(evidence: dict[str, Any]) -> dict[str, Any] | None:
     return {"quantity": q, "unit": u, "expected_dim": _fmt(qd), "unit_dim": _fmt(ud), "match": match}
 
 
+# Standard atomic weights (g/mol), enough for mass-balance of common reactions.
+_ATOMIC_WEIGHT = {
+    "H": 1.008, "He": 4.0026, "Li": 6.94, "Be": 9.0122, "B": 10.81, "C": 12.011,
+    "N": 14.007, "O": 15.999, "F": 18.998, "Ne": 20.180, "Na": 22.990, "Mg": 24.305,
+    "Al": 26.982, "Si": 28.085, "P": 30.974, "S": 32.06, "Cl": 35.45, "Ar": 39.948,
+    "K": 39.098, "Ca": 40.078, "Fe": 55.845, "Cu": 63.546, "Zn": 65.38, "Ag": 107.87,
+    "I": 126.90, "Ba": 137.33, "Pt": 195.08, "Au": 196.97, "Hg": 200.59, "Pb": 207.2,
+    "Mn": 54.938, "Cr": 51.996, "Ni": 58.693, "Br": 79.904, "Sn": 118.71,
+}
+_FORMULA_TOKEN = re.compile(r"([A-Z][a-z]?|\(|\)|\d+)")
+
+
+def _parse_formula(formula: str) -> dict[str, float]:
+    """Parse a chemical formula into element->count, honouring nested parentheses
+    and multipliers (e.g. Ca(OH)2 -> {Ca:1, O:2, H:2})."""
+    tokens = _FORMULA_TOKEN.findall(formula or "")
+
+    def parse(i: int) -> tuple[dict[str, float], int]:
+        counts: dict[str, float] = {}
+        while i < len(tokens):
+            t = tokens[i]
+            if t == "(":
+                sub, i = parse(i + 1)
+                mult = 1
+                if i < len(tokens) and tokens[i].isdigit():
+                    mult = int(tokens[i]); i += 1
+                for e, c in sub.items():
+                    counts[e] = counts.get(e, 0) + c * mult
+            elif t == ")":
+                return counts, i + 1
+            elif t[0].isalpha():
+                el = t; i += 1
+                n = 1
+                if i < len(tokens) and tokens[i].isdigit():
+                    n = int(tokens[i]); i += 1
+                if el not in _ATOMIC_WEIGHT:
+                    raise ValueError(f"unknown element {el}")
+                counts[el] = counts.get(el, 0) + n
+            else:
+                i += 1
+        return counts, i
+
+    counts, _ = parse(0)
+    return counts
+
+
+def rederive_stoichiometry(evidence: dict[str, Any]) -> dict[str, Any] | None:
+    """Re-derive that a chemical equation conserves atoms (and mass). evidence
+    ['stoichiometry'] = {reactants:[{formula, coeff}], products:[{formula, coeff}]}.
+    Atom conservation is exact and deterministic — the equation balances or it does
+    not. An unparseable/empty equation is MALFORMED (-> ATTEST), never accepted."""
+    st = evidence.get("stoichiometry")
+    if not isinstance(st, dict):
+        return None
+    try:
+        sides: dict[str, dict[str, float]] = {"reactants": {}, "products": {}}
+        masses = {"reactants": 0.0, "products": 0.0}
+        for side in ("reactants", "products"):
+            species = st.get(side) or []
+            if not species:
+                return {"status": "MALFORMED", "match": False, "reason": f"no {side}"}
+            for sp in species:
+                counts = _parse_formula(sp["formula"])
+                coeff = float(sp.get("coeff", 1))
+                for e, c in counts.items():
+                    sides[side][e] = sides[side].get(e, 0) + c * coeff
+                    masses[side] += c * coeff * _ATOMIC_WEIGHT[e]
+    except (KeyError, ValueError, TypeError):
+        return {"status": "MALFORMED", "match": False}
+    elements = set(sides["reactants"]) | set(sides["products"])
+    imbalanced = {e: [sides["reactants"].get(e, 0), sides["products"].get(e, 0)]
+                  for e in sorted(elements)
+                  if abs(sides["reactants"].get(e, 0) - sides["products"].get(e, 0)) > 1e-9}
+    return {"reactant_atoms": sides["reactants"], "product_atoms": sides["products"],
+            "imbalanced": imbalanced, "reactant_mass": round(masses["reactants"], 4),
+            "product_mass": round(masses["products"], 4), "match": not imbalanced}
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # ZK rung — verify a result over HIDDEN data (PHI / licensed / proprietary) via a
 # zero-knowledge proof, extending GATE scope to data that cannot be re-shipped.
@@ -1043,7 +1121,7 @@ def _artifact_hash(evidence: dict[str, Any]) -> str | None:
     re-check against the exact same inputs."""
     keys = ("raw_data", "raw", "computation", "derivation", "environment",
             "registry", "integration", "zk_proof", "quantum_circuit", "quantum_proof",
-            "crypto", "accounting", "dimensions", "reproduction", "xbrl", "physical")
+            "crypto", "accounting", "dimensions", "reproduction", "xbrl", "physical", "stoichiometry")
     artifacts = {k: evidence[k] for k in keys if k in evidence}
     if not artifacts:
         return None
@@ -1089,7 +1167,7 @@ def _receipt(payload, base_verdict, final, scope, tier, checks, rationale) -> di
 # (which rejects unknown fields) and consumed by this layer instead.
 _EXTENSION_KEYS = {"raw_data", "raw", "computation", "derivation", "environment",
                    "registry", "integration", "zk_proof", "quantum_circuit", "quantum_proof",
-                   "crypto", "accounting", "dimensions", "reproduction", "xbrl", "physical",
+                   "crypto", "accounting", "dimensions", "reproduction", "xbrl", "physical", "stoichiometry",
                    *PROVENANCE_KEYS}
 
 try:  # quantum re-derivation rung (needs numpy); deterministic statevector + frontier
@@ -1394,6 +1472,27 @@ def verify(payload: dict[str, Any]) -> dict[str, Any]:
                 f"Dimensional claim not re-derivable ({dm.get('status', 'unresolved')}: "
                 f"quantity={dm.get('quantity')!r}, unit={dm.get('unit')!r}); the engine has no "
                 "dimension for it — held for a recognised quantity+unit or attestation, not accepted.")
+
+    # Stoichiometry: a chemical equation conserves atoms (exact, deterministic).
+    if final == "ACCEPT" and evidence.get("stoichiometry") is not None:
+        sx = rederive_stoichiometry(evidence)
+        if sx and sx.get("match") is True:
+            checks.append({"check": "stoichiometry_balance", "status": "VERIFIED", "detail": sx})
+            rationale.append(
+                f"Equation balances: every element is conserved and mass matches "
+                f"({sx['reactant_mass']} = {sx['product_mass']} g/mol). Re-derived by atom conservation.")
+        elif sx and sx.get("match") is False and sx.get("status") in ("MALFORMED",):
+            scope = "ATTEST"; final = "HOLD"
+            checks.append({"check": "stoichiometry_balance", "status": "MALFORMED", "detail": sx})
+            rationale.append(
+                "Chemical equation could not be parsed (unknown element / empty side); not "
+                "re-derivable — held, not accepted.")
+        elif sx and sx.get("match") is False:
+            checks.append({"check": "stoichiometry_balance", "status": "FAIL", "detail": sx})
+            final = "REJECT"
+            rationale.append(
+                f"Equation does NOT balance — atoms not conserved: {sx['imbalanced']} "
+                "(reactant vs product counts). Rejected by atom conservation.")
 
     # ZK rung: verify a result over HIDDEN data via a registered zero-knowledge backend.
     if final == "ACCEPT" and evidence.get("zk_proof") is not None:
