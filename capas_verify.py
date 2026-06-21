@@ -501,6 +501,122 @@ def rederive_integration(evidence: dict[str, Any]) -> dict[str, Any] | None:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# Domain extension (Tier-1, pure-deterministic): cryptographic verification,
+# accounting identities, and dimensional consistency. Each re-derives a claimed
+# fact bit-exactly (or within a declared tolerance) from inputs, with zero added
+# trust assumptions — the SOTA-ranked highest value × cleanest-checkability slice.
+# ─────────────────────────────────────────────────────────────────────────────
+def rederive_crypto(evidence: dict[str, Any]) -> dict[str, Any] | None:
+    """Gold standard: recompute a digest / Merkle root and compare bit-exactly.
+    evidence['crypto'] = {algorithm, preimage|{hex}|leaves, claimed_digest|claimed_root}."""
+    c = evidence.get("crypto")
+    if not isinstance(c, dict):
+        return None
+    algo = str(c.get("algorithm", "sha256")).lower().replace("-", "")
+    if algo not in hashlib.algorithms_available:
+        return {"status": "UNKNOWN_ALGORITHM", "algorithm": algo, "match": False}
+
+    def _h(b: bytes) -> str:
+        return hashlib.new(algo, b).hexdigest()
+
+    def _norm(d: Any) -> str:
+        return str(d or "").split(":")[-1].strip().lower()
+
+    def _as_bytes(x: Any) -> bytes:
+        s = _norm(x)
+        if s and len(s) % 2 == 0 and all(ch in "0123456789abcdef" for ch in s):
+            return bytes.fromhex(s)
+        return str(x).encode()
+
+    if c.get("leaves") is not None:  # Merkle root over ordered leaves (pairwise, dup-last)
+        layer = [bytes.fromhex(_h(_as_bytes(x))) for x in c["leaves"]]
+        while len(layer) > 1:
+            if len(layer) % 2:
+                layer.append(layer[-1])
+            layer = [bytes.fromhex(_h(layer[i] + layer[i + 1])) for i in range(0, len(layer), 2)]
+        root = layer[0].hex()
+        return {"primitive": "merkle_root", "algorithm": algo, "re_derived": root,
+                "claimed": _norm(c.get("claimed_root")), "match": root == _norm(c.get("claimed_root"))}
+
+    pre = c.get("preimage")
+    data = bytes.fromhex(pre["hex"]) if isinstance(pre, dict) and "hex" in pre else str(pre).encode()
+    digest = _h(data)
+    return {"primitive": "digest", "algorithm": algo, "re_derived": digest,
+            "claimed": _norm(c.get("claimed_digest")), "match": digest == _norm(c.get("claimed_digest"))}
+
+
+def rederive_accounting(evidence: dict[str, Any]) -> dict[str, Any] | None:
+    """Re-derive a fundamental accounting identity. evidence['accounting'] =
+    {identity: 'debits_equal_credits'|'balance_sheet'|'cash_flow', ...inputs, tolerance}."""
+    a = evidence.get("accounting")
+    if not isinstance(a, dict):
+        return None
+    ident = str(a.get("identity", "")).lower()
+    tol = float(a.get("tolerance", 0.01) or 0.0)
+    try:
+        if ident in ("debits_equal_credits", "double_entry"):
+            d, cr = sum(map(float, a.get("debits", []))), sum(map(float, a.get("credits", [])))
+            return {"identity": ident, "lhs": round(d, 6), "rhs": round(cr, 6),
+                    "match": abs(d - cr) <= tol}
+        if ident in ("balance_sheet", "accounting_equation"):
+            assets = float(a["assets"]); le = float(a["liabilities"]) + float(a["equity"])
+            return {"identity": ident, "lhs": round(assets, 6), "rhs": round(le, 6),
+                    "match": abs(assets - le) <= tol}
+        if ident in ("cash_flow", "cash_reconciliation"):
+            end = float(a["beginning"]) + float(a.get("operating", 0)) + float(a.get("investing", 0)) + float(a.get("financing", 0))
+            return {"identity": ident, "lhs": round(end, 6), "rhs": round(float(a["ending"]), 6),
+                    "match": abs(end - float(a["ending"])) <= tol}
+    except (KeyError, ValueError, TypeError):
+        return {"identity": ident, "status": "MALFORMED", "match": False}
+    return {"identity": ident, "status": "UNKNOWN_IDENTITY", "match": False}
+
+
+# SI base dimensions as exponent vectors [M, L, T, I, Θ, N, J] (kg,m,s,A,K,mol,cd).
+_DIM_BASE = ("M", "L", "T", "I", "Θ", "N", "J")
+_UNIT_DIM: dict[str, tuple[int, ...]] = {
+    "kg": (1, 0, 0, 0, 0, 0, 0), "g": (1, 0, 0, 0, 0, 0, 0), "m": (0, 1, 0, 0, 0, 0, 0),
+    "s": (0, 0, 1, 0, 0, 0, 0), "a": (0, 0, 0, 1, 0, 0, 0), "k": (0, 0, 0, 0, 1, 0, 0),
+    "mol": (0, 0, 0, 0, 0, 1, 0), "cd": (0, 0, 0, 0, 0, 0, 1),
+    "n": (1, 1, -2, 0, 0, 0, 0), "j": (1, 2, -2, 0, 0, 0, 0), "w": (1, 2, -3, 0, 0, 0, 0),
+    "pa": (1, -1, -2, 0, 0, 0, 0), "c": (0, 0, 1, 1, 0, 0, 0), "v": (1, 2, -3, -1, 0, 0, 0),
+    "hz": (0, 0, -1, 0, 0, 0, 0), "m/s": (0, 1, -1, 0, 0, 0, 0), "m/s2": (0, 1, -2, 0, 0, 0, 0),
+    "m/s^2": (0, 1, -2, 0, 0, 0, 0), "m2": (0, 2, 0, 0, 0, 0, 0), "m3": (0, 3, 0, 0, 0, 0, 0),
+}
+# Physical quantity -> its dimension. The unit a claim attaches must match.
+_QUANTITY_DIM: dict[str, tuple[int, ...]] = {
+    "force": (1, 1, -2, 0, 0, 0, 0), "energy": (1, 2, -2, 0, 0, 0, 0),
+    "work": (1, 2, -2, 0, 0, 0, 0), "power": (1, 2, -3, 0, 0, 0, 0),
+    "pressure": (1, -1, -2, 0, 0, 0, 0), "velocity": (0, 1, -1, 0, 0, 0, 0),
+    "speed": (0, 1, -1, 0, 0, 0, 0), "acceleration": (0, 1, -2, 0, 0, 0, 0),
+    "mass": (1, 0, 0, 0, 0, 0, 0), "length": (0, 1, 0, 0, 0, 0, 0),
+    "distance": (0, 1, 0, 0, 0, 0, 0), "time": (0, 0, 1, 0, 0, 0, 0),
+    "frequency": (0, 0, -1, 0, 0, 0, 0), "area": (0, 2, 0, 0, 0, 0, 0),
+    "volume": (0, 3, 0, 0, 0, 0, 0), "voltage": (1, 2, -3, -1, 0, 0, 0),
+}
+
+
+def rederive_dimensions(evidence: dict[str, Any]) -> dict[str, Any] | None:
+    """Dimensional consistency: a claimed physical quantity must carry a unit of
+    the matching SI dimension. evidence['dimensions'] = {quantity, unit}."""
+    d = evidence.get("dimensions")
+    if not isinstance(d, dict):
+        return None
+    q = str(d.get("quantity", "")).lower().strip()
+    u = str(d.get("unit", "")).lower().strip().replace(" ", "")
+    if q not in _QUANTITY_DIM:
+        return {"status": "UNKNOWN_QUANTITY", "quantity": q, "match": None}
+    if u not in _UNIT_DIM:
+        return {"status": "UNKNOWN_UNIT", "unit": u, "match": None}
+    qd, ud = _QUANTITY_DIM[q], _UNIT_DIM[u]
+    match = qd == ud
+
+    def _fmt(vec: tuple[int, ...]) -> str:
+        return " ".join(f"{b}^{e}" for b, e in zip(_DIM_BASE, vec) if e) or "dimensionless"
+
+    return {"quantity": q, "unit": u, "expected_dim": _fmt(qd), "unit_dim": _fmt(ud), "match": match}
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # ZK rung — verify a result over HIDDEN data (PHI / licensed / proprietary) via a
 # zero-knowledge proof, extending GATE scope to data that cannot be re-shipped.
 # Soundness is delegated to a REGISTERED verifying backend (production: EZKL /
@@ -563,7 +679,8 @@ def _artifact_hash(evidence: dict[str, Any]) -> str | None:
     """Bind the re-derivable artifacts into the receipt so a third party can
     re-check against the exact same inputs."""
     keys = ("raw_data", "raw", "computation", "derivation", "environment",
-            "registry", "integration", "zk_proof", "quantum_circuit", "quantum_proof")
+            "registry", "integration", "zk_proof", "quantum_circuit", "quantum_proof",
+            "crypto", "accounting", "dimensions")
     artifacts = {k: evidence[k] for k in keys if k in evidence}
     if not artifacts:
         return None
@@ -609,6 +726,7 @@ def _receipt(payload, base_verdict, final, scope, tier, checks, rationale) -> di
 # (which rejects unknown fields) and consumed by this layer instead.
 _EXTENSION_KEYS = {"raw_data", "raw", "computation", "derivation", "environment",
                    "registry", "integration", "zk_proof", "quantum_circuit", "quantum_proof",
+                   "crypto", "accounting", "dimensions",
                    *PROVENANCE_KEYS}
 
 try:  # quantum re-derivation rung (needs numpy); deterministic statevector + frontier
@@ -753,6 +871,50 @@ def verify(payload: dict[str, Any]) -> dict[str, Any]:
                 f"Reported peak area {ig.get('reported_area')} does NOT re-derive from the raw signal "
                 f"(automatic integration gives {ig['auto_area']}) — rejected."
             )
+
+    # Domain extension (Tier-1): cryptographic digest/Merkle, accounting identity,
+    # dimensional consistency — bit-exact deterministic re-derivation.
+    if final == "ACCEPT" and evidence.get("crypto") is not None:
+        cr = rederive_crypto(evidence)
+        if cr and cr.get("match") is True:
+            checks.append({"check": "crypto_rederivation", "status": "VERIFIED", "detail": cr})
+            rationale.append(
+                f"{cr['primitive']} re-derives bit-exactly ({cr['algorithm']}): re-computed "
+                f"{cr['re_derived'][:16]}… equals the claimed value. Verified by recomputation.")
+        elif cr and cr.get("match") is False:
+            checks.append({"check": "crypto_rederivation", "status": "FAIL", "detail": cr})
+            final = "REJECT"
+            rationale.append(
+                f"{cr.get('primitive', 'digest')} does NOT match: re-computed "
+                f"{str(cr.get('re_derived'))[:16]}… ≠ claimed {str(cr.get('claimed'))[:16]}… — rejected.")
+
+    if final == "ACCEPT" and evidence.get("accounting") is not None:
+        ac = rederive_accounting(evidence)
+        if ac and ac.get("match") is True:
+            checks.append({"check": "accounting_identity", "status": "VERIFIED", "detail": ac})
+            rationale.append(
+                f"Accounting identity '{ac['identity']}' holds: {ac['lhs']} = {ac['rhs']} "
+                "(re-derived, not trusted).")
+        elif ac and ac.get("match") is False:
+            checks.append({"check": "accounting_identity", "status": "FAIL", "detail": ac})
+            final = "REJECT"
+            rationale.append(
+                f"Accounting identity '{ac['identity']}' is violated: {ac.get('lhs')} ≠ "
+                f"{ac.get('rhs')} — the books do not balance; rejected.")
+
+    if final == "ACCEPT" and evidence.get("dimensions") is not None:
+        dm = rederive_dimensions(evidence)
+        if dm and dm.get("match") is True:
+            checks.append({"check": "dimensional_consistency", "status": "VERIFIED", "detail": dm})
+            rationale.append(
+                f"Dimensional check: '{dm['quantity']}' in {dm['unit']} is consistent "
+                f"({dm['expected_dim']}). Verified.")
+        elif dm and dm.get("match") is False:
+            checks.append({"check": "dimensional_consistency", "status": "FAIL", "detail": dm})
+            final = "REJECT"
+            rationale.append(
+                f"Dimensional error: '{dm['quantity']}' requires {dm['expected_dim']} but the unit "
+                f"{dm['unit']} is {dm['unit_dim']}. The quantity and its unit are incommensurable — rejected.")
 
     # ZK rung: verify a result over HIDDEN data via a registered zero-knowledge backend.
     if final == "ACCEPT" and evidence.get("zk_proof") is not None:

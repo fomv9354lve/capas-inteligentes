@@ -64,6 +64,12 @@ def route(payload: dict[str, Any], jurisdiction: str | None = None) -> dict[str,
                            "reason": reason, **extra})
 
     # ── exact re-derivation rungs (strongest: unconditional) ──
+    if ev.get("crypto") is not None:
+        add("re-execution", "a cryptographic digest/Merkle artifact is present (bit-exact recomputation)")
+    if ev.get("accounting") is not None:
+        add("re-execution", "an accounting identity is present (re-derived arithmetic)")
+    if ev.get("dimensions") is not None:
+        add("re-execution", "a dimensional-consistency claim is present (SI exponent check)")
     if any(k in ev for k in ("computation", "integration")):
         add("re-execution", "a deterministic computation/integration artifact is present")
     if ev.get("derivation") is not None:
