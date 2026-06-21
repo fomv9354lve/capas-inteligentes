@@ -41,10 +41,41 @@ def ezkl_backend(proof: dict[str, Any], public_inputs: dict[str, Any], statement
         return False
 
 
-def prove_linear_derivation(weights: list[float], inputs: list[float], out_dir: str) -> dict[str, str]:
+def _obtain_srs(ezkl: Any, srs_path: str, logrows: int, settings_path: str, secure: bool) -> str:
+    """Get the KZG structured reference string.
+
+    SECURITY (per ezkl docs + Trail of Bits audit): ``gen_srs`` builds a LOCAL
+    SRS and RETAINS the toxic waste — anyone with it can forge proofs, so it is
+    for offline testing ONLY. Production certification MUST use ``get_srs``,
+    which pulls a real, ceremony-generated SRS (Perpetual Powers of Tau). We
+    default to the secure path and only fall back to the insecure generator when
+    a caller explicitly opts out (and we mark the artifact so it is never mistaken
+    for a real proof)."""
+    if secure:
+        try:  # API drifts across ezkl versions; try the common signatures.
+            try:
+                _run(ezkl.get_srs(settings_path, logrows=logrows, srs_path=srs_path))
+            except TypeError:
+                _run(ezkl.get_srs(srs_path, settings_path))
+            return srs_path
+        except Exception as e:
+            raise RuntimeError(
+                "secure SRS fetch (get_srs / Perpetual Powers of Tau) failed; refusing to "
+                "silently fall back to the insecure gen_srs. Pass secure_srs=False to "
+                f"explicitly accept a TEST-ONLY toxic-waste SRS. Cause: {e!r}")
+    _run(ezkl.gen_srs(srs_path, logrows))  # INSECURE — test only
+    open(srs_path + ".INSECURE", "w").write("gen_srs: toxic waste retained; NOT a real ceremony")
+    return srs_path
+
+
+def prove_linear_derivation(weights: list[float], inputs: list[float], out_dir: str,
+                            secure_srs: bool = True) -> dict[str, str]:
     """Reference PROVER (data holder side): build an ONNX linear model
     y = inputs · weights, then EZKL-setup and prove it. Returns artifact paths
-    for the verifier. Requires `ezkl`, `onnx`, `numpy`."""
+    for the verifier. Requires `ezkl`, `onnx`, `numpy`.
+
+    secure_srs=True (default) uses a real ceremony SRS via get_srs; pass False
+    only for offline tests (insecure, toxic-waste SRS)."""
     import numpy as np
     import onnx
     from onnx import TensorProto, helper
@@ -65,8 +96,7 @@ def prove_linear_derivation(weights: list[float], inputs: list[float], out_dir: 
     _run(ezkl.gen_settings(str(d / "model.onnx"), str(d / "settings.json")))
     _run(ezkl.compile_circuit(str(d / "model.onnx"), str(d / "model.compiled"), str(d / "settings.json")))
     logrows = json.load(open(d / "settings.json"))["run_args"]["logrows"]
-    srs = str(d / "kzg.srs")
-    _run(ezkl.gen_srs(srs, logrows))
+    srs = _obtain_srs(ezkl, str(d / "kzg.srs"), logrows, str(d / "settings.json"), secure_srs)
     _run(ezkl.setup(str(d / "model.compiled"), str(d / "vk.key"), str(d / "pk.key"), srs))
     _run(ezkl.gen_witness(str(d / "input.json"), str(d / "model.compiled"), str(d / "witness.json")))
     _run(ezkl.prove(str(d / "witness.json"), str(d / "model.compiled"), str(d / "pk.key"), str(d / "proof.json"), srs))
