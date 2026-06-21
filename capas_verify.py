@@ -121,6 +121,7 @@ ANCHORS: list[dict[str, Any]] = [
 # never abstains. This extends the engine's deterministic domain to "hard limit"
 # claims that previously fell through to an unhelpful HOLD.
 _C_LIGHT = 299_792_458.0
+_EPS = 1e-9  # numeric slack for bound comparisons (e.g. Holevo bits ≤ qubits)
 UNIVERSAL_BOUNDS: list[dict[str, Any]] = [
     {
         "id": "absolute_zero_floor_C", "direction": "min", "limit": -273.15, "unit": "°C",
@@ -169,6 +170,101 @@ def universal_bound_violations(claim_text: str) -> list[dict[str, Any]]:
                             "re_derived_from": b["basis"]})
                 break
     return out
+
+
+# ── Holevo accessible-information bound (a universal bound WITH assumption-gates) ─
+# Holevo's theorem (1973) is a PROVEN bound, not a conjecture: from n qubits no
+# measurement strategy can recover more than n classical bits of ACCESSIBLE
+# information. A qubit carries continuous amplitudes (α,β on the Bloch sphere), so
+# its STORAGE is unbounded — but READ-OUT is destructive, and no-cloning (Wootters–
+# Zurek / Dieks 1982) forbids manufacturing copies of an unknown state. Reading the
+# "shape" (full state) therefore COSTS copies: shadow/tomography lower bounds are
+# themselves PROVEN VIA Holevo (e.g. Ω(dr/ε²) copies, arXiv:2207.14438, 2025), and
+# general n-qubit reconstruction needs O(4ⁿ) copies (arXiv:2505.14953, 2025).
+#
+# Unlike a context-free bound (c, absolute zero), Holevo's *applicable* ceiling is
+# lifted by two NAMED resources, which become the assumption-gates the engine pins:
+#   * prior shared ENTANGLEMENT -> superdense coding sends 2 bits per transmitted
+#     qubit, but the protocol consumes 2 qubits total (Bennett–Wiesner 1992), so the
+#     "2 bits / 1 qubit" claim is only admissible WITH entanglement and still obeys
+#     ≤ n bits per n qubits.
+#   * N independent COPIES -> the full state is recoverable by tomography, but the
+#     readout spent N qubits; "exceeded 1 bit/qubit" remains false.
+# So: a claim to recover >n bits of accessible information from n qubits is REJECTED
+# (no off-baseline saves it — it is a proven impossibility); a claim that merely
+# *reconstructs the state* is admissible but the engine pins that it cost the copies
+# it used; a claim that invokes neither resource and asserts >1 bit/qubit single-shot
+# is REJECTED on no-cloning + Holevo.
+_HOLEVO_BITS_PER_QUBIT = re.compile(
+    r"(?:store|stor(?:e|ing)|encode|encoding|pack(?:ing)?|recover(?:ing)?|read(?:ing)?\s+out|"
+    r"retriev(?:e|ing)|extract(?:ing)?|transmit(?:ting)?|send(?:ing)?)\D{0,40}?"
+    r"(\d+(?:\.\d+)?)\s*(?:classical\s+)?bits?\b\D{0,40}?(?:per|in|from|out\s+of|/)\s*"
+    r"(?:an?\s+)?(?:(\d+(?:\.\d+)?)\s*)?(?:single\s+|one\s+|1\s+)?qu?[\s-]*bits?\b")
+# Resources that legitimately appear when >1 bit/qubit is claimed.
+_HOLEVO_ENTANGLEMENT = re.compile(
+    r"entangl|superdense|super[\s-]?dense|pre[\s-]?shared|bell\s+pair|epr\s+pair|shared\s+pair")
+# Copies named -> claim is about STATE reconstruction (tomography/shadows), not
+# beating the accessible-information bound; admissible but pin the copy cost.
+_HOLEVO_COPIES = re.compile(
+    r"\b(\d+(?:\.\d+)?)\s*(?:identical\s+|fresh\s+)?copies\b|"
+    r"tomograph|classical\s+shadows?|shadow\s+tomograph|many\s+copies|multiple\s+copies|n\s+copies")
+
+
+def holevo_information_contradictions(claim_text: str) -> list[dict[str, Any]]:
+    """Deterministic Holevo accessible-information anchor (a universal bound whose
+    *applicable* ceiling is gated by two named quantum resources: prior entanglement
+    and number of copies). Returns the same ``kind`` taxonomy as the other anchors:
+
+      * "contradiction" -> claim asserts > n bits of accessible information out of n
+        qubits with NO entanglement and NO copies named (or single-shot): a proven
+        impossibility (Holevo + no-cloning) -> verify() REJECT.
+      * "abstain"       -> claim names COPIES / tomography / shadows: it is about
+        reconstructing the state, not beating the bound. The bound does not refute
+        it, but the engine cannot re-derive the copy budget from text alone -> HOLD,
+        route up to pin/attest how many copies (qubits) were spent.
+    Entanglement-gated 2-bit/qubit (superdense) within ≤ n bits per n qubits is NOT
+    flagged. An empty list means no Holevo claim is engaged."""
+    text = (claim_text or "").lower()
+    m = _HOLEVO_BITS_PER_QUBIT.search(text)
+    if not m:
+        return []
+    bits = float(m.group(1))
+    qubits = float(m.group(2)) if m.group(2) else 1.0
+    if qubits <= 0:
+        return []
+    bound = qubits  # Holevo: accessible bits ≤ number of qubits
+    if bits <= bound + _EPS:
+        return []  # within the bound (incl. 1 bit/1 qubit) -> nothing to flag
+    # Over the nominal bound: check which resource the claim invokes.
+    if _HOLEVO_ENTANGLEMENT.search(text):
+        # Superdense coding: 2 bits per *transmitted* qubit, consuming 2 qubits total.
+        # Admissible iff bits ≤ 2·qubits (entanglement at most doubles); else still impossible.
+        if bits <= 2.0 * qubits + _EPS:
+            return []
+        return [{"anchor": "holevo_accessible_information", "kind": "contradiction",
+                 "asserted": bits, "truth": 2.0 * qubits, "unit": "bits",
+                 "desc": "Holevo bound: even WITH prior entanglement (superdense coding) "
+                         f"at most 2 bits per transmitted qubit (≤{2.0 * qubits:g} bits for "
+                         f"{qubits:g} qubit(s)), and the protocol still consumes 2 qubits total",
+                 "re_derived_from": "Holevo (1973) + superdense coding (Bennett–Wiesner 1992)"}]
+    if _HOLEVO_COPIES.search(text):
+        # State reconstruction from N copies: not a Holevo violation, but the readout
+        # spent N qubits. The text does not let us re-derive N -> abstain (route up).
+        return [{"anchor": "holevo_accessible_information", "kind": "abstain",
+                 "asserted": bits, "unit": "bits",
+                 "desc": "Holevo accessible-information bound",
+                 "reason": "claim recovers the full state via copies/tomography/shadows, not "
+                           "single-shot accessible information; this does not beat Holevo but the "
+                           "copy budget (qubits spent) is not re-derivable from text. Reading the "
+                           "'shape' costs copies (tomography lower bounds are proven via Holevo); "
+                           "pin or attest the number of copies (= qubits consumed)."}]
+    # No entanglement, no copies, claims > bits than qubits: single-shot impossibility.
+    return [{"anchor": "holevo_accessible_information", "kind": "contradiction",
+             "asserted": bits, "truth": bound, "unit": "bits",
+             "desc": f"Holevo bound: at most {bound:g} bit(s) of accessible information can be "
+                     f"recovered from {qubits:g} qubit(s); no-cloning forbids manufacturing copies "
+                     "of an unknown state, so single-shot read-out cannot exceed the bound",
+             "re_derived_from": "Holevo (1973) + no-cloning (Wootters–Zurek / Dieks 1982)"}]
 
 
 def anchor_contradictions(claim_text: str) -> list[dict[str, Any]]:
@@ -759,7 +855,8 @@ def verify(payload: dict[str, Any]) -> dict[str, Any]:
     # quantifying it leaves the constant inapplicable -> abstain (HOLD, route up).
     # Universal bounds (hold in every condition) are checked first and override:
     # a physical impossibility cannot be saved by any context.
-    hits = universal_bound_violations(text) + anchor_contradictions(text)
+    hits = (universal_bound_violations(text) + anchor_contradictions(text)
+            + holevo_information_contradictions(text))
     contradictions = [h for h in hits if h.get("kind") != "abstain"]
     abstentions = [h for h in hits if h.get("kind") == "abstain"]
     if contradictions:

@@ -82,6 +82,23 @@ def run():
          _payload("ub3", "the probability of recurrence is 1.4", "statistical_confidence",
                   {"p_value": 0.01, "alpha": 0.05, "effect_direction_confirmed": True}),
          "REJECT", "GATE"),
+        ("HOLEVO: store 5 bits in 1 qubit single-shot -> REJECT (no-cloning + Holevo)",
+         _payload("hv1", "our scheme can store 5 bits in 1 qubit", "statistical_confidence",
+                  {"p_value": 0.01, "alpha": 0.05, "effect_direction_confirmed": True}),
+         "REJECT", "GATE"),
+        ("HOLEVO: 8 bits from 1 qubit via tomography/copies -> abstain (pin copy cost)",
+         _payload("hv2", "we recover 8 bits from 1 qubit using tomography over many copies",
+                  "statistical_confidence",
+                  {"p_value": 0.01, "alpha": 0.05, "effect_direction_confirmed": True}),
+         "HOLD", "ATTEST"),
+        # Superdense coding (2 bits / transmitted qubit WITH prior entanglement) is NOT
+        # a Holevo violation, so the anchor does not REJECT it; absent its own re-derivable
+        # evidence the claim is held to attest, not falsely accepted nor falsely rejected.
+        ("HOLEVO: 2 bits per qubit WITH entanglement (superdense) -> not rejected, attest",
+         _payload("hv3", "transmit 2 classical bits per qubit using prior shared entanglement",
+                  "statistical_confidence",
+                  {"p_value": 0.01, "alpha": 0.05, "effect_direction_confirmed": True}),
+         "HOLD", "ATTEST"),
         ("DOMAIN crypto: sha256 digest re-derives bit-exactly -> ACCEPT",
          _payload("cy1", "evidence digest is as stated", "financial_metric_claim",
                   {"reported_value": 1.0, "reference_value": 1.0, "tolerance": 1.0, "metric_period_match": True,
