@@ -7007,6 +7007,24 @@ def cmd_verify(args: argparse.Namespace) -> int:
     return 0 if receipt.get("verified_verdict") != "REJECT" else 2
 
 
+def cmd_route(args: argparse.Namespace) -> int:
+    import capas_route
+
+    payload = _load_json(Path(args.input))
+    plan = capas_route.route(payload, args.jurisdiction)
+    if args.output:
+        _write_json(Path(args.output), plan)
+    if args.json or not args.output:
+        print(json.dumps(plan, indent=2, sort_keys=True))
+    else:
+        print(f"selected rung: {plan['selected_rung']} [{plan['scope']}]")
+        print(f"  soundness : {plan['soundness_basis']}")
+        print(f"  why       : {plan['why']}")
+        print(f"  satisfies : {plan['jurisdiction_demand_satisfied']}")
+        print(f"  plan      : {' > '.join(r['rung'] for r in plan['plan'])}")
+    return 0
+
+
 def cmd_batch(args: argparse.Namespace) -> int:
     payload = _load_json(Path(args.input))
     try:
@@ -7361,6 +7379,13 @@ def main(argv: list[str] | None = None) -> int:
     verify.add_argument("--output", help="optional verification receipt path")
     verify.add_argument("--json", action="store_true", help="print JSON even when --output is supplied")
     verify.set_defaults(func=cmd_verify)
+
+    route = subparsers.add_parser("route", help="unified router: pick the strongest feasible verification rung for the evidence and map it to the jurisdiction demand")
+    route.add_argument("--input", required=True, help="path to claim/evidence JSON")
+    route.add_argument("--jurisdiction", help="EU | US | UK | SG | CN | GLOBAL (default GLOBAL)")
+    route.add_argument("--output", help="optional routing plan path")
+    route.add_argument("--json", action="store_true", help="print JSON even when --output is supplied")
+    route.set_defaults(func=cmd_route)
 
     batch = subparsers.add_parser("batch", help="run deterministic gates over multiple claim/evidence JSON objects")
     batch.add_argument("--input", required=True, help="path to JSON array or object with items/claims array")

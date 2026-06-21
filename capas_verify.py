@@ -403,7 +403,7 @@ def _artifact_hash(evidence: dict[str, Any]) -> str | None:
     """Bind the re-derivable artifacts into the receipt so a third party can
     re-check against the exact same inputs."""
     keys = ("raw_data", "raw", "computation", "derivation", "environment",
-            "registry", "integration", "zk_proof")
+            "registry", "integration", "zk_proof", "quantum_circuit", "quantum_proof")
     artifacts = {k: evidence[k] for k in keys if k in evidence}
     if not artifacts:
         return None
@@ -448,7 +448,13 @@ def _receipt(payload, base_verdict, final, scope, tier, checks, rationale) -> di
 # not part of the base evidence contract. They are stripped before the base gate runs
 # (which rejects unknown fields) and consumed by this layer instead.
 _EXTENSION_KEYS = {"raw_data", "raw", "computation", "derivation", "environment",
-                   "registry", "integration", "zk_proof", *PROVENANCE_KEYS}
+                   "registry", "integration", "zk_proof", "quantum_circuit", "quantum_proof",
+                   *PROVENANCE_KEYS}
+
+try:  # quantum re-derivation rung (needs numpy); deterministic statevector + frontier
+    from capas_quantum import rederive_quantum as _rederive_quantum
+except Exception:  # pragma: no cover
+    _rederive_quantum = None
 
 
 def _base_payload(payload: dict[str, Any]) -> dict[str, Any]:
@@ -591,6 +597,41 @@ def verify(payload: dict[str, Any]) -> dict[str, Any]:
             rationale.append(
                 f"Zero-knowledge proof FAILED verification (vk={zk.get('verifying_key_id')}). The claimed result "
                 "does not bind to the committed computation — rejected."
+            )
+
+    # Quantum rung: re-simulate a quantum-circuit claim below the simulability
+    # frontier (Bravyi-Gosset 2^{0.40 t} / Gottesman-Knill / statevector 2^n);
+    # beyond it, route to CVQC (Mahadev, LWE) or ATTEST — never fake a simulation.
+    if final == "ACCEPT" and evidence.get("quantum_circuit") is not None and _rederive_quantum is not None:
+        qr = _rederive_quantum(evidence)
+        if qr and qr.get("status") == "BEYOND_FRONTIER":
+            scope = "ATTEST"; final = "HOLD"
+            checks.append({"check": "quantum_resimulation", "status": "BEYOND_FRONTIER",
+                           "detail": {k: qr[k] for k in ("qubits", "t_count", "log2_cost_statevector",
+                                                          "log2_cost_stabilizer_rank", "route")}})
+            rationale.append(
+                f"Quantum claim is beyond the engine's exact-simulability frontier "
+                f"(n={qr['qubits']}, t_count={qr['t_count']}, log2-cost≈"
+                f"{min(qr['log2_cost_statevector'], qr['log2_cost_stabilizer_rank'])}). "
+                f"Route: {qr['route']} — Classical Verification of Quantum Computation (Mahadev/LWE) "
+                "if a quantum proof is supplied, else attest a real QC. The engine does not fake a simulation."
+            )
+        elif qr and qr.get("match") is True:
+            checks.append({"check": "quantum_resimulation", "status": "VERIFIED",
+                           "detail": {k: qr.get(k) for k in ("claim_type", "re_derived", "declared",
+                                                             "qubits", "t_count")}})
+            rationale.append(
+                f"Quantum claim re-derives by exact classical statevector simulation "
+                f"({qr.get('claim_type')} = {qr.get('re_derived')}, n={qr['qubits']}, t={qr['t_count']}). Verified."
+            )
+        elif qr and qr.get("match") is False:
+            checks.append({"check": "quantum_resimulation", "status": "FAIL", "detail":
+                           {"claim_type": qr.get("claim_type"), "re_derived": qr.get("re_derived"),
+                            "declared": qr.get("declared")}})
+            final = "REJECT"
+            rationale.append(
+                f"Quantum claim does NOT re-derive: re-simulation gives {qr.get('re_derived')} vs declared "
+                f"{qr.get('declared')} — rejected."
             )
 
     # Registry reconciliation (Passage Point B): posted figure vs re-derived figure.
