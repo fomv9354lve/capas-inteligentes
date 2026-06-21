@@ -52,6 +52,52 @@ _LOEBIAN_CLAUSE = (
 )
 
 
+# The product output is the PROPOSAL, not the why. Every non-grounded status maps to
+# a concrete imperative the user can act on — the HOLD that proposes its own exit.
+# (kind orders by leverage: CORRECT a fabrication > SUPPLY re-derivable evidence >
+# ATTEST/DEFER what only the subject can close.)
+_PROPOSAL_BY_STATUS = {
+    "FAIL":                ("CORRECT", "the reported value does not re-derive from its inputs — correct it to the "
+                                       "re-derived figure (or fix the inputs); a number that doesn't re-derive is rejected"),
+    "REJECT":              ("CORRECT", "this contradicts a grounded invariant — change the claim to one that does not "
+                                       "violate the anchored law/constant"),
+    "HOLD":                ("SUPPLY",  "supply the raw inputs the figure is computed from so the engine can re-derive it "
+                                       "(moves HOLD -> GROUNDED by GATE) instead of holding"),
+    "UNRESOLVED_EVIDENCE": ("SUPPLY",  "evidence was supplied but no rung resolved it — supply a re-derivable artifact "
+                                       "(raw_data / computation inputs / a registry id) that one rung can re-derive"),
+    "UNSUPPORTED":         ("SUPPLY",  "the claim is bare — attach re-derivable evidence (raw_data, computation inputs, "
+                                       "or a signed registry entry) to move it off pure assertion"),
+    "ABSTAIN":             ("ATTEST",  "the anchored law does not apply off-baseline — quantify the condition "
+                                       "(e.g. pressure/altitude/temperature) or attach a signed attestation of it"),
+    "UNBACKED":            ("ATTEST",  "study-design / unobservable evidence — provide a signed human attestation; it "
+                                       "cannot be computed, only attested"),
+    "SEED_CONDITIONAL":    ("ATTEST",  "reproducible only under the producer-chosen seed — provide robustness across "
+                                       "independent seeds (a human judgment), then attest it"),
+    "UNJUSTIFIED_DIVERGENCE": ("ATTEST", "a manual override with no reason — supply a signed human justification"),
+    "BEYOND_FRONTIER":     ("DEFER",   "beyond the deterministic re-derivation frontier — no efficient re-derivation "
+                                       "exists; the subject must close this by judgment"),
+}
+_KIND_RANK = {"CORRECT": 0, "SUPPLY": 1, "ATTEST": 2, "DEFER": 3}
+
+
+def _solution_proposal(items: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Turn the open/refuted checks into an ordered, deduplicated list of imperative
+    actions — the user-facing PROPOSAL (what to do), not the epistemic why."""
+    out, seen = [], set()
+    for it in items:
+        status = it.get("status")
+        kind, action = _PROPOSAL_BY_STATUS.get(status, ("SUPPLY",
+            "supply a re-derivable artifact (raw_data / computation inputs / registry id) the engine can check"))
+        key = (kind, action)
+        if key in seen:
+            continue
+        seen.add(key)
+        out.append({"do": action, "kind": kind, "for_check": it.get("check"),
+                    "unlocks": "GROUNDED" if kind in ("CORRECT", "SUPPLY") else "ATTESTED (subject-grounded)"})
+    out.sort(key=lambda s: _KIND_RANK.get(s["kind"], 9))
+    return out
+
+
 def _coverage_for(check: dict[str, Any]) -> str:
     name, status = check.get("check"), check.get("status")
     if status in ("VERIFIED",):
@@ -112,6 +158,22 @@ def rcc(payload: dict[str, Any]) -> dict[str, Any]:
         except Exception:
             consilience_report = None
 
+    # THE PRODUCT OUTPUT: the proposal, not the why. Build the user's action list from
+    # the refuted (correct it) + generated (supply it) + unknowable (attest it) checks.
+    verdict_for_proposal = receipt.get("verified_verdict")
+    proposal = _solution_proposal(refuted + generated + unknowable)
+    if not proposal and verdict_for_proposal != "ACCEPT":
+        # bare claim: no checks ran, but it did not ACCEPT — still owe the user a path,
+        # not a silent "grounded". HOLD -> supply evidence; REJECT -> correct the claim.
+        proposal = _solution_proposal([{"check": "base_contract",
+                                        "status": "UNSUPPORTED" if verdict_for_proposal == "HOLD" else "REJECT"}])
+    if proposal:
+        top = proposal[0]
+        headline_action = f"{top['kind']}: {top['do']}" if len(proposal) == 1 else \
+            f"{top['kind']} first — {top['do']}  (+{len(proposal) - 1} more step(s) to fully ground)"
+    else:
+        headline_action = "No action needed — the claim is grounded (only the standing Löbian limit applies)."
+
     verdict = receipt.get("verified_verdict")
     if refuted:
         headline = "REFUTED — contradicts a grounded invariant (inadmissible-because-false)"
@@ -125,6 +187,9 @@ def rcc(payload: dict[str, Any]) -> dict[str, Any]:
     body = {
         "schema": "capas-reflexive-conformal-certificate-v1",
         "claim_id": (payload.get("claim") or {}).get("id"),
+        # PROPOSAL FIRST (what the user does), then the verdict, then the why (below).
+        "headline_action": headline_action,
+        "solution_proposal": proposal,        # ordered imperative steps to ground the claim (empty if grounded)
         "headline": headline,
         "verdict": verdict, "scope": receipt.get("scope"),
         "admissibility_score": adm.get("score"),          # the dense reward in [0,1]

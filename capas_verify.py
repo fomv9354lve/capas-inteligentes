@@ -561,8 +561,10 @@ def rederive_calculation(evidence: dict[str, Any]) -> dict[str, Any] | None:
             val = _safe_eval(comp.get("expression", ""), inp)
         else:
             return {"operation": op, "status": "UNSUPPORTED_OP", "match": None}
-    except Exception as e:  # malformed artifact -> cannot re-derive
-        return {"operation": op, "status": "ERROR", "error": str(e), "match": False}
+    except Exception as e:  # malformed artifact -> cannot re-derive (NOT a proven mismatch):
+        # match=None routes to HOLD (GIGO-safe), not False which would REJECT as if
+        # fabricated. "Couldn't compute" must never be conflated with "computed and wrong".
+        return {"operation": op, "status": "ERROR", "error": str(e), "reported": reported, "match": None}
     reported_f = float(reported) if isinstance(reported, (int, float)) else None
     match = reported_f is not None and abs(val - reported_f) <= max(tol, 1e-9)
     return {"operation": op, "re_derived": round(val, 6), "reported": reported,
@@ -1392,14 +1394,14 @@ def verify(payload: dict[str, Any], use_cache: bool = True) -> dict[str, Any]:
             if calc.get("match") is True:
                 checks.append({"check": "calculation_rederivation", "status": "VERIFIED", "detail": calc})
                 rationale.append(
-                    f"Reported value {calc['reported']} re-derives from its raw inputs via "
+                    f"Reported value {calc.get('reported')} re-derives from its raw inputs via "
                     f"{calc['operation']} (= {calc['re_derived']}). Verified by re-computation, not trusted."
                 )
             elif calc.get("match") is False:
                 checks.append({"check": "calculation_rederivation", "status": "FAIL", "detail": calc})
                 final = "REJECT"
                 rationale.append(
-                    f"Reported value {calc['reported']} does NOT re-derive from its raw inputs "
+                    f"Reported value {calc.get('reported')} does NOT re-derive from its raw inputs "
                     f"({calc['operation']} gives {calc.get('re_derived')}). The reported number is "
                     "fabricated relative to the raw data — rejected (spreadsheet-integrity pattern)."
                 )
