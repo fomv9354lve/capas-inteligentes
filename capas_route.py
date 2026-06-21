@@ -72,6 +72,17 @@ def route(payload: dict[str, Any], jurisdiction: str | None = None) -> dict[str,
         add("re-execution", "a dimensional-consistency claim is present (SI exponent check)")
     if any(k in ev for k in ("computation", "integration")):
         add("re-execution", "a deterministic computation/integration artifact is present")
+    rep = ev.get("reproduction")
+    if isinstance(rep, dict):
+        st = rep.get("stochastic") or {}
+        if st.get("method") and st.get("seed") is None:
+            add("attest", f"a stochastic method ({st.get('method')}) is declared with no recorded seed — not reproducible")
+        elif st.get("method") and not st.get("committed_before_data"):
+            add("signed-provenance", f"a stochastic result is reproducible only under a post-hoc seed ({st.get('seed')!r}) — seed-conditional, attest")
+        elif rep.get("tolerance") and rep.get("tolerance_basis") not in (
+                "instrument_precision", "method_acceptance_criterion", "floating_point_epsilon",
+                "regulatory_limit", "measurement_uncertainty", "rounding_half_ulp"):
+            add("attest", "a comparison tolerance is declared without a recognized basis — unjustified band")
     if ev.get("derivation") is not None:
         env = ev.get("environment") or {}
         pinned = all(env.get(k) for k in ("language", "version", "os", "locale"))

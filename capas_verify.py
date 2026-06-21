@@ -597,6 +597,53 @@ def rederive_integration(evidence: dict[str, Any]) -> dict[str, Any] | None:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# Reproduction policy: bit-exact equality is the WRONG default for floating-point
+# science (float addition is non-associative; parallel/GPU reductions reorder it;
+# even greedy temperature=0 LLM inference is non-deterministic by batch size). A
+# bitwise verifier therefore FALSELY REJECTS correct work. Conversely, a stochastic
+# method (MCMC/bootstrap/SGD) re-derived under a producer-CHOSEN recorded seed can
+# FALSELY ACCEPT a cherry-picked result (seed-hacking). This policy closes both:
+#   * a numeric result is GATE-comparable within a tolerance only if that tolerance
+#     carries a recognized BASIS (instrument precision / method acceptance criterion
+#     / float epsilon / regulatory limit / measurement uncertainty). An unjustified
+#     band cannot gate a value -> ATTEST/HOLD (standard-above).
+#   * a stochastic method with NO recorded seed is not reproducible -> HOLD.
+#   * a stochastic method WITH a seed is reproducible-under-that-seed only: GATE
+#     iff the seed was committed BEFORE the data (pre-registration, seed-hack-proof);
+#     otherwise ATTEST and disclose seed-conditionality with the seed pinned, so a
+#     reviewer can re-run under other seeds.
+# ─────────────────────────────────────────────────────────────────────────────
+JUSTIFIED_TOLERANCE_BASES = {
+    "instrument_precision", "method_acceptance_criterion", "floating_point_epsilon",
+    "regulatory_limit", "measurement_uncertainty", "rounding_half_ulp",
+}
+
+
+def assess_reproduction(evidence: dict[str, Any]) -> dict[str, Any] | None:
+    """Evaluate the reproduction discipline of a numeric claim. evidence['reproduction']
+    = {mode: 'exact'|'bounded', tolerance, tolerance_basis, stochastic:{method, seed,
+    committed_before_data}}."""
+    rep = evidence.get("reproduction")
+    if not isinstance(rep, dict):
+        return None
+    out: dict[str, Any] = {"mode": str(rep.get("mode", "bounded")).lower()}
+    tol = rep.get("tolerance")
+    basis = rep.get("tolerance_basis")
+    out["tolerance"] = tol
+    out["tolerance_basis"] = basis
+    # A nonzero band must be justified; exact mode / no band is fine.
+    out["tolerance_justified"] = True if (tol in (None, 0, 0.0) or out["mode"] == "exact") \
+        else (basis in JUSTIFIED_TOLERANCE_BASES)
+    stoch = rep.get("stochastic")
+    if isinstance(stoch, dict):
+        out["stochastic_method"] = stoch.get("method")
+        out["seed"] = stoch.get("seed")
+        out["has_seed"] = stoch.get("seed") is not None
+        out["committed_before_data"] = bool(stoch.get("committed_before_data"))
+    return out
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # Domain extension (Tier-1, pure-deterministic): cryptographic verification,
 # accounting identities, and dimensional consistency. Each re-derives a claimed
 # fact bit-exactly (or within a declared tolerance) from inputs, with zero added
@@ -662,7 +709,39 @@ def rederive_accounting(evidence: dict[str, Any]) -> dict[str, Any] | None:
             end = float(a["beginning"]) + float(a.get("operating", 0)) + float(a.get("investing", 0)) + float(a.get("financing", 0))
             return {"identity": ident, "lhs": round(end, 6), "rhs": round(float(a["ending"]), 6),
                     "match": abs(end - float(a["ending"])) <= tol}
-    except (KeyError, ValueError, TypeError):
+        if ident in ("financial_ratio", "ratio"):
+            # RE-DERIVE a reported ratio from its raw components — never trust the
+            # declared value. The one judgement seam (which line items go in the
+            # numerator/denominator) is PINNED by ``ratio`` + the named components,
+            # so re-derivation gives a single right answer. Default tolerance is a
+            # relative 0.5% (ratios are unitless) unless the claim pins one.
+            rname = str(a.get("ratio", "")).lower().replace("-", "_").replace(" ", "_")
+            rtol = float(a.get("tolerance", 0.005) or 0.0)  # relative, ratios are unitless
+            f = lambda k: float(a[k])  # noqa: E731 — KeyError -> MALFORMED below
+            _RATIOS = {
+                "current_ratio":        lambda: f("current_assets") / f("current_liabilities"),
+                "quick_ratio":          lambda: (f("current_assets") - float(a.get("inventory", 0))) / f("current_liabilities"),
+                "debt_to_equity":       lambda: f("total_debt") / f("total_equity"),
+                "debt_to_equity_ratio": lambda: f("total_debt") / f("total_equity"),
+                "return_on_equity":     lambda: f("net_income") / f("total_equity"),
+                "roe":                  lambda: f("net_income") / f("total_equity"),
+                "return_on_assets":     lambda: f("net_income") / f("total_assets"),
+                "roa":                  lambda: f("net_income") / f("total_assets"),
+                "gross_margin":         lambda: (f("revenue") - f("cogs")) / f("revenue"),
+                "net_margin":           lambda: f("net_income") / f("revenue"),
+                "eps":                  lambda: (f("net_income") - float(a.get("preferred_dividends", 0))) / f("shares_outstanding"),
+                "earnings_per_share":   lambda: (f("net_income") - float(a.get("preferred_dividends", 0))) / f("shares_outstanding"),
+            }
+            if rname not in _RATIOS:
+                return {"identity": ident, "ratio": rname, "status": "UNKNOWN_RATIO", "match": False}
+            recomputed = _RATIOS[rname]()
+            declared = float(a["reported"])
+            denom = abs(recomputed) or 1.0
+            ok = abs(recomputed - declared) / denom <= rtol
+            return {"identity": ident, "ratio": rname, "lhs": round(declared, 6),
+                    "rhs": round(recomputed, 6), "re_derived": round(recomputed, 6),
+                    "match": ok}
+    except (KeyError, ValueError, TypeError, ZeroDivisionError):
         return {"identity": ident, "status": "MALFORMED", "match": False}
     return {"identity": ident, "status": "UNKNOWN_IDENTITY", "match": False}
 
@@ -776,7 +855,7 @@ def _artifact_hash(evidence: dict[str, Any]) -> str | None:
     re-check against the exact same inputs."""
     keys = ("raw_data", "raw", "computation", "derivation", "environment",
             "registry", "integration", "zk_proof", "quantum_circuit", "quantum_proof",
-            "crypto", "accounting", "dimensions")
+            "crypto", "accounting", "dimensions", "reproduction")
     artifacts = {k: evidence[k] for k in keys if k in evidence}
     if not artifacts:
         return None
@@ -822,7 +901,7 @@ def _receipt(payload, base_verdict, final, scope, tier, checks, rationale) -> di
 # (which rejects unknown fields) and consumed by this layer instead.
 _EXTENSION_KEYS = {"raw_data", "raw", "computation", "derivation", "environment",
                    "registry", "integration", "zk_proof", "quantum_circuit", "quantum_proof",
-                   "crypto", "accounting", "dimensions",
+                   "crypto", "accounting", "dimensions", "reproduction",
                    *PROVENANCE_KEYS}
 
 try:  # quantum re-derivation rung (needs numpy); deterministic statevector + frontier
@@ -879,6 +958,42 @@ def verify(payload: dict[str, Any]) -> dict[str, Any]:
         scope = "ATTEST"
         if final == "ACCEPT":
             final = "HOLD"
+
+    # Reproduction policy: bit-exact vs bounded-error, and stochastic/seed discipline.
+    # Closes the two real determinism cracks (false-reject from float/GPU reordering;
+    # false-accept from seed-hacking) without abandoning re-derivation.
+    if final == "ACCEPT":
+        rep = assess_reproduction(evidence)
+        if rep is not None:
+            if not rep["tolerance_justified"]:
+                checks.append({"check": "reproduction_tolerance", "status": "UNJUSTIFIED_BAND", "detail": rep})
+                scope = "ATTEST"; final = "HOLD"
+                rationale.append(
+                    f"A comparison tolerance ({rep['tolerance']}) is declared without a recognized "
+                    f"basis (got {rep.get('tolerance_basis')!r}; expected one of "
+                    f"{sorted(JUSTIFIED_TOLERANCE_BASES)}). An unjustified band can pass a wrong "
+                    "value — held until the tolerance is tied to an instrument/method/regulatory basis.")
+            if final == "ACCEPT" and rep.get("stochastic_method"):
+                if not rep.get("has_seed"):
+                    checks.append({"check": "reproduction_seed", "status": "NO_SEED", "detail": rep})
+                    scope = "ATTEST"; final = "HOLD"
+                    rationale.append(
+                        f"The result is produced by a stochastic method ({rep['stochastic_method']}) "
+                        "with NO recorded seed: it is not reproducible. Record the seed to re-derive.")
+                elif rep.get("committed_before_data"):
+                    checks.append({"check": "reproduction_seed", "status": "PRECOMMITTED_SEED", "detail": rep})
+                    rationale.append(
+                        f"Stochastic method ({rep['stochastic_method']}) re-derives under a seed "
+                        f"committed BEFORE the data (seed={rep.get('seed')!r}); pre-registration "
+                        "rules out seed-hacking — GATE-eligible.")
+                else:
+                    checks.append({"check": "reproduction_seed", "status": "SEED_CONDITIONAL", "detail": rep})
+                    scope = "ATTEST"
+                    rationale.append(
+                        f"Stochastic method ({rep['stochastic_method']}) re-derives ONLY under the "
+                        f"producer-chosen seed={rep.get('seed')!r}. Reproducible-under-that-seed is not "
+                        "robustness across seeds (seed-hacking risk); the seed is pinned for a reviewer "
+                        "to re-run under others — ATTEST, not GATE.")
 
     # The base gate already rejects/holds the self-failing cases (p>alpha, missing,
     # required-boolean-false). We only ADD scrutiny where the base said ACCEPT.
@@ -987,17 +1102,35 @@ def verify(payload: dict[str, Any]) -> dict[str, Any]:
 
     if final == "ACCEPT" and evidence.get("accounting") is not None:
         ac = rederive_accounting(evidence)
+        _is_ratio = ac is not None and ac.get("ratio") is not None
         if ac and ac.get("match") is True:
             checks.append({"check": "accounting_identity", "status": "VERIFIED", "detail": ac})
+            if _is_ratio:
+                rationale.append(
+                    f"Financial ratio '{ac['ratio']}' re-derives from its components: reported "
+                    f"{ac['lhs']} = re-computed {ac['rhs']} (re-derived from raw line items, not trusted).")
+            else:
+                rationale.append(
+                    f"Accounting identity '{ac['identity']}' holds: {ac['lhs']} = {ac['rhs']} "
+                    "(re-derived, not trusted).")
+        elif ac and ac.get("match") is False and ac.get("status") in ("UNKNOWN_RATIO", "UNKNOWN_IDENTITY", "MALFORMED"):
+            # Cannot re-derive (unrecognised/ill-formed) -> do not silently accept; hold to attest.
+            scope = "ATTEST"; final = "HOLD"
+            checks.append({"check": "accounting_identity", "status": ac.get("status"), "detail": ac})
             rationale.append(
-                f"Accounting identity '{ac['identity']}' holds: {ac['lhs']} = {ac['rhs']} "
-                "(re-derived, not trusted).")
+                f"Accounting claim could not be re-derived ({ac.get('status')}); not re-derivable by the "
+                "engine — held for a recognised identity/ratio with its raw components, or attestation.")
         elif ac and ac.get("match") is False:
             checks.append({"check": "accounting_identity", "status": "FAIL", "detail": ac})
             final = "REJECT"
-            rationale.append(
-                f"Accounting identity '{ac['identity']}' is violated: {ac.get('lhs')} ≠ "
-                f"{ac.get('rhs')} — the books do not balance; rejected.")
+            if _is_ratio:
+                rationale.append(
+                    f"Financial ratio '{ac['ratio']}' does NOT re-derive: reported {ac['lhs']} ≠ "
+                    f"re-computed {ac['rhs']} from the raw line items — rejected by re-derivation.")
+            else:
+                rationale.append(
+                    f"Accounting identity '{ac['identity']}' is violated: {ac.get('lhs')} ≠ "
+                    f"{ac.get('rhs')} — the books do not balance; rejected.")
 
     if final == "ACCEPT" and evidence.get("dimensions") is not None:
         dm = rederive_dimensions(evidence)
