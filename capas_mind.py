@@ -23,6 +23,8 @@ import capas_rcc
 import capas_think
 import capas_value
 
+MATURITY = "research"   # Cara 2 — research-grade, NOT product-verified (see CARA2_BOUNDARY.md)
+
 
 def cognize(top_payload: dict[str, Any],
             supply: Callable[[dict], dict | None],
@@ -42,6 +44,8 @@ def cognize(top_payload: dict[str, Any],
     verdict = thought["verdict"]
     return {
         "schema": "capas-cognition-v1",
+        "tier": "research-grade (Cara 2) — not product-verified; the verdict's GATE layer is "
+                "deterministic, the rest is research scaffolding",
         "claim": (top_payload.get("claim") or {}).get("id"),
         "verdict": verdict,
         "thought": {k: thought[k] for k in ("passes", "residual_trajectory", "settled_residual",
