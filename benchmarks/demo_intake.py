@@ -77,6 +77,20 @@ def run() -> int:
     checks.append(("source does not support -> fields False -> gate does not ACCEPT",
                    _verdict(ra["payload"]) != "ACCEPT"))
 
+    # 6) C2 CLOSURE: a SYSTEMATIC single-model misread (grounded-but-wrong) is MISSED by K runs
+    #    of that one model, but CAUGHT across DISTINCT models.
+    def m_truth_false(field, ct, st, idx):            # correct model: source does NOT support it
+        return {"supported": False, "span": None}
+    def m_systematic_wrong(field, ct, st, idx):       # one model wrong the SAME way every run, with a hallucinated span
+        return {"supported": True, "span": "hallucinated span"}
+    single = I.extract_field("effect_consistency", TEXT, SRC, m_systematic_wrong, k=3)
+    multi = I.extract_field_multimodel("effect_consistency", TEXT, SRC,
+                                       [m_truth_false, m_truth_false, m_systematic_wrong])
+    checks.append(("C2 hole reproduced: K runs of ONE model agree on the wrong value -> EXTRACTED (missed)",
+                   single["status"] == "EXTRACTED" and single["value"] is True))
+    checks.append(("C2 CLOSED: across DISTINCT models the wrong model disagrees -> DEFER (caught)",
+                   multi["status"] == "DEFER"))
+
     ok = all(c for _, c in checks)
     for label, c in checks:
         print(f"{'✅' if c else '❌'} {label}")

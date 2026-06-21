@@ -48,6 +48,56 @@ def extract_field(field: str, claim_text: str, source_text: str, extractor: Extr
             "span": spans[0] if spans else None, "votes": votes}
 
 
+def extract_field_multimodel(field: str, claim_text: str, source_text: str,
+                             extractors: list[Extractor], runs_per_model: int = 1) -> dict[str, Any]:
+    """C2 FIX — triangulate across DISTINCT models. Each extractor is a different model
+    (genuinely independent), so a SYSTEMATIC single-model misread (which K runs of that SAME
+    model would agree on and miss) is now exposed the moment a model that does not share its
+    bias disagrees -> DEFER. Independence groups = MODELS, so the residual reflects real
+    model-diversity, not repeated same-model runs."""
+    per_model = []
+    for ex in extractors:
+        runs = [ex(field, claim_text, source_text, r) for r in range(runs_per_model)]
+        sv = [v.get("supported") for v in runs if v.get("supported") is not None]
+        spans = [v.get("span") for v in runs if v.get("span")]
+        per_model.append({"supported": (sv[0] if sv and len(set(sv)) == 1 else None),
+                          "span": spans[0] if spans else None})
+    decided = [p["supported"] for p in per_model if p["supported"] is not None]
+    spans = [p["span"] for p in per_model if p["span"]]
+    if not decided or len(set(decided)) != 1:
+        return {"field": field, "value": None, "status": "DEFER",
+                "why": "models disagree or abstain — a systematic single-model misread is caught across models",
+                "residual": 1.0, "models": len(extractors), "model_votes": [p["supported"] for p in per_model]}
+    value = decided[0]
+    if value is True and not spans:
+        return {"field": field, "value": None, "status": "DEFER",
+                "why": "affirmed but no source span grounds it", "residual": 1.0}
+    groups = len(decided)                              # independent MODELS that agree
+    return {"field": field, "value": bool(value), "status": "EXTRACTED",
+            "residual": round(1.0 / (1.0 + groups), 4), "models_agreeing": groups,
+            "span": spans[0] if spans else None}
+
+
+def intake_multimodel(claim_text: str, claim_type: str, source_text: str,
+                      extractors: list[Extractor]) -> dict[str, Any]:
+    """Like intake(), but each field is triangulated across DISTINCT models (C2-resistant)."""
+    import capas
+    required = capas.required_fields_for_claim(claim_type) or []
+    evidence, deferred, per_field, total = {}, [], [], 1.0
+    for field in required:
+        r = extract_field_multimodel(field, claim_text, source_text, extractors)
+        per_field.append(r)
+        if r["status"] == "EXTRACTED":
+            evidence[field] = r["value"]; total *= r["residual"]
+        else:
+            deferred.append(field)
+    return {"payload": {"schema_version": "capas-claim-payload-v3",
+                        "claim": {"id": "intake", "type": claim_type, "text": claim_text}, "evidence": evidence},
+            "evidence_extracted": evidence, "deferred_fields": deferred,
+            "extraction_residual": round(total, 6), "fail_closed": bool(deferred), "per_field": per_field,
+            "note": "independence is across DISTINCT models; a systematic single-model misread is caught and deferred."}
+
+
 def intake(claim_text: str, claim_type: str, source_text: str, extractor: Extractor,
            k: int = 3) -> dict[str, Any]:
     """Build a structured payload from raw text — fail-closed. Returns the evidence the
