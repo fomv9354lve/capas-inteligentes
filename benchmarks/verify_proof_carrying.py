@@ -25,6 +25,11 @@ def _payload(cid, text, ctype, evidence):
     return {"claim": {"id": cid, "text": text, "type": ctype}, "evidence": evidence, "schema_version": SV}
 
 
+def _commit(input_hash, output, nonce):  # mirror the reference ZK commitment backend
+    import hashlib
+    return "sha256:" + hashlib.sha256(f"{input_hash}|{output}|{nonce}".encode()).hexdigest()
+
+
 def run():
     # raw data with a real, large separation -> tiny p
     a = [10.1, 10.3, 9.9, 10.2, 10.0, 10.4, 9.8, 10.1]
@@ -111,6 +116,49 @@ def run():
                   {"reported_value": 5.0, "reference_value": 5.0, "tolerance": 1.0, "metric_period_match": True,
                    "registry": {"posted_value": 7.2, "rederived_value": 5.0, "tolerance": 0.1, "source_id": "NCT01234567"}}),
          "HOLD", "GATE"),
+        ("PASSAGE A v2: peak area RE-DERIVES from raw signal (auto integration)",
+         _payload("v1", "Peak area is 20.0", "financial_metric_claim",
+                  {"reported_value": 1.0, "reference_value": 1.0, "tolerance": 1.0, "metric_period_match": True,
+                   "integration": {"signal": {"time": [0, 1, 2, 3, 4], "response": [0, 5, 10, 5, 0]},
+                                   "baseline_start": 0, "baseline_end": 4, "reported_area": 20.0, "tolerance": 0.1}}),
+         "ACCEPT", "GATE"),
+        ("PASSAGE A v2: MANUAL re-integration diverges, UNJUSTIFIED -> hold",
+         _payload("v2", "Peak area is 35.0", "financial_metric_claim",
+                  {"reported_value": 1.0, "reference_value": 1.0, "tolerance": 1.0, "metric_period_match": True,
+                   "integration": {"signal": {"time": [0, 1, 2, 3, 4], "response": [0, 5, 10, 5, 0]},
+                                   "baseline_start": 0, "baseline_end": 4, "tolerance": 0.1,
+                                   "manual_override": {"area": 35.0}}}),
+         "HOLD", "ATTEST"),
+        ("PASSAGE A v2: MANUAL re-integration diverges but ATTESTED -> surfaced",
+         _payload("v3", "Peak area is 35.0", "financial_metric_claim",
+                  {"reported_value": 1.0, "reference_value": 1.0, "tolerance": 1.0, "metric_period_match": True,
+                   "integration": {"signal": {"time": [0, 1, 2, 3, 4], "response": [0, 5, 10, 5, 0]},
+                                   "baseline_start": 0, "baseline_end": 4, "tolerance": 0.1,
+                                   "manual_override": {"area": 35.0, "analyst": "J. Doe", "reason": "manual baseline correction per SOP-17"}}}),
+         "ATTEST", "ATTEST"),
+        ("ZK: result verified over HIDDEN data (trusted backend)",
+         _payload("z1", "Aggregate over private cohort = 42", "financial_metric_claim",
+                  {"reported_value": 1.0, "reference_value": 1.0, "tolerance": 1.0, "metric_period_match": True,
+                   "zk_proof": {"scheme": "ref-commitment", "verifying_key_id": "capas-ref-commitment",
+                                "public_inputs": {"commitment": _commit("phi_dataset_v1", 42.0, "n1"),
+                                                  "claimed_output": 42.0, "tolerance": 0},
+                                "proof": {"opening": {"input_hash": "phi_dataset_v1", "output": 42.0}, "nonce": "n1"},
+                                "statement": "mean(private_cohort)==42"}}),
+         "ACCEPT", "GATE"),
+        ("ZK: proof present but verifying key UNTRUSTED -> attest",
+         _payload("z2", "Aggregate = 42", "financial_metric_claim",
+                  {"reported_value": 1.0, "reference_value": 1.0, "tolerance": 1.0, "metric_period_match": True,
+                   "zk_proof": {"scheme": "groth16", "verifying_key_id": "unregistered-vk-xyz",
+                                "public_inputs": {"claimed_output": 42.0}, "proof": {"a": "..."}}}),
+         "HOLD", "ATTEST"),
+        ("ZK: proof FAILS verification (output not bound) -> reject",
+         _payload("z3", "Aggregate = 99", "financial_metric_claim",
+                  {"reported_value": 1.0, "reference_value": 1.0, "tolerance": 1.0, "metric_period_match": True,
+                   "zk_proof": {"scheme": "ref-commitment", "verifying_key_id": "capas-ref-commitment",
+                                "public_inputs": {"commitment": _commit("phi_dataset_v1", 42.0, "n1"),
+                                                  "claimed_output": 99.0, "tolerance": 0},
+                                "proof": {"opening": {"input_hash": "phi_dataset_v1", "output": 42.0}, "nonce": "n1"}}}),
+         "REJECT", "GATE"),
         ("ATTESTED: causal all-true WITH signed provenance",
          _payload("s4", "intervention X causes outcome Y", "causal_mechanism_claim",
                   {"intervention_or_natural_experiment": True, "temporal_order_established": True,

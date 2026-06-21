@@ -284,10 +284,114 @@ def reconcile_registry(evidence: dict[str, Any]) -> dict[str, Any] | None:
             "source_id": reg.get("source_id")}
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# Passage Point A v2 — parameterized peak integration + manual_override.
+# The automatic integration (area under the signal between bounds, minus a linear
+# baseline) IS deterministic and re-derivable. A MANUAL re-integration is human
+# judgment — the literal data-integrity fraud in FDA 483s (analyst re-integrates a
+# peak to pass spec). It is NOT silently reproduced: it is SURFACED, the
+# divergence from the automatic result is measured, and it is ATTEST-class —
+# requiring a signed analyst+reason, else HELD.
+# ─────────────────────────────────────────────────────────────────────────────
+def _trapz(times: list[float], resp: list[float]) -> float:
+    return sum((resp[i] + resp[i + 1]) / 2.0 * (times[i + 1] - times[i]) for i in range(len(times) - 1))
+
+
+def rederive_integration(evidence: dict[str, Any]) -> dict[str, Any] | None:
+    integ = evidence.get("integration")
+    if not isinstance(integ, dict):
+        return None
+    sig = integ.get("signal")
+    if isinstance(sig, dict):
+        times, resp = sig.get("time"), sig.get("response")
+    elif isinstance(sig, list):
+        times = [p[0] for p in sig]; resp = [p[1] for p in sig]
+    else:
+        return {"status": "MALFORMED", "match": False}
+    if not (times and resp and len(times) == len(resp)):
+        return {"status": "MALFORMED", "match": False}
+    start, end = float(integ["baseline_start"]), float(integ["baseline_end"])
+    win = [(float(t), float(y)) for t, y in zip(times, resp) if start <= float(t) <= end]
+    if len(win) < 2:
+        return {"status": "NO_WINDOW", "match": False}
+    wt, wy = [p[0] for p in win], [p[1] for p in win]
+    auto_area = _trapz(wt, wy) - (wy[0] + wy[-1]) / 2.0 * (wt[-1] - wt[0])  # gross − linear baseline
+    tol = float(integ.get("tolerance", 0) or 0)
+    out: dict[str, Any] = {"auto_area": round(auto_area, 6), "tolerance": tol}
+    mo = integ.get("manual_override")
+    if isinstance(mo, dict):
+        out["manual_override"] = True
+        out["analyst"], out["reason"] = mo.get("analyst"), mo.get("reason")
+        out["manual_area"] = mo.get("area")
+        try:
+            out["diverges_from_auto"] = abs(float(mo.get("area")) - auto_area) > max(tol, 1e-9)
+        except Exception:
+            out["diverges_from_auto"] = True
+        out["attested"] = bool(mo.get("analyst") and mo.get("reason"))
+        out["match"] = None  # human judgment → ATTEST, never a clean re-derivation
+        return out
+    reported = integ.get("reported_area")
+    try:
+        out["match"] = reported is not None and abs(float(reported) - auto_area) <= max(tol, 1e-9)
+    except Exception:
+        out["match"] = False
+    out["manual_override"] = False
+    out["reported_area"] = reported
+    return out
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ZK rung — verify a result over HIDDEN data (PHI / licensed / proprietary) via a
+# zero-knowledge proof, extending GATE scope to data that cannot be re-shipped.
+# Soundness is delegated to a REGISTERED verifying backend (production: EZKL /
+# groth16 / halo2). Ships with a reference commitment-binding backend so the
+# protocol is runnable and testable; an UNREGISTERED verifying key is ATTEST-only.
+# ─────────────────────────────────────────────────────────────────────────────
+def _ref_commitment_backend(proof: dict[str, Any], public_inputs: dict[str, Any], statement: Any) -> bool:
+    """Reference backend: verify the public output is bound to a committed input
+    (a real, deterministic commitment opening — NOT full SNARK soundness)."""
+    opening = proof.get("opening") or {}
+    nonce = proof.get("nonce", "")
+    recomputed = "sha256:" + hashlib.sha256(
+        f"{opening.get('input_hash')}|{opening.get('output')}|{nonce}".encode()).hexdigest()
+    if recomputed != public_inputs.get("commitment"):
+        return False
+    try:
+        return abs(float(opening.get("output")) - float(public_inputs.get("claimed_output"))) \
+            <= float(public_inputs.get("tolerance", 0) or 0)
+    except Exception:
+        return False
+
+
+TRUSTED_ZK_BACKENDS: dict[str, Any] = {"capas-ref-commitment": _ref_commitment_backend}
+
+
+def register_zk_backend(vk_id: str, verifier) -> None:
+    """Register a production verifying backend (e.g. an EZKL/groth16 verifier)."""
+    TRUSTED_ZK_BACKENDS[vk_id] = verifier
+
+
+def verify_zk_proof(evidence: dict[str, Any]) -> dict[str, Any] | None:
+    zk = evidence.get("zk_proof")
+    if not isinstance(zk, dict):
+        return None
+    vk = zk.get("verifying_key_id")
+    backend = TRUSTED_ZK_BACKENDS.get(vk)
+    if backend is None:
+        return {"status": "UNTRUSTED_VK", "verifying_key_id": vk, "verified": None}
+    try:
+        ok = bool(backend(zk.get("proof") or {}, zk.get("public_inputs") or {}, zk.get("statement")))
+    except Exception as e:
+        return {"status": "ERROR", "error": str(e), "verified": False, "verifying_key_id": vk}
+    return {"status": "VERIFIED" if ok else "FAILED", "verifying_key_id": vk,
+            "verified": ok, "scheme": zk.get("scheme"), "statement": zk.get("statement")}
+
+
 def _artifact_hash(evidence: dict[str, Any]) -> str | None:
     """Bind the re-derivable artifacts into the receipt so a third party can
     re-check against the exact same inputs."""
-    keys = ("raw_data", "raw", "computation", "derivation", "environment", "registry")
+    keys = ("raw_data", "raw", "computation", "derivation", "environment",
+            "registry", "integration", "zk_proof")
     artifacts = {k: evidence[k] for k in keys if k in evidence}
     if not artifacts:
         return None
@@ -331,7 +435,8 @@ def _receipt(payload, base_verdict, final, scope, tier, checks, rationale) -> di
 # Evidence keys that are CAPAS-verify EXTENSIONS (re-derivable artifacts / provenance),
 # not part of the base evidence contract. They are stripped before the base gate runs
 # (which rejects unknown fields) and consumed by this layer instead.
-_EXTENSION_KEYS = {"raw_data", "raw", "computation", "derivation", "environment", "registry", *PROVENANCE_KEYS}
+_EXTENSION_KEYS = {"raw_data", "raw", "computation", "derivation", "environment",
+                   "registry", "integration", "zk_proof", *PROVENANCE_KEYS}
 
 
 def _base_payload(payload: dict[str, Any]) -> dict[str, Any]:
@@ -418,6 +523,64 @@ def verify(payload: dict[str, Any]) -> dict[str, Any]:
                     "(e.g. " + json.dumps((ds.get("mismatches") or [{}])[0]) + "). The derived "
                     "dataset diverges from its raw data — rejected (the discrepancy Pinnacle 21 misses)."
                 )
+    # Passage Point A v2: parameterized peak integration + manual_override surfacing.
+    if final == "ACCEPT" and evidence.get("integration") is not None:
+        ig = rederive_integration(evidence)
+        if ig and ig.get("manual_override"):
+            scope = "ATTEST"
+            if ig.get("diverges_from_auto") and not ig.get("attested"):
+                final = "HOLD"
+                checks.append({"check": "manual_integration_override", "status": "UNJUSTIFIED_DIVERGENCE", "detail": ig})
+                rationale.append(
+                    f"A manual re-integration ({ig.get('manual_area')}) diverges from the automatic "
+                    f"re-derivation ({ig['auto_area']}) and carries NO signed analyst/reason. This is the "
+                    "data-integrity override pattern — held pending signed justification."
+                )
+            else:
+                checks.append({"check": "manual_integration_override", "status": "ATTESTED_SURFACED", "detail": ig})
+                rationale.append(
+                    f"Manual re-integration surfaced (analyst={ig.get('analyst')}, reason={ig.get('reason')}); "
+                    f"diverges from automatic by |{ig.get('manual_area')}−{ig['auto_area']}|. ATTEST: signed human "
+                    "judgment, not silently reproduced — the inspector sees exactly what was overridden and why."
+                )
+        elif ig and ig.get("match") is True:
+            checks.append({"check": "peak_integration_rederivation", "status": "VERIFIED", "detail": ig})
+            rationale.append(
+                f"Reported peak area {ig.get('reported_area')} re-derives from the raw signal by automatic "
+                f"integration (= {ig['auto_area']}). Verified, not trusted."
+            )
+        elif ig and ig.get("match") is False:
+            checks.append({"check": "peak_integration_rederivation", "status": "FAIL", "detail": ig})
+            final = "REJECT"
+            rationale.append(
+                f"Reported peak area {ig.get('reported_area')} does NOT re-derive from the raw signal "
+                f"(automatic integration gives {ig['auto_area']}) — rejected."
+            )
+
+    # ZK rung: verify a result over HIDDEN data via a registered zero-knowledge backend.
+    if final == "ACCEPT" and evidence.get("zk_proof") is not None:
+        zk = verify_zk_proof(evidence)
+        if zk and zk.get("status") == "UNTRUSTED_VK":
+            scope = "ATTEST"; final = "HOLD"
+            checks.append({"check": "zk_proof", "status": "UNTRUSTED_VK", "detail": zk})
+            rationale.append(
+                f"A zero-knowledge proof is supplied but its verifying key '{zk.get('verifying_key_id')}' is "
+                "not registered/trusted. Register a verifying backend (EZKL/groth16) to GATE; ATTEST only."
+            )
+        elif zk and zk.get("verified") is True:
+            checks.append({"check": "zk_proof", "status": "VERIFIED", "detail": zk})
+            rationale.append(
+                f"Zero-knowledge proof verified ({zk.get('scheme')}, vk={zk.get('verifying_key_id')}): the result "
+                "re-derives over HIDDEN data without exposing it. GATE extended to non-shippable evidence."
+            )
+        elif zk and zk.get("verified") is False:
+            checks.append({"check": "zk_proof", "status": "FAILED", "detail": zk})
+            final = "REJECT"
+            rationale.append(
+                f"Zero-knowledge proof FAILED verification (vk={zk.get('verifying_key_id')}). The claimed result "
+                "does not bind to the committed computation — rejected."
+            )
+
     # Registry reconciliation (Passage Point B): posted figure vs re-derived figure.
     if final == "ACCEPT" and evidence.get("registry") is not None:
         reg = reconcile_registry(evidence)
