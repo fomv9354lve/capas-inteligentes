@@ -26,6 +26,7 @@ from typing import Any, Callable
 import capas_admissibility
 import capas_braid
 import capas_hierarchy
+import capas_integration
 
 _GROUNDED = ("VERIFIED",)
 
@@ -65,10 +66,9 @@ def _advance(payload: dict[str, Any], supply: Callable[[dict], dict | None]) -> 
     return supplied if supplied is not None else payload
 
 
-def _braid_coherent(payload: dict[str, Any]) -> tuple[bool, list]:
-    """Integration core: weave the grounded leaves into the braid by their target;
-    a settled verdict is irreducible only if the whole coheres (no same-target
-    disagreement). Leaves carry evidence['target'] and evidence['value']."""
+def _braid_core(payload: dict[str, Any]) -> capas_braid.Braid:
+    """Integration core: weave the grounded leaves into the braid by their target.
+    Leaves carry evidence['target'] and evidence['value']."""
     br = capas_braid.Braid()
 
     def _walk(p):
@@ -79,7 +79,7 @@ def _braid_coherent(payload: dict[str, Any]) -> tuple[bool, list]:
             br.add({**p, "evidence": {k: v for k, v in ev.items() if k not in _META}},
                    target=ev["target"], value=float(ev["value"]), method=(p.get("claim") or {}).get("id", "?"))
     _walk(payload)
-    return (not br.faults(), br.faults())
+    return br
 
 
 def settle(payload: dict[str, Any], supply: Callable[[dict], dict | None],
@@ -98,7 +98,10 @@ def settle(payload: dict[str, Any], supply: Callable[[dict], dict | None],
             break
 
     final_residual = trajectory[-1]
-    coherent, faults = _braid_coherent(current)
+    core = _braid_core(current)
+    faults = core.faults()
+    coherent = not faults
+    phi = capas_integration.integration(core)         # the irreducibility of the thought (Φ-proxy)
     tree = capas_hierarchy.think(current)
     ignited = final_residual == 0 and coherent and tree["composed_class"] == "VERIFIED"
     if ignited:
@@ -116,6 +119,8 @@ def settle(payload: dict[str, Any], supply: Callable[[dict], dict | None],
         "settled_residual": final_residual,
         "ignited": ignited,
         "braid_coherent": coherent, "braid_faults": faults,
+        "integration_phi_proxy": phi["algebraic_connectivity"],   # λ₂: irreducibility of the thought
+        "irreducible": phi["irreducible"],
         "composed_class": tree["composed_class"],
         "frontier": tree["residual_to_subject"],
         "note": note,
