@@ -92,6 +92,18 @@ def run() -> int:
     checks.append(("coherent -> FLAG_COHERENT_RECOVERABLE (recalibratable, not fundamental)",
                    vc["verdict"] == "FLAG_COHERENT_RECOVERABLE"))
 
+    # beat-the-benchmark: complete budget re-derives a floor ABOVE the vendor headline, from
+    # published fields; mitigation prescription fires the right corrections.
+    fez = {"cz_error": 1.629e-3, "sx_error": 2.743e-4, "t1_us": 299.57, "t2_us": 33.9,
+           "readout": 5.371e-3, "zz_residual_hz": 50e3, "idle_ns": 300, "p01": 0.00854, "p10": 0.0022}
+    bud = P.complete_error_budget(fez)
+    checks.append((f"beat-IBM: complete floor {bud['exact_complete_floor']:.2e} > headline "
+                   f"{bud['headline_ibm_rb']:.2e} ({bud['exact_gap_x']}x, from published fields)",
+                   bud["exact_complete_floor"] > bud["headline_ibm_rb"] and bud["exact_gap_x"] > 1))
+    presc = P.mitigation_prescription(fez)
+    checks.append(("beat-IBM: mitigation prescribes DD for the dephasing-limited qubit (Tphi<50us)",
+                   any("decoupling" in a["action"] for a in presc["prescription"])))
+
     # consolidation: the budget-reconciliation must NOT flag a coherent-error device as too-clean,
     # and SHOULD flag a low-coherence over-clean result for investigation.
     rc_coh = P.reconcile_budget_with_measurement(0.73, 0.56, coherent_fraction=0.6, depth=24)
@@ -144,12 +156,15 @@ def run() -> int:
     # noise levels chosen so the curves ACTUALLY DECAY (like the real ~0.73@depth24 data) — kappa
     # is only identifiable where there is real decay (a too-good edge stays ~1 and kappa is noise).
     sweep_depths = [6, 8, 12, 16, 20, 28]
-    good = _sweep(0.01, sweep_depths)    # decays to ~0.8 — kappa identifiable here
-    bad = _sweep(0.04, sweep_depths)     # 4x CZ, decays hard -> clear ordering
-    # failure mode 1 (fixed): kappa in the scrambled regime is finite & sensible, NOT garbage (was 32.7)
-    kap = P.estimate_kappa(sweep_depths, good, naive_layer_error=1 - (1 - 0.01) * (1 - 2.7e-4) ** 2, min_depth=6)
-    checks.append((f"pipeline: kappa from a DECAYING scrambled curve is sane (got {kap['kappa']}, not garbage)",
-                   kap["kappa"] is not None and 0.3 < kap["kappa"] < 2.0))
+    good = _sweep(0.01, sweep_depths)
+    bad = _sweep(0.04, sweep_depths)
+    # failure mode 1 (fixed): the SLOPE method recovers kappa IGNORING a SPAM prefactor — the bug
+    # that made the good edge's single-point kappa come back ~10. Analytic curve with 0.85 SPAM:
+    naive_an = 0.012
+    xeb_spam = [0.85 * (1 - 0.40 * naive_an) ** d for d in sweep_depths]
+    kap = P.estimate_kappa(sweep_depths, xeb_spam, naive_layer_error=naive_an, min_depth=6)
+    checks.append((f"pipeline: slope method recovers kappa~0.40 IGNORING a 0.85 SPAM prefactor (got {kap['kappa']})",
+                   kap["kappa"] is not None and abs(kap["kappa"] - 0.40) < 0.05))
     # failure mode 2 (the fez cross-val failure): with a REAL 10x noise gap, good edge beats bad edge
     deep_good, deep_bad = good[-1], bad[-1]
     checks.append((f"pipeline: good edge XEB {deep_good:.3f} > bad edge {deep_bad:.3f} at depth "

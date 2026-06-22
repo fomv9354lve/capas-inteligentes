@@ -417,6 +417,99 @@ def reconcile_budget_with_measurement(measured_xeb: float, predicted_xeb: float,
                       "coherent-error device 'too clean'"}
 
 
+# ---------------------------------------------------------------------------
+# BEAT-THE-BENCHMARK: the vendor publishes an OPTIMISTIC single number (RB/IRB). We re-derive the
+# COMPLETE per-layer error budget from the SAME published fields — surfacing the terms the
+# headline number averages away. The exact additions (pure dephasing, ZZ-idle, SX, readout) are
+# 100% re-derivable from IBM's own calibration; the structured-circuit amplification is a
+# DOCUMENTED literature band (Proctor 2022: RB under-states structured-circuit error 3-10x), so it
+# is reported as a band+citation, not a point. This is how a deterministic layer 'beats' a
+# marketing benchmark: same data, honest number, fully auditable.
+# ---------------------------------------------------------------------------
+
+def complete_error_budget(row: dict[str, Any]) -> dict[str, Any]:
+    """Re-derive the complete per-2Q-layer error budget from published calibration fields, vs the
+    headline RB/CZ number. Inputs (all from a vendor calibration row): cz_error, sx_error,
+    t1_us, t2_us, readout (per measured qubit), zz_residual_hz, cz_time_ns (default 68),
+    idle_ns (default 0), sx_per_layer (default 2). Returns the headline, the EXACT complete floor,
+    the re-derivable gap, the per-term breakdown, and the literature structured-circuit band."""
+    cz = float(row.get("cz_error", 0.0))
+    sx = float(row.get("sx_error", 3.0e-4))
+    t1 = float(row.get("t1_us", 0.0)) or None
+    t2 = float(row.get("t2_us", 0.0)) or None
+    ro = float(row.get("readout", row.get("readout_q0", 0.0)) or 0.0)
+    zz_hz = abs(float(row.get("zz_residual_hz", 0.0)))
+    cz_ns = float(row.get("cz_time_ns", 68.0))
+    idle_ns = float(row.get("idle_ns", 0.0))
+    n_sx = int(row.get("sx_per_layer", 2))
+
+    layer_us = (cz_ns + n_sx * 32.0 + idle_ns) * 1e-3
+    gamma_phi = (1.0 / t2 - 1.0 / (2.0 * t1)) if (t1 and t2) else 0.0
+    gamma_phi = max(0.0, gamma_phi)
+    dephasing = layer_us * gamma_phi                       # EXACT from published T1,T2
+    zz_phase = 2.0 * 3.141592653589793 * zz_hz * (idle_ns * 1e-9)
+    zz_err = 0.5 * zz_phase * zz_phase                     # EXACT from published ZZ (coherent->infid)
+    sx_contrib = n_sx * sx                                 # EXACT from published SX
+    leakage = 1.0e-4                                       # ESTIMATE (Negirneac 2021, marked)
+
+    exact_floor = 1.0 - (1 - cz) * (1 - sx_contrib) * (1 - dephasing) * (1 - zz_err) * (1 - leakage)
+    gap = round(exact_floor / cz, 2) if cz > 0 else None
+    components = {"cz_rb_headline": round(cz, 6), "sx (x%d)" % n_sx: round(sx_contrib, 6),
+                  "dephasing_per_layer": round(dephasing, 6), "zz_idle": round(zz_err, 6),
+                  "leakage_estimate": leakage, "readout_per_qubit": round(ro, 6)}
+    dominant = max((k for k in components if k != "cz_rb_headline"),
+                   key=lambda k: components[k], default=None)
+    # structured-circuit literature band (Proctor 2022): RB under-states by 3-10x for structured circuits
+    structured_band = [round(exact_floor * 3, 5), round(exact_floor * 10, 5)]
+    return {
+        "headline_ibm_rb": round(cz, 6),
+        "exact_complete_floor": round(exact_floor, 6),
+        "exact_gap_x": gap,
+        "components_per_layer": components,
+        "dominant_omitted_term": dominant,
+        "readout_floor_note": f"readout adds ~{ro:.2%}/qubit on top (per-circuit, not per-layer)",
+        "structured_circuit_band": structured_band,
+        "provenance": ("EXACT terms (cz, sx, dephasing, zz_idle) are re-derived from the vendor's "
+                       "OWN published calibration — fully auditable. leakage is a literature estimate. "
+                       "The structured-circuit band (x3-10) is Proctor et al. 2022, a documented "
+                       "range for repeated/structured circuits, NOT a point claim."),
+        "headline_vs_honest": (f"vendor headline {cz:.2e}; re-derivable complete floor {exact_floor:.2e} "
+                               f"({gap}x); structured circuits up to {structured_band[1]:.2e}"),
+    }
+
+
+def mitigation_prescription(row: dict[str, Any]) -> dict[str, Any]:
+    """Operationalize error CORRECTION from a calibration row: emit the concrete mitigations the
+    physics implies, each with its re-derived reason. Deterministic, no measurement."""
+    actions = []
+    t1 = float(row.get("t1_us", 0.0)) or None
+    t2 = float(row.get("t2_us", 0.0)) or None
+    if t1 and t2:
+        g = 1.0 / t2 - 1.0 / (2.0 * t1)
+        t_phi = (1.0 / g) if g > 1e-9 else float("inf")
+        if t_phi != float("inf") and t_phi < 50.0:
+            actions.append({"action": "dynamical_decoupling (XY-8 / CPMG on idle)",
+                            "reason": f"dephasing-limited: Tphi={t_phi:.1f}us << 2*T1 — refocuses low-freq TLS/1-f noise",
+                            "caveat": "only helps if the TLS is LOW-frequency (1/f); a fast fluctuator makes DD neutral/worse"})
+        if t1:
+            rep = round(5 * t1, 1)
+            actions.append({"action": f"rep_delay >= {rep}us (~5*T1)",
+                            "reason": f"default 250us gives ~{1-2.718281828**(-250/t1):.0%} relaxation for T1={t1:.0f}us — incomplete |0> prep"})
+    p01, p10 = row.get("p01"), row.get("p10")
+    if p01 is not None and p10 is not None and float(p10) > 5e-3:
+        actions.append({"action": "active reset on this + neighbour qubits",
+                        "reason": f"residual excitation P(1|prep0)={float(p10):.2e} >> thermal equilibrium — contaminated initial state"})
+    if "readout" in row or "readout_q0" in row:
+        actions.append({"action": "explicit readout-error correction (prep |0..0> and |1..1>, invert M)",
+                        "reason": "the assignment matrix is asymmetric (thermal); correcting it removes a systematic bias"})
+    cz = float(row.get("cz_error", 0.0))
+    if cz > 5e-3:
+        actions.append({"action": "re-route onto a lower-CZ edge if possible",
+                        "reason": f"CZ error {cz:.2e} is elevated — a neighbouring edge may be much better (CZ alone is a weak predictor; check the full budget)"})
+    return {"prescription": actions, "n_actions": len(actions),
+            "note": "deterministic mitigations re-derived from the calibration — the error-correction IBM's panel does not hand you"}
+
+
 def estimate_kappa(depths: list[int], measured_xeb: list[float], naive_layer_error: float,
                    leave_one_out: bool = True, min_depth: int = 6) -> dict[str, Any]:
     """Estimate the CORRELATION-DISCOUNT factor kappa from a measured XEB-vs-depth curve:
@@ -425,32 +518,55 @@ def estimate_kappa(depths: list[int], measured_xeb: list[float], naive_layer_err
     real error is SMALLER than the naive (incoherent) inference — correlated/coherent error that
     doesn't accumulate as fast. Leave-one-out gives an honest held-out estimate, not in-sample.
 
-    `min_depth` (default 6): XEB is only meaningful in the SCRAMBLED regime; at low depth the
-    circuit hasn't scrambled and the linear-XEB estimator is unstable (this is what corrupted the
-    first ibm_fez run — depth-2 XEB came back ~0.28 and broke the fit). Points below min_depth are
-    excluded from the kappa estimate."""
+    `min_depth` (default 6): XEB is only meaningful in the SCRAMBLED regime.
+
+    METHOD (corrected): the per-layer error is the SLOPE of log(XEB) vs depth — a log-linear
+    regression — NOT eff_err from a single depth. Single-depth eff_err folds in the depth-
+    INDEPENDENT SPAM/readout prefactor, which inflated the first estimates (e.g. the good edge's
+    kappa came back ~10 because its tiny CZ made SPAM dominate the ratio). The regression
+    separates the per-layer decay (slope) from SPAM (intercept), so kappa reflects gate error."""
+    import math as _math
     naive = float(naive_layer_error)
-    ks, used = [], 0
-    for d, fx in zip(depths, measured_xeb):
-        if d >= min_depth and 0 < fx < 1 and naive > 0:
-            eff = 1 - fx ** (1.0 / d)
-            ks.append(eff / naive)
-            used += 1
-    if not ks:
-        return {"kappa": None, "why": f"no valid (depth>={min_depth}, 0<xeb<1) points for the fit"}
-    if leave_one_out and len(ks) >= 2:
-        # held-out: predict each point's kappa from the mean of the others (honesty vs overfit)
-        loo = [sum(ks[:i] + ks[i + 1:]) / (len(ks) - 1) for i in range(len(ks))]
+    pts = [(d, _math.log(fx)) for d, fx in zip(depths, measured_xeb)
+           if d >= min_depth and 0 < fx < 1]
+    if len(pts) < 2 or naive <= 0:
+        return {"kappa": None, "why": f"need >=2 points (depth>={min_depth}, 0<xeb<1) for the slope fit"}
+
+    def _slope(points):
+        n = len(points)
+        mx = sum(p[0] for p in points) / n
+        my = sum(p[1] for p in points) / n
+        var = sum((p[0] - mx) ** 2 for p in points)
+        if var <= 0:
+            return None
+        return sum((p[0] - mx) * (p[1] - my) for p in points) / var
+
+    def _kappa_from(points):
+        s = _slope(points)
+        if s is None or s >= 0:           # slope must be negative (XEB decays)
+            return None
+        per_layer_err = 1.0 - _math.exp(s)
+        return per_layer_err / naive
+
+    full = _kappa_from(pts)
+    if full is None:
+        return {"kappa": None, "why": "non-decaying / degenerate XEB curve — per-layer error not identifiable"}
+    # held-out: leave-one-out over the regression for an honest (non-in-sample) estimate
+    if leave_one_out and len(pts) >= 3:
+        loo = [k for k in (_kappa_from(pts[:i] + pts[i + 1:]) for i in range(len(pts))) if k is not None]
         kappa = sum(loo) / len(loo)
-        spread = (max(ks) - min(ks))
+        spread = round(max(loo) - min(loo), 4)
     else:
-        kappa = sum(ks) / len(ks)
-        spread = 0.0
-    return {"kappa": round(kappa, 4), "per_point_kappa": [round(k, 4) for k in ks],
+        kappa, spread = full, 0.0
+    slope = _slope(pts)
+    return {"kappa": round(kappa, 4),
+            "per_layer_error": round(1.0 - _math.exp(slope), 6),
+            "spam_prefactor": round(_math.exp(sum(p[1] for p in pts) / len(pts) - slope * (sum(p[0] for p in pts) / len(pts))), 4),
+            "method": "slope of log(XEB) vs depth (separates per-layer error from SPAM)",
             "depth_ceiling_multiplier": round(1.0 / kappa, 3) if kappa > 0 else None,
-            "n_points": len(ks), "held_out": bool(leave_one_out and len(ks) >= 2),
-            "spread": round(spread, 4),
-            "coverage_note": (f"n={len(ks)} points -> max conformal coverage ~{round(len(ks)/(len(ks)+1)*100)}%; "
+            "n_points": len(pts), "held_out": bool(leave_one_out and len(pts) >= 3),
+            "spread": spread,
+            "coverage_note": (f"n={len(pts)} points -> max conformal coverage ~{round(len(pts)/(len(pts)+1)*100)}%; "
                               f"90% needs >=9 points. Report the BAND, not the point.")}
 
 
