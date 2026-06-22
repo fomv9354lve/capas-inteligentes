@@ -1,0 +1,81 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CAPAS · Benchmark methodology</title>
+<style>
+:root{--bg:#06060c;--text:#e8e8ef;--muted:rgba(255,255,255,.45);--border:rgba(255,255,255,.08);--pink:#e8185d;--green:#48bb78;--amber:#f6ad55;--red:#f56565}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased}
+.page{max-width:1000px;margin:0 auto;padding:0 32px}
+nav{display:flex;align-items:center;gap:24px;height:60px;border-bottom:1px solid var(--border);margin-bottom:48px}
+nav a{color:var(--muted);text-decoration:none;font-size:13px;font-weight:500}
+nav a:hover,nav a.active{color:#fff}
+nav .sp{flex:1}
+.label{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--pink);margin-bottom:14px}
+h1{font-size:clamp(32px,4vw,48px);font-weight:900;letter-spacing:-.03em;line-height:1.08;margin-bottom:18px}
+h1 em{font-style:normal;background:linear-gradient(135deg,#e8185d,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+h2{font-size:22px;font-weight:800;letter-spacing:-.02em;margin:48px 0 16px}
+p{color:rgba(255,255,255,.62);margin-bottom:14px;max-width:760px}
+.sub{font-size:16px;color:rgba(255,255,255,.55);max-width:720px}
+.callout{background:rgba(246,173,85,.07);border:1px solid rgba(246,173,85,.28);border-radius:10px;padding:16px 18px;margin:24px 0;font-size:14px;color:rgba(255,255,255,.7)}
+.callout strong{color:var(--amber)}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:24px 0}
+.stat{border:1px solid var(--border);border-radius:10px;background:rgba(255,255,255,.03);padding:16px}
+.stat strong{display:block;font-size:26px;font-weight:900;letter-spacing:-.03em;line-height:1.1}
+.stat span{font-size:11px;color:var(--muted)}
+table{width:100%;border-collapse:collapse;margin:18px 0;font-size:13px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--border)}
+th{font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:700}
+td.n{text-align:right;font-variant-numeric:tabular-nums}
+.fam{color:#fff;font-weight:600}
+code{font-family:'SF Mono',ui-monospace,Menlo,monospace;font-size:12px;color:rgba(255,255,255,.7);background:rgba(255,255,255,.05);padding:1px 6px;border-radius:4px}
+.foot{margin:56px 0 40px;font-size:12px;color:rgba(255,255,255,.38);border-top:1px solid var(--border);padding-top:24px}
+.bar{display:inline-flex;height:8px;border-radius:3px;overflow:hidden;width:120px;vertical-align:middle}
+.bar i{display:block;height:100%}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"></head>
+<body><div class="page">
+<nav><a href="index.html">Home</a><a href="customer-brief.html">Methodology</a><a href="benchmark.html" class="active">Benchmark</a><a href="security.html">Security</a><a href="app.html">Gate App</a><span class="sp"></span><a href="app.html" style="color:var(--pink);font-weight:700">Test a Claim →</a></nav>
+
+<div class="label">Benchmark methodology</div>
+<h1>How the <em>1,238</em> number is produced.</h1>
+<p class="sub">Full transparency on the headline figures: what the grid is, how decisions are counted, and the exact command to reproduce them. The number measures verdict-space coverage of the deterministic contracts — it is not a production drift rate.</p>
+
+<div class="callout"><strong>Honest scope.</strong> This is a <strong>synthetic</strong> decision-space grid that enumerates realistic evidence combinations per claim family to confirm every contract is deterministic and exercises its full verdict space. It is <strong>not</strong> a measurement of how often real claims drift, and no production pilot has run yet. Real rates require an independently adjudicated corpus.</div>
+
+<h2>The headline figures (reproduced)</h2>
+<div class="grid">
+  <div class="stat"><strong>1,238</strong><span>total decisions</span></div>
+  <div class="stat"><strong>12</strong><span>claim families</span></div>
+  <div class="stat"><strong style="color:var(--amber)">78.4%</strong><span>gated (REWRITE + REJECT)</span></div>
+  <div class="stat"><strong style="color:var(--green)">12 / 12</strong><span>families reach ≥2 verdicts</span></div>
+</div>
+<p>Overall mix: <strong style="color:var(--green)">ACCEPT 217</strong> (17.5%) · <strong style="color:#00c8c8">REWRITE 126</strong> (10.2%) · <strong style="color:var(--red)">REJECT 845</strong> (68.3%) · <strong style="color:var(--amber)">HOLD 50</strong> (4.0%). The grid is adversarial by construction (most evidence combinations are deliberately under-supported), so a high REJECT share is expected and intended — it shows the contracts are strict, not that real corpora reject 68%.</p>
+
+<h2>Decision mix per claim family</h2>
+<table>
+<thead><tr><th>Claim family</th><th class="n">N</th><th class="n">ACCEPT</th><th class="n">REWRITE</th><th class="n">REJECT</th><th class="n">HOLD</th><th>verdicts</th></tr></thead>
+<tbody>
+<tr><td class="fam">statistical_confidence</td><td class="n">543</td><td class="n">74</td><td class="n">74</td><td class="n">392</td><td class="n">3</td><td>4 / 4</td></tr>
+<tr><td class="fam">financial_metric_claim</td><td class="n">364</td><td class="n">29</td><td class="n">29</td><td class="n">302</td><td class="n">4</td><td>4 / 4</td></tr>
+<tr><td class="fam">exact_model_solution</td><td class="n">182</td><td class="n">104</td><td class="n">0</td><td class="n">76</td><td class="n">2</td><td>3 / 4</td></tr>
+<tr><td class="fam">universal_anchor_claim</td><td class="n">41</td><td class="n">1</td><td class="n">5</td><td class="n">22</td><td class="n">13</td><td>4 / 4</td></tr>
+<tr><td class="fam">causal_mechanism_claim</td><td class="n">20</td><td class="n">1</td><td class="n">3</td><td class="n">12</td><td class="n">4</td><td>4 / 4</td></tr>
+<tr><td class="fam">evidence_conflict_claim</td><td class="n">20</td><td class="n">1</td><td class="n">1</td><td class="n">14</td><td class="n">4</td><td>4 / 4</td></tr>
+<tr><td class="fam">multimodal_evidence_claim</td><td class="n">20</td><td class="n">2</td><td class="n">6</td><td class="n">8</td><td class="n">4</td><td>4 / 4</td></tr>
+<tr><td class="fam">systematic_review_claim</td><td class="n">20</td><td class="n">1</td><td class="n">3</td><td class="n">12</td><td class="n">4</td><td>4 / 4</td></tr>
+<tr><td class="fam">programming_language_behavior_claim</td><td class="n">16</td><td class="n">1</td><td class="n">3</td><td class="n">4</td><td class="n">8</td><td>4 / 4</td></tr>
+<tr><td class="fam">reproducibility_check</td><td class="n">6</td><td class="n">1</td><td class="n">1</td><td class="n">2</td><td class="n">2</td><td>4 / 4</td></tr>
+<tr><td class="fam">claim_transition</td><td class="n">3</td><td class="n">1</td><td class="n">1</td><td class="n">0</td><td class="n">1</td><td>3 / 4</td></tr>
+<tr><td class="fam">physical_accuracy</td><td class="n">3</td><td class="n">1</td><td class="n">0</td><td class="n">1</td><td class="n">1</td><td>3 / 4</td></tr>
+</tbody></table>
+<p style="font-size:12px;color:var(--muted)">Three families (exact_model_solution, claim_transition, physical_accuracy) have a contract that cannot reach all four verdicts by design — e.g. a binary exactness check has no REWRITE state. That is disclosed, not hidden.</p>
+
+<h2>Reproduce it yourself</h2>
+<p>Every figure on this page comes from one deterministic script. Same inputs → same counts, on any machine:</p>
+<pre style="background:rgba(8,8,14,.9);border:1px solid var(--border);border-radius:10px;padding:16px;font-family:'SF Mono',ui-monospace,monospace;font-size:13px;color:rgba(255,255,255,.8);overflow-x:auto"><span style="color:var(--muted)">$</span> python3 benchmarks/family_decision_mix.py
+<span style="color:var(--muted)"># -&gt; outputs/family_decision_mix.json + .md</span>
+<span style="color:var(--muted)">family_decision_mix: N=1238 across 12 families</span>
+<span style="color:var(--muted)">overall: {'ACCEPT': 217, 'REWRITE': 126, 'REJECT': 845, 'HOLD': 50}</span></pre>
+
+<div class="foot">
+Provenance · schema <code>capas-claim-payload-v3</code> · engine UI <code>v13</code> · grid generator <code>benchmarks/family_decision_mix.py</code> · these figures regenerate in CI on every commit. The synthetic grid validates the contracts' logic; it does not represent fraud-detection from raw paper text, nor a real-world drift rate. Production figures will be published only after an independently adjudicated pilot, with false-reject / false-accept measured against domain experts.
+</div>
+</div></body></html>

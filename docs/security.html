@@ -1,0 +1,91 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CAPAS · Data handling &amp; security</title>
+<style>
+:root{--bg:#06060c;--text:#e8e8ef;--muted:rgba(255,255,255,.45);--border:rgba(255,255,255,.08);--pink:#e8185d;--green:#48bb78;--amber:#f6ad55}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased}
+.page{max-width:920px;margin:0 auto;padding:0 32px}
+nav{display:flex;align-items:center;gap:24px;height:60px;border-bottom:1px solid var(--border);margin-bottom:48px}
+nav a{color:var(--muted);text-decoration:none;font-size:13px;font-weight:500}
+nav a:hover,nav a.active{color:#fff}
+nav .sp{flex:1}
+.label{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--pink);margin-bottom:14px}
+h1{font-size:clamp(32px,4vw,48px);font-weight:900;letter-spacing:-.03em;line-height:1.08;margin-bottom:18px}
+h1 em{font-style:normal;background:linear-gradient(135deg,#e8185d,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+h2{font-size:20px;font-weight:800;letter-spacing:-.02em;margin:44px 0 8px}
+p{color:rgba(255,255,255,.64);margin-bottom:12px;max-width:740px}
+.sub{font-size:16px;color:rgba(255,255,255,.55);max-width:720px}
+.q{font-size:15px;font-weight:700;color:#fff;margin:28px 0 6px}
+.modes{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:24px 0}
+.mode{border:1px solid var(--border);border-radius:10px;background:rgba(255,255,255,.03);padding:16px}
+.mode h3{font-size:14px;color:#fff;margin-bottom:6px}
+.mode p{font-size:12.5px;color:rgba(255,255,255,.55);margin:0}
+.tag{display:inline-block;font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px;margin-bottom:8px}
+.tag.local{background:rgba(72,187,120,.14);color:var(--green);border:1px solid rgba(72,187,120,.3)}
+.tag.opt{background:rgba(246,173,85,.12);color:var(--amber);border:1px solid rgba(246,173,85,.3)}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:24px 0}
+.col{border:1px solid var(--border);border-radius:10px;padding:18px;background:rgba(255,255,255,.02)}
+.col h3{font-size:13px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px}
+.col.now h3{color:var(--green)}.col.road h3{color:var(--muted)}
+.col li{font-size:13px;color:rgba(255,255,255,.62);list-style:none;padding:6px 0 6px 18px;position:relative}
+.col li:before{content:'';position:absolute;left:0;top:13px;width:6px;height:6px;border-radius:50%}
+.col.now li:before{background:var(--green)}.col.road li:before{background:rgba(255,255,255,.25)}
+code{font-family:'SF Mono',ui-monospace,Menlo,monospace;font-size:12px;color:rgba(255,255,255,.72);background:rgba(255,255,255,.05);padding:1px 6px;border-radius:4px}
+.callout{background:rgba(232,24,93,.06);border:1px solid rgba(232,24,93,.25);border-radius:10px;padding:16px 18px;margin:28px 0;font-size:14px;color:rgba(255,255,255,.72)}
+.foot{margin:56px 0 40px;font-size:12px;color:rgba(255,255,255,.38);border-top:1px solid var(--border);padding-top:24px}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"></head>
+<body><div class="page">
+<nav><a href="index.html">Home</a><a href="customer-brief.html">Methodology</a><a href="benchmark.html">Benchmark</a><a href="security.html" class="active">Security</a><a href="app.html">Gate App</a><span class="sp"></span><a href="app.html" style="color:var(--pink);font-weight:700">Test a Claim →</a></nav>
+
+<div class="label">Data handling &amp; security</div>
+<h1>Your evidence <em>doesn&rsquo;t have to leave your machine.</em></h1>
+<p class="sub">CAPAS is a deterministic gate, not a model. There is no language model in the decision and nothing to train, so your claims are never used to train anything. This page states plainly what is true today and what is still on the roadmap.</p>
+
+<h2>Three ways to run it</h2>
+<div class="modes">
+  <div class="mode"><span class="tag local">Fully local</span><h3>Library (pip)</h3><p><code>pip install capas-claim-gate</code>. The gate runs in-process on your machine; evidence never leaves it.</p></div>
+  <div class="mode"><span class="tag local">Fully local</span><h3>MCP server</h3><p><code>python3 capas_mcp.py</code> as a local tool for your agent. Same in-process gate, no outbound calls.</p></div>
+  <div class="mode"><span class="tag opt">Optional</span><h3>Hosted API</h3><p>A managed endpoint for signed certificates. Used only if you choose it; auth-gated and isolated per pilot.</p></div>
+</div>
+
+<div class="callout"><strong>The honest core:</strong> the verdict (ACCEPT / REWRITE / REJECT / HOLD) is pure local computation over the evidence fields you supply. CAPAS makes <strong>one</strong> kind of outbound call, and only if you opt in: when a payload declares <code>source_urls</code> for provenance verification, CAPAS fetches them to confirm they are recoverable and hash-match. Supply no URLs → no network calls in the gate path.</div>
+
+<h2>Buyer questions, answered straight</h2>
+
+<div class="q">Is our source text used to train a model?</div>
+<p>No. CAPAS is deterministic — there is no model in the decision path and no training step. The same payload always yields the same verdict.</p>
+
+<div class="q">Does our data leave our environment?</div>
+<p>Not in library or MCP mode — the gate is in-process. The only exception is opt-in provenance verification (if you include <code>source_urls</code>, those URLs are fetched). The hosted API is used only if you send a payload to it.</p>
+
+<div class="q">How is the hosted API secured?</div>
+<p>Certificate issuance is auth-gated (<code>Authorization: Bearer</code> / <code>X-API-Key</code> via <code>CAPAS_API_KEY</code>). Certificates are signed (HMAC-SHA256, content-addressed) so any tampering is detectable on verification. The certificate store path is configurable (<code>CAPAS_DATA_DIR</code>); retention is defined per pilot.</p>
+
+<div class="q">Can we run it air-gapped / on confidential records?</div>
+<p>Yes. Run the library or MCP server inside your own environment on redacted or full records, with no source URLs, and nothing is transmitted. Pilots can begin on synthetic samples or customer-provided redacted payloads.</p>
+
+<div class="q">What about logging?</div>
+<p>The local gate writes no telemetry. The hosted API logs are operational only and configurable per deployment; no payload content is required to be retained.</p>
+
+<h2>What&rsquo;s true today vs roadmap</h2>
+<div class="split">
+  <div class="col now"><h3>Available today</h3>
+    <li>Fully local execution (library / MCP) — no data egress</li>
+    <li>Deterministic gate; no model, no training on your data</li>
+    <li>Signed, tamper-evident certificates (hosted)</li>
+    <li>API-key auth + configurable data/retention dir</li>
+    <li>Opt-in (not default) provenance URL fetching</li>
+  </div>
+  <div class="col road"><h3>Roadmap / per-pilot</h3>
+    <li>SOC 2 / ISO 27001 — not yet certified</li>
+    <li>DPA &amp; subprocessor list — defined per pilot</li>
+    <li>Tenant isolation &amp; encryption-at-rest SLAs (hosted)</li>
+    <li>Formal data-retention &amp; export-control terms</li>
+    <li>Private-cloud / on-prem managed deployment</li>
+  </div>
+</div>
+
+<div class="foot">
+CAPAS does not certify compliance, provide legal advice, or guarantee a security posture beyond what is stated above. It is a deterministic evidence-control layer; security terms for any hosted or managed deployment are agreed per engagement. Do not paste confidential source text into the public Gate App demo — use the library, MCP server, or an isolated pilot endpoint for sensitive material.
+</div>
+</div></body></html>
