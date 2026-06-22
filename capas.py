@@ -49,6 +49,7 @@ VALIDATION_COMMANDS = [
     ("quantum physical-consistency gate", ["benchmarks/demo_quantum_physics.py"]),
     ("cross-domain invariant engine", ["benchmarks/demo_invariants.py"]),
     ("capability matrix (live gates)", ["benchmarks/generate_capability_matrix.py"]),
+    ("MCP server (LLM tool surface)", ["benchmarks/verify_mcp_server.py"]),
     ("batch and API surfaces", ["benchmarks/verify_batch_and_api.py"]),
     ("external user validation packet", ["benchmarks/verify_external_user_validation.py"]),
     ("profile registration packet", ["benchmarks/verify_profile_registration_packet.py"]),
