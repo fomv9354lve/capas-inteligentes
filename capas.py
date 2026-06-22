@@ -49,6 +49,8 @@ VALIDATION_COMMANDS = [
     ("quantum physical-consistency gate", ["benchmarks/demo_quantum_physics.py"]),
     ("cross-domain invariant engine", ["benchmarks/demo_invariants.py"]),
     ("survive-refutation loop (gate<->ledger)", ["benchmarks/demo_survive_refutation.py"]),
+    ("fail-closed invariant (CLOSED)", ["benchmarks/verify_fail_closed.py"]),
+    ("proof ledger release gate", ["benchmarks/generate_proof_ledger.py"]),
     ("XEB + speckle-purity coherence gate", ["benchmarks/verify_xeb_purity.py"]),
     ("capability matrix (live gates)", ["benchmarks/generate_capability_matrix.py"]),
     ("MCP server (LLM tool surface)", ["benchmarks/verify_mcp_server.py"]),

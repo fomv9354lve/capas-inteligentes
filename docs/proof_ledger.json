@@ -1,0 +1,90 @@
+[
+  {
+    "id": "fail_closed",
+    "claim": "Fail-closed: a structurally-deficient claim is never accepted",
+    "status": "CLOSED",
+    "backing": "benchmarks/verify_fail_closed.py",
+    "ok": true,
+    "scope": "Structural invariant (proven). Empirical false-accept RATE on real claims is SCOPED below.",
+    "owner": "eval"
+  },
+  {
+    "id": "no_llm_verdict",
+    "claim": "No language model in the verdict (deterministic)",
+    "status": "CLOSED",
+    "backing": "benchmarks/verify_cara_decoupling.py (+ audit_hash determinism)",
+    "ok": true,
+    "scope": "The product loads and decides with the cognitive layer blocked; same input -> same audit_hash.",
+    "owner": "cto"
+  },
+  {
+    "id": "gates_domains",
+    "claim": "26 deterministic gates across 10 domains",
+    "status": "BACKED",
+    "backing": "python3 benchmarks/generate_capability_matrix.py",
+    "ok": true,
+    "value": "26 gates / 10 domains",
+    "artifact": "outputs/capability_matrix.json",
+    "sha256": "sha256:eca067d7a54a1442eda7c8a9e19803d9\u2026",
+    "owner": "eval"
+  },
+  {
+    "id": "decisions_1238",
+    "claim": "1,238 decisions, 78.4% hard-gated",
+    "status": "BACKED",
+    "backing": "python3 benchmarks/family_decision_mix.py",
+    "ok": true,
+    "value": "N=1238; REWRITE+REJECT=78.4%",
+    "artifact": "outputs/family_decision_mix.json",
+    "sha256": "sha256:51b4e31c4c15f261a47c77a203fd6edf\u2026",
+    "scope": "SYNTHETIC adversarial decision-space grid (contract coverage), NOT a production drift rate.",
+    "owner": "eval"
+  },
+  {
+    "id": "beat_benchmark",
+    "claim": "Vendor headline under-states real per-layer error by 2-11x",
+    "status": "BACKED",
+    "backing": "capas_quantum_physics.complete_error_budget(published fields)",
+    "ok": true,
+    "value": "~2x typical, 11.45x worst (dephasing-limited)",
+    "scope": "Re-derived from the vendor's OWN published calibration. Worst case is a real anomalous qubit; structured-circuit 3-10x band is Proctor (Nat. Phys. 2022), a cited literature range.",
+    "owner": "quantum"
+  },
+  {
+    "id": "false_accept_rate",
+    "claim": "Empirical false-accept / false-reject RATE on real claims",
+    "status": "SCOPED",
+    "value": "0 false-accepts on the n=28 AGENT-CODED retrospective only",
+    "scope": "NOT an oracle-adjudicated rate. A well-formed but fabricated-consistent payload can pass (GIGO ceiling).",
+    "upgrade_artifact": "independently-adjudicated real-claim corpus + confusion matrix",
+    "owner": "eval"
+  },
+  {
+    "id": "retrospective_28",
+    "claim": "Separated 28 retracted-vs-replicated claims by structure",
+    "status": "SCOPED",
+    "value": "28/28 on an agent-coded, publicly-known retrospective",
+    "scope": "Illustrative; the papers were already publicly retracted (no blind adjudication). Demonstrates the contract logic, not blind fraud detection.",
+    "upgrade_artifact": "blind-coded frozen corpus + receipts",
+    "owner": "eval"
+  },
+  {
+    "id": "head_to_head",
+    "claim": "At par with a frontier LLM-judge on accuracy; ahead on determinism",
+    "status": "SCOPED",
+    "backing": "benchmarks/head_to_head_sota.py",
+    "value": "0/5 false-accept (both); CAPAS deterministic, LLM stochastic",
+    "scope": "10-claim corpus; modeled mechanism arms labeled as modeled.",
+    "upgrade_artifact": "larger adjudicated corpus + real competitor runs",
+    "owner": "eval"
+  },
+  {
+    "id": "pip_install",
+    "claim": "pip install capas-claim-gate",
+    "status": "SCOPED",
+    "value": "wheel built + twine-check PASSED; NOT yet published to PyPI",
+    "scope": "The install command works only AFTER `twine upload`. Until then the homepage CTA must not imply it is live.",
+    "upgrade_artifact": "twine upload (needs the maintainer's PyPI token)",
+    "owner": "release"
+  }
+]

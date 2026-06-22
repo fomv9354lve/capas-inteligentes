@@ -186,7 +186,7 @@ footer{border-top:1px solid rgba(255,255,255,0.06);padding:32px 48px;display:fle
     <div class="hero-left">
       <div class="hero-eyebrow">Deterministic Scientific Claim Gate</div>
       <h1 class="hero-h1" style="font-size:clamp(36px,4.5vw,58px);font-weight:900;letter-spacing:-0.03em;line-height:1.05;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">Evidence in.<br><em>Admissibility</em><br>decision out.</h1>
-      <p class="hero-sub">Your model proposes; CAPAS disposes. It checks whether your evidence actually licenses a claim &mdash; returning a deterministic ACCEPT / REWRITE / REJECT / HOLD with a re-derivable audit trail. No language model in the verdict. Never a false-accept on the tested corpus.</p>
+      <p class="hero-sub">Your model proposes; CAPAS disposes. It checks whether your evidence actually licenses a claim &mdash; returning a deterministic ACCEPT / REWRITE / REJECT / HOLD with a re-derivable audit trail. No language model in the verdict. <strong>Fail-closed by construction</strong>: a structurally-deficient claim is never accepted &mdash; a proven invariant, not a marketing number.</p>
       <div class="hero-actions">
         <a class="btn-primary" href="app.html">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
@@ -252,13 +252,14 @@ footer{border-top:1px solid rgba(255,255,255,0.06);padding:32px 48px;display:fle
     </div>
     <div class="stat-item">
       <div class="stat-num">0</div>
-      <div class="stat-label">False-accepts &middot; 0 LLM in the verdict</div>
+      <div class="stat-label">LLM in the verdict &middot; fail-closed (proven)</div>
     </div>
     <div class="stat-item">
       <div class="stat-num">100<span>%</span></div>
       <div class="stat-label">Re-derivable, replayable</div>
     </div>
   </div>
+  <div style="text-align:center;margin-top:14px;font-size:11px;color:rgba(255,255,255,.4)">Every number is <strong style="color:rgba(255,255,255,.6)">CLOSED</strong> (proven by a test), <strong style="color:rgba(255,255,255,.6)">BACKED</strong> (regenerates with a hash), or <strong style="color:rgba(255,255,255,.6)">SCOPED</strong> (empirical-pending, with its corpus &amp; upgrade path) &mdash; see the <a href="proof_ledger.json" style="color:#e8185d">proof ledger</a>.</div>
 </div>
 
 <section class="section">
@@ -403,7 +404,7 @@ footer{border-top:1px solid rgba(255,255,255,0.06);padding:32px 48px;display:fle
         <tr><td>Deep-research agents</td><td class="yes">&#10003;</td><td class="no">&#10007;</td></tr>
         <tr><td>LLM-as-judge</td><td class="no">&#10007;</td><td class="part">stochastic &middot; no guarantee, not replayable</td></tr>
         <tr><td>Fact-checkers</td><td class="no">&#10007;</td><td class="part">truth, not boundary</td></tr>
-        <tr class="capas"><td>CAPAS</td><td class="no">&#10007;</td><td class="yes">&#10003; deterministic &middot; replayable &middot; 0 false-accepts</td></tr>
+        <tr class="capas"><td>CAPAS</td><td class="no">&#10007;</td><td class="yes">&#10003; deterministic &middot; replayable &middot; fail-closed (proven)</td></tr>
       </tbody>
     </table>
   </div>
@@ -428,7 +429,7 @@ footer{border-top:1px solid rgba(255,255,255,0.06);padding:32px 48px;display:fle
   <div class="section-inner">
     <div class="section-label">Cross-domain engine</div>
     <h2 class="section-h2" style="font-size:clamp(28px,3vw,42px);font-weight:900;letter-spacing:-0.03em;line-height:1.1;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">One mechanism. 10 domains. 26 gates.</h2>
-    <p class="section-sub">A fabricated claim still has to satisfy the <strong>conservation laws of its field</strong> &mdash; and that is re-derivable with no oracle. The same engine catches a balance sheet that doesn&rsquo;t close, a survey mean that&rsquo;s arithmetically impossible (GRIM), a 99%-sensitive test claimed to imply a 99% PPV for a rare disease (the base-rate fallacy), an unbalanced reaction, a non-dimensional equation, a qubit with T2&nbsp;&gt;&nbsp;2&middot;T1. Any declared number that breaks a domain law forces <strong>REJECT</strong> &mdash; downgrade-only, so the 0-false-accept guarantee never weakens.</p>
+    <p class="section-sub">A fabricated claim still has to satisfy the <strong>conservation laws of its field</strong> &mdash; and that is re-derivable with no oracle. The same engine catches a balance sheet that doesn&rsquo;t close, a survey mean that&rsquo;s arithmetically impossible (GRIM), a 99%-sensitive test claimed to imply a 99% PPV for a rare disease (the base-rate fallacy), an unbalanced reaction, a non-dimensional equation, a qubit with T2&nbsp;&gt;&nbsp;2&middot;T1. Any declared number that breaks a domain law forces <strong>REJECT</strong> &mdash; downgrade-only, so it can only make a verdict stricter. Fail-closed is a <strong>proven invariant</strong> (18/18 structurally-deficient claims rejected, locked by a test), not a number.</p>
     <div class="fam-chips"><span class="fam-chip">Finance &mdash; A=L+E</span><span class="fam-chip">Statistics &mdash; GRIM</span><span class="fam-chip">Epidemiology &mdash; Bayes PPV, RR/OR, vaccine efficacy</span><span class="fam-chip">Chemistry &mdash; stoichiometry, charge, oxidation states</span><span class="fam-chip">Physics &mdash; dimensions, &eta;&le;1, v&le;c</span><span class="fam-chip">Quantum &mdash; T2&le;2T1, &Gamma;&phi;, gate floor</span><span class="fam-chip">Engineering &mdash; Ohm&rsquo;s law</span><span class="fam-chip">Biology &mdash; Hardy-Weinberg, mark-recapture</span><span class="fam-chip">Mathematics &mdash; root &amp; linear-system checks</span><span class="fam-chip">Universal &mdash; probability &amp; conservation</span><span class="fam-chip" style="border-style:dashed;color:rgba(255,255,255,0.4)">+ a new domain = one deterministic law</span></div>
   </div>
 </section>
@@ -466,7 +467,7 @@ footer{border-top:1px solid rgba(255,255,255,0.06);padding:32px 48px;display:fle
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:24px;max-width:680px">
       <div style="border:1px solid rgba(72,187,120,.3);border-radius:12px;background:rgba(72,187,120,.06);padding:20px">
         <div style="font-size:34px;font-weight:900;color:#48bb78;letter-spacing:-.03em">28/28</div>
-        <div style="font-size:13px;color:rgba(255,255,255,.6);margin-top:4px">CAPAS separated retracted from replicated &mdash; <strong>0 false-accepts</strong></div>
+        <div style="font-size:13px;color:rgba(255,255,255,.6);margin-top:4px">Separated by structure on an <strong>illustrative, agent-coded</strong> retrospective &mdash; not an adjudicated benchmark</div>
       </div>
       <div style="border:1px solid rgba(255,255,255,.08);border-radius:12px;background:rgba(255,255,255,.02);padding:20px">
         <div style="font-size:34px;font-weight:900;color:rgba(255,255,255,.4);letter-spacing:-.03em">0/28</div>
@@ -542,9 +543,10 @@ footer{border-top:1px solid rgba(255,255,255,0.06);padding:32px 48px;display:fle
       <div>verdict = verified(my_llm, <span style="color:#48bb78">"reproducibility_check"</span>)[<span style="color:#48bb78">"verdict"</span>]</div>
       <div style="color:rgba(255,255,255,.4)"># -> ACCEPT / REWRITE / REJECT / HOLD  (never the LLM&rsquo;s call)</div>
     </div>
-    <div style="display:flex;gap:14px;margin-top:20px;flex-wrap:wrap">
+    <div style="display:flex;gap:14px;margin-top:20px;flex-wrap:wrap;align-items:center">
       <div style="border:1px solid rgba(72,187,120,.3);border-radius:10px;background:rgba(72,187,120,.06);padding:14px 18px"><strong style="color:#48bb78;font-size:18px">0/3</strong> <span style="font-size:13px;color:rgba(255,255,255,.6)">false-accepts with CAPAS</span></div>
-      <div style="border:1px solid rgba(255,255,255,.08);border-radius:10px;background:rgba(255,255,255,.02);padding:14px 18px"><strong style="color:rgba(255,255,255,.4);font-size:18px">3/3</strong> <span style="font-size:13px;color:rgba(255,255,255,.45)">false-accepts LLM-alone (it accepts what&rsquo;s plausible)</span></div>
+      <div style="border:1px solid rgba(255,255,255,.08);border-radius:10px;background:rgba(255,255,255,.02);padding:14px 18px"><strong style="color:rgba(255,255,255,.4);font-size:18px">3/3</strong> <span style="font-size:13px;color:rgba(255,255,255,.45)">false-accepts LLM-alone</span></div>
+      <span style="font-size:11px;color:rgba(255,255,255,.35)">illustrative 3-case example, not a benchmark</span>
     </div>
     <p class="section-sub" style="margin-top:18px;font-size:13px;color:rgba(255,255,255,.5)">The boost is <strong>reliability, not capability</strong> &mdash; the model doesn&rsquo;t get smarter, its output becomes admissible-or-deferred. Honest scope: it grounds record&harr;text, not text&harr;reality &mdash; a source that lies about its methods and withholds its data passes (the GIGO ceiling), so CAPAS says exactly which slice it re-derived and which it could only attest.</p>
   </div>
