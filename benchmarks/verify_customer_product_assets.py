@@ -31,7 +31,7 @@ ARGILLA_EXAMPLE = ROOT / "examples" / "argilla_capas_record.json"
 
 
 REQUIRED = {
-    "landing page with narrative": (PRODUCT, ["Deterministic Scientific Claim Gate", "Admissibility", "ACCEPT, REWRITE, REJECT, or HOLD", "No black box", "Where it Lives", "Verdict Reference", "The Core", "Krenn-IQ", "12 reference claim families", "does not certify scientific truth", "contamination cascade", "should this have been said"]),
+    "landing page with narrative": (PRODUCT, ["Deterministic Scientific Claim Gate", "Admissibility", "ACCEPT, REWRITE, REJECT, or HOLD", "No language model in the verdict", "Where it Lives", "Verdict Reference", "The Core", "Krenn-IQ", "One mechanism. 10 domains. 26 gates", "does not certify scientific truth", "contamination cascade", "should this have been said"]),
     "scalable transition-network logo": (LOGO, ["viewBox=\"0 0 128 128\"", "CAPAS transition network logo", "cyan licensed paths", "magenta drift paths"]),
     "landing page logo placement": (PRODUCT, ["class=\"bg-logo\"", "src=\"logo_kreniq_volum_trico.html\"", "class=\"bg-veil\""]),
     "exact dynamic html logo": (LOGO_HTML, ["Kreniq - Red de Transiciones 3D", "vendor/three-r128/three.min.js", "vendor/three-r128/OrbitControls.js", "new THREE.Scene()", "THREE.OrbitControls", "COLOR_EDGE_CYAN = 0x00E5FF", "COLOR_EDGE_MAGENTA = 0xE61062", "TOTAL_NODES = 36", "THREE.TubeGeometry", "camera.position.set(0, 10, 80)", "matrixGroup.position.y = Math.sin(Date.now() * 0.001) * 1.5"]),
