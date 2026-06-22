@@ -81,6 +81,159 @@
     "catches": "declared components that do not sum to the declared whole"
   },
   {
+    "domain": "chemistry",
+    "capability": "stoichiometric atom balance",
+    "class": "consistency-invariant",
+    "exact": true,
+    "demo_input": "CH4+O2->CO2+2H2O (1 O2)",
+    "verdict": "FLAG",
+    "catches": "an unbalanced reaction (atoms not conserved reactants->products)"
+  },
+  {
+    "domain": "physics",
+    "capability": "dimensional homogeneity",
+    "class": "consistency-invariant",
+    "exact": true,
+    "demo_input": "J = kg m/s^2 (wrong)",
+    "verdict": "FLAG",
+    "catches": "an equation whose two sides have different physical dimensions"
+  },
+  {
+    "domain": "physics",
+    "capability": "physical bounds (eta<=1, v<=c, T>=0)",
+    "class": "consistency-invariant",
+    "exact": true,
+    "demo_input": "efficiency 1.2",
+    "verdict": "FLAG",
+    "catches": "over-unity efficiency, faster-than-light, sub-absolute-zero, |r|>1"
+  },
+  {
+    "domain": "mathematics",
+    "capability": "claimed root satisfies the equation",
+    "class": "derived-quantity",
+    "exact": true,
+    "demo_input": "x=2 for x^2-9=0",
+    "verdict": "FLAG",
+    "catches": "a declared solution that does not satisfy its own equation"
+  },
+  {
+    "domain": "mathematics",
+    "capability": "linear system Ax=b solution check",
+    "class": "derived-quantity",
+    "exact": true,
+    "demo_input": "wrong x for Ax=b",
+    "verdict": "FLAG",
+    "catches": "a declared solution vector that does not satisfy the system"
+  },
+  {
+    "domain": "mathematics",
+    "capability": "integer divisibility / gcd-lcm",
+    "class": "consistency-invariant",
+    "exact": true,
+    "demo_input": "3|10 claimed true",
+    "verdict": "FLAG",
+    "catches": "false divisibility / gcd-lcm / quotient-remainder claims"
+  },
+  {
+    "domain": "chemistry",
+    "capability": "charge balance in reaction",
+    "class": "consistency-invariant",
+    "exact": true,
+    "demo_input": "net charge unbalanced",
+    "verdict": "FLAG",
+    "catches": "a reaction that conserves atoms but not net charge"
+  },
+  {
+    "domain": "chemistry",
+    "capability": "oxidation states sum to charge",
+    "class": "consistency-invariant",
+    "exact": true,
+    "demo_input": "SO4: 6-8 != 0",
+    "verdict": "FLAG",
+    "catches": "declared oxidation states inconsistent with the species charge"
+  },
+  {
+    "domain": "chemistry",
+    "capability": "mole/mass/amount n=m/M",
+    "class": "derived-quantity",
+    "exact": true,
+    "demo_input": "18g/18 != 2 mol",
+    "verdict": "FLAG",
+    "catches": "an inconsistent mole / mass / molar-mass trio"
+  },
+  {
+    "domain": "epidemiology",
+    "capability": "2x2 metric identities (Se/Sp/PPV/...)",
+    "class": "derived-quantity",
+    "exact": true,
+    "demo_input": "claimed Se != cells",
+    "verdict": "FLAG",
+    "catches": "a claimed sensitivity/specificity/PPV that the 2x2 cells do not support"
+  },
+  {
+    "domain": "epidemiology",
+    "capability": "Bayes PPV vs base rate",
+    "class": "derived-quantity",
+    "exact": true,
+    "demo_input": "99% test, rare disease",
+    "verdict": "FLAG",
+    "catches": "the base-rate fallacy: high-sensitivity test claimed to imply high PPV for a rare disease"
+  },
+  {
+    "domain": "epidemiology",
+    "capability": "RR/OR/RD from 2x2",
+    "class": "derived-quantity",
+    "exact": true,
+    "demo_input": "claimed RR != table",
+    "verdict": "FLAG",
+    "catches": "a claimed risk/odds ratio inconsistent with the cohort table"
+  },
+  {
+    "domain": "epidemiology",
+    "capability": "vaccine efficacy VE=1-RR, VE<=1",
+    "class": "consistency-invariant",
+    "exact": true,
+    "demo_input": "VE>1 (negative cases)",
+    "verdict": "FLAG",
+    "catches": "a vaccine efficacy above 1 or inconsistent with the arm attack rates"
+  },
+  {
+    "domain": "epidemiology",
+    "capability": "count containment (num<=den)",
+    "class": "consistency-invariant",
+    "exact": true,
+    "demo_input": "deaths 120 > cases 100",
+    "verdict": "FLAG",
+    "catches": "a numerator exceeding its denominator (deaths>cases, etc.)"
+  },
+  {
+    "domain": "engineering",
+    "capability": "Ohm's law V=IR, P=VI",
+    "class": "consistency-invariant",
+    "exact": true,
+    "demo_input": "V=10, I*R=6",
+    "verdict": "FLAG",
+    "catches": "declared electrical quantities that violate V=IR or P=VI"
+  },
+  {
+    "domain": "biology",
+    "capability": "Lincoln-Petersen N=M*C/R",
+    "class": "derived-quantity",
+    "exact": true,
+    "demo_input": "N inconsistent w/ M,C,R",
+    "verdict": "FLAG",
+    "catches": "a mark-recapture population estimate inconsistent with the counts"
+  },
+  {
+    "domain": "biology",
+    "capability": "Hardy-Weinberg internal consistency",
+    "class": "consistency-invariant",
+    "exact": true,
+    "demo_input": "genotype freqs sum!=1",
+    "verdict": "FLAG",
+    "catches": "genotype frequencies that do not sum to 1 / inconsistent allele freqs"
+  },
+  {
     "domain": "quantum",
     "capability": "ZZ from CZ/RZZ ratio",
     "class": "DIAGNOSTIC",

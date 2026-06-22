@@ -98,9 +98,9 @@ def run() -> int:
     ok = all(c for _, c in checks)
     for label, c in checks:
         print(f"{'OK ' if c else 'XX '}{label}")
-    print("\nONE mechanism, SEVEN domains: finance + psychology + quantum + chemistry + physics + math\n"
-          "+ universal fabrication all caught by deterministic invariant re-derivation — no oracle, no\n"
-          "LLM. The core gate is strengthened, never weakened (downgrade-only): 0-false-accept preserved.")
+    print("\nONE mechanism, 10 domains / 26 live gates: finance + psychology + quantum + chemistry +\n"
+          "physics + math + epidemiology + engineering + biology + universal fabrication all caught by\n"
+          "deterministic invariant re-derivation — no oracle, no LLM. Downgrade-only: 0-false-accept kept.")
     print("CROSS-DOMAIN INVARIANT ENGINE: pass" if ok else "INVARIANTS: FAILURES")
     return 0 if ok else 1
 

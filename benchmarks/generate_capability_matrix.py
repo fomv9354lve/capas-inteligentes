@@ -87,6 +87,45 @@ def build() -> list[dict]:
     add("mathematics", "claimed root satisfies the equation", "derived-quantity", True,
         "x=2 for x^2-9=0", _v(INV.check_root({"root_check": {"polynomial": [-9, 0, 1], "root": 2}})),
         "a declared solution that does not satisfy its own equation")
+    add("mathematics", "linear system Ax=b solution check", "derived-quantity", True,
+        "wrong x for Ax=b", _v(INV.check_linear_system({"linear_system": {"A": [[1, 1]], "x": [1, 2], "b": [5]}})),
+        "a declared solution vector that does not satisfy the system")
+    add("mathematics", "integer divisibility / gcd-lcm", "consistency-invariant", True,
+        "3|10 claimed true", _v(INV.check_divisibility({"divisibility": {"a": 3, "b": 10, "divides": True}})),
+        "false divisibility / gcd-lcm / quotient-remainder claims")
+    add("chemistry", "charge balance in reaction", "consistency-invariant", True,
+        "net charge unbalanced", _v(INV.check_charge_balance({"charge_balance": {"reactants": [[1, 2], [1, 0]], "products": [[1, 3]]}})),
+        "a reaction that conserves atoms but not net charge")
+    add("chemistry", "oxidation states sum to charge", "consistency-invariant", True,
+        "SO4: 6-8 != 0", _v(INV.check_oxidation_states({"oxidation_states": {"atoms": {"S": 1, "O": 4}, "states": {"S": 6, "O": -2}, "net_charge": 0}})),
+        "declared oxidation states inconsistent with the species charge")
+    add("chemistry", "mole/mass/amount n=m/M", "derived-quantity", True,
+        "18g/18 != 2 mol", _v(INV.check_mole_mass({"mole_mass": {"m": 18, "M": 18, "n": 2}})),
+        "an inconsistent mole / mass / molar-mass trio")
+    add("epidemiology", "2x2 metric identities (Se/Sp/PPV/...)", "derived-quantity", True,
+        "claimed Se != cells", _v(INV.check_confusion_matrix({"confusion_matrix": {"tp": 90, "fp": 10, "fn": 10, "tn": 90, "claimed": {"sensitivity": 0.99}}})),
+        "a claimed sensitivity/specificity/PPV that the 2x2 cells do not support")
+    add("epidemiology", "Bayes PPV vs base rate", "derived-quantity", True,
+        "99% test, rare disease", _v(INV.check_bayes_ppv({"bayes_ppv": {"sensitivity": 0.99, "specificity": 0.99, "prevalence": 0.001, "claimed_ppv": 0.99}})),
+        "the base-rate fallacy: high-sensitivity test claimed to imply high PPV for a rare disease")
+    add("epidemiology", "RR/OR/RD from 2x2", "derived-quantity", True,
+        "claimed RR != table", _v(INV.check_association({"association": {"a": 20, "b": 80, "c": 10, "d": 90, "claimed_rr": 3.0}})),
+        "a claimed risk/odds ratio inconsistent with the cohort table")
+    add("epidemiology", "vaccine efficacy VE=1-RR, VE<=1", "consistency-invariant", True,
+        "VE>1 (negative cases)", _v(INV.check_vaccine_efficacy({"vaccine_efficacy": {"cases_vax": -5, "n_vax": 1000, "cases_unvax": 50, "n_unvax": 1000}})),
+        "a vaccine efficacy above 1 or inconsistent with the arm attack rates")
+    add("epidemiology", "count containment (num<=den)", "consistency-invariant", True,
+        "deaths 120 > cases 100", _v(INV.check_count_containment({"containment": {"pairs": [{"num": 120, "den": 100, "label": "deaths/cases"}]}})),
+        "a numerator exceeding its denominator (deaths>cases, etc.)")
+    add("engineering", "Ohm's law V=IR, P=VI", "consistency-invariant", True,
+        "V=10, I*R=6", _v(INV.check_ohms_law({"ohms_law": {"V": 10, "I": 2, "R": 3}})),
+        "declared electrical quantities that violate V=IR or P=VI")
+    add("biology", "Lincoln-Petersen N=M*C/R", "derived-quantity", True,
+        "N inconsistent w/ M,C,R", _v(INV.check_mark_recapture({"mark_recapture": {"M": 100, "C": 100, "R": 20, "N": 999}})),
+        "a mark-recapture population estimate inconsistent with the counts")
+    add("biology", "Hardy-Weinberg internal consistency", "consistency-invariant", True,
+        "genotype freqs sum!=1", _v(INV.check_hardy_weinberg({"hardy_weinberg": {"AA": 0.3, "Aa": 0.5, "aa": 0.3}})),
+        "genotype frequencies that do not sum to 1 / inconsistent allele freqs")
 
     # --- DIAGNOSTIC only (honest exclusions: model assumptions, NOT gates) ---
     rows.append({"domain": "quantum", "capability": "ZZ from CZ/RZZ ratio", "class": "DIAGNOSTIC",
