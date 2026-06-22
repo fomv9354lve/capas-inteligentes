@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "capas-claim-gate"
-version = "0.1.1"
-description = "Evidence-typed claim gate for scientific computation traces"
+version = "0.2.0"
+description = "A fail-closed verification layer you wrap around your LLM: it never lets an unsupported claim through as ACCEPT, re-derives what is re-derivable, and emits a deterministic verifiable reward."
 readme = "README.md"
 requires-python = ">=3.11"
 authors = [
@@ -44,5 +44,13 @@ standalone = [
 capas = "capas:main"
 
 [tool.setuptools]
-py-modules = ["capas"]
+py-modules = [
+  "capas", "capas_sdk",
+  "capas_admissibility", "capas_audit", "capas_braid", "capas_bridge", "capas_circuits",
+  "capas_conformal", "capas_conjecture", "capas_consilience", "capas_discovery", "capas_extract",
+  "capas_ezkl", "capas_falsify", "capas_hierarchy", "capas_intake", "capas_integration",
+  "capas_loop", "capas_mind", "capas_process", "capas_propose", "capas_quantum", "capas_rcc",
+  "capas_registry", "capas_route", "capas_sequential", "capas_sql", "capas_think", "capas_value",
+  "capas_verify", "capas_xbrl",
+]
 packages = ["router", "router.backends", "integrations"]
