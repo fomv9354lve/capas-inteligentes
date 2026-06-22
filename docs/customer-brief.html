@@ -85,17 +85,18 @@ footer a{color:rgba(255,255,255,.35);text-decoration:none;font-size:12px}
   <div>
     <div class="label">Methodology</div>
     <h1 class="h1" style="font-size:clamp(36px,4.5vw,58px)">Deterministic claim <em style="font-style:normal;background:linear-gradient(135deg,#e8185d,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">admissibility</em><br>for scientific AI teams.</h1>
-    <p class="sub">CAPAS gives review teams a deterministic gate before scientific claims enter reports, governed datasets, or fine-tuning preparation. It checks whether supplied evidence licenses a claim for controlled reuse, emits an auditable decision, and makes provenance blockers visible before downstream adoption.</p>
+    <p class="sub">CAPAS gives review teams a deterministic gate before scientific claims enter reports, governed datasets, or fine-tuning preparation. It checks whether supplied evidence licenses a claim for controlled reuse, and returns a <strong>replayable packet</strong> &mdash; the verdict, the deterministic reason, the required evidence contract, the no-LLM marker, and fine-tune readiness &mdash; re-derivable from the same input.</p>
     <div class="actions" style="margin-top:0">
       <a class="btn btn-pink" href="app.html">Open Gate App</a>
       <a class="btn btn-ghost" href="pilot-packet.html">Pilot →</a>
     </div>
     <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,.3);letter-spacing:.1em;text-transform:uppercase;margin-top:28px;margin-bottom:-12px">Reproducible engine benchmark &middot; pilots pending</div>
     <div class="hero-metrics">
-      <div class="hero-metric"><strong>1,238</strong><span>real engine decisions across 12 claim families</span></div>
-      <div class="hero-metric amber"><strong>78%</strong><span>gated (rewritten or rejected) on the adversarial grid</span></div>
+      <div class="hero-metric"><strong>1,238</strong><span>synthetic-grid engine decisions across 12 claim families</span></div>
+      <div class="hero-metric amber"><strong>78%</strong><span>gated on the adversarial synthetic grid &mdash; not a production drift rate</span></div>
       <div class="hero-metric"><strong>14</strong><span>fine-tune readiness criteria</span></div>
     </div>
+    <p style="font-size:11px;color:rgba(255,255,255,.42);margin-top:12px;max-width:520px;line-height:1.5"><strong style="color:rgba(255,255,255,.6)">Synthetic benchmark</strong> &mdash; full verdict-space coverage on an adversarial grid, <strong>not</strong> a production drift rate. No production pilot has run yet. Reproducible from <code style="color:rgba(255,255,255,.55)">benchmarks/family_decision_mix.py</code>.</p>
   </div>
   <div class="verdict-preview">
     <div class="vp-bar"><div class="vp-dots"><span class="vp-dot" style="background:#f56565"></span><span class="vp-dot" style="background:#f6ad55"></span><span class="vp-dot" style="background:#48bb78"></span></div><span class="vp-tag">Recent gate decisions</span><span class="vp-schema">SCHEMA V3</span></div>
@@ -114,6 +115,59 @@ footer a{color:rgba(255,255,255,.35);text-decoration:none;font-size:12px}
   <div class="wf-item"><div class="wf-num">03 &middot; GATE</div><div class="wf-title">Run gate</div><div class="wf-desc">Schema v3 and claim-type rules return ACCEPT, REWRITE, REJECT, or HOLD.</div></div>
   <div class="wf-item"><div class="wf-num">04 &middot; AUDIT</div><div class="wf-title">Inspect decision</div><div class="wf-desc">Reason, evidence spans, provenance blockers, and fine-tune readiness.</div></div>
 </div>
+<section class="section">
+<div class="si">
+  <div class="label">The artifact</div>
+  <h2 class="h2" style="font-size:clamp(28px,3vw,42px);font-weight:900;letter-spacing:-0.03em;line-height:1.1">A real decision packet &mdash; not a description of one.</h2>
+  <p class="sub sub-wide">This is the literal output of the engine on a claim whose reported number re-derives correctly but whose supplied accounting evidence is internally inconsistent. Reproducible: <code style="color:rgba(255,255,255,.6)">capas_sdk.gate("financial_metric_claim", evidence)</code>.</p>
+  <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:24px;margin-top:28px;align-items:start">
+    <pre style="background:rgba(8,8,14,.92);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:20px;font-family:'SF Mono',ui-monospace,Menlo,monospace;font-size:12px;line-height:1.7;color:rgba(255,255,255,.82);overflow-x:auto;margin:0">{
+  <span style="color:#7da7ff">"schema_version"</span>: <span style="color:#9ae6b4">"capas-claim-payload-v3"</span>,
+  <span style="color:#7da7ff">"verdict"</span>: <span style="color:#f56565">"REJECT"</span>,
+  <span style="color:#7da7ff">"reason"</span>: <span style="color:#9ae6b4">"reported_value matches reference within
+     tolerance and period matches; OVERRIDDEN by a
+     domain invariant violation: balance identity
+     VIOLATED &mdash; assets 1000 != liabilities 600 +
+     equity 300 (residual 100). The books do not close."</span>,
+  <span style="color:#7da7ff">"required_fields"</span>: [<span style="color:#9ae6b4">"reported_value"</span>, <span style="color:#9ae6b4">"reference_value"</span>,
+                      <span style="color:#9ae6b4">"tolerance"</span>, <span style="color:#9ae6b4">"metric_period_match"</span>],
+  <span style="color:#7da7ff">"invariant_audit"</span>: <span style="color:#f6ad55">"FLAG"</span>,
+  <span style="color:#7da7ff">"fine_tune_ready"</span>: <span style="color:#f6ad55">false</span>,
+  <span style="color:#7da7ff">"non_claim"</span>: <span style="color:#9ae6b4">"This decision is rule-based over supplied
+     evidence fields, not an LLM judgment."</span>
+}</pre>
+    <div>
+      <div style="display:inline-block;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#e8185d;border:1px solid rgba(232,24,93,.3);padding:3px 9px;border-radius:5px;margin-bottom:14px">Decision path</div>
+      <p style="font-size:13px;color:rgba(255,255,255,.6);line-height:1.7">An LLM <strong>may</strong> be used upstream &mdash; to extract the payload from a paper, or draft a rewrite suggestion. It is <strong>never</strong> used to determine admissibility. The verdict (<code>ACCEPT / REWRITE / REJECT / HOLD</code>) is produced only by versioned deterministic rules over the supplied evidence fields. The same payload always yields the same verdict, so any decision can be independently re-run and audited. The <code>non_claim</code> field is the machine-readable marker of this.</p>
+      <p style="font-size:12px;color:rgba(255,255,255,.42);line-height:1.65;margin-top:14px">Text-ingested claims additionally carry source <strong>evidence spans</strong>; the hosted API wraps any packet in a signed, content-addressed certificate (<code>capas_certstore</code>) for tamper-evidence.</p>
+    </div>
+  </div>
+</div>
+</section>
+<section class="section alt">
+<div class="si">
+  <div class="label">The checklist</div>
+  <h2 class="h2" style="font-size:clamp(28px,3vw,42px);font-weight:900;letter-spacing:-0.03em;line-height:1.1">The 14 fine-tune readiness criteria.</h2>
+  <p class="sub sub-wide">A claim can be ACCEPTed for a report yet still not be ready for training data. These 14 deterministic checks (verbatim from the engine) gate <code>fine_tune_ready</code> after an ACCEPT &mdash; they never change the verdict, only whether the claim may enter fine-tuning preparation.</p>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:10px;margin-top:24px">
+    <div style="font-size:12.5px;color:rgba(255,255,255,.6);line-height:1.6;padding:10px 12px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06);border-radius:7px"><strong style="color:#fff">verdict_accept</strong> &middot; the claim verdict is ACCEPT</div>
+    <div style="font-size:12.5px;color:rgba(255,255,255,.6);line-height:1.6;padding:10px 12px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06);border-radius:7px"><strong style="color:#fff">schema_clean</strong> &middot; no schema or required-field blockers</div>
+    <div style="font-size:12.5px;color:rgba(255,255,255,.6);line-height:1.6;padding:10px 12px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06);border-radius:7px"><strong style="color:#fff">source_backed_evidence</strong> &middot; source-backed evidence is attached</div>
+    <div style="font-size:12.5px;color:rgba(255,255,255,.6);line-height:1.6;padding:10px 12px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06);border-radius:7px"><strong style="color:#fff">external_review</strong> &middot; external review is attached</div>
+    <div style="font-size:12.5px;color:rgba(255,255,255,.6);line-height:1.6;padding:10px 12px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06);border-radius:7px"><strong style="color:#fff">semantic_alignment</strong> &middot; claim text alignment is externally certified</div>
+    <div style="font-size:12.5px;color:rgba(255,255,255,.6);line-height:1.6;padding:10px 12px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06);border-radius:7px"><strong style="color:#fff">witness_independence</strong> &middot; witness independence is externally certified</div>
+    <div style="font-size:12.5px;color:rgba(255,255,255,.6);line-height:1.6;padding:10px 12px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06);border-radius:7px"><strong style="color:#fff">provenance_sources</strong> &middot; provenance sources / source URLs present</div>
+    <div style="font-size:12.5px;color:rgba(255,255,255,.6);line-height:1.6;padding:10px 12px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06);border-radius:7px"><strong style="color:#fff">review_hash_verified</strong> &middot; review hash matches the review packet</div>
+    <div style="font-size:12.5px;color:rgba(255,255,255,.6);line-height:1.6;padding:10px 12px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06);border-radius:7px"><strong style="color:#fff">source_urls_recoverable_hashable</strong> &middot; source URLs recoverable with matching hashes</div>
+    <div style="font-size:12.5px;color:rgba(255,255,255,.6);line-height:1.6;padding:10px 12px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06);border-radius:7px"><strong style="color:#fff">witness_registry_resolved</strong> &middot; witness ID resolves in the registry</div>
+    <div style="font-size:12.5px;color:rgba(255,255,255,.6);line-height:1.6;padding:10px 12px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06);border-radius:7px"><strong style="color:#fff">ro_crate_validated</strong> &middot; RO-Crate packet valid and hash-matched</div>
+    <div style="font-size:12.5px;color:rgba(255,255,255,.6);line-height:1.6;padding:10px 12px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06);border-radius:7px"><strong style="color:#fff">reviewer_attestation_verified</strong> &middot; reviewer identity / attestation verifiable</div>
+    <div style="font-size:12.5px;color:rgba(255,255,255,.6);line-height:1.6;padding:10px 12px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06);border-radius:7px"><strong style="color:#fff">review_id_present</strong> &middot; provenance review_id is present</div>
+    <div style="font-size:12.5px;color:rgba(255,255,255,.6);line-height:1.6;padding:10px 12px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06);border-radius:7px"><strong style="color:#fff">witness_id_present</strong> &middot; provenance witness_id is present</div>
+  </div>
+  <p style="font-size:12px;color:rgba(255,255,255,.4);line-height:1.65;margin-top:18px">Verbatim from <code style="color:rgba(255,255,255,.55)">capas.evaluate_fine_tune_readiness</code>. Any unmet criterion appears as a named blocker on the packet.</p>
+</div>
+</section>
 
 <!-- EXECUTIVE SO WHAT -->
 <section class="section alt">
