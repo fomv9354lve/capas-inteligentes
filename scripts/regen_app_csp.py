@@ -87,7 +87,7 @@ def build_csp(style_hashes: list[str], script_hashes: list[str]) -> str:
         + style_src + "; "
         + script_src + "; "
         + "font-src 'self' https://fonts.gstatic.com; "
-        + "object-src 'none'; base-uri 'none'; form-action 'none'; connect-src 'none'"
+        + "object-src 'none'; base-uri 'none'; form-action 'none'; connect-src 'self'"
     )
 
 

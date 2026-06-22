@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CAPAS · Live Engine</title>
+<style>
+  :root{--bg:#0a0a0f;--card:rgba(255,255,255,.03);--bd:rgba(255,255,255,.08);--mut:rgba(255,255,255,.5)}
+  *{box-sizing:border-box}body{margin:0;background:var(--bg);color:#fff;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.5}
+  .wrap{max-width:720px;margin:0 auto;padding:48px 22px}
+  .lab{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mut)}
+  h1{font-size:clamp(28px,4vw,40px);font-weight:900;letter-spacing:-.03em;margin:8px 0 6px}
+  .sub{color:var(--mut);font-size:15px;max-width:600px}
+  .card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:22px;margin-top:24px}
+  label{display:block;font-size:12px;color:var(--mut);margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em}
+  select,button{font:inherit;border-radius:8px;border:1px solid var(--bd);background:rgba(255,255,255,.04);color:#fff;padding:10px 14px}
+  select{width:100%}
+  .field{display:flex;align-items:center;gap:10px;padding:8px 0;font-size:14px;cursor:pointer}
+  .field input{width:18px;height:18px;accent-color:#4f5ef7}
+  button.run{margin-top:18px;background:linear-gradient(135deg,#4f5ef7,#3a47d5);border:0;font-weight:700;cursor:pointer;width:100%;padding:13px}
+  .out{margin-top:20px;display:none}
+  .verdict{font-size:30px;font-weight:900;letter-spacing:-.02em}
+  .ACCEPT{color:#48bb78}.REWRITE{color:#f6ad55}.REJECT{color:#e8185d}.HOLD{color:#a0aec0}
+  .meta{font-size:13px;color:var(--mut);margin-top:8px}
+  code{font-family:'SF Mono',ui-monospace,Menlo,monospace;font-size:12px;color:rgba(255,255,255,.7)}
+  .note{font-size:12px;color:var(--mut);margin-top:26px;border-top:1px solid var(--bd);padding-top:16px}
+  a{color:#8b9bff}
+</style></head>
+<body><div class="wrap">
+  <div class="lab">Live engine · no LLM in the verdict</div>
+  <h1>Run the real gate</h1>
+  <p class="sub">This page calls the actual deterministic Python engine over <code>POST /api/gate</code> — not a JavaScript reimplementation. Toggle the evidence a claim declares and watch the verdict change. The engine re-derives what it can, and fails closed on what it can't.</p>
+
+  <div class="card">
+    <label>Claim family</label>
+    <select id="ctype"></select>
+    <div id="fields" style="margin-top:14px"></div>
+    <button class="run" id="run">Gate it — real engine →</button>
+    <div class="out" id="out">
+      <div class="verdict" id="verdict"></div>
+      <div class="meta" id="reason"></div>
+      <div class="meta" id="reward"></div>
+    </div>
+  </div>
+
+  <p class="note"><strong>Honest scope.</strong> The verdict is deterministic and re-derives <em>record↔text</em> (it recomputes numbers, checks contracts) — it does NOT verify <em>text↔reality</em>: a source that declares correct methods and withholds its data passes (the GIGO ceiling). ACCEPT means evidence-licensed, not true. <a href="index.html">← back to home</a></p>
+
+<script>
+const FAMILIES = {
+  systematic_review_claim: ["protocol_registered","inclusion_criteria_declared","risk_of_bias_assessed","effect_consistency"],
+  causal_mechanism_claim: ["intervention_or_natural_experiment","temporal_order_established","confounders_controlled","mechanism_evidence_present"],
+  reproducibility_check: ["artifact_available","independent_reproduction_pass"],
+};
+const sel = document.getElementById('ctype'), fieldsEl = document.getElementById('fields');
+Object.keys(FAMILIES).forEach(k => { const o=document.createElement('option'); o.value=k; o.textContent=k; sel.appendChild(o); });
+function renderFields(){
+  fieldsEl.innerHTML='';
+  FAMILIES[sel.value].forEach(f => {
+    const l=document.createElement('label'); l.className='field'; l.style.textTransform='none'; l.style.color='#fff';
+    l.innerHTML=`<input type="checkbox" data-f="${f}"> ${f}`;
+    fieldsEl.appendChild(l);
+  });
+}
+sel.onchange=renderFields; renderFields();
+document.getElementById('run').onclick=async ()=>{
+  const ct=sel.value, ev={};
+  fieldsEl.querySelectorAll('input').forEach(i=> ev[i.dataset.f]=i.checked);
+  const body=JSON.stringify({claim_type:ct, claim_text:ct, evidence:ev});
+  let g, r;
+  try{
+    g=await (await fetch('/api/gate',{method:'POST',headers:{'Content-Type':'application/json'},body})).json();
+    r=await (await fetch('/api/reward',{method:'POST',headers:{'Content-Type':'application/json'},body})).json();
+  }catch(e){ alert('engine call failed: '+e); return; }
+  const v=g.verdict||'ERROR';
+  document.getElementById('out').style.display='block';
+  const ve=document.getElementById('verdict'); ve.textContent=v; ve.className='verdict '+v;
+  document.getElementById('reason').textContent=g.reason||'';
+  document.getElementById('reward').innerHTML='verifiable reward: <code>'+(r.reward!==undefined?r.reward:'—')+'</code>  ·  scope: <code>'+(g.scope||'GATE')+'</code>';
+};
+</script>
+</div></body></html>
