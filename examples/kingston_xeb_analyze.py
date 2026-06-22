@@ -86,19 +86,22 @@ def main() -> int:
             print(f"    depth {d['depth']:2d}: F_xeb {d['f_xeb']:.3f}  F_purity {d['f_purity']:.3f}  "
                   f"coh {d['coherent_fraction']:.0%}  {d['verdict']}")
 
-    # cross-validation: good edge should beat bad edge at the deepest point
+    # cross-validation: CAPAS predicts the LOWER-CZ edge (from calibration) should have the higher
+    # deep XEB. Derive good/bad from CZ, not the tag string (robust to pinned/user edges).
     deep_by_edge = {e: max(c["by_depth"], key=lambda d: d["depth"])["f_xeb"] for e, c in curves.items()}
-    tags = {e: c["tag"] for e, c in curves.items()}
-    good = [e for e, t in tags.items() if "good" in t]
-    bad = [e for e, t in tags.items() if "bad" in t]
-    if good and bad:
-        ordering_ok = deep_by_edge[good[0]] > deep_by_edge[bad[0]]
+    cz_by_edge = {e: (c["cz"] or 1e9) for e, c in curves.items()}
+    if len(curves) >= 2:
+        good = min(cz_by_edge, key=cz_by_edge.get)   # CAPAS-predicted better (lower CZ)
+        bad = max(cz_by_edge, key=cz_by_edge.get)
+        ordering_ok = deep_by_edge[good] > deep_by_edge[bad]
         summary["capas_cross_validation"] = {
-            "good_edge_deep_xeb": deep_by_edge[good[0]], "bad_edge_deep_xeb": deep_by_edge[bad[0]],
+            "good_edge": good, "good_cz": cz_by_edge[good], "good_edge_deep_xeb": deep_by_edge[good],
+            "bad_edge": bad, "bad_cz": cz_by_edge[bad], "bad_edge_deep_xeb": deep_by_edge[bad],
             "ordering_matches_capas_prediction": ordering_ok}
-        print(f"\nCAPAS cross-validation: good edge XEB {deep_by_edge[good[0]]:.3f} "
-              f"{'>' if ordering_ok else '<='} bad edge XEB {deep_by_edge[bad[0]]:.3f} "
-              f"-> prediction {'CONFIRMED' if ordering_ok else 'NOT confirmed'}")
+        print(f"\nCAPAS cross-validation: lower-CZ edge {good} (CZ {cz_by_edge[good]:.1e}) XEB "
+              f"{deep_by_edge[good]:.3f} {'>' if ordering_ok else '<='} higher-CZ edge {bad} "
+              f"(CZ {cz_by_edge[bad]:.1e}) XEB {deep_by_edge[bad]:.3f} "
+              f"-> calibration prediction {'CONFIRMED' if ordering_ok else 'NOT confirmed'}")
 
     json.dump(summary, open(OUT, "w"), indent=2)
     print(f"\nsaved -> {OUT}")

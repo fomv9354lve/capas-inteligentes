@@ -22,7 +22,9 @@ from pathlib import Path
 
 TOKEN_FILE = "/Users/kreniq/Downloads/apikey (1).json"
 OUT = "/tmp/xeb_submit.json"
-DEPTHS = [2, 8, 16, 24]
+# 9 depth points -> max conformal coverage n/(n+1) = 90% (vs 80% at 5 / 83% max at 4-5).
+# Spans 2..30 so the kappa fit and the depth-extrapolation band both have real leverage.
+DEPTHS = [2, 4, 6, 8, 12, 16, 20, 25, 30]
 N_CIRCUITS = 10
 SHOTS = 4096
 
