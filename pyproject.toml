@@ -44,13 +44,11 @@ standalone = [
 capas = "capas:main"
 
 [tool.setuptools]
+# LEAN ENGINE: ship only the deterministic gate core. The research layer
+# (falsify/discovery/sequential/bridge/consilience/cognitive) stays in the repo,
+# importable from source, but is NOT in the wheel.
 py-modules = [
-  "capas", "capas_sdk",
-  "capas_admissibility", "capas_audit", "capas_braid", "capas_bridge", "capas_circuits",
-  "capas_conformal", "capas_conjecture", "capas_consilience", "capas_discovery", "capas_extract",
-  "capas_ezkl", "capas_falsify", "capas_hierarchy", "capas_intake", "capas_integration",
-  "capas_loop", "capas_mind", "capas_process", "capas_propose", "capas_quantum", "capas_rcc",
-  "capas_registry", "capas_route", "capas_sequential", "capas_sql", "capas_think", "capas_value",
-  "capas_verify", "capas_xbrl",
+  "capas", "capas_sdk", "capas_verify", "capas_admissibility", "capas_rcc",
+  "capas_route", "capas_intake", "capas_propose",
 ]
 packages = ["router", "router.backends", "integrations"]
