@@ -123,4 +123,52 @@ def invariants(block: dict[str, Any]) -> dict[str, Any]:
     return capas_invariants.audit(block or {})
 
 
-__all__ = ["gate", "reward", "certificate", "verified", "gate_text", "gate_quantum", "invariants"]
+def admit(claim_type: str, evidence: dict[str, Any], attester: str, claim_text: str = "",
+          claim_id: str = "claim", at: str | None = None) -> dict[str, Any]:
+    """Gate a claim AND enter it into the persisted survive-refutation ledger, bound to an
+    attester. The verdict stops being a one-shot: it becomes a time-extended, refutable record.
+    Returns the verdict + the PROVISIONAL WEIGHT — for a GATE (ACCEPT, proof-backed) the weight is
+    full; for an ATTEST (declared, non-re-derivable) it is worth only the attester's standing
+    EARNED by surviving refutation. This connects the gate (now) to accountability (over time) —
+    the third pole, and the actual moat (trust-as-certification-standard)."""
+    import capas_ledger_store
+    verdict = gate(claim_type, evidence, claim_text, claim_id)
+    cert = {"claim_id": claim_id, "verdict": verdict.get("verdict"),
+            "claim_type": claim_type, "reason": verdict.get("reason")}
+    weight = capas_ledger_store.attest(cert, attester, at=at)
+    return {"verdict": verdict.get("verdict"), "claim_id": claim_id, "attester": attester,
+            "provisional_weight": weight, "decision": verdict,
+            "note": "attested to the survive-refutation ledger; call resolve() as the world measures it"}
+
+
+def resolve(claim_id: str, outcome: str) -> dict[str, Any]:
+    """The world's measurement on an attested claim: 'survived' or 'refuted'. This is the only
+    mechanism CAPAS cannot fake — the world, not the engine, earns or destroys an attester's
+    standing. Adversarial/temporal refutation is what makes the ATTEST slice accountable."""
+    import capas_ledger_store
+    return capas_ledger_store.resolve(claim_id, outcome)
+
+
+def standing(attester: str) -> dict[str, Any]:
+    """An attester's reputation, earned ONLY by surviving refutation over time (not by self-claim)."""
+    import capas_ledger_store
+    return capas_ledger_store.standing(attester)
+
+
+def error_budget(calibration_row: dict[str, Any]) -> dict[str, Any]:
+    """Beat the vendor benchmark: re-derive the COMPLETE per-layer error budget from a device's
+    OWN published calibration fields, vs its optimistic headline (RB) number — fully auditable.
+    Plus mitigation_prescription via error_correction(). (See docs/BEATING_THE_BENCHMARK.md.)"""
+    import capas_quantum_physics
+    return capas_quantum_physics.complete_error_budget(calibration_row or {})
+
+
+def error_correction(calibration_row: dict[str, Any]) -> dict[str, Any]:
+    """The deterministic error-correction prescription (DD / rep_delay / reset / readout) re-derived
+    from a calibration row — the corrections the vendor panel does not hand you."""
+    import capas_quantum_physics
+    return capas_quantum_physics.mitigation_prescription(calibration_row or {})
+
+
+__all__ = ["gate", "reward", "certificate", "verified", "gate_text", "gate_quantum", "invariants",
+           "admit", "resolve", "standing", "error_budget", "error_correction"]
