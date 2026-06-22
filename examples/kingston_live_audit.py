@@ -45,12 +45,20 @@ def main() -> int:
         except Exception:
             continue
 
+    # EXACT published residual ZZ per edge (general.zz_*, in GHz) — measured, not estimated.
+    raw = p.to_dict()
+    gen = {x["name"]: (x.get("value"), x.get("unit")) for x in raw.get("general", [])}
+    zz_hz = {}
     for e in sorted({tuple(sorted(x)) for x in b.coupling_map}):
         try:
-            cz = p.gate_error("cz", list(e))
-            edge_rows[e] = cz
+            edge_rows[e] = p.gate_error("cz", list(e))
         except Exception:
-            continue
+            pass
+        for nm in (f"zz_{e[0]}{e[1]}", f"zz_{e[1]}{e[0]}"):
+            if nm in gen:
+                val, unit = gen[nm]
+                zz_hz[e] = abs(val) * (1e9 if str(unit).upper() == "GHZ" else 1.0)
+                break
 
     # --- run the invariant engine over the live chip ---
     coh_flags, deph_limited, hot_floor, gate_too_clean = [], [], [], []
@@ -75,6 +83,12 @@ def main() -> int:
     median_cz = czs[len(czs) // 2] if czs else 0.0
     tls_edges = [(list(e), round(cz, 5)) for e, cz in edge_rows.items() if cz > 20 * median_cz]
 
+    # EXACT ZZ gate over every edge (published quantity) — and the estimate-vs-exact check.
+    zz_flags = [(list(e), round(v / 1e3, 2)) for e, v in zz_hz.items()
+                if P.check_zz_residual(v)["verdict"] == "FLAG_HIGH_ZZ"]
+    zz_max = max(zz_hz.values()) if zz_hz else 0.0
+    zz_max_edge = max(zz_hz, key=zz_hz.get) if zz_hz else None
+
     summary = {
         "backend": "ibm_kingston", "live": True,
         "qubits_audited": len(qrows), "edges_audited": len(edge_rows),
@@ -86,8 +100,13 @@ def main() -> int:
         "tls_degraded_edges_gt_20x_median": tls_edges,
         "gamma_phi_min_per_us": round(min(gamma_phis), 6) if gamma_phis else None,
         "gamma_phi_max_per_us": round(max(gamma_phis), 6) if gamma_phis else None,
+        "zz_published_edges": len(zz_hz),
+        "zz_max_khz": round(zz_max / 1e3, 2),
+        "zz_max_edge": list(zz_max_edge) if zz_max_edge else None,
+        "zz_high_flags": zz_flags,
         "frequency_exposed": False,
-        "note": "CAPAS gated the vendor's live calibration; frequency withheld on open plan.",
+        "note": "CAPAS gated the vendor's live calibration; frequency withheld on open plan; "
+                "residual ZZ is published EXACTLY (not estimated).",
     }
     json.dump(summary, open(OUT, "w"), indent=2)
 
@@ -100,6 +119,9 @@ def main() -> int:
     print(f"CZ TLS-degraded edges (>20x median {median_cz:.2e}): {len(tls_edges)}  e.g. {tls_edges[:4]}")
     print(f"pure-dephasing rate range         : {summary['gamma_phi_min_per_us']}"
           f" .. {summary['gamma_phi_max_per_us']} /us")
+    print(f"EXACT published ZZ residual       : {len(zz_hz)} edges, max {summary['zz_max_khz']} kHz "
+          f"at {summary['zz_max_edge']}, {len(zz_flags)} above coupler-nulling target")
+    print(f"  (measured, NOT the CZ/RZZ estimate — e.g. 131-138 estimate ~86kHz vs published ~3.6kHz)")
     print(f"saved -> {OUT}")
     return 0
 

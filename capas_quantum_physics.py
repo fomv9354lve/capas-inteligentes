@@ -294,6 +294,26 @@ def derive_hidden_quantities(row: dict[str, Any]) -> dict[str, Any]:
     return out
 
 
+def check_zz_residual(zz_hz: float, threshold_hz: float = 1.0e5) -> dict[str, Any]:
+    """Gate a coupler's residual ZZ coupling against an engineering target. IBM PUBLISHES this
+    EXACTLY per edge (general.zz_*, in GHz) — it is measured data, NOT an estimate from the
+    CZ/RZZ ratio (which over-states it: e.g. edge 131-138 estimates ~86 kHz from CZ/RZZ but the
+    PUBLISHED value is 3.56 kHz, 24x smaller — gating on the estimate would false-flag). On a
+    tunable-coupler device (Heron) the coupler nulls ZZ to single-digit kHz; a residual far above
+    the target means the coupler is not nulling (always-on entanglement during idle -> qubits not
+    independently addressable). This is an ENGINEERING-TARGET threshold, not a fundamental identity."""
+    zz = abs(float(zz_hz))
+    flag = zz > threshold_hz
+    return {"zz_residual_hz": zz, "threshold_hz": threshold_hz,
+            "verdict": "FLAG_HIGH_ZZ" if flag else "ADMISSIBLE",
+            "why": (f"residual ZZ {zz/1e3:.2f} kHz exceeds the {threshold_hz/1e3:.0f} kHz coupler-nulling "
+                    f"target — the tunable coupler is not suppressing ZZ; the pair entangles during idle"
+                    if flag else
+                    f"residual ZZ {zz/1e3:.2f} kHz is within the coupler-nulling target (independently "
+                    f"addressable)"),
+            "note": "EXACT published quantity (general.zz_*), not the CZ/RZZ estimate"}
+
+
 def audit_calibration_row(row: dict[str, Any]) -> dict[str, Any]:
     """Run every applicable physical-consistency gate over one qubit/edge calibration row and
     return a combined verdict. The row may carry: t1_us, t2_us, t2_method, p01, p10,
@@ -312,6 +332,8 @@ def audit_calibration_row(row: dict[str, Any]) -> dict[str, Any]:
     if "gate_error" in row and "gate_time_ns" in row and "t1_us" in row and "t2_us" in row:
         checks["gate_coherence"] = gate_error_admissible(
             row["gate_error"], row["gate_time_ns"], row["t1_us"], row["t2_us"])
+    if "zz_residual_hz" in row:
+        checks["zz_residual"] = check_zz_residual(row["zz_residual_hz"])
 
     flags = [k for k, v in checks.items() if str(v.get("verdict", "")).startswith("FLAG")]
     out = {
