@@ -46,6 +46,26 @@ def run() -> int:
     checks.append(("UNIVERSAL: p=1.4 -> FLAG (out of [0,1])", bad_p["verdict"] == "FLAG"))
     checks.append(("UNIVERSAL: 10+20+35 != 60 -> FLAG (conservation)", bad_s["verdict"] == "FLAG"))
 
+    # chemistry: stoichiometric atom balance
+    chem_ok = INV.check_stoichiometry({"stoichiometry": {"reactants": {"CH4": 1, "O2": 2}, "products": {"CO2": 1, "H2O": 2}}})
+    chem_bad = INV.check_stoichiometry({"stoichiometry": {"reactants": {"CH4": 1, "O2": 1}, "products": {"CO2": 1, "H2O": 2}}})
+    checks.append(("CHEMISTRY: CH4+2O2->CO2+2H2O balanced -> PASS", chem_ok["verdict"] == "PASS"))
+    checks.append(("CHEMISTRY: unbalanced (1 O2) -> FLAG (atoms not conserved)", chem_bad["verdict"] == "FLAG"))
+
+    # physics: dimensional homogeneity + bounds
+    dim_ok = INV.check_dimensions({"dimensions": {"lhs": "N", "rhs": {"kg": 1, "m": 1, "s": -2}}})
+    dim_bad = INV.check_dimensions({"dimensions": {"lhs": "J", "rhs": {"kg": 1, "m": 1, "s": -2}}})
+    eff = INV.check_physical_bounds({"bounds": {"efficiency": 1.2}})
+    checks.append(("PHYSICS: F=ma dims (N = kg m/s^2) -> PASS", dim_ok["verdict"] == "PASS"))
+    checks.append(("PHYSICS: J != kg m/s^2 -> FLAG (dimensional)", dim_bad["verdict"] == "FLAG"))
+    checks.append(("PHYSICS: efficiency 1.2 -> FLAG (>1, over-unity)", eff["verdict"] == "FLAG"))
+
+    # mathematics: a claimed root must satisfy the equation
+    root_ok = INV.check_root({"root_check": {"polynomial": [-9, 0, 1], "root": 3}})
+    root_bad = INV.check_root({"root_check": {"polynomial": [-9, 0, 1], "root": 2}})
+    checks.append(("MATH: x=3 satisfies x^2-9=0 -> PASS", root_ok["verdict"] == "PASS"))
+    checks.append(("MATH: x=2 does NOT satisfy x^2-9=0 -> FLAG", root_bad["verdict"] == "FLAG"))
+
     # --- 2. integration: the CORE decision is OVERRIDDEN to REJECT by an invariant violation ---
     # A financial_metric_claim that re-derives fine BUT whose books do not close -> REJECT.
     payload = {
@@ -78,9 +98,9 @@ def run() -> int:
     ok = all(c for _, c in checks)
     for label, c in checks:
         print(f"{'OK ' if c else 'XX '}{label}")
-    print("\nONE mechanism, THREE domains: finance + psychology + quantum fabrication all caught by\n"
-          "deterministic invariant re-derivation — no oracle, no LLM. The core gate is strengthened,\n"
-          "never weakened (downgrade-only): the 0-false-accept guarantee is preserved.")
+    print("\nONE mechanism, SEVEN domains: finance + psychology + quantum + chemistry + physics + math\n"
+          "+ universal fabrication all caught by deterministic invariant re-derivation — no oracle, no\n"
+          "LLM. The core gate is strengthened, never weakened (downgrade-only): 0-false-accept preserved.")
     print("CROSS-DOMAIN INVARIANT ENGINE: pass" if ok else "INVARIANTS: FAILURES")
     return 0 if ok else 1
 

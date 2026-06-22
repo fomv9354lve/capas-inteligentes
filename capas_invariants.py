@@ -147,12 +147,181 @@ def check_sum(ev: dict[str, Any]) -> dict[str, Any]:
                     f"parts sum to {s:.6g} != declared total {total:.6g} — conservation violated")}
 
 
+import re as _re
+
+# --- chemistry: stoichiometric atom balance ---
+def _parse_formula(formula: str) -> dict[str, int]:
+    """Parse a chemical formula into element->count, handling parentheses: Ca(OH)2 -> {Ca,O2,H2}."""
+    def multiply(counts, n):
+        return {e: c * n for e, c in counts.items()}
+
+    def merge(a, b):
+        for e, c in b.items():
+            a[e] = a.get(e, 0) + c
+        return a
+
+    tokens = _re.findall(r"([A-Z][a-z]?|\(|\)|\d+)", str(formula))
+    stack = [{}]
+    i = 0
+    while i < len(tokens):
+        t = tokens[i]
+        if t == "(":
+            stack.append({})
+        elif t == ")":
+            grp = stack.pop()
+            n = 1
+            if i + 1 < len(tokens) and tokens[i + 1].isdigit():
+                n = int(tokens[i + 1]); i += 1
+            merge(stack[-1], multiply(grp, n))
+        elif t.isdigit():
+            pass  # bare leading digit handled as coefficient by caller
+        else:  # element
+            n = 1
+            if i + 1 < len(tokens) and tokens[i + 1].isdigit():
+                n = int(tokens[i + 1]); i += 1
+            merge(stack[-1], {t: n})
+        i += 1
+    return stack[0]
+
+
+def check_stoichiometry(ev: dict[str, Any]) -> dict[str, Any]:
+    """Atom conservation: each element's count must match across a balanced reaction. Needs a
+    `stoichiometry` block: {reactants: {formula: coeff,...}, products: {formula: coeff,...}}."""
+    st = ev.get("stoichiometry")
+    if not isinstance(st, dict) or "reactants" not in st or "products" not in st:
+        return {"applies": False}
+    def side(d):
+        tot: dict[str, int] = {}
+        for formula, coeff in (d or {}).items():
+            atoms = _parse_formula(formula)
+            for e, c in atoms.items():
+                tot[e] = tot.get(e, 0) + c * float(coeff)
+        return tot
+    lhs, rhs = side(st["reactants"]), side(st["products"])
+    elems = set(lhs) | set(rhs)
+    unbalanced = {e: (lhs.get(e, 0), rhs.get(e, 0)) for e in elems
+                  if abs(lhs.get(e, 0) - rhs.get(e, 0)) > 1e-9}
+    ok = not unbalanced
+    return {"applies": True, "verdict": "PASS" if ok else "FLAG",
+            "law": "atom conservation: reactant atoms = product atoms, per element",
+            "why": ("reaction is balanced (every element conserved)" if ok else
+                    f"NOT balanced — element counts differ: "
+                    + "; ".join(f"{e}: {l} vs {r}" for e, (l, r) in unbalanced.items()))}
+
+
+# --- physics: dimensional homogeneity ---
+# base SI dimensions: (M mass, L length, T time, I current, K temperature, N amount, J luminous)
+_DIM = {
+    "kg": (1, 0, 0, 0, 0, 0, 0), "g": (1, 0, 0, 0, 0, 0, 0), "m": (0, 1, 0, 0, 0, 0, 0),
+    "s": (0, 0, 1, 0, 0, 0, 0), "A": (0, 0, 0, 1, 0, 0, 0), "K": (0, 0, 0, 0, 1, 0, 0),
+    "mol": (0, 0, 0, 0, 0, 1, 0), "cd": (0, 0, 0, 0, 0, 0, 1),
+    "N": (1, 1, -2, 0, 0, 0, 0), "J": (1, 2, -2, 0, 0, 0, 0), "W": (1, 2, -3, 0, 0, 0, 0),
+    "Pa": (1, -1, -2, 0, 0, 0, 0), "C": (0, 0, 1, 1, 0, 0, 0), "V": (1, 2, -3, -1, 0, 0, 0),
+    "Hz": (0, 0, -1, 0, 0, 0, 0), "ohm": (1, 2, -3, -2, 0, 0, 0),
+}
+
+
+def _dim_vector(terms: Any) -> tuple | None:
+    """terms: a unit string ('N') or a dict {unit: power}. Returns the 7-vector of base dims."""
+    if isinstance(terms, str):
+        terms = {terms: 1}
+    if not isinstance(terms, dict):
+        return None
+    vec = [0.0] * 7
+    for unit, power in terms.items():
+        base = _DIM.get(unit)
+        if base is None:
+            return None
+        for k in range(7):
+            vec[k] += base[k] * float(power)
+    return tuple(vec)
+
+
+def check_dimensions(ev: dict[str, Any]) -> dict[str, Any]:
+    """Dimensional homogeneity: the two sides of a physical equation must have identical base
+    dimensions. Needs `dimensions` block: {lhs: 'N' | {unit:power}, rhs: {'kg':1,'m':1,'s':-2}}."""
+    dm = ev.get("dimensions")
+    if not isinstance(dm, dict) or "lhs" not in dm or "rhs" not in dm:
+        return {"applies": False}
+    lhs, rhs = _dim_vector(dm["lhs"]), _dim_vector(dm["rhs"])
+    if lhs is None or rhs is None:
+        return {"applies": True, "verdict": "FLAG", "law": "dimensional homogeneity",
+                "why": "an unknown unit was used (not in the SI base/derived table)"}
+    ok = all(abs(a - b) < 1e-9 for a, b in zip(lhs, rhs))
+    return {"applies": True, "verdict": "PASS" if ok else "FLAG",
+            "law": "dimensional homogeneity: dim(LHS) = dim(RHS)",
+            "why": ("both sides share the same base dimensions" if ok else
+                    f"dimensions differ: LHS {lhs} != RHS {rhs} (M,L,T,I,K,N,J) — the equation cannot be physical")}
+
+
+# --- physics/stats: physical & mathematical bounds ---
+_BOUNDS = {  # name -> (low, high, reason)
+    "efficiency": (0.0, 1.0, "efficiency in [0,1] (no over-unity)"),
+    "correlation": (-1.0, 1.0, "Pearson r in [-1,1]"),
+    "r_squared": (0.0, 1.0, "R^2 in [0,1]"),
+    "probability": (0.0, 1.0, "probability in [0,1]"),
+    "mole_fraction": (0.0, 1.0, "mole fraction in [0,1]"),
+    "temperature_K": (0.0, float("inf"), "absolute temperature >= 0 K"),
+    "speed_m_s": (0.0, 299792458.0, "speed <= c"),
+    "ph": (-1.0, 15.0, "pH roughly in [-1,15] for aqueous solutions"),
+}
+
+
+def check_physical_bounds(ev: dict[str, Any]) -> dict[str, Any]:
+    """Named physical/mathematical bounds. Needs `bounds` block: {efficiency: 1.2, correlation: 0.9}."""
+    b = ev.get("bounds")
+    if not isinstance(b, dict):
+        return {"applies": False}
+    bad = []
+    for name, val in b.items():
+        v = _num(val)
+        lim = _BOUNDS.get(name)
+        if lim is None or v is None:
+            continue
+        lo, hi, _ = lim
+        if v < lo - 1e-12 or v > hi + 1e-12:
+            bad.append(f"{name}={v} outside [{lo},{hi}] ({lim[2]})")
+    applicable = any(name in _BOUNDS for name in b)
+    if not applicable:
+        return {"applies": False}
+    ok = not bad
+    return {"applies": True, "verdict": "PASS" if ok else "FLAG",
+            "law": "named physical/mathematical bounds",
+            "why": ("all bounded quantities within range" if ok else "; ".join(bad))}
+
+
+# --- mathematics: a declared root must satisfy the polynomial ---
+def check_root(ev: dict[str, Any]) -> dict[str, Any]:
+    """Re-derivation: a claimed root must satisfy the equation. Needs `root_check` block:
+    {polynomial: [a0,a1,...,an], root: x} meaning sum(a_i * x^i) must be ~0. Pure arithmetic,
+    no eval — safe."""
+    rc = ev.get("root_check")
+    if not isinstance(rc, dict) or "polynomial" not in rc or "root" not in rc:
+        return {"applies": False}
+    coeffs = rc["polynomial"]
+    x = _num(rc["root"])
+    if not isinstance(coeffs, list) or x is None:
+        return {"applies": True, "verdict": "FLAG", "law": "claimed root satisfies the equation",
+                "why": "malformed polynomial or root"}
+    val = sum((_num(a) or 0.0) * (x ** i) for i, a in enumerate(coeffs))
+    tol = rc.get("tol", 1e-6)
+    ok = abs(val) <= tol
+    return {"applies": True, "verdict": "PASS" if ok else "FLAG",
+            "law": "claimed root satisfies the equation: sum(a_i x^i) = 0",
+            "why": (f"x={x} satisfies the polynomial (residual {val:.2g})" if ok else
+                    f"x={x} is NOT a root: the polynomial evaluates to {val:.4g}, not 0 — the claimed solution is wrong")}
+
+
 REGISTRY: dict[str, Callable[[dict[str, Any]], dict[str, Any]]] = {
     "accounting": check_accounting,
     "quantum": check_quantum,
     "grim": check_grim,
     "probability": check_probability_bounds,
     "sum": check_sum,
+    "stoichiometry": check_stoichiometry,   # chemistry
+    "dimensions": check_dimensions,         # physics
+    "bounds": check_physical_bounds,        # physics / math
+    "root": check_root,                     # mathematics
 }
 
 

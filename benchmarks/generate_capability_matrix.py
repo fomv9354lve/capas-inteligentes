@@ -74,6 +74,20 @@ def build() -> list[dict]:
         "parts[10,20,35] total60", _v(INV.check_sum({"parts": [10, 20, 35], "total": 60})),
         "declared components that do not sum to the declared whole")
 
+    # --- chemistry / physics / mathematics ---
+    add("chemistry", "stoichiometric atom balance", "consistency-invariant", True,
+        "CH4+O2->CO2+2H2O (1 O2)", _v(INV.check_stoichiometry({"stoichiometry": {"reactants": {"CH4": 1, "O2": 1}, "products": {"CO2": 1, "H2O": 2}}})),
+        "an unbalanced reaction (atoms not conserved reactants->products)")
+    add("physics", "dimensional homogeneity", "consistency-invariant", True,
+        "J = kg m/s^2 (wrong)", _v(INV.check_dimensions({"dimensions": {"lhs": "J", "rhs": {"kg": 1, "m": 1, "s": -2}}})),
+        "an equation whose two sides have different physical dimensions")
+    add("physics", "physical bounds (eta<=1, v<=c, T>=0)", "consistency-invariant", True,
+        "efficiency 1.2", _v(INV.check_physical_bounds({"bounds": {"efficiency": 1.2}})),
+        "over-unity efficiency, faster-than-light, sub-absolute-zero, |r|>1")
+    add("mathematics", "claimed root satisfies the equation", "derived-quantity", True,
+        "x=2 for x^2-9=0", _v(INV.check_root({"root_check": {"polynomial": [-9, 0, 1], "root": 2}})),
+        "a declared solution that does not satisfy its own equation")
+
     # --- DIAGNOSTIC only (honest exclusions: model assumptions, NOT gates) ---
     rows.append({"domain": "quantum", "capability": "ZZ from CZ/RZZ ratio", "class": "DIAGNOSTIC",
                  "exact": False, "demo_input": "n/a", "verdict": "NOT-A-GATE",
