@@ -46,6 +46,7 @@ VALIDATION_COMMANDS = [
     ("proof-carrying verification", ["benchmarks/verify_proof_carrying.py"]),
     ("Cara 1 product acceptance", ["benchmarks/cara1_acceptance.py"]),
     ("Cara 1/2 decoupling + honesty", ["benchmarks/verify_cara_decoupling.py"]),
+    ("quantum physical-consistency gate", ["benchmarks/demo_quantum_physics.py"]),
     ("batch and API surfaces", ["benchmarks/verify_batch_and_api.py"]),
     ("external user validation packet", ["benchmarks/verify_external_user_validation.py"]),
     ("profile registration packet", ["benchmarks/verify_profile_registration_packet.py"]),

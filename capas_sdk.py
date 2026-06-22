@@ -94,4 +94,18 @@ def gate_text(text: str, claim_type: str, extractor: Callable, claim_id: str = "
             "fail_closed": r["fail_closed"]}
 
 
-__all__ = ["gate", "reward", "certificate", "verified", "gate_text"]
+def gate_quantum(calibration_row: dict[str, Any]) -> dict[str, Any]:
+    """Gate a REPORTED quantum calibration/result claim against textbook physical invariants —
+    deterministically, with NO device. Pass a row with any of: t1_us, t2_us, t2_method, p01, p10,
+    readout_isolated/readout_parallel (lists), cz_error, rzz_error. Returns ADMISSIBLE only if
+    every applicable invariant holds (T2<=2*T1 unless DD declared; P01>=P10 thermal; CZ~RZZ;
+    parallel-readout basis). Fail-closed: any physical inconsistency flags the row.
+
+    This is the quantum analog of GRIM/statcheck — it rejects a spec/result that contradicts
+    physics without re-running the experiment (record<->text re-derivation). To gate a NOISY
+    MEASUREMENT against the device's calibrated noise model instead, use capas_quantum_hw."""
+    import capas_quantum_physics
+    return capas_quantum_physics.audit_calibration_row(calibration_row or {})
+
+
+__all__ = ["gate", "reward", "certificate", "verified", "gate_text", "gate_quantum"]
