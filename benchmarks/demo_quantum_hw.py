@@ -45,6 +45,20 @@ def run() -> int:
         (f"measurement ~{rn['measured_error']:.1%} noisier than calibration -> FLAG_TOO_NOISY (drift/anomaly)",
          rn["verdict"] == "FLAG_TOO_NOISY"),
     ]
+    # CALIBRATION-GRADE gate (Aer NoiseModel.from_backend prediction), statistically honest
+    REAL_PRED = {"00": 4038, "11": 3985, "01": 96, "10": 73}   # ibm_kingston Q0-Q1, Aer-simulated
+    pn = Q.gate_against_prediction({"00": 3200, "11": 3200, "01": 900, "10": 892}, REAL_PRED, IDEAL)
+    pc8k = Q.gate_against_prediction({"00": 4096, "11": 4096}, REAL_PRED, IDEAL)
+    pc200k = Q.gate_against_prediction({"00": 100000, "11": 100000}, REAL_PRED, IDEAL)
+    checks += [
+        ("precise gate: a noisy measurement -> FLAG_TOO_NOISY (signature far above calibrated)",
+         pn["verdict"] == "FLAG_TOO_NOISY"),
+        ("precise gate HONESTY: perfectly-clean at 8192 shots is NOT resolvable (no fake flag)",
+         pc8k["verdict"] == "ADMISSIBLE" and pc8k["too_clean_resolvable"] is False),
+        ("precise gate: with enough shots (200k) too-clean BECOMES detectable -> FLAG_TOO_CLEAN",
+         pc200k["verdict"] == "FLAG_TOO_CLEAN" and pc200k["too_clean_resolvable"] is True),
+    ]
+
     ok = all(c for _, c in checks)
     for label, c in checks:
         print(f"{'OK ' if c else 'XX '}{label}")
