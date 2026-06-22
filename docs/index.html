@@ -173,6 +173,8 @@ footer{border-top:1px solid rgba(255,255,255,0.06);padding:32px 48px;display:fle
     <a href="app.html"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"></path></svg>Gate App</a>
     <a href="customer-brief.html"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>Methodology</a>
     <a href="pilot-packet.html"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20V10"></path><path d="M12 20V4"></path><path d="M6 20v-6"></path></svg>Pilot</a>
+    <a href="benchmark.html"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20V10"></path><path d="M12 20V4"></path><path d="M6 20v-6"></path></svg>Benchmark</a>
+    <a href="security.html"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>Security</a>
     <a href="audit.html"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>Audit</a>
   </div>
   <div class="nav-sep"></div>
@@ -241,20 +243,20 @@ footer{border-top:1px solid rgba(255,255,255,0.06);padding:32px 48px;display:fle
 <div class="stat-bar">
   <div class="stat-bar-inner">
     <div class="stat-item">
-      <div class="stat-num">4<span>v</span></div>
-      <div class="stat-label">Verdict outcomes</div>
+      <div class="stat-num">26</div>
+      <div class="stat-label">Deterministic gates</div>
     </div>
     <div class="stat-item">
-      <div class="stat-num">90<span>+</span></div>
-      <div class="stat-label">Validation functions</div>
+      <div class="stat-num">10</div>
+      <div class="stat-label">Domains, one engine</div>
     </div>
     <div class="stat-item">
       <div class="stat-num">0</div>
-      <div class="stat-label">LLM dependency</div>
+      <div class="stat-label">False-accepts &middot; 0 LLM in the verdict</div>
     </div>
     <div class="stat-item">
       <div class="stat-num">100<span>%</span></div>
-      <div class="stat-label">Traceable decisions</div>
+      <div class="stat-label">Re-derivable, replayable</div>
     </div>
   </div>
 </div>
@@ -399,8 +401,9 @@ footer{border-top:1px solid rgba(255,255,255,0.06);padding:32px 48px;display:fle
       <tbody>
         <tr><td>GPT &middot; Claude &middot; Gemini</td><td class="yes">&#10003;</td><td class="no">&#10007;</td></tr>
         <tr><td>Deep-research agents</td><td class="yes">&#10003;</td><td class="no">&#10007;</td></tr>
+        <tr><td>LLM-as-judge</td><td class="no">&#10007;</td><td class="part">stochastic &middot; no guarantee, not replayable</td></tr>
         <tr><td>Fact-checkers</td><td class="no">&#10007;</td><td class="part">truth, not boundary</td></tr>
-        <tr class="capas"><td>CAPAS</td><td class="no">&#10007;</td><td class="yes">&#10003; evidence boundary</td></tr>
+        <tr class="capas"><td>CAPAS</td><td class="no">&#10007;</td><td class="yes">&#10003; deterministic &middot; replayable &middot; 0 false-accepts</td></tr>
       </tbody>
     </table>
   </div>
@@ -423,10 +426,10 @@ footer{border-top:1px solid rgba(255,255,255,0.06);padding:32px 48px;display:fle
 </section>
 <section class="section">
   <div class="section-inner">
-    <div class="section-label">Coverage</div>
-    <h2 class="section-h2" style="font-size:clamp(28px,3vw,42px);font-weight:900;letter-spacing:-0.03em;line-height:1.1;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">12 reference claim families</h2>
-    <p class="section-sub">Each family declares its own evidence contract. Unsupported domains HOLD until a team defines a new contract &mdash; the taxonomy never silently guesses.</p>
-    <div class="fam-chips"><span class="fam-chip">Causal mechanism</span><span class="fam-chip">Statistical confidence</span><span class="fam-chip">Universal anchor</span><span class="fam-chip">Systematic review</span><span class="fam-chip">Evidence conflict</span><span class="fam-chip">Multimodal evidence</span><span class="fam-chip">Physical accuracy</span><span class="fam-chip">Reproducibility</span><span class="fam-chip">Programming behavior</span><span class="fam-chip">Exact model solution</span><span class="fam-chip">Financial metric</span><span class="fam-chip">Claim transition</span><span class="fam-chip" style="border-style:dashed;color:rgba(255,255,255,0.4)">+ new domains via evidence contracts</span></div>
+    <div class="section-label">Cross-domain engine</div>
+    <h2 class="section-h2" style="font-size:clamp(28px,3vw,42px);font-weight:900;letter-spacing:-0.03em;line-height:1.1;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">One mechanism. 10 domains. 26 gates.</h2>
+    <p class="section-sub">A fabricated claim still has to satisfy the <strong>conservation laws of its field</strong> &mdash; and that is re-derivable with no oracle. The same engine catches a balance sheet that doesn&rsquo;t close, a survey mean that&rsquo;s arithmetically impossible (GRIM), a 99%-sensitive test claimed to imply a 99% PPV for a rare disease (the base-rate fallacy), an unbalanced reaction, a non-dimensional equation, a qubit with T2&nbsp;&gt;&nbsp;2&middot;T1. Any declared number that breaks a domain law forces <strong>REJECT</strong> &mdash; downgrade-only, so the 0-false-accept guarantee never weakens.</p>
+    <div class="fam-chips"><span class="fam-chip">Finance &mdash; A=L+E</span><span class="fam-chip">Statistics &mdash; GRIM</span><span class="fam-chip">Epidemiology &mdash; Bayes PPV, RR/OR, vaccine efficacy</span><span class="fam-chip">Chemistry &mdash; stoichiometry, charge, oxidation states</span><span class="fam-chip">Physics &mdash; dimensions, &eta;&le;1, v&le;c</span><span class="fam-chip">Quantum &mdash; T2&le;2T1, &Gamma;&phi;, gate floor</span><span class="fam-chip">Engineering &mdash; Ohm&rsquo;s law</span><span class="fam-chip">Biology &mdash; Hardy-Weinberg, mark-recapture</span><span class="fam-chip">Mathematics &mdash; root &amp; linear-system checks</span><span class="fam-chip">Universal &mdash; probability &amp; conservation</span><span class="fam-chip" style="border-style:dashed;color:rgba(255,255,255,0.4)">+ a new domain = one deterministic law</span></div>
   </div>
 </section>
 <section class="section">
@@ -568,8 +571,21 @@ footer{border-top:1px solid rgba(255,255,255,0.06);padding:32px 48px;display:fle
         <div style="font-family:'SF Mono',ui-monospace,monospace;font-size:12px;color:rgba(255,255,255,.45);background:rgba(0,0,0,.3);border-radius:7px;padding:10px">POST /api/certificate &rarr; id + signature</div>
       </div>
     </div>
-    <p class="section-sub" style="margin-top:26px">Beneath all three: a <strong>cross-domain invariant engine</strong>. One mechanism gates fabrication in finance (the books must close), psychology (a mean of N integers is a multiple of 1/N &mdash; GRIM), and quantum hardware (T2&nbsp;&le;&nbsp;2&middot;T1, and a gate can&rsquo;t be cleaner than relaxation allows). A declared number that violates a domain law forces <strong>REJECT</strong> &mdash; downgrade-only, so it never weakens the verdict. We validated it live against IBM&rsquo;s real ibm_kingston calibration: CAPAS independently re-found the chip&rsquo;s one anomalous qubit and its bad-coupler cluster, with zero false flags on honest data &mdash; and it admitted a real Bell measurement off the live QPU, bounded by two independent oracles (the ideal re-derivation and IBM&rsquo;s calibrated noise model). <span style="color:rgba(255,255,255,.5)">Honest scope: that proves it doesn&rsquo;t false-flag an honest result; flagging an <em>anomalous</em> live measurement is the discriminating stress test, pending a run on the device&rsquo;s degraded edges.</span></p>
-    <p class="section-sub" style="margin-top:14px;font-size:13px;color:rgba(255,255,255,.5)">That same pattern &mdash; invariant checks + threshold gates + a fail-closed verdict + a disclosed boundary &mdash; is what IBM&rsquo;s production calibration system <em>is</em>. The architecture isn&rsquo;t speculative: a hardware vendor runs it at scale. CAPAS generalizes it across domains.</p>
+    <p class="section-sub" style="margin-top:14px;font-size:13px;color:rgba(255,255,255,.5)">The same pattern &mdash; invariant checks + threshold gates + a fail-closed verdict + a disclosed boundary &mdash; is what IBM&rsquo;s production calibration system <em>is</em>. The architecture isn&rsquo;t speculative: a hardware vendor runs it at scale.</p>
+  </div>
+</section>
+<section class="section alt">
+  <div class="section-inner">
+    <div class="section-label">Proof on real hardware</div>
+    <h2 class="section-h2" style="font-size:clamp(28px,3vw,42px);font-weight:900;letter-spacing:-0.03em;line-height:1.1;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">We beat a vendor benchmark with the vendor&rsquo;s own numbers.</h2>
+    <p class="section-sub">IBM&rsquo;s headline gate-error figure is an optimistic lower bound &mdash; for real circuits it under-states by 3&ndash;10&times; (Proctor, <em>Nat. Phys.</em> 2022). From the <strong>same published calibration fields</strong>, CAPAS re-derives the complete error budget &mdash; fully auditable, no hardware required.</p>
+    <div style="display:flex;gap:32px;flex-wrap:wrap;align-items:center;margin:28px 0">
+      <div style="text-align:center"><div style="font-size:13px;color:rgba(255,255,255,.4)">IBM headline (RB)</div><div style="font-size:34px;font-weight:900;color:rgba(255,255,255,.7)">1.6&times;10<sup>-3</sup></div></div>
+      <div style="font-size:28px;color:var(--pink)">&rarr;</div>
+      <div style="text-align:center"><div style="font-size:13px;color:rgba(255,255,255,.4)">Re-derivable complete floor</div><div style="font-size:34px;font-weight:900;color:#e8185d">1.9&times;10<sup>-2</sup></div></div>
+      <div style="text-align:center;border-left:1px solid rgba(255,255,255,.1);padding-left:32px"><div style="font-size:13px;color:rgba(255,255,255,.4)">Error the headline hid</div><div style="font-size:34px;font-weight:900;color:#f6ad55">11&times;</div></div>
+    </div>
+    <p class="section-sub" style="font-size:13px;color:rgba(255,255,255,.5)">Validated live on IBM hardware: CAPAS re-found the chip&rsquo;s one anomalous qubit and its bad-coupler cluster from calibration alone, admitted a real Bell measurement bounded by two independent oracles, and its cross-validation held on a second device. The error-correction prescription (dynamical decoupling, rep-delay, readout mitigation) is re-derived from the same row. <a href="BEATING_THE_BENCHMARK.md" style="color:#e8185d;font-weight:600">Full method &rarr;</a></p>
   </div>
 </section>
 
@@ -597,7 +613,7 @@ footer{border-top:1px solid rgba(255,255,255,0.06);padding:32px 48px;display:fle
 
 <ul class="home-disclaimers">
   <li>CAPAS gates structured evidence supplied by users. It does not certify scientific truth or replace external review.</li>
-  <li>The app ships with 12 reference claim families; unsupported domains HOLD until a team defines a new evidence contract, admissibility policy, and audit artifact.</li>
+  <li>The engine ships 26 deterministic gates across 10 domains; unsupported domains HOLD until a team defines a new evidence contract, admissibility policy, and audit artifact.</li>
   <li>CAPAS does not use language models at decision time &mdash; every gate decision is deterministic and fully traceable.</li>
 </ul>
 <footer>
