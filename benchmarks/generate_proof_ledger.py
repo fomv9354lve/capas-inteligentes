@@ -42,6 +42,11 @@ def build() -> list[dict]:
               "ok": _run_test("benchmarks/verify_fail_closed.py"),
               "scope": "Structural invariant (proven). Empirical false-accept RATE on real claims is SCOPED below.",
               "owner": "eval"})
+    L.append({"id": "robustness", "claim": "Survives hostile input: no crash, no false-accept, injection inert, SSRF bounded",
+              "status": "CLOSED", "backing": "benchmarks/verify_robustness.py",
+              "ok": _run_test("benchmarks/verify_robustness.py"),
+              "scope": "20 adversarial payloads + an internal-URL SSRF probe; worst case is HOLD/REJECT.",
+              "owner": "security"})
     L.append({"id": "no_llm_verdict", "claim": "No language model in the verdict (deterministic)",
               "status": "CLOSED", "backing": "benchmarks/verify_cara_decoupling.py (+ audit_hash determinism)",
               "ok": _run_test("benchmarks/verify_cara_decoupling.py"),

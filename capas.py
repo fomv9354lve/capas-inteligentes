@@ -50,6 +50,7 @@ VALIDATION_COMMANDS = [
     ("cross-domain invariant engine", ["benchmarks/demo_invariants.py"]),
     ("survive-refutation loop (gate<->ledger)", ["benchmarks/demo_survive_refutation.py"]),
     ("fail-closed invariant (CLOSED)", ["benchmarks/verify_fail_closed.py"]),
+    ("adversarial robustness (CLOSED)", ["benchmarks/verify_robustness.py"]),
     ("proof ledger release gate", ["benchmarks/generate_proof_ledger.py"]),
     ("XEB + speckle-purity coherence gate", ["benchmarks/verify_xeb_purity.py"]),
     ("capability matrix (live gates)", ["benchmarks/generate_capability_matrix.py"]),

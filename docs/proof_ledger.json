@@ -9,6 +9,15 @@
     "owner": "eval"
   },
   {
+    "id": "robustness",
+    "claim": "Survives hostile input: no crash, no false-accept, injection inert, SSRF bounded",
+    "status": "CLOSED",
+    "backing": "benchmarks/verify_robustness.py",
+    "ok": true,
+    "scope": "20 adversarial payloads + an internal-URL SSRF probe; worst case is HOLD/REJECT.",
+    "owner": "security"
+  },
+  {
     "id": "no_llm_verdict",
     "claim": "No language model in the verdict (deterministic)",
     "status": "CLOSED",
