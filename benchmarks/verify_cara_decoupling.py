@@ -30,7 +30,7 @@ CARA1 = {"capas_verify", "capas_route", "capas_rcc", "capas_admissibility", "cap
          "capas_circuits", "capas_ezkl", "capas_consilience", "capas_falsify", "capas_sequential",
          "capas_bridge", "capas_registry", "capas_propose", "capas_discovery", "capas_intake",
          "capas_trust", "capas_ledger", "capas_federated", "capas_quantum_hw",
-         "capas_quantum_physics", "capas_invariants", "capas_mcp"}
+         "capas_quantum_physics", "capas_invariants", "capas_mcp", "capas_certstore"}
 CARA2 = {"capas_conjecture", "capas_loop", "capas_hierarchy", "capas_think", "capas_integration",
          "capas_value", "capas_process", "capas_mind"}
 

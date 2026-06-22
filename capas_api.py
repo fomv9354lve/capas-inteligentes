@@ -10,6 +10,7 @@ always reflects the engine (re-derivation, fail-closed, honest scope).
 from __future__ import annotations
 
 import json
+import os
 import sys
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -17,6 +18,11 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT))
 import capas_sdk  # noqa: E402
+import capas_certstore  # noqa: E402
+
+# Hosted-product auth: if CAPAS_API_KEY is set, write/issue endpoints require it (Bearer or
+# X-API-Key). Unset -> open (local dev). Read/verify of a certificate stays public by design.
+_API_KEY = os.environ.get("CAPAS_API_KEY")
 
 DOCS = ROOT / "docs"
 _CTYPE = {"html": "text/html", "js": "application/javascript", "css": "text/css",
@@ -33,6 +39,14 @@ class H(BaseHTTPRequestHandler):
 
     def do_OPTIONS(self):
         self.send_response(204); self._cors(); self.end_headers()
+
+    def _authed(self) -> bool:
+        if not _API_KEY:
+            return True
+        hdr = self.headers.get("Authorization", "")
+        token = hdr[7:] if hdr.startswith("Bearer ") else self.headers.get("X-API-Key", "")
+        import hmac
+        return hmac.compare_digest(token or "", _API_KEY)
 
     def _json(self, obj, code=200):
         data = json.dumps(obj).encode()
@@ -56,14 +70,24 @@ class H(BaseHTTPRequestHandler):
                 return self._json(capas.decide_external_claim(body))
             except Exception as e:
                 return self._json({"error": repr(e)}, 500)
+        # verify a posted certificate record (public, no auth — anyone can check tamper-evidence)
+        if self.path == "/api/certificate/verify":
+            return self._json(capas_certstore.verify(body.get("record") or body))
         ct = body.get("claim_type", ""); ev = body.get("evidence", {}) or {}; txt = body.get("claim_text", "") or ct
         try:
             if self.path == "/api/gate":
                 out = capas_sdk.gate(ct, ev, txt)
             elif self.path == "/api/reward":
                 out = {"reward": capas_sdk.reward(ct, ev, txt)}
+            elif self.path == "/api/quantum":
+                out = capas_sdk.gate_quantum(body.get("row") or ev)
+            elif self.path == "/api/invariants":
+                out = capas_sdk.invariants(body.get("block") or ev)
             elif self.path == "/api/certificate":
-                out = capas_sdk.certificate(ct, ev, txt)
+                # hosted product: issue a SIGNED, PERSISTED, addressable certificate (auth-gated)
+                if not self._authed():
+                    return self._json({"error": "unauthorized: set Authorization: Bearer <CAPAS_API_KEY>"}, 401)
+                out = capas_certstore.issue(capas_sdk.certificate(ct, ev, txt))
             else:
                 return self._json({"error": "unknown endpoint"}, 404)
         except Exception as e:
@@ -72,6 +96,16 @@ class H(BaseHTTPRequestHandler):
 
     def do_GET(self):
         p = self.path.split("?")[0]
+        # hosted product: retrieve a persisted certificate by id (public read + verify)
+        if p.startswith("/api/certificate/"):
+            cid = p[len("/api/certificate/"):]
+            rec = capas_certstore.get(cid)
+            if rec is None:
+                return self._json({"error": "certificate not found"}, 404)
+            rec["verification"] = capas_certstore.verify(rec)
+            return self._json(rec)
+        if p == "/api/health":
+            return self._json({"status": "ok", "auth_required": bool(_API_KEY)})
         if p in ("/", ""):
             p = "/index.html"
         f = (DOCS / p.lstrip("/")).resolve()

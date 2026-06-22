@@ -50,6 +50,8 @@ VALIDATION_COMMANDS = [
     ("cross-domain invariant engine", ["benchmarks/demo_invariants.py"]),
     ("capability matrix (live gates)", ["benchmarks/generate_capability_matrix.py"]),
     ("MCP server (LLM tool surface)", ["benchmarks/verify_mcp_server.py"]),
+    ("pip package (installable surface)", ["benchmarks/verify_pip_package.py"]),
+    ("hosted certificate API", ["benchmarks/verify_hosted_api.py"]),
     ("batch and API surfaces", ["benchmarks/verify_batch_and_api.py"]),
     ("external user validation packet", ["benchmarks/verify_external_user_validation.py"]),
     ("profile registration packet", ["benchmarks/verify_profile_registration_packet.py"]),

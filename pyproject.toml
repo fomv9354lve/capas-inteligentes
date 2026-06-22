@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "capas-claim-gate"
-version = "0.2.0"
+version = "0.3.0"
 description = "A fail-closed verification layer you wrap around your LLM: it never lets an unsupported claim through as ACCEPT, re-derives what is re-derivable, and emits a deterministic verifiable reward."
 readme = "README.md"
 requires-python = ">=3.11"
@@ -42,13 +42,18 @@ standalone = [
 
 [project.scripts]
 capas = "capas:main"
+capas-mcp = "capas_mcp:serve"
 
 [tool.setuptools]
 # LEAN ENGINE: ship only the deterministic gate core. The research layer
 # (falsify/discovery/sequential/bridge/consilience/cognitive) stays in the repo,
 # importable from source, but is NOT in the wheel.
+#   capas_invariants     — REQUIRED: the invariant override runs on EVERY decide_external_claim
+#   capas_quantum_physics — the quantum gate (capas_sdk.gate_quantum) + quantum invariant block
+#   capas_mcp            — the MCP server surface (capas-mcp entry point)
 py-modules = [
   "capas", "capas_sdk", "capas_verify", "capas_admissibility", "capas_rcc",
   "capas_route", "capas_intake", "capas_propose",
+  "capas_invariants", "capas_quantum_physics", "capas_mcp",
 ]
 packages = ["router", "router.backends", "integrations"]

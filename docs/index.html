@@ -546,6 +546,32 @@ footer{border-top:1px solid rgba(255,255,255,0.06);padding:32px 48px;display:fle
     <p class="section-sub" style="margin-top:18px;font-size:13px;color:rgba(255,255,255,.5)">The boost is <strong>reliability, not capability</strong> &mdash; the model doesn&rsquo;t get smarter, its output becomes admissible-or-deferred. Honest scope: it grounds record&harr;text, not text&harr;reality &mdash; a source that lies about its methods and withholds its data passes (the GIGO ceiling), so CAPAS says exactly which slice it re-derived and which it could only attest.</p>
   </div>
 </section>
+<section class="section">
+  <div class="section-inner">
+    <div class="section-label">One core, three surfaces</div>
+    <h2 class="section-h2" style="font-size:clamp(28px,3vw,42px);font-weight:900;letter-spacing:-0.03em;line-height:1.1;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">However you build, CAPAS is the gate</h2>
+    <p class="section-sub">The same deterministic engine, exposed three ways. CAPAS is never the language model &mdash; it is the fail-closed layer the model proposes into.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;margin-top:28px">
+      <div class="core-card">
+        <h4 style="margin:0 0 8px;font-size:16px">Library &middot; <span style="color:#48bb78">pip</span></h4>
+        <p style="font-size:13px;color:rgba(255,255,255,.55);line-height:1.6;margin:0 0 12px">Wrap your LLM in code. <code>gate &middot; reward &middot; certificate &middot; invariants &middot; gate_quantum</code>.</p>
+        <div style="font-family:'SF Mono',ui-monospace,monospace;font-size:12px;color:rgba(255,255,255,.45);background:rgba(0,0,0,.3);border-radius:7px;padding:10px">pip install capas-claim-gate</div>
+      </div>
+      <div class="core-card">
+        <h4 style="margin:0 0 8px;font-size:16px">Skill &middot; <span style="color:#4f5ef7">MCP server</span></h4>
+        <p style="font-size:13px;color:rgba(255,255,255,.55);line-height:1.6;margin:0 0 12px">A tool any agent calls &mdash; Claude Code, Desktop, Cursor. Zero dependencies. The agent proposes, CAPAS disposes.</p>
+        <div style="font-family:'SF Mono',ui-monospace,monospace;font-size:12px;color:rgba(255,255,255,.45);background:rgba(0,0,0,.3);border-radius:7px;padding:10px">python3 capas_mcp.py &nbsp;<span style="color:rgba(255,255,255,.3)"># see docs/mcp.md</span></div>
+      </div>
+      <div class="core-card">
+        <h4 style="margin:0 0 8px;font-size:16px">API &middot; <span style="color:#e8185d">signed certificate</span></h4>
+        <p style="font-size:13px;color:rgba(255,255,255,.55);line-height:1.6;margin:0 0 12px">Hosted, auth-gated issuance of a <strong>signed, persisted, tamper-evident</strong> admissibility certificate &mdash; the audit artifact a regulated buyer purchases.</p>
+        <div style="font-family:'SF Mono',ui-monospace,monospace;font-size:12px;color:rgba(255,255,255,.45);background:rgba(0,0,0,.3);border-radius:7px;padding:10px">POST /api/certificate &rarr; id + signature</div>
+      </div>
+    </div>
+    <p class="section-sub" style="margin-top:26px">Beneath all three: a <strong>cross-domain invariant engine</strong>. One mechanism gates fabrication in finance (the books must close), psychology (a mean of N integers is a multiple of 1/N &mdash; GRIM), and quantum hardware (T2&nbsp;&le;&nbsp;2&middot;T1, and a gate can&rsquo;t be cleaner than relaxation allows). A declared number that violates a domain law forces <strong>REJECT</strong> &mdash; downgrade-only, so it never weakens the verdict. We validated it live against IBM&rsquo;s real ibm_kingston calibration: CAPAS independently re-found the chip&rsquo;s one anomalous qubit and its bad-coupler cluster, with zero false flags on honest data.</p>
+    <p class="section-sub" style="margin-top:14px;font-size:13px;color:rgba(255,255,255,.5)">That same pattern &mdash; invariant checks + threshold gates + a fail-closed verdict + a disclosed boundary &mdash; is what IBM&rsquo;s production calibration system <em>is</em>. The architecture isn&rsquo;t speculative: a hardware vendor runs it at scale. CAPAS generalizes it across domains.</p>
+  </div>
+</section>
 
 <section class="cta-section">
   <div class="cta-inner">
