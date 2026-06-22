@@ -314,6 +314,109 @@ def check_zz_residual(zz_hz: float, threshold_hz: float = 1.0e5) -> dict[str, An
             "note": "EXACT published quantity (general.zz_*), not the CZ/RZZ estimate"}
 
 
+# ---------------------------------------------------------------------------
+# CIRCUIT-LEVEL coherence gate (XEB + speckle purity). Extends the single-gate
+# control-vs-decoherence split to a whole circuit: XEB measures TOTAL fidelity; speckle
+# purity measures the INCOHERENT-limited fidelity. Their gap is COHERENT error — which is
+# recalibratable, not fundamental. This is why a naive multiplicative (incoherent) budget is
+# PESSIMISTIC for a device whose error is partly coherent: it over-penalizes correctable error.
+# ---------------------------------------------------------------------------
+
+def _norm_counts(counts: dict[str, Any], n_qubits: int) -> dict[str, float]:
+    shots = sum(counts.values()) or 1
+    out = {}
+    for k, v in counts.items():
+        b = str(k).replace(" ", "")
+        out[b] = out.get(b, 0.0) + v / shots
+    return out
+
+
+def xeb_linear_fidelity(ideal_probs: dict[str, float], counts: dict[str, Any]) -> float:
+    """Normalized linear cross-entropy benchmarking fidelity for one circuit:
+    F = (D*Σ p_meas*p_ideal - 1) / (D*Σ p_ideal² - 1), D = 2^n. F=1 ideal, F=0 uniform."""
+    D = len(ideal_probs)
+    pm = _norm_counts(counts, max(1, D.bit_length() - 1))
+    sum_pm_pi = sum(pm.get(k, 0.0) * p for k, p in ideal_probs.items())
+    sum_pi2 = sum(p * p for p in ideal_probs.values())
+    den = D * sum_pi2 - 1.0
+    return round((D * sum_pm_pi - 1.0) / den, 6) if abs(den) > 1e-12 else 0.0
+
+
+def speckle_purity_fidelity(counts: dict[str, Any], n_qubits: int) -> float:
+    """Speckle-purity fidelity: F_purity = sqrt( Var(p_meas) / Var_PorterThomas ), with
+    Var_PT = (D-1)/(D²(D+1)). Coherent (unitary) errors preserve speckle variance, so F_purity
+    stays high while XEB drops — the gap isolates coherent error. Needs ONLY measured counts
+    (no ideal sim), so it is FREE from the same XEB circuits — zero extra QPU."""
+    D = 2 ** n_qubits
+    pm = _norm_counts(counts, n_qubits)
+    probs = [pm.get(format(i, f"0{n_qubits}b"), 0.0) for i in range(D)]
+    mean = sum(probs) / D
+    var = sum((p - mean) ** 2 for p in probs) / D
+    var_pt = (D - 1) / (D ** 2 * (D + 1))
+    purity = var / var_pt if var_pt > 0 else 0.0
+    return round(purity ** 0.5, 6)
+
+
+def coherent_fraction_verdict(f_xeb: float, f_purity: float, depth: int | None = None) -> dict[str, Any]:
+    """Split a circuit's measured infidelity into COHERENT (recalibratable) vs INCOHERENT
+    (fundamental). f_purity >= f_xeb: the gap is coherent. coherent_fraction = (f_p - f_x)/(1-f_x)
+    is the share of the error that is, in principle, correctable by calibration."""
+    fx, fp = float(f_xeb), float(f_purity)
+    infid = 1.0 - fx
+    coh = max(0.0, (fp - fx)) / infid if infid > 1e-6 else 0.0
+    coh = min(1.0, coh)
+    if infid < 0.01:
+        verdict, why = "ADMISSIBLE", "near-ideal circuit; negligible error to attribute"
+    elif coh > 0.5:
+        verdict = "FLAG_COHERENT_RECOVERABLE"
+        why = (f"{coh:.0%} of the infidelity is COHERENT (F_purity {fp:.3f} >> F_xeb {fx:.3f}): "
+               f"recalibratable error, NOT fundamental loss — a naive multiplicative budget "
+               f"over-penalizes this; the qubit/edge is better than it looks")
+    else:
+        verdict = "INCOHERENT_FUNDAMENTAL"
+        why = (f"only {coh:.0%} coherent (F_purity {fp:.3f} ~ F_xeb {fx:.3f}): the error is "
+               f"incoherent loss — the multiplicative budget is approximately right here")
+    return {"verdict": verdict, "why": why, "f_xeb": round(fx, 4), "f_purity": round(fp, 4),
+            "coherent_fraction": round(coh, 4), "depth": depth,
+            "lesson": "incoherent inference of a partly-coherent device is systematically pessimistic"}
+
+
+def reconcile_budget_with_measurement(measured_xeb: float, predicted_xeb: float,
+                                      coherent_fraction: float, depth: int | None = None) -> dict[str, Any]:
+    """CONSOLIDATION of the hard-20% learning. CAPAS's multiplicative circuit budget is INCOHERENT,
+    so it is a LOWER BOUND on real fidelity. The measured XEB sits ABOVE it exactly when the
+    device's error is partly COHERENT (purity-preserving). This function explains that gap with the
+    coherent fraction instead of mis-flagging it — the fix for why an incoherent inference of the
+    hard 20% was systematically pessimistic (mean error 0.14):
+      - within budget                       -> normal
+      - above budget AND coherent high      -> budget pessimistic BY DESIGN; the excess is
+                                               recalibratable, NOT a fabrication ('too clean') signal
+      - above budget AND coherent low       -> cleaner than incoherent physics with low coherent
+                                               share -> genuinely investigate (possible fabrication)
+    """
+    m, p, coh = float(measured_xeb), float(predicted_xeb), float(coherent_fraction)
+    gap = round(m - p, 4)
+    if gap <= 0.02:
+        verdict = "WITHIN_BUDGET"
+        why = f"measured XEB {m:.3f} <= incoherent budget {p:.3f} (+margin) — nothing to reconcile"
+    elif coh > 0.4:
+        verdict = "BUDGET_PESSIMISTIC_COHERENT"
+        why = (f"measured XEB {m:.3f} exceeds the incoherent budget {p:.3f} by {gap}, and {coh:.0%} of "
+               f"the error is coherent — the budget is pessimistic BY DESIGN (it treats coherent error "
+               f"as incoherent loss); the excess is recalibratable, NOT a too-clean/fabrication signal. "
+               f"Do NOT flag. This is exactly why an incoherent inference of the hard region runs low.")
+    else:
+        verdict = "ABOVE_BUDGET_LOW_COHERENCE"
+        why = (f"measured XEB {m:.3f} exceeds the budget {p:.3f} by {gap} with only {coh:.0%} coherent — "
+               f"cleaner than incoherent physics explains; investigate (too-clean / wrong device).")
+    return {"verdict": verdict, "why": why, "measured_xeb": round(m, 4),
+            "incoherent_budget": round(p, 4), "gap": gap, "coherent_fraction": round(coh, 4),
+            "depth": depth,
+            "lesson": "an incoherent multiplicative budget is a LOWER BOUND; speckle purity's coherent "
+                      "fraction explains how far real fidelity sits above it — so CAPAS stops calling a "
+                      "coherent-error device 'too clean'"}
+
+
 def audit_calibration_row(row: dict[str, Any]) -> dict[str, Any]:
     """Run every applicable physical-consistency gate over one qubit/edge calibration row and
     return a combined verdict. The row may carry: t1_us, t2_us, t2_method, p01, p10,

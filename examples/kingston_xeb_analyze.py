@@ -1,0 +1,98 @@
+"""Analyze the XEB+purity job when it lands: per (edge, depth) compute mean F_XEB and F_purity,
+the coherent fraction, the XEB-vs-depth curve, and reconcile it with CAPAS's calibration budget.
+
+Answers the three questions in one pass:
+  1. ground-truth XEB curve  (vs the inferred-20%, mean error 0.14)
+  2. coherent vs incoherent  (is the hard region recalibratable or fundamental?)
+  3. CAPAS cross-validation  (does the good edge beat the bad edge, as CAPAS predicted?)
+Token from file, never printed. Saves /tmp/xeb_results.json.
+"""
+from __future__ import annotations
+
+import json
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+import capas_quantum_physics as P
+
+TOKEN_FILE = "/Users/kreniq/Downloads/apikey (1).json"
+SUBMIT = "/tmp/xeb_submit.json"
+OUT = "/tmp/xeb_results.json"
+
+
+def _counts(pub):
+    d = pub.data
+    reg = "meas" if hasattr(d, "meas") else ("c" if hasattr(d, "c") else None)
+    return getattr(d, reg).get_counts()
+
+
+def main() -> int:
+    sub = json.load(open(SUBMIT))
+    tok = json.load(open(TOKEN_FILE))["apikey"]
+    from qiskit_ibm_runtime import QiskitRuntimeService
+    service = QiskitRuntimeService(channel="ibm_quantum_platform", token=tok)
+    res = service.job(sub["job_id"]).result()
+
+    # per-circuit F_xeb, F_purity
+    rows = []
+    for meta, pub in zip(sub["metas"], res):
+        counts = _counts(pub)
+        rows.append({"edge": tuple(meta["edge"]), "edge_tag": meta["edge_tag"],
+                     "edge_cz": meta["edge_cz"], "depth": meta["depth"],
+                     "f_xeb": P.xeb_linear_fidelity(meta["ideal_probs"], counts),
+                     "f_purity": P.speckle_purity_fidelity(counts, 2)})
+
+    # aggregate by (edge, depth)
+    agg = {}
+    for r in rows:
+        agg.setdefault((r["edge"], r["depth"]), []).append(r)
+    curves = {}
+    for (edge, depth), rs in sorted(agg.items()):
+        fx = sum(r["f_xeb"] for r in rs) / len(rs)
+        fp = sum(r["f_purity"] for r in rs) / len(rs)
+        v = P.coherent_fraction_verdict(fx, fp, depth)
+        curves.setdefault(str(list(edge)), {"tag": rs[0]["edge_tag"], "cz": rs[0]["edge_cz"], "by_depth": []})
+        curves[str(list(edge))]["by_depth"].append(
+            {"depth": depth, "f_xeb": round(fx, 4), "f_purity": round(fp, 4),
+             "coherent_fraction": v["coherent_fraction"], "verdict": v["verdict"]})
+
+    # reconcile each edge's curve with CAPAS's calibration budget (the inference-error question)
+    summary = {"job_id": sub["job_id"], "curves": curves, "reconciliation": {}}
+    for edge_str, c in curves.items():
+        cz = c["cz"] or 1e-3
+        layer_f = (1 - cz) * (1 - 2.0e-4) ** 2          # 1 CZ + 2 SX per XEB layer (incoherent budget)
+        deepest = max(c["by_depth"], key=lambda d: d["depth"])
+        predicted = layer_f ** deepest["depth"]
+        measured = deepest["f_xeb"]
+        coh = deepest["coherent_fraction"]
+        rec = P.reconcile_budget_with_measurement(measured, predicted, coh, deepest["depth"])
+        summary["reconciliation"][edge_str] = rec
+        print(f"edge {edge_str:10s} ({c['tag']}, CZ {cz:.2e}): "
+              f"depth {deepest['depth']} measured XEB {measured:.3f} vs budget {predicted:.3f} "
+              f"-> {rec['verdict']} (coherent {coh:.0%})")
+        for d in c["by_depth"]:
+            print(f"    depth {d['depth']:2d}: F_xeb {d['f_xeb']:.3f}  F_purity {d['f_purity']:.3f}  "
+                  f"coh {d['coherent_fraction']:.0%}  {d['verdict']}")
+
+    # cross-validation: good edge should beat bad edge at the deepest point
+    deep_by_edge = {e: max(c["by_depth"], key=lambda d: d["depth"])["f_xeb"] for e, c in curves.items()}
+    tags = {e: c["tag"] for e, c in curves.items()}
+    good = [e for e, t in tags.items() if "good" in t]
+    bad = [e for e, t in tags.items() if "bad" in t]
+    if good and bad:
+        ordering_ok = deep_by_edge[good[0]] > deep_by_edge[bad[0]]
+        summary["capas_cross_validation"] = {
+            "good_edge_deep_xeb": deep_by_edge[good[0]], "bad_edge_deep_xeb": deep_by_edge[bad[0]],
+            "ordering_matches_capas_prediction": ordering_ok}
+        print(f"\nCAPAS cross-validation: good edge XEB {deep_by_edge[good[0]]:.3f} "
+              f"{'>' if ordering_ok else '<='} bad edge XEB {deep_by_edge[bad[0]]:.3f} "
+              f"-> prediction {'CONFIRMED' if ordering_ok else 'NOT confirmed'}")
+
+    json.dump(summary, open(OUT, "w"), indent=2)
+    print(f"\nsaved -> {OUT}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

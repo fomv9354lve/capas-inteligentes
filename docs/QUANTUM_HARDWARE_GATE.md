@@ -60,3 +60,33 @@ nothing. The two highest-value, lowest-cost next runs: (1) a Bell on edge 116-12
 (expect FLAG_TOO_NOISY), and (2) a clean Bell at ≥100k shots (makes 'too clean' resolvable, so a
 filtered/fabricated variant can be caught). `examples/kingston_stress_test.py` is ready to fire
 both when you have queue budget.
+
+## The definitive test (submitted) — XEB + speckle purity, and what it consolidates
+
+The unknown-known behind the hard-20% inference error (mean 0.14, growing with depth): an
+inferred error that grows monotonically with depth is the signature of **treating coherent error
+as incoherent**. A multiplicative (depolarizing) budget over-penalizes coherent error, which does
+not accumulate as fast — so the inference runs pessimistic exactly where depth is large.
+
+**Job `d8sllqtbh0os73eodk3g`** (submitted): one XEB+speckle-purity sweep, 2 edges × 4 depths × 10
+circuits × 4096 shots. CAPAS auto-picked the edges from live calibration — and they match the
+atlas by hand: **82-83** (CZ 8.2e-4, the "diamond" best edge) and **6-7** (CZ 9.6e-3, an 80 ns
+slow edge). One job yields three results:
+1. the ground-truth XEB-vs-depth curve (corrects the inference);
+2. the **coherent vs incoherent split** — speckle purity is FREE from the same circuits (zero
+   extra QPU). F_purity > F_xeb isolates coherent (recalibratable) error;
+3. cross-validation that the good edge beats the bad edge, as CAPAS predicted from calibration.
+
+**What it consolidates into CAPAS** (`capas_quantum_physics`, verified on simulator —
+`verify_xeb_purity.py`): two new circuit-level gates.
+- `coherent_fraction_verdict(F_xeb, F_purity)` → splits a circuit's infidelity into COHERENT
+  (recalibratable) vs INCOHERENT (fundamental) — the depth-level analog of the single-gate
+  control-vs-decoherence split. Verified: depolarizing → INCOHERENT; over-rotation → COHERENT.
+- `reconcile_budget_with_measurement(measured, budget, coherent_fraction)` → the fix for the
+  pessimism. CAPAS's multiplicative budget is a **lower bound**; a measurement above it is NOT
+  "too clean" when the coherent fraction explains the gap. So CAPAS stops mis-flagging a
+  coherent-error device as fabricated, and reports "recalibratable, not fundamental" instead.
+
+If the QPU confirms the 6-7 (bad) edge carries a high coherent fraction, the operational lesson
+is concrete: **the hard 20% is partly recoverable by recalibration, not condemned** — and CAPAS
+now says which.
