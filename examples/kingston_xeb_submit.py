@@ -66,8 +66,10 @@ def main() -> int:
     from qiskit.quantum_info import Statevector
     from qiskit_ibm_runtime import QiskitRuntimeService, SamplerV2
 
+    import os
+    bk = os.environ.get("CAPAS_QPU_BACKEND", "ibm_kingston")  # least-queued: ibm_fez
     service = QiskitRuntimeService(channel="ibm_quantum_platform", token=tok)
-    backend = service.backend("ibm_kingston")
+    backend = service.backend(bk)
     props = backend.properties()
 
     if len(sys.argv) > 1:
@@ -98,7 +100,7 @@ def main() -> int:
     sampler = SamplerV2(mode=backend)
     job = sampler.run(circuits, shots=SHOTS)
     jid = job.job_id()
-    json.dump({"job_id": jid, "backend": "ibm_kingston", "shots": SHOTS,
+    json.dump({"job_id": jid, "backend": bk, "shots": SHOTS,
                "depths": DEPTHS, "n_circuits": N_CIRCUITS, "metas": metas}, open(OUT, "w"))
     print(f"SUBMITTED {len(circuits)} circuits in ONE job: {jid}")
     print(f"  {len(edges)} edges x {len(DEPTHS)} depths x {N_CIRCUITS} circuits x {SHOTS} shots")
