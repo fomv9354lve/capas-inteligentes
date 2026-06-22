@@ -22,10 +22,11 @@ from pathlib import Path
 
 TOKEN_FILE = "/Users/kreniq/Downloads/apikey (1).json"
 OUT = "/tmp/xeb_submit.json"
-# 9 depth points -> max conformal coverage n/(n+1) = 90% (vs 80% at 5 / 83% max at 4-5).
-# Spans 2..30 so the kappa fit and the depth-extrapolation band both have real leverage.
-DEPTHS = [2, 4, 6, 8, 12, 16, 20, 25, 30]
-N_CIRCUITS = 10
+# 9 depth points -> max conformal coverage n/(n+1) = 90%. ALL in the scrambled regime (>=6):
+# the first ibm_fez run showed XEB at depth 2-4 is unstable (came back ~0.28 and broke the kappa
+# fit), so we start at 6 where XEB is meaningful. 12 circuits/depth (was 10) to cut variance.
+DEPTHS = [6, 8, 10, 12, 16, 20, 24, 28, 32]
+N_CIRCUITS = 12
 SHOTS = 4096
 
 

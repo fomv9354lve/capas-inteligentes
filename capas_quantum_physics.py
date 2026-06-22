@@ -418,20 +418,26 @@ def reconcile_budget_with_measurement(measured_xeb: float, predicted_xeb: float,
 
 
 def estimate_kappa(depths: list[int], measured_xeb: list[float], naive_layer_error: float,
-                   leave_one_out: bool = True) -> dict[str, Any]:
+                   leave_one_out: bool = True, min_depth: int = 6) -> dict[str, Any]:
     """Estimate the CORRELATION-DISCOUNT factor kappa from a measured XEB-vs-depth curve:
     measured_xeb(d) ~ (1 - kappa*naive_err)^d, so the effective per-layer error is
     eff_err(d) = 1 - measured_xeb(d)^(1/d), and kappa = eff_err / naive_err. kappa<1 means the
     real error is SMALLER than the naive (incoherent) inference — correlated/coherent error that
-    doesn't accumulate as fast. Leave-one-out gives an honest held-out estimate, not in-sample."""
+    doesn't accumulate as fast. Leave-one-out gives an honest held-out estimate, not in-sample.
+
+    `min_depth` (default 6): XEB is only meaningful in the SCRAMBLED regime; at low depth the
+    circuit hasn't scrambled and the linear-XEB estimator is unstable (this is what corrupted the
+    first ibm_fez run — depth-2 XEB came back ~0.28 and broke the fit). Points below min_depth are
+    excluded from the kappa estimate."""
     naive = float(naive_layer_error)
-    ks = []
+    ks, used = [], 0
     for d, fx in zip(depths, measured_xeb):
-        if d > 0 and 0 < fx < 1 and naive > 0:
+        if d >= min_depth and 0 < fx < 1 and naive > 0:
             eff = 1 - fx ** (1.0 / d)
             ks.append(eff / naive)
+            used += 1
     if not ks:
-        return {"kappa": None, "why": "insufficient valid (depth, xeb) points"}
+        return {"kappa": None, "why": f"no valid (depth>={min_depth}, 0<xeb<1) points for the fit"}
     if leave_one_out and len(ks) >= 2:
         # held-out: predict each point's kappa from the mean of the others (honesty vs overfit)
         loo = [sum(ks[:i] + ks[i + 1:]) / (len(ks) - 1) for i in range(len(ks))]

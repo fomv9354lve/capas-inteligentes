@@ -119,6 +119,42 @@ def run() -> int:
     checks.append(("apply_correlation_discount: kappa>1 -> FLAG_ANTICORRELATED (not silently used)",
                    bad_k["verdict"] == "FLAG_ANTICORRELATED"))
 
+    # PIPELINE END-TO-END on a device-faithful simulator (the 'mucho cuidado' step before kingston):
+    # replicate submit->analyze with TWO edges of known-different noise across the SCRAMBLED depth
+    # range, and confirm the two failure modes the ibm_fez run exposed are fixed.
+    from qiskit_aer.noise import NoiseModel, depolarizing_error
+
+    def _noise(cz_err):
+        nm = NoiseModel()
+        nm.add_all_qubit_quantum_error(depolarizing_error(2.7e-4, 1), ["rx", "ry", "rz"])
+        nm.add_all_qubit_quantum_error(depolarizing_error(cz_err, 2), ["cz"])
+        return nm
+
+    def _sweep(cz_err, depths, ncirc=8):
+        nm = _noise(cz_err)
+        out = []
+        for d in depths:
+            fxs = []
+            for s in range(ncirc):
+                qc = _rand_xeb_circuit(d, s * 7 + d)
+                fxs.append(P.xeb_linear_fidelity(_ideal_probs(qc), _run(qc, noise=nm, shots=4096)))
+            out.append(sum(fxs) / ncirc)
+        return out
+
+    # noise levels chosen so the curves ACTUALLY DECAY (like the real ~0.73@depth24 data) — kappa
+    # is only identifiable where there is real decay (a too-good edge stays ~1 and kappa is noise).
+    sweep_depths = [6, 8, 12, 16, 20, 28]
+    good = _sweep(0.01, sweep_depths)    # decays to ~0.8 — kappa identifiable here
+    bad = _sweep(0.04, sweep_depths)     # 4x CZ, decays hard -> clear ordering
+    # failure mode 1 (fixed): kappa in the scrambled regime is finite & sensible, NOT garbage (was 32.7)
+    kap = P.estimate_kappa(sweep_depths, good, naive_layer_error=1 - (1 - 0.01) * (1 - 2.7e-4) ** 2, min_depth=6)
+    checks.append((f"pipeline: kappa from a DECAYING scrambled curve is sane (got {kap['kappa']}, not garbage)",
+                   kap["kappa"] is not None and 0.3 < kap["kappa"] < 2.0))
+    # failure mode 2 (the fez cross-val failure): with a REAL 10x noise gap, good edge beats bad edge
+    deep_good, deep_bad = good[-1], bad[-1]
+    checks.append((f"pipeline: good edge XEB {deep_good:.3f} > bad edge {deep_bad:.3f} at depth "
+                   f"{sweep_depths[-1]} (ordering holds with a real gap)", deep_good > deep_bad))
+
     ok = all(c for _, c in checks)
     print()
     for label, c in checks:
