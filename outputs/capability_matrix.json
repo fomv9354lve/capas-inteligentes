@@ -1,0 +1,101 @@
+[
+  {
+    "domain": "quantum",
+    "capability": "coherence bound T2<=2*T1",
+    "class": "consistency-invariant",
+    "exact": true,
+    "demo_input": "Q121 T1=11.2 T2=23.44 ramsey",
+    "verdict": "FLAG_INCONSISTENT",
+    "catches": "active TLS / hidden CPMG passed off as a clean qubit"
+  },
+  {
+    "domain": "quantum",
+    "capability": "thermal P01>=P10",
+    "class": "consistency-invariant",
+    "exact": true,
+    "demo_input": "inverted P01=0.004 P10=0.012",
+    "verdict": "FLAG_UNPHYSICAL",
+    "catches": "negative thermal population (fabricated/inverted readout row)"
+  },
+  {
+    "domain": "statistics",
+    "capability": "GRIM mean reachability",
+    "class": "consistency-invariant",
+    "exact": true,
+    "demo_input": "mean 5.19 n=10",
+    "verdict": "FLAG",
+    "catches": "fabricated/typo'd reported means in survey/clinical data"
+  },
+  {
+    "domain": "finance",
+    "capability": "accounting identity A=L+E",
+    "class": "consistency-invariant",
+    "exact": true,
+    "demo_input": "assets1000 liab600 equity300",
+    "verdict": "FLAG",
+    "catches": "books that do not close"
+  },
+  {
+    "domain": "universal",
+    "capability": "probability bounds 0<=p<=1",
+    "class": "consistency-invariant",
+    "exact": true,
+    "demo_input": "p=[0.3,1.4]",
+    "verdict": "FLAG",
+    "catches": "out-of-range probabilities / unnormalized distributions"
+  },
+  {
+    "domain": "quantum",
+    "capability": "pure dephasing Gamma_phi=1/T2-1/2T1",
+    "class": "derived-quantity",
+    "exact": true,
+    "demo_input": "Q137 T1=212 T2=14",
+    "verdict": "ADMISSIBLE",
+    "catches": "re-derives unpublished dephasing rate; classifies dephasing- vs T1-limited"
+  },
+  {
+    "domain": "quantum",
+    "capability": "gate-error coherence floor t_g/3T1",
+    "class": "derived-quantity",
+    "exact": true,
+    "demo_input": "claim SX err 1e-5 on Q137",
+    "verdict": "FLAG_TOO_CLEAN",
+    "catches": "a gate error cleaner than relaxation physically allows (fabricated fidelity)"
+  },
+  {
+    "domain": "quantum",
+    "capability": "residual ZZ coupling",
+    "class": "exact-published",
+    "exact": true,
+    "demo_input": "ZZ=200kHz vs target",
+    "verdict": "FLAG_HIGH_ZZ",
+    "catches": "tunable coupler not nulling ZZ (always-on idle entanglement)"
+  },
+  {
+    "domain": "universal",
+    "capability": "conservation sum(parts)=total",
+    "class": "consistency-invariant",
+    "exact": true,
+    "demo_input": "parts[10,20,35] total60",
+    "verdict": "FLAG",
+    "catches": "declared components that do not sum to the declared whole"
+  },
+  {
+    "domain": "quantum",
+    "capability": "ZZ from CZ/RZZ ratio",
+    "class": "DIAGNOSTIC",
+    "exact": false,
+    "demo_input": "n/a",
+    "verdict": "NOT-A-GATE",
+    "catches": "EXCLUDED: \u00b12x linear-model estimate; the published exact ZZ replaces it (was 24x off)"
+  },
+  {
+    "domain": "quantum",
+    "capability": "loss tangent tan_d=1/(2pi f T1)",
+    "class": "DIAGNOSTIC",
+    "exact": false,
+    "demo_input": "n/a",
+    "verdict": "NOT-A-GATE",
+    "catches": "EXCLUDED: needs qubit frequency (withheld on open plan, verified live)"
+  }
+]
