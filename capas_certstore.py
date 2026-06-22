@@ -25,8 +25,15 @@ def _secret() -> bytes:
 
 
 def _store_dir() -> Path:
-    d = Path(os.environ.get("CAPAS_DATA_DIR", str(Path(__file__).resolve().parent / "_certs")))
-    d.mkdir(parents=True, exist_ok=True)
+    # User data dir by default (~/.capas), never the package install location.
+    default = Path.home() / ".capas" / "certs"
+    d = Path(os.environ.get("CAPAS_DATA_DIR", str(default)))
+    try:
+        d.mkdir(parents=True, exist_ok=True)
+    except OSError:
+        import tempfile
+        d = Path(tempfile.gettempdir()) / "capas_certs"
+        d.mkdir(parents=True, exist_ok=True)
     return d
 
 

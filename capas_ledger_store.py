@@ -21,8 +21,16 @@ import capas_ledger
 
 
 def _path() -> Path:
-    d = Path(os.environ.get("CAPAS_DATA_DIR", str(Path(__file__).resolve().parent / "_ledger")))
-    d.mkdir(parents=True, exist_ok=True)
+    # Default to a USER data dir (~/.capas), never the package install location (site-packages may
+    # be read-only/shared). Override with CAPAS_DATA_DIR. Falls back to a temp dir if home is unwritable.
+    default = Path.home() / ".capas" / "ledger"
+    d = Path(os.environ.get("CAPAS_DATA_DIR", str(default)))
+    try:
+        d.mkdir(parents=True, exist_ok=True)
+    except OSError:
+        import tempfile
+        d = Path(tempfile.gettempdir()) / "capas_ledger"
+        d.mkdir(parents=True, exist_ok=True)
     return d / "ledger.json"
 
 
