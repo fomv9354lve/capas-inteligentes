@@ -47,6 +47,7 @@ VALIDATION_COMMANDS = [
     ("Cara 1 product acceptance", ["benchmarks/cara1_acceptance.py"]),
     ("Cara 1/2 decoupling + honesty", ["benchmarks/verify_cara_decoupling.py"]),
     ("quantum physical-consistency gate", ["benchmarks/demo_quantum_physics.py"]),
+    ("cross-domain invariant engine", ["benchmarks/demo_invariants.py"]),
     ("batch and API surfaces", ["benchmarks/verify_batch_and_api.py"]),
     ("external user validation packet", ["benchmarks/verify_external_user_validation.py"]),
     ("profile registration packet", ["benchmarks/verify_profile_registration_packet.py"]),
@@ -647,7 +648,11 @@ def validate_external_payload(payload: dict[str, Any]) -> list[str]:
             + f"; unsupported claim type {claim_type!r} requires a registered evidence contract before CAPAS can decide it"
         )
     if isinstance(claim_type, str) and claim_type in REQUIRED_DECISION_FIELDS:
-        allowed_evidence = allowed_evidence_fields_for_claim(claim_type) or set()
+        # `invariants` is a universally-allowed reserved namespace: a domain-law block
+        # (accounting / quantum / grim / probability / sum) checked by capas_invariants on
+        # EVERY claim type. It is downgrade-only and fail-closed, so allowing it cannot widen
+        # what CAPAS accepts.
+        allowed_evidence = (allowed_evidence_fields_for_claim(claim_type) or set()) | {"invariants"}
         unknown_evidence = sorted(set(evidence) - allowed_evidence)
         if "training_evidence" in unknown_evidence:
             errors.append("evidence.training_evidence is not allowed; move training_evidence to the payload root")
@@ -1626,6 +1631,22 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
             rewrite = "programming-language behavior candidate; runtime/execution evidence is not fully licensed"
             licensed_claim = rewrite
 
+    # Cross-domain INVARIANT filter (downgrade-only, fail-closed). A claim whose declared
+    # quantities violate a domain law (accounting identity, quantum physics, GRIM, probability
+    # bounds, conservation) is physically/mathematically impossible regardless of claim type,
+    # so it is forced to REJECT. This can only make a verdict STRICTER -> it never introduces a
+    # false-accept; it strengthens the 0-false-accept guarantee. See capas_invariants.
+    if str(ROOT) not in sys.path:
+        sys.path.insert(0, str(ROOT))
+    import capas_invariants
+    _inv_block = evidence.get("invariants")
+    invariant_audit = capas_invariants.audit(_inv_block if isinstance(_inv_block, dict) else {})
+    if invariant_audit["applicable"] and invariant_audit["verdict"] == "FLAG" and verdict != "REJECT":
+        reason = f"{reason}; OVERRIDDEN by a domain invariant violation: {invariant_audit['summary']}"
+        verdict = "REJECT"
+        licensed_claim = None
+        rewrite = None
+
     fine_tune = evaluate_fine_tune_readiness(
         payload,
         verdict=verdict,
@@ -1643,6 +1664,7 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
         "missing_fields": missing,
         "required_fields": required or [],
         "schema_errors": [],
+        "invariant_audit": invariant_audit,
         **fine_tune,
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
     }

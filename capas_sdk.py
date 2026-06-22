@@ -108,4 +108,19 @@ def gate_quantum(calibration_row: dict[str, Any]) -> dict[str, Any]:
     return capas_quantum_physics.audit_calibration_row(calibration_row or {})
 
 
-__all__ = ["gate", "reward", "certificate", "verified", "gate_text", "gate_quantum"]
+def invariants(block: dict[str, Any]) -> dict[str, Any]:
+    """Check a block of declared quantities against every applicable DOMAIN LAW — deterministic,
+    cross-domain, no oracle, no LLM. `block` may carry any of: accounting{assets,liabilities,
+    equity}, quantum{...}, grim{mean,n,decimals?}, probabilities[...]/distribution{...},
+    parts[...]+total. Returns PASS only if every applicable invariant holds (fail-closed).
+
+    Same mechanism behind the core gate: when this block is supplied under evidence.invariants,
+    a violation OVERRIDES the verdict to REJECT for ANY claim type. Internal consistency under a
+    domain's laws is the largest slice of text<->reality CAPAS can re-derive without an oracle —
+    it does not break the GIGO ceiling, it raises the cost of lying to 'fabricate a consistent
+    world'. The finance/psychology/quantum fraud cases are one mechanism (see demo_invariants)."""
+    import capas_invariants
+    return capas_invariants.audit(block or {})
+
+
+__all__ = ["gate", "reward", "certificate", "verified", "gate_text", "gate_quantum", "invariants"]
