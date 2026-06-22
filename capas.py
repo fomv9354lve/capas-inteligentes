@@ -1674,6 +1674,13 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
         **fine_tune,
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
     }
+    # Real, re-derivable audit hash over the canonical decision body (not a mockup): anyone can
+    # recompute it from the same input and verdict -> tamper-evident, deterministic.
+    _body = {"schema_version": CAPAS_CLAIM_SCHEMA_VERSION, "input_claim": claim, "verdict": verdict,
+             "reason": reason, "required_fields": required or [],
+             "invariant_audit": invariant_audit.get("verdict") if isinstance(invariant_audit, dict) else None}
+    result["audit_hash"] = "sha256:" + hashlib.sha256(
+        json.dumps(_body, sort_keys=True, separators=(",", ":"), default=str).encode()).hexdigest()
     result["admissibility_certificate"] = build_admissibility_certificate(payload, result)
     return result
 

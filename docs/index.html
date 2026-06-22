@@ -186,7 +186,7 @@ footer{border-top:1px solid rgba(255,255,255,0.06);padding:32px 48px;display:fle
     <div class="hero-left">
       <div class="hero-eyebrow">Deterministic Scientific Claim Gate</div>
       <h1 class="hero-h1" style="font-size:clamp(36px,4.5vw,58px);font-weight:900;letter-spacing:-0.03em;line-height:1.05;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">Evidence in.<br><em>Admissibility</em><br>decision out.</h1>
-      <p class="hero-sub">CAPAS compiles your supplied evidence into a deterministic, schema-validated verdict: ACCEPT, REWRITE, REJECT, or HOLD. No black box — every gate decision is fully traceable.</p>
+      <p class="hero-sub">Your model proposes; CAPAS disposes. It checks whether your evidence actually licenses a claim &mdash; returning a deterministic ACCEPT / REWRITE / REJECT / HOLD with a re-derivable audit trail. No language model in the verdict. Never a false-accept on the tested corpus.</p>
       <div class="hero-actions">
         <a class="btn-primary" href="app.html">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
@@ -296,7 +296,7 @@ footer{border-top:1px solid rgba(255,255,255,0.06);padding:32px 48px;display:fle
           <svg viewBox="0 0 24 24" fill="none" stroke="#f6ad55" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
         </div>
         <h3>Zero LLM dependency</h3>
-        <p>CAPAS does not use language models for gate decisions. Verdicts are computed by 90+ deterministic rule functions against a structured evidence contract — fully offline-capable.</p>
+        <p>CAPAS does not use language models for gate decisions. Verdicts are computed by deterministic rule functions &mdash; 26 cross-domain invariant gates plus per-claim-type evidence contracts &mdash; against a structured contract, fully offline-capable. Every decision carries a re-derivable <code>audit_hash</code>.</p>
         <span class="core-card-tag" style="background:rgba(246,173,85,0.1);color:#f6ad55">Rule-based only</span>
       </div>
     </div>
@@ -453,7 +453,7 @@ footer{border-top:1px solid rgba(255,255,255,0.06);padding:32px 48px;display:fle
       <div><span class="aj-k">"evidence_contract":</span> <span class="aj-s">"intervention + temporal_order + confounders"</span>,</div>
       <div><span class="aj-k">"blocker":</span> <span class="aj-b">"No intervention or natural-experiment evidence."</span>,</div>
       <div><span class="aj-k">"reviewer_action":</span> <span class="aj-s">"edit_and_resubmit"</span>,</div>
-      <div><span class="aj-k">"audit_hash":</span> <span class="aj-k">"sha256:a3f9e2..."</span>,</div>
+      <div><span class="aj-k">"audit_hash":</span> <span class="aj-s" style="word-break:break-all">"sha256:f6c361712b894a2d2e4005e345341b4bbcaa2d7b7819121942d550972800b17a"</span>,</div>
       <div><span class="aj-k">"non_claim":</span> <span class="aj-d">true</span></div>
     </div>
   </div>
@@ -583,9 +583,9 @@ footer{border-top:1px solid rgba(255,255,255,0.06);padding:32px 48px;display:fle
       <div style="text-align:center"><div style="font-size:13px;color:rgba(255,255,255,.4)">IBM headline (RB)</div><div style="font-size:34px;font-weight:900;color:rgba(255,255,255,.7)">1.6&times;10<sup>-3</sup></div></div>
       <div style="font-size:28px;color:var(--pink)">&rarr;</div>
       <div style="text-align:center"><div style="font-size:13px;color:rgba(255,255,255,.4)">Re-derivable complete floor</div><div style="font-size:34px;font-weight:900;color:#e8185d">1.9&times;10<sup>-2</sup></div></div>
-      <div style="text-align:center;border-left:1px solid rgba(255,255,255,.1);padding-left:32px"><div style="font-size:13px;color:rgba(255,255,255,.4)">Error the headline hid</div><div style="font-size:34px;font-weight:900;color:#f6ad55">11&times;</div></div>
+      <div style="text-align:center;border-left:1px solid rgba(255,255,255,.1);padding-left:32px"><div style="font-size:13px;color:rgba(255,255,255,.4)">Error the headline hid</div><div style="font-size:34px;font-weight:900;color:#f6ad55">2&ndash;11&times;</div></div>
     </div>
-    <p class="section-sub" style="font-size:13px;color:rgba(255,255,255,.5)">Validated live on IBM hardware: CAPAS re-found the chip&rsquo;s one anomalous qubit and its bad-coupler cluster from calibration alone, admitted a real Bell measurement bounded by two independent oracles, and its cross-validation held on a second device. The error-correction prescription (dynamical decoupling, rep-delay, readout mitigation) is re-derived from the same row. <a href="BEATING_THE_BENCHMARK.md" style="color:#e8185d;font-weight:600">Full method &rarr;</a></p>
+    <p class="section-sub" style="font-size:13px;color:rgba(255,255,255,.5)"><strong>Honest scope:</strong> the gap is ~2&times; on a healthy qubit and reaches 11&times; on a dephasing-limited one (the numbers shown are that worst case &mdash; a real qubit whose anomaly the headline hides). Either way it is re-derived from the vendor&rsquo;s own published fields. Validated live: CAPAS re-found the chip&rsquo;s one anomalous qubit and its bad-coupler cluster from calibration alone, admitted a real Bell measurement bounded by two independent oracles, and its cross-validation held on a second device. The error-correction prescription (DD, rep-delay, readout mitigation) is re-derived from the same row. <a href="BEATING_THE_BENCHMARK.md" style="color:#e8185d;font-weight:600">Full method &rarr;</a></p>
   </div>
 </section>
 
