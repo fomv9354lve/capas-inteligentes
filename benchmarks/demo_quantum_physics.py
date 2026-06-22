@@ -74,7 +74,28 @@ def run() -> int:
     checks.append(("best edge 82_83 CZ~RZZ -> ADMISSIBLE (no TLS signature)",
                    good_edge["verdict"] == "ADMISSIBLE"))
 
-    # 6. Combined row audit: fail-closed — any flag dominates.
+    # 6. DERIVED-QUANTITY gates: re-derive what IBM does not publish, exactly.
+    #    Q137: T1=212, T2=14 -> huge pure dephasing, dephasing-limited (phase noise, not relaxation).
+    deph137 = P.pure_dephasing(212.0, 14.0)
+    checks.append((f"Q137 derived pure dephasing T_phi={deph137['t_phi_us']}us -> "
+                   f"'{deph137['mechanism'][:18]}...' (re-derived, IBM doesn't publish it)",
+                   deph137["mechanism"].startswith("dephasing-limited") and deph137["admissible"]))
+    #    Q0: T1=327, T2=420 -> Tphi~1174us, relaxation/balanced, clean.
+    deph0 = P.pure_dephasing(327.36, 420.31)
+    checks.append((f"Q0 derived T_phi={deph0['t_phi_us']}us (clean, matches atlas ~1174us)",
+                   deph0["admissible"] and deph0["t_phi_us"] is not None and deph0["t_phi_us"] > 900))
+    #    Gate-error coherence floor: a fabricated SX error below the T1 relaxation floor -> FLAG.
+    too_clean_gate = P.gate_error_admissible(1e-5, 32.0, 212.0, 14.0)  # claim 1e-5 on Q137
+    checks.append(("fabricated SX error 1e-5 below relaxation floor t_g/(3T1) -> FLAG_TOO_CLEAN",
+                   too_clean_gate["verdict"] == "FLAG_TOO_CLEAN"))
+    #    A real, control-dominated gate (Q131-like: error >> decoherence) is ADMISSIBLE but flagged
+    #    as needing recalibration, not better hardware.
+    control_gate = P.gate_error_admissible(4.61e-2, 32.0, 69.0, 80.0)
+    checks.append((f"control-dominated SX error -> ADMISSIBLE, control_dominated="
+                   f"{control_gate['control_dominated']} (recalibrate, not re-fab)",
+                   control_gate["verdict"] == "ADMISSIBLE" and control_gate["control_dominated"] is True))
+
+    # 7. Combined row audit: fail-closed — any flag dominates.
     audit = P.audit_calibration_row({
         "t1_us": 11.2, "t2_us": 23.44, "t2_method": "ramsey",
         "cz_error": 0.1853, "rzz_error": 1.887e-3,

@@ -195,11 +195,111 @@ def check_edge_tls(cz_err: float, rzz_err: float) -> dict[str, Any]:
     }
 
 
+# ---------------------------------------------------------------------------
+# DERIVED-QUANTITY gates. A second class of invariant: from PUBLISHED quantities
+# (T1, T2, gate time) EXACTLY re-derive a quantity the vendor does NOT publish, and gate
+# the claim against that derived quantity's own physical bound. "It's in the numbers,
+# they just don't show it." These are exact identities, not estimates.
+# ---------------------------------------------------------------------------
+
+# minimal Haar-averaged single-qubit gate infidelity from T1 relaxation alone, ~ t_g/(3*T1).
+# Adding dephasing only INCREASES error, so this is a TRUE lower bound regardless of T2 — a
+# reported gate error below it is physically impossible. Convention prefactor 1/3 (amplitude
+# damping, average gate fidelity); a slack widens it so convention differences never false-flag.
+_COH_FLOOR_COEF = 1.0 / 3.0
+
+
+def pure_dephasing(t1_us: float, t2_us: float) -> dict[str, Any]:
+    """EXACTLY re-derive the pure-dephasing rate the vendor does not publish, from T1 and T2:
+    1/T2 = 1/(2*T1) + Gamma_phi  ->  Gamma_phi = 1/T2 - 1/(2*T1). Gamma_phi >= 0 is required
+    (equivalent to T2 <= 2*T1). Classifies whether the qubit is dephasing-limited (environmental
+    phase noise — a packaging/materials problem) or T1-limited (energy loss)."""
+    t1, t2 = float(t1_us), float(t2_us)
+    g_phi = 1.0 / t2 - 1.0 / (2.0 * t1) if t1 > 0 and t2 > 0 else float("nan")
+    admissible = g_phi >= -1e-12
+    t_phi = (1.0 / g_phi) if g_phi > 0 else float("inf")
+    # share of the total T2 rate that is pure dephasing vs relaxation
+    rate_t2 = 1.0 / t2 if t2 > 0 else float("inf")
+    deph_share = (g_phi / rate_t2) if rate_t2 > 0 and admissible else float("nan")
+    if not admissible:
+        mech = "UNPHYSICAL (Gamma_phi < 0 -> T2 > 2*T1)"
+    elif deph_share > 0.66:
+        mech = "dephasing-limited (environmental phase noise — packaging/materials, not junction fab)"
+    elif deph_share < 0.34:
+        mech = "T1-limited (energy relaxation dominates; better fab/materials would help)"
+    else:
+        mech = "balanced (relaxation and dephasing comparable)"
+    return {
+        "gamma_phi_per_us": round(g_phi, 8) if g_phi == g_phi else None,
+        "t_phi_us": round(t_phi, 2) if t_phi != float("inf") else None,
+        "dephasing_share": round(deph_share, 4) if deph_share == deph_share else None,
+        "mechanism": mech, "admissible": bool(admissible),
+        "identity": "Gamma_phi = 1/T2 - 1/(2*T1) (exact); Gamma_phi >= 0 required",
+    }
+
+
+def gate_error_coherence_floor(gate_time_ns: float, t1_us: float, t2_us: float) -> dict[str, Any]:
+    """The physical LOWER BOUND on a single-qubit gate error from coherence alone. The relaxation
+    floor t_g/(3*T1) is a hard bound (independent of T2 and control); the fuller decoherence
+    estimate t_g/2*(1/T1 + 1/T2) is used to attribute reported error to decoherence vs control."""
+    tg = float(gate_time_ns) * 1e-3   # ns -> us
+    t1, t2 = float(t1_us), float(t2_us)
+    relax_floor = _COH_FLOOR_COEF * tg / t1 if t1 > 0 else 0.0
+    deco_estimate = 0.5 * tg * (1.0 / t1 + 1.0 / t2) if t1 > 0 and t2 > 0 else 0.0
+    return {"relaxation_floor": round(relax_floor, 8),     # HARD lower bound (gate cannot be cleaner)
+            "decoherence_estimate": round(deco_estimate, 8),  # estimate, for control-vs-decoherence split
+            "gate_time_ns": float(gate_time_ns)}
+
+
+def gate_error_admissible(reported_error: float, gate_time_ns: float, t1_us: float, t2_us: float,
+                          slack: float = 1.5) -> dict[str, Any]:
+    """Gate a REPORTED single-qubit gate error against its coherence floor. Below the relaxation
+    floor (with slack for convention) -> FLAG_TOO_CLEAN: a gate cannot be cleaner than relaxation
+    permits (fabricated / wrong device / mis-attributed). Far above the decoherence estimate is
+    NOT a flag — it's a poorly-CALIBRATED but admissible gate (control-dominated); we note it."""
+    fl = gate_error_coherence_floor(gate_time_ns, t1_us, t2_us)
+    floor = fl["relaxation_floor"]
+    deco = fl["decoherence_estimate"]
+    err = float(reported_error)
+    hard_floor = floor / slack
+    if err < hard_floor:
+        verdict = "FLAG_TOO_CLEAN"
+        why = (f"reported gate error {err:.2e} is below the relaxation floor {floor:.2e} "
+               f"(t_g/(3*T1)); a gate cannot be cleaner than energy relaxation allows — "
+               f"physically impossible (fabricated / wrong T1 / mis-attributed)")
+    else:
+        verdict = "ADMISSIBLE"
+        control_dominated = err > 2.0 * deco and deco > 0
+        why = (f"reported gate error {err:.2e} >= relaxation floor {floor:.2e}; "
+               + (f"control-dominated (~{deco:.2e} is decoherence; the rest is calibration residual "
+                  f"-> needs recalibration, not better hardware)" if control_dominated
+                  else f"consistent with the decoherence estimate {deco:.2e}"))
+    return {"verdict": verdict, "why": why, "reported_error": err,
+            "relaxation_floor": floor, "decoherence_estimate": deco,
+            "control_dominated": bool(err > 2.0 * deco and deco > 0)}
+
+
+def derive_hidden_quantities(row: dict[str, Any]) -> dict[str, Any]:
+    """Surface what is re-derivable from a calibration row but NOT published: pure dephasing rate
+    + mechanism (exact), and the gate-error coherence floor (exact). This is CAPAS as a derivation
+    engine — 'it's in the numbers, they just don't show it' — with each derived quantity carrying
+    its own admissibility bound. EXACT only; approximate derivations (ZZ-residual from CZ/RZZ,
+    loss tangent assuming a frequency) are deliberately NOT here — they are diagnostics, not gates."""
+    out: dict[str, Any] = {}
+    if "t1_us" in row and "t2_us" in row:
+        out["pure_dephasing"] = pure_dephasing(row["t1_us"], row["t2_us"])
+        if "gate_time_ns" in row:
+            out["gate_coherence_floor"] = gate_error_coherence_floor(
+                row["gate_time_ns"], row["t1_us"], row["t2_us"])
+    return out
+
+
 def audit_calibration_row(row: dict[str, Any]) -> dict[str, Any]:
     """Run every applicable physical-consistency gate over one qubit/edge calibration row and
     return a combined verdict. The row may carry: t1_us, t2_us, t2_method, p01, p10,
-    readout_isolated/readout_parallel (lists), cz_error, rzz_error. ADMISSIBLE only if every
-    applicable invariant passes — fail-closed: any flag dominates."""
+    readout_isolated/readout_parallel (lists), cz_error, rzz_error, and a single-qubit-gate
+    claim (gate_error + gate_time_ns, gated against the coherence floor). ADMISSIBLE only if
+    every applicable invariant passes — fail-closed: any flag dominates."""
     checks: dict[str, Any] = {}
     if "t1_us" in row and "t2_us" in row:
         checks["coherence"] = check_coherence(row["t1_us"], row["t2_us"], row.get("t2_method", "ramsey"))
@@ -209,9 +309,12 @@ def audit_calibration_row(row: dict[str, Any]) -> dict[str, Any]:
         checks["readout_basis"] = check_readout_floor_basis(row["readout_isolated"], row["readout_parallel"])
     if "cz_error" in row and "rzz_error" in row:
         checks["edge_tls"] = check_edge_tls(row["cz_error"], row["rzz_error"])
+    if "gate_error" in row and "gate_time_ns" in row and "t1_us" in row and "t2_us" in row:
+        checks["gate_coherence"] = gate_error_admissible(
+            row["gate_error"], row["gate_time_ns"], row["t1_us"], row["t2_us"])
 
     flags = [k for k, v in checks.items() if str(v.get("verdict", "")).startswith("FLAG")]
-    return {
+    out = {
         "verdict": "ADMISSIBLE" if not flags else "FLAG",
         "flags": flags,
         "checks": checks,
@@ -220,3 +323,7 @@ def audit_calibration_row(row: dict[str, Any]) -> dict[str, Any]:
                  if not flags else
                  f"{len(flags)} physical inconsistency(ies) — the claimed numbers contradict physics"),
     }
+    derived = derive_hidden_quantities(row)
+    if derived:
+        out["derived"] = derived   # exact re-derivation of unpublished quantities (Gamma_phi, floor)
+    return out
