@@ -417,6 +417,66 @@ def reconcile_budget_with_measurement(measured_xeb: float, predicted_xeb: float,
                       "coherent-error device 'too clean'"}
 
 
+def estimate_kappa(depths: list[int], measured_xeb: list[float], naive_layer_error: float,
+                   leave_one_out: bool = True) -> dict[str, Any]:
+    """Estimate the CORRELATION-DISCOUNT factor kappa from a measured XEB-vs-depth curve:
+    measured_xeb(d) ~ (1 - kappa*naive_err)^d, so the effective per-layer error is
+    eff_err(d) = 1 - measured_xeb(d)^(1/d), and kappa = eff_err / naive_err. kappa<1 means the
+    real error is SMALLER than the naive (incoherent) inference — correlated/coherent error that
+    doesn't accumulate as fast. Leave-one-out gives an honest held-out estimate, not in-sample."""
+    naive = float(naive_layer_error)
+    ks = []
+    for d, fx in zip(depths, measured_xeb):
+        if d > 0 and 0 < fx < 1 and naive > 0:
+            eff = 1 - fx ** (1.0 / d)
+            ks.append(eff / naive)
+    if not ks:
+        return {"kappa": None, "why": "insufficient valid (depth, xeb) points"}
+    if leave_one_out and len(ks) >= 2:
+        # held-out: predict each point's kappa from the mean of the others (honesty vs overfit)
+        loo = [sum(ks[:i] + ks[i + 1:]) / (len(ks) - 1) for i in range(len(ks))]
+        kappa = sum(loo) / len(loo)
+        spread = (max(ks) - min(ks))
+    else:
+        kappa = sum(ks) / len(ks)
+        spread = 0.0
+    return {"kappa": round(kappa, 4), "per_point_kappa": [round(k, 4) for k in ks],
+            "depth_ceiling_multiplier": round(1.0 / kappa, 3) if kappa > 0 else None,
+            "n_points": len(ks), "held_out": bool(leave_one_out and len(ks) >= 2),
+            "spread": round(spread, 4),
+            "coverage_note": (f"n={len(ks)} points -> max conformal coverage ~{round(len(ks)/(len(ks)+1)*100)}%; "
+                              f"90% needs >=9 points. Report the BAND, not the point.")}
+
+
+def apply_correlation_discount(naive_layer_error: float, kappa: float,
+                               conformal_halfwidth: float | None = None,
+                               coverage: float | None = None) -> dict[str, Any]:
+    """Apply the correlation discount kappa to CAPAS's naive (incoherent) per-layer budget. This
+    is the FIX for the depth-pessimism: corrected_err = kappa*naive_err, so the usable depth
+    ceiling extends by 1/kappa. Honesty: carries the conformal band — the value is the BAND, not
+    the point. kappa>1 (anti-correlated / inference was OPTIMISTIC) is flagged, not silently used."""
+    naive, k = float(naive_layer_error), float(kappa)
+    corrected = k * naive
+    if k <= 0:
+        verdict, why = "INVALID_KAPPA", "kappa must be > 0"
+    elif k > 1.0:
+        verdict = "FLAG_ANTICORRELATED"
+        why = (f"kappa={k} > 1: the real per-layer error is LARGER than the naive inference "
+               f"(anti-correlated / optimistic inference) — do not extend the depth ceiling")
+    else:
+        verdict = "CORRECTED"
+        why = (f"correlated error: real per-layer error is {k:.0%} of the naive inference; the "
+               f"usable depth ceiling extends {1.0/k:.2f}x. Report the conformal band, not the point.")
+    return {"verdict": verdict, "why": why, "naive_layer_error": round(naive, 6),
+            "corrected_layer_error": round(corrected, 6), "kappa": round(k, 4),
+            "depth_ceiling_multiplier": round(1.0 / k, 3) if k > 0 else None,
+            "conformal_band": ([round(corrected - conformal_halfwidth, 6),
+                                round(corrected + conformal_halfwidth, 6)]
+                               if conformal_halfwidth is not None else None),
+            "coverage": coverage,
+            "honesty": "the value is the band (finite-sample); a point estimate hides the coverage limit"}
+
+
 def audit_calibration_row(row: dict[str, Any]) -> dict[str, Any]:
     """Run every applicable physical-consistency gate over one qubit/edge calibration row and
     return a combined verdict. The row may carry: t1_us, t2_us, t2_method, p01, p10,

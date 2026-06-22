@@ -103,6 +103,22 @@ def run() -> int:
                    rc_low["verdict"] == "ABOVE_BUDGET_LOW_COHERENCE"))
     checks.append(("reconcile: within budget -> WITHIN_BUDGET", rc_in["verdict"] == "WITHIN_BUDGET"))
 
+    # kappa correlation-discount consolidation (the user's 0.401 result, structurally).
+    # synth: real per-layer error = 0.40 * naive -> measured XEB = (1-0.40*naive)^d. Recover kappa.
+    naive_err = 0.012
+    depths_k = [2, 8, 16, 24]
+    meas_xeb = [(1 - 0.40 * naive_err) ** d for d in depths_k]
+    ke = P.estimate_kappa(depths_k, meas_xeb, naive_err)
+    checks.append((f"estimate_kappa recovers ~0.40 from a correlated curve (got {ke['kappa']})",
+                   ke["kappa"] is not None and abs(ke["kappa"] - 0.40) < 0.03))
+    ad = P.apply_correlation_discount(naive_err, 0.401, conformal_halfwidth=0.065, coverage=0.80)
+    checks.append((f"apply_correlation_discount(0.401) -> depth ceiling {ad['depth_ceiling_multiplier']}x "
+                   f"(~2.5x) + band", ad["verdict"] == "CORRECTED" and abs(ad["depth_ceiling_multiplier"] - 2.49) < 0.1
+                   and ad["conformal_band"] is not None))
+    bad_k = P.apply_correlation_discount(naive_err, 1.3)
+    checks.append(("apply_correlation_discount: kappa>1 -> FLAG_ANTICORRELATED (not silently used)",
+                   bad_k["verdict"] == "FLAG_ANTICORRELATED"))
+
     ok = all(c for _, c in checks)
     print()
     for label, c in checks:

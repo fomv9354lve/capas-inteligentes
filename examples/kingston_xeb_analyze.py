@@ -67,7 +67,18 @@ def main() -> int:
         measured = deepest["f_xeb"]
         coh = deepest["coherent_fraction"]
         rec = P.reconcile_budget_with_measurement(measured, predicted, coh, deepest["depth"])
+        # estimate kappa (correlation discount) from THIS edge's measured curve vs the naive budget
+        depths_e = [d["depth"] for d in c["by_depth"]]
+        xeb_e = [d["f_xeb"] for d in c["by_depth"]]
+        kappa = P.estimate_kappa(depths_e, xeb_e, naive_layer_error=1 - layer_f, leave_one_out=True)
+        rec["kappa_estimate"] = kappa
+        rec["kappa_vs_user_0_401"] = (None if kappa.get("kappa") is None
+                                      else round(abs(kappa["kappa"] - 0.401), 4))
         summary["reconciliation"][edge_str] = rec
+        if kappa.get("kappa") is not None:
+            print(f"    kappa (correlation discount) = {kappa['kappa']} "
+                  f"(user fit 0.401, |diff| {rec['kappa_vs_user_0_401']}) "
+                  f"-> depth ceiling {kappa['depth_ceiling_multiplier']}x")
         print(f"edge {edge_str:10s} ({c['tag']}, CZ {cz:.2e}): "
               f"depth {deepest['depth']} measured XEB {measured:.3f} vs budget {predicted:.3f} "
               f"-> {rec['verdict']} (coherent {coh:.0%})")
