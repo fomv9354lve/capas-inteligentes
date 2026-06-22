@@ -525,6 +525,28 @@ footer{border-top:1px solid rgba(255,255,255,0.06);padding:32px 48px;display:fle
   </div>
 </section>
 
+<section class="section">
+  <div class="section-inner">
+    <div class="section-label">For developers</div>
+    <h2 class="section-h2" style="font-size:clamp(28px,3vw,42px);font-weight:900;letter-spacing:-0.03em;line-height:1.1;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">Wrap your LLM. Stop trusting plausible.</h2>
+    <p class="section-sub">An installable verification layer: your model proposes, CAPAS disposes. It never lets an unsupported claim through as ACCEPT &mdash; it re-derives what is re-derivable, grades the rest, and emits a verifiable reward your model can&rsquo;t game by sounding right. No language model in the verdict.</p>
+    <div style="font-family:'SF Mono',ui-monospace,Menlo,monospace;font-size:13px;line-height:1.7;background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:20px;margin-top:24px;max-width:680px;color:rgba(255,255,255,.8);overflow-x:auto">
+      <div style="color:rgba(255,255,255,.4)">$ pip install capas-claim-gate</div>
+      <div style="height:10px"></div>
+      <div><span style="color:#a855f7">from</span> capas_sdk <span style="color:#a855f7">import</span> verified</div>
+      <div style="height:6px"></div>
+      <div style="color:rgba(255,255,255,.4)"># your model proposes the evidence; CAPAS gates it</div>
+      <div>verdict = verified(my_llm, <span style="color:#48bb78">"reproducibility_check"</span>)[<span style="color:#48bb78">"verdict"</span>]</div>
+      <div style="color:rgba(255,255,255,.4)"># -> ACCEPT / REWRITE / REJECT / HOLD  (never the LLM&rsquo;s call)</div>
+    </div>
+    <div style="display:flex;gap:14px;margin-top:20px;flex-wrap:wrap">
+      <div style="border:1px solid rgba(72,187,120,.3);border-radius:10px;background:rgba(72,187,120,.06);padding:14px 18px"><strong style="color:#48bb78;font-size:18px">0/3</strong> <span style="font-size:13px;color:rgba(255,255,255,.6)">false-accepts with CAPAS</span></div>
+      <div style="border:1px solid rgba(255,255,255,.08);border-radius:10px;background:rgba(255,255,255,.02);padding:14px 18px"><strong style="color:rgba(255,255,255,.4);font-size:18px">3/3</strong> <span style="font-size:13px;color:rgba(255,255,255,.45)">false-accepts LLM-alone (it accepts what&rsquo;s plausible)</span></div>
+    </div>
+    <p class="section-sub" style="margin-top:18px;font-size:13px;color:rgba(255,255,255,.5)">The boost is <strong>reliability, not capability</strong> &mdash; the model doesn&rsquo;t get smarter, its output becomes admissible-or-deferred. Honest scope: it grounds record&harr;text, not text&harr;reality &mdash; a source that lies about its methods and withholds its data passes (the GIGO ceiling), so CAPAS says exactly which slice it re-derived and which it could only attest.</p>
+  </div>
+</section>
+
 <section class="cta-section">
   <div class="cta-inner">
     <div class="section-label" style="text-align:center">Get started</div>
