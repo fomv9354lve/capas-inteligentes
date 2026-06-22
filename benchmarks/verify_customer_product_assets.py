@@ -40,7 +40,7 @@ REQUIRED = {
     "gate app header without discarded logo": (UI, ["aria-label=\"CAPAS Claim Gate\"", "krenniq-logo.png", "class=\"nav-logo\"", "Gate App", "class=\"nav-cta\"", "Audit"]),
     "landing page screenshots": (PRODUCT, ["Recent Gate Decisions", "SCHEMA V3", "statistical_confidence"]),
     "product business case": (PRODUCT, ["Verdict Reference", "Where it Lives", "Use Cases", "audit_hash", "claim_id", "evidence_contract", "reviewer_action"]),
-    "designed methodology page": (BRIEF_HTML, ["Methodology", "Deterministic claim ", "Pilot model assumptions", "Disclaimers"]),
+    "designed methodology page": (BRIEF_HTML, ["Methodology", "Deterministic claim ", "Reproducible engine benchmark", "Disclaimers"]),
     "designed pilot packet": (PACKET_HTML, ["Pilot Packet", "Two-week", "Roles", "Success criteria", "Governance", "disclaimer"]),
     "guided no-code form": (UI, ["CAPAS workflow", "Guided Claim Builder", "Evidence contract", "builder-preview", "buildGuidedPayload", "Build guided payload", "evidence field for"]),
     "paper text ingestion": (UI, ["Candidate extraction aid", "extractCandidateClaims", "candidate claims extracted from paper or text", "Evidence spans", "evidence_spans", "parseBooleanEvidenceValue", "numberPattern", "parseFloat"]),
