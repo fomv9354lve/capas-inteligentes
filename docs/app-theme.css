@@ -319,3 +319,23 @@ body[data-flow-phase="gate"] .step-tab[data-step="complete"] .step-num { backgro
 
 /* Hero accent gradient on a key word — consistent with the marketing heroes. */
 #product-hero-title em { font-style: normal; background: linear-gradient(135deg,#e8185d,#a855f7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+/* === Gate App container hygiene: ONE frame, not boxes-inside-boxes ===
+   The guided/workflow panel stacked up to four bordered+filled layers between its outer frame
+   and the leaf cards (phase-viewport > phase-pane > flow-section), reading as concentric boxes.
+   That killed the clean, transparent feel of the rest of the site. Collapse the MIDDLE layers to
+   transparent so each panel is a single frame holding clean leaf cards/fields. Scoped so a panel
+   that legitimately stands alone keeps its one border. (External file -> no inline-CSP-hash change.) */
+.phase-viewport,
+.flow-section,
+.panel .phase-pane,
+.guided-panel .phase-pane,
+.workflow-panel .phase-pane,
+.phase-track > .phase-pane {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+}
+/* the inner layers no longer need their own inset padding stacking up */
+.phase-viewport { padding: 0 !important; }
