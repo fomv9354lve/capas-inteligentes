@@ -112,8 +112,20 @@ class H(BaseHTTPRequestHandler):
         if not str(f).startswith(str(DOCS)) or not f.is_file():
             return self._json({"error": "not found"}, 404)
         data = f.read_bytes()
+        # Freshness contract: every asset carries a content ETag and is served `no-cache`
+        # (cache, but ALWAYS revalidate). After a deploy a normal reload picks up the new bytes
+        # instantly — no hard-reload, no stale "missing sections". Unchanged files return 304
+        # against the ETag, so revalidation stays cheap. This is what makes the deploy cycle clean.
+        import hashlib
+        etag = '"' + hashlib.sha256(data).hexdigest()[:16] + '"'
+        if self.headers.get("If-None-Match") == etag:
+            self.send_response(304); self.send_header("ETag", etag)
+            self.send_header("Cache-Control", "no-cache"); self._cors(); self.end_headers()
+            return
         self.send_response(200)
         self.send_header("Content-Type", _CTYPE.get(f.suffix.lstrip(".").lower(), "application/octet-stream"))
+        self.send_header("Cache-Control", "no-cache")
+        self.send_header("ETag", etag)
         self.send_header("Content-Length", str(len(data))); self._cors(); self.end_headers()
         self.wfile.write(data)
 
