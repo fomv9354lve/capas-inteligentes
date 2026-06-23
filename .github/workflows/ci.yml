@@ -38,11 +38,16 @@ jobs:
       - name: External user validation packet
         run: python benchmarks/verify_external_user_validation.py
 
-      - name: External MVP readiness packets
-        run: python benchmarks/verify_external_mvp_readiness.py
-
-      - name: Product validators
-        run: python capas.py validate
+      # Load-bearing invariants on neutral CI (deterministic, no browser / gh / release deps).
+      - name: Conformance suite
+        run: python benchmarks/conformance.py
 
       - name: Entry point smoke test
         run: capas inspect trace_039
+
+      # NOTE: "External MVP readiness packets" (verify_external_mvp_readiness.py — asserts gh-auth +
+      # release tags) and the full "Product validators" (`capas validate` — browser E2E + env-sensitive)
+      # were removed from per-push CI: they assume a local/release environment that a runner does not
+      # have and flaked red on every commit (the email flood). Release readiness belongs in a release
+      # workflow; the validate invariants are covered by the conformance suite above. Run them locally:
+      # `python capas.py validate`.
