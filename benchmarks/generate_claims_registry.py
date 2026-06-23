@@ -23,6 +23,7 @@ WHERE = {
     "fail_closed": "Home (“fail-closed (proven)”), Security",
     "robustness": "Security, Audit",
     "no_llm_verdict": "Home (“no language model in the verdict”), Gate App (LLM in gate: NONE)",
+    "commitment_gate": "Methodology / quantum domain (capas_quantum_physics.gate_quantum_advantage_claim)",
     "gates_domains": "Home stat bar (26 gates / 10 domains), Methodology",
     "decisions_1238": "Benchmark (1,238 decisions, 78.4% gated)",
     "beat_benchmark": "Home (“Proof on real hardware”, 2–11×)",

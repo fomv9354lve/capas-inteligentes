@@ -351,3 +351,13 @@ body[data-flow-phase="gate"] .step-tab[data-step="complete"] .step-num { backgro
   .history-item { flex-wrap: wrap; }
   .history-id, .history-badge { word-break: break-word; }
 }
+
+/* ─── Decision panel ghost state: teach what a verdict contains before one exists (audit #7) ─── */
+.no-decision { font-size: 13px; color: rgba(255,255,255,0.62); line-height: 1.62; }
+.ghost-list { list-style: none; margin: 12px 0 12px; padding: 0; display: grid; gap: 7px; }
+.ghost-list li { font-size: 12.5px; color: rgba(255,255,255,0.5); padding-left: 18px; position: relative; line-height: 1.5; }
+.ghost-list li::before { content: '\2192'; position: absolute; left: 0; color: #e8185d; font-weight: 700; }
+
+/* ─── Evidence Contract as protagonist, not a side panel (audit #5 — this is the moat) ─── */
+.builder-rail { border-left: 2px solid rgba(232,24,93,0.5) !important; }
+.builder-rail h3 { color: #e8185d !important; letter-spacing: 0.07em; font-size: 11px !important; }

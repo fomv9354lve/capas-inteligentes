@@ -1968,7 +1968,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="capas-shell.css?v=043">
-<link rel="stylesheet" href="app-theme.css?v=046">
+<link rel="stylesheet" href="app-theme.css?v=047">
 </head>
 <body>
 <div class="bg-logo"><iframe src="logo_kreniq_volum_trico.html" title="CAPAS transition network logo" scrolling="no" tabindex="-1" aria-hidden="true"></iframe></div>
@@ -2261,7 +2261,7 @@
         <span class="panel-title">Decision</span>
         <button class="copy-btn" id="copy-btn" aria-label="Copy decision JSON" onclick="copyOutput()" disabled>Copy JSON</button>
       </div>
-      <div id="verdict-area" aria-live="polite" aria-atomic="true"><div class="no-decision"><strong>No decision yet.</strong>Select a workflow mode, build or provide evidence, then press <em>Run CAPAS Gate</em> in Step 3.</div></div>
+      <div id="verdict-area" aria-live="polite" aria-atomic="true"><div class="no-decision"><strong>Awaiting decision.</strong> Run a claim and this becomes a deterministic <strong>admissibility certificate</strong> &mdash; not a black box. It will show:<ul class="ghost-list"><li>the <strong>verdict</strong> (ACCEPT / REWRITE / REJECT / HOLD) and the rule that fired</li><li>the <strong>licensed reuse boundary</strong> &mdash; exactly what the evidence permits</li><li>blockers and <strong>open proof obligations</strong></li><li>the next operational action and fine-tune readiness</li><li>the raw, re-derivable JSON + audit hash</li></ul>Press <em>Run CAPAS Gate</em> in Step 3 &mdash; missing evidence will HOLD, by design.</div></div>
       <div class="output-section">
         <div class="output-inspector" id="output-inspector" aria-label="Decision inspector">
           <div class="empty-state">Decision inspector will summarize the verdict, fine-tune readiness, schema errors, provenance, and raw JSON.</div>

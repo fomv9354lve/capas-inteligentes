@@ -279,6 +279,44 @@ def gate_error_admissible(reported_error: float, gate_time_ns: float, t1_us: flo
             "control_dominated": bool(err > 2.0 * deco and deco > 0)}
 
 
+def gate_quantum_advantage_claim(claimed_circuit_depth: float, commitment_depth: float,
+                                 asserts_quantum_hardness: bool = True,
+                                 margin: int = 0) -> dict[str, Any]:
+    """Gate a REPORTED quantum-advantage / hard-quantum-result claim against the circuit's measured
+    COMMITMENT DEPTH — the depth at which device noise forces the circuit to commit from quantum
+    (uncommitted superposition) to classical (compressible/simulable). This is the association->causation
+    pattern in the quantum domain: running a depth-D circuit does NOT license a 'quantum advantage' claim
+    if the device already committed to classical before depth D.
+
+    Rule: if the claim asserts quantum-hardness at claimed_circuit_depth but commitment_depth < that depth,
+    the evidence licenses a CLASSICALLY-REPRODUCIBLE result, not a quantum-advantage claim
+    -> FLAG_CLASSICALLY_REPRODUCIBLE (the CAPAS analog of REWRITE). Otherwise ADMISSIBLE.
+
+    SCOPE: `commitment_depth` is supplied as evidence (re-derivable same-device from device noise via the
+    physics-magnitude-lab `commitment_depth` axis; cross-device validation is pending). CAPAS is the gate,
+    not the simulator — it consumes the measured depth and decides admissibility."""
+    d_claim = float(claimed_circuit_depth)
+    d_commit = float(commitment_depth)
+    if not asserts_quantum_hardness:
+        return {"verdict": "ADMISSIBLE", "why": "claim does not assert quantum hardness/advantage; "
+                "commitment depth does not bound a non-advantage claim",
+                "claimed_circuit_depth": d_claim, "commitment_depth": d_commit, "committed_before_claim": None}
+    committed_early = d_commit < (d_claim - margin)
+    if committed_early:
+        verdict = "FLAG_CLASSICALLY_REPRODUCIBLE"
+        why = (f"circuit commits to classical at depth {d_commit:g} (noise-forced), before the claimed "
+               f"depth {d_claim:g}; past the commitment depth the state is compressible/simulable, so the "
+               f"evidence licenses a CLASSICALLY-REPRODUCIBLE result, not a quantum-advantage claim "
+               f"(rewrite to 'classically reproducible at depth {d_claim:g} on this device')")
+    else:
+        verdict = "ADMISSIBLE"
+        why = (f"claimed depth {d_claim:g} <= commitment depth {d_commit:g}; the circuit stays uncommitted "
+               f"(quantum) through the claimed depth, so the quantum-hardness framing is not defeated by "
+               f"commitment depth (other gates still apply)")
+    return {"verdict": verdict, "why": why, "claimed_circuit_depth": d_claim,
+            "commitment_depth": d_commit, "committed_before_claim": bool(committed_early), "margin": int(margin)}
+
+
 def derive_hidden_quantities(row: dict[str, Any]) -> dict[str, Any]:
     """Surface what is re-derivable from a calibration row but NOT published: pure dephasing rate
     + mechanism (exact), and the gate-error coherence floor (exact). This is CAPAS as a derivation

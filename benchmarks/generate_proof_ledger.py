@@ -52,6 +52,14 @@ def build() -> list[dict]:
               "ok": _run_test("benchmarks/verify_cara_decoupling.py"),
               "scope": "The product loads and decides with the cognitive layer blocked; same input -> same audit_hash.",
               "owner": "cto"})
+    L.append({"id": "commitment_gate", "claim": "Quantum-advantage claims past the commitment depth are flagged classically-reproducible",
+              "status": "CLOSED", "backing": "benchmarks/verify_quantum_commitment.py",
+              "ok": _run_test("benchmarks/verify_quantum_commitment.py"),
+              "scope": "The gate CONTRACT is test-locked (the defeater fires iff a hardness claim runs past the "
+                       "depth the device stays uncommitted — the association->causation pattern, quantum edition). "
+                       "The empirical commitment_depth frontier is supplied as evidence: same-device validated "
+                       "(physics-magnitude-lab), cross-device pending.",
+              "owner": "quantum"})
 
     # --- BACKED: regenerates from a command, value + hash recorded ---
     matrix = ROOT / "outputs" / "capability_matrix.json"
