@@ -3,7 +3,19 @@
 [![CAPAS CI](https://github.com/fomv9354lve/capas-inteligentes/actions/workflows/ci.yml/badge.svg)](https://github.com/fomv9354lve/capas-inteligentes/actions/workflows/ci.yml)
 [![Release](https://img.shields.io/github/v/release/fomv9354lve/capas-inteligentes)](https://github.com/fomv9354lve/capas-inteligentes/releases/tag/v0.1.1)
 
-CAPAS is a small evidence-typed claim gate for scientific computation.
+**CAPAS does not determine truth. It evaluates whether supplied evidence licenses a
+specific claim under a declared admissibility contract** — deterministically, with no
+language model in the verdict, and re-derivably (same input → same verdict → same audit
+hash). A claim + its structured evidence goes in; ACCEPT / REWRITE / REJECT / HOLD comes out.
+
+CAPAS ships **open-core + open standard** (Apache-2.0). The defensible asset is the schema,
+the admissibility calculus, the certificate, and the benchmark corpus — not the code. It is a
+reference implementation in the lineage of OPA / SPDX / RO-Crate, not a closed SaaS. The CAPAS
+name, certification, and official benchmark are reserved (see `NOTICE`).
+
+**It gates its own claims:** every public number is `CLOSED` (proven by a test), `BACKED`
+(regenerates from a command), or `SCOPED` (a declared estimate) — see
+[`docs/CLAIMS_REGISTRY.md`](docs/CLAIMS_REGISTRY.md). Nothing bare.
 
 It is not a new provenance standard, benchmark suite, workflow engine, or VVUQ
 methodology. CAPAS is a profile/costurero over existing standards:
@@ -67,7 +79,7 @@ For reviewers and potential users:
 - Public demo: `https://fomv9354lve.github.io/capas-inteligentes/`
 - Current release: `https://github.com/fomv9354lve/capas-inteligentes/releases/tag/v0.1.1`
 - Public feedback issue: `https://github.com/fomv9354lve/capas-inteligentes/issues/1`
-- License: proprietary research prototype; see `LICENSE`.
+- License: **Apache-2.0** (open-core); the CAPAS mark + official certification are reserved — see `LICENSE` and `NOTICE`.
 
 The current validation question is not "is CAPAS broadly useful?" It is narrower:
 do the explicit evidence fields help audit or exchange one scientific-agent

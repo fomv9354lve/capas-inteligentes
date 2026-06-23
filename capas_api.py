@@ -27,7 +27,8 @@ _API_KEY = os.environ.get("CAPAS_API_KEY")
 DOCS = ROOT / "docs"
 _CTYPE = {"html": "text/html", "js": "application/javascript", "css": "text/css",
           "png": "image/png", "jpeg": "image/jpeg", "jpg": "image/jpeg", "json": "application/json",
-          "svg": "image/svg+xml", "ico": "image/x-icon"}
+          "svg": "image/svg+xml", "ico": "image/x-icon", "md": "text/plain; charset=utf-8",
+          "txt": "text/plain; charset=utf-8"}
 
 
 class H(BaseHTTPRequestHandler):
