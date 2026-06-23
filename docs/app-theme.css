@@ -361,3 +361,10 @@ body[data-flow-phase="gate"] .step-tab[data-step="complete"] .step-num { backgro
 /* ─── Evidence Contract as protagonist, not a side panel (audit #5 — this is the moat) ─── */
 .builder-rail { border-left: 2px solid rgba(232,24,93,0.5) !important; }
 .builder-rail h3 { color: #e8185d !important; letter-spacing: 0.07em; font-size: 11px !important; }
+
+/* ─── Option B: seeded EXAMPLE banner — only while the demo decision is showing (body[data-demo]) ─── */
+.demo-banner { display: none; }
+body[data-demo="1"] .demo-banner { display: block; margin-bottom: 12px; padding: 9px 13px;
+  border: 1px solid rgba(232,24,93,0.4); border-radius: 8px; background: rgba(232,24,93,0.08);
+  font-size: 12px; color: rgba(255,255,255,0.78); line-height: 1.5; }
+body[data-demo="1"] .demo-banner strong { color: #e8185d; letter-spacing: 0.06em; }
