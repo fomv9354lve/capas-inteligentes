@@ -1,7 +1,30 @@
 # CAPAS INTELIGENTES
 
 [![CAPAS CI](https://github.com/fomv9354lve/capas-inteligentes/actions/workflows/ci.yml/badge.svg)](https://github.com/fomv9354lve/capas-inteligentes/actions/workflows/ci.yml)
-[![Release](https://img.shields.io/github/v/release/fomv9354lve/capas-inteligentes)](https://github.com/fomv9354lve/capas-inteligentes/releases/tag/v0.1.1)
+[![Conformance](https://github.com/fomv9354lve/capas-inteligentes/actions/workflows/conformance.yml/badge.svg)](https://github.com/fomv9354lve/capas-inteligentes/actions/workflows/conformance.yml)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/fomv9354lve/capas-inteligentes/badge)](https://scorecard.dev/viewer/?uri=github.com/fomv9354lve/capas-inteligentes)
+[![License](https://img.shields.io/badge/license-Apache--2.0-blue)](LICENSE)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/fomv9354lve/capas-inteligentes/main?labpath=notebooks/run_a_claim.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fomv9354lve/capas-inteligentes/blob/main/notebooks/run_a_claim.ipynb)
+
+### Verify it yourself — free, neutral infrastructure (don't trust us, reproduce it)
+
+A claim is only worth the badge if a *third party* can reproduce it. Every public claim here is checkable
+on infra we don't control:
+
+- **Conformance on neutral CI, signed.** GitHub Actions runs `python3 benchmarks/conformance.py` on every
+  push and **Sigstore-signs** the result into a public transparency log (keyless). The badge above is that
+  run — green means the load-bearing invariants hold on GitHub's runners, not just a laptop.
+- **Run a claim yourself** — the Binder / Colab badges open `notebooks/run_a_claim.ipynb`: install nothing,
+  run the gate in your browser, get the same verdict and audit hash we publish.
+- **Independent supply-chain score** — the OpenSSF Scorecard badge is a third party's assessment.
+- **Every number is re-derivable** — see [`docs/CLAIMS_REGISTRY.md`](docs/CLAIMS_REGISTRY.md); each claim
+  carries the command that reproduces it. Governance: [`GOVERNANCE.md`](GOVERNANCE.md).
+
+*Your turn (account-gated, one-time):* connect the repo to **Zenodo** + cut a release → mints a citable DOI
+(`.zenodo.json` is ready); add a **PyPI Trusted Publisher** → `pip install` goes live via `publish.yml`;
+push `spaces/` to a **Hugging Face Space** → a neutral hosted demo; register at **bestpractices.dev** for
+the OpenSSF Best Practices badge.
 
 **CAPAS does not determine truth. It evaluates whether supplied evidence licenses a
 specific claim under a declared admissibility contract** — deterministically, with no

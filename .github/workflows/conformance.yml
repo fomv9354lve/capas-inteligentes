@@ -1,0 +1,49 @@
+# Tier 1 — run the CAPAS conformance suite on NEUTRAL infra and SIGN the result (Sigstore, keyless).
+# This turns "passes on my laptop" into "the suite is green on GitHub's runners, and the result is
+# cryptographically attested in a public transparency log." Anyone can verify the signature.
+name: CAPAS Conformance
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write   # required for keyless Sigstore signing (OIDC)
+
+jobs:
+  conformance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e .
+
+      - name: Run the conformance suite (run-it-yourself; same suite the certifier runs)
+        run: python benchmarks/conformance.py --json
+
+      - name: Install cosign
+        uses: sigstore/cosign-installer@v3
+
+      - name: Sign the conformance result (keyless — Sigstore / Rekor transparency log)
+        run: |
+          cosign sign-blob --yes outputs/conformance_result.json \
+            --output-signature outputs/conformance_result.sig \
+            --output-certificate outputs/conformance_result.pem
+
+      - name: Upload the signed conformance attestation
+        uses: actions/upload-artifact@v4
+        with:
+          name: capas-conformance-attestation
+          path: |
+            outputs/conformance_result.json
+            outputs/conformance_result.sig
+            outputs/conformance_result.pem
