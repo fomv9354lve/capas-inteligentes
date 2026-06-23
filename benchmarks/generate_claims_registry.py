@@ -26,6 +26,7 @@ WHERE = {
     "commitment_gate": "Methodology / quantum domain (capas_quantum_physics.gate_quantum_advantage_claim)",
     "gates_domains": "Home stat bar (26 gates / 10 domains), Methodology",
     "decisions_1238": "Benchmark (1,238 decisions, 78.4% gated)",
+    "pharma_admissibility": "Pharma beachhead (capas_pharma.gate_pharma_stat_claim)",
     "beat_benchmark": "Home (“Proof on real hardware”, 2–11×)",
     "false_accept_rate": "Pilot, Home (n=28 retrospective)",
     "retrospective_28": "Home + Pilot (28 retracted-vs-replicated)",

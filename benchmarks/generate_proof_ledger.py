@@ -76,6 +76,16 @@ def build() -> list[dict]:
               "sha256": _sha256(mix),
               "scope": "SYNTHETIC adversarial decision-space grid (contract coverage), NOT a production drift rate.",
               "owner": "eval"})
+    pharma = ROOT / "outputs" / "pharma_corpus.json"
+    L.append({"id": "pharma_admissibility", "claim": "Pharma statistical-claim admissibility: 3,024-case corpus, 0 false-accepts",
+              "status": "BACKED", "backing": "python3 benchmarks/generate_pharma_corpus.py",
+              "ok": _run_test("benchmarks/generate_pharma_corpus.py"),
+              "value": "N=3024; hard-gated 95.5%; 0 deficient claims ACCEPTed", "artifact": "outputs/pharma_corpus.json",
+              "sha256": _sha256(pharma),
+              "scope": "SYNTHETIC contract coverage of the statistical-admissibility space Pinnacle 21 skips "
+                       "(significance-vs-alpha, multiplicity, CI-excludes-null, direction, endpoint). NOT a production "
+                       "false-accept rate on real submissions. The beachhead gate; see docs/MARKET_VALIDATION.md.",
+              "owner": "pharma"})
     b = Q.complete_error_budget({"cz_error": 1.629e-3, "sx_error": 2.743e-4, "t1_us": 299.57,
                                  "t2_us": 33.9, "readout": 5.371e-3, "zz_residual_hz": 50e3, "idle_ns": 300})
     L.append({"id": "beat_benchmark", "claim": "Vendor headline under-states real per-layer error by 2-11x",

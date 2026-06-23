@@ -59,6 +59,18 @@
     "owner": "eval"
   },
   {
+    "id": "pharma_admissibility",
+    "claim": "Pharma statistical-claim admissibility: 3,024-case corpus, 0 false-accepts",
+    "status": "BACKED",
+    "backing": "python3 benchmarks/generate_pharma_corpus.py",
+    "ok": true,
+    "value": "N=3024; hard-gated 95.5%; 0 deficient claims ACCEPTed",
+    "artifact": "outputs/pharma_corpus.json",
+    "sha256": "sha256:349286ca67a17dfc0a47767cc17be030\u2026",
+    "scope": "SYNTHETIC contract coverage of the statistical-admissibility space Pinnacle 21 skips (significance-vs-alpha, multiplicity, CI-excludes-null, direction, endpoint). NOT a production false-accept rate on real submissions. The beachhead gate; see docs/MARKET_VALIDATION.md.",
+    "owner": "pharma"
+  },
+  {
     "id": "beat_benchmark",
     "claim": "Vendor headline under-states real per-layer error by 2-11x",
     "status": "BACKED",
