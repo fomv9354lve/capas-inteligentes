@@ -1968,7 +1968,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="capas-shell.css?v=043">
-<link rel="stylesheet" href="app-theme.css?v=048">
+<link rel="stylesheet" href="app-theme.css?v=049">
 </head>
 <body>
 <div class="bg-logo"><iframe src="logo_kreniq_volum_trico.html" title="CAPAS transition network logo" scrolling="no" tabindex="-1" aria-hidden="true"></iframe></div>
@@ -2061,21 +2061,23 @@
                 <strong>Guided Claim Builder</strong>
                 <span>No-code claim creation with dynamic evidence fields.</span>
               </button>
-              <button class="workflow-mode-card" id="workflow-mode-raw" type="button" role="radio" aria-checked="false" onclick="setWorkflowMode('raw')">
+              <button class="workflow-mode-card mode-advanced" id="workflow-mode-raw" type="button" role="radio" aria-checked="false" onclick="setWorkflowMode('raw')">
                 <span class="mode-card-icon mode-icon-raw"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg></span>
                 <strong>Raw JSON Payload</strong>
                 <span>Advanced mode for existing CAPAS schema v3 payloads.</span>
               </button>
-              <button class="workflow-mode-card" id="workflow-mode-batch" type="button" role="radio" aria-checked="false" onclick="setWorkflowMode('batch')">
+              <button class="workflow-mode-card mode-advanced" id="workflow-mode-batch" type="button" role="radio" aria-checked="false" onclick="setWorkflowMode('batch')">
                 <span class="mode-card-icon mode-icon-batch"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg></span>
                 <strong>Batch Evaluation</strong>
                 <span>Corpus/pilot mode for many claim/evidence records.</span>
               </button>
-              <button class="workflow-mode-card" id="workflow-mode-ingestion" type="button" role="radio" aria-checked="false" onclick="setWorkflowMode('ingestion')">
+              <button class="workflow-mode-card mode-advanced" id="workflow-mode-ingestion" type="button" role="radio" aria-checked="false" onclick="setWorkflowMode('ingestion')">
                 <span class="mode-card-icon mode-icon-ingestion"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line></svg></span>
                 <strong>Claim Candidate Extraction</strong>
                 <span>Extraction aid. Human confirmation is required before gating.</span>
               </button>
+              <input type="checkbox" id="adv-modes-toggle" class="adv-toggle" hidden aria-label="Show advanced input modes">
+              <label for="adv-modes-toggle" class="adv-toggle-label">Advanced inputs &mdash; Raw JSON · Batch · Extraction</label>
             </div>
           </div>
         </div>
