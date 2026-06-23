@@ -108,7 +108,14 @@ class H(BaseHTTPRequestHandler):
         if p == "/api/health":
             return self._json({"status": "ok", "auth_required": bool(_API_KEY)})
         if p in ("/", ""):
-            p = "/index.html"
+            # Routing por host (one-ecosystem scheme):
+            #   krenniq.com / www.krenniq.com  -> landing KRENIQ (front door, las 2 herramientas)
+            #   capas.krenniq.com              -> la herramienta CAPAS (cuando se bindee el subdominio)
+            #   capas.lemonground...azure      -> la herramienta CAPAS (host crudo de Azure)
+            # APEX-only para la landing: 'capas.krenniq.com' contiene 'krenniq.com' como substring, así
+            # que un `in` lo mandaría al landing por error. Match exacto del ápex (sin puerto).
+            host = (self.headers.get("Host") or "").lower().split(":")[0]
+            p = "/krenniq.html" if host in ("krenniq.com", "www.krenniq.com") else "/index.html"
         f = (DOCS / p.lstrip("/")).resolve()
         if not str(f).startswith(str(DOCS)) or not f.is_file():
             return self._json({"error": "not found"}, 404)
