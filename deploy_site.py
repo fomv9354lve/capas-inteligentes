@@ -122,7 +122,22 @@ def deploy() -> bool:
     tail = "\n".join((r.stdout + r.stderr).splitlines()[-6:])
     print(tail)
     print(f"(az exit {r.returncode} — not authoritative; the VERIFY step below is the real gate)")
+    _rebind_krenniq()
     return True
+
+
+def _rebind_krenniq() -> None:
+    # CRITICAL (see CLAUDE.md §2): every capas image update breaks krenniq.com's TLS SNI binding at the
+    # edge (curl -> no peer certificate), so the umbrella domain goes DOWN after a deploy. Re-bind it
+    # every time — idempotent. The edge then takes ~2–5 min to propagate.
+    print("=== RE-BIND krenniq.com TLS (always, post-deploy — or the umbrella domain dies) ===")
+    b = subprocess.run(["az", "containerapp", "hostname", "bind", "--hostname", "krenniq.com",
+                        "-n", APP, "-g", RG, "--environment", "capas-env",
+                        "--certificate", "mc-capas-env-krenniq-com-3031"],
+                       cwd=str(ROOT), capture_output=True, text=True)
+    out = b.stdout + b.stderr
+    print("  re-bind:", "ok (SniEnabled) — allow ~2–5 min for the edge to serve HTTPS 200"
+          if "SniEnabled" in out else f"CHECK MANUALLY: {out.strip()[-200:]}")
 
 
 def poll_until_live(timeout_s: int = 420) -> bool:
