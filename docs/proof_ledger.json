@@ -111,10 +111,11 @@
   {
     "id": "pip_install",
     "claim": "pip install capas-claim-gate",
-    "status": "SCOPED",
-    "value": "wheel built + twine-check PASSED; NOT yet published to PyPI",
-    "scope": "The install command works only AFTER `twine upload`. Until then the homepage CTA must not imply it is live.",
-    "upgrade_artifact": "twine upload (needs the maintainer's PyPI token)",
+    "status": "BACKED",
+    "backing": "pip install capas-claim-gate (PyPI; published from GitHub via OIDC Trusted Publishing, no token)",
+    "value": "capas-claim-gate 0.3.0 LIVE on PyPI",
+    "artifact": "https://pypi.org/project/capas-claim-gate/",
+    "scope": "Published via the publish.yml Trusted Publisher on release v0.1.2; the wheel install is now live.",
     "owner": "release"
   }
 ]
