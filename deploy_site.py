@@ -140,11 +140,23 @@ def poll_until_live(timeout_s: int = 420) -> bool:
     return False
 
 
+def _ui_gate() -> bool:
+    # Optional design gate: run the local UI lab (render + layout-consistency assertions) BEFORE
+    # deploying, so a column/gutter/nav/mobile-overflow regression is caught locally in seconds
+    # instead of shipping. Opt-in via `--ui` (keeps the plain deploy fast when you don't need it).
+    print("=== UI GATE (designlab/check.py) ===")
+    r = subprocess.run([sys.executable, "designlab/check.py"], cwd=str(ROOT))
+    return r.returncode == 0
+
+
 def main() -> int:
     if "--verify" in sys.argv:
         return 0 if verify_live() else 1
     if not validate():
         print("Refusing to deploy: fix validation first.")
+        return 1
+    if "--ui" in sys.argv and not _ui_gate():
+        print("Refusing to deploy: UI layout gate failed (run `python3 designlab/check.py`).")
         return 1
     deploy()
     return 0 if poll_until_live() else 1

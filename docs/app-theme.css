@@ -339,3 +339,15 @@ body[data-flow-phase="gate"] .step-tab[data-step="complete"] .step-num { backgro
 }
 /* the inner layers no longer need their own inset padding stacking up */
 .phase-viewport { padding: 0 !important; }
+
+/* ─── Mobile hardening — found by ui_lab (gate-app overflowed to 912px @390w) ─── */
+@media (max-width: 760px) {
+  html, body { overflow-x: hidden; }                      /* the decorative bg iframe never makes h-scroll */
+  .app-body { max-width: 100%; padding-left: 16px; padding-right: 16px; }
+  .app-layout { grid-template-columns: 1fr !important; }  /* main pane + right rail stack */
+  .product-hero { grid-template-columns: 1fr !important; }/* hero + recent-decisions panel stack */
+  .workflow-strip { grid-template-columns: 1fr !important; }
+  .history-item, .audit-row, .audit-table, .side-card, .panel { max-width: 100%; }
+  .history-item { flex-wrap: wrap; }
+  .history-id, .history-badge { word-break: break-word; }
+}
