@@ -5,6 +5,7 @@
 [![PyPI](https://img.shields.io/pypi/v/capas-claim-gate)](https://pypi.org/project/capas-claim-gate/)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20808512.svg)](https://doi.org/10.5281/zenodo.20808512)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/fomv9354lve/capas-inteligentes/badge)](https://scorecard.dev/viewer/?uri=github.com/fomv9354lve/capas-inteligentes)
+[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/13338/badge)](https://www.bestpractices.dev/projects/13338)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue)](LICENSE)
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/fomv9354lve/capas-inteligentes/main?labpath=notebooks/run_a_claim.ipynb)
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fomv9354lve/capas-inteligentes/blob/main/notebooks/run_a_claim.ipynb)
