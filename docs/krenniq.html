@@ -2,172 +2,8 @@
 <html lang="es"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Krenn·IQ — Inteligencia Cuántica</title>
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --pink:#e8185d;--pink2:#c4125a;--bg:#050507;--surface:rgba(255,255,255,0.04);
-  --border:rgba(255,255,255,0.08);--text:rgba(255,255,255,0.88);--muted:rgba(255,255,255,0.44);
-  --accent:#4f5ef7;--green:#48bb78;--amber:#f6ad55;
-}
-html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;overflow-x:hidden}
-/* ── NAV ── */
-nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;padding:0 48px;height:60px;border-bottom:1px solid rgba(255,255,255,0.06);background:rgba(8,8,16,0.92);backdrop-filter:blur(12px)}
-.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;margin-right:40px;flex-shrink:0}
-.nav-logo img{width:32px;height:32px;object-fit:contain;display:block}
-.nav-logo-title{font-size:14px;font-weight:800;color:#fff;letter-spacing:-0.01em;line-height:1.1}
-.nav-logo-sub{font-size:9px;font-weight:500;color:#444;letter-spacing:0.1em;text-transform:uppercase}
-.nav-links{display:flex;align-items:center;gap:4px}
-.nav-links a{display:inline-flex;align-items:center;gap:6px;color:rgba(255,255,255,0.5);text-decoration:none;font-size:13px;padding:7px 14px;border-radius:6px;white-space:nowrap;transition:color .15s}
-.nav-links a:hover{color:rgba(255,255,255,0.85)}
-.nav-links a.active{color:#fff;border:1px solid rgba(255,255,255,0.18);background:rgba(255,255,255,0.05)}
-.nav-sep{flex:1}
-.nav-cta{background:linear-gradient(135deg,#e8185d,#c4125a);color:#fff;font-size:13px;font-weight:700;padding:9px 20px;border-radius:7px;text-decoration:none;box-shadow:0 2px 14px rgba(232,24,93,0.35);white-space:nowrap;transition:opacity .15s}
-.nav-cta:hover{opacity:0.88}
-/* ── BACKGROUND ── */
-.bg-logo{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;opacity:0.65}
-.bg-logo iframe{width:100%;height:100%;border:0;display:block;background:#000;transform:scale(3.35);transform-origin:center center}
-.bg-veil{position:fixed;inset:0;z-index:1;pointer-events:none;
-  background:radial-gradient(circle at 60% 35%,transparent 0%,rgba(5,5,7,0.25) 40%,rgba(5,5,7,0.68) 100%),
-             linear-gradient(rgba(5,5,7,0.40),rgba(5,5,7,0.10) 30%,rgba(5,5,7,0.55))}
-/* ── LAYOUT ── */
-.page{position:relative;z-index:2}
-/* ── HERO ── */
-.hero{min-height:calc(100vh - 60px);display:flex;align-items:center;padding:80px 48px 60px}
-.hero-inner{max-width:1200px;width:100%;margin:0 auto;display:grid;grid-template-columns:1fr 460px;gap:80px;align-items:center}
-.hero-eyebrow{font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--pink);margin-bottom:20px}
-.hero-h1{font-size:clamp(36px,4.5vw,58px);font-weight:900;line-height:1.08;letter-spacing:-0.03em;color:#fff;margin-bottom:24px}
-.hero-h1 em{font-style:normal;background:linear-gradient(135deg,#e8185d,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero-sub{font-size:17px;line-height:1.65;color:rgba(255,255,255,0.6);margin-bottom:40px;max-width:520px}
-.hero-actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-.btn-primary{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#e8185d,#c4125a);color:#fff;font-size:14px;font-weight:700;padding:13px 26px;border-radius:8px;text-decoration:none;border:none;cursor:pointer;box-shadow:0 2px 20px rgba(232,24,93,0.4);transition:opacity .15s}
-.btn-primary:hover{opacity:0.88}
-.btn-secondary{display:inline-flex;align-items:center;gap:8px;background:transparent;color:rgba(255,255,255,0.75);font-size:14px;font-weight:500;padding:13px 22px;border-radius:8px;text-decoration:none;border:1px solid rgba(255,255,255,0.15);cursor:pointer;transition:border-color .15s,color .15s}
-.btn-secondary:hover{border-color:rgba(255,255,255,0.3);color:#fff}
-/* ── HERO VERDICT PANEL ── */
-.verdict-panel{background:rgba(10,10,18,0.75);border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:20px;backdrop-filter:blur(16px)}
-.vp-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
-.vp-title{font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.35)}
-.vp-badge{font-size:10px;font-weight:700;padding:3px 8px;border-radius:4px;background:rgba(79,94,247,0.15);color:#4f5ef7;border:1px solid rgba(79,94,247,0.3)}
-.vp-dots{display:flex;gap:5px;margin-bottom:16px}
-.vp-dots span{width:10px;height:10px;border-radius:50%}
-.vp-rows{display:flex;flex-direction:column;gap:8px}
-.vp-row{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:10px 12px}
-.verdict-chip{font-size:10px;font-weight:800;padding:3px 9px;border-radius:4px;letter-spacing:0.04em;white-space:nowrap;flex-shrink:0}
-.vc-accept{background:rgba(72,187,120,0.15);color:#48bb78;border:1px solid rgba(72,187,120,0.3)}
-.vc-rewrite{background:rgba(0,200,200,0.15);color:#00c8c8;border:1px solid rgba(0,200,200,0.35)}
-.vc-reject{background:rgba(232,24,93,0.15);color:#e8185d;border:1px solid rgba(232,24,93,0.3)}
-.vc-hold{background:rgba(200,150,10,0.15);color:#d4a820;border:1px solid rgba(200,150,10,0.35)}
-.vp-row-text{font-size:11px;color:rgba(255,255,255,0.5);font-family:monospace;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.vp-row-tag{margin-left:auto;font-size:10px;color:rgba(255,255,255,0.22);white-space:nowrap;flex-shrink:0}
-/* ── STAT BAR ── */
-.stat-bar{border-top:1px solid rgba(255,255,255,0.06);border-bottom:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02);backdrop-filter:blur(8px)}
-.stat-bar-inner{max-width:1200px;margin:0 auto;padding:0 48px;display:grid;grid-template-columns:repeat(4,1fr)}
-.stat-item{padding:28px 24px;border-right:1px solid rgba(255,255,255,0.06);text-align:center}
-.stat-item:last-child{border-right:none}
-.stat-num{font-size:32px;font-weight:900;letter-spacing:-0.04em;color:#fff;line-height:1}
-.stat-num span{font-size:18px;color:var(--pink)}
-.stat-label{font-size:11px;color:rgba(255,255,255,0.38);margin-top:6px;letter-spacing:0.04em;text-transform:uppercase}
-/* ── SECTION SHARED ── */
-.section{padding:96px 48px}
-.section-inner{max-width:1200px;margin:0 auto}
-.section-label{font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--pink);margin-bottom:14px}
-.section-h2{font-size:clamp(28px,3vw,42px);font-weight:900;letter-spacing:-0.03em;color:#fff;margin-bottom:14px;line-height:1.1}
-.section-sub{font-size:16px;color:rgba(255,255,255,0.5);max-width:560px;line-height:1.65;margin-bottom:56px}
-/* ── CORE CARDS ── */
-.core-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
-.core-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:32px;backdrop-filter:blur(8px);transition:border-color .2s,background .2s}
-.core-card:hover{border-color:rgba(255,255,255,0.14);background:rgba(255,255,255,0.05)}
-.core-card-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:18px}
-.core-card-icon svg{width:22px;height:22px}
-.core-card h3{font-size:17px;font-weight:800;color:#fff;margin-bottom:10px;letter-spacing:-0.01em}
-.core-card p{font-size:14px;color:rgba(255,255,255,0.5);line-height:1.65}
-.core-card-tag{display:inline-block;margin-top:16px;font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:4px 10px;border-radius:4px}
-/* ── PIPELINE ── */
-.pipeline{background:rgba(255,255,255,0.015);border-top:1px solid rgba(255,255,255,0.06);border-bottom:1px solid rgba(255,255,255,0.06)}
-.pipeline-inner{max-width:1200px;margin:0 auto;padding:80px 48px}
-.pipeline-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:48px;position:relative}
-.pipeline-steps::before{content:'';position:absolute;top:28px;left:12.5%;right:12.5%;height:1px;background:linear-gradient(90deg,rgba(232,24,93,0.4),rgba(79,94,247,0.4))}
-.pipe-step{text-align:center;padding:0 16px;position:relative;z-index:1}
-.pipe-num{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:13px;font-weight:800;color:#fff;position:relative}
-.pipe-step-title{font-size:14px;font-weight:700;color:#fff;margin-bottom:8px}
-.pipe-step-desc{font-size:12px;color:rgba(255,255,255,0.45);line-height:1.6}
-/* ── VERDICTS SECTION ── */
-.verdicts-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:48px}
-.verdict-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:24px;backdrop-filter:blur(8px);transition:transform .2s,border-color .2s}
-.verdict-card:hover{transform:translateY(-3px)}
-.verdict-card-badge{display:inline-block;font-size:11px;font-weight:800;padding:4px 12px;border-radius:5px;letter-spacing:0.06em;margin-bottom:16px}
-.verdict-card h4{font-size:15px;font-weight:700;color:#fff;margin-bottom:8px}
-.verdict-card p{font-size:13px;color:rgba(255,255,255,0.45);line-height:1.6}
-.verdict-card-ex{margin-top:14px;font-size:11px;font-family:monospace;color:rgba(255,255,255,0.3);padding:8px;background:rgba(0,0,0,0.3);border-radius:6px;line-height:1.5}
-/* ── HOW IT DIFFERS ── */
-.differ-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:48px}
-.differ-col{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:32px;backdrop-filter:blur(8px)}
-.differ-col-title{font-size:13px;font-weight:700;color:rgba(255,255,255,0.4);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:20px}
-.differ-row{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05)}
-.differ-row:last-child{border-bottom:none}
-.differ-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:5px}
-.differ-row p{font-size:13px;color:rgba(255,255,255,0.55);line-height:1.55}
-/* ── USE CASES ── */
-.cases-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:48px}
-.case-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:28px;backdrop-filter:blur(8px);transition:border-color .2s}
-.case-card:hover{border-color:rgba(255,255,255,0.14)}
-.case-icon{width:40px;height:40px;border-radius:9px;display:flex;align-items:center;justify-content:center;margin-bottom:16px}
-.case-card h4{font-size:15px;font-weight:700;color:#fff;margin-bottom:8px}
-.case-card p{font-size:13px;color:rgba(255,255,255,0.48);line-height:1.6}
-/* ── CTA SECTION ── */
-.cta-section{padding:100px 48px;text-align:center}
-.cta-inner{max-width:680px;margin:0 auto}
-.cta-inner .section-h2{margin-bottom:18px}
-.cta-inner .section-sub{margin:0 auto 40px;max-width:480px}
-.cta-actions{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
-/* ── FOOTER ── */
-footer{border-top:1px solid rgba(255,255,255,0.06);padding:32px 48px;display:flex;align-items:center;justify-content:space-between}
-.footer-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
-.footer-logo img{width:24px;height:24px;object-fit:contain}
-.footer-logo-name{font-size:13px;font-weight:700;color:#fff}
-.footer-copy{font-size:12px;color:rgba(255,255,255,0.25)}
-.footer-links{display:flex;gap:24px}
-.footer-links a{font-size:12px;color:rgba(255,255,255,0.35);text-decoration:none}
-.footer-links a:hover{color:rgba(255,255,255,0.65)}
-
-.vs-table{width:100%;border-collapse:collapse;margin-top:24px;font-size:13px;border:1px solid rgba(255,255,255,0.08);border-radius:12px;overflow:hidden}
-.vs-table th,.vs-table td{padding:13px 16px;text-align:left;border-bottom:1px solid rgba(255,255,255,0.06)}
-.vs-table th{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,0.4);background:rgba(255,255,255,0.03);font-weight:700}
-.vs-table td{color:rgba(255,255,255,0.65)}
-.vs-table td.yes{color:#48bb78;font-weight:700}.vs-table td.no{color:rgba(255,255,255,0.3)}.vs-table td.part{color:#f6ad55}
-.vs-table tr:last-child td{border-bottom:none}
-.vs-table .capas td{background:rgba(232,24,93,0.06);color:#fff;font-weight:600}.vs-table .capas td:first-child{color:#e8185d}
-.cascade{display:grid;grid-template-columns:1fr auto 1fr auto 1fr auto 1fr;align-items:center;margin-top:24px}
-.casc-step{background:rgba(14,14,24,0.7);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:16px;text-align:center}
-.casc-step.gate{border-color:rgba(232,24,93,0.4);background:rgba(232,24,93,0.06)}
-.casc-step.blocked{opacity:.45}
-.casc-num{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-bottom:6px}
-.casc-step.gate .casc-num{color:#e8185d}
-.casc-name{font-size:13px;font-weight:700;color:#fff;margin-bottom:5px}
-.casc-desc{font-size:11px;color:rgba(255,255,255,0.4);line-height:1.5}
-.casc-arrow{color:rgba(255,255,255,0.2);font-size:18px;text-align:center;padding:0 8px}
-.fam-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
-.fam-chip{font-size:12px;font-weight:600;color:rgba(255,255,255,0.62);border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.03);border-radius:999px;padding:7px 14px}
-.audit-json{background:rgba(10,10,16,0.9);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:20px;margin-top:24px;font-family:'SF Mono','Fira Code',monospace;font-size:12px;line-height:1.85;overflow-x:auto}
-.aj-k{color:rgba(255,255,255,0.4)}.aj-s{color:#48bb78}.aj-d{color:#e8185d;font-weight:700}.aj-b{color:#f6ad55}
-.home-disclaimers{max-width:820px;margin:0 auto;padding:8px 48px 40px;font-size:11.5px;color:rgba(255,255,255,0.3);line-height:1.7;list-style:none}
-.home-disclaimers li{margin:6px 0;padding-left:14px;position:relative}
-.home-disclaimers li::before{content:'\00b7';position:absolute;left:2px;color:rgba(232,24,93,0.6)}
-@media(max-width:900px){.cascade{grid-template-columns:1fr}.casc-arrow{transform:rotate(90deg);padding:4px 0}}
-
-/* ── RESPONSIVE (cazado con Playwright a 390px) ── */
-@media(max-width:760px){
-  nav{padding:0 16px;flex-wrap:wrap;height:auto;gap:8px;padding-top:10px;padding-bottom:10px}
-  .nav-logo{margin-right:0}
-  .nav-links{order:3;width:100%;overflow-x:auto;justify-content:flex-start}
-  .nav-sep{display:none}
-  .nav-cta{margin-left:auto}
-  .core-grid{grid-template-columns:1fr}
-  .hero{padding:48px 20px 40px}
-  .section{padding:40px 20px}
-  .hero-h1{font-size:clamp(30px,8vw,44px)}
-}
-</style>
+<link rel="stylesheet" href="kreniq-shell.css">
+<style>.kq-grad{font-style:normal;background:linear-gradient(135deg,#e8185d,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}</style>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"></head>
 <body>
 <!-- BACKGROUND (logo canónico flotante, idéntico a CAPAS) -->
@@ -175,44 +11,68 @@ footer{border-top:1px solid rgba(255,255,255,0.06);padding:32px 48px;display:fle
 <div class="bg-veil"></div>
 <div class="page">
 <!-- NAV (logo canónico mismo lugar) -->
-<nav><a class="nav-logo" href="krenniq.html"><img src="krenniq-logo.png" alt="Krenn-IQ"><div><div class="nav-logo-title">KRENN&middot;IQ</div><div class="nav-logo-sub">Inteligencia Cuántica</div></div></a>
+<nav><a class="nav-logo" href="krenniq.html"><img src="krenniq-logo.png" alt="Krenn-IQ"><div><div class="nav-logo-title">KRENN&middot;IQ</div><div class="nav-logo-sub" data-en="Quantum Intelligence">Inteligencia Cuántica</div></div></a>
 <div class="nav-links">
   <a href="krenniq.html" class="active"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Home</a>
-  <a href="https://capas.lemonground-e6ebae60.eastus.azurecontainerapps.io/"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>CAPAS</a>
-  <a href="https://atlas.lemonground-e6ebae60.eastus.azurecontainerapps.io/"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg>Atlas</a>
+  <a href="https://capas.krenniq.com/"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>CAPAS</a>
+  <a href="https://atlas.krenniq.com/"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg>Atlas</a>
 </div>
-<div class="nav-sep"></div><a class="nav-cta" href="https://atlas.lemonground-e6ebae60.eastus.azurecontainerapps.io/">Abrir herramienta</a></nav>
+<div class="nav-sep"></div>
+<button class="nav-lang" data-lang-btn onclick="KQLang.toggle()">EN</button>
+<a class="nav-cta" href="https://atlas.krenniq.com/" data-en="Open tool">Abrir herramienta</a></nav>
 
 <!-- HERO -->
 <section class="hero"><div class="hero-inner" style="grid-template-columns:1fr;max-width:900px;text-align:center">
   <div>
-    <div class="hero-eyebrow">Krenn&middot;IQ — Inteligencia Cuántica</div>
-    <h1 class="hero-h1">Dos herramientas.<br><em>Una disciplina:</em> decidir con número, no con humo.</h1>
-    <p class="hero-sub" style="margin-left:auto;margin-right:auto">Krenn&middot;IQ construye sistemas que <strong>cuantifican su propia ignorancia y la declaran</strong>. Veredictos deterministas, evidencia trazable, cero overclaim. Elige la herramienta:</p>
+    <div class="hero-eyebrow" data-en="Krenn&middot;IQ — Quantum Intelligence">Krenn&middot;IQ — Inteligencia Cuántica</div>
+    <h1 class="hero-h1" data-en="Two tools.<br><em>One discipline:</em> decide with numbers, not smoke.">Dos herramientas.<br><em>Una disciplina:</em> decidir con número, no con humo.</h1>
+    <p class="hero-sub" style="margin-left:auto;margin-right:auto" data-en="Krenn&middot;IQ builds systems that <strong>quantify their own ignorance and declare it</strong>. Deterministic verdicts, traceable evidence, zero overclaim. Pick a tool:">Krenn&middot;IQ construye sistemas que <strong>cuantifican su propia ignorancia y la declaran</strong>. Veredictos deterministas, evidencia trazable, cero overclaim. Elige la herramienta:</p>
   </div>
 </div></section>
 
 <!-- LAS DOS HERRAMIENTAS -->
 <section class="section" style="padding-top:0"><div class="section-inner">
   <div class="core-grid">
-    <a class="core-card" href="https://capas.lemonground-e6ebae60.eastus.azurecontainerapps.io/" style="text-decoration:none;display:block">
+    <a class="core-card" href="https://capas.krenniq.com/" style="text-decoration:none;display:block">
       <div class="core-card-icon" style="background:rgba(232,24,93,0.14)"><svg viewBox="0 0 24 24" fill="none" stroke="#e8185d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
       <h3>CAPAS — Claim Gate</h3>
-      <p>¿Tu evidencia realmente licencia el claim? Veredicto determinista ACCEPT / REWRITE / REJECT / HOLD con rastro re-derivable. Sin modelo de lenguaje en el veredicto. Fail-closed por construcción.</p>
-      <span class="core-card-tag" style="background:rgba(232,24,93,0.14);color:#e8185d">Probar un claim &rarr;</span>
+      <p data-en="Does your evidence actually license the claim? Deterministic ACCEPT / REWRITE / REJECT / HOLD verdict with a re-derivable trail. No language model in the verdict. Fail-closed by construction.">¿Tu evidencia realmente licencia el claim? Veredicto determinista ACCEPT / REWRITE / REJECT / HOLD con rastro re-derivable. Sin modelo de lenguaje en el veredicto. Fail-closed por construcción.</p>
+      <span class="core-card-tag" style="background:rgba(232,24,93,0.14);color:#e8185d" data-en="Test a claim &rarr;">Probar un claim &rarr;</span>
     </a>
-    <a class="core-card" href="https://atlas.lemonground-e6ebae60.eastus.azurecontainerapps.io/" style="text-decoration:none;display:block">
+    <a class="core-card" href="https://atlas.krenniq.com/" style="text-decoration:none;display:block">
       <div class="core-card-icon" style="background:rgba(79,94,247,0.14)"><svg viewBox="0 0 24 24" fill="none" stroke="#4f5ef7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l3 3M16 16l3 3M19 5l-3 3M8 16l-3 3"/></svg></div>
-      <h3>Atlas — Triage Cuántico</h3>
-      <p>¿Necesitas un QPU o lo simula un laptop? Triage pre-vuelo con métricas multi-método (magia, MPS, treewidth, Stim) y confianza calibrada. Y cuando certifica que es barato, te entrega el resultado.</p>
-      <span class="core-card-tag" style="background:rgba(79,94,247,0.14);color:#4f5ef7">Abrir Atlas &rarr;</span>
+      <h3 data-en="Atlas — Quantum Triage">Atlas — Triage Cuántico</h3>
+      <p data-en="Do you need a QPU or can a laptop simulate it? Pre-flight triage with multi-method metrics (magic, MPS, treewidth, Stim) and calibrated confidence. And when it certifies the case is cheap, it hands you the result.">¿Necesitas un QPU o lo simula un laptop? Triage pre-vuelo con métricas multi-método (magia, MPS, treewidth, Stim) y confianza calibrada. Y cuando certifica que es barato, te entrega el resultado.</p>
+      <span class="core-card-tag" style="background:rgba(79,94,247,0.14);color:#4f5ef7" data-en="Open Atlas &rarr;">Abrir Atlas &rarr;</span>
     </a>
+  </div>
+</div></section>
+
+<!-- EL NOMBRE (capa Karenin: se infiere Kundera sin nombrar 'el perro' en crudo) -->
+<section class="section" style="padding-top:24px"><div class="section-inner" style="max-width:760px">
+  <div class="section-label" data-en="The name">El nombre</div>
+  <h2 class="section-h2" style="font-size:clamp(24px,2.6vw,34px)" data-en="Fidelity without calculation, presence without ego, <em class='kq-grad'>loyalty to the real</em>.">Fidelidad sin c&aacute;lculo, presencia sin ego, <em class="kq-grad">lealtad a lo real</em>.</h2>
+  <p class="section-sub" style="max-width:680px;margin-bottom:22px;font-style:italic" data-en="Those who have read it will recognize it.">Quien lo ha le&iacute;do, lo reconoce.</p>
+  <p class="section-sub" style="max-width:680px;margin-bottom:26px" data-en="Quantum computing usually sells <strong style='color:rgba(255,255,255,0.66)'>supremacy</strong>. We inherit the opposite: intelligence that <strong style='color:#fff'>does not divorce itself from the real</strong>. That quantifies what it knows, declares what it does not, and never confuses narrative with evidence. That is the discipline; CAPAS and Atlas are its two forms.">
+    La computaci&oacute;n cu&aacute;ntica suele vender <strong style="color:rgba(255,255,255,0.66)">supremac&iacute;a</strong>. Nosotros heredamos lo contrario:
+    inteligencia que <strong style="color:#fff">no se divorcia de lo real</strong>. Que cuantifica lo que sabe, declara lo que no,
+    y nunca confunde la narrativa con la evidencia. Esa es la disciplina; CAPAS y Atlas son sus dos formas.
+  </p>
+  <div style="display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;font-size:13px;color:rgba(255,255,255,0.5);border-top:1px solid rgba(255,255,255,0.08);padding-top:20px">
+    <span style="color:rgba(255,255,255,0.78)" data-en="Presence">Presencia</span><span style="color:#e8185d">&harr;</span><span data-en="Analysis">An&aacute;lisis</span>
+    <span style="opacity:.3">&middot;</span>
+    <span style="color:rgba(255,255,255,0.78)" data-en="Loyalty">Lealtad</span><span style="color:#e8185d">&harr;</span><span data-en="Optimization">Optimizaci&oacute;n</span>
+    <span style="opacity:.3">&middot;</span>
+    <span style="color:rgba(255,255,255,0.78)" data-en="Integrity">Integridad</span><span style="color:#e8185d">&harr;</span><span data-en="Calculation">C&aacute;lculo</span>
+    <span style="flex-basis:100%;height:0"></span>
+    <span style="font-style:italic;color:rgba(255,255,255,0.4);margin-top:4px" data-en="Can there be intelligence without losing fidelity to the real? The name is the question; the product, the attempt at an answer.">&iquest;Puede haber inteligencia sin perder la fidelidad a lo real? El nombre es la pregunta; el producto, el intento de respuesta.</span>
   </div>
 </div></section>
 
 <!-- FOOTER -->
 <footer><a class="footer-logo" href="krenniq.html"><img src="krenniq-logo.png" alt="Krenn-IQ"><span class="footer-logo-name">Krenn&middot;IQ</span></a>
-<span class="footer-copy">Inteligencia Cuántica &middot; veredictos con evidencia, no humo</span>
-<div class="footer-links"><a href="https://capas.lemonground-e6ebae60.eastus.azurecontainerapps.io/">CAPAS</a><a href="https://atlas.lemonground-e6ebae60.eastus.azurecontainerapps.io/">Atlas</a></div></footer>
+<span class="footer-copy" data-en="Quantum Intelligence &middot; verdicts from evidence, not smoke">Inteligencia Cuántica &middot; veredictos con evidencia, no humo</span>
+<div class="footer-links"><a href="https://capas.krenniq.com/">CAPAS</a><a href="https://atlas.krenniq.com/">Atlas</a></div></footer>
 </div>
+<script src="lang.js"></script>
 </body></html>

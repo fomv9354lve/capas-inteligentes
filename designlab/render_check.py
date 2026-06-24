@@ -51,7 +51,7 @@ PAGES = [
 VIEWPORTS = [{"name": "desktop", "width": 1440, "height": 900},
              {"name": "mobile", "width": 390, "height": 844}]
 
-NAV_ITEMS = ["Home", "Gate App", "Methodology", "Pilot", "Audit", "Benchmark", "Security"]
+NAV_ITEMS = ["Home", "Intro+", "Gate App", "Methodology", "Pilot", "Audit", "Benchmark", "Security", "Atlas"]
 COLUMN_TOL = 8     # px tolerance for "same column width / gutter across pages"
 A11Y_FAIL_IMPACTS = {"critical"}  # hard-fail only on critical; serious/moderate are reported as warnings
 
