@@ -225,6 +225,23 @@ footer a{color:rgba(255,255,255,.35);text-decoration:none;font-size:12px}
       <p style="font-size:12px;color:rgba(255,255,255,.45);line-height:1.6;margin-top:10px">+ blockers, reviewer action, audit hash, evidence spans</p>
     </div>
   </div>
+  <div style="margin-top:40px">
+    <div class="label" style="margin-bottom:14px">Worked example &mdash; editorial review (<code style="color:rgba(255,255,255,.7);font-size:12px">systematic_review_claim</code>)</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+      <div class="card" style="padding:24px;border-color:rgba(72,187,120,.25)">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px"><span class="vc vc-accept">ACCEPT</span><span style="font-size:12px;color:rgba(255,255,255,.45)">all four obligations met</span></div>
+        <p style="font-size:13px;color:rgba(255,255,255,.55);line-height:1.7">protocol_registered&nbsp;&check; &middot; inclusion_criteria_declared&nbsp;&check; &middot; risk_of_bias_assessed&nbsp;&check; &middot; effect_consistency&nbsp;&check;</p>
+        <p style="font-size:13px;color:rgba(255,255,255,.85);line-height:1.6;margin-top:10px">The claim is licensed as written.</p>
+      </div>
+      <div class="card" style="padding:24px;border-color:rgba(0,200,200,.25)">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px"><span class="vc vc-rewrite">REWRITE</span><span style="font-size:12px;color:rgba(255,255,255,.45)">flip two booleans</span></div>
+        <p style="font-size:13px;color:rgba(255,255,255,.55);line-height:1.7">protocol&nbsp;&check; &middot; inclusion&nbsp;&check; &middot; risk_of_bias_assessed&nbsp;&cross; &middot; effect_consistency&nbsp;&cross;</p>
+        <p style="font-size:13px;color:rgba(255,255,255,.85);line-height:1.6;margin-top:10px">CAPAS proposes the narrowest licensed wording, automatically:</p>
+        <p style="font-size:13px;color:#00c8c8;line-height:1.55;margin-top:8px;border-left:2px solid rgba(0,200,200,.4);padding-left:10px">&ldquo;systematic review process is documented; strength or consistency of effect is not fully licensed.&rdquo;</p>
+      </div>
+    </div>
+    <p class="sub" style="font-size:13px;color:rgba(255,255,255,.5);margin-top:14px;max-width:none">Two booleans changed the verdict &mdash; <strong>no language model in the decision</strong>, a different deterministic <code style="color:rgba(255,255,255,.7);font-size:12px">audit_hash</code> for each input, and the rewrite is the <em>tightest claim the declared evidence licenses</em>, not an opinion. Re-derive it yourself: <code style="color:rgba(255,255,255,.7);font-size:12px">capas_sdk.gate("systematic_review_claim", evidence, claim_text)</code>.</p>
+  </div>
 </div>
 </section>
 
