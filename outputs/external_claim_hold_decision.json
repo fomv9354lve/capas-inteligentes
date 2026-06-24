@@ -1,9 +1,121 @@
 {
+  "admissibility_certificate": {
+    "calculus_version": "capas-admissibility-calculus-v1",
+    "claim_contract": {
+      "absolute_accept_only": false,
+      "anchor_license": null,
+      "anchor_mode": null,
+      "claim_type": "physical_accuracy",
+      "description": "Direct physical or chemical-accuracy claims.",
+      "optional_fields": [
+        "physical_evidence_level",
+        "reference_truth"
+      ],
+      "registered": true,
+      "required_fields": [
+        "within_chemical_accuracy"
+      ]
+    },
+    "dialectic": {
+      "burden_of_proof": [
+        "evidence: provide within_chemical_accuracy"
+      ],
+      "licensed_thesis": "The simulation matches experiment.",
+      "optional_supports": [
+        "evidence.physical_evidence_level",
+        "evidence.reference_truth"
+      ],
+      "rebuttals": [],
+      "supports": [],
+      "thesis": "The simulation matches experiment.",
+      "undercutters": [
+        "missing within_chemical_accuracy"
+      ],
+      "warrant": "missing required evidence fields: ['within_chemical_accuracy']"
+    },
+    "lattice": {
+      "axes": {
+        "boundary": {
+          "level": "none",
+          "score": 0
+        },
+        "contract": {
+          "level": "schema_clean",
+          "score": 2
+        },
+        "defeaters": {
+          "level": "burden_gap",
+          "score": 2
+        },
+        "evidence": {
+          "level": "declared",
+          "score": 1
+        },
+        "provenance": {
+          "level": "none",
+          "score": 0
+        }
+      },
+      "controlled_reuse_meet": 0,
+      "non_claim": "This lattice orders admissibility of supplied evidence, not scientific truth.",
+      "reuse_boundary": "none",
+      "training_reuse_meet": 0
+    },
+    "metaphor": "compiler_certificate",
+    "next_action": {
+      "kind": "supply_evidence",
+      "label": "Supply the missing evidence fields, then run the gate again."
+    },
+    "proof_obligations": [
+      "evidence: provide within_chemical_accuracy"
+    ]
+  },
+  "audit_hash": "sha256:585964ad78a24d4f060adedb6b9081c0bbab0213523e1eded2e61bb308b97126",
+  "fine_tune_blockers": [
+    "claim verdict is not ACCEPT",
+    "schema or required-field blockers remain",
+    "source-backed evidence is not attached",
+    "external review is not attached",
+    "claim.text semantic alignment is not externally certified",
+    "witness independence is not externally certified",
+    "provenance.sources or provenance.source_urls is empty",
+    "external review hash is missing or does not match review_packet",
+    "source URLs are not recoverable with matching hashes",
+    "witness_id is not resolvable in the witness registry",
+    "RO-Crate provenance packet is missing, invalid, or hash-mismatched",
+    "reviewer identity or attestation is not verifiable",
+    "provenance.review_id is missing",
+    "provenance.witness_id is missing"
+  ],
+  "fine_tune_criteria": {
+    "external_review": false,
+    "provenance_sources": false,
+    "review_hash_verified": false,
+    "review_id_present": false,
+    "reviewer_attestation_verified": false,
+    "ro_crate_validated": false,
+    "schema_clean": false,
+    "semantic_alignment": false,
+    "source_backed_evidence": false,
+    "source_urls_recoverable_hashable": false,
+    "verdict_accept": false,
+    "witness_id_present": false,
+    "witness_independence": false,
+    "witness_registry_resolved": false
+  },
   "fine_tune_ready": false,
   "input_claim": {
     "id": "external_experiment_hold",
     "text": "The simulation matches experiment.",
     "type": "physical_accuracy"
+  },
+  "invariant_audit": {
+    "applicable": false,
+    "laws_checked": [],
+    "results": {},
+    "summary": "no domain invariant applies to this evidence",
+    "verdict": "N/A",
+    "violations": []
   },
   "licensed_claim": "The simulation matches experiment.",
   "missing_fields": [
@@ -16,5 +128,6 @@
   ],
   "rewrite": null,
   "schema_errors": [],
+  "schema_version": "capas-claim-payload-v3",
   "verdict": "HOLD"
 }

@@ -3,7 +3,18 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Krenn·IQ — Inteligencia Cuántica</title>
 <link rel="stylesheet" href="kreniq-shell.css">
-<style>.kq-grad{font-style:normal;background:linear-gradient(135deg,#e8185d,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}</style>
+<style>.kq-grad{font-style:normal;background:linear-gradient(135deg,#e8185d,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.tier-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.tier{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:26px;display:flex;flex-direction:column;backdrop-filter:blur(8px)}
+.tier.feat{border-color:rgba(232,24,93,0.4);box-shadow:0 0 0 1px rgba(232,24,93,0.18),0 8px 40px rgba(232,24,93,0.10)}
+.tier-badge{align-self:flex-start;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:5px;margin-bottom:14px}
+.tier h3{font-size:18px;font-weight:800;color:#fff;margin-bottom:6px;letter-spacing:-.01em}
+.tier-price{font-size:13px;color:rgba(255,255,255,0.45);margin-bottom:16px}
+.tier ul{list-style:none;margin:0 0 22px;padding:0;flex:1}
+.tier li{font-size:13.5px;color:rgba(255,255,255,0.62);line-height:1.5;padding:6px 0 6px 20px;position:relative}
+.tier li::before{content:"›";position:absolute;left:2px;color:#e8185d;font-weight:700}
+.tier-cta{display:inline-flex;align-items:center;justify-content:center;gap:6px;font-size:13.5px;font-weight:700;padding:11px 18px;border-radius:8px;text-decoration:none;transition:opacity .15s,border-color .15s}
+@media(max-width:760px){.tier-grid{grid-template-columns:1fr}}</style>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"></head>
 <body>
 <!-- BACKGROUND (logo canónico flotante, idéntico a CAPAS) -->
@@ -48,6 +59,79 @@
   </div>
 </div></section>
 
+<!-- ACCESO / 3 MODOS — open-core local-first: libre para todos, retribución justa -->
+<section class="section" style="padding-top:8px"><div class="section-inner">
+  <div class="section-label" data-en="Access">Acceso</div>
+  <h2 class="section-h2" style="margin-bottom:14px" data-en="For everyone. A fair return.">Para todos. Retribuci&oacute;n justa.</h2>
+  <p class="section-sub" style="margin-bottom:40px" data-en="The engine is free and runs on your own machine, no limits. Whoever can, contributes so it keeps growing &mdash; access for all, organic growth, no lock-in.">El motor es libre y corre en tu propia m&aacute;quina, sin l&iacute;mites. Quien puede, contribuye para que siga creciendo &mdash; acceso para todos, crecimiento org&aacute;nico, sin lock-in.</p>
+  <div class="tier-grid">
+
+    <div class="tier">
+      <span class="tier-badge" style="background:rgba(72,187,120,0.16);color:#48bb78" data-en="Free forever">Gratis para siempre</span>
+      <h3 data-en="Free &middot; Local">Libre &middot; Local</h3>
+      <div class="tier-price" data-en="Open source &middot; Apache 2.0">C&oacute;digo abierto &middot; Apache 2.0</div>
+      <ul>
+        <li data-en="Full engine, downloadable &mdash; runs on your hardware with no limits">Motor completo, descargable &mdash; corre en tu hardware sin l&iacute;mites</li>
+        <li data-en="Local LLM (8B) interpretation &mdash; works offline, zero token cost">Interpretaci&oacute;n con LLM local (8B) &mdash; offline, cero costo de tokens</li>
+        <li data-en="Free hosted web with a daily quota &mdash; nothing to install">Web hosted gratis con cuota diaria &mdash; sin instalar nada</li>
+      </ul>
+      <a class="tier-cta" href="https://atlas.krenniq.com/" style="border:1px solid rgba(255,255,255,0.18);color:#fff" data-en="Open Atlas">Abrir Atlas</a>
+    </div>
+
+    <div class="tier feat">
+      <span class="tier-badge" style="background:rgba(232,24,93,0.18);color:#e8185d" data-en="Support the project">Apoya el proyecto</span>
+      <h3 data-en="Pro &middot; Sponsor">Pro &middot; Sponsor</h3>
+      <div class="tier-price" data-en="Voluntary &mdash; keeps it alive">Voluntario &mdash; lo mantiene vivo</div>
+      <ul>
+        <li data-en="More quota on the hosted web">M&aacute;s cuota en la web hosted</li>
+        <li data-en="Updated real-hardware calibration data">Datos de calibraci&oacute;n de hardware real, actualizados</li>
+        <li data-en="Claude-powered natural-language interpretation">Interpretaci&oacute;n en lenguaje natural con Claude</li>
+        <li data-en="Priority support">Soporte prioritario</li>
+      </ul>
+      <a class="tier-cta" href="https://github.com/sponsors" style="background:linear-gradient(135deg,#e8185d,#c4125a);color:#fff;box-shadow:0 2px 16px rgba(232,24,93,0.32)" data-en="Become a sponsor">Hazte sponsor</a>
+    </div>
+
+    <div class="tier">
+      <span class="tier-badge" style="background:rgba(0,229,255,0.14);color:#00e5ff" data-en="For teams">Para equipos</span>
+      <h3 data-en="Enterprise">Enterprise</h3>
+      <div class="tier-price" data-en="Institutional &mdash; on request">Institucional &mdash; a medida</div>
+      <ul>
+        <li data-en="On-premise deployment with SLA">Despliegue on-premise con SLA</li>
+        <li data-en="CI/CD pipeline integration (REST API)">Integraci&oacute;n en pipelines CI/CD (API REST)</li>
+        <li data-en="Full calibration corpus &amp; measured-hardware data">Corpus de calibraci&oacute;n completo y datos medidos</li>
+        <li data-en="Dedicated support">Soporte dedicado</li>
+      </ul>
+      <a class="tier-cta" href="mailto:fomv9354@gmail.com?subject=KRENIQ%20Enterprise" style="border:1px solid rgba(255,255,255,0.18);color:#fff" data-en="Contact us">Contáctanos</a>
+    </div>
+
+  </div>
+</div></section>
+
+<!-- SECURITY & RELIABILITY — los 3 bullets del audit adversarial (construye confianza con CTOs) -->
+<section class="section" style="padding-top:8px"><div class="section-inner">
+  <div class="section-label" data-en="Security &amp; Reliability">Seguridad y fiabilidad</div>
+  <h2 class="section-h2" style="margin-bottom:14px" data-en="Built to be trusted.">Hecho para confiar.</h2>
+  <p class="section-sub" style="margin-bottom:40px" data-en="The classifier was audited adversarially and the server was hardened against pathological inputs. Honest by design.">El clasificador fue auditado adversarialmente y el servidor endurecido contra entradas patol&oacute;gicas. Honesto por dise&ntilde;o.</p>
+  <div class="tier-grid">
+    <div class="tier">
+      <span class="tier-badge" style="background:rgba(72,187,120,0.16);color:#48bb78" data-en="Adversarial audit">Auditor&iacute;a adversarial</span>
+      <h3 data-en="0 false-security">0 falsas-seguridades</h3>
+      <ul><li data-en="Across multiple attack vectors &mdash; irrational rotations, T-identity camouflage, maximal entanglement, mid-circuit measurements, permutation camouflage &mdash; the classifier never routed an expensive circuit as cheap.">A trav&eacute;s de m&uacute;ltiples vectores &mdash; rotaciones irracionales, camuflaje de identidades T, entrelazamiento m&aacute;ximo, mediciones intermedias, perm-camouflage &mdash; el clasificador nunca rute&oacute; barato algo caro.</li></ul>
+    </div>
+    <div class="tier">
+      <span class="tier-badge" style="background:rgba(0,229,255,0.14);color:#00e5ff" data-en="DoS-protected">Protegido contra DoS</span>
+      <h3 data-en="No server hang">Sin cuelgues</h3>
+      <ul><li data-en="A topology-aware guard (2q-reach, sharper than gate-count) keeps a pathological circuit from blocking the server &mdash; it degrades to an honest &lsquo;compute-bound &rarr; HPC&rsquo; verdict in seconds.">Un guard consciente de la topolog&iacute;a (alcance-2q, m&aacute;s fino que el conteo de gates) impide que un circuito patol&oacute;gico bloquee el servidor &mdash; degrada a un veredicto honesto &lsquo;compute-bound &rarr; HPC&rsquo; en segundos.</li></ul>
+    </div>
+    <div class="tier">
+      <span class="tier-badge" style="background:rgba(232,24,93,0.16);color:#e8185d" data-en="Calibrated confidence">Confianza calibrada</span>
+      <h3 data-en="It admits its limits">Admite sus l&iacute;mites</h3>
+      <ul><li data-en="The engine flags when a verdict sits in its borderline calibration zone instead of feigning certainty &mdash; and a permanent adversarial regression test guards every future change.">El motor avisa cu&aacute;ndo un veredicto cae en su zona l&iacute;mite en vez de fingir certeza &mdash; y un test de regresi&oacute;n adversarial permanente protege cada cambio futuro.</li></ul>
+    </div>
+  </div>
+  <p style="margin-top:26px;text-align:center"><a href="evidence.html" style="color:#00e5ff;font-size:14px;font-weight:600;text-decoration:none" data-en="See the full evidence &amp; audit trail &rarr;">Ver la evidencia y el audit trail completos &rarr;</a></p>
+</div></section>
+
 <!-- EL NOMBRE / ABOUT — contexto solo en código, NO expuesto en el landing:
      Krenn·IQ viene de una IDEA, no de una persona: fidelidad a lo real.
      Raíz literaria (material de about/disclaimer, no del landing): Karenin, en "La insoportable
@@ -76,7 +160,7 @@
 <!-- FOOTER -->
 <footer><a class="footer-logo" href="krenniq.html"><img src="krenniq-logo.png" alt="Krenn-IQ"><span class="footer-logo-name">Krenn&middot;IQ</span></a>
 <div class="footer-copy"><span data-en="Quantum Intelligence &middot; verdicts from evidence, not noise">Inteligencia Cuántica &middot; veredictos con evidencia, no humo</span><br><span style="font-size:11px;opacity:.65">© 2026 Fco. Osvaldo Morales Vilchis &middot; <a href="https://www.apache.org/licenses/LICENSE-2.0" style="color:inherit;text-decoration:underline">Apache&nbsp;2.0</a></span></div>
-<div class="footer-links"><a href="https://capas.krenniq.com/">CAPAS</a><a href="https://atlas.krenniq.com/">Atlas</a></div></footer>
+<div class="footer-links"><a href="https://capas.krenniq.com/">CAPAS</a><a href="https://atlas.krenniq.com/">Atlas</a><a href="evidence.html">Evidence</a><a href="legal.html" data-en="Terms &amp; Privacy">Términos y Privacidad</a></div></footer>
 </div>
 <script src="lang.js"></script>
 </body></html>

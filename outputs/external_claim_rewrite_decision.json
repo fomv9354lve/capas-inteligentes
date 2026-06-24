@@ -1,9 +1,134 @@
 {
+  "admissibility_certificate": {
+    "calculus_version": "capas-admissibility-calculus-v1",
+    "claim_contract": {
+      "absolute_accept_only": false,
+      "anchor_license": "universal-anchor claim boundary",
+      "anchor_mode": "absolute_anchor",
+      "claim_type": "universal_anchor_claim",
+      "description": "Claims that require an explicit anchor-mode evidence contract.",
+      "optional_fields": [
+        "benchmark_metric",
+        "benchmark_name",
+        "benchmark_pass",
+        "empirical_anchor_pass",
+        "empirical_reference_present",
+        "empirical_tolerance",
+        "physical_evidence_level",
+        "relative_anchor_comparison_pass",
+        "relative_anchor_reference",
+        "verification_independence"
+      ],
+      "registered": true,
+      "required_fields": [
+        "anchor_mode",
+        "local_property_tests_pass",
+        "universal_anchor_pass"
+      ]
+    },
+    "dialectic": {
+      "burden_of_proof": [
+        "boundary: edit claim.text to the licensed_claim and resubmit before ACCEPT"
+      ],
+      "licensed_thesis": "local plausibility only; universal physical correctness is not licensed",
+      "optional_supports": [
+        "evidence.physical_evidence_level",
+        "evidence.verification_independence"
+      ],
+      "rebuttals": [
+        "local checks pass, but the universal anchor fails"
+      ],
+      "supports": [
+        "evidence.anchor_mode",
+        "evidence.local_property_tests_pass",
+        "evidence.universal_anchor_pass"
+      ],
+      "thesis": "Local monotonicity proves the generated scaling result is physically correct.",
+      "undercutters": [],
+      "warrant": "local checks pass, but the universal anchor fails"
+    },
+    "lattice": {
+      "axes": {
+        "boundary": {
+          "level": "bounded_rewrite",
+          "score": 3
+        },
+        "contract": {
+          "level": "contract_complete",
+          "score": 3
+        },
+        "defeaters": {
+          "level": "bounded_defeater",
+          "score": 3
+        },
+        "evidence": {
+          "level": "supports_bounded_claim",
+          "score": 3
+        },
+        "provenance": {
+          "level": "none",
+          "score": 0
+        }
+      },
+      "controlled_reuse_meet": 3,
+      "non_claim": "This lattice orders admissibility of supplied evidence, not scientific truth.",
+      "reuse_boundary": "bounded_rewrite",
+      "training_reuse_meet": 0
+    },
+    "metaphor": "compiler_certificate",
+    "next_action": {
+      "kind": "edit_and_resubmit",
+      "label": "Replace claim.text with the licensed weaker claim and resubmit."
+    },
+    "proof_obligations": [
+      "boundary: edit claim.text to the licensed_claim and resubmit before ACCEPT"
+    ]
+  },
+  "audit_hash": "sha256:a67d0e913561024087a5459f5b301545c8b4c28f517fd4b9de1faef61bc5a398",
+  "fine_tune_blockers": [
+    "claim verdict is not ACCEPT",
+    "source-backed evidence is not attached",
+    "external review is not attached",
+    "claim.text semantic alignment is not externally certified",
+    "witness independence is not externally certified",
+    "provenance.sources or provenance.source_urls is empty",
+    "external review hash is missing or does not match review_packet",
+    "source URLs are not recoverable with matching hashes",
+    "witness_id is not resolvable in the witness registry",
+    "RO-Crate provenance packet is missing, invalid, or hash-mismatched",
+    "reviewer identity or attestation is not verifiable",
+    "provenance.review_id is missing",
+    "provenance.witness_id is missing"
+  ],
+  "fine_tune_criteria": {
+    "external_review": false,
+    "provenance_sources": false,
+    "review_hash_verified": false,
+    "review_id_present": false,
+    "reviewer_attestation_verified": false,
+    "ro_crate_validated": false,
+    "schema_clean": true,
+    "semantic_alignment": false,
+    "source_backed_evidence": false,
+    "source_urls_recoverable_hashable": false,
+    "verdict_accept": false,
+    "witness_id_present": false,
+    "witness_independence": false,
+    "witness_registry_resolved": false
+  },
   "fine_tune_ready": false,
   "input_claim": {
     "id": "external_scaling_anchor_rewrite",
     "text": "Local monotonicity proves the generated scaling result is physically correct.",
     "type": "universal_anchor_claim"
+  },
+  "invariant_audit": {
+    "applicable": false,
+    "laws_checked": [],
+    "results": {},
+    "summary": "no domain invariant applies to this evidence",
+    "verdict": "N/A",
+    "violations": []
   },
   "licensed_claim": "local plausibility only; universal physical correctness is not licensed",
   "missing_fields": [],
@@ -16,5 +141,6 @@
   ],
   "rewrite": "local plausibility only; universal physical correctness is not licensed",
   "schema_errors": [],
+  "schema_version": "capas-claim-payload-v3",
   "verdict": "REWRITE"
 }

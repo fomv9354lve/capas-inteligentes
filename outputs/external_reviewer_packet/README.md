@@ -24,6 +24,35 @@ CAPAS is for people auditing AI-generated scientific-computation outputs:
 CAPAS is not for users who only need a faster simulator or generic workflow
 lineage.
 
+## Hybrid Pipeline Role
+
+CAPAS is the deterministic middle of a hybrid AI-for-science verification
+pipeline:
+
+```text
+LLM / extractor / scientific verifier upstream
+        -> claim + evidence JSON
+        -> CAPAS deterministic claim gate
+        -> ACCEPT / REWRITE / REJECT / HOLD
+```
+
+CAPAS now includes an explicit upstream MVP for retrieval/parsing/alignment, but
+the final decision remains deterministic. Local corpus retrieval, web retrieval
+with `--allow-web`, and PDF parsing can prepare candidate evidence; they do not
+silently invent missing evidence or turn CAPAS into a broad scientific oracle.
+
+The standalone direction has started with a local upstream MVP:
+
+```text
+local text / solver log / code excerpt
+        -> explicit evidence extraction
+        -> deterministic claim-text alignment
+        -> CAPAS claim gate
+```
+
+It is intentionally explicit-only and deterministic. See
+`docs/STANDALONE_PRODUCT_ROADMAP.md`.
+
 ## External Review Packet
 
 For reviewers and potential users:
@@ -31,8 +60,14 @@ For reviewers and potential users:
 - Technical note: `docs/CAPAS_TECHNICAL_NOTE.md`
 - Request for feedback: `docs/REQUEST_FOR_FEEDBACK.md`
 - QMB100 / PhysVEC one-pager: `docs/CAPAS_ONE_PAGER_QMB100.md`
+- Global SotA / market audit: `docs/GLOBAL_SOTA_MARKET_AUDIT.md`
+- Hybrid pipeline positioning: `docs/HYBRID_PIPELINE_POSITIONING.md`
+- Input hardening notes: `docs/INPUT_HARDENING.md`
+- Product scope and debt status: `docs/PRODUCT_SCOPE_AND_DEBTS.md`
+- Public demo: `https://fomv9354lve.github.io/capas-inteligentes/`
 - Current release: `https://github.com/fomv9354lve/capas-inteligentes/releases/tag/v0.1.1`
 - Public feedback issue: `https://github.com/fomv9354lve/capas-inteligentes/issues/1`
+- License: proprietary research prototype; see `LICENSE`.
 
 The current validation question is not "is CAPAS broadly useful?" It is narrower:
 do the explicit evidence fields help audit or exchange one scientific-agent
@@ -43,6 +78,9 @@ computation result, or are they already covered by existing artifacts?
 ```bash
 python -m pip install -e .
 capas decide --input examples/external_claim_rewrite.json
+capas batch --input examples/external_claim_batch.json --json
+capas provenance-check --input examples/external_claim_fine_tune_ready.json --json
+capas pipeline --input examples/standalone_pipeline_semantic_hold.json
 capas inspect trace_039
 capas validate
 ```
@@ -50,6 +88,9 @@ capas validate
 Expected behavior:
 
 - `decide` returns `REWRITE` when local checks pass but a universal anchor fails.
+- `batch` applies the same deterministic gate to multiple claim/evidence objects.
+- `pipeline` can block a numeric `ACCEPT` when `claim.text` overstates the scope
+  of the evidence.
 - `inspect trace_039` shows a motor-backed claim-transition trace.
 - `validate` runs the product gates and profile/RO-Crate checks.
 
@@ -90,6 +131,58 @@ Run the core product validators:
 capas validate
 ```
 
+Run the local integration API:
+
+```bash
+CAPAS_API_TOKEN=change-me CAPAS_AUDIT_DIR=outputs/api-audit \
+  capas serve --host 127.0.0.1 --port 8765
+curl -H "Authorization: Bearer change-me" http://127.0.0.1:8765/health
+```
+
+The API is local and deterministic. It exposes `GET /health`,
+`GET /decisions`, `POST /decide`, `POST /batch`, and
+`POST /provenance-check`. `CAPAS_API_TOKEN` enables bearer-token auth;
+`CAPAS_AUDIT_DIR` writes workspace-scoped JSONL decision logs keyed by
+`X-CAPAS-Workspace`. It is not a hosted SaaS service.
+
+The canonical payload schema is published in the static docs tree:
+
+```text
+https://fomv9354lve.github.io/capas-inteligentes/schema/v3/capas_claim_payload.schema.json
+```
+
+Enterprise integration notes live in:
+
+- `docs/ENTERPRISE_INTEGRATION_PACK.md`
+- `docs/PROVENANCE_REGISTRY_OPERATIONS.md`
+- `docs/SECURITY_COMPLIANCE_APPENDIX.md`
+- `docs/PILOT_ROI_BUSINESS_CASE.md`
+- `docs/PAPER_INGESTION_CONNECTORS.md`
+- `docs/UPSTREAM_GITHUB_ACTIONS_POLICY.md`
+- `docs/DAILY_SOTA_UPDATE.md`
+
+Run CAPAS in GitHub Actions:
+
+```yaml
+jobs:
+  claim-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - uses: ./.github/actions/capas-claim-gate
+        with:
+          mode: batch
+          input: examples/external_claim_batch.json
+          output: outputs/capas-action-report.json
+```
+
+The manual workflow `.github/workflows/claim-gate.yml` runs a batch smoke check
+through `workflow_dispatch`. Other workflows can reuse the composite action
+directly with `mode: decide`, `mode: batch`, or `mode: pipeline`.
+
 Inspect a trace:
 
 ```bash
@@ -106,6 +199,38 @@ capas decide --input examples/external_claim_rewrite.json
 capas decide --input examples/external_claim_hold.json
 ```
 
+Run the standalone upstream MVP:
+
+```bash
+capas retrieve --input examples/standalone_pipeline_multisource.json
+capas retrieve --input examples/standalone_pipeline_web_source.json --allow-web
+capas extract --input examples/standalone_pipeline_accept.json
+capas extract --input examples/standalone_pipeline_pdf_source.json
+capas align --input examples/standalone_pipeline_semantic_hold.json
+capas reason --input examples/standalone_pipeline_semantic_hold.json
+capas pipeline --input examples/standalone_pipeline_semantic_hold.json
+python3 benchmarks/verify_standalone_pipeline.py
+```
+
+This is not broad scientific reasoning. It is local explicit parsing plus a
+deterministic semantic-scope guard before the CAPAS gate.
+
+`extract` also returns `evidence_spans` with `source_id`, line number, snippet,
+and parser for each extracted field, so a reviewer can audit where the evidence
+came from.
+
+Local corpus retrieval accepts JSON, JSONL, text, Markdown, or a directory of
+those files and returns auditable snippets matched to claim terms and required
+evidence fields. Web retrieval is opt-in with `--allow-web`. Local PDF parsing
+is supported when the optional standalone dependency is installed:
+
+```bash
+python -m pip install -e ".[standalone]"
+```
+
+If web permission or PDF parser support is missing, CAPAS records that as an
+extraction note instead of silently inventing evidence.
+
 The published MVP input contract is
 `docs/schema/capas_claim_payload.schema.json`. `check-input` validates the
 payload shape; `decide` then checks whether the supplied evidence licenses the
@@ -118,8 +243,14 @@ capas ui
 python3 benchmarks/verify_claim_gate_ui.py
 ```
 
-The UI exposes ACCEPT, REWRITE, HOLD, and INVALID samples. Structurally invalid
-payloads are shown as `HOLD` with `schema_errors`, matching `capas decide`.
+The UI exposes ACCEPT, REWRITE, REJECT, HOLD, and INVALID samples.
+Structurally invalid payloads are shown as `HOLD` with `schema_errors`,
+matching `capas decide`. It also supports batch evaluation for JSON arrays or
+objects with `items` / `claims`, displays `schema v3` for audit trails, and
+includes a keyboard help modal with the main shortcuts and pipeline scope.
+
+Schema v3 supports 11 deterministic claim types, including causal mechanism,
+systematic review, evidence conflict, and multimodal evidence gates.
 
 Prepare a non-mutating GitHub release plan:
 
@@ -249,6 +380,8 @@ See:
 - `docs/PROJECT_DASHBOARD.md`
 - `docs/REPRODUCIBILITY.md`
 - `docs/SOTA_POSITIONING.md`
+- `docs/SOTA_DAILY_WATCH.md`
+- `docs/DAILY_SOTA_UPDATE.md`
 - `docs/WORKFLOW_RUN_RO_CRATE_ALIGNMENT.md`
 - `docs/profile/CAPAS_PHYSICAL_EVIDENCE_PROFILE.md`
 - `docs/FORMAL_BOUND_AXIS.md`
