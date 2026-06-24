@@ -127,17 +127,20 @@ def deploy() -> bool:
 
 
 def _rebind_krenniq() -> None:
-    # CRITICAL (see CLAUDE.md §2): every capas image update breaks krenniq.com's TLS SNI binding at the
-    # edge (curl -> no peer certificate), so the umbrella domain goes DOWN after a deploy. Re-bind it
-    # every time — idempotent. The edge then takes ~2–5 min to propagate.
-    print("=== RE-BIND krenniq.com TLS (always, post-deploy — or the umbrella domain dies) ===")
-    b = subprocess.run(["az", "containerapp", "hostname", "bind", "--hostname", "krenniq.com",
-                        "-n", APP, "-g", RG, "--environment", "capas-env",
-                        "--certificate", "mc-capas-env-krenniq-com-3031"],
-                       cwd=str(ROOT), capture_output=True, text=True)
-    out = b.stdout + b.stderr
-    print("  re-bind:", "ok (SniEnabled) — allow ~2–5 min for the edge to serve HTTPS 200"
-          if "SniEnabled" in out else f"CHECK MANUALLY: {out.strip()[-200:]}")
+    # CRITICAL (see CLAUDE.md §2): every capas image update breaks the TLS SNI bindings of the custom
+    # hostnames on this app at the edge (curl -> no peer certificate), so they go DOWN after a deploy.
+    # Re-bind BOTH the apex (krenniq.com, the umbrella landing) and capas.krenniq.com (the tool) every
+    # time — idempotent. The edge then takes ~2–5 min to propagate. (atlas.krenniq.com is on the atlas
+    # app and is re-bound by Atlas's own deploy.)
+    print("=== RE-BIND custom hostnames TLS (always, post-deploy — or the domains die) ===")
+    for host, cert in (("krenniq.com", "mc-capas-env-krenniq-com-3031"),
+                       ("capas.krenniq.com", "mc-capas-env-capas-krenniq-co-5290")):
+        b = subprocess.run(["az", "containerapp", "hostname", "bind", "--hostname", host,
+                            "-n", APP, "-g", RG, "--environment", "capas-env", "--certificate", cert],
+                           cwd=str(ROOT), capture_output=True, text=True)
+        out = b.stdout + b.stderr
+        print(f"  {host}:", "ok (SniEnabled)" if "SniEnabled" in out else f"CHECK MANUALLY: {out.strip()[-160:]}")
+    print("  (allow ~2–5 min for the edge to serve HTTPS 200 on both)")
 
 
 def poll_until_live(timeout_s: int = 420) -> bool:
