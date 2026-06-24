@@ -49,9 +49,11 @@ class H(BaseHTTPRequestHandler):
         import hmac
         return hmac.compare_digest(token or "", _API_KEY)
 
-    def _json(self, obj, code=200):
+    def _json(self, obj, code=200, surface=None):
         data = json.dumps(obj).encode()
         self.send_response(code); self.send_header("Content-Type", "application/json")
+        if surface:  # which API surface answered (gate=verdict, certificate=strict signed) — discoverability
+            self.send_header("X-CAPAS-Surface", surface)
         self.send_header("Content-Length", str(len(data))); self._cors(); self.end_headers()
         self.wfile.write(data)
 
@@ -68,16 +70,19 @@ class H(BaseHTTPRequestHandler):
         if self.path == "/api/decide":
             import capas
             try:
-                return self._json(capas.decide_external_claim(body))
+                d = capas.decide_external_claim(body)
+                return self._json({"surface": "decide", **d} if isinstance(d, dict) else d, surface="decide")
             except Exception as e:
                 return self._json({"error": repr(e)}, 500)
         # verify a posted certificate record (public, no auth — anyone can check tamper-evidence)
         if self.path == "/api/certificate/verify":
             return self._json(capas_certstore.verify(body.get("record") or body))
         ct = body.get("claim_type", ""); ev = body.get("evidence", {}) or {}; txt = body.get("claim_text", "") or ct
+        surface = None
         try:
             if self.path == "/api/gate":
-                out = capas_sdk.gate(ct, ev, txt)
+                surface = "gate"
+                out = {"surface": "gate", **capas_sdk.gate(ct, ev, txt)}
             elif self.path == "/api/reward":
                 out = {"reward": capas_sdk.reward(ct, ev, txt)}
             elif self.path == "/api/quantum":
@@ -85,15 +90,33 @@ class H(BaseHTTPRequestHandler):
             elif self.path == "/api/invariants":
                 out = capas_sdk.invariants(body.get("block") or ev)
             elif self.path == "/api/certificate":
-                # hosted product: issue a SIGNED, PERSISTED, addressable certificate (auth-gated)
+                # hosted product: issue a SIGNED, PERSISTED, addressable certificate (auth-gated).
+                # Made self-explanatory (discoverability): the verdict is top-level AND we surface the
+                # GATE verdict beside it so the gate-ACCEPT / certificate-HOLD duality is never read as a
+                # bug. The certificate stays STRICT (re-derivable only) — we make it legible, not softer.
                 if not self._authed():
                     return self._json({"error": "unauthorized: set Authorization: Bearer <CAPAS_API_KEY>"}, 401)
-                out = capas_certstore.issue(capas_sdk.certificate(ct, ev, txt))
+                surface = "certificate"
+                cert = capas_sdk.certificate(ct, ev, txt)
+                gate_v = capas_sdk.gate(ct, ev, txt).get("verdict")
+                out = {
+                    "surface": "certificate",
+                    "surface_strictness": "requires RE-DERIVABLE evidence (e.g. raw_data to recompute the "
+                                          "number); declared-only values are not enough to ACCEPT here",
+                    "verdict": cert.get("verdict"),
+                    "verdict_reason": cert.get("headline_action") or cert.get("headline"),
+                    "gate_verdict": gate_v,
+                    "note": f"The GATE (POST /api/gate) decides on DECLARED evidence and returned "
+                            f"'{gate_v}'. This CERTIFICATE additionally requires the evidence be re-derivable, "
+                            f"so a gate ACCEPT can be a certificate HOLD until you attach raw_data / "
+                            f"computation inputs / a registry entry. By design — see GET /api/status.",
+                    "certificate": capas_certstore.issue(cert),
+                }
             else:
                 return self._json({"error": "unknown endpoint"}, 404)
         except Exception as e:
             return self._json({"error": repr(e)}, 500)
-        self._json(out)
+        self._json(out, surface=surface)
 
     def do_GET(self):
         p = self.path.split("?")[0]
@@ -107,6 +130,32 @@ class H(BaseHTTPRequestHandler):
             return self._json(rec)
         if p == "/api/health":
             return self._json({"status": "ok", "auth_required": bool(_API_KEY)})
+        if p == "/api/status":
+            # Discoverability cornerstone: a cold evaluator hitting this GET learns which surface returns
+            # the verdict, why the certificate is stricter, and gets copy-paste payloads that reproduce
+            # all four verdicts — so nobody mistakes the certificate's strictness for a non-discriminating
+            # engine (the "Cold Evaluator Test"). No LLM in the verdict.
+            return self._json({
+                "service": "CAPAS — deterministic claim-admissibility engine (no language model in the verdict)",
+                "the_verdict_endpoint": "POST /api/gate  (or /api/decide) — returns ACCEPT / REWRITE / REJECT / HOLD",
+                "surfaces": {
+                    "POST /api/gate": "THE VERDICT. Decides on the DECLARED structured evidence. The primary, "
+                                      "discriminating endpoint — start here.",
+                    "POST /api/decide": "Same engine; takes the full Gate-App payload.",
+                    "POST /api/certificate": "A SIGNED, STRICTER artifact: it additionally requires the evidence "
+                                             "be RE-DERIVABLE (e.g. raw_data to recompute a p-value). A gate "
+                                             "ACCEPT can be a certificate HOLD until you attach re-derivable "
+                                             "evidence — by design ('re-derive more than you trust'), not a bug.",
+                    "POST /api/certificate/verify": "Check a posted certificate's tamper-evidence.",
+                },
+                "verdicts": ["ACCEPT", "REWRITE", "REJECT", "HOLD"],
+                "reproduce_all_four_on_/api/gate": {
+                    "ACCEPT":  {"claim_type": "statistical_confidence", "evidence": {"p_value": 0.03, "alpha": 0.05, "effect_direction_confirmed": True}, "claim_text": "X improves Y"},
+                    "REJECT":  {"claim_type": "statistical_confidence", "evidence": {"p_value": 0.20, "alpha": 0.05, "effect_direction_confirmed": True}, "claim_text": "X improves Y"},
+                    "REWRITE": {"claim_type": "statistical_confidence", "evidence": {"p_value": 0.03, "alpha": 0.05, "effect_direction_confirmed": False}, "claim_text": "X improves Y"},
+                    "HOLD":    {"claim_type": "statistical_confidence", "evidence": {"p_value": 0.03}, "claim_text": "X improves Y (missing required field -> HOLD)"},
+                },
+            })
         if p in ("/", ""):
             # Routing por host (one-ecosystem scheme):
             #   krenniq.com / www.krenniq.com  -> landing KRENIQ (front door, las 2 herramientas)
