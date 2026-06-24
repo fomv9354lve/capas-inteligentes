@@ -226,6 +226,22 @@ class H(BaseHTTPRequestHandler):
                 return self._json({"error": f"unknown claim_type {ct!r}",
                                    "claim_types": sorted(capas.CLAIM_TYPE_REGISTRY)}, 404, surface="requirements")
             return self._json(req, surface="requirements")
+        # Governance/legal docs are linked from the footer AND the moat section ("Governance charter ->")
+        # but live at the repo ROOT, while only docs/ is served — so those relative links 404'd, breaking
+        # the one document that explains the main moat. Serve a fixed whitelist of root docs (exact-match,
+        # no traversal). CLAIMS_REGISTRY.md already lives in docs/, so it is not here.
+        _root_name = p.lstrip("/")
+        if _root_name in ("GOVERNANCE.md", "LICENSE", "NOTICE", "SECURITY.md",
+                          "CONTRIBUTING.md", "CODE_OF_CONDUCT.md"):
+            rf = ROOT / _root_name
+            if rf.is_file():
+                data = rf.read_bytes()
+                self.send_response(200)
+                self.send_header("Content-Type", "text/plain; charset=utf-8")
+                self.send_header("Content-Length", str(len(data)))
+                self._cors(); self.end_headers()
+                self.wfile.write(data)
+                return
         if p in ("/", ""):
             # Routing por host (one-ecosystem scheme):
             #   krenniq.com / www.krenniq.com  -> landing KRENIQ (front door, las 2 herramientas)
