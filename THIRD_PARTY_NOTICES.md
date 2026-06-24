@@ -21,10 +21,11 @@ their licenses, as required by their terms and for enterprise procurement review
 
 ## Optional extras (`[project.optional-dependencies]`, installed only on request)
 
-scipy (BSD-3-Clause) · stim (Apache-2.0) · pyscf (Apache-2.0) · quimb (BSD-3-Clause) · cotengra · ro-crate
-(rocrate / rocrateValidator) · pypdf (BSD-3-Clause). All are permissive (BSD / MIT / Apache-2.0).
-*Maintainer note: confirm the exact SPDX identifier of `cotengra` and `ro-crate` against their current
-release before tagging a public release; both are believed permissive (MIT / Apache-2.0).*
+scipy (BSD-3-Clause) · stim (Apache-2.0) · pyscf (Apache-2.0) · quimb (BSD-3-Clause) · **cotengra (Apache-2.0)** ·
+**ro-crate / rocrate (Apache-2.0)** · pypdf (BSD-3-Clause). All are permissive (BSD / MIT / Apache-2.0);
+cotengra and ro-crate were confirmed Apache-2.0 from installed package metadata (2026-06-24).
+*Maintainer note: rocrate-validator was not installed at audit time — confirm its exact SPDX identifier
+(believed Apache-2.0) before tagging a public release.*
 
 ## IBM Quantum results
 

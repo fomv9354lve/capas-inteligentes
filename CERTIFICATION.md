@@ -44,7 +44,7 @@ Current result — **8/8 load-bearing invariants pass**, `CAPAS-CONFORMANT`:
 | `audit_hash_reproduces` | every verdict's audit_hash re-derives + is tamper-evident |
 
 **Re-derivable conformance hash:** `sha256:3d3b5cf39aaffef23fa8562b` — deterministic over the (check, pass)
-pairs; the same suite on any machine reproduces it. The hash *is* the attestation, not an opinion.
+pairs; re-running the same suite (same pass profile) reproduces it. The hash *is* the attestation, not an opinion.
 
 ### 2. Signed, re-derivable admissibility certificate
 
@@ -55,6 +55,11 @@ regulated buyer keeps): `POST /api/certificate`. Anyone checks tamper-evidence w
 POST /api/certificate/verify      # is this certificate record intact and ours?
 POST /api/gate/verify             # re-derive a verdict's audit_hash from the result itself
 ```
+
+*Issuance posture (honest scope): in the open demo, `POST /api/certificate` is unauthenticated &mdash; anyone
+can mint a certificate. The trust anchor is not access control, it is the signature (tamper-evidence) plus the
+re-derivable conformance the certificate attests. Before issuance is charged for, set `CAPAS_API_KEY` in the
+deployment so only the issuer mints official certificates; verification stays public by design.*
 
 ### 3. The mark under binding, neutral governance
 

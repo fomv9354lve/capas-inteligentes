@@ -1,7 +1,7 @@
 # Beating the benchmark — how CAPAS wins IBM's game with IBM's own numbers
 
 *2026-06-22. Honest scope. Re-derivable: `capas_quantum_physics.complete_error_budget`,
-`mitigation_prescription`, `estimate_kappa`; kingston data in `/tmp/xeb_results.json`.*
+`mitigation_prescription`, `estimate_kappa`. (The XEB per-layer-&kappa; leg below was computed from a kingston run whose raw data is **not committed** to this repo — treat it as illustrative, not re-derivable, until the data lands under `benchmarks/`.)*
 
 ## The game, and where it's winnable
 
@@ -41,7 +41,7 @@ is 1.9% — because the published number hides a dephasing-limited qubit.
 The kingston XEB run (edges 82-83 diamond, 6-7 moderate) gave per-layer error from the **slope of
 log(XEB) vs depth** — which, crucially, **separates the per-layer gate error from the depth-
 independent SPAM/readout prefactor**. Our first estimator took single-depth `eff_err` and folded
-SPAM in, inflating κ to ~10 on the diamond edge. Corrected:
+SPAM in, inflating κ to ~10 on the diamond edge. Corrected (XEB leg — **source data uncommitted, illustrative** until committed under `benchmarks/`):
 
 | edge | published CZ+SX | measured per-layer (slope) | κ | reading |
 |---|---|---|---|---|

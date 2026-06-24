@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import platform
 import subprocess
 import sys
 from pathlib import Path
@@ -51,6 +52,7 @@ def main() -> int:
         json.dumps([(r["id"], r["pass"]) for r in results], sort_keys=True).encode()).hexdigest()[:24]
     record = {"conformant": passed, "suite": [{"id": r["id"], "pass": r["pass"]} for r in results],
               "result_hash": "sha256:" + digest,
+              "environment": {"python": platform.python_version()},  # recorded for transparency; hash is over (id,pass) only
               "statement": ("CAPAS-CONFORMANT: the deterministic core upholds its load-bearing invariants, "
                             "reproducibly on this machine." if passed else
                             "NOT CONFORMANT: one or more invariants failed — see the suite.")}
