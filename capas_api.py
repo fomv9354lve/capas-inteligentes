@@ -95,6 +95,11 @@ class H(BaseHTTPRequestHandler):
         # verify a posted certificate record (public, no auth — anyone can check tamper-evidence)
         if self.path == "/api/certificate/verify":
             return self._json(capas_certstore.verify(body.get("record") or body))
+        # re-derive + verify the audit_hash of a posted GATE result (public, no auth). Makes the gate's
+        # "re-derivable" claim checkable by a third party: recompute the hash, compare to the claimed one.
+        if self.path == "/api/gate/verify":
+            import capas
+            return self._json(capas.verify_audit_hash(body.get("result") or body), surface="gate_verify")
         ct = body.get("claim_type", ""); ev = body.get("evidence", {}) or {}; txt = body.get("claim_text", "") or ct
         surface = None
         try:
@@ -171,9 +176,18 @@ class H(BaseHTTPRequestHandler):
                                              "ACCEPT can be a certificate HOLD until you attach re-derivable "
                                              "evidence — by design ('re-derive more than you trust'), not a bug.",
                     "POST /api/certificate/verify": "Check a posted certificate's tamper-evidence.",
+                    "POST /api/gate/verify": "Re-derive + verify the audit_hash of a gate result. Post the result "
+                                             "(or {result: ...}); the engine recomputes the hash and confirms it "
+                                             "matches — so the gate verdict is independently re-derivable, not trusted.",
                     "GET /api/requirements": "Pre-flight: ?claim_type=<type> returns the exact required/optional "
                                              "evidence fields, their types, and a fillable template — learn what to "
                                              "supply BEFORE submitting, so a HOLD is never a guessing game.",
+                },
+                "audit_hash_contract": {
+                    "what": "Every verdict carries audit_hash — a sha256 over the canonical decision body — so a "
+                            "third party can recompute it and detect any tampering, with no trust in the issuer.",
+                    "recipe": __import__("capas").AUDIT_HASH_RECIPE,
+                    "verify": "POST the gate result to /api/gate/verify, or call capas.verify_audit_hash(result).",
                 },
                 "verdicts": ["ACCEPT", "REWRITE", "REJECT", "HOLD"],
                 "reason_code_taxonomy": {

@@ -340,12 +340,23 @@ def _edit_distance(a: str, b: str) -> int:
 
 
 def _closest_field(key: str, candidates: Any, max_distance: int = 2) -> str | None:
-    """Nearest legitimate field to a (mistyped) key, or None if nothing is within reach."""
+    """Nearest legitimate field to a (mistyped) key, or None if nothing is within reach.
+
+    A typo is short and close in length to its target. We exploit that for BOTH correctness and
+    safety: edit distance is at least the absolute length difference, so any candidate whose length
+    differs by more than max_distance cannot win and is skipped without computing the O(n*m) DP. This
+    also bounds work on hostile input — a giant junk key matches no short field name in ~zero time."""
+    k = key.lower()
+    if len(k) > 64:  # not a plausible field-name typo; don't burn cycles on adversarial keys
+        return None
     best, best_d = None, max_distance + 1
     for cand in candidates:
-        d = _edit_distance(key.lower(), str(cand).lower())
+        c = str(cand)
+        if abs(len(c) - len(k)) > max_distance:
+            continue
+        d = _edit_distance(k, c.lower())
         if d < best_d:
-            best, best_d = str(cand), d
+            best, best_d = c, d
     return best
 
 
@@ -440,6 +451,53 @@ def _resolution_for_result(verdict: str, claim_type: Any, missing: list[str],
     if verdict == "ACCEPT":
         return {"kind": "accepted", "message": "The evidence licenses the claim as worded."}
     return {"kind": "hold_for_review", "message": "Resolve the open proof obligations before reuse."}
+
+
+# --- audit_hash contract: published, re-derivable, third-party verifiable ---
+# The gate's audit_hash is a sha256 over a CANONICAL decision body. Extracting the body builder and
+# the hash into named functions (single source of truth) lets a third party recompute the hash from a
+# returned result and confirm it — so "re-derivable" is not a slogan, it is a checkable property.
+AUDIT_HASH_RECIPE = (
+    "sha256 over canonical JSON of {schema_version, input_claim, verdict, reason, required_fields, "
+    "invariant_audit} where invariant_audit is the invariant verdict string (or null); JSON is "
+    "serialized with sorted keys and compact separators (',',':'), then prefixed with 'sha256:'."
+)
+
+
+def _audit_hash_body(claim: Any, verdict: Any, reason: Any,
+                     required_fields: Any, invariant_audit: Any) -> dict[str, Any]:
+    return {
+        "schema_version": CAPAS_CLAIM_SCHEMA_VERSION,
+        "input_claim": claim,
+        "verdict": verdict,
+        "reason": reason,
+        "required_fields": required_fields or [],
+        "invariant_audit": invariant_audit.get("verdict") if isinstance(invariant_audit, dict) else None,
+    }
+
+
+def _hash_audit_body(body: dict[str, Any]) -> str:
+    return "sha256:" + hashlib.sha256(
+        json.dumps(body, sort_keys=True, separators=(",", ":"), default=str).encode()).hexdigest()
+
+
+def reproduce_audit_hash(result: dict[str, Any]) -> str:
+    """Recompute the audit_hash from a returned decision result — the same recipe the engine used,
+    so anyone holding a result can independently reproduce the hash. See AUDIT_HASH_RECIPE."""
+    return _hash_audit_body(_audit_hash_body(
+        result.get("input_claim"), result.get("verdict"), result.get("reason"),
+        result.get("required_fields"), result.get("invariant_audit")))
+
+
+def verify_audit_hash(result: dict[str, Any]) -> dict[str, Any]:
+    """Third-party verification: re-derive the hash and compare to the claimed one (tamper-evidence)."""
+    claimed = result.get("audit_hash") if isinstance(result, dict) else None
+    if not claimed:
+        return {"audit_hash_present": False, "verified": None,
+                "note": "this result carries no audit_hash (e.g. a malformed payload)"}
+    recomputed = reproduce_audit_hash(result)
+    return {"audit_hash_present": True, "verified": recomputed == claimed,
+            "claimed": claimed, "recomputed": recomputed, "recipe": AUDIT_HASH_RECIPE}
 
 
 def _append_unknown_field_errors(
@@ -1606,6 +1664,9 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
             **fine_tune,
             "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
         }
+        # Uniform contract: every verdict — schema-error HOLDs included — carries a re-derivable audit_hash.
+        result["audit_hash"] = _hash_audit_body(_audit_hash_body(
+            result["input_claim"], "HOLD", result["reason"], [], None))
         result["admissibility_certificate"] = build_admissibility_certificate(
             payload if isinstance(payload, dict) else {},
             result,
@@ -1876,12 +1937,8 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
     }
     # Real, re-derivable audit hash over the canonical decision body (not a mockup): anyone can
-    # recompute it from the same input and verdict -> tamper-evident, deterministic.
-    _body = {"schema_version": CAPAS_CLAIM_SCHEMA_VERSION, "input_claim": claim, "verdict": verdict,
-             "reason": reason, "required_fields": required or [],
-             "invariant_audit": invariant_audit.get("verdict") if isinstance(invariant_audit, dict) else None}
-    result["audit_hash"] = "sha256:" + hashlib.sha256(
-        json.dumps(_body, sort_keys=True, separators=(",", ":"), default=str).encode()).hexdigest()
+    # recompute it with reproduce_audit_hash() / POST /api/gate/verify -> tamper-evident, deterministic.
+    result["audit_hash"] = _hash_audit_body(_audit_hash_body(claim, verdict, reason, required, invariant_audit))
     result["admissibility_certificate"] = build_admissibility_certificate(payload, result)
     return result
 
