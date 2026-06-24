@@ -31,6 +31,22 @@ _CTYPE = {"html": "text/html", "js": "application/javascript", "css": "text/css"
           "txt": "text/plain; charset=utf-8"}
 
 
+def _reason_code(verdict: str, gate_out: dict, re_derivable_hold: bool = False) -> str:
+    """Machine-readable reason taxonomy so a caller distinguishes WHY, not just the verdict — turns a bare
+    HOLD into 'you omitted a field' vs 'the engine rejects everything'. (Audit attack #4.)"""
+    if verdict == "ACCEPT":
+        return "evidence_licenses_claim"
+    if verdict == "REWRITE":
+        return "overclaim_rewrite_to_licensed_wording"
+    if verdict == "REJECT":
+        return "evidence_contradicts_claim"
+    if verdict == "HOLD":
+        if re_derivable_hold:
+            return "evidence_declared_but_not_re_derivable"   # certificate's stricter bar
+        return "missing_required_evidence" if (gate_out.get("missing_fields") or []) else "evidence_insufficient"
+    return "unknown"
+
+
 class H(BaseHTTPRequestHandler):
     def _cors(self):
         self.send_header("Access-Control-Allow-Origin", "*")
@@ -82,7 +98,8 @@ class H(BaseHTTPRequestHandler):
         try:
             if self.path == "/api/gate":
                 surface = "gate"
-                out = {"surface": "gate", **capas_sdk.gate(ct, ev, txt)}
+                g = capas_sdk.gate(ct, ev, txt)
+                out = {"surface": "gate", "reason_code": _reason_code(g.get("verdict"), g), **g}
             elif self.path == "/api/reward":
                 out = {"reward": capas_sdk.reward(ct, ev, txt)}
             elif self.path == "/api/quantum":
@@ -98,14 +115,19 @@ class H(BaseHTTPRequestHandler):
                     return self._json({"error": "unauthorized: set Authorization: Bearer <CAPAS_API_KEY>"}, 401)
                 surface = "certificate"
                 cert = capas_sdk.certificate(ct, ev, txt)
-                gate_v = capas_sdk.gate(ct, ev, txt).get("verdict")
+                g = capas_sdk.gate(ct, ev, txt)
+                gate_v = g.get("verdict")
+                cert_v = cert.get("verdict")
+                rderiv = (cert_v == "HOLD" and gate_v != "HOLD")  # the strict re-derivability bar caused it
                 out = {
                     "surface": "certificate",
                     "surface_strictness": "requires RE-DERIVABLE evidence (e.g. raw_data to recompute the "
                                           "number); declared-only values are not enough to ACCEPT here",
-                    "verdict": cert.get("verdict"),
+                    "verdict": cert_v,
+                    "reason_code": _reason_code(cert_v, g, re_derivable_hold=rderiv),
                     "verdict_reason": cert.get("headline_action") or cert.get("headline"),
                     "gate_verdict": gate_v,
+                    "gate_reason_code": _reason_code(gate_v, g),
                     "note": f"The GATE (POST /api/gate) decides on DECLARED evidence and returned "
                             f"'{gate_v}'. This CERTIFICATE additionally requires the evidence be re-derivable, "
                             f"so a gate ACCEPT can be a certificate HOLD until you attach raw_data / "
@@ -149,6 +171,14 @@ class H(BaseHTTPRequestHandler):
                     "POST /api/certificate/verify": "Check a posted certificate's tamper-evidence.",
                 },
                 "verdicts": ["ACCEPT", "REWRITE", "REJECT", "HOLD"],
+                "reason_code_taxonomy": {
+                    "evidence_licenses_claim": "ACCEPT — the evidence licenses the claim as worded",
+                    "overclaim_rewrite_to_licensed_wording": "REWRITE — threshold passes but the claim over-states it",
+                    "evidence_contradicts_claim": "REJECT — the evidence refutes the claim (e.g. p > alpha)",
+                    "missing_required_evidence": "HOLD — a required evidence field was not supplied",
+                    "evidence_insufficient": "HOLD — present but not enough to decide",
+                    "evidence_declared_but_not_re_derivable": "HOLD (certificate only) — declared, but not re-derivable; supply raw_data",
+                },
                 "reproduce_all_four_on_/api/gate": {
                     "ACCEPT":  {"claim_type": "statistical_confidence", "evidence": {"p_value": 0.03, "alpha": 0.05, "effect_direction_confirmed": True}, "claim_text": "X improves Y"},
                     "REJECT":  {"claim_type": "statistical_confidence", "evidence": {"p_value": 0.20, "alpha": 0.05, "effect_direction_confirmed": True}, "claim_text": "X improves Y"},
