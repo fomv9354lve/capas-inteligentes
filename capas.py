@@ -266,6 +266,182 @@ def allowed_evidence_fields_for_claim(claim_type: str) -> set[str] | None:
     return set(spec["required"]) | set(spec["optional"])
 
 
+# --- Usability: field typing + fuzzy suggestion + contract introspection (A1-A3) ---
+# Module-level evidence-field type tables. Single source of truth for BOTH validation and the
+# /api/requirements introspection endpoint, so the typed contract a caller is shown can never
+# drift from the types validation actually enforces.
+NUMERIC_EVIDENCE_FIELDS = [
+    "abs_error", "tolerance", "p_value", "alpha",
+    "reported_value", "reference_value", "empirical_tolerance",
+]
+BOOL_EVIDENCE_FIELDS = [
+    "within_chemical_accuracy", "local_property_tests_pass", "universal_anchor_pass",
+    "upgrade_evidence_present", "effect_direction_confirmed", "artifact_available",
+    "independent_reproduction_pass", "metric_period_match", "relative_anchor_comparison_pass",
+    "empirical_reference_present", "empirical_anchor_pass", "benchmark_pass",
+    "intervention_or_natural_experiment", "temporal_order_established", "confounders_controlled",
+    "mechanism_evidence_present", "protocol_registered", "inclusion_criteria_declared",
+    "risk_of_bias_assessed", "effect_consistency", "resolution_pre_registered",
+    "source_hashes_verified", "cross_modal_alignment", "extraction_method_declared",
+    "execution_observed", "runtime_environment_declared",
+]
+STRING_EVIDENCE_FIELDS = [
+    "anchor_mode", "relative_anchor_reference", "benchmark_name", "benchmark_metric",
+    "metric_name", "bound_scope", "physical_evidence_level", "verification_independence",
+    "conflict_resolution_method", "modality", "language", "language_version",
+    "claim_api", "docs_reference", "current_claim",
+    "code_snippet", "expected_output", "observed_output",
+]
+LIST_EVIDENCE_FIELDS = ["supporting_sources", "contradicting_sources"]
+
+# Example values for a fillable requirements template (A3): type defaults + a few overrides
+# that make the expected shape obvious to a first-time caller.
+_EXAMPLE_OVERRIDES: dict[str, Any] = {
+    "abs_error": 0.0002, "tolerance": 0.0016, "p_value": 0.01, "alpha": 0.05,
+    "reported_value": 101.0, "reference_value": 100.0, "empirical_tolerance": 0.5,
+    "anchor_mode": "absolute_anchor", "benchmark_name": "GSM8K", "benchmark_metric": "accuracy",
+    "modality": "image+text", "language": "python", "language_version": "3.12",
+    "conflict_resolution_method": "pre-registered random-effects meta-analysis",
+    "supporting_sources": ["doi:10.1/a"], "contradicting_sources": ["doi:10.1/b"],
+}
+
+
+def evidence_field_type(field: str) -> str:
+    if field in NUMERIC_EVIDENCE_FIELDS:
+        return "number"
+    if field in BOOL_EVIDENCE_FIELDS:
+        return "boolean"
+    if field in LIST_EVIDENCE_FIELDS:
+        return "string[]"
+    if field in STRING_EVIDENCE_FIELDS:
+        return "string"
+    return "unknown"
+
+
+def _example_value(field: str) -> Any:
+    if field in _EXAMPLE_OVERRIDES:
+        return _EXAMPLE_OVERRIDES[field]
+    return {"number": 0.0, "boolean": True, "string": "…", "string[]": ["…"], "unknown": "…"}[
+        evidence_field_type(field)
+    ]
+
+
+def _edit_distance(a: str, b: str) -> int:
+    """Levenshtein distance — small field names, so the simple DP is plenty."""
+    if a == b:
+        return 0
+    prev = list(range(len(b) + 1))
+    for i, ca in enumerate(a, 1):
+        cur = [i]
+        for j, cb in enumerate(b, 1):
+            cur.append(min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (ca != cb)))
+        prev = cur
+    return prev[-1]
+
+
+def _closest_field(key: str, candidates: Any, max_distance: int = 2) -> str | None:
+    """Nearest legitimate field to a (mistyped) key, or None if nothing is within reach."""
+    best, best_d = None, max_distance + 1
+    for cand in candidates:
+        d = _edit_distance(key.lower(), str(cand).lower())
+        if d < best_d:
+            best, best_d = str(cand), d
+    return best
+
+
+def did_you_mean_map(evidence: dict[str, Any], claim_type: str) -> dict[str, str]:
+    """A1: map each unrecognized evidence key to the closest legitimate field for this claim
+    type, so a single-character typo (`p_val` -> `p_value`) never produces a bare HOLD."""
+    allowed = allowed_evidence_fields_for_claim(claim_type)
+    if allowed is None or not isinstance(evidence, dict):
+        return {}
+    suggestions: dict[str, str] = {}
+    for key in evidence:
+        if key in allowed or key == "invariants":
+            continue
+        match = _closest_field(str(key), allowed)
+        if match and match not in evidence:
+            suggestions[str(key)] = match
+    return suggestions
+
+
+def requirements_for_claim(claim_type: str, anchor_mode: str | None = None) -> dict[str, Any] | None:
+    """A3: pre-flight contract introspection. Given a claim type (and anchor_mode for
+    universal_anchor_claim), return the exact required/optional fields, their types, and a
+    fillable template — so a caller learns what to supply BEFORE submitting, not after a HOLD."""
+    spec = CLAIM_TYPE_REGISTRY.get(claim_type)
+    if spec is None:
+        return None
+    required = list(spec["required"])
+    optional = list(spec["optional"])
+    modes = None
+    if claim_type == "universal_anchor_claim":
+        modes = sorted(ANCHOR_MODE_CONTRACTS)
+        if isinstance(anchor_mode, str) and anchor_mode in ANCHOR_MODE_CONTRACTS:
+            required = list(ANCHOR_MODE_CONTRACTS[anchor_mode]["required"])
+            optional = list(ANCHOR_MODE_CONTRACTS[anchor_mode]["optional"])
+        else:
+            anchor_mode = None
+    fields = {
+        f: {"type": evidence_field_type(f), "required": f in required, "example": _example_value(f)}
+        for f in required + optional
+    }
+    out: dict[str, Any] = {
+        "claim_type": claim_type,
+        "description": spec.get("description"),
+        "required_fields": required,
+        "optional_fields": optional,
+        "fields": fields,
+        "evidence_template": {f: _example_value(f) for f in required},
+        "claim_text_note": "claim.text is your natural-language claim; CAPAS gates the EVIDENCE, not the wording.",
+    }
+    if modes is not None:
+        out["anchor_mode"] = anchor_mode
+        out["anchor_modes_available"] = modes
+        out["note"] = ("universal_anchor_claim is contract-versioned by anchor_mode; pass "
+                       "?anchor_mode=<one of anchor_modes_available> for its exact required fields.")
+    return out
+
+
+def _resolution_for_result(verdict: str, claim_type: Any, missing: list[str],
+                           required: list[str] | None, evidence: dict[str, Any],
+                           schema_errors: list[str]) -> dict[str, Any]:
+    """The constructive way OUT of any result — and the guarantee that no HOLD is a dead end.
+    Every HOLD branch (schema error / unsupported type / missing field) returns an actionable,
+    machine-readable path that, applied without changing the underlying facts, leaves HOLD."""
+    ev = evidence if isinstance(evidence, dict) else {}
+    if schema_errors:
+        dym = did_you_mean_map(ev, str(claim_type)) if isinstance(claim_type, str) else {}
+        msg = "Correct the listed schema errors (each names its own fix), then resubmit."
+        if dym:
+            msg += " Likely typos: " + ", ".join(f"{k}→{v}" for k, v in dym.items()) + "."
+        return {"kind": "fix_schema_errors", "did_you_mean": dym, "errors": schema_errors, "message": msg}
+    if required is None:
+        return {"kind": "unsupported_claim_type",
+                "supported_claim_types": sorted(CLAIM_TYPE_REGISTRY),
+                "message": f"Claim type {claim_type!r} has no registered contract. Choose a supported "
+                           f"claim type — GET /api/requirements?claim_type=<type> returns its fields."}
+    if missing:
+        dym = did_you_mean_map(ev, str(claim_type))
+        msg = "Supply these evidence fields (types and examples given), then resubmit."
+        if dym:
+            msg += " Some keys look like typos: " + ", ".join(f"{k}→{v}" for k, v in dym.items()) + "."
+        return {"kind": "supply_fields",
+                "fields": [{"name": f, "type": evidence_field_type(f), "example": _example_value(f)}
+                           for f in missing],
+                "evidence_template": {f: _example_value(f) for f in missing},
+                "did_you_mean": dym, "message": msg}
+    if verdict == "REWRITE":
+        return {"kind": "edit_and_resubmit",
+                "message": "Replace claim.text with the licensed (weaker) wording in `rewrite`, then resubmit."}
+    if verdict == "REJECT":
+        return {"kind": "exclude_or_replace_evidence",
+                "message": "The evidence contradicts the claim. Exclude it, or supply new evidence that changes the contract outcome."}
+    if verdict == "ACCEPT":
+        return {"kind": "accepted", "message": "The evidence licenses the claim as worded."}
+    return {"kind": "hold_for_review", "message": "Resolve the open proof obligations before reuse."}
+
+
 def _append_unknown_field_errors(
     value: dict[str, Any],
     *,
@@ -667,7 +843,9 @@ def validate_external_payload(payload: dict[str, Any]) -> list[str]:
             errors.append("evidence.training_evidence is not allowed; move training_evidence to the payload root")
             unknown_evidence.remove("training_evidence")
         for field in unknown_evidence:
-            errors.append(f"evidence.{field} is not allowed for claim.type {claim_type}")
+            hint = _closest_field(str(field), allowed_evidence - {"invariants"})
+            suffix = f" — did you mean '{hint}'?" if hint and hint not in evidence else ""
+            errors.append(f"evidence.{field} is not allowed for claim.type {claim_type}{suffix}")
 
     numeric_fields = [
         "abs_error",
@@ -683,7 +861,17 @@ def validate_external_payload(payload: dict[str, Any]) -> list[str]:
             isinstance(evidence[field], bool)
             or not isinstance(evidence[field], (int, float))
         ):
-            errors.append(f"evidence.{field} must be a number")
+            sent = evidence[field]
+            if isinstance(sent, str):
+                try:
+                    fix = f" — you sent the string {sent!r}; use the number {float(sent)} (no quotes)"
+                except ValueError:
+                    fix = f" — you sent {sent!r}; use a number like 0.05 (no quotes)"
+            elif isinstance(sent, bool):
+                fix = f" — you sent the boolean {sent}; use a number"
+            else:
+                fix = f" — you sent {type(sent).__name__}; use a number"
+            errors.append(f"evidence.{field} must be a number{fix}")
         elif field in evidence:
             value = float(evidence[field])
             if not (value == value and value not in (float("inf"), float("-inf"))):
@@ -723,7 +911,12 @@ def validate_external_payload(payload: dict[str, Any]) -> list[str]:
     ]
     for field in bool_fields:
         if field in evidence and not isinstance(evidence[field], bool):
-            errors.append(f"evidence.{field} must be a boolean")
+            sent = evidence[field]
+            if isinstance(sent, str) and sent.strip().lower() in ("true", "false"):
+                fix = f" — you sent the string {sent!r}; use boolean {sent.strip().lower()} (no quotes)"
+            else:
+                fix = f" — you sent {sent!r}; use true or false (boolean, no quotes)"
+            errors.append(f"evidence.{field} must be a boolean{fix}")
 
     string_fields = [
         "anchor_mode",
@@ -743,7 +936,7 @@ def validate_external_payload(payload: dict[str, Any]) -> list[str]:
     ]
     for field in string_fields:
         if field in evidence and not isinstance(evidence[field], str):
-            errors.append(f"evidence.{field} must be a string")
+            errors.append(f"evidence.{field} must be a string — you sent {evidence[field]!r}; wrap the value in quotes")
         _validate_no_angle_like(evidence.get(field), f"evidence.{field}", errors)
     anchor_mode = evidence.get("anchor_mode")
     if isinstance(anchor_mode, str) and anchor_mode not in ANCHOR_MODE_CONTRACTS:
@@ -1397,6 +1590,7 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
             missing_fields=[],
             schema_errors=schema_errors,
         )
+        _ct = claim.get("type") if isinstance(claim, dict) else None
         result = {
             "schema_version": CAPAS_CLAIM_SCHEMA_VERSION,
             "input_claim": claim if isinstance(claim, dict) else {},
@@ -1407,6 +1601,8 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
             "missing_fields": [],
             "required_fields": [],
             "schema_errors": schema_errors,
+            "did_you_mean": did_you_mean_map(evidence, str(_ct)) if isinstance(_ct, str) else {},
+            "resolution": _resolution_for_result("HOLD", _ct, [], None, evidence, schema_errors),
             **fine_tune,
             "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
         }
@@ -1673,6 +1869,8 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
         "missing_fields": missing,
         "required_fields": required or [],
         "schema_errors": [],
+        "did_you_mean": did_you_mean_map(evidence, str(claim_type)),
+        "resolution": _resolution_for_result(verdict, claim_type, missing, required, evidence, []),
         "invariant_audit": invariant_audit,
         **fine_tune,
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",

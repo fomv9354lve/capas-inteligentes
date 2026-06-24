@@ -29,6 +29,7 @@ SUITE = [
     ("quantum_commitment", "benchmarks/verify_quantum_commitment.py", "quantum-advantage defeater contract"),
     ("pharma_admissibility", "benchmarks/generate_pharma_corpus.py", "pharma statistical-admissibility, fail-closed"),
     ("proof_ledger", "benchmarks/generate_proof_ledger.py", "every public claim CLOSED/BACKED/SCOPED, none bare"),
+    ("hold_has_resolution", "benchmarks/verify_hold_has_resolution.py", "no HOLD is a dead end; each ships a constructive way out"),
 ]
 
 

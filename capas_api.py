@@ -43,6 +43,8 @@ def _reason_code(verdict: str, gate_out: dict, re_derivable_hold: bool = False) 
     if verdict == "HOLD":
         if re_derivable_hold:
             return "evidence_declared_but_not_re_derivable"   # certificate's stricter bar
+        if gate_out.get("schema_errors"):
+            return "input_schema_invalid"                     # wrong type / unknown field / bad value (carries a fix)
         return "missing_required_evidence" if (gate_out.get("missing_fields") or []) else "evidence_insufficient"
     return "unknown"
 
@@ -169,6 +171,9 @@ class H(BaseHTTPRequestHandler):
                                              "ACCEPT can be a certificate HOLD until you attach re-derivable "
                                              "evidence — by design ('re-derive more than you trust'), not a bug.",
                     "POST /api/certificate/verify": "Check a posted certificate's tamper-evidence.",
+                    "GET /api/requirements": "Pre-flight: ?claim_type=<type> returns the exact required/optional "
+                                             "evidence fields, their types, and a fillable template — learn what to "
+                                             "supply BEFORE submitting, so a HOLD is never a guessing game.",
                 },
                 "verdicts": ["ACCEPT", "REWRITE", "REJECT", "HOLD"],
                 "reason_code_taxonomy": {
@@ -176,9 +181,11 @@ class H(BaseHTTPRequestHandler):
                     "overclaim_rewrite_to_licensed_wording": "REWRITE — threshold passes but the claim over-states it",
                     "evidence_contradicts_claim": "REJECT — the evidence refutes the claim (e.g. p > alpha)",
                     "missing_required_evidence": "HOLD — a required evidence field was not supplied",
+                    "input_schema_invalid": "HOLD — payload failed schema validation (wrong type / unknown field / bad value); see schema_errors + resolution (each error names its fix, and did_you_mean catches typos)",
                     "evidence_insufficient": "HOLD — present but not enough to decide",
                     "evidence_declared_but_not_re_derivable": "HOLD (certificate only) — declared, but not re-derivable; supply raw_data",
                 },
+                "every_hold_ships_a_resolution": "Every HOLD response carries a machine-readable `resolution` (and `did_you_mean` for typos): the exact fields/types/examples or corrections that, applied without changing the facts, move it off HOLD. A HOLD is a waypoint, never a dead end.",
                 "reproduce_all_four_on_/api/gate": {
                     "ACCEPT":  {"claim_type": "statistical_confidence", "evidence": {"p_value": 0.03, "alpha": 0.05, "effect_direction_confirmed": True}, "claim_text": "X improves Y"},
                     "REJECT":  {"claim_type": "statistical_confidence", "evidence": {"p_value": 0.20, "alpha": 0.05, "effect_direction_confirmed": True}, "claim_text": "X improves Y"},
@@ -186,6 +193,25 @@ class H(BaseHTTPRequestHandler):
                     "HOLD":    {"claim_type": "statistical_confidence", "evidence": {"p_value": 0.03}, "claim_text": "X improves Y (missing required field -> HOLD)"},
                 },
             })
+        if p == "/api/requirements":
+            # A3: pre-flight contract introspection. ?claim_type=<type>[&anchor_mode=<mode>]
+            from urllib.parse import urlparse, parse_qs
+            import capas
+            q = parse_qs(urlparse(self.path).query)
+            ct = (q.get("claim_type") or [""])[0]
+            am = (q.get("anchor_mode") or [None])[0]
+            if not ct:
+                return self._json({
+                    "endpoint": "GET /api/requirements?claim_type=<type>[&anchor_mode=<mode>]",
+                    "purpose": "Returns the exact required/optional evidence fields, their types, and a fillable "
+                               "template for a claim type — so you know what to supply BEFORE submitting.",
+                    "claim_types": sorted(capas.CLAIM_TYPE_REGISTRY),
+                }, surface="requirements")
+            req = capas.requirements_for_claim(ct, am)
+            if req is None:
+                return self._json({"error": f"unknown claim_type {ct!r}",
+                                   "claim_types": sorted(capas.CLAIM_TYPE_REGISTRY)}, 404, surface="requirements")
+            return self._json(req, surface="requirements")
         if p in ("/", ""):
             # Routing por host (one-ecosystem scheme):
             #   krenniq.com / www.krenniq.com  -> landing KRENIQ (front door, las 2 herramientas)
