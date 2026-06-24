@@ -46,6 +46,11 @@ jobs:
       - name: Conformance suite
         run: python benchmarks/conformance.py
 
+      # Locks the gate's correctness on the two failure modes the pedagogy sprint flagged
+      # (non-GIGO false-admit + over-block): a real regression fails CI. GIGO ceiling is out of scope.
+      - name: Gate correctness (no false-admit / no over-block)
+        run: python benchmarks/verify_gate_no_false_admit.py
+
       # OpenSSF Best Practices — warnings: treated as errors (verified clean on the conformance suite).
       - name: Warnings as errors
         run: python -W error benchmarks/conformance.py
