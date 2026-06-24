@@ -46,7 +46,7 @@ def sign(obj: Any, secret: bytes | None = None) -> str:
     return hmac.new(secret or _secret(), _canonical(obj), hashlib.sha256).hexdigest()
 
 
-def issue(certificate: dict[str, Any], capas_version: str = "0.3.0",
+def issue(certificate: dict[str, Any], capas_version: str = "0.4.0",
           persist: bool = True) -> dict[str, Any]:
     """Wrap a CAPAS certificate into a signed, addressable record. The id is content-derived
     (sha256 of the certificate + a nonce) so it is unguessable and collision-resistant."""

@@ -57,7 +57,7 @@ def run() -> int:
     try:
         r = subprocess.run([sys.executable, "-m", "build", "--wheel", "--no-isolation",
                             "--outdir", str(out)], cwd=str(ROOT), capture_output=True, text=True, timeout=300)
-        wheels = sorted(out.glob("capas_claim_gate-0.3.0-*.whl"))
+        wheels = sorted(out.glob("capas_claim_gate-0.4.0-*.whl"))
         if r.returncode == 0 and wheels:
             names = zipfile.ZipFile(wheels[-1]).namelist()
             has_mods = all(f"{m}.py" in names for m in ("capas_invariants", "capas_quantum_physics", "capas_mcp"))
@@ -72,7 +72,7 @@ def run() -> int:
     ok = all(c for _, c in checks)
     for label, c in checks:
         print(f"{'OK ' if c else 'XX '}{label}")
-    print("PIP PACKAGE: pass (capas-claim-gate v0.3.0 builds with the full deterministic surface)"
+    print("PIP PACKAGE: pass (capas-claim-gate v0.4.0 builds with the full deterministic surface)"
           if ok else "PIP PACKAGE: FAILURES")
     return 0 if ok else 1
 
