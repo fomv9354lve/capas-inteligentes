@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """CARA 2 — measured cognitive advantage over flat verification (no hallucination).
 
 Run the engine ON ITSELF: the hypothesis "the cognitive layer beats a flat

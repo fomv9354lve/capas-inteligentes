@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """Deep end-to-end: the full cognitive loop wired through capas_mind.cognize().
 
 Exercises generate(guided) -> settle -> integrate(nodal Φ-core) -> certify in one

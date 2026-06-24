@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """Demo + check: continuous admissibility as a graded verifiable reward.
 
 Asserts the ordering that keeps the signal from killing imagination:

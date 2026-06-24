@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """Demo + check: the Reflexive Conformal Certificate (RCC).
 
 Asserts the three-stratum behaviour — GROUNDED (re-derived), GENERATED (coherent,

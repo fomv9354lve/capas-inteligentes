@@ -16,9 +16,9 @@ jobs:
   conformance:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd  # v5
 
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1  # v6
         with:
           python-version: "3.11"
 
@@ -31,7 +31,7 @@ jobs:
         run: python benchmarks/conformance.py --json
 
       - name: Install cosign
-        uses: sigstore/cosign-installer@v3
+        uses: sigstore/cosign-installer@398d4b0eeef1380460a10c8013a76f728fb906ac  # v3
 
       - name: Sign the conformance result (keyless — Sigstore / Rekor transparency log)
         run: |
@@ -40,7 +40,7 @@ jobs:
             --output-certificate outputs/conformance_result.pem
 
       - name: Upload the signed conformance attestation
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4
         with:
           name: capas-conformance-attestation
           path: |

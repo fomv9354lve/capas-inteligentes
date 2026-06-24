@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """Demo + check: CAPAS's cross-domain INVARIANT engine catches fabrication in finance,
 psychology, and quantum with ONE deterministic mechanism — and the core decision is OVERRIDDEN
 to REJECT when a claim's declared numbers violate a domain law, regardless of claim type.

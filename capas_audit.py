@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """CAPAS — in-process milestone audit protocol (the engine reviews itself).
 
 Formalizes the discipline we ran ad-hoc into a reusable protocol: at each relevant

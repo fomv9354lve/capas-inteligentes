@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """ONE clean deploy cycle: validate -> deploy -> VERIFY the live site matches local. No guessing.
 
 The whole point: an edit must land on the live Azure site with proof, not hope. This script

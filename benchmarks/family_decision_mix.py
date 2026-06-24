@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """Per-family decision-mix over the evidence-contract decision space (relevant N).
 
 For each of the 12 claim families this enumerates a realistic grid of evidence

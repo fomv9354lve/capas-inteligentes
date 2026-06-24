@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """CAPAS — claim_type proposer (roadmap #7). LLM-assisted, PROPOSE-ONLY, pharma-focused.
 
 The bigger field (non-experts, clinical/pharma teams) is reached WITHOUT touching the

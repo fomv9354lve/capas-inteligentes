@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """layout_lint — lint de consistencia de layout para el shell KRENIQ (CAPAS + landing + Atlas).
 
 Rompe el build si una página no cumple la fuente única de verdad del shell:

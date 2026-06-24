@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """Cara 2 — LIVE controlled experiment: does CAPAS-connected generation ground more?
 
 A paired A/B with a real LLM proposer (DeepSeek, triage role; key from env), judged

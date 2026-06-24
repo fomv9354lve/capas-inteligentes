@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """Complexity routing primitives validated by the benchmark harness."""
 
 from .cost_model import (

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """CAPAS — LLM extraction layer (proposer), deterministically re-verified.
 
 The LLM is a PROPOSER, never the guarantor. It reads unstructured input and

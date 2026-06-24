@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """CAPAS — the layered triad (capas): same triad per layer, ordered inward.
 
 The verdict need NOT be a flat deterministic decision. It is a COMPOSITION across

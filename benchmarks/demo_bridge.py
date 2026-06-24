@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """Demo + check: attacking the autoformalization frontier by triangulation.
 
 Deterministic. The claim: "ALL values in the batch are below the limit 100." Three

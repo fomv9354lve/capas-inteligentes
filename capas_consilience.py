@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """CAPAS — consilience: reach OUTSIDE the re-derivable slice by INDEPENDENT adjacency.
 
 Re-derivation proves record↔evidence, never evidence↔reality (the GIGO residual is

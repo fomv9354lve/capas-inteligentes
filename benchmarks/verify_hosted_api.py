@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """Verify the hosted certificate API end-to-end against a REAL running server: issue a signed +
 persisted certificate, retrieve it by id, verify the signature, detect tampering, and enforce
 auth. Boots capas_api on an ephemeral port in-process (stdlib http.client), no network.

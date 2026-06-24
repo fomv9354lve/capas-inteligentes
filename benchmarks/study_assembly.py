@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """CAPAS — cross-domain study: tamper-evident assembly + SCOPED→BACKED flip contract.
 
 This is the ASSEMBLE/ROOT layer for the blind-adjudicated n=500 confusion-matrix study

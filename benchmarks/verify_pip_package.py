@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """Verify the pip package is real and complete: every listed module exists, the modules the
 CORE SDK needs at runtime are shipped, and a wheel actually BUILDS containing them + the entry
 points. This is the 'pip install capas-claim-gate' surface, proven not asserted.

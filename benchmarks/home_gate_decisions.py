@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """Real, re-derivable gate decisions shown on the home page (de-mock: no illustrative numbers).
 
 Every verdict + audit_hash rendered in the home's "Recent Gate Decisions" panel and verdict-reference

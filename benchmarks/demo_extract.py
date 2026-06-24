@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """Demo + check: LLM extraction layer with deterministic span re-verification.
 
 The offline cases are DETERMINISTIC (hand-made proposals simulating the LLM) and

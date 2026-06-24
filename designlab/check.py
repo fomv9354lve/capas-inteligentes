@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """designlab/check — the ONE design gate. Runs the whole lab as a single command.
 
 Two complementary layers, fail-closed:

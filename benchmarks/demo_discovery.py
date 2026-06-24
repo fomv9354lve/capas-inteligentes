@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """Demo + check: certifying a GENUINELY NEW claim (quantum-gravity reconciliation).
 
 Deterministic. Certifies the FORM of a discovery, never its truth. Asserts: a candidate

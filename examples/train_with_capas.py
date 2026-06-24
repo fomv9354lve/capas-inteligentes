@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """Lab: train an LLM with CAPAS (lean engine) as the verifiable reward — and find, BEFORE
 productizing it as an RLVR signal, where the reward is hack-proof and where it is gamed.
 

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """CAPAS — quantum HARDWARE claim verifier (the real integration of real hardware).
 
 The classical re-derivation gives the IDEAL output (GATE) but cannot judge a NOISY hardware

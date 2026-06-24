@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """CAPAS — learned value function (AlphaProof-style guidance, determinism-safe).
 
 The macrophage move for the SOTA-ahead 'learned value function': absorb it, but

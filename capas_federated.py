@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """CAPAS — federated survive-refutation ledger: all five structural lenses, integrated.
 
 Each lens is LANDED TO STRUCTURE (no quantum vibes — the content is Beta-credence +

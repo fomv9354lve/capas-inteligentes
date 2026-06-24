@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """Verify CAPAS's XEB + speckle-purity circuit-level coherence gate on a SIMULATOR before any
 QPU time. The decisive property: it must SEPARATE coherent from incoherent error.
   - noiseless          -> F_xeb ~ 1, F_purity ~ 1

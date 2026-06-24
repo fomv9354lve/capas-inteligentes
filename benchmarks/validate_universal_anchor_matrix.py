@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """Validate the D11 local-oracle vs universal-anchor matrix.
 
 This is the executable guard against turning the D11 traces into a dominance

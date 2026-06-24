@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """CAPAS — the survive-refutation ledger (the field's #1 buildable piece, closed).
 
 The 2024-2026 SOTA verdict: you cannot incentivize truth on declared evidence (collusion-

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """CAPAS — production ZK backend via EZKL (KZG/halo2 SNARK).
 
 Optional. If `ezkl` is installed, capas_verify registers `ezkl_backend` as the

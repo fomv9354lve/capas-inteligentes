@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """Execution adapters for already-routed workloads.
 
 Backends do not decide routes. They only execute a `RouteDecision` produced by

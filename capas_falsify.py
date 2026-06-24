@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """CAPAS — falsifiable-idea classifier: the line between imagination and hallucination,
 made mechanical (Popper's demarcation over deterministic rungs).
 

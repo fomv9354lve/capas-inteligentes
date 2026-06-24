@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """Hard statistics for the CAPAS-governed pedagogy test (the good-enough-governor thesis).
 
 Each test item carries a ground-truth LABEL and receives a GOVERNANCE DECISION:

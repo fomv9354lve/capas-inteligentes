@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """CAPAS — unified intelligent certification router.
 
 One engine, many verification rungs, routed by the REAL properties of the evidence

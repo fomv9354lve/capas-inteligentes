@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """See how CAPAS boosts your LLM — the reliability boost, measured honestly.
 
 An LLM (or an LLM-as-judge) accepts what is PLAUSIBLE. CAPAS accepts only what is

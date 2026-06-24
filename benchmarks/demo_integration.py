@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """Demo + check: integration (Φ-proxy, nodal vs layered) + process reward (generation).
 
 Deterministic; no network/key. Asserts:

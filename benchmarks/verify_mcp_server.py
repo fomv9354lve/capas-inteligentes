@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """Drive capas_mcp.py exactly as an MCP client would — over stdio, newline-delimited JSON-RPC —
 and assert the handshake + every tool fires deterministically. Proves the server is a real MCP
 endpoint, not an assertion.

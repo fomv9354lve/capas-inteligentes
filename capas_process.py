@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """CAPAS — process reward: verification shapes GENERATION at the state level.
 
 How a verifier improves the generational heuristic at character/word/relevant-state

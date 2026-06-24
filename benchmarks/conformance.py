@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """CAPAS conformance harness — the Sonobuoy analog: run-it-yourself, get the SAME verdict + hash.
 
 The open-standard's distribution mechanic (per the market research): the mark attests that an artifact

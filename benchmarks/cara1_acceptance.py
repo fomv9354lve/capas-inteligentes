@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """CARA 1 — product acceptance suite (the deployable verification engine).
 
 The single contained gate for the deployable product: the deterministic,

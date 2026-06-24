@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """Validate a small evidence-type claim matrix over CAPAS traces.
 
 This script is intentionally conservative. It does not use an LLM, textual

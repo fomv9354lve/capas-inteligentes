@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """Lock the gate's correctness on the two failure modes the pedagogy sprint flagged.
 
 The sprint's iteration-3 reported a non-GIGO false-ADMIT (s12) and an over-BLOCK (s13) at the CAPAS

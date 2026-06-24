@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """CAPAS — how the human actually works: trust-with-accountability, not verification.
 
 A declaration ('confounders were controlled') cannot be re-derived from text. A human

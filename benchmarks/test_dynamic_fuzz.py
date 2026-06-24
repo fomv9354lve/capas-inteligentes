@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """Dynamic analysis — property-based fuzzing of the gate (OpenSSF dynamic_analysis criterion).
 
 Generalizes benchmarks/verify_robustness.py (20 hand-built hostile payloads) into a Hypothesis

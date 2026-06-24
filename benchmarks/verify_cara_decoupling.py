@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """Containment gate: Cara 1 (product) is decoupled from Cara 2 (research/cognitive).
 
 The rule governs PRODUCT SOURCE MODULES at RUNTIME, not tests. What it enforces:

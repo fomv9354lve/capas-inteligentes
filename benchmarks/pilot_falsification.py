@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """PILOT — capitalize on the lead: falsifiability beats plausibility (retrospective).
 
 The genuine edge (per our SOTA sweeps): the field maximizes PLAUSIBILITY (LLM-judges,

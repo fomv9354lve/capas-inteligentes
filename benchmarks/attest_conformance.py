@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """CAPAS conformance ATTESTATION runner — the outsider-runnable packet builder for GOVERNANCE.md §5/§6.
 
 Run-it-yourself, get the SAME verdict + the SAME hashes the certifier gets. Emits a content-addressed

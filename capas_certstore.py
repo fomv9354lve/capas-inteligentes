@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """CAPAS certificate store — the hosted-product layer: issue a SIGNED, PERSISTED, re-derivable
 admissibility certificate (the audit artifact a regulated buyer purchases), retrieve it by id,
 and VERIFY it for tamper-evidence. Stdlib only (hmac/hashlib/json), no DB dependency.

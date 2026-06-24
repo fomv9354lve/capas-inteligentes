@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """CAPAS — independence-weighted sequential e-value test (THE WELD).
 
 POPPER (ICML'25) gives Type-I error control over falsification by aggregating

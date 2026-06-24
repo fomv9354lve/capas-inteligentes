@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """Demo + check: consilience — bounding the GIGO residual by INDEPENDENT adjacency.
 
 Deterministic. Asserts: no adjacency -> pure GIGO (residual 1.0); independent

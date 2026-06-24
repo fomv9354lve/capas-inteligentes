@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """Demo + check: the layered triad (capas) — multi-hop, regime-gradient verdict.
 
 The verdict is a COMPOSITION across layers/regimes, not a flat deterministic

@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """Builds the pedagogy-governance corpus (iteration 3) and emits decisions.json.
 
 Each item is GOVERNED here by the iteration-3 MASTER RULE so the harness measures the

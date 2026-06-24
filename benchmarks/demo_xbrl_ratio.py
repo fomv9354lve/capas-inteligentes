@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """Demo + check: re-derive a financial ratio from a filed XBRL instance via Arelle.
 
 Closes the "no hand-typed numbers" loop — the ratio components are read straight

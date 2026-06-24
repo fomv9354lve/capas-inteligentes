@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """CAPAS — conjecture bridge compiler (Lakatos mechanized).
 
 A coherent-but-unproven claim must NOT be rejected for the absence of proof — it

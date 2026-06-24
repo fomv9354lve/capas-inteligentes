@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """Waits for the real ibm_kingston Bell job, then CAPAS gates the measurement against the
 device calibration — both the first-order floor AND the calibration-grade Aer prediction."""
 import json, sys

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """Demo + check: the falsifiable-idea generator-filter (imagination vs hallucination).
 
 Deterministic. Independent labels (NOT moved to fit the engine): below absolute zero

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 from __future__ import annotations
 
 from .backends import execute_dense_circuit, execute_external_engine, execute_stim_circuit, execute_tensor_contract

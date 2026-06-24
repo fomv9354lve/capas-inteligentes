@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """CAPAS — split-conformal coverage for the GROUNDED stratum.
 
 Makes the RCC's "coverage α" a REAL distribution-free, finite-sample guarantee

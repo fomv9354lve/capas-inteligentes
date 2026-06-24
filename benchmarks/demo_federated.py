@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """Demo + check: the federated ledger integrates all five structural lenses.
 
 Deterministic. Asserts: independent resolvers collapse the claim (superposition -> credence ->

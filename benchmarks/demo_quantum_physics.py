@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """Demo + check: CAPAS gates quantum CALIBRATION/RESULT claims against textbook physics —
 no device needed. Driven by REAL ibm_kingston atlas numbers (22/06/2026 calibration snapshot).
 

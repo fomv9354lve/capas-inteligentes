@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """Demo + check: the claim_type proposer (roadmap #7) and its STRUCTURAL frontier.
 
 Deterministic (no key -> transparent keyword proposal). Proves the moat is intact while

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """CLOSE the structural behavior of the quantum-advantage / commitment-depth gate.
 
 The physics (validated same-device in physics-magnitude-lab): noise forces a circuit to COMMIT from

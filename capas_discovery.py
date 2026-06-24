@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """CAPAS — certifying a GENUINELY NEW claim (e.g. a quantum-gravity reconciliation).
 
 The hard case: a claim with NO prior anchor, no reference value, no ground truth. You

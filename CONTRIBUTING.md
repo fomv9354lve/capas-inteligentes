@@ -30,11 +30,41 @@ python benchmarks/conformance.py     # the load-bearing suite — must stay gree
 - For website changes, the design gate must pass: `python3 designlab/check.py`.
 - Keep `docs/CLAIMS_REGISTRY.md` and `docs/proof_ledger.json` regenerated if you touched a claim.
 
+## Sign your commits (DCO)
+
+CAPAS uses the [Developer Certificate of Origin](https://developercertificate.org) (DCO 1.1) as a
+lightweight, per-commit attestation of provenance — the same model the Linux kernel and the CNCF use. It
+fits the project's spine: every contribution carries an explicit, auditable claim about where it came from.
+
+Every commit must be **signed off**. The sign-off is a single trailer line added by `-s`:
+
+```bash
+git commit -s -m "Your message"
+```
+
+This appends a `Signed-off-by` trailer using your `user.name` / `user.email` from git config:
+
+```
+Signed-off-by: Jane Doe <jane@example.com>
+```
+
+By adding that line you certify the four points of the DCO — that you wrote the work or otherwise have the
+right to submit it under the project's open-source license. The full text is in [`DCO.md`](DCO.md) and at
+<https://developercertificate.org>.
+
+Notes:
+
+- Use a real name and a reachable email; they must match the commit author.
+- Forgot to sign off the last commit? `git commit --amend -s --no-edit`. For an existing branch:
+  `git rebase --signoff <base>`.
+- A PR with unsigned commits will be asked to re-sign before merge.
+
 ## Pull requests
 
 - Branch from `main`, keep PRs focused, describe what invariant your change touches and how you verified it.
-- **Sign your commits off (DCO):** `git commit -s` — this certifies you have the right to submit the work
-  under the project license.
+- **Sign off every commit (DCO):** `git commit -s` — see [Sign your commits (DCO)](#sign-your-commits-dco)
+  above. This certifies you have the right to submit the work under the project license.
+- **Add a test for new functionality** and keep the suite green — see [`TEST_POLICY.md`](TEST_POLICY.md).
 - By contributing you agree your contribution is licensed under **Apache-2.0** (see `LICENSE`). The CAPAS
   name and certification mark are reserved under neutral governance (see `GOVERNANCE.md`); contributions do
   not grant rights to the mark.

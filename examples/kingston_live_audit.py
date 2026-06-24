@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """CAPAS audits the LIVE ibm_kingston calibration — all 156 qubits + 176 edges — through the
 physical-consistency and derived-quantity gates. Metadata only (no job/queue). This is the
 strong honest version: CAPAS gates the device vendor's OWN published numbers, live, with no

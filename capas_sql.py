@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """CAPAS — tabular SQL-aggregate re-derivation + Proof-of-SQL scale hook.
 
 The macrophage move for 'ZK at scale' (Space and Time's Proof of SQL: sub-second

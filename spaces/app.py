@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """CAPAS Gate — Hugging Face Space (neutral mirror of the deterministic gate).
 Your turn: create a Space (SDK: gradio) and push this folder. It runs the SAME engine, not our server."""
 import json
@@ -16,7 +18,12 @@ def run(claim_type, evidence_json, claim_text):
     except Exception as e:
         return f"bad JSON: {e}"
     out = capas_sdk.gate(claim_type, ev, claim_text or claim_type)
-    return f"## {out.get('verdict','?')}\n\n{out.get('why','')}\n\n*CAPAS decides whether the evidence licenses the claim — not whether it is true. Same input → same verdict.*"
+    msg = out.get("reason", "")
+    if out.get("rewrite"):
+        msg += f"\n\n**Licensed rewrite:** {out['rewrite']}"
+    if out.get("audit_hash"):
+        msg += f"\n\n`{out['audit_hash']}`"
+    return f"## {out.get('verdict','?')}\n\n{msg}\n\n*CAPAS decides whether the evidence licenses the claim — not whether it is true. Same input → same verdict.*"
 
 with gr.Blocks(title="CAPAS Gate") as demo:
     gr.Markdown("# CAPAS — run a claim\nDeterministic admissibility gate. No LLM in the verdict. Reproducible.")

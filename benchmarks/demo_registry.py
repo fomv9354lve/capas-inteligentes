@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """Demo + check: the Decision Registry (roadmap #5, the honest buildable-now slice).
 
 Deterministic. Real signed certificates (capas_rcc.rcc) are appended to an append-only,

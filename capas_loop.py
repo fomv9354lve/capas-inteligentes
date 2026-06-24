@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """CAPAS — the spiral: an OPEN triad that closes FORWARD (knowledge-growth loop).
 
 Not a closed dialectic (thesis-antithesis-synthesis that closes BACKWARD into a

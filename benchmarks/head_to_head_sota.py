@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """AGGRESSIVE head-to-head: CAPAS vs the named SOTA approaches on one labeled corpus.
 
 Honesty rules (this is the whole point):

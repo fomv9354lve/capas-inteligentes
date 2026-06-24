@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """CAPAS — Decision Registry (the honest, buildable-now slice of roadmap #5).
 
 NOT the overclaimed 'versioned UUID registry at millions-scale' — that stays roadmap.

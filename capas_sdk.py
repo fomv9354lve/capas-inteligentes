@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """CAPAS SDK — a fail-closed verification layer you wrap around your LLM.
 
     pip install capas-claim-gate

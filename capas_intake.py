@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """CAPAS — intake membrane: shrink the EXTRACTION residual to the max (fail-closed).
 
 The pilot moved the residual here: paper text -> structured evidence fields. Extraction

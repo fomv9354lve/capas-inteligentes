@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """Demo + check: the open-forward-closing triad engine (#1 bridge, #2 spiral, #3 conformal).
 
 Deterministic; no network/key. Asserts:

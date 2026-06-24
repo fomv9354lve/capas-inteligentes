@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """Pull ibm_kingston per-qubit FREQUENCIES (and anharmonicity) via the Qiskit API — metadata
 only, NO job/queue — and convert the assumed-5GHz loss-tangent BOUND into an EXACT number, plus
 test the Q121 spectral-collision hypothesis against the real frequency map.

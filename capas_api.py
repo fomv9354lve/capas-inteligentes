@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """CAPAS live API — the thin backend that connects the tool to the REAL engine.
 
 Stdlib only (no FastAPI/Flask, so it stays light). One server: it serves the static site
@@ -141,6 +143,15 @@ class H(BaseHTTPRequestHandler):
                             f"computation inputs / a registry entry. By design — see GET /api/status.",
                     "certificate": capas_certstore.issue(cert),
                 }
+                if not _API_KEY:
+                    # Open-demo: no CAPAS_API_KEY set, so this charging/issuing surface accepted an
+                    # UNAUTHENTICATED request. Mark it loudly in the response AND the log so a demo
+                    # certificate is never mistaken for an authenticated, production-issued one.
+                    out["auth"] = "unauthenticated-demo"
+                    out["auth_note"] = ("issued WITHOUT authentication (CAPAS_API_KEY unset). Set "
+                                        "CAPAS_API_KEY to require Authorization: Bearer / X-API-Key on this endpoint.")
+                    sys.stderr.write("[CAPAS] WARNING: /api/certificate served UNAUTHENTICATED "
+                                     "(CAPAS_API_KEY unset) — open-demo mode\n")
             else:
                 return self._json({"error": "unknown endpoint"}, 404)
         except Exception as e:

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """PILOT (real corpus) — falsifiability vs plausibility on 28 AGENT-CODED cases.
 
 The seed was hand-coded by me (not an independent oracle). This corpus was coded by two

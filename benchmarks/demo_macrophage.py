@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """Demo + check: constructive integration of the SOTA-ahead areas (the macrophage).
 
 Each absorbed in service of the deterministic core, never as the verdict:

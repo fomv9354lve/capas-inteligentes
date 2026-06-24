@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """CAPAS — persisted survive-refutation ledger (the third pole made material).
 
 capas_ledger is PURE (log in -> log out). It had no state, so the GATE (a verdict now) and the

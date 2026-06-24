@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """CAPAS — quantum physical-consistency gates (deterministic, re-derivable).
 
 These gates do NOT cross text<->reality. They re-derive whether a CLAIMED set of device

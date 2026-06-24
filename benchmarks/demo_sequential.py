@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """Demo + check: the independence-weighted sequential e-test (THE WELD).
 
 Deterministic. The contribution is falsifiable and checked here: a CIRCULAR corroboration

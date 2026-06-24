@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """Conformance check: NO HOLD IS A DEAD END.
 
 The usability invariant behind A1-A3: a claim that is true-and-supportable must never terminate in a

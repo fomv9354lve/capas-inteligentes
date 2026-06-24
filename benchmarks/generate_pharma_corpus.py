@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """500+ pharma statistical-claim corpus — exercises capas_pharma against a combinatorial grid and pins
 the fail-closed contract: a deficient claim is NEVER ACCEPTed, a clean claim always is. This is the
 pharma analog of family_decision_mix — contract coverage of the statistical-admissibility space P21 skips.

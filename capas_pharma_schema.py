@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """capas_pharma_schema.py — versioned input-schema + validator for a pharma statistical-claim
 payload to the CAPAS pharma gate (capas_pharma.gate_pharma_stat_claim / decide).
 

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """Analyze the XEB+purity job when it lands: per (edge, depth) compute mean F_XEB and F_purity,
 the coherent fraction, the XEB-vs-depth curve, and reconcile it with CAPAS's calibration budget.
 

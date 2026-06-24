@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """CAPAS pharma adapter — statistical-claim admissibility for regulated trial submissions.
 
 The market-validated beachhead: Pinnacle 21 owns STRUCTURAL CDISC conformance (is the dataset well-formed

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """CAPAS — proof-carrying verification layer (Rung 3 re-execution + scope partition + receipt).
 
 Sits ON TOP of the deterministic admissibility gate (``capas.decide_external_claim``)

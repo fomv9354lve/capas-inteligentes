@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """THE PROOF LEDGER — the launch success-criterion, encoded.
 
 Every headline claim must be CLOSED, BACKED, or SCOPED. None bare. This generator regenerates each

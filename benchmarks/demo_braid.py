@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """Demo + check: the verified knowledge braid (grounding by position, not node).
 
 Deterministic; no network/key. Asserts:

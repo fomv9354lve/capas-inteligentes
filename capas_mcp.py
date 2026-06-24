@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """CAPAS MCP server — the deterministic claim-admissibility gate as a tool for ANY LLM agent.
 
 The LLM PROPOSES evidence; CAPAS DISPOSES the verdict (fail-closed, no LLM in the decision).

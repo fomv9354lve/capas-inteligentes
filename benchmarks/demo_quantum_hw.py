@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """Demo + check: CAPAS gates a quantum HARDWARE measurement against the device calibration.
 
 Deterministic. Uses real ibm_kingston Q0-Q1 calibration if present (/tmp/kingston_calib.json),

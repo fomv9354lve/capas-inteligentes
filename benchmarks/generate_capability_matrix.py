@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """Generate CAPAS's capability matrix by EXERCISING every gate, not asserting it. Each row is
 proven live: the gate is called on a canonical input and its verdict recorded. Emits a JSON +
 markdown matrix so the 'where we are' positioning is re-derivable from the code, not marketing.

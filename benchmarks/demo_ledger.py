@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """Demo + check: the survive-refutation ledger end to end.
 
 Deterministic. A claim is ATTESTED (signed, hash-chained, bound to an identity), the WORLD

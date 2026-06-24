@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """CAPAS — Reflexive Conformal Certificate (RCC).
 
 The artifact the cross-disciplinary audit converged on but nobody has built: a

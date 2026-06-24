@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """Conformance check: the gate's audit_hash is RE-DERIVABLE and TAMPER-EVIDENT.
 
 CAPAS's core claim is "re-derive more than you trust". This asserts that property for the gate's

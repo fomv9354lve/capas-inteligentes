@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 import sys; sys.path.insert(0,".")
 import capas_ezkl, capas_verify, json
 # PROVER side: prove CHG = AVAL - BASE  (weights [1,-1]) on inputs [10,8] -> 2

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """Demo + check: trust-with-accountability — how the human actually handles declarations.
 
 Deterministic. A declaration cannot be re-derived; the human weights it by the source's

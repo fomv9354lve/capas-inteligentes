@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """Demo + check: VERIFY the anytime-valid Type-I guarantee of the sequential e-process.
 
 Closing the statistical-rigor gap (POPPER's level) by PROOF, not claim. Under the null

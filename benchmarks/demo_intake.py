@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """Demo + check: the intake membrane shrinks the EXTRACTION residual, fail-closed.
 
 Deterministic (mock extractors prove the triangulation logic; the live DeepSeek extractor is

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """THE DEFINITIVE TEST — submit one XEB+speckle-purity sweep to ibm_kingston.
 
 From a SINGLE job (frugal QPU) it yields three results the clean Bell could not:

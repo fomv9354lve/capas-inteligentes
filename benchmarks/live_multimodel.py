@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """LIVE cross-lab extraction triangulation (the C2 fix, live) — DeepSeek + Gemini.
 
 Ready to fire. Set both keys in env and run:

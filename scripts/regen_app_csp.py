@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """Regenerate the Content-Security-Policy sha256 hashes for docs/app.html.
 
 app.html ships a strict CSP with `'unsafe-hashes'`, so every inline surface needs

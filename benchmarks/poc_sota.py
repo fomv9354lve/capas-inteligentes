@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """CAPAS vs SOTA — a REPRODUCIBLE proof of concept (numbers emitted by the real engine).
 
 Run:  python3 benchmarks/poc_sota.py

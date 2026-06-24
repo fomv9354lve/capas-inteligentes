@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """Hard statistics for the CAPAS descent census (rung-2 literal check).
 
 The census is a CENSUS, not a sample: every quantitative claim on the audited served surfaces is

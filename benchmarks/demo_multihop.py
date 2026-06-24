@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """Demo + check: deep multi-hop bridge compiler (HTN + cycle guard + substrate cache).
 
 Deterministic; no network/key. Asserts a 3-hop chain compiles and grounds; a cycle

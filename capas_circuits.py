@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """CAPAS — arithmetic-circuit (R1CS) backend for re-derivation rules.
 
 Turns a re-derivation rule into a Rank-1 Constraint System — the exact object a

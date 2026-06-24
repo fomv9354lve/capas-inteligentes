@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """CAPAS — attacking the autoformalization frontier (the NL->structure bridge).
 
 The wall (Agent 3; survey arXiv 2505.23486): no formal method can CERTIFY informal<->formal

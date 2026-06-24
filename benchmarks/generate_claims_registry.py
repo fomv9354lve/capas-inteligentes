@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """CAPAS gates its own claims. This regenerates docs/CLAIMS_REGISTRY.md from the proof ledger.
 
 The thesis applied to ourselves: every public claim CAPAS makes must itself be admissible — CLOSED

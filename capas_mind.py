@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """CAPAS — the orchestrator: one cognitive loop wiring every layer.
 
 Integrates the whole stack into a single entry point so the layers are not just

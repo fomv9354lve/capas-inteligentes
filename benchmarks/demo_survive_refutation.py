@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """Demo + check: the survive-refutation loop — the integration that connects the GATE (a verdict
 now) to the LEDGER (accountability over time). The third trialectic pole, made material.
 

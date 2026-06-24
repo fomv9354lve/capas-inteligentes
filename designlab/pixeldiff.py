@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """pixeldiff — regresión visual de píxeles entre dos screenshots (#2 del backlog de UX).
 
 Compara antes/después (o dos páginas que deberían verse igual), reporta el % de píxeles que

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """READY-TO-FIRE stress test for CAPAS's layer-3 (measurement) gate on REAL hardware — the
 discriminating half the clean Bell did NOT exercise. Targets the HARD 20% of the QPU.
 

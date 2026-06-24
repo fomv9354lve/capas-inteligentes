@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """CAPAS — the verified knowledge braid: grounding by position, not self-assertion.
 
 The topological/relational horizon. A claim's certification is stored NOT in a

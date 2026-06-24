@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """Option B — single source of truth for the browser gate's evidence contracts.
 
 The browser app (docs/app.html) historically hand-mirrors capas.py's contracts in

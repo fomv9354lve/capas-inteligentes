@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """CAPAS — integration measure: how irreducible is the verified whole (a Φ-proxy).
 
 Answers "clean-layered or nodal?": for INTEGRATION, nodal wins. A clean layered

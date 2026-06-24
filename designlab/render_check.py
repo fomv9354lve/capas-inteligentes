@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """designlab/render_check — the RENDERING half of the design lab (the static half is layout_lint.py).
 
 The friction this kills: iterating UI by deploying to Azure (~4 min) or eyeballing screenshots. Here a

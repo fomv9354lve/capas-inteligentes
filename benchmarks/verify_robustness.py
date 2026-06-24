@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """ADVERSARIAL ROBUSTNESS — prove the engine survives the first 10 seconds of hostile attention.
 
 The shortest paths a hostile user takes to embarrass a public package:

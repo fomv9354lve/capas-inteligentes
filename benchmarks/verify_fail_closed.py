@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """STRENGTHEN, don't reduce: CLOSE the 'fail-closed' claim as a PROVEN structural invariant.
 
 The dangerous version of '0 false-accepts' reads as an empirical guarantee that needs an external

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Fco. Osvaldo Morales Vilchis
 """CAPAS — XBRL extraction loop (Arelle) for financial-ratio re-derivation.
 
 Closes the loop the SOTA review flagged: instead of a human hand-typing the line
