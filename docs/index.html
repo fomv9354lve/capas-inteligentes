@@ -1,6 +1,6 @@
 <html lang="en"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>CAPAS Home · Full Mock</title>
+<title>CAPAS · Deterministic claim-admissibility gate</title>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -205,25 +205,26 @@ footer{border-top:1px solid rgba(255,255,255,0.06);padding:32px 48px;display:fle
         <div class="vp-rows">
           <div class="vp-row">
             <span class="verdict-chip vc-accept">ACCEPT</span>
-            <span class="vp-row-text">statistical_confidence: p=0.03 &lt;= alpha=0.05</span>
-            <span class="vp-row-tag">schema v3</span>
+            <span class="vp-row-text">statistical_confidence: p=0.03 &lt;= alpha=0.05, direction confirmed</span>
+            <span class="vp-row-tag" title="real, re-derivable audit_hash">ff23bfcc</span>
           </div>
           <div class="vp-row">
             <span class="verdict-chip vc-rewrite">REWRITE</span>
-            <span class="vp-row-text">direction not independently licensed</span>
-            <span class="vp-row-tag">training 7/14</span>
+            <span class="vp-row-text">threshold passes; effect direction not licensed</span>
+            <span class="vp-row-tag" title="real, re-derivable audit_hash">2a2c5234</span>
           </div>
           <div class="vp-row">
             <span class="verdict-chip vc-reject">REJECT</span>
             <span class="vp-row-text">artifact unavailable for reproducibility</span>
-            <span class="vp-row-tag">audit trail</span>
+            <span class="vp-row-tag" title="real, re-derivable audit_hash">1cc473f8</span>
           </div>
           <div class="vp-row">
             <span class="verdict-chip vc-hold">HOLD</span>
-            <span class="vp-row-text">RO-Crate attestation pending CLI verif...</span>
-            <span class="vp-row-tag">no LLM</span>
+            <span class="vp-row-text">incomplete evidence &middot; fail-closed</span>
+            <span class="vp-row-tag" title="real, re-derivable audit_hash">9033f4c1</span>
           </div>
         </div>
+        <div style="padding:10px 14px 2px;font-size:11px;color:rgba(255,255,255,.45);line-height:1.5">Real engine output, not a mockup &mdash; re-derive every verdict &amp; hash: <code style="color:rgba(255,255,255,.65)">python3 benchmarks/home_gate_decisions.py</code></div>
       </div>
     </div>
   </div>
@@ -333,25 +334,25 @@ footer{border-top:1px solid rgba(255,255,255,0.06);padding:32px 48px;display:fle
         <span class="verdict-card-badge" style="background:rgba(72,187,120,0.12);color:#48bb78;border:1px solid rgba(72,187,120,0.3)">ACCEPT</span>
         <h4>Claim is admissible</h4>
         <p>All schema constraints pass. Evidence fully supports the claim as stated. No licensing or reproducibility blockers found.</p>
-        <div class="verdict-card-ex">p=0.03 &lt;= alpha=0.05<br>artifact: available<br>license: CC-BY-4.0</div>
+        <div class="verdict-card-ex">p_value=0.03, alpha=0.05<br>effect_direction_confirmed: true<br>&rarr; ACCEPT &middot; audit_hash ff23bfcc</div>
       </div>
       <div class="verdict-card" style="border-color:rgba(0,200,200,0.18)">
         <span class="verdict-card-badge" style="background:rgba(0,200,200,0.12);color:#00c8c8;border:1px solid rgba(0,200,200,0.35)">REWRITE</span>
         <h4>Claim needs adjustment</h4>
         <p>Evidence is present but the claim overreaches. Direction, scope, or causal language must be corrected before resubmission.</p>
-        <div class="verdict-card-ex">blocker: direction_not_licensed<br>training: 7 of 14 pass<br>suggest: hedge_causality</div>
+        <div class="verdict-card-ex">p_value=0.03, alpha=0.05<br>effect_direction_confirmed: false<br>&rarr; REWRITE &middot; audit_hash 2a2c5234</div>
       </div>
       <div class="verdict-card" style="border-color:rgba(232,24,93,0.18)">
         <span class="verdict-card-badge" style="background:rgba(232,24,93,0.12);color:#e8185d;border:1px solid rgba(232,24,93,0.3)">REJECT</span>
         <h4>Claim is inadmissible</h4>
         <p>Critical evidence is missing, contradicted, or irreproducible. The claim cannot be licensed in its current form.</p>
-        <div class="verdict-card-ex">blocker: artifact_unavailable<br>reproducibility: FAIL<br>schema_errors: 3</div>
+        <div class="verdict-card-ex">artifact_available: false<br>independent_reproduction_pass: false<br>&rarr; REJECT &middot; audit_hash 1cc473f8</div>
       </div>
       <div class="verdict-card" style="border-color:rgba(200,150,10,0.18)">
         <span class="verdict-card-badge" style="background:rgba(200,150,10,0.12);color:#d4a820;border:1px solid rgba(200,150,10,0.35)">HOLD</span>
         <h4>Pending verification</h4>
-        <p>Gate cannot complete without external attestation — RO-Crate, CLI verification, or third-party confirmation still required.</p>
-        <div class="verdict-card-ex">pending: ro_crate_attestation<br>cli_verify: required<br>no_llm: true</div>
+        <p>Evidence is incomplete or no external oracle is available; the gate fail-closes to HOLD instead of guessing.</p>
+        <div class="verdict-card-ex">p_value=0.03, alpha=0.05<br>effect_direction_confirmed: (missing)<br>&rarr; HOLD &middot; audit_hash 9033f4c1</div>
       </div>
     </div>
   </div>
@@ -439,12 +440,62 @@ footer{border-top:1px solid rgba(255,255,255,0.06);padding:32px 48px;display:fle
     <div class="audit-json">
       <div><span class="aj-k">"claim_id":</span> <span class="aj-s">"claim_drift_001"</span>,</div>
       <div><span class="aj-k">"claim_type":</span> <span class="aj-s">"causal_mechanism_claim"</span>,</div>
-      <div><span class="aj-k">"decision":</span> <span class="aj-d">"REWRITE"</span>,</div>
-      <div><span class="aj-k">"evidence_contract":</span> <span class="aj-s">"intervention + temporal_order + confounders"</span>,</div>
-      <div><span class="aj-k">"blocker":</span> <span class="aj-b">"No intervention or natural-experiment evidence."</span>,</div>
-      <div><span class="aj-k">"reviewer_action":</span> <span class="aj-s">"edit_and_resubmit"</span>,</div>
-      <div><span class="aj-k">"audit_hash":</span> <span class="aj-s" style="word-break:break-all">"sha256:f6c361712b894a2d2e4005e345341b4bbcaa2d7b7819121942d550972800b17a"</span>,</div>
-      <div><span class="aj-k">"non_claim":</span> <span class="aj-d">true</span></div>
+      <div><span class="aj-k">"decision":</span> <span class="aj-d">"REJECT"</span>,</div>
+      <div><span class="aj-k">"evidence_contract":</span> <span class="aj-s">"intervention_or_natural_experiment + temporal_order + confounders + mechanism"</span>,</div>
+      <div><span class="aj-k">"reason":</span> <span class="aj-b">"causal claim lacks intervention/natural-experiment evidence or temporal order"</span>,</div>
+      <div><span class="aj-k">"audit_hash":</span> <span class="aj-s" style="word-break:break-all">"sha256:392234b5fb245c166f0e2dd46b9bc1ffff1f2c6d52b20cd3b8f0b9ea6667034d"</span>,</div>
+      <div><span class="aj-k">"re_derive":</span> <span class="aj-s">"python3 benchmarks/home_gate_decisions.py"</span></div>
+    </div>
+  </div>
+</section>
+<section class="section">
+  <div class="section-inner">
+    <div class="section-label">What validates us</div>
+    <h2 class="section-h2">Run it yourself &mdash; every claim carries its command</h2>
+    <p class="section-sub">CAPAS is a fail-closed gate: it disposes a verdict on the <strong>structure of the evidence you submit</strong>, with no language model in the decision path. Every claim below carries the command that regenerates it &mdash; clone the repo and run them. A claim you can&rsquo;t re-derive isn&rsquo;t a claim, it&rsquo;s a slogan.</p>
+
+    <div style="margin-top:24px;border:1px solid rgba(72,187,120,.25);border-radius:14px;background:rgba(72,187,120,.05);padding:20px 22px">
+      <div style="font-size:12px;font-weight:800;letter-spacing:.08em;color:#48bb78;margin-bottom:12px">PROVEN &middot; locked invariants &mdash; re-running the test <em>is</em> the proof</div>
+      <ul style="margin:0;padding-left:18px;font-size:13px;color:rgba(255,255,255,.7);line-height:1.9">
+        <li>Never ACCEPTs a structurally-deficient claim (18/18 deficient cases held). <code style="color:#9fe0b4">python3 benchmarks/verify_fail_closed.py</code></li>
+        <li>Never crashes on hostile or garbage input &mdash; fails closed, returns one of four legal verdicts every time. <code style="color:#9fe0b4">python3 benchmarks/test_dynamic_fuzz.py</code></li>
+        <li>Survives a 20-payload hostile battery (malformed, injection, oversize, SSRF) with no false-accept. <code style="color:#9fe0b4">python3 benchmarks/verify_robustness.py</code></li>
+        <li>Every HOLD ships an actionable resolution &mdash; no dead ends (7/7 paths). <code style="color:#9fe0b4">python3 benchmarks/verify_hold_has_resolution.py</code></li>
+        <li>The 8 load-bearing invariants all hold, with a reproducible result hash. <code style="color:#9fe0b4">python3 benchmarks/conformance.py</code></li>
+        <li>Anytime-valid Type-I guarantee: empirical false-reject &le; &alpha;=0.05 under the null. <code style="color:#9fe0b4">python3 benchmarks/demo_sequential_typeI.py</code></li>
+      </ul>
+    </div>
+
+    <div style="margin-top:14px;border:1px solid rgba(0,200,200,.22);border-radius:14px;background:rgba(0,200,200,.05);padding:20px 22px">
+      <div style="font-size:12px;font-weight:800;letter-spacing:.08em;color:#00c8c8;margin-bottom:12px">BACKED &middot; regenerates from a command, and the output hash matches</div>
+      <ul style="margin:0;padding-left:18px;font-size:13px;color:rgba(255,255,255,.7);line-height:1.9">
+        <li>Every verdict carries an audit hash a third party re-derives from the published recipe; tamper any load-bearing field and the hash diverges. <code style="color:#7fdede">python3 benchmarks/verify_audit_hash_reproduces.py</code></li>
+        <li>A signed conformance attestation binds the commit, the conformance result hash, and a live verdict into one packet hash. <code style="color:#7fdede">python3 benchmarks/attest_conformance.py</code></li>
+        <li>All 26 cross-domain invariant gates produce a live verdict. <code style="color:#7fdede">python3 benchmarks/generate_capability_matrix.py</code></li>
+        <li>The browser Gate App consumes a single source of truth &mdash; no drift between the served contract and <code style="color:rgba(255,255,255,.6)">capas.py</code>. <code style="color:#7fdede">python3 benchmarks/verify_gate_contracts_match.py</code></li>
+      </ul>
+    </div>
+
+    <div style="margin-top:14px;border:1px solid rgba(212,168,32,.25);border-radius:14px;background:rgba(212,168,32,.05);padding:20px 22px">
+      <div style="font-size:12px;font-weight:800;letter-spacing:.08em;color:#d4a820;margin-bottom:6px">SCOPED &middot; the mechanism runs; the headline rate is over a <em>synthetic / agent-coded</em> corpus</div>
+      <div style="font-size:11px;color:rgba(255,255,255,.4);margin-bottom:12px">We name the corpus and the upgrade path &mdash; these are coverage, not measured real-world rates.</div>
+      <ul style="margin:0;padding-left:18px;font-size:13px;color:rgba(255,255,255,.7);line-height:1.9">
+        <li>N=1238 decisions across 12 claim families exercise the full ACCEPT/REWRITE/REJECT/HOLD space &mdash; <em>synthetic-grid coverage, not a real-world reject rate</em>. <code style="color:#e6cd8a">python3 benchmarks/family_decision_mix.py</code></li>
+        <li>The n=28 retrospective separated retracted from replicated published claims by structure &mdash; <em>agent-coded from public retraction records, not blind adjudication</em>. <code style="color:#e6cd8a">python3 benchmarks/pilot_real.py</code></li>
+        <li>The pharma admissibility contract is fail-closed over a <em>synthetic n=3024 corpus</em> (not a measured market rate). <code style="color:#e6cd8a">python3 benchmarks/generate_pharma_corpus.py</code></li>
+      </ul>
+    </div>
+
+    <div style="margin-top:18px;border:1px solid rgba(232,24,93,.3);border-radius:14px;background:rgba(232,24,93,.04);padding:20px 22px">
+      <div style="font-size:12px;font-weight:800;letter-spacing:.06em;color:#e8185d;margin-bottom:10px">WHAT IS <em>NOT</em> VALIDATED &mdash; the honesty footer is the point</div>
+      <p style="margin:0 0 10px;font-size:13px;color:rgba(255,255,255,.7);line-height:1.7"><strong>The GIGO ceiling is real and we do not hide it.</strong> CAPAS gates the <em>structure</em> of evidence, not ground truth &mdash; a self-consistent, well-formed, fabricated payload <strong>can pass the gate</strong>. Our own fuzz and pedagogy-governance tests measure and report this residual (a disclosed false-admit on the GIGO-ceiling class). The gate raises the cost of lying and makes every verdict re-derivable; it does not detect a careful liar.</p>
+      <ul style="margin:0;padding-left:18px;font-size:13px;color:rgba(255,255,255,.6);line-height:1.8">
+        <li><strong>No blind, oracle-adjudicated fraud-detection rate exists.</strong> The retrospective and benchmark numbers are agent-coded or synthetic; the &ldquo;0 false-accepts&rdquo; figure is on that corpus only.</li>
+        <li><strong>The cross-domain blind-adjudication study (Gap-1) has NOT been run.</strong> Its registry, receipts, and gating are built and pass (<code style="color:rgba(255,255,255,.6)">python3 benchmarks/study_assembly.py</code>), but the n&ge;500 human-adjudicated comparison is <em>pre-registered, not yet executed</em>.</li>
+        <li><strong>No SOC 2 / ISO 27001 certification.</strong> Roadmap, not held.</li>
+        <li><strong>Head-to-head baselines (UMA, BTS, EigenTrust) are our <em>models</em> of those mechanisms</strong>, not the live systems.</li>
+      </ul>
+      <p style="margin:12px 0 0;font-size:12px;color:rgba(255,255,255,.45)">If any command above does not reproduce its stated result on your machine, that is a bug &mdash; tell us.</p>
     </div>
   </div>
 </section>
@@ -534,9 +585,9 @@ footer{border-top:1px solid rgba(255,255,255,0.06);padding:32px 48px;display:fle
       <div style="color:rgba(255,255,255,.4)"># -> ACCEPT / REWRITE / REJECT / HOLD  (never the LLM&rsquo;s call)</div>
     </div>
     <div style="display:flex;gap:14px;margin-top:20px;flex-wrap:wrap;align-items:center">
-      <div style="border:1px solid rgba(72,187,120,.3);border-radius:10px;background:rgba(72,187,120,.06);padding:14px 18px"><strong style="color:#48bb78;font-size:18px">0/3</strong> <span style="font-size:13px;color:rgba(255,255,255,.6)">false-accepts with CAPAS</span></div>
-      <div style="border:1px solid rgba(255,255,255,.08);border-radius:10px;background:rgba(255,255,255,.02);padding:14px 18px"><strong style="color:rgba(255,255,255,.4);font-size:18px">3/3</strong> <span style="font-size:13px;color:rgba(255,255,255,.45)">false-accepts LLM-alone</span></div>
-      <span style="font-size:11px;color:rgba(255,255,255,.35)">illustrative 3-case example, not a benchmark</span>
+      <div style="border:1px solid rgba(72,187,120,.3);border-radius:10px;background:rgba(72,187,120,.06);padding:14px 18px"><strong style="color:#48bb78;font-size:18px">0/5</strong> <span style="font-size:13px;color:rgba(255,255,255,.6)">false-accepts &mdash; CAPAS gate</span></div>
+      <div style="border:1px solid rgba(255,255,255,.08);border-radius:10px;background:rgba(255,255,255,.02);padding:14px 18px"><strong style="color:rgba(255,255,255,.4);font-size:18px">5/5</strong> <span style="font-size:13px;color:rgba(255,255,255,.45)">accept-if-undisputed default</span></div>
+      <span style="font-size:11px;color:rgba(255,255,255,.35)">5 checkable-FALSE claims &middot; a strong LLM-judge ties CAPAS here (0/5) &mdash; the gate&rsquo;s edge is determinism, not accuracy &middot; re-derive: <code>python3 benchmarks/head_to_head_sota.py</code></span>
     </div>
     <p class="section-sub" style="margin-top:18px;font-size:13px;color:rgba(255,255,255,.5)">The boost is <strong>reliability, not capability</strong> &mdash; the model doesn&rsquo;t get smarter, its output becomes admissible-or-deferred. Honest scope: it grounds record&harr;text, not text&harr;reality &mdash; a source that lies about its methods and withholds its data passes (the GIGO ceiling), so CAPAS says exactly which slice it re-derived and which it could only attest.</p>
   </div>
@@ -586,11 +637,11 @@ footer{border-top:1px solid rgba(255,255,255,0.06);padding:32px 48px;display:fle
     <div class="section-label">Independent validation</div>
     <h2 class="section-h2">We didn&rsquo;t invent the architecture &mdash; a frontier quantum-hardware vendor&rsquo;s production stack already runs it.</h2>
     <p class="section-sub">IBM&rsquo;s quantum stack will not run your circuit until it clears a calibration gate &mdash; every job checked against <strong>frozen, re-derived device invariants</strong>, fail-closed, with no model-of-the-day in the decision. That is exactly the CAPAS architecture: re-derive from declared evidence, refuse on violation, keep the verdict deterministic. It already runs in production, at the frontier of physics. CAPAS generalizes the same mechanism across ten domains &mdash; finance, statistics, epidemiology, chemistry, physics, quantum. Two independent systems converging on the same admissibility mechanism is <strong>consilience</strong>: evidence the design is structural, not a pitch.</p>
-    <p class="section-sub" style="margin-top:14px;opacity:.7">Honest scope: the identities are textbook and the convergence is architectural, not a partnership claim. And the mechanism itself is the open Apache-2.0 engine &mdash; re-derivable, therefore copyable &mdash; so the consilience validates the design, it is not the moat. What is defensible is the cross-domain composition plus the self-run conformance mark and signed certificate; on frozen calibration, CAPAS is in fact the stricter of the two.</p>
+    <p class="section-sub" style="margin-top:14px;opacity:.7">Honest scope: the identities are textbook and the convergence is architectural, not a partnership claim. And the mechanism itself is the open Apache-2.0 engine &mdash; re-derivable, therefore copyable &mdash; so the consilience validates the design, it is not the moat. What is defensible is the cross-domain composition plus the self-run conformance mark and signed certificate; on an unchanging-then-reported-operational calibration value, CAPAS applies the more conservative, fail-closed disposition. (Independent of IBM &mdash; not affiliated or endorsed; observations from public open-plan metadata.)</p>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:24px;max-width:680px">
       <div style="border:1px solid rgba(72,187,120,.3);border-radius:12px;background:rgba(72,187,120,.06);padding:20px">
         <div style="font-size:34px;font-weight:900;color:#48bb78;letter-spacing:-.03em">0 false flags</div>
-        <div style="font-size:13px;color:rgba(255,255,255,.6);margin-top:4px">Run live over the real <strong>155-qubit ibm_kingston</strong> calibration, CAPAS independently re-found only the genuine anomalies &mdash; the single T2&nbsp;&gt;&nbsp;2&middot;T1 qubit (Q121) and the 12-edge TLS cluster &mdash; with no false positives on honest vendor data.</div>
+        <div style="font-size:13px;color:rgba(255,255,255,.6);margin-top:4px">Run live over the real <strong>156-qubit ibm_kingston</strong> calibration, CAPAS independently re-found only the genuine anomalies &mdash; the single T2&nbsp;&gt;&nbsp;2&middot;T1 qubit (Q121) and the 12-edge TLS cluster &mdash; with no false positives on honest vendor data.</div>
       </div>
       <div style="border:1px solid rgba(255,255,255,.08);border-radius:12px;background:rgba(255,255,255,.02);padding:20px">
         <div style="font-size:34px;font-weight:900;color:rgba(255,255,255,.85);letter-spacing:-.03em">24&times; caught</div>
@@ -633,8 +684,8 @@ footer{border-top:1px solid rgba(255,255,255,0.06);padding:32px 48px;display:fle
       <a class="fam-chip" href="SECURITY.md" style="text-decoration:none">Responsible-disclosure policy</a>
       <a class="fam-chip" href="THIRD_PARTY_NOTICES.md" style="text-decoration:none">Third-party notices</a>
     </div>
-    <p class="section-sub" style="font-size:13px;color:rgba(255,255,255,.55)"><strong>Quantum-calibration credential:</strong> CAPAS gates reported quantum-device claims against textbook invariants &mdash; run live over IBM&rsquo;s 155-qubit <code style="color:rgba(255,255,255,.7)">ibm_kingston</code> calibration it re-found only the genuine anomalies (Q121, the bad-coupler cluster) with 0 false flags. Architectural consilience with IBM&rsquo;s own admissibility engine &mdash; not a partnership or endorsement. <a href="capas_vs_sota_and_ibm.md" style="color:#e8185d;font-weight:600">The IBM consilience &rarr;</a></p>
-    <p class="section-sub" style="font-size:12px;color:rgba(255,255,255,.4);margin-top:10px">Shown honestly as <em>not yet earned</em>: the <strong>OpenSSF Best Practices Badge</strong> is in progress (self-cert + static/dynamic-analysis criteria being closed). We&rsquo;ll display it only once it passes &mdash; putting up a badge we don&rsquo;t hold would contradict the whole point.</p>
+    <p class="section-sub" style="font-size:13px;color:rgba(255,255,255,.55)"><strong>Quantum-calibration credential:</strong> CAPAS gates reported quantum-device claims against textbook invariants &mdash; run live over IBM&rsquo;s 156-qubit <code style="color:rgba(255,255,255,.7)">ibm_kingston</code> calibration it re-found only the genuine anomalies (Q121, the bad-coupler cluster) with 0 false flags. Architectural consilience with IBM&rsquo;s own admissibility engine &mdash; not a partnership or endorsement. <a href="capas_vs_sota_and_ibm.md" style="color:#e8185d;font-weight:600">The IBM consilience &rarr;</a></p>
+    <p class="section-sub" style="font-size:12px;color:rgba(255,255,255,.5);margin-top:10px"><strong>OpenSSF Best Practices Badge:</strong> passing (100%) &mdash; self-cert + static/dynamic-analysis criteria met. The badge hotlinks the live bestpractices.dev project, so it verifies independently and updates itself. <a href="https://www.bestpractices.dev/projects/13338" style="display:inline-block;vertical-align:middle;margin-left:4px"><img src="https://www.bestpractices.dev/projects/13338/badge" alt="OpenSSF Best Practices passing" style="height:19px;vertical-align:middle"></a></p>
   </div>
 </section>
 
@@ -642,7 +693,7 @@ footer{border-top:1px solid rgba(255,255,255,0.06);padding:32px 48px;display:fle
   <div class="section-inner">
     <div class="section-label">Beachhead</div>
     <h2 class="section-h2">Statistical-claim admissibility for regulated submissions.</h2>
-    <p class="section-sub">Pinnacle 21 already checks whether a trial dataset is structurally well-formed (CDISC conformance). It does <em>not</em> check whether the reported statistic is <strong>licensed by its evidence</strong>. CAPAS does: significance versus alpha, multiplicity, confidence-interval-excludes-null, effect direction, endpoint pre-specification &mdash; re-derivably, beside the submission, not as a replacement. Validated on a <strong>3,024-case admissibility corpus, 0 deficient claims accepted</strong> (fail-closed). <a href="MARKET_VALIDATION.md" style="color:#e8185d;font-weight:600">Market validation &rarr;</a></p>
+    <p class="section-sub">Pinnacle 21 already checks whether a trial dataset is structurally well-formed (CDISC conformance). It does <em>not</em> check whether the reported statistic is <strong>licensed by its evidence</strong>. CAPAS does: significance versus alpha, multiplicity, confidence-interval-excludes-null, effect direction, endpoint pre-specification &mdash; re-derivably, beside the submission, not as a replacement. Validated on a <strong>3,024-case <em>synthetic</em> admissibility corpus, 0 deficient claims accepted</strong> (fail-closed) &mdash; contract coverage of the space P21 skips, not a production false-accept rate on real submissions. <a href="MARKET_VALIDATION.md" style="color:#e8185d;font-weight:600">Market validation &rarr;</a></p>
   </div>
 </section>
 

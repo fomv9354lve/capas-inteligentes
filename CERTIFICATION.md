@@ -72,7 +72,7 @@ makes the open standard a moat instead of a commodity — the lesson MongoDB/Ela
 
 IBM's production quantum-calibration stack is, structurally, the same admissibility engine — invariant
 checks + threshold gates + fail-closed verdict + a served/withheld data tier. CAPAS run live over the real
-155-qubit `ibm_kingston` calibration re-found only the genuine anomalies with **0 false flags**, and its
+156-qubit `ibm_kingston` calibration re-found only the genuine anomalies with **0 false flags**, and its
 exact-only discipline caught a residual-ZZ estimate **24× off** IBM's published value. Re-derive:
 `examples/kingston_live_audit.py`, `benchmarks/kingston_real_bell_verdict.json`. (Architectural
 consilience, not an IBM partnership or endorsement — see `docs/capas_vs_sota_and_ibm.md`.)

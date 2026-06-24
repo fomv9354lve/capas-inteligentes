@@ -3,6 +3,10 @@ name: CAPAS Claim Gate Action
 on:
   workflow_dispatch:
 
+# Least-privilege token (OpenSSF Scorecard: Token-Permissions).
+permissions:
+  contents: read
+
 jobs:
   claim-gate:
     runs-on: ubuntu-latest

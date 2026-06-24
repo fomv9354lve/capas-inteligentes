@@ -1,0 +1,18 @@
+# Dependabot — automated dependency monitoring + GitHub Actions SHA hygiene.
+# Backs OpenSSF Scorecard (Dependency-Update-Tool, Pinned-Dependencies upkeep)
+# and OpenSSF Best Practices Silver (dependency_monitoring).
+version: 2
+updates:
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    labels: ["dependencies", "python"]
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    labels: ["dependencies", "ci"]

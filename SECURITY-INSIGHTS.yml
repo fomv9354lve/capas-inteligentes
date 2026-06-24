@@ -1,0 +1,73 @@
+# OpenSSF Security Insights (v1.0.0) — machine-readable security posture.
+# https://github.com/ossf/security-insights-spec
+header:
+  schema-version: 1.0.0
+  expiration-date: '2027-06-24T00:00:00.000Z'
+  last-updated: '2026-06-24'
+  last-reviewed: '2026-06-24'
+  project-url: https://github.com/fomv9354lve/capas-inteligentes
+  license: https://github.com/fomv9354lve/capas-inteligentes/blob/main/LICENSE
+
+project-lifecycle:
+  status: active
+  bug-fixes-only: false
+  core-maintainers:
+    - https://github.com/fomv9354lve
+  # Honest note: single maintainer. Bus-factor >= 2 is an open governance item.
+
+contribution-policy:
+  accepts-pull-requests: true
+  accepts-automated-pull-requests: true
+  contributing-policy: https://github.com/fomv9354lve/capas-inteligentes/blob/main/CONTRIBUTING.md
+  code-of-conduct: https://github.com/fomv9354lve/capas-inteligentes/blob/main/CODE_OF_CONDUCT.md
+
+documentation:
+  - https://github.com/fomv9354lve/capas-inteligentes/blob/main/README.md
+  - https://github.com/fomv9354lve/capas-inteligentes/blob/main/GOVERNANCE.md
+  - https://github.com/fomv9354lve/capas-inteligentes/blob/main/CERTIFICATION.md
+
+distribution-points:
+  - https://pypi.org/project/capas-claim-gate/
+
+security-artifacts:
+  threat-model:
+    threat-model-created: false
+    # Open item (assurance case / threat model) — see OpenSSF Best Practices Silver roadmap.
+
+security-testing:
+  - tool-type: sast
+    tool-name: CodeQL
+    integration:
+      ad-hoc: false
+      ci: true
+      before-release: true
+  - tool-type: sast
+    tool-name: Bandit
+    integration:
+      ad-hoc: false
+      ci: true
+      before-release: true
+  - tool-type: fuzzer
+    tool-name: Hypothesis (property-based)
+    integration:
+      ad-hoc: false
+      ci: true
+      before-release: true
+
+security-contacts:
+  - type: website
+    value: https://github.com/fomv9354lve/capas-inteligentes/blob/main/SECURITY.md
+
+vulnerability-reporting:
+  accepts-vulnerability-reports: true
+  security-policy: https://github.com/fomv9354lve/capas-inteligentes/blob/main/SECURITY.md
+
+dependencies:
+  third-party-packages: true
+  dependencies-lists:
+    - https://github.com/fomv9354lve/capas-inteligentes/blob/main/pyproject.toml
+  sbom: []
+  dependencies-lifecycle:
+    policy-url: https://github.com/fomv9354lve/capas-inteligentes/blob/main/SECURITY.md
+  env-dependencies-policy:
+    policy-url: https://github.com/fomv9354lve/capas-inteligentes/blob/main/SECURITY.md

@@ -14,13 +14,16 @@ claims about qubits** — the same pattern CAPAS is. For each qubit/edge it:
 - measures quantities (T1, T2, gate error, readout, residual ZZ),
 - checks them against physical invariants and engineering thresholds,
 - emits a fail-closed decision (`Operational: Yes/No`),
-- and manages a **disclosure boundary** — it serves T1/T2/readout/ZZ but **withholds frequency**.
+- and manages a **disclosure boundary** — on the open plan it serves T1/T2/readout/ZZ but does not
+  expose qubit frequency.
 
-**(Fact)** This is consilience, not analogy-for-flavor: a system built independently, at industrial
-scale, for a domain we did not design for, converged on CAPAS's exact architecture — invariant
-checks + threshold gates + a fail-closed operational verdict + a served/withheld data tier. The
-CAPAS pattern is not speculative; IBM runs it in production. That is the strongest external
-validation the architecture has received.
+**(Fact + our interpretation)** A system built independently, at industrial scale, for a domain we
+did not design for, exhibits the same structural pattern CAPAS uses — invariant checks + threshold
+gates + a fail-closed operational verdict + a served/undisclosed data tier. We read this as
+**independent architectural convergence**: evidence the pattern is sound engineering. This pattern
+(measure → compare to thresholds → fail-closed verdict → data tiers) is common across quality-control
+engineering, so the convergence *supports the design* — it is **not** a validation, review, or
+endorsement of CAPAS by IBM.
 
 ## 2. The four concrete things it gave us (all integrated, all tested)
 
@@ -29,15 +32,16 @@ validation the architecture has received.
 | 1 | A reported number can be re-derived into a quantity they don't publish | **Derived-quantity gates**: `Γφ = 1/T2 − 1/2T1` (reproduced their atlas to 2 decimals: Q0 Tφ=1173.95µs), gate-error coherence floor `t_g/3T1` | ✅ live |
 | 2 | An *estimate* and an *exact published value* can diverge wildly | **Exact-only discipline, validated by data**: the CZ/RZZ estimate put edge 131-138 at ~86 kHz; IBM's published ZZ is **3.56 kHz — 24× off**. Gating on the estimate would have false-flagged | ✅ proven |
 | 3 | A vendor serves a *tier* and withholds the rest | **GATE / ATTEST / DEFER maps onto served / withheld data**: CAPAS correctly refuses to gate on the withheld (frequency) — loss-tangent & spectral-collision stay diagnostics | ✅ honored |
-| 4 | A calibration that doesn't converge can be *silently frozen* and still reported `Operational` | **CAPAS is STRICTER than IBM's engine here**: a frozen value reported as operational is a fail-OPEN leak; CAPAS's fail-closed discipline + the derived-quantity gates flag exactly that pattern (Q121: T2>2T1, unmoving across calibrations) | ✅ caught live |
+| 4 | A calibration value can remain unchanged across calibration cycles while the device is still reported `Operational` | **A more conservative disposition**: CAPAS's fail-closed discipline + the derived-quantity gates flag that pattern (Q121: T2>2T1, value unchanged across the calibrations we sampled) — a fail-closed gate treats an unchanging value more cautiously than a binary operational flag does | ✅ caught live |
 
-**(Conjecture, well-supported)** Items 3–4 are our interpretation of IBM's disclosure and
-freezing behavior, not IBM's stated design. The observations (frequency=None; Q121 unchanged;
-`Operational: Yes` at T1=11µs) are fact; the "DEFER" and "fail-open leak" framings are ours.
+**(Conjecture, well-supported)** Items 3–4 are our interpretation of publicly-served calibration
+metadata, not statements about IBM's internal design or intent. The observations (frequency=None on
+the open plan; Q121's value unchanged across the calibrations we sampled; `Operational: Yes` at
+T1=11µs) are what the metadata shows; the "DEFER" and conservative-disposition framings are ours.
 
 ## 3. The live proof: CAPAS audited the real chip
 
-`kingston_live_audit.py` ran the gates over the live ibm_kingston calibration (155 qubits, 176
+`kingston_live_audit.py` ran the gates over the live ibm_kingston calibration (156 qubits, 176
 edges, metadata only). **(Fact)** CAPAS independently re-found the atlas from the vendor's own
 numbers:
 
@@ -68,10 +72,11 @@ numbers:
   "fabricate a globally-consistent world," we do not abolish it.
 
 **The honest one-line position:** CAPAS is a cross-domain **invariant-admissibility engine** whose
-architecture was independently validated by IBM's production calibration system, which is novel
-specifically where it gates *reported physical/mathematical claims for admissibility without
-re-running the experiment* (GRIM/statcheck generalized), and which is, on at least one axis
-(silent frozen-calibration), **stricter than the industrial engine that inspired it.**
+architecture shows **independent convergence** with IBM's production calibration system (convergence,
+not endorsement), which is novel specifically where it gates *reported physical/mathematical claims
+for admissibility without re-running the experiment* (GRIM/statcheck generalized), and which, on at
+least one axis (an unchanging-then-reported-operational calibration value), applies a **more
+conservative, fail-closed disposition** than a binary operational flag.
 
 ## 5. What is still NOT ours / still open
 
@@ -79,6 +84,18 @@ re-running the experiment* (GRIM/statcheck generalized), and which is, on at lea
   stay diagnostics, never gates.
 - The GIGO ceiling is intact: internal consistency ≠ truth-against-reality.
 - Sybil / collusion / cash-in in the accountability substrate are unsolved (for the whole field).
-- The "IBM freezes calibration" and "disclosure = DEFER" readings are interpretation, not IBM doctrine.
+- The unchanging-calibration and "disclosure = DEFER" readings are our interpretation of public
+  metadata, not IBM doctrine.
 
 *The capability matrix backing §2–3 is regenerated, not asserted: `docs/capability_matrix.md`.*
+
+---
+
+*IBM, IBM Quantum, Heron, and ibm_kingston are trademarks of International Business Machines
+Corporation. This document is independent and is **not affiliated with, sponsored by, or endorsed by
+IBM**. All device observations are re-derived from calibration metadata publicly served on the IBM
+Quantum open plan; they reflect no knowledge of IBM's internal design or intent. Use of IBM Quantum
+data is subject to IBM's terms of service. Device-specific figures (e.g. Q121, residual-ZZ values,
+the estimate-vs-published divergence) are re-derivable by running the cited `kingston_live_audit.py`
+against a current live calibration — confirm against a fresh run before external publication, as
+calibration values change over time.*

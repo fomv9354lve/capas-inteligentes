@@ -1,0 +1,41 @@
+name: CodeQL
+
+# Real CodeQL static analysis (Python). Backs the OpenSSF Best Practices Badge
+# static_analysis declaration ("Bandit + CodeQL"). Bandit runs in ci.yml; this
+# workflow is the actual CodeQL semantic analysis — NOT just a SARIF upload.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: "0 6 * * 1"  # weekly, Monday 06:00 UTC
+  workflow_dispatch:
+
+# Top-level least-privilege (Scorecard Token-Permissions); the analyze job elevates only what CodeQL needs.
+permissions:
+  contents: read
+
+jobs:
+  analyze:
+    name: Analyze (python)
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+      actions: read
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: python
+          queries: security-and-quality
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:python"
