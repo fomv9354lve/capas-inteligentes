@@ -232,7 +232,8 @@ class H(BaseHTTPRequestHandler):
         # no traversal). CLAIMS_REGISTRY.md already lives in docs/, so it is not here.
         _root_name = p.lstrip("/")
         if _root_name in ("GOVERNANCE.md", "LICENSE", "NOTICE", "SECURITY.md",
-                          "CONTRIBUTING.md", "CODE_OF_CONDUCT.md", "THIRD_PARTY_NOTICES.md"):
+                          "CONTRIBUTING.md", "CODE_OF_CONDUCT.md", "THIRD_PARTY_NOTICES.md",
+                          "CERTIFICATION.md"):
             rf = ROOT / _root_name
             if rf.is_file():
                 data = rf.read_bytes()
