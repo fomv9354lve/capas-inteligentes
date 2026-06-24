@@ -30,7 +30,9 @@ with gr.Blocks(title="CAPAS Gate") as demo:
     ct = gr.Textbox(label="claim_type", value="statistical_confidence")
     ev = gr.Code(label="evidence (JSON)", value=SAMPLES["Claim drift (association->causal)"][1], language="json")
     tx = gr.Textbox(label="claim_text", value="X reduces defects by 35%")
-    gr.Button("Run CAPAS gate").click(run, [ct, ev, tx], gr.Markdown())
+    btn = gr.Button("Run CAPAS gate", variant="primary")
+    out = gr.Markdown(label="verdict")  # named output component, placed in the layout
+    btn.click(run, [ct, ev, tx], out)
 
 if __name__ == "__main__":
     demo.launch()
