@@ -2,9 +2,12 @@
 admissibility certificate (the audit artifact a regulated buyer purchases), retrieve it by id,
 and VERIFY it for tamper-evidence. Stdlib only (hmac/hashlib/json), no DB dependency.
 
-The signature binds the certificate CONTENT — it proves the artifact was issued by CAPAS and not
-altered. It does NOT certify the claim is true (that is the GIGO ceiling): it certifies that THIS
-verdict was deterministically produced from THIS evidence by THIS engine version.
+The signature binds the certificate CONTENT — tamper-evident, non-repudiable proof that THIS exact record
+(engine version + evidence + verdict) was signed by the CAPAS key and not altered since (HMAC-SHA256 over
+canonical JSON, verified by recomputation). It does NOT certify the claim is true (the GIGO ceiling), and
+on its own it does NOT prove the verdict was produced deterministically — that comes from the engine's
+no-LLM decision path and is independently re-checkable by anyone via the self-run conformance mark (the
+no_llm_verdict suite must PASS). The HMAC binds the record; the conformance mark proves the determinism.
 """
 from __future__ import annotations
 

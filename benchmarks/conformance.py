@@ -64,7 +64,7 @@ def main() -> int:
     print("=== CAPAS CONFORMANCE SUITE (run-it-yourself; same suite the certifier runs) ===")
     for r in results:
         print(f"  {'OK ' if r['pass'] else 'XX '}{r['id']:22} {r['desc']}")
-    print(f"\nresult hash: sha256:{digest}  (deterministic — reproduces on any machine)")
+    print(f"\nresult hash: sha256:{digest}  (deterministic on re-run — same suite-pass profile yields the same hash)")
     print(record["statement"])
     print("Anyone can reproduce this: `python3 benchmarks/conformance.py`. The mark attests a verified "
           "artifact passed exactly this — no private process to trust.")

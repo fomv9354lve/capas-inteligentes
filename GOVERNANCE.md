@@ -2,7 +2,7 @@
 
 *This charter exists because the market research was unambiguous: the single highest-leverage move for an
 open standard is to **separate the standard/mark from the commercial entity before adoption**, not after.
-This document is the **binding, irrevocable instrument** that does it. It is written for legal review
+This document is the **binding statement of direction, drafted to be made legally irrevocable** (§3). It is written for legal review
 (`draft for counsel` — the structure is the commitment; the final wording is to be executed by counsel),
 but it takes effect as a binding statement of direction on publication.*
 
@@ -11,28 +11,35 @@ but it takes effect as a binding statement of direction on publication.*
 The CAPAS engine, schema, calculus, reference gate, CLI, tests, and benchmark corpus are open under
 Apache-2.0 (see `LICENSE`, `THIRD_PARTY_NOTICES.md`). They **will not be relicensed** to a
 source-available / non-OSI license to capture value. That move is the documented #1 trust-killer (see the
-record in §7) and is **irrevocably renounced** by this charter (§3).
+record in §7) and is renounced by this charter, to be made legally irrevocable per §3.
 
 ## 2. The certification mark — reserved, then placed under neutral governance
 
-The CAPAS name and the official certification/conformance mark are reserved (see `NOTICE`). This charter
-pre-commits them to neutral governance **before** CAPAS is promoted for adoption — the one move that lets
-the standard survive the commercial entity being acquired, pivoting, or dying.
+The CAPAS name and the official certification/conformance mark are claimed by the maintainer (see `NOTICE`,
+`LICENSE` §6) and **intended** to be reserved and placed under neutral governance **before** CAPAS is
+promoted for adoption — the one move that lets a standard survive the commercial entity being acquired,
+pivoting, or dying. **No trademark has been registered and no escrow has been executed yet** — both are open
+items in the status block. What is operative today is not the legal reservation but the **self-run
+conformance mark** (§5), which anyone can re-derive; that self-checkable check, not a registration, is the
+asset this charter protects.
 
-**Vehicle (effective now): trustee-escrow.** The mark is placed in escrow with an independent trustee
-(`[TRUSTEE — to be named]`) who holds the transfer right defined in §4. This is the executable-today
+**Intended vehicle: trustee-escrow.** The mark is to be placed in escrow with an independent trustee
+(`[TRUSTEE — to be named]`) who would hold the transfer right defined in §4. This is the executable-today
 vehicle (the Certified-Kubernetes pattern without waiting on a foundation). **Destination:** assignment
 to an independent foundation (Linux Foundation–style) is the migration target; until then the trustee
 holds the mark in trust under these terms.
 
 ## 3. Irrevocability (the one-way ratchet)
 
-The commitments in §1, §2, §4, and §5 are **irrevocable** and may be amended **only in the direction of
-greater neutrality and openness, never less**. Specifically: this charter may not be amended to relicense
-the core away from an OSI-approved license, to return the mark to the unconstrained control of the
-commercial entity, to remove the self-run conformance right (§6), or to weaken the trigger/transfer terms
-(§4). Any purported amendment that does so is void. This is the structural difference from every project
-in §7: the capture move is not *discouraged* — it is made *impossible by the instrument*.
+The commitments in §1, §2, §4, and §5 are **drafted to be made irrevocable** — amendable only toward
+greater neutrality and openness — **by an executed legal instrument**. Until that instrument is executed by
+counsel (status block, open item 2), they are a public, binding statement of direction, **not yet a
+legally enforceable one-way ratchet**. The intent: this charter may not be amended to relicense the core
+away from an OSI-approved license, to return the mark to the unconstrained control of the commercial
+entity, to remove the self-run conformance right (§6), or to weaken the trigger/transfer terms (§4). The
+capture move this charter forbids is the configuration that, in the surveyed set in §7, preceded a
+neutral-foundation fork in every listed case — once executed, the ratchet is what makes it *impossible by
+the instrument* rather than merely *discouraged*.
 
 ## 4. Trigger events and transfer
 
@@ -55,7 +62,7 @@ certifier runs (`python3 benchmarks/conformance.py`) and obtain the **same verdi
 hash** — a verified artifact can be checked with `POST /api/gate/verify`. The mark attests that a verified
 artifact passed that suite; it never requires trusting a private process. (Mechanic modeled on Certified
 Kubernetes / Sonobuoy: open tool, run-it-yourself, PR-submitted, **yearly re-certification** to prevent
-stale forks.) This right is irrevocable under §3.
+stale forks.) This right is to be made irrevocable under §3.
 
 ## 6. Mark usage
 
@@ -85,7 +92,7 @@ stranded the original; reversals did not restore trust. §3 makes this structura
 | **Styra / OPA** | Company acqui-hired by Apple (2025) | **The standard survived — because CNCF, not Styra, held the mark.** The model this charter copies. |
 
 The lesson the evidence forces: **entity-owns-engine + entity-owns-mark + entity-sells-product** is the
-exact configuration that forks every project. This charter pre-commits against it — irrevocably, before
+exact configuration that forks every project. This charter pre-commits against it, before
 adoption, while it is still free to do so.
 
 ## 8. Precedents this charter follows

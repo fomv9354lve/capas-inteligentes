@@ -1,9 +1,12 @@
 # CAPAS Claim Registry
 
-**CAPAS gates its own claims.** Every public number on this site is itself an admissible claim:
-`CLOSED` (proven by a passing test), `BACKED` (regenerates from a command, value+hash recorded),
+**CAPAS gates its own claims.** Every headline claim in this registry carries a machine-checked admissibility
+status: `CLOSED` (proven by a passing test), `BACKED` (regenerates from a command, value+hash recorded),
 or `SCOPED` (a declared estimate stated with its exact corpus and the artifact that would upgrade it).
-Nothing is bare. Run the command in the *Re-derive* column to reproduce the claim yourself.
+Nothing in this registry is bare; the release gate `python3 benchmarks/generate_proof_ledger.py` exits
+non-zero on any bare or broken claim. Run the *Re-derive* command to reproduce a claim yourself. (Here
+`admissible` means "carries a re-derivation command," NOT "measured/true in production" — see the GIGO
+ceiling below; UI numbers outside this registry are illustrative, not gated.)
 
 > Regenerate this file: `python3 benchmarks/generate_claims_registry.py` · release gate: `python3 benchmarks/generate_proof_ledger.py`
 
