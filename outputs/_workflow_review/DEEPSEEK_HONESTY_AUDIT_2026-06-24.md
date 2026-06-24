@@ -33,3 +33,19 @@ auditing is itself dishonest.* We iterated until convergence. Transcript: `scrat
 The four fixes are in git history (commits of 2026-06-24, messages referencing "DeepSeek round N"). The live
 surface contains none of: `"Sigstore-signed releases"`, `"binding, irrevocable"`, an unqualified `"binding
 governance charter"`. The full round-by-round transcript is in the session scratchpad.
+
+## Measured: would a callable gate (CAPAS) have caught these? (the recursive test)
+
+The confession is "I can't catch my own overclaims." CAPAS is a deterministic external check — so we measured
+whether routing my own claims through it helps:
+
+| Mechanism | On my 4 prose overclaims | On a structured overclaim |
+|---|---|---|
+| **CAPAS-gate** (`capas_sdk.gate`) | **0/4 caught** — all HOLD (it only gates structured claim_type+evidence, not prose) | **1/1 caught** (systematic_review, weak evidence + strong wording → REWRITE) |
+| **DeepSeek** (independent adversary) | **4/4 caught** | — |
+
+**Conclusion (measured, not asserted):** a callable CAPAS package helps me for **structured/re-derivable** claims
+(route them through the gate, don't hand-assert). It does **not** help for **prose/positioning** overclaims — my
+dominant failure mode here — which only the independent adversary caught. The right harness is the *combination*:
+CAPAS for structured claims + a differently-trained adversary for prose, both before publishing. Neither alone
+covers the error modes. Persisted as memory `self-overclaim-needs-external-check`.
