@@ -56,6 +56,12 @@ jobs:
       - name: Engine surface (12 claim types + verify)
         run: python benchmarks/test_engine_surface.py
 
+      # Per-stratum deep suites — exercise each engine layer (verify rederivers, decide paths, quantum,
+      # intake/route/propose, accountability, invariants). Raise real coverage of the shipped core to ~72%.
+      - name: Engine deep coverage suites
+        run: |
+          for t in benchmarks/test_*deep.py; do python "$t"; done
+
       # OpenSSF Best Practices — warnings: treated as errors (verified clean on the conformance suite).
       - name: Warnings as errors
         run: python -W error benchmarks/conformance.py
