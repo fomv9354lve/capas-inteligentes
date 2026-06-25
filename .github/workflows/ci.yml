@@ -51,6 +51,11 @@ jobs:
       - name: Gate correctness (no false-admit / no over-block)
         run: python benchmarks/verify_gate_no_false_admit.py
 
+      # Exercises the shipped engine across all 12 claim types + the verify/audit surface
+      # (raises real coverage of the load-bearing decision paths).
+      - name: Engine surface (12 claim types + verify)
+        run: python benchmarks/test_engine_surface.py
+
       # OpenSSF Best Practices — warnings: treated as errors (verified clean on the conformance suite).
       - name: Warnings as errors
         run: python -W error benchmarks/conformance.py
