@@ -77,6 +77,11 @@ def certificate(claim_type: str, evidence: dict[str, Any], claim_text: str = "",
             cert["independence"] = block
     except Exception:
         pass
+    try:  # breeding lock: interbreed the claim with CAPAS's invariant corpus (additive, fail-open)
+        import capas_breeding
+        cert["integration"] = capas_breeding.breeding_lock(evidence if isinstance(evidence, dict) else {})
+    except Exception:
+        pass
     return cert
 
 
