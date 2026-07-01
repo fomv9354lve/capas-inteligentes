@@ -65,8 +65,24 @@ def reward(claim_type: str, evidence: dict[str, Any], claim_text: str = "", clai
 def certificate(claim_type: str, evidence: dict[str, Any], claim_text: str = "", claim_id: str = "claim") -> dict[str, Any]:
     """A signed, re-derivable admissibility certificate (the audit artifact a regulated buyer
     purchases): stratifies the claim into grounded / generated / unknowable and names the
-    boundary it cannot enter."""
-    return capas_rcc.rcc(_payload(claim_type, evidence, claim_text, claim_id))
+    boundary it cannot enter. Additionally reports the gate's effective independent-constraint
+    count (M_eff) + theater tax when a reference estimate exists — the certificate is honest
+    about its own strength, not just its verdict. The independence block is additive (it does
+    not enter the core audit hash) and is skipped silently if unavailable."""
+    cert = capas_rcc.rcc(_payload(claim_type, evidence, claim_text, claim_id))
+    try:  # additive, fail-open on the annotation ONLY — never blocks a certificate
+        import capas_independence
+        block = capas_independence.certificate_block(claim_type)
+        if block is not None:
+            cert["independence"] = block
+    except Exception:
+        pass
+    try:  # breeding lock: interbreed the claim with CAPAS's invariant corpus (additive, fail-open)
+        import capas_breeding
+        cert["integration"] = capas_breeding.breeding_lock(evidence if isinstance(evidence, dict) else {})
+    except Exception:
+        pass
+    return cert
 
 
 def verified(propose: Callable[[], dict[str, Any]], claim_type: str,
