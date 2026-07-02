@@ -1,0 +1,89 @@
+{
+  "note": "CAPAS probe library \u2014 grows via ingest() from physics-magnitude-lab gated (BACKED) signals.",
+  "probes": [
+    {
+      "id": "coherence",
+      "name": "T2<=2T1",
+      "inputs": [
+        "t1",
+        "t2"
+      ],
+      "lhs": "t2",
+      "op": "<=",
+      "rhs": "2*t1",
+      "status": "BACKED",
+      "source": "capas_quantum_physics.check_coherence",
+      "derivation": "Markovian decoherence"
+    },
+    {
+      "id": "dephasing",
+      "name": "Gamma_phi>=0",
+      "inputs": [
+        "t1",
+        "t2"
+      ],
+      "lhs": "1/t2 - 1/(2*t1)",
+      "op": ">=",
+      "rhs": "-1e-9",
+      "status": "BACKED",
+      "source": "capas_quantum_physics.pure_dephasing",
+      "derivation": "1/T2=1/2T1+Gamma_phi"
+    },
+    {
+      "id": "fidelity",
+      "name": "fid=1-gerr",
+      "inputs": [
+        "fid",
+        "gerr"
+      ],
+      "lhs": "(fid-(1-gerr))**2",
+      "op": "<=",
+      "rhs": "1e-6",
+      "status": "BACKED",
+      "source": "gate fidelity identity",
+      "derivation": "F=1-e"
+    },
+    {
+      "id": "gate_floor",
+      "name": "gerr>=tg/3T1",
+      "inputs": [
+        "gerr",
+        "tg",
+        "t1"
+      ],
+      "lhs": "gerr",
+      "op": ">=",
+      "rhs": "tg/(3*t1) - 1e-9",
+      "status": "BACKED",
+      "source": "decoherence-limited gate floor",
+      "derivation": "T1 decay during gate"
+    },
+    {
+      "id": "readout",
+      "name": "P01>=P10",
+      "inputs": [
+        "p01",
+        "p10"
+      ],
+      "lhs": "p01",
+      "op": ">=",
+      "rhs": "p10 - 1e-9",
+      "status": "BACKED",
+      "source": "readout asymmetry",
+      "derivation": "thermal population"
+    },
+    {
+      "id": "prob_gerr",
+      "name": "0<=gerr<=1",
+      "inputs": [
+        "gerr"
+      ],
+      "lhs": "gerr",
+      "op": "<=",
+      "rhs": "1",
+      "status": "BACKED",
+      "source": "probability bound",
+      "derivation": "gerr is a probability"
+    }
+  ]
+}

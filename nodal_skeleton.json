@@ -1,0 +1,11 @@
+{ "note": "CAPAS nodal skeleton — the few cross-stratum invariants that constrain claims in ANY domain. Ordered by NODALITY (strata reached). The high-nodality core; leaf laws ingest on-miss.",
+  "laws": [
+    {"id":"prob_bound","name":"0<=p<=1","inputs":["p"],"lhs":"p*(1-p)","op":">=","rhs":"-1e-9","stratum":"measure/logic","reach":["quantum","finance","epi","rmt","chem","any"],"derivation":"Kolmogorov axiom"},
+    {"id":"corr_bound","name":"|corr|<=1","inputs":["corr"],"lhs":"corr*corr","op":"<=","rhs":"1.000000001","stratum":"measure/logic","reach":["stats","rmt","finance","epi"],"derivation":"Cauchy-Schwarz"},
+    {"id":"variance_nonneg","name":"var>=0","inputs":["var"],"lhs":"var","op":">=","rhs":"-1e-9","stratum":"measure/logic","reach":["any"],"derivation":"E[(X-mu)^2]>=0"},
+    {"id":"cauchy_schwarz","name":"<a,b> <= |a||b|","inputs":["inner","na","nb"],"lhs":"inner","op":"<=","rhs":"na*nb + 1e-9","stratum":"geometry","reach":["rmt","stats","physics","any_inner_product"],"derivation":"Cauchy-Schwarz inequality"},
+    {"id":"conservation","name":"parts sum to total","inputs":["a","b","total"],"lhs":"(a+b-total)**2","op":"<=","rhs":"1e-6","stratum":"conservation","reach":["accounting","chem","physics","probability"],"derivation":"balance identity (Noether-family)"},
+    {"id":"fidelity_bound","name":"0<=F<=1","inputs":["fidelity"],"lhs":"fidelity*(1-fidelity)","op":">=","rhs":"-1e-9","stratum":"measure","reach":["quantum","ml","stats"],"derivation":"F is a probability"},
+    {"id":"bayes_ppv","name":"PPV=sens*prev/(...)","inputs":["ppv","sens","spec","prev"],"lhs":"(ppv-(sens*prev)/(sens*prev+(1-spec)*(1-prev)))**2","op":"<=","rhs":"1e-6","stratum":"inference","reach":["epi","ml","diagnostics"],"derivation":"Bayes theorem"},
+    {"id":"success_budget","name":"total<=step","inputs":["total_success","step_success"],"lhs":"total_success","op":"<=","rhs":"step_success + 1e-9","stratum":"multiplicative","reach":["quantum","reliability","probability"],"derivation":"product of <=1 factors decreases"}
+  ] }
