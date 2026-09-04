@@ -15,6 +15,8 @@ import json
 import sys
 from pathlib import Path
 
+from redact_capture import CREDENTIAL_NAME, MARKER
+
 REQUIRED_APPS = ("capas", "atlas", "client-app-1", "client-app-2", "teoria")
 ENV_NAME = "capas-env"
 EXPECTED_CERTS = 3
@@ -46,6 +48,12 @@ def validate(state_dir: Path) -> list[str]:
                 fails.append(f"{app}: container resources not captured — cannot recreate")
             if (props.get("template") or {}).get("scale") is None:
                 fails.append(f"{app}: scale not captured — cannot recreate")
+            for c in (props.get("template") or {}).get("containers") or []:
+                for e in c.get("env") or []:
+                    name, value = e.get("name", ""), e.get("value")
+                    if CREDENTIAL_NAME.search(name) and value and value != MARKER:
+                        fails.append(f"{app}: env {name} carries a plaintext credential value — "
+                                     "the capture must redact it before this dump is committed")
 
         if _load(state_dir / f"secrets-{app}.json") is None:
             fails.append(f"{app}: secret names not captured (secrets-{app}.json)")

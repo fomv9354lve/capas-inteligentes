@@ -20,6 +20,7 @@ while read -r a; do
   [ -z "$a" ] && continue
   echo "  app: $a"
   az containerapp show -n "$a" -g "$RG" -o json          > "$OUT/app-$a.json"
+  python3 "$(dirname "$0")/redact_capture.py" "$OUT/app-$a.json"
   az containerapp secret list -n "$a" -g "$RG" -o json    > "$OUT/secrets-$a.json"
   # `az containerapp secret list` imprime stdout VACÍO (no `[]`) cuando la app no tiene
   # secretos. Un fichero de 0 bytes es indistinguible de una escritura fallida, que es

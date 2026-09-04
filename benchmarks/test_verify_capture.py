@@ -8,6 +8,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "ops"))
+from redact_capture import MARKER, redact  # noqa: E402
 from verify_capture import REQUIRED_APPS, validate  # noqa: E402
 
 
@@ -71,3 +72,56 @@ def test_env_without_static_ip_is_caught(tmp_path):
     (d / "env-capas-env.json").write_text(json.dumps({"properties": {"defaultDomain": "x"}}))
     fails = validate(d)
     assert any("staticIp" in f for f in fails)
+
+
+def _with_env(d: Path, app: str, env_entry: dict) -> dict:
+    doc = json.loads((d / f"app-{app}.json").read_text())
+    doc["properties"]["template"]["containers"][0]["env"] = [env_entry]
+    (d / f"app-{app}.json").write_text(json.dumps(doc))
+    return doc
+
+
+def test_plaintext_credential_env_is_caught(tmp_path):
+    d = _complete(tmp_path)
+    _with_env(d, "atlas", {"name": "ANALYTICS_SALT", "value": "a" * 32})
+    fails = validate(d)
+    assert any("atlas" in f and "ANALYTICS_SALT" in f for f in fails)
+
+
+def test_redacted_marker_env_passes(tmp_path):
+    d = _complete(tmp_path)
+    _with_env(d, "atlas", {"name": "ANALYTICS_SALT", "value": MARKER})
+    assert validate(d) == []
+
+
+def test_empty_credential_env_passes(tmp_path):
+    d = _complete(tmp_path)
+    _with_env(d, "atlas", {"name": "ANALYTICS_SALT", "value": ""})
+    assert validate(d) == []
+
+
+def test_secret_ref_env_passes(tmp_path):
+    d = _complete(tmp_path)
+    _with_env(d, "atlas", {"name": "ANTHROPIC_API_KEY", "secretRef": "anthropic-key"})
+    assert validate(d) == []
+
+
+def test_redact_round_trip_is_idempotent():
+    doc = _app("atlas")
+    doc["properties"]["template"]["containers"][0]["env"] = [
+        {"name": "ANALYTICS_SALT", "value": "a" * 32},
+        {"name": "ANTHROPIC_API_KEY", "secretRef": "anthropic-key"},
+        {"name": "PLAIN_CONFIG", "value": "not-a-secret"},
+    ]
+    doc, redacted = redact(doc)
+    assert redacted == ["ANALYTICS_SALT"]
+    env = doc["properties"]["template"]["containers"][0]["env"]
+    assert env[0]["value"] == MARKER
+    assert "value" not in env[1]
+    assert env[2]["value"] == "not-a-secret"
+
+    doc, redacted_again = redact(doc)
+    assert redacted_again == []
+    env = doc["properties"]["template"]["containers"][0]["env"]
+    assert env[0]["value"] == MARKER
+    assert env[2]["value"] == "not-a-secret"
