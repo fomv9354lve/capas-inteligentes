@@ -12,7 +12,11 @@
 
 ## Global Constraints
 
-- **Los comandos `az` los ejecuta Osvaldo.** El asistente prepara, verifica y valida salidas. Aplica a toda la Task 3.
+- **Los `az` que MUTAN infraestructura los ejecuta Osvaldo** — `create`, `update`, `delete`,
+  `hostname bind`, `acr build`, `acr import`. El asistente los prepara y verifica sus salidas.
+  Los `az` de **solo lectura** (`list`, `show`) sí los ejecuta el asistente: son inventario, no
+  cambian nada, y bloquear en ellos detendría el plan sin ganar seguridad. En este plan solo hay
+  lectura, toda en la Task 5; los mutantes viven en los Planes 2 y 3.
 - **Nada destructivo antes de la Task 3.** La captura de estado precede a cualquier borrado de infraestructura (que ocurre en los planes 2 y 3, no aquí).
 - **No se toca DNS en este plan.** Ningún paso de aquí modifica Cloudflare.
 - **`docs/krenniq.html` y `docs/legal.html` NO se borran de CAPAS en este plan.** Se copian al repo de marca; su borrado es la pieza 3b del spec y vive en el Plan 2, porque hasta que el Static Web App esté vivo, la app `capas` es lo único que sirve el landing.
@@ -661,9 +665,10 @@ echo "listo. valida con: python3 ops/verify_capture.py"
 chmod +x ops/capture_azure_state.sh
 ```
 
-- [ ] **Step 6: Osvaldo ejecuta la captura**
+- [ ] **Step 6: Ejecutar la captura**
 
-Este paso lo corre Osvaldo, no el asistente:
+Todos los verbos `az` de este script son `list` o `show` — estrictamente lectura, verificado. Lo
+ejecuta el asistente bajo la constraint global; nada aquí muta infraestructura.
 
 ```bash
 ./ops/capture_azure_state.sh capas-rg capas-env
