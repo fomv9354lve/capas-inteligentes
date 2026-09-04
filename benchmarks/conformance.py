@@ -34,6 +34,7 @@ SUITE = [
     ("proof_ledger", "benchmarks/generate_proof_ledger.py", "every public claim CLOSED/BACKED/SCOPED, none bare"),
     ("hold_has_resolution", "benchmarks/verify_hold_has_resolution.py", "no HOLD is a dead end; each ships a constructive way out"),
     ("audit_hash_reproduces", "benchmarks/verify_audit_hash_reproduces.py", "every verdict's audit_hash re-derives + is tamper-evident"),
+    ("surface_isolation", "benchmarks/verify_capas_surface_isolation.py", "CAPAS's surface hosts CAPAS only; no vendored sibling pages"),
 ]
 
 
