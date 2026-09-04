@@ -66,6 +66,7 @@ window.CAPAS_CONTRACTS = {
     "multimodal_evidence_claim": "Claims supported by declared multimodal evidence and extraction method.",
     "physical_accuracy": "Direct physical or chemical-accuracy claims.",
     "programming_language_behavior_claim": "Executable programming-language behavior claims requiring snippet, runtime, and observed output evidence.",
+    "proof_admissibility": "Claims that a result is PROVEN (a 'theorem'): gates whether the evidence licenses the word. Each step must validate, the load-bearing step must be identified, and a universally-quantified claim (all orders / for-all) must carry a bound UNIFORM over the quantified index \u2014 not just finite or leading-order checks. A universal claim backed only by finite checks is downgraded to 'leading-order result + conjectured remainder', never accepted as a full theorem.",
     "reproducibility_check": "Artifact availability and independent reproduction claims.",
     "statistical_confidence": "Statistical threshold and effect-direction claims.",
     "systematic_review_claim": "Systematic-review claims requiring protocol, inclusion, bias, and consistency evidence.",
@@ -96,6 +97,10 @@ window.CAPAS_CONTRACTS = {
     ],
     "programming_language_behavior_claim": [
       "docs_reference"
+    ],
+    "proof_admissibility": [
+      "leading_order_established",
+      "conjectured_remainder"
     ],
     "reproducibility_check": [],
     "statistical_confidence": [],
@@ -157,6 +162,12 @@ window.CAPAS_CONTRACTS = {
       "observed_output",
       "execution_observed",
       "runtime_environment_declared"
+    ],
+    "proof_admissibility": [
+      "claim_scope",
+      "steps_all_valid",
+      "load_bearing_step_identified",
+      "uniform_bound_proven"
     ],
     "reproducibility_check": [
       "artifact_available",

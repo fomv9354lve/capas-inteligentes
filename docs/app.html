@@ -3182,6 +3182,28 @@
           result.rewrite = "programming-language behavior candidate; runtime/execution evidence is not fully licensed";
           result.licensed_claim = result.rewrite;
         }
+      } else if (claim.type === "proof_admissibility") {
+        const scope = String(evidence.claim_scope || "").trim().toLowerCase();
+        const universal = ["universal", "all", "all_orders", "for_all", "for all", "for-all", "∀"].includes(scope);
+        const valid = evidence.steps_all_valid === true;
+        const crux = evidence.load_bearing_step_identified === true;
+        const uniform = evidence.uniform_bound_proven === true;
+        const remainder = String(evidence.conjectured_remainder || "").trim() || "the unproven remainder";
+        if (!crux) {
+          result.verdict = "REJECT";
+          result.reason = "a claimed proof whose load-bearing step is not identified is inadmissible as a proof";
+        } else if (!valid) {
+          result.verdict = "REJECT";
+          result.reason = "a step in the claimed proof does not re-derive/validate — there is a gap, not a proof";
+        } else if (universal && !uniform) {
+          result.verdict = "REWRITE";
+          result.reason = "the claim is universally quantified but no bound uniform over the quantified index is proven (only finite / leading-order checks) — 'theorem' is not licensed";
+          result.rewrite = `leading-order result established; ${remainder} is CONJECTURED, not proven — supply a bound uniform over the quantified index to license the full 'theorem'`;
+          result.licensed_claim = result.rewrite;
+        } else {
+          result.verdict = "ACCEPT";
+          result.reason = "each step validates, the load-bearing step is identified, and the claim's scope is licensed";
+        }
       }
       result = { ...result, ...evaluateFineTuneReadiness(payload, result) };
       result.admissibility_certificate = buildAdmissibilityCertificate(payload, result);

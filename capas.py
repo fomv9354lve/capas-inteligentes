@@ -196,6 +196,17 @@ CLAIM_TYPE_REGISTRY = {
         "optional": ["docs_reference"],
         "description": "Executable programming-language behavior claims requiring snippet, runtime, and observed output evidence.",
     },
+    "proof_admissibility": {
+        "required": ["claim_scope", "steps_all_valid", "load_bearing_step_identified", "uniform_bound_proven"],
+        "optional": ["leading_order_established", "conjectured_remainder"],
+        "description": (
+            "Claims that a result is PROVEN (a 'theorem'): gates whether the evidence licenses the word. "
+            "Each step must validate, the load-bearing step must be identified, and a universally-quantified "
+            "claim (all orders / for-all) must carry a bound UNIFORM over the quantified index — not just "
+            "finite or leading-order checks. A universal claim backed only by finite checks is downgraded to "
+            "'leading-order result + conjectured remainder', never accepted as a full theorem."
+        ),
+    },
 }
 
 REQUIRED_DECISION_FIELDS = {
@@ -286,6 +297,8 @@ BOOL_EVIDENCE_FIELDS = [
     "risk_of_bias_assessed", "effect_consistency", "resolution_pre_registered",
     "source_hashes_verified", "cross_modal_alignment", "extraction_method_declared",
     "execution_observed", "runtime_environment_declared",
+    "steps_all_valid", "load_bearing_step_identified", "uniform_bound_proven",
+    "leading_order_established",
 ]
 STRING_EVIDENCE_FIELDS = [
     "anchor_mode", "relative_anchor_reference", "benchmark_name", "benchmark_metric",
@@ -293,6 +306,7 @@ STRING_EVIDENCE_FIELDS = [
     "conflict_resolution_method", "modality", "language", "language_version",
     "claim_api", "docs_reference", "current_claim",
     "code_snippet", "expected_output", "observed_output",
+    "claim_scope", "conjectured_remainder",
 ]
 LIST_EVIDENCE_FIELDS = ["supporting_sources", "contradicting_sources"]
 
@@ -1898,6 +1912,33 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
             reason = "programming behavior evidence is structurally complete but lacks observed execution or runtime boundary"
             rewrite = "programming-language behavior candidate; runtime/execution evidence is not fully licensed"
             licensed_claim = rewrite
+    elif claim_type == "proof_admissibility":
+        # The load-bearing gate is a QUANTIFIER-SCOPE check (the capas_language invariant): a
+        # universally-quantified claim ("for all", "all orders") is licensed only by a bound UNIFORM
+        # over the quantified index — finite/leading-order checks license only the checked scope.
+        scope = str(evidence["claim_scope"]).strip().lower()
+        valid = evidence["steps_all_valid"] is True
+        crux = evidence["load_bearing_step_identified"] is True
+        uniform = evidence["uniform_bound_proven"] is True
+        universal = scope in {"universal", "all", "all_orders", "for_all", "for all", "for-all", "∀"}
+        remainder = str(evidence.get("conjectured_remainder", "")).strip() or "the unproven remainder"
+        if not crux:
+            verdict = "REJECT"
+            reason = "a claimed proof whose load-bearing step is not identified is inadmissible as a proof"
+        elif not valid:
+            verdict = "REJECT"
+            reason = "a step in the claimed proof does not re-derive/validate — there is a gap, not a proof"
+        elif universal and not uniform:
+            verdict = "REWRITE"
+            reason = ("the claim is universally quantified but the evidence proves no bound uniform over the "
+                      "quantified index (only finite / leading-order checks) — 'theorem' is not licensed")
+            rewrite = (f"leading-order result established; {remainder} is CONJECTURED, not proven — supply a bound "
+                       f"uniform over the quantified index to license the full 'theorem'")
+            licensed_claim = rewrite
+        else:
+            verdict = "ACCEPT"
+            reason = ("each step validates, the load-bearing step is identified, and the claim's scope is "
+                      "licensed (a uniform bound is proven, or the claim is bounded/finite)")
 
     # Cross-domain INVARIANT filter (downgrade-only, fail-closed). A claim whose declared
     # quantities violate a domain law (accounting identity, quantum physics, GRIM, probability
