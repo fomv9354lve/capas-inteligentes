@@ -125,3 +125,60 @@ def test_redact_round_trip_is_idempotent():
     env = doc["properties"]["template"]["containers"][0]["env"]
     assert env[0]["value"] == MARKER
     assert env[2]["value"] == "not-a-secret"
+
+
+def test_keyboard_and_salty_are_not_redacted():
+    doc = _app("atlas")
+    doc["properties"]["template"]["containers"][0]["env"] = [
+        {"name": "KEYBOARD", "value": "qwerty-layout"},
+        {"name": "SALTY", "value": "not-a-secret-either"},
+    ]
+    doc, redacted = redact(doc)
+    assert redacted == []
+    env = doc["properties"]["template"]["containers"][0]["env"]
+    assert env[0]["value"] == "qwerty-layout"
+    assert env[1]["value"] == "not-a-secret-either"
+
+
+def test_known_credential_names_still_redacted():
+    doc = _app("atlas")
+    doc["properties"]["template"]["containers"][0]["env"] = [
+        {"name": "ANTHROPIC_API_KEY", "value": "sk-ant-plaintext"},
+        {"name": "ANALYTICS_SALT", "value": "a" * 32},
+    ]
+    doc, redacted = redact(doc)
+    assert set(redacted) == {"ANTHROPIC_API_KEY", "ANALYTICS_SALT"}
+    env = doc["properties"]["template"]["containers"][0]["env"]
+    assert env[0]["value"] == MARKER
+    assert env[1]["value"] == MARKER
+
+
+def test_database_url_with_embedded_credentials_is_redacted():
+    doc = _app("atlas")
+    doc["properties"]["template"]["containers"][0]["env"] = [
+        {"name": "DATABASE_URL", "value": "postgres://user:pass@host:5432/db"},
+    ]
+    doc, redacted = redact(doc)
+    assert redacted == ["DATABASE_URL"]
+    assert doc["properties"]["template"]["containers"][0]["env"][0]["value"] == MARKER
+
+
+def test_database_url_without_embedded_credentials_passes():
+    doc = _app("atlas")
+    doc["properties"]["template"]["containers"][0]["env"] = [
+        {"name": "DATABASE_URL", "value": "https://host/path"},
+    ]
+    doc, redacted = redact(doc)
+    assert redacted == []
+    assert doc["properties"]["template"]["containers"][0]["env"][0]["value"] == "https://host/path"
+
+
+def test_validator_credential_scan_covers_apps_outside_required(tmp_path):
+    d = _complete(tmp_path)
+    extra = _app("extra-app")
+    extra["properties"]["template"]["containers"][0]["env"] = [
+        {"name": "ANALYTICS_SALT", "value": "a" * 32},
+    ]
+    (d / "app-extra-app.json").write_text(json.dumps(extra))
+    fails = validate(d)
+    assert any("extra-app" in f and "ANALYTICS_SALT" in f for f in fails)

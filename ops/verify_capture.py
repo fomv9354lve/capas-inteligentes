@@ -15,7 +15,7 @@ import json
 import sys
 from pathlib import Path
 
-from redact_capture import CREDENTIAL_NAME, MARKER
+from redact_capture import _is_sensitive, MARKER
 
 REQUIRED_APPS = ("capas", "atlas", "client-app-1", "client-app-2", "teoria")
 ENV_NAME = "capas-env"
@@ -48,18 +48,28 @@ def validate(state_dir: Path) -> list[str]:
                 fails.append(f"{app}: container resources not captured — cannot recreate")
             if (props.get("template") or {}).get("scale") is None:
                 fails.append(f"{app}: scale not captured — cannot recreate")
-            for c in (props.get("template") or {}).get("containers") or []:
-                for e in c.get("env") or []:
-                    name, value = e.get("name", ""), e.get("value")
-                    if CREDENTIAL_NAME.search(name) and value and value != MARKER:
-                        fails.append(f"{app}: env {name} carries a plaintext credential value — "
-                                     "the capture must redact it before this dump is committed")
 
         if _load(state_dir / f"secrets-{app}.json") is None:
             fails.append(f"{app}: secret names not captured (secrets-{app}.json)")
         if _load(state_dir / f"roles-{app}.json") is None:
             fails.append(f"{app}: roles inventory not captured (roles-{app}.json) — "
                          "a recreated identity loses every assignment")
+
+    # The credential scan runs over every app-*.json actually present, not just
+    # REQUIRED_APPS — the shell redaction is unconditional, so the backstop must be
+    # too, or a capture against a different resource group could regress silently.
+    for app_file in sorted(state_dir.glob("app-*.json")):
+        app = app_file.stem[len("app-"):]
+        doc = _load(app_file)
+        if doc is None:
+            continue
+        props = doc.get("properties", {})
+        for c in (props.get("template") or {}).get("containers") or []:
+            for e in c.get("env") or []:
+                name, value = e.get("name", ""), e.get("value")
+                if value and value != MARKER and _is_sensitive(name, value):
+                    fails.append(f"{app}: env {name} carries a plaintext credential value — "
+                                 "the capture must redact it before this dump is committed")
 
     env = _load(state_dir / f"env-{ENV_NAME}.json")
     if env is None:

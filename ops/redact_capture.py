@@ -15,10 +15,26 @@ from __future__ import annotations
 
 import re
 
+# Un nombre se parte en tokens por _ - . y se compara token completo: así KEY casa con
+# ANTHROPIC_API_KEY pero no con KEYBOARD, y SALT con ANALYTICS_SALT pero no con SALTY.
+_TOKEN = r"(?:^|[_\-.])(?:%s)(?:[_\-.]|$)"
+
 CREDENTIAL_NAME = re.compile(
-    r"(SECRET|KEY|TOKEN|PASSWORD|PASSWD|SALT|CONNECTION|CONN_STR|DSN|CREDENTIAL)", re.I
+    _TOKEN % "SECRET|SECRETS|KEY|KEYS|APIKEY|TOKEN|PASSWORD|PASSWD|PWD|SALT|CREDENTIAL|CREDENTIALS|PRIVATE", re.I
 )
+
+# Un nombre tipo URL solo es sensible si el VALOR lleva credenciales incrustadas.
+# Redactar toda URL perdería config pública y necesaria (p.ej. INVITE_REDIRECT_URL).
+URLISH_NAME = re.compile(_TOKEN % "URL|URI|DSN|CONNECTION|CONNSTR|CONN|ENDPOINT", re.I)
+EMBEDDED_CREDENTIAL = re.compile(r"://[^/@\s]+:[^/@\s]+@")
+
 MARKER = "[REDACTED-BY-CAPTURE]"
+
+
+def _is_sensitive(name: str, value: str) -> bool:
+    if CREDENTIAL_NAME.search(name):
+        return True
+    return bool(URLISH_NAME.search(name) and EMBEDDED_CREDENTIAL.search(value))
 
 
 def redact(doc: dict) -> tuple[dict, list[str]]:
@@ -28,9 +44,9 @@ def redact(doc: dict) -> tuple[dict, list[str]]:
     for c in containers:
         for e in c.get("env") or []:
             name, value = e.get("name", ""), e.get("value")
-            if not CREDENTIAL_NAME.search(name):
-                continue
             if not value or value == MARKER:
+                continue
+            if not _is_sensitive(name, value):
                 continue
             e["value"] = MARKER
             redacted.append(name)
