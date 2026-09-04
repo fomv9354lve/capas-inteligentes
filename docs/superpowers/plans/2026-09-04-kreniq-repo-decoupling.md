@@ -291,10 +291,35 @@ Esperado: `exit=0` y `OK: CAPAS's surface is CAPAS only ...`
 ```bash
 python3 -m pytest benchmarks/ -q --no-header -p no:cacheprovider
 python3 benchmarks/conformance.py
-python3 designlab/layout_lint.py
 ```
 
-Esperado: `310 passed`, `CAPAS-CONFORMANT`, y el lint en verde. El lint pasa a evaluar 12 páginas menos.
+Esperado: `310 passed` y `CAPAS-CONFORMANT`.
+
+Para el lint, ojo con el criterio:
+
+`designlab/layout_lint.py` **no está en verde y nunca lo ha estado**: hace glob de `docs/*.html`
+y lintea como página de marca archivos que estructuralmente no lo son — `logo_kreniq_volum_trico.html`
+es el contenido del iframe del logo (no puede contener un iframe de sí mismo ni un `<nav>`), y
+`live.html`, `product.html` y `gemini-code-*.html` no tienen nav. Otros fallan por ancho de columna.
+
+El criterio no es "verde", es **"sin regresión"**: los mismos 9 fallos preexistentes, ninguno nuevo.
+La baseline está congelada en
+`.superpowers/sdd/2026-09-04-kreniq-repo-decoupling/lint-baseline.txt`:
+
+```
+app.html  gate-app-mock.html  gate-app-mock2.html  gemini-code-1781935819867.html
+krenniq.html  legal.html  live.html  logo_kreniq_volum_trico.html  product.html
+```
+
+```bash
+python3 designlab/layout_lint.py 2>&1 | grep "^✗" | sed 's/^✗ //' | sort \
+  > /tmp/lint-now.txt
+diff .superpowers/sdd/2026-09-04-kreniq-repo-decoupling/lint-baseline.txt /tmp/lint-now.txt \
+  && echo "LINT OK — sin regresión contra la baseline"
+```
+
+Esperado: `LINT OK — sin regresión contra la baseline`. El lint pasa de evaluar 23 páginas a 15,
+porque se borraron 8 archivos HTML.
 
 - [ ] **Step 6: Corregir la ruta caduca del repo de Atlas en el `CLAUDE.md`**
 
@@ -1073,11 +1098,27 @@ por:
 - [ ] **Step 8: Ejecutar el lint completo y la suite**
 
 ```bash
-python3 designlab/layout_lint.py; echo "lint exit=$?"
 python3 -m pytest benchmarks/ -q --no-header -p no:cacheprovider
 ```
 
-Esperado: `lint exit=0` y `319 passed` (310 previos + 5 de captura + 4 de lock).
+Esperado: `319 passed` (310 previos + 5 de captura + 4 de lock).
+
+El lint sigue el criterio de no-regresión (ver Task 3, Step 5): la baseline tiene 9 páginas
+fallando por causas estructurales previas a este plan. Lo que esta tarea SÍ debe conseguir es
+que no aparezca ninguna línea `SHELL-DRIFT`:
+
+```bash
+python3 designlab/layout_lint.py 2>&1 | grep "^✗" | sed 's/^✗ //' | sort \
+  > /tmp/lint-now.txt
+diff .superpowers/sdd/2026-09-04-kreniq-repo-decoupling/lint-baseline.txt /tmp/lint-now.txt \
+  && echo "LINT OK — sin regresión contra la baseline"
+```
+
+```bash
+python3 designlab/layout_lint.py 2>&1 | grep -c "SHELL-DRIFT" | xargs echo "líneas de deriva:"
+```
+
+Esperado: `LINT OK — sin regresión contra la baseline` y `líneas de deriva: 0`.
 
 - [ ] **Step 9: Commitear**
 
@@ -1104,7 +1145,8 @@ python3 -m pytest benchmarks/ -q --no-header -p no:cacheprovider   # 319 passed
 python3 benchmarks/conformance.py | tail -3                        # CAPAS-CONFORMANT
 python3 benchmarks/verify_capas_surface_isolation.py               # OK
 python3 ops/verify_capture.py                                      # OK
-python3 designlab/layout_lint.py                                   # exit 0
+python3 designlab/layout_lint.py 2>&1 | grep "^✗" | sed 's/^✗ //' | sort | \
+  diff .superpowers/sdd/2026-09-04-kreniq-repo-decoupling/lint-baseline.txt -   # sin regresión
 git status -sb | head -1                                           # sin 'ahead'
 ls docs/atlas-*.html docs/evidence.html 2>/dev/null || echo "forks borrados"
 ```
