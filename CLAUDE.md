@@ -54,6 +54,6 @@ az containerapp update -n capas -g capas-rg --image "caf7ef600384acr.azurecr.io/
 |-----|-------|--------------|
 | `krenniq.com/` | Landing KRENIQ (front door) | esta app · `docs/krenniq.html` |
 | `capas.lemonground…azure/` | CAPAS (la herramienta) | esta app · `docs/index.html` |
-| `atlas.lemonground…azure/` | Atlas (la otra herramienta) | **otro repo**: `OPORTUNIDADES/codex_subrepo/atlas-codex` |
+| `atlas.lemonground…azure/` | Atlas (la otra herramienta) | **otro repo**: `../ATLAS/` (hermano de este, bajo `01. Investigacion/`) |
 
 Atlas es app/repo aparte — no se despliega desde aquí. Su nav ya apunta Home→landing y CAPAS→capas.
