@@ -646,6 +646,11 @@ while read -r a; do
   echo "  app: $a"
   az containerapp show -n "$a" -g "$RG" -o json          > "$OUT/app-$a.json"
   az containerapp secret list -n "$a" -g "$RG" -o json    > "$OUT/secrets-$a.json"
+  # `az containerapp secret list` imprime stdout VACÍO (no `[]`) cuando la app no tiene
+  # secretos. Un fichero de 0 bytes es indistinguible de una escritura fallida, que es
+  # justo lo que el validador debe atrapar. Normalizamos aquí, en la captura, para no
+  # tener que ablandar el validador.
+  [ -s "$OUT/secrets-$a.json" ] || echo "[]" > "$OUT/secrets-$a.json"
   pid=$(az containerapp show -n "$a" -g "$RG" --query "identity.principalId" -o tsv)
   if [ -n "$pid" ] && [ "$pid" != "None" ]; then
     az role assignment list --assignee "$pid" --all -o json > "$OUT/roles-$a.json"
