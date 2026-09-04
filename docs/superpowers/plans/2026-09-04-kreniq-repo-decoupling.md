@@ -75,7 +75,30 @@ CLAUDE.md, the freeze runbook, and the brand/probe notes that were living only
 on disk."
 ```
 
-- [ ] **Step 4: Verificar que no queda nada sensible sin trackear ni trackeado por error**
+- [ ] **Step 4: Commitear el trabajo de contenido de julio**
+
+`docs/index.html` y `docs/krenniq.html` están modificados y **ya en producción**, pero sin
+commitear. Van en su propio commit: no son limpieza de Atlas y no deben acabar barridos por el
+`git add -A docs` de la Task 3.
+
+`capas_api.py` **se deja fuera a propósito.** Su único diff son las 10 líneas del redirect 301
+que la Task 3 elimina; al quitarlas, el archivo vuelve a su estado en HEAD y no queda nada que
+commitear.
+
+```bash
+git add docs/index.html docs/krenniq.html
+git commit -m "Commit the July landing work that was live but untracked
+
+index.html gained the 'Proof on a real paper' section: 13 of 13 closed-form
+claims re-derived straight from a PDF, one tabulated row flagged at 2.6% off the
+paper's own formula, zero numbers typed by a model. krenniq.html dropped the
+three pricing tiers for a single open-access block.
+
+Both have been serving on capas.krenniq.com since 2026-07-02; only the source
+was missing."
+```
+
+- [ ] **Step 5: Verificar que no queda nada sensible sin trackear ni trackeado por error**
 
 ```bash
 git check-ignore -v .claude/settings.local.json
@@ -84,14 +107,17 @@ git ls-files | xargs grep -lIE "(sk-ant|AKIA|-----BEGIN (RSA|OPENSSH|PRIVATE))" 
 
 Esperado: la primera línea confirma que `.gitignore:25` lo ignora; la segunda imprime `sin secretos trackeados`.
 
-- [ ] **Step 5: Empujar ambas ramas a `origin`**
+- [ ] **Step 6: Empujar ambas ramas a `origin`** — ⚠️ **NO lo ejecuta un subagente**
+
+Publicar en un remoto compartido es un efecto fuera del árbol de trabajo. Este paso lo confirma
+Osvaldo explícitamente y lo ejecuta el controlador, nunca un implementador.
 
 ```bash
 git push origin main
 git push origin feat/capas-fisica
 ```
 
-- [ ] **Step 6: Verificar que `origin` ya tiene todo**
+- [ ] **Step 7: Verificar que `origin` ya tiene todo**
 
 ```bash
 git fetch origin
@@ -293,8 +319,13 @@ en el Plan 2 y se reescribe allí, junto con el cambio de código que la vuelve 
 
 - [ ] **Step 7: Commitear**
 
+Tras la Task 1, `docs/index.html` y `docs/krenniq.html` ya están commiteados y `capas_api.py`
+ha vuelto a su estado en HEAD, así que este `add` recoge solo los borrados y el `CLAUDE.md`.
+Confirma que es así antes de commitear:
+
 ```bash
 git add -A docs capas_api.py CLAUDE.md
+git status --porcelain --cached   # esperado: solo líneas 'D ' de docs/ + 'M  CLAUDE.md'
 git commit -m "Remove the vendored sibling pages and the redirect that covered them
 
 docs/ carried 12 frozen copies of Atlas pages plus its data directory (~800 KB),
