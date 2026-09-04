@@ -1,0 +1,1 @@
+- derivation request: claim quantum_calibration survived 5 laws (['fid', 'ge2', 'gerr', 'p01', 'p10', 't1', 't2', 'tg', 'tg2', 'zz']) — derive an independent law over its untouched variables.
