@@ -24,6 +24,25 @@ def main() -> int:
          {"uniform_bound_proven": False}, "REWRITE"),
         ("a step does not validate (a gap) -> not a proof", {"steps_all_valid": False}, "REJECT"),
         ("load-bearing step not identified -> inadmissible", {"load_bearing_step_identified": False}, "REJECT"),
+        # C4 regression: unrecognized/empty/non-string scope must NOT fall through to universal=False
+        # (the old whitelist let these ACCEPT with no uniform bound). Bounded-allowlist polarity means
+        # anything not explicitly bounded is treated as universal and needs the uniform bound.
+        ("scope 'all orders' (the claim type's own docstring phrase), no uniform bound -> downgrade",
+         {"claim_scope": "all orders", "uniform_bound_proven": False}, "REWRITE"),
+        ("scope 'every', no uniform bound -> downgrade",
+         {"claim_scope": "every", "uniform_bound_proven": False}, "REWRITE"),
+        ("scope '∀n', no uniform bound -> downgrade",
+         {"claim_scope": "∀n", "uniform_bound_proven": False}, "REWRITE"),
+        ("scope 'ALL ORDERS' (uppercase), no uniform bound -> downgrade",
+         {"claim_scope": "ALL ORDERS", "uniform_bound_proven": False}, "REWRITE"),
+        ("scope '' (empty string), no uniform bound -> downgrade",
+         {"claim_scope": "", "uniform_bound_proven": False}, "REWRITE"),
+        ("scope non-string (int), no uniform bound -> downgrade",
+         {"claim_scope": 12345, "uniform_bound_proven": False}, "REWRITE"),
+        ("scope 'bounded', no uniform bound -> still ACCEPT (bounded is genuinely bounded)",
+         {"claim_scope": "bounded", "uniform_bound_proven": False}, "ACCEPT"),
+        ("scope 'finite', no uniform bound -> still ACCEPT (finite is genuinely bounded)",
+         {"claim_scope": "finite", "uniform_bound_proven": False}, "ACCEPT"),
     ]
     fails = []
     for label, patch, expected in checks:

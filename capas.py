@@ -1920,7 +1920,13 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
         valid = evidence["steps_all_valid"] is True
         crux = evidence["load_bearing_step_identified"] is True
         uniform = evidence["uniform_bound_proven"] is True
-        universal = scope in {"universal", "all", "all_orders", "for_all", "for all", "for-all", "∀"}
+        # Polaridad invertida a propósito: la lista enumera los alcances ACOTADOS, y
+        # cualquier otra cosa —incluido un valor no reconocido, vacío o no-string— se
+        # trata como universal y exige cota uniforme. Una whitelist de "universal"
+        # dejaba pasar 'all orders', 'every', '∀n' y '' al ACCEPT por defecto.
+        BOUNDED_SCOPES = {"bounded", "finite", "local", "instance", "single", "fixed",
+                          "leading_order", "leading-order", "leading order"}
+        universal = scope not in BOUNDED_SCOPES
         remainder = str(evidence.get("conjectured_remainder", "")).strip() or "the unproven remainder"
         if not crux:
             verdict = "REJECT"

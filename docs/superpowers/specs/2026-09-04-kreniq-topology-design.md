@@ -144,13 +144,13 @@ load-bearing.
 | ¿`storageAccounts` soporta move? | **Sí** | `az provider show -n Microsoft.Storage` |
 | ¿Una container app puede cambiar de environment? | **No.** `managedEnvironmentId` es inmutable. | restricción de la plataforma |
 
-**Implicación clave:** como una app no puede cambiar de environment, dar a cliente su propio
+**Implicación clave:** como una app no puede cambiar de environment, dar al cliente su propio
 environment **obliga a recrear sus apps** — de ahí el bloqueo por secretos del §7. Los datos
 (Postgres, Storage) sí se mueven intactos y no pasan por recreación.
 
 **Pendiente de verificar antes de ejecutar:** si una container app puede moverse a otro RG
 dejando atrás su environment. No afecta al plan elegido (recreamos), pero determina si existe
-una vía de rollback más barata para cliente. Comando de validación no destructivo:
+una vía de rollback más barata para el cliente. Comando de validación no destructivo:
 
 ```bash
 SUB=$(az account show --query id -o tsv)

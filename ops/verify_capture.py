@@ -17,7 +17,6 @@ from pathlib import Path
 
 from redact_capture import _is_sensitive, MARKER
 
-REQUIRED_APPS = ("capas", "atlas", "client-app-1", "client-app-2", "teoria")
 ENV_NAME = "capas-env"
 EXPECTED_CERTS = 3
 
@@ -31,10 +30,27 @@ def _load(path: Path):
         return None
 
 
+def required_apps(state_dir: Path) -> list[str]:
+    """Los nombres los aporta la captura, no el código.
+
+    Hardcodearlos publicaba nombres de cliente en un repo público y ataba el validador
+    a una sola máquina: un clon sin esos ficheros fallaba siempre. La captura escribe
+    apps.txt; esa es la lista autoritativa de lo que hay que validar.
+    """
+    f = state_dir / "apps.txt"
+    if not f.is_file():
+        return []
+    return [ln.strip() for ln in f.read_text(encoding="utf-8").splitlines() if ln.strip()]
+
+
 def validate(state_dir: Path) -> list[str]:
     fails: list[str] = []
 
-    for app in REQUIRED_APPS:
+    apps = required_apps(state_dir)
+    if not apps:
+        fails.append("apps.txt missing or empty — the capture recorded no apps")
+
+    for app in apps:
         doc = _load(state_dir / f"app-{app}.json")
         if doc is None:
             fails.append(f"missing or unreadable app config: app-{app}.json")

@@ -9,7 +9,11 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "ops"))
 from redact_capture import MARKER, redact  # noqa: E402
-from verify_capture import REQUIRED_APPS, validate  # noqa: E402
+from verify_capture import required_apps, validate  # noqa: E402
+
+# The real validator reads app names from apps.txt (see required_apps()) rather than a
+# hardcoded tuple, so fixtures here provide their own — no client names.
+REQUIRED_APPS = ("capas", "atlas", "app-a", "app-b", "teoria")
 
 
 def _app(name: str) -> dict:
@@ -29,6 +33,7 @@ def _app(name: str) -> dict:
 def _complete(tmp: Path) -> Path:
     d = tmp / "azure_state"
     d.mkdir()
+    (d / "apps.txt").write_text("\n".join(REQUIRED_APPS) + "\n")
     for a in REQUIRED_APPS:
         (d / f"app-{a}.json").write_text(json.dumps(_app(a)))
         (d / f"secrets-{a}.json").write_text("[]")
@@ -42,6 +47,27 @@ def _complete(tmp: Path) -> Path:
 
 def test_complete_capture_passes(tmp_path):
     assert validate(_complete(tmp_path)) == []
+
+
+def test_required_apps_reads_apps_txt(tmp_path):
+    d = _complete(tmp_path)
+    assert required_apps(d) == list(REQUIRED_APPS)
+
+
+def test_missing_apps_txt_fails_closed(tmp_path):
+    d = _complete(tmp_path)
+    (d / "apps.txt").unlink()
+    assert required_apps(d) == []
+    fails = validate(d)
+    assert any("apps.txt" in f for f in fails)
+
+
+def test_empty_apps_txt_fails_closed(tmp_path):
+    d = _complete(tmp_path)
+    (d / "apps.txt").write_text("")
+    assert required_apps(d) == []
+    fails = validate(d)
+    assert any("apps.txt" in f for f in fails)
 
 
 def test_missing_app_is_caught(tmp_path):

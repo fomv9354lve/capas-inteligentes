@@ -24,7 +24,8 @@ _ledger/
 # barrera -- un `git add -A` bastaba para publicarlas. Esto la pone.
 .claude/
 
-# Volcados de apps de cliente: se capturan y viven en disco para el plan de evacuación,
-# pero no se publican en este repo. Regla de tracks del workspace: nada Track M en una
-# superficie pública Track R.
-ops/azure_state/*cliente*
+# El volcado de infraestructura es dato operativo: nombres de cliente, subscription y
+# tenant IDs, UPN de administrador, token de verificación de dominio. Vive en disco para
+# los planes de migración; no se publica. La herramienta (script, validador, tests) sí
+# se versiona — el volcado no.
+ops/azure_state/
