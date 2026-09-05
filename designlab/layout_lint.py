@@ -44,6 +44,44 @@ def _nav_signature(html: str) -> str | None:
     return hashlib.sha1("|".join(hrefs).encode()).hexdigest()[:12]
 
 
+LOCKED_SHELL_FILES = ("kreniq-shell.css", "lang.js")
+
+
+def shell_lock_drift(docs_dir: Path, lock_path: Path) -> list[str]:
+    """El shell de marca es fuente única: una copia local que difiere del lock es deriva.
+
+    El lock lo publica el repo kreniq-brand. Un consumidor que edita su copia en vez de
+    editar la fuente rompe la consistencia entre los tres sitios en silencio; esto la
+    convierte en un fallo de build.
+    """
+    import hashlib
+    import json
+
+    if not lock_path.is_file():
+        return [f"shell lock missing: {lock_path} — run scripts/sync_shell.py"]
+    try:
+        lock = json.loads(lock_path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return [f"shell lock unreadable: {lock_path}"]
+
+    drift = []
+    for name in LOCKED_SHELL_FILES:
+        local = docs_dir / name
+        if not local.is_file():
+            drift.append(f"{name}: missing locally but pinned in the lock")
+            continue
+        expected = lock.get(name)
+        if expected is None:
+            drift.append(f"{name}: not pinned in the lock — regenerate it in kreniq-brand")
+            continue
+        actual = hashlib.sha256(local.read_bytes()).hexdigest()
+        if actual != expected:
+            drift.append(f"{name}: drifted from the brand shell "
+                         f"(local {actual[:12]} != locked {expected[:12]}) — "
+                         "edit kreniq-brand and re-sync, do not edit the copy")
+    return drift
+
+
 def lint_page(path: Path) -> list[str]:
     html = path.read_text(encoding="utf-8")
     errs = _balanced(html)
@@ -80,7 +118,14 @@ def main():
     for sig, names in sigs.items():
         print("  %s : %s" % (sig, ", ".join(names)))
     print("\n%s — %d/%d páginas OK" % ("FALLO" if fail else "TODO OK", len(files) - fail, len(files)))
-    sys.exit(1 if fail else 0)
+
+    drift = shell_lock_drift(ROOT / "docs", ROOT / "docs" / "shell.lock.json")
+    if drift:
+        print("\n✗ deriva del shell de marca (fuente única: repo kreniq-brand):")
+        for d in drift:
+            print("    - %s" % d)
+
+    sys.exit(1 if (fail or drift) else 0)
 
 
 if __name__ == "__main__":
