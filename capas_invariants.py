@@ -891,7 +891,9 @@ def check_calibration_snapshot(ev: dict[str, Any]) -> dict[str, Any]:
     if not isinstance(snap, dict) or not (isinstance(snap.get("qubits"), dict) or isinstance(snap.get("edges"), dict)):
         return {"applies": False}
     law = "calibration_snapshot: no element outside the device distribution, no textbook violation, not stale"
-    th = {**_SNAP_DEFAULTS, **{k: float(v) for k, v in (snap.get("thresholds") or {}).items() if _num(v) is not None}}
+    # alias que usa Atlas en sus fixtures: edge_abs -> edge_max_abs, t1_abs_us -> t1_min_us
+    _alias = {"edge_abs": "edge_max_abs", "t1_abs_us": "t1_min_us", "readout_abs": "readout_max_abs"}
+    th = {**_SNAP_DEFAULTS, **{_alias.get(k, k): float(v) for k, v in (snap.get("thresholds") or {}).items() if _num(v) is not None}}
     qubits = snap.get("qubits") or {}
     edges = snap.get("edges") or {}
     layout = snap.get("layout") if isinstance(snap.get("layout"), dict) else None

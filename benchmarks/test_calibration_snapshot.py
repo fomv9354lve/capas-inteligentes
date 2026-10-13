@@ -121,3 +121,24 @@ def test_atlas_synthetic_stale_variant_flags():
     # SYNTHETIC (Atlas has no real stale run): same snapshot re-dated to June, job today
     a = ci.audit(_atlas(layout=_N8, measured="2026-06-20 10:00:00", job_date="2026-10-13"))
     assert a["verdict"] == "FLAG" and "stale" in a["results"]["calibration_snapshot"]["why"]
+
+
+# --- Atlas case 4, PROSPECTIVE (2026-10-13): layout chosen BY this law on live properties, then run.
+# Same circuits as the June-layout n=12 (job db6tn74lf4us73dat2sg). Law-chosen layout: job db6uisamb58s738cem4g,
+# prereg mirror_rep12_2026_10_v8. Outcome: F 0.232/0.205/0.145 (d=10/12/16) vs 0.030/0.022/0.011 with the June
+# layout; r/layer 15.6% -> 7.6% with equivalent physical CZ counts. PASS/FLAG separated 15.6% from 7.6%.
+_FIX4 = os.path.join(os.path.dirname(__file__), "fixtures", "atlas_kingston_2026-10-13_rep12.json")
+
+def test_atlas_case4_prospective_law_chosen_layout_passes():
+    w = json.load(open(_FIX4))
+    a = ci.audit({"calibration_snapshot": w["calibration_snapshot"]})
+    r = a["results"]["calibration_snapshot"]
+    assert a["verdict"] == "PASS" == w["law_verdict_local"] and r["outliers"] == [] and r["stale_days"] is None
+
+def test_atlas_threshold_aliases_are_honoured():
+    # Atlas writes edge_abs / t1_abs_us; a stricter alias value must change the verdict
+    w = json.load(open(_FIX4))["calibration_snapshot"]
+    strict = {**w, "thresholds": {**w["thresholds"], "edge_abs": 0.004}}   # worst edge in layout is 0.0048
+    assert ci.audit({"calibration_snapshot": strict})["verdict"] == "FLAG"
+    strict_t1 = {**w, "thresholds": {**w["thresholds"], "t1_abs_us": 130.0}}  # min T1 in layout is ~122
+    assert ci.audit({"calibration_snapshot": strict_t1})["verdict"] == "FLAG"
