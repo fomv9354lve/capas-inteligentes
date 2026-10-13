@@ -177,3 +177,12 @@ cambio neto de veredicto es X4-033 (buena, ACCEPT → REWRITE)**. Malos cazados 
 textos cuantificaba en universal. La regla no gana detección en estos corpus; cierra el hueco que el auditor
 demostró (texto universal con alcance declarado acotado) al precio de 1 buena, y el precio desaparece en
 cuanto el codificador declara el campo.
+
+### Primer acierto PROSPECTIVO de la regla de alcance (hook sombra de Ginibre, 2026-10-13 03:35)
+
+Claim nuevo de Ginibre (`claims/CT_2026-10-13_MP_CRIT_FINITE.json`, repo Ginibre): v1 decía «En la ventana
+n = p + t…» con un test de solo 2 celdas (p ≤ 400) → **REWRITE** («text asserts a scope… scope_declared/
+scope_tested not declared»). Ginibre reescribió v2 restringida al alcance probado, con los dos campos iguales →
+**ACCEPT** con Šidák sobre n_cells = 2 (3,0 → 3,205 SE). Fuera de muestra: el gate no había visto el claim y el
+REWRITE era el veredicto correcto según el propio autor. n = 1; es el primer caso en que la regla del 13-oct
+hace su trabajo en vivo y no solo post-hoc. Log de Ginibre: `.claude/capas_shadow.log.jsonl`.
