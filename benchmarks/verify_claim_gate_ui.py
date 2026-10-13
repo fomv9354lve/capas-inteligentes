@@ -287,7 +287,7 @@ REQUIRED_SNIPPETS = [
     "sentence.length >= 4",
     "rootProvenance",
     "provenance must be an object when supplied at the payload root",
-    "entry.decision.fine_tune_ready !== recomputed.fine_tune_ready",
+    "entry.decision.audit_hash.startsWith("sha256:")",
     "Enter positive values to calculate the pilot capacity planning estimate",
     "min=\"0\" max=\"1\" step=\"0.001\"",
     "normalizeLocalMetadataExport",
