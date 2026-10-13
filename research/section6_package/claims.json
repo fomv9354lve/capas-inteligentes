@@ -17,7 +17,7 @@
   "id": "C6-03",
   "claim": "Las identidades RMT (C(x,d), C(x,d,tau), F(a,b,gamma), G(a,b,1)) son coherencia exacta entre cantidades declaradas, a la precision declarada",
   "estado": "closed-local",
-  "evidencia": "capas_invariants.py check_rmt_*; benchmarks/test_rmt_identities.py (casos a 10 cifras y casos-que-deben-fallar de Ginibre)",
+  "evidencia": "capas_invariants.py check_rmt_*; benchmarks/test_rmt_identities.py (casos a 10 cifras y casos-que-deben-fallar de Ginibre); 2026-10-13 a8dde6d: precision declarada en notacion cientifica = exponente de la forma decimal mas corta (antes: split en el punto → FLAG indebido a valores correctamente redondeados); tests parametricos x in {0.3,1e-3,1e-6,1e-9} x 2-8 cifras",
   "como_refutar": "Un par (x,d[,tau]) con A y C correctos que FLAG, o un par incorrecto que PASS, dentro del dominio declarado."
  },
  {
