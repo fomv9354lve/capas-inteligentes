@@ -49,7 +49,7 @@ def run() -> int:
     # 4. full stdio drive: initialize -> tools/call capas_gate (ACCEPT case)
     accept_args = {"name": "capas_gate", "arguments": {
         "claim_type": "exact_model_solution",
-        "evidence": {"abs_error": 0.0, "tolerance": 1e-3}, "claim_text": "x"}}
+        "evidence": {"abs_error": 0.0, "tolerance": 1e-3, "negative_control_failed": True}, "claim_text": "x"}}
     resp = _drive([
         {"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {}},
         {"jsonrpc": "2.0", "method": "notifications/initialized"},
@@ -87,7 +87,7 @@ def run() -> int:
     # 8. capas_reward tool: aligned signal
     rw = capas_mcp.handle({"jsonrpc": "2.0", "id": 7, "method": "tools/call", "params": {
         "name": "capas_reward", "arguments": {"claim_type": "exact_model_solution",
-                                              "evidence": {"abs_error": 0.0, "tolerance": 1e-3}}}})
+                                              "evidence": {"abs_error": 0.0, "tolerance": 1e-3, "negative_control_failed": True}}}})
     checks.append((f"capas_reward ACCEPT-case -> {rw['result']['structuredContent']['reward']} (==1.0)",
                    rw["result"]["structuredContent"]["reward"] == 1.0))
 
