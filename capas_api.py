@@ -158,6 +158,28 @@ class H(BaseHTTPRequestHandler):
             return self._json({"error": repr(e)}, 500)
         self._json(out, surface=surface)
 
+    class _HeadWriter:
+        """Passes the status line + headers through, drops the body (headers are flushed by end_headers)."""
+        def __init__(self, real): self.real, self.body = real, False
+        def write(self, b): return len(b) if self.body else self.real.write(b)
+        def flush(self): self.real.flush()
+
+    def end_headers(self):
+        super().end_headers()
+        if isinstance(self.wfile, H._HeadWriter):
+            self.wfile.body = True
+
+    def do_HEAD(self):
+        # HEAD = GET without a body. BaseHTTPRequestHandler answers 501 to any method it lacks, which is what
+        # `curl -sI https://capas.krenniq.com` has been getting all along (found 2026-10-13 while verifying a
+        # deploy: GET 200, HEAD 501). Uptime probes and the post-deploy ritual use HEAD, so serve it.
+        real = self.wfile
+        self.wfile = H._HeadWriter(real)
+        try:
+            self.do_GET()
+        finally:
+            self.wfile = real
+
     def do_GET(self):
         p = self.path.split("?")[0]
         # hosted product: retrieve a persisted certificate by id (public read + verify)

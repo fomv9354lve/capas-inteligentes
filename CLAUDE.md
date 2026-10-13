@@ -47,7 +47,9 @@ az containerapp update -n capas -g capas-rg --image "caf7ef600384acr.azurecr.io/
 - `python3 deploy_site.py` **sin flags DESPLIEGA** (`az containerapp up --source`). `--verify` es solo lectura (live == local).
   Cualquier otro flag (incl. `--help`) ahora imprime uso y sale sin desplegar — antes desplegaba (incidente 03:15).
 - Los `az` mutantes los corre Osvaldo. La sesión prepara y verifica; no despliega salvo instrucción explícita.
-- Tras un deploy: `curl -sI` a **los tres** hostnames (krenniq.com, capas.krenniq.com, atlas.krenniq.com); el `up --source`
+- Tras un deploy: comprueba **los tres** hostnames (krenniq.com, capas.krenniq.com, atlas.krenniq.com) con GET
+  (`curl -s -o /dev/null -w '%{http_code}' https://…/`): hasta el deploy que lleve `do_HEAD` (commit del 2026-10-13 ~17:00)
+  el servidor de capas respondía **501 a HEAD**, así que `curl -sI` daba 501 aunque el sitio estuviera bien; el `up --source`
   de hoy no tumbó el SNI, pero la regla de re-bind del §2 sigue vigente.
 - La Gate App decide con el motor Python vía `/api/decide` (individual Y lote); la réplica JS `rule()` no es el motor
   (paridad 130/233) y sin backend la página da HOLD. `python3 benchmarks/replica_parity.py` mide la deriva.
