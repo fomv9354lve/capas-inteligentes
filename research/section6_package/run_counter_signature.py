@@ -108,7 +108,7 @@ def run_cmd(cmd):
         out = (r.stdout + ("\n[stderr]\n" + r.stderr if r.stderr.strip() else "")).strip()
     except subprocess.TimeoutExpired:
         out = "[TIMEOUT 600s]"
-    dirty = "\n".join(l for l in subprocess.run(["git", "status", "--porcelain"], cwd=ROOT, capture_output=True, text=True).stdout.splitlines()
+    dirty = "\n".join(l for l in subprocess.run(["git", "--no-optional-locks", "status", "--porcelain"], cwd=ROOT, capture_output=True, text=True).stdout.splitlines()
                       if " outputs/" not in l and ".coverage" not in l)  # artefactos generados por los propios verificadores
     if dirty != run_cmd.baseline:
         out += "\n[ALERTA: el comando modificó el árbol de trabajo]\n" + dirty
@@ -148,7 +148,7 @@ def main():
               "edición. Nadie responderá preguntas: solo salidas de comandos. Cuando termines, escribe tu informe final "
               "empezando con la línea `## VEREDICTOS` y sin bloques run. Usa como máximo ~" + str(a.rounds) + " turnos."
               + (f"\n\n## Foco de esta corrida\n{a.focus}" if a.focus else ""))
-    run_cmd.baseline = "\n".join(l for l in subprocess.run(["git", "status", "--porcelain"], cwd=ROOT, capture_output=True, text=True).stdout.splitlines()
+    run_cmd.baseline = "\n".join(l for l in subprocess.run(["git", "--no-optional-locks", "status", "--porcelain"], cwd=ROOT, capture_output=True, text=True).stdout.splitlines()
                                  if " outputs/" not in l and ".coverage" not in l)
     messages = [{"role": "system", "content": system},
                 {"role": "user", "content": f"## claims.json\n```json\n{claims}\n```\n\n## Mapa del repo\n{repo_map()}\n\nEmpieza."}]
