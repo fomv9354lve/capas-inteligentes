@@ -235,9 +235,9 @@ CLAIM_TYPE_REGISTRY = {
         "optional": ["docs_reference"],
         "description": "Executable programming-language behavior claims requiring snippet, runtime, and observed output evidence.",
     },
-    "proof_admissibility": {
+    "proof_admissibility": {  # text_quantifier added 2026-10-13 (§6 run 6)
         "required": ["claim_scope", "steps_all_valid", "load_bearing_step_identified", "uniform_bound_proven"],
-        "optional": ["leading_order_established", "conjectured_remainder", "independent_reproduction_pass"],
+        "optional": ["leading_order_established", "conjectured_remainder", "independent_reproduction_pass", "text_quantifier"],
         "description": (
             "Claims that a result is PROVEN (a 'theorem'): gates whether the evidence licenses the word. "
             "Each step must validate, the load-bearing step must be identified, and a universally-quantified "
@@ -367,6 +367,7 @@ STRING_EVIDENCE_FIELDS = [
     "claim_api", "docs_reference", "current_claim",
     "code_snippet", "expected_output", "observed_output",
     "claim_scope", "conjectured_remainder", "object_declared", "tolerance_unit", "error_statistic", "tolerance_rationale",
+    "text_quantifier",
 ]
 LIST_EVIDENCE_FIELDS = ["supporting_sources", "contradicting_sources", "scope_declared", "scope_tested"]
 DICT_EVIDENCE_FIELDS = ["test_statistic"]
@@ -1076,6 +1077,8 @@ def validate_external_payload(payload: dict[str, Any]) -> list[str]:
     anchor_mode = evidence.get("anchor_mode")
     if isinstance(anchor_mode, str) and anchor_mode not in ANCHOR_MODE_CONTRACTS:
         errors.append("evidence.anchor_mode must be one of: " + ", ".join(sorted(ANCHOR_MODE_CONTRACTS)))
+    if "text_quantifier" in evidence and str(evidence.get("text_quantifier")).lower() not in ("bounded", "universal"):
+        errors.append("evidence.text_quantifier must be one of: bounded, universal")
     if "error_statistic" in evidence and str(evidence.get("error_statistic")).lower() not in ERROR_STATISTICS:
         errors.append("evidence.error_statistic must be one of: " + ", ".join(sorted(ERROR_STATISTICS)))
     if "current_claim" in evidence:
@@ -2028,12 +2031,24 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
         elif not valid:
             verdict = "REJECT"
             reason = "a step in the claimed proof does not re-derive/validate — there is a gap, not a proof"
-        elif not universal and text_universal and not uniform:
+        elif not universal and not uniform and (text_universal or str(evidence.get("text_quantifier", "") or "").lower() != "bounded"):
+            # §6 run 6: a regex over prose is a closed list and cannot be complete. Structural closure: a bounded declared
+            # scope without a uniform bound licenses the text ONLY if the coder declares text_quantifier="bounded" AND the
+            # text is not visibly universal. Missing declaration -> REWRITE (declare it), never ACCEPT.
+            _tq = str(evidence.get("text_quantifier", "") or "").lower()
             verdict = "REWRITE"
-            reason = (f"evidence declares claim_scope {scope!r} (bounded) but the claim text quantifies universally "
-                      "and no uniform bound is proven — the declared scope does not license the text's scope")
-            rewrite = (f"result established on the declared bounded scope ({scope.strip()}); the universal statement in "
-                       f"the text is CONJECTURED — restrict the text to the bounded scope or prove a uniform bound")
+            if text_universal and _tq == "bounded":
+                reason = (f"evidence declares claim_scope {scope!r} (bounded) and text_quantifier='bounded', but the claim text "
+                          "visibly quantifies universally — the declarations contradict the text; no uniform bound is proven")
+            elif text_universal:
+                reason = (f"evidence declares claim_scope {scope!r} (bounded) but the claim text quantifies universally "
+                          "and no uniform bound is proven — the declared scope does not license the text's scope")
+            else:
+                reason = (f"evidence declares claim_scope {scope!r} (bounded) and no uniform bound; text_quantifier is "
+                          f"{_tq or 'undeclared'!r} — the gate cannot read the text's quantifier, so a bounded scope licenses the "
+                          "text only when text_quantifier='bounded' is declared")
+            rewrite = (f"result established on the declared bounded scope ({scope.strip()}); any universal statement in "
+                       f"the text is CONJECTURED — declare text_quantifier='bounded' (and restrict the text) or prove a uniform bound")
             licensed_claim = rewrite
         elif universal and not uniform:
             verdict = "REWRITE"

@@ -26,7 +26,12 @@ def main() -> int:
          {"independent_reproduction_pass": None}, "REWRITE"),
         # (label, evidence patch, expected verdict)
         ("universal + uniform bound proven -> theorem licensed", {}, "ACCEPT"),
-        ("bounded claim, steps+crux ok -> licensed", {"claim_scope": "bounded", "uniform_bound_proven": False}, "ACCEPT"),
+        # since 2026-10-13 (§6 run 6) a bounded scope without a uniform bound licenses the text only if the coder declares
+        # text_quantifier="bounded" (a regex over prose is a closed list and cannot be complete)
+        ("bounded claim, steps+crux ok, text_quantifier declared -> licensed",
+         {"claim_scope": "bounded", "uniform_bound_proven": False, "text_quantifier": "bounded"}, "ACCEPT"),
+        ("bounded claim, steps+crux ok, text_quantifier NOT declared -> REWRITE (declare it)",
+         {"claim_scope": "bounded", "uniform_bound_proven": False}, "REWRITE"),
         ("universal but NO uniform bound (finite checks only) -> downgrade",
          {"uniform_bound_proven": False}, "REWRITE"),
         ("a step does not validate (a gap) -> not a proof", {"steps_all_valid": False}, "REJECT"),
@@ -46,15 +51,15 @@ def main() -> int:
          {"claim_scope": "", "uniform_bound_proven": False}, "REWRITE"),
         ("scope non-string (int), no uniform bound -> downgrade",
          {"claim_scope": 12345, "uniform_bound_proven": False}, "REWRITE"),
-        ("scope 'bounded', no uniform bound -> still ACCEPT (bounded is genuinely bounded)",
-         {"claim_scope": "bounded", "uniform_bound_proven": False}, "ACCEPT"),
-        ("scope 'finite', no uniform bound -> still ACCEPT (finite is genuinely bounded)",
-         {"claim_scope": "finite", "uniform_bound_proven": False}, "ACCEPT"),
+        ("scope 'bounded', no uniform bound, quantifier declared -> ACCEPT (bounded is genuinely bounded)",
+         {"claim_scope": "bounded", "uniform_bound_proven": False, "text_quantifier": "bounded"}, "ACCEPT"),
+        ("scope 'finite', no uniform bound, quantifier declared -> ACCEPT (finite is genuinely bounded)",
+         {"claim_scope": "finite", "uniform_bound_proven": False, "text_quantifier": "bounded"}, "ACCEPT"),
     ]
     # §6 run 2 (xAI, 2026-10-13) refuted C6-02 with: declared scope "bounded " + text "for every writing, with no
     # restriction on scope" + no uniform bound -> ACCEPT. Declared bounded scope must not license a universal text.
     for sc in ("bounded ", "bounded\t", "bounded\n", "bounded\xa0", "bounded", "finite"):
-        got = C.gate("proof_admissibility", {**base, "claim_scope": sc, "uniform_bound_proven": False},
+        got = C.gate("proof_admissibility", {**base, "claim_scope": sc, "uniform_bound_proven": False, "text_quantifier": "bounded"},
                      claim_text="Theorem: the identity holds for every writing of the formula, with no restriction on scope.")["verdict"]
         if got != "REWRITE":
             fails.append(f"bounded scope {sc!r} + universal text, no uniform bound: expected REWRITE, got {got}")
