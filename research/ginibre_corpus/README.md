@@ -155,3 +155,8 @@ Ginibre), que vive en `final_recodif_out.txt` y no en un archivo sellado. Verifi
 Hasta que la recodificación se corra con el protocolo de X4/X5 (claims sellados → tag → veredictos sellados →
 doble conteo), la cifra ciega de X1–3 es 0,65 / 0,83. El acumulado fuera de muestra X4+X5 (17/21, 16/17) no
 cambia: esos lotes sí están sellados de punta a punta.
+
+Re-sellado de la recodificación (mismo día, tras aceptar Ginibre la refutación): `PARA_CAPAS_claims_recodif.jsonl`
+(sha256 b13f3211…, 22 payloads mutados según `recodif_validez.jsonl`, 154 byte-idénticos) contra v2 en worktree →
+`DE_CAPAS_veredictos_recodif.jsonl` (sha256 8aa94028…, `blind:false`). Principal (flag sellado): **53/82 y 57/63**;
+secundario (OR): 52/81 y 57/63. No es ciego; es una mutación declarada con cabecera. Queda así.
