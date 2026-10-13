@@ -24,7 +24,12 @@ Estado fuente de verdad: `01. Investigacion/CURRENT_TRUTH.md` (filas del 13-oct)
 - Un auditor **inventó** salidas de `ls` (run 4); la transcripción literal lo detectó → el ejecutor ahora coteja cada comando citado contra los ejecutados.
 - Estado: ningún claim sube a `proved`. Créditos de xAI agotados a las 03:46; DeepSeek 402, Gemini 429, Groq TPM insuficiente.
 
-## Motor (todo con tests, suite 472, CAPAS-CONFORMANT, `capas validate` verde)
+## Motor (todo con tests, suite 482, CAPAS-CONFORMANT, `capas validate` verde)
+
+Añadido ~05:00: `rmt_G` para γ > 1 con **G-CLOSED** (Codex, reconstruida por Ginibre; estado `reduced`, solo diseño y
+respuesta gaussianos, exige `design_response: "gaussian"`, si no HOLD); 4 predicciones congeladas a 1e-8 y los casos
+de Ginibre (Rademacher declarada gaussiana → FLAG; control gaussiano → PASS) como tests. Valores RMT declarados con
+entrada incompleta ya no se saltan en silencio: HOLD.
 
 Campos nuevos (opcionales; ausente → nunca ACCEPT en la ruta afectada): `error_statistic`+`n_cells` (Šidák), `scope_declared`/`scope_tested`, `negative_control_failed` (régimen de precisión de máquina), `tolerance_rationale`, `reference_value`, `text_quantifier`. Coste post-hoc sobre X1–X5 medido y escrito (`research/ginibre_corpus/README.md`): 0 buenos a REJECT; la regla de alcance en texto cuesta 5 buenos por 2 malos hasta que se declaren los campos.
 
