@@ -190,9 +190,17 @@ def main():
                 quoted.append(ln[2:].strip())
             elif ln and not ln.startswith(("→", "->", "#", "[")) and re.match(r"^(python3?|pytest|cat|head|tail|sed|grep|rg|ls|wc|shasum|jq|git|find|diff|sort|uniq|cut|tr|awk)\b", ln):
                 quoted.append(ln)
+    # comandos citados inline entre backticks (`grep -c ... archivo`), no solo en bloques
+    for inl in re.findall(r"`([^`\n]{6,300})`", report):
+        inl = inl.strip()
+        if re.match(r"^(python3?|pytest|cat|head|tail|sed|grep|rg|ls|wc|shasum|jq|git|find|diff|sort|uniq|cut|tr|awk)\b", inl) and (" " in inl):
+            quoted.append(inl)
     def _norm(c): return re.sub(r"\s+", " ", c).strip()
     ex_norm = {_norm(c) for c in executed}
-    unexecuted = [q for q in quoted if _norm(q) not in ex_norm and not any(_norm(q) in e or e in _norm(q) for e in ex_norm)]
+    def _key(c):  # binario + primer argumento "fuerte" (archivo/patrón), para tolerar reescrituras del auditor
+        t = _norm(c).split(" "); return " ".join(t[:1] + [x for x in t[1:] if not x.startswith("-")][:2])
+    ex_keys = {_key(e) for e in ex_norm}
+    unexecuted = [q for q in quoted if _norm(q) not in ex_norm and not any(_norm(q) in e or e in _norm(q) for e in ex_norm) and _key(q) not in ex_keys]
     gate = (f"\n## GATE sobre el informe\ncomandos citados en VEREDICTOS: {len(quoted)}; ejecutados de verdad: {len(quoted) - len(unexecuted)}; "
             f"**NO EJECUTADOS: {len(unexecuted)}**\n" + "".join(f"- `{q[:160]}`\n" for q in unexecuted) +
             ("\nTodo veredicto apoyado en un comando NO EJECUTADO carece de valor; verificar contra los bloques `### ejecutado`.\n" if unexecuted else "\nTodos los comandos citados fueron ejecutados.\n"))
