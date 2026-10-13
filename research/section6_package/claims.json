@@ -8,10 +8,10 @@
  },
  {
   "id": "C6-02",
-  "claim": "proof_admissibility no licencia 'teorema' sin cota uniforme: no hay false-accept por alcance",
+  "claim": "proof_admissibility no licencia 'teorema' sin cota uniforme: no hay false-accept por alcance — ni por alcance declarado universal, ni por alcance declarado acotado con texto universal (desde 1f192bd el texto acotado exige text_quantifier='bounded' declarado; el gate no lee prosa)",
   "estado": "empirical",
-  "evidencia": "benchmarks/verify_proof_admissibility.py (updated 2026-10-13: ACCEPT also needs independent_reproduction_pass, GOVERNANCE §6); capas.py rama proof_admissibility (BOUNDED_SCOPES, polaridad invertida)",
-  "como_refutar": "Construir un payload con claim_scope universal (cualquier escritura) y uniform_bound_proven False que de ACCEPT."
+  "evidencia": "benchmarks/verify_proof_admissibility.py; benchmarks/test_section6_refutations.py (contraejemplos de run 2 y run 6 congelados); capas.py rama proof_admissibility (BOUNDED_SCOPES, text_quantifier, UNIVERSAL_TEXT_RE como guardia secundaria)",
+  "como_refutar": "Construir un payload proof_admissibility que de ACCEPT con uniform_bound_proven False y un claim.text que cuantifique universalmente, con cualquier claim_scope y cualquier text_quantifier; o uno con claim_scope universal que de ACCEPT sin cota."
  },
  {
   "id": "C6-03",
