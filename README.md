@@ -44,6 +44,26 @@ name, certification, and official benchmark are reserved (see `NOTICE`).
 (regenerates from a command), or `SCOPED` (a declared estimate) — see
 [`docs/CLAIMS_REGISTRY.md`](docs/CLAIMS_REGISTRY.md). Nothing bare.
 
+### What is validated, as of 2026-10-13 (and what is not)
+
+- **Blind self-gating corpus (real research claims, sister project):** 233 claims coded blind by a
+  separate session; engine frozen at a git tag *before* coding; verdicts sealed by sha256 *before*
+  outcomes were opened; double-counted. Blind X1–3: bad-not-ACCEPT 53/82, good-not-REJECT 52/63.
+  **Out-of-sample X4+X5: 17/21 and 16/17** (Wilson 95% [0.60–0.92], [0.73–0.99]). Outcomes are the
+  project's own later corrections, not an external oracle. `python3 research/ginibre_corpus/score_sealed.py`
+- **Not a fraud detector, measured:** on 888 clean control papers vs 6,348 retracted-for-data papers,
+  recomputable numeric inconsistencies did not separate the groups (2.13% vs 1.58% severe).
+  `python3 research/retraction_audit/grade_severity.py`
+- **Cross-family counter-signature (GOVERNANCE §6):** every public claim was attacked by a model of
+  another family (8 runs); 3 of 7 claims were refuted the same day and each fix is frozen as a test or a
+  sealed file. Verbatim transcripts in `research/section6_package/`. Nothing is marked *proved*.
+- **Physical law for quantum calibration (Atlas):** `calibration_snapshot` separated 4/4 real GHZ runs
+  (GOOD vs DEGRADED) blind, and prospectively chose a layout that halved the per-layer error on
+  ibm_kingston with identical circuits. `benchmarks/test_calibration_snapshot.py`
+- **Known limits:** the in-browser JS replica is not the engine (parity 130/233; offline → HOLD); the
+  GIGO ceiling stands (a self-consistent fabrication passes); a declared field is the coder's
+  responsibility — the gate does not read prose.
+
 It is not a new provenance standard, benchmark suite, workflow engine, or VVUQ
 methodology. CAPAS is a profile/costurero over existing standards:
 
