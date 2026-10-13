@@ -83,3 +83,41 @@ def test_same_day_freshness_policy():
     assert ci.audit({"calibration_snapshot": s})["verdict"] == "FLAG"   # different calendar day
     s = {**HEALTHY, "measured": "2026-10-13 00:25:48", "job_date": "2026-10-13 18:00:00", "thresholds": {"max_age_days": 0.0}}
     assert ci.audit({"calibration_snapshot": s})["verdict"] == "PASS"   # same day
+
+
+# --- Atlas's three REAL cases (ibm_kingston 2026-10-13, mirror-RB job db6tn74lf4us73dat2sg), frozen.
+# Outcomes measured by Atlas: n=12 June layout -> chi2 = 83.4 > 11.07 (5 dof), FALSIFIED; n=8 -> CONFIRMED.
+_FIX = os.path.join(os.path.dirname(__file__), "fixtures", "atlas_kingston_2026-10-13.json")
+_N12 = {"qubits": [69, 78, 67, 68, 88, 89, 65, 66, 87, 86, 85, 77],
+        "edges": ["69_78", "78_89", "67_68", "68_69", "88_89", "65_66", "65_77", "66_67", "87_88", "86_87", "85_86", "77_85"]}
+_N8 = {"qubits": [50, 29, 67, 38, 49, 57, 48, 47],
+       "edges": ["29_38", "38_49", "49_50", "57_67", "48_49", "47_57", "47_48"]}
+
+def _atlas(**extra):
+    snap = json.load(open(_FIX)); snap.pop("_source", None)
+    return {"calibration_snapshot": {**snap, **extra}}
+
+def _elements(r):
+    return {o["element"] for o in r["outliers"]}
+
+def test_atlas_case1_n12_june_layout_with_jobdate_flags():
+    a = ci.audit(_atlas(layout=_N12, job_date="2026-10-13"))
+    r = a["results"]["calibration_snapshot"]
+    assert a["verdict"] == "FLAG" and _elements(r) == {"86_87", "85_86", "87"} and r["stale_days"] is None
+
+def test_atlas_case2_n12_june_layout_no_jobdate_flags():
+    a = ci.audit(_atlas(layout=_N12))
+    assert a["verdict"] == "FLAG" and _elements(a["results"]["calibration_snapshot"]) == {"86_87", "85_86", "87"}
+
+def test_atlas_case3_n8_layout_with_jobdate_passes():
+    a = ci.audit(_atlas(layout=_N8, job_date="2026-10-13"))
+    assert a["verdict"] == "PASS", a["results"]["calibration_snapshot"]["why"]
+
+def test_atlas_medians_as_stated():
+    r = ci.audit(_atlas(layout=_N8, job_date="2026-10-13"))["results"]["calibration_snapshot"]["medians"]
+    assert abs(r["edge_error"] - 0.00228) < 1e-5 and abs(r["t1_us"] - 209.1) < 0.1 and abs(r["readout"] - 0.0093) < 1e-4
+
+def test_atlas_synthetic_stale_variant_flags():
+    # SYNTHETIC (Atlas has no real stale run): same snapshot re-dated to June, job today
+    a = ci.audit(_atlas(layout=_N8, measured="2026-06-20 10:00:00", job_date="2026-10-13"))
+    assert a["verdict"] == "FLAG" and "stale" in a["results"]["calibration_snapshot"]["why"]
