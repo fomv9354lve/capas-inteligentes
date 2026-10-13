@@ -845,6 +845,158 @@ def check_rmt_G(ev: dict[str, Any]) -> dict[str, Any]:
             "why": w + ("" if exact else " [rectangular law: measured, not a theorem]")}
 
 
+# ---------------------------------------------------------------- calibration snapshot (Atlas)
+# Ley pedida por Atlas (incidente real 2026-10-13): un layout elegido sobre un snapshot de junio
+# tenia dos aristas CZ degradadas x15 y x6 y un qubit con T1 = 54 us; la corrida salio 10x por
+# debajo de la prediccion. Un snapshot cuyos elementos (o los del layout) rompen una ley de libro,
+# quedan lejos de la distribucion del propio dispositivo, o son viejos respecto al job, NO entra
+# al triage ni a la seleccion de layout. Esquema que ingiere Atlas:
+#   {measured: "YYYY-MM-DD HH:MM:SS", qubits: {id: {t1_us, readout[, t2_us, t2_method, ...]}},
+#    edges: {id: error_float | {cz_error, rzz_error, ...}}, [layout: {qubits: [...], edges: [...]}],
+#    [job_date: ...], [thresholds: {edge_x_median, readout_x_median, t1_min_frac_median,
+#                                   t1_min_us, max_age_days}]}
+# Umbrales por defecto = propuesta; Atlas los declara en `thresholds` cuando tenga los suyos.
+_SNAP_DEFAULTS = {
+    "edge_x_median": 5.0,        # arista con error > 5x la mediana del dispositivo -> outlier
+    "readout_x_median": 5.0,     # readout > 5x la mediana -> outlier
+    "t1_min_frac_median": 1 / 3, # T1 < mediana/3 -> outlier (54 us vs mediana 209 = 0.26x)
+    "t1_min_us": 0.0,            # piso absoluto opcional (0 = no aplica)
+    "max_age_days": 7.0,         # snapshot medido > 7 dias antes del job -> stale
+}
+
+
+def _parse_ts(x: Any) -> float | None:
+    """ISO-ish timestamp -> epoch seconds; None if unparseable (no se juzga)."""
+    from datetime import datetime
+    if x is None:
+        return None
+    if isinstance(x, (int, float)):
+        return float(x)
+    s = str(x).strip().replace("T", " ").replace("Z", "")
+    for fmt in ("%Y-%m-%d %H:%M:%S.%f", "%Y-%m-%d %H:%M:%S", "%Y-%m-%d %H:%M", "%Y-%m-%d"):
+        try:
+            return datetime.strptime(s[:26], fmt).timestamp()
+        except ValueError:
+            continue
+    return None
+
+
+def check_calibration_snapshot(ev: dict[str, Any]) -> dict[str, Any]:
+    import statistics as _st
+    snap = ev.get("calibration_snapshot")
+    if not isinstance(snap, dict) or not (isinstance(snap.get("qubits"), dict) or isinstance(snap.get("edges"), dict)):
+        return {"applies": False}
+    law = "calibration_snapshot: no element outside the device distribution, no textbook violation, not stale"
+    th = {**_SNAP_DEFAULTS, **{k: float(v) for k, v in (snap.get("thresholds") or {}).items() if _num(v) is not None}}
+    qubits = snap.get("qubits") or {}
+    edges = snap.get("edges") or {}
+    layout = snap.get("layout") if isinstance(snap.get("layout"), dict) else None
+    sel_q = set(map(str, layout.get("qubits", []))) if layout else None
+    sel_e = set(map(str, layout.get("edges", []))) if layout else None
+    outliers: list[dict[str, Any]] = []
+    holds: list[str] = []
+
+    def _edge_err(v: Any) -> float | None:
+        if isinstance(v, dict):
+            return _num(v.get("cz_error", v.get("error", v.get("gate_error"))))
+        return _num(v)
+
+    # 1) aristas: error relativo a la mediana del dispositivo (la mediana se toma sobre TODO el
+    #    dispositivo; el layout solo restringe que elementos se juzgan)
+    errs = {str(k): _edge_err(v) for k, v in edges.items()}
+    errs = {k: v for k, v in errs.items() if v is not None and v >= 0}
+    if errs:
+        med_e = _st.median(errs.values())
+        for k, v in errs.items():
+            if sel_e is not None and k not in sel_e:
+                continue
+            if med_e > 0 and v / med_e > th["edge_x_median"]:
+                outliers.append({"element": k, "kind": "edge_error", "value": v,
+                                 "ratio_to_median": round(v / med_e, 2), "limit": th["edge_x_median"]})
+
+    # 2) qubits: T1 piso (relativo a la mediana y absoluto) + readout relativo a la mediana
+    t1s = {str(k): _num((v or {}).get("t1_us")) for k, v in qubits.items() if isinstance(v, dict)}
+    t1s = {k: v for k, v in t1s.items() if v is not None and v > 0}
+    ros = {str(k): _num((v or {}).get("readout")) for k, v in qubits.items() if isinstance(v, dict)}
+    ros = {k: v for k, v in ros.items() if v is not None and v >= 0}
+    med_t1 = _st.median(t1s.values()) if t1s else None
+    med_ro = _st.median(ros.values()) if ros else None
+    for k, v in qubits.items():
+        k = str(k)
+        if sel_q is not None and k not in sel_q:
+            continue
+        if not isinstance(v, dict):
+            continue
+        t1 = t1s.get(k)
+        if t1 is not None:
+            if med_t1 and t1 / med_t1 < th["t1_min_frac_median"]:
+                outliers.append({"element": k, "kind": "t1_low", "value": t1,
+                                 "ratio_to_median": round(t1 / med_t1, 2), "limit": th["t1_min_frac_median"]})
+            elif th["t1_min_us"] > 0 and t1 < th["t1_min_us"]:
+                outliers.append({"element": k, "kind": "t1_low", "value": t1, "limit_us": th["t1_min_us"]})
+        ro = ros.get(k)
+        if ro is not None and med_ro and ro / med_ro > th["readout_x_median"]:
+            outliers.append({"element": k, "kind": "readout_high", "value": ro,
+                             "ratio_to_median": round(ro / med_ro, 2), "limit": th["readout_x_median"]})
+        # 3) leyes de libro por fila (T2 <= 2 T1, termico, piso de compuerta...) via capas_quantum_physics
+        row_keys = {"t1_us", "t2_us", "p01", "p10", "readout_isolated", "readout_parallel",
+                    "gate_error", "gate_time_ns", "zz_residual_hz"}
+        if len(row_keys & set(v)) >= 2:
+            try:
+                from capas_quantum_physics import audit_calibration_row
+                r = audit_calibration_row(v)
+                if r.get("verdict") not in ("ADMISSIBLE", None):
+                    outliers.append({"element": k, "kind": "textbook_violation",
+                                     "why": r.get("summary") or r.get("why") or str(r.get("flags"))})
+            except Exception as exc:  # fail-closed
+                outliers.append({"element": k, "kind": "textbook_check_errored", "why": str(exc)})
+    for k, v in edges.items():
+        k = str(k)
+        if isinstance(v, dict) and "cz_error" in v and "rzz_error" in v and (sel_e is None or k in sel_e):
+            try:
+                from capas_quantum_physics import audit_calibration_row
+                r = audit_calibration_row(v)
+                if r.get("verdict") not in ("ADMISSIBLE", None):
+                    outliers.append({"element": k, "kind": "textbook_violation",
+                                     "why": r.get("summary") or r.get("why") or str(r.get("flags"))})
+            except Exception as exc:
+                outliers.append({"element": k, "kind": "textbook_check_errored", "why": str(exc)})
+
+    # 4) frescura: snapshot medido vs fecha del job
+    stale = None
+    t_meas, t_job = _parse_ts(snap.get("measured")), _parse_ts(snap.get("job_date"))
+    if t_meas is not None and t_job is not None:
+        age_days = (t_job - t_meas) / 86400.0
+        if age_days > th["max_age_days"]:
+            stale = round(age_days, 1)
+    elif snap.get("job_date") is not None and t_meas is None:
+        holds.append("measured timestamp unparseable: cannot judge staleness")
+
+    def _fmt(o: dict[str, Any]) -> str:
+        if o["kind"] == "edge_error":
+            return f"edge {o['element']} error {o['value']:.3g} = {o['ratio_to_median']}x median (> {o['limit']}x)"
+        if o["kind"] == "t1_low":
+            return (f"qubit {o['element']} T1 {o['value']:.4g} us = {o.get('ratio_to_median', '?')}x median "
+                    f"(< {o.get('limit', o.get('limit_us'))})")
+        if o["kind"] == "readout_high":
+            return f"qubit {o['element']} readout {o['value']:.3g} = {o['ratio_to_median']}x median (> {o['limit']}x)"
+        return f"{o['element']}: {o['kind']} — {o.get('why')}"
+
+    n_j = (len(sel_q) if sel_q is not None else len(qubits)) + (len(sel_e) if sel_e is not None else len(edges))
+    scope = f"layout ({n_j} elements judged, medians over whole device)" if layout else f"whole snapshot ({n_j} elements)"
+    extra = {"outliers": outliers, "medians": {"edge_error": med_e if errs else None, "t1_us": med_t1, "readout": med_ro},
+             "thresholds": th, "stale_days": stale}
+    if outliers or stale is not None:
+        parts = [_fmt(o) for o in outliers]
+        if stale is not None:
+            parts.append(f"stale: measured {stale} days before job (> {th['max_age_days']} days)")
+        return {"applies": True, "verdict": "FLAG", "law": law, "why": f"{scope}: " + "; ".join(parts), **extra}
+    if holds:
+        return {"applies": True, "verdict": "HOLD", "law": law, "why": f"{scope}: " + "; ".join(holds), **extra}
+    return {"applies": True, "verdict": "PASS", "law": law,
+            "why": f"{scope}: every element within device distribution, no textbook violation, fresh", **extra}
+
+
 REGISTRY: dict[str, Callable[[dict[str, Any]], dict[str, Any]]] = {
     "accounting": check_accounting,
     "quantum": check_quantum,
@@ -873,6 +1025,7 @@ REGISTRY: dict[str, Callable[[dict[str, Any]], dict[str, Any]]] = {
     "rmt_closed_form": check_rmt_closed_form,
     "rmt_F": check_rmt_F,
     "rmt_G": check_rmt_G,
+    "calibration_snapshot": check_calibration_snapshot,  # quantum hardware (Atlas)
 }
 
 
