@@ -610,45 +610,58 @@ def check_pvalue_consistency(ev: dict[str, Any]) -> dict[str, Any]:
     if None in (df1, val, p) or df1 <= 0:
         return {"applies": True, "verdict": "FLAG", "law": "p recomputes from its test statistic",
                 "why": "non-numeric or invalid inputs"}
-    if stat == "t":
-        pc = 2 * st.t.sf(abs(val), df1)
-    elif stat == "f":
-        if df2 is None or df2 <= 0:
-            return {"applies": True, "verdict": "FLAG", "law": "p recomputes from its test statistic",
-                    "why": "F test needs df2"}
-        pc = st.f.sf(val, df1, df2)
-    elif stat in ("chi2", "chi"):
-        pc = st.chi2.sf(val, df1)
-    elif stat == "z":
-        pc = 2 * st.norm.sf(abs(val))
-    elif stat == "r":
-        if abs(val) >= 1:
-            return {"applies": True, "verdict": "FLAG", "law": "p recomputes from its test statistic",
-                    "why": f"|r|={val} >= 1 is impossible"}
-        tval = val * ((df1 / (1 - val * val)) ** 0.5)
-        pc = 2 * st.t.sf(abs(tval), df1)
-    else:
+    def _p_of(v: float) -> float | None:
+        if stat == "t":
+            return 2 * st.t.sf(abs(v), df1)
+        if stat == "f":
+            return st.f.sf(v, df1, df2) if (df2 and df2 > 0) else None
+        if stat in ("chi2", "chi"):
+            return st.chi2.sf(v, df1)
+        if stat == "z":
+            return 2 * st.norm.sf(abs(v))
+        if stat == "r":
+            if abs(v) >= 1:
+                return None
+            tv = v * ((df1 / (1 - v * v)) ** 0.5)
+            return 2 * st.t.sf(abs(tv), df1)
+        return None
+    if stat not in ("t", "f", "chi2", "chi", "z", "r"):
         return {"applies": False}
+    if stat == "f" and not (df2 and df2 > 0):
+        return {"applies": True, "verdict": "FLAG", "law": "p recomputes from its test statistic",
+                "why": "F test needs df2"}
+    if stat == "r" and abs(val) >= 1:
+        return {"applies": True, "verdict": "FLAG", "law": "p recomputes from its test statistic",
+                "why": f"|r|={val} >= 1 is impossible"}
+    # El estadistico reportado esta redondeado: t=1.98 significa t in [1.975, 1.985). El p
+    # consistente es por tanto un INTERVALO (metodo statcheck), no un punto.
+    dv = int(b.get("value_decimals", _decimals(b["value"], 2)))
+    half = 0.5 * 10 ** (-dv)
+    cands = [x for x in (_p_of(val), _p_of(val - half), _p_of(val + half)) if x is not None]
+    if not cands:
+        return {"applies": True, "verdict": "FLAG", "law": "p recomputes from its test statistic",
+                "why": "could not recompute p"}
+    pc, p_lo, p_hi = cands[0], min(cands), max(cands)
     d = int(b.get("decimals", _decimals(b["p"], 2)))
     tol = 0.5 * 10 ** (-d) + 1e-9
     # Igualdad: consistente si p recalculado REDONDEA al p reportado.
     # Desigualdad: estricta, como statcheck — "p < .05" con p recalculado .0501 es un flag.
     if op == "=":
-        ok = abs(pc - p) <= tol
+        ok = (p_lo - tol) <= p <= (p_hi + tol)
     elif op == "<":
-        ok = pc < p + 1e-9
+        ok = p_lo < p + 1e-9
     elif op == "<=":
-        ok = pc <= p + 1e-9
+        ok = p_lo <= p + 1e-9
     elif op == ">":
-        ok = pc > p - 1e-9
+        ok = p_hi > p - 1e-9
     elif op == ">=":
-        ok = pc >= p - 1e-9
+        ok = p_hi >= p - 1e-9
     else:
-        ok = abs(pc - p) <= tol
+        ok = (p_lo - tol) <= p <= (p_hi + tol)
     # Error de decision: ambos lados claramente a distinto lado de .05. Un p reportado
     # exactamente en .05 es ambiguo por construccion y no cuenta como cruce.
-    crosses = (op == "=" and (pc < 0.05) != (p < 0.05)
-               and abs(pc - 0.05) > tol and abs(p - 0.05) > tol)
+    crosses = (op == "=" and (p_hi < 0.05) != (p < 0.05) and (p_lo < 0.05) == (p_hi < 0.05)
+               and abs(p - 0.05) > tol)
     return {"applies": True, "verdict": "PASS" if (ok and not crosses) else "FLAG",
             "law": "p recomputes from its test statistic (statcheck)",
             "recomputed_p": round(pc, 6),
