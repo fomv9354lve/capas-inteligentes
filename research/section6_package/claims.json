@@ -47,5 +47,26 @@
   "estado": "empirical",
   "evidencia": "research/registration_adherence/phase0.py; research/registration_adherence/data/phase0_n500.json",
   "como_refutar": "Correr phase0.py sobre otra muestra y obtener <80%; o mostrar que el endpoint /api/int no es estable/publico."
+ },
+ {
+  "id": "C6-08",
+  "claim": "Sobre 38 claims reales limpios fuera de muestra (Ginibre X4+X5; motor congelado por tag ANTES de codificar; veredictos sellados por sha256 ANTES de abrir desenlaces; doble conteo), CAPAS no deja en ACCEPT 17/21 malos y no rechaza 16/17 buenos",
+  "estado": "empirical",
+  "evidencia": "research/ginibre_corpus/score_sealed.py (verifica claims_sha256 contra cabeceras; outputs/ginibre_sealed_scores.json); repo Ginibre CAPAS_CORPUS_2026-10-12/: PARA_CAPAS_claims_X4.jsonl + DE_CAPAS_veredictos_X4.jsonl (tag ginibre-ciego-v4=bf09faa), PARA_CAPAS_claims_X5.jsonl + DE_CAPAS_veredictos_X5.jsonl (tag ginibre-ciego-v6=481d5cf); research/ginibre_corpus/README.md secciones X4 y X5",
+  "como_refutar": "Mostrar que las cabeceras no cuadran con los archivos (hash), que el tag es posterior a la codificacion (git log del tag vs fecha del corpus), que los desenlaces se abrieron antes de sellar (outcomes_file_opened), o que la etiqueta 'bueno'='sin correccion posterior' invalida la cifra; o recontar y obtener otros numeros."
+ },
+ {
+  "id": "C6-09",
+  "claim": "La ley calibration_snapshot (capas_invariants) separa, con los filtros fisicos solos, 4/4 corridas GHZ reales de ibm_kingston (GOOD vs DEGRADED por TVD) en un lote ciego de Atlas, y eligio prospectivamente un layout que bajo r/capa de 15.6% a 7.6% con circuitos identicos",
+  "estado": "empirical (n=4 ciego + 1 prospectivo)",
+  "evidencia": "research/atlas_blind/README.md y DE_CAPAS_veredictos_atlas_2026-06*.json (sellados antes de abrir desenlaces; sha256 31758a04/415c8407; desenlaces c2a1abc0 en el repo Atlas benchmarks/capas_blind/); benchmarks/fixtures/atlas_kingston_2026-10-13*.json + benchmarks/test_calibration_snapshot.py (casos reales 1-4)",
+  "como_refutar": "Un snapshot real con layout GOOD que la ley FLAGuee por fisica, o DEGRADED que PASS; mostrar que las medianas o umbrales se eligieron viendo los desenlaces (fechas de commits vs revelacion); o que la politica 'mismo dia' → '1 dia' se cambio para subir el conteo (fue post-hoc y esta declarado asi)."
+ },
+ {
+  "id": "C6-10",
+  "claim": "Las reglas estructurales del 13-oct (scope_declared/scope_tested, text_quantifier, negative_control_failed, Sidak sobre n_cells) no cuestan REJECT a ningun bueno en X1-X5 y la regla de alcance cazo en vivo una sobreafirmacion real (hook sombra de Ginibre, 03:35)",
+  "estado": "empirical post-hoc + prospectivo n=1",
+  "evidencia": "research/ginibre_corpus/drift_vs_sealed.py (outputs/engine_vs_sealed.json: 41 flips, 0 bueno→REJECT); research/ginibre_corpus/README.md secciones 'Post-hoc: coste y ganancia' y 'Primer acierto PROSPECTIVO'; repo Ginibre .claude/capas_shadow.log.jsonl 03:35",
+  "como_refutar": "Un bueno de X1-X5 que hoy de REJECT; o mostrar que el acierto prospectivo no lo era (el claim ya era visible para el motor, o el REWRITE no era correcto)."
  }
 ]
