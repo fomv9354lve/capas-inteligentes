@@ -33,6 +33,11 @@ entrada incompleta ya no se saltan en silencio: HOLD.
 
 Campos nuevos (opcionales; ausente → nunca ACCEPT en la ruta afectada): `error_statistic`+`n_cells` (Šidák), `scope_declared`/`scope_tested`, `negative_control_failed` (régimen de precisión de máquina), `tolerance_rationale`, `reference_value`, `text_quantifier`. Coste post-hoc sobre X1–X5 medido y escrito (`research/ginibre_corpus/README.md`): 0 buenos a REJECT; la regla de alcance en texto cuesta 5 buenos por 2 malos hasta que se declaren los campos.
 
+Añadido ~05:50 (convención (a) de Ginibre al motor): `exact_model_solution` lee `test_statistic` {chi2_dof, value, dof,
+rivals, z_constraint}: rival con mejor χ²/dof → REJECT; mejor de los rivales pero p<α → REWRITE (la lectura honesta de
+X4-026); rivales ajustados con parámetro libre a |z|>4 son auto-refutados y no cuentan (trampa CRIT_FINO de Ginibre);
+`n_replicates` = extracciones independientes detrás de la SE. Guía de codificación: `docs/CODING_GUIDE_EVIDENCE_FIELDS.md`.
+
 ## Hallazgos de infraestructura (corregidos localmente, pendientes de deploy)
 
 - **Gate App**: el modo lote usaba una réplica JS vieja (paridad 130/233) aunque el backend estuviera vivo; el historial de auditoría descartaba veredictos vivos; 4 violaciones CSP por render de lote. Ahora: lote e individual por `/api/decide`, offline → HOLD, historial por `audit_hash`.
