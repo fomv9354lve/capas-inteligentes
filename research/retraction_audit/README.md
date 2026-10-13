@@ -83,3 +83,32 @@ La separación es por ítem, no por paper: un paper fabricado chequeable concent
 inconsistencias severas, pero "tener al menos una" no distingue. **Sigue sobre 11 papers.**
 La tanda 2 (clínica/psicología, razones de datos, 7.934 candidatos) está descargando; su etiqueta
 es más débil ("Unreliable Results" domina) y hay que estratificar por razón antes de sumar.
+
+## Tercera pasada: corpus completo estratificado por razón (2026-10-13)
+
+Tanda 2: 7.934 retractaciones en clínica/psicología con razones de datos; 6.185 con texto. Control
+sin cambios (116). Estratificación por la **primera razón que casa, por orden de fuerza** (un paper
+puede llevar varias). Severo = error de decisión, cuenta imposible o desajuste numérico.
+
+| razón | papers | chequeables | items | severos | % sev | OR vs ctl | p |
+|---|---|---|---|---|---|---|---|
+| Falsification/Fabrication of Data | 175 | 11 | 150 | 8 | 5,3 | 7,49 | 0,0004 |
+| Unreliable Data | 345 | 9 | 195 | 1 | 0,5 | 0,69 | 1 |
+| Error in Data | 151 | 18 | 499 | 7 | 1,4 | 1,89 | 0,26 |
+| Error in Results and/or Conclusions | 67 | 15 | 521 | 5 | 1,0 | 1,29 | 0,76 |
+| Unreliable Results | 5.569 | 616 | 16.725 | 265 | 1,6 | 2,14 | 0,057 |
+| **control** | 116 | 17 | 804 | 6 | 0,7 | — | — |
+
+Agregados: fuertes (fab + unreliable/error in data) 1,9% vs 0,7%, OR 2,56, p 0,053. Todos: 1,6% vs
+0,7%, OR 2,14, p 0,058. **Por paper no hay separación en ningún estrato** (119/670 = 18% vs 5/17 =
+29%).
+
+**Lectura.** La señal fuerte (OR 7,5) vive sólo en "Fabrication of Data" y sobre 11 papers. Al
+bajar a etiquetas más débiles la razón de probabilidades cae a ~2 y deja de ser significativa. El
+cuello de botella es ahora **el control: 17 papers chequeables y 6 ítems severos no anclan nada**. Se
+está descargando un control de ~800 papers de las mismas 60 revistas. Hasta entonces, ninguna de
+las razones por encima de la primera fila es un hallazgo.
+
+Dos bugs míos corregidos en esta pasada, ambos del lado del experimento: truncaba la razón de
+retractación a 120 caracteres (4.541 papers caían en "?"), y la lista de control se construía con
+una query sin codificar. Ninguno toca el motor.
