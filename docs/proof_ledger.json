@@ -109,7 +109,7 @@
     "ok": true,
     "value": "5 runs, xAI grok-4.7: 3/7 claims REFUTED (C6-02 false-accept by scope, C6-04 unsealed figure, C6-05 unversioned grading) -> each corrected and frozen as a test or sealed file; 4/7 not refuted",
     "artifact": "research/section6_package/README.md",
-    "sha256": "sha256:4dde32619fbb6b74fd0136e2fea493ca\u2026",
+    "sha256": "sha256:9bfde217fb71c7cfafc9910b907feb9e\u2026",
     "scope": "One auditor family so far; NOT REFUTED is not PROVED. Run 4's report quoted commands it never executed (caught by the transcript); the runner now gates the report against executed commands.",
     "owner": "eval"
   },
@@ -130,6 +130,18 @@
     "value": "0/5 false-accept (both); CAPAS deterministic, LLM stochastic",
     "scope": "10-claim corpus; modeled mechanism arms labeled as modeled.",
     "upgrade_artifact": "larger adjudicated corpus + real competitor runs",
+    "owner": "eval"
+  },
+  {
+    "id": "replica_parity",
+    "claim": "The in-browser JS replica is NOT the engine: it agrees with the Python gate on 130/233 sealed payloads",
+    "status": "SCOPED",
+    "backing": "python3 benchmarks/replica_parity.py (node + playwright)",
+    "value": "130/233 agree; python\u2192js mismatches: REWRITE\u2192ACCEPT 26, REJECT\u2192HOLD 30, ACCEPT\u2192HOLD 17, REWRITE\u2192HOLD 28, HOLD\u2192ACCEPT 2",
+    "artifact": "outputs/replica_parity.json",
+    "sha256": "sha256:059e22e0068c26653c0318c32140a865\u2026",
+    "scope": "Measured 2026-10-13. Consequence applied the same day: the Gate App's single and batch paths use the live engine; without a backend the page returns HOLD (fail-closed), never a replica verdict; the local audit history is validated by the engine's audit_hash, not by replica recomputation.",
+    "upgrade_artifact": "either regenerate rule() from capas.py or delete the replica",
     "owner": "eval"
   },
   {

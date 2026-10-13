@@ -138,6 +138,15 @@ def build() -> list[dict]:
               "value": "0/5 false-accept (both); CAPAS deterministic, LLM stochastic",
               "scope": "10-claim corpus; modeled mechanism arms labeled as modeled.",
               "upgrade_artifact": "larger adjudicated corpus + real competitor runs", "owner": "eval"})
+    rp = ROOT / "outputs" / "replica_parity.json"
+    L.append({"id": "replica_parity", "claim": "The in-browser JS replica is NOT the engine: it agrees with the Python gate on 130/233 sealed payloads",
+              "status": "SCOPED", "backing": "python3 benchmarks/replica_parity.py (node + playwright)",
+              "value": "130/233 agree; python→js mismatches: REWRITE→ACCEPT 26, REJECT→HOLD 30, ACCEPT→HOLD 17, REWRITE→HOLD 28, HOLD→ACCEPT 2",
+              "artifact": "outputs/replica_parity.json", "sha256": _sha256(rp),
+              "scope": "Measured 2026-10-13. Consequence applied the same day: the Gate App's single and batch paths use the live "
+                       "engine; without a backend the page returns HOLD (fail-closed), never a replica verdict; the local audit "
+                       "history is validated by the engine's audit_hash, not by replica recomputation.",
+              "upgrade_artifact": "either regenerate rule() from capas.py or delete the replica", "owner": "eval"})
     L.append({"id": "pip_install", "claim": "pip install capas-claim-gate",
               "status": "BACKED", "backing": "pip install capas-claim-gate (PyPI; published from GitHub via OIDC Trusted Publishing, no token)",
               "value": "capas-claim-gate 0.3.0 LIVE on PyPI", "artifact": "https://pypi.org/project/capas-claim-gate/",
