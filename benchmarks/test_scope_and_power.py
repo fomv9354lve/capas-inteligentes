@@ -41,8 +41,10 @@ def test_local_text_needs_no_scope_fields():
 def test_x5_003_and_x4_002_shapes_are_caught():
     t3 = "La corrección kurt_true funciona en la ventana útil (d/borde 1.1–1.3, CV(σ²)≤2) (verificada, no heredada)."
     assert capas.decide_external_claim(_p(t3, abs_error=1.59, tolerance=2.0))["verdict"] == "REWRITE"
+    # X4-001's shape ("k-casi-independiente") was caught only by the weak marker '-independiente'; since the 07:15 cost fix
+    # weak markers alone do not trigger, so this one is a DECLARED loss (1 bad) traded for 4 good claims kept in ACCEPT.
     t2 = "La curtosis por realización es monótona en el margen y k-casi-independiente ⇒ es un estimador del margen de estabilidad."
-    assert capas.decide_external_claim(_p(t2, abs_error=0.07, tolerance=0.1, n_points=3))["verdict"] == "REWRITE"
+    assert capas.decide_external_claim(_p(t2, abs_error=0.07, tolerance=0.1, n_points=3))["verdict"] == "ACCEPT"
 
 # ---------- (2) power
 def test_machine_precision_without_negative_control_holds():
@@ -133,3 +135,24 @@ def test_principal_own_constraint_rejected():
 
 def test_rival_dict_without_chi2_holds():
     assert capas.decide_external_claim(_ts(kind="chi2_dof", value=0.74, dof=6, rivals=[{"z_constraint": 0.3}]))["verdict"] == "HOLD"
+
+
+# --- Cost fix (Osvaldo, 2026-10-13 07:15): the scope-in-text rule fired on WEAK nouns ('ventana', 'régimen', 'siempre',
+# '-independiente') and cost 5 good claims for 2 bad on X1-X5 (post-hoc). Weak markers alone no longer trigger; only a
+# quantifier or an explicit generalisation does ('para todo', 'for all/every/any', '∀', 'funciona en', 'holds for/over',
+# 'en general', 'independiente de'). POST-HOC on X1-X5; the Atlas blind corpus (tag atlas-ciego-v3) tests it out of sample.
+WEAK_ONLY = ["H estima C(x,d): en d=0 los pulls son +0.01 y −0.29 SE; dentro del dominio d≤0.6 χ²/dof=1.39 sobre 6 celdas.",   # 'ventana'-type
+             "OLS con n mayor que p es otro régimen: C_p=p·E[σ²] se duplica al duplicar p.",
+             "Ley individual con f=e_j (τ=0): P(signo igual)−½ predice 12 puntos fuera de muestra, k-independiente."]
+STRONG = ["La corrección funciona en la ventana útil (d/borde 1.1–1.3).", "Universalidad de entradas iid: t5, t3 y Rademacher coinciden con el gaussiano.", "ψ es invariante bajo Π↦SΠ para todo S∈GL(m).",
+          "The identity holds for every writing.", "El resultado vale en general.", "independiente de k para k ≥ 64"]
+
+def test_weak_markers_alone_do_not_trigger_scope_rule():
+    for t in WEAK_ONLY:
+        d = capas.decide_external_claim(_p(t))
+        assert d["verdict"] == "ACCEPT", (t, d["verdict"], d["reason"][:80])
+
+def test_strong_markers_still_trigger():
+    for t in STRONG:
+        d = capas.decide_external_claim(_p(t))
+        assert d["verdict"] == "REWRITE" and "scope" in d["reason"].lower(), (t, d["verdict"])

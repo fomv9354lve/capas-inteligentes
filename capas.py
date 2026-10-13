@@ -106,9 +106,12 @@ ANCHOR_MODE_CONTRACTS = {
 ERROR_STATISTICS = {"single", "max", "rms"}
 # Alcance afirmado en PROSA (X4-002, X5-003): "funciona en la ventana", "para todo k", "en general", "∀".
 # El gate no lee alcance; exige que se declare (scope_declared ⊆ scope_tested) cuando el texto generaliza.
-SCOPE_RE = re.compile(r"(\bpara tod[oa]s?\b|\ben tod[oa]s?\b|\bventana\b|\bwindow\b|\bregim\w*\b|\bréf?gimen\b|"
-                      r"\ben general\b|\bgeneral\w*\b|\bfor (all|every|any)\b|\bthroughout\b|\bsiempre\b|\balways\b|"
-                      r"\bindependiente de\b|\bindependent of\b|-?(casi-)?independiente\b|-?independent\b|\bfunciona en\b|\bholds (in|for|over)\b|∀)", re.I)
+SCOPE_RE = re.compile(r"(\bpara (toda|todo|todas|todos|cualquier\w*|cualesquiera|cada)\b|\bfor (all|every|any|each|arbitrary)\b|\bevery\b|"
+                      r"\ben general\b|\bin general\b|\bfunciona en\b|\bholds (in|for|over)\b|\bvale (en|para)\b|"
+                      r"\bindependiente(mente)? de\b|\bindependent(ly)? of\b|\buniversal\w*\b|\ben todo el\b|\bthroughout\b|∀)", re.I)
+# 2026-10-13 07:15 (Osvaldo: "arregla"): the weak nouns 'ventana', 'régimen', 'siempre', '-independiente' alone no longer
+# trigger — on X1-X5 they cost 5 good claims for 2 bad. Only a quantifier or an explicit generalisation triggers. POST-HOC
+# tuning; tested out of sample by the Atlas blind corpus (tag atlas-ciego-v3).
 # Regimen de precision de maquina (X5-010): abs_error <= 1e-12*max(1,|valor|). Ahi la tolerancia no informa — una
 # comprobacion circular da 3e-14 con cualquier tolerancia, igual que una identidad exacta legitima. Lo unico
 # que las separa es si se vio FALLAR a una variante falsa: negative_control_failed. (Regla de Ginibre, 2026-10-13;
