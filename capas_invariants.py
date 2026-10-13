@@ -142,13 +142,13 @@ def check_sum(ev: dict[str, Any]) -> dict[str, Any]:
         return {"applies": False}
     s = sum(_num(x) or 0.0 for x in parts)
     tol = max(_TOL, 1e-3 * max(abs(total), 1.0))
-    # Sumas de ESTIMADOS: si se declaran errores estandar, la tolerancia es k·sigma de la
+    # Sumas de ESTIMADOS: si se declaran errores estandar, la tolerancia es k·sigma (k=4) de la
     # diferencia (sigma^2 = sum se_i^2 + se_total^2), no la contabilidad exacta. Sin ellos,
     # el chequeo sigue siendo exacto -- declarar incertidumbre es lo que la compra.
     # (Hallazgo del uso en Ginibre, 2026-10: 0.1066+0.124-0.008 vs 0.227 con se~0.005 era
     # un REJECT falso con tol fija 0.001.)
     se_parts, se_total = ev.get("parts_se"), _num(ev.get("total_se")) if "total_se" in ev else None
-    k_sigma = _num(ev.get("k_sigma")) or 2.0
+    k_sigma = _num(ev.get("k_sigma")) or 4.0
     if se_parts is not None or se_total is not None:
         if se_parts is None:
             se_parts = [0.0] * len(parts)
@@ -712,6 +712,123 @@ def check_reported_percent(ev: dict[str, Any]) -> dict[str, Any]:
                     f"{k:g}/{N:g} = {calc:.{d+1}f}% but reported {pct}% — inconsistent")}
 
 
+# --- RMT / inverse-Ginibre closed-form identities (spec + 10-digit cases: Ginibre session, 2026-10-12) ---
+# These are COHERENCE checks between declared closed-form quantities, not "the echo law": the
+# u/(1-xu) shape is nearly a rewriting (almost any law fits it by choosing u), so its content as a
+# physical law is nil -- but as an algebraic identity between a declared A and a declared C it is
+# exact, and a pair that does not agree is caught. Exact identities: relative tol 1e-9. An
+# ESTIMATED quantity must declare its standard error: FLAG only beyond 4*SE, and with no SE the
+# verdict is HOLD (cannot judge), never a flag.
+_RMT_REL = 1e-9
+_RMT_K = 4.0
+
+
+def _rmt_compare(name: str, declared: float | None, formula: float, se: float | None,
+                 exact: bool) -> tuple[str, str]:
+    """-> (verdict, why) for one declared-vs-formula comparison."""
+    if declared is None:
+        return "PASS", f"{name} not declared"
+    if exact:
+        tol = _RMT_REL * max(abs(formula), 1e-12)
+        ok = abs(declared - formula) <= tol
+        return ("PASS" if ok else "FLAG",
+                f"{name}: declared {declared:.10g} vs identity {formula:.10g}" + ("" if ok else " — exact identity violated"))
+    if se is None:
+        return "HOLD", f"{name} is a measured quantity but no standard error was declared — cannot judge"
+    z = abs(declared - formula) / se if se > 0 else float("inf")
+    ok = z <= _RMT_K
+    return ("PASS" if ok else "FLAG",
+            f"{name}: declared {declared:.10g} ± {se:.3g} vs law {formula:.10g} (z = {z:.1f})" + ("" if ok else f" — beyond {_RMT_K:g}·SE"))
+
+
+def _rmt_combine(parts: list[tuple[str, str]], law: str) -> dict[str, Any]:
+    verdicts = [v for v, _ in parts]
+    verdict = "FLAG" if "FLAG" in verdicts else ("HOLD" if "HOLD" in verdicts else "PASS")
+    return {"applies": True, "verdict": verdict, "law": law, "why": "; ".join(w for _, w in parts)}
+
+
+def check_rmt_closed_form(ev: dict[str, Any]) -> dict[str, Any]:
+    """C(x,d) and C(x,d,tau): with u = x + 2(1-x)d^2 (tau absent) or u = x + 2(1-x)d^2/((1+tau)(1+tau x)),
+    A = 1/(1 - x u) and C = (4/pi^2) u/(1 - x u). Declared A and/or C must satisfy both exactly.
+    Needs `rmt_closed_form`: {x, d, tau?, A?, C?}. Domain: x in (0,1), d in [0,1) (and d < 1+tau,
+    |tau| < 1 when tau given), and 1 - x u > 0."""
+    b = ev.get("rmt_closed_form")
+    if not isinstance(b, dict) or "x" not in b or "d" not in b:
+        return {"applies": False}
+    import math
+    x, d, tau = _num(b["x"]), _num(b["d"]), (_num(b["tau"]) if "tau" in b else None)
+    law = "RMT closed form: A = 1/(1-xu), C = (4/pi^2) u/(1-xu)"
+    if x is None or d is None or not (0 < x < 1) or d < 0:
+        return {"applies": True, "verdict": "FLAG", "law": law, "why": f"domain: x must be in (0,1) and d >= 0 (got x={x}, d={d})"}
+    if tau is None:
+        if d >= 1:
+            return {"applies": True, "verdict": "FLAG", "law": law, "why": f"domain: d must be < 1 (got {d})"}
+        u = x + 2 * (1 - x) * d * d
+    else:
+        if not (abs(tau) < 1) or d >= 1 + tau:
+            return {"applies": True, "verdict": "FLAG", "law": law, "why": f"domain: need |tau| < 1 and d < 1 + tau (got d={d}, tau={tau})"}
+        u = x + 2 * (1 - x) * d * d / ((1 + tau) * (1 + tau * x))
+    if 1 - x * u <= 0:
+        return {"applies": True, "verdict": "FLAG", "law": law, "why": f"domain: 1 - x·u must be > 0 (x·u = {x*u:.6g})"}
+    A = 1 / (1 - x * u)
+    C = (4 / math.pi ** 2) * u / (1 - x * u)
+    parts = [_rmt_compare("A", _num(b.get("A")), A, None, True),
+             _rmt_compare("C", _num(b.get("C")), C, None, True)]
+    out = _rmt_combine(parts, law); out["u"] = u; out["A_formula"] = A; out["C_formula"] = C
+    return out
+
+
+def check_rmt_F(ev: dict[str, Any]) -> dict[str, Any]:
+    """F(a,b,gamma): rho = a(1-l)/(1 - a b l) with l = 1/gamma; F = ((2/pi) asin rho)^2.
+    Invariants: 0 <= rho < 1, F in [0,1), and declared rho / F coherent with (a,b,gamma).
+    Needs `rmt_F`: {a, b, gamma, rho?, F?}. Domain a, b in [0,1], gamma >= 1."""
+    b = ev.get("rmt_F")
+    if not isinstance(b, dict) or not all(k in b for k in ("a", "b", "gamma")):
+        return {"applies": False}
+    import math
+    a, bb, g = _num(b["a"]), _num(b["b"]), _num(b["gamma"])
+    law = "RMT F: rho = a(1-1/g)/(1-ab/g), F = ((2/pi) asin rho)^2"
+    if None in (a, bb, g) or not (0 <= a <= 1 and 0 <= bb <= 1 and g >= 1):
+        return {"applies": True, "verdict": "FLAG", "law": law, "why": f"domain: a,b in [0,1], gamma >= 1 (got a={a}, b={bb}, gamma={g})"}
+    lam = 1 / g
+    rho = a * (1 - lam) / (1 - a * bb * lam)
+    F = ((2 / math.pi) * math.asin(rho)) ** 2
+    parts = [_rmt_compare("rho", _num(b.get("rho")), rho, None, True),
+             _rmt_compare("F", _num(b.get("F")), F, None, True)]
+    for nm, val in (("rho", _num(b.get("rho"))), ("F", _num(b.get("F")))):
+        if val is not None and not (0 <= val < 1):
+            parts.append(("FLAG", f"{nm}={val} outside [0,1)"))
+    out = _rmt_combine(parts, law); out["rho_formula"] = rho; out["F_formula"] = F
+    return out
+
+
+def check_rmt_G(ev: dict[str, Any]) -> dict[str, Any]:
+    """G(a,b,1) = (4/pi^2) a/(1 - a b). With a = b = x this is C(x) exactly (theorem for x in (0,1):
+    proof written, AI-reviewed, no peer review). With a != b the rectangular law is MEASURED:
+    a declared G must come with G_se; flag only beyond 4*SE; no SE -> HOLD.
+    Needs `rmt_G`: {a, b, gamma, G, G_se?}. Only gamma == 1 is a law; other gamma -> not applicable."""
+    b = ev.get("rmt_G")
+    if not isinstance(b, dict) or not all(k in b for k in ("a", "b", "gamma", "G")):
+        return {"applies": False}
+    import math
+    a, bb, g, G = _num(b["a"]), _num(b["b"]), _num(b["gamma"]), _num(b["G"])
+    if None in (a, bb, g, G) or abs(g - 1) > 1e-12:
+        return {"applies": False}
+    law = "RMT G(a,b,1) = (4/pi^2) a/(1-ab)"
+    if not (0 < a < 1 and 0 < bb < 1):
+        return {"applies": True, "verdict": "FLAG", "law": law, "why": f"domain: a, b in (0,1) (got {a}, {bb})"}
+    Gf = (4 / math.pi ** 2) * a / (1 - a * bb)
+    exact = abs(a - bb) <= 1e-12
+    se = _num(b.get("G_se")) if "G_se" in b else None
+    if exact and se is not None:
+        # a declared SE on an exact identity: judge by SE (a 6-sigma miss must still flag)
+        v, w = _rmt_compare("G", G, Gf, se, False)
+    else:
+        v, w = _rmt_compare("G", G, Gf, se, exact)
+    return {"applies": True, "verdict": v, "law": law, "G_formula": Gf,
+            "why": w + ("" if exact else " [rectangular law: measured, not a theorem]")}
+
+
 REGISTRY: dict[str, Callable[[dict[str, Any]], dict[str, Any]]] = {
     "accounting": check_accounting,
     "quantum": check_quantum,
@@ -737,6 +854,9 @@ REGISTRY: dict[str, Callable[[dict[str, Any]], dict[str, Any]]] = {
     "hardy_weinberg": check_hardy_weinberg,       # biology
     "pvalue_test": check_pvalue_consistency,
     "reported_percent": check_reported_percent,
+    "rmt_closed_form": check_rmt_closed_form,
+    "rmt_F": check_rmt_F,
+    "rmt_G": check_rmt_G,
 }
 
 
@@ -754,14 +874,20 @@ def audit(evidence: dict[str, Any]) -> dict[str, Any]:
         if r.get("applies"):
             results[name] = r
     flags = [n for n, r in results.items() if r.get("verdict") == "FLAG"]
+    # HOLD: una ley que NO PUEDE juzgar (p.ej. cantidad medida sin error estandar declarado).
+    # No es violacion: nunca fuerza REJECT; deja el claim en HOLD hasta que se declare lo que falta.
+    holds = [n for n, r in results.items() if r.get("verdict") == "HOLD"]
     applicable = bool(results)
+    verdict = ("FLAG" if flags else ("HOLD" if holds else "PASS")) if applicable else "N/A"
     return {
         "applicable": applicable,
-        "verdict": ("FLAG" if flags else "PASS") if applicable else "N/A",
+        "verdict": verdict,
         "laws_checked": sorted(results.keys()),
         "violations": flags,
+        "holds": holds,
         "results": results,
         "summary": ("; ".join(results[f]["why"] for f in flags) if flags else
-                    (f"all {len(results)} applicable invariant(s) hold" if applicable else
-                     "no domain invariant applies to this evidence")),
+                    ("; ".join(results[h]["why"] for h in holds) if holds else
+                     (f"all {len(results)} applicable invariant(s) hold" if applicable else
+                      "no domain invariant applies to this evidence"))),
     }

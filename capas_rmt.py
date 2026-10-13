@@ -12,7 +12,7 @@ import math
 from typing import Any
 
 PI2 = math.pi**2
-def C_closed(x): return (4/PI2)*x/(1-x**2)          # Conjecture 1 closed form
+def C_closed(x): return (4/PI2)*x/(1-x**2)          # C(x) theorem, x in (0,1): proof written (SSRN v2), AI-reviewed, no peer review; was 'Conjecture 1'
 
 def _pf(applies, ok, law, why):
     return {"applies": applies, "verdict": ("PASS" if ok else "FLAG") if applies else "N/A", "law": law, "why": why}
@@ -64,7 +64,7 @@ def check_theorem5(ev):
 def check_closed_form(ev):
     if not all(k in ev for k in ("x", "C_pred")): return _pf(False, True, "", "")
     cf = C_closed(ev["x"]); ok = abs(ev["C_pred"]-cf) <= 0.01*max(cf, 1e-9)
-    return _pf(True, ok, "C_pred = (4/pi^2)x/(1-x^2) (Conj 1)", f"tabulated={ev['C_pred']:.4f} vs formula={cf:.4f} ({100*(ev['C_pred']-cf)/cf:+.1f}%)")
+    return _pf(True, ok, "C_pred = (4/pi^2)x/(1-x^2) (C(x) theorem, unrefereed)", f"tabulated={ev['C_pred']:.4f} vs formula={cf:.4f} ({100*(ev['C_pred']-cf)/cf:+.1f}%)")
 
 def check_zscore(ev):
     if not all(k in ev for k in ("C_hat", "C_pred", "sigma", "z")): return _pf(False, True, "", "")

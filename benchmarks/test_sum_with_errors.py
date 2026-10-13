@@ -14,8 +14,9 @@ def test_ginibre_fitted_limits_within_se_pass():
     assert ci.audit(ev)["verdict"] == "PASS"
 
 def test_discrepancy_beyond_k_sigma_flags():
-    ev = {"parts": [0.1066, 0.124, -0.008], "parts_se": [0.001, 0.001, 0.001],
-          "total": 0.227, "total_se": 0.001}
+    # k = 4 (spec Ginibre): sigma = sqrt(4 * 0.0005^2) = 0.001 -> 4*sigma = 0.004 < |diff| 0.0044
+    ev = {"parts": [0.1066, 0.124, -0.008], "parts_se": [0.0005, 0.0005, 0.0005],
+          "total": 0.227, "total_se": 0.0005}
     assert ci.audit(ev)["verdict"] == "FLAG"
 
 def test_malformed_se_length_flags():

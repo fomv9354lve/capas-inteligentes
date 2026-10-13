@@ -1961,6 +1961,12 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
         verdict = "REJECT"
         licensed_claim = None
         rewrite = None
+    elif invariant_audit["applicable"] and invariant_audit["verdict"] == "HOLD" and verdict == "ACCEPT":
+        # Una ley no pudo juzgar (cantidad medida sin SE declarado): no es violacion, pero un
+        # ACCEPT no esta licenciado hasta que se declare lo que falta. Downgrade a HOLD, no REJECT.
+        reason = f"{reason}; HELD by a domain invariant that could not judge: {invariant_audit['summary']}"
+        verdict = "HOLD"
+        licensed_claim = None
 
     fine_tune = evaluate_fine_tune_readiness(
         payload,
