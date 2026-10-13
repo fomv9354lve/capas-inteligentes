@@ -21,3 +21,10 @@ def test_discrepancy_beyond_k_sigma_flags():
 def test_malformed_se_length_flags():
     ev = {"parts": [1, 2], "parts_se": [0.1], "total": 3}
     assert ci.audit(ev)["verdict"] == "FLAG"
+
+
+def test_rmt_bounds_rho_and_F():
+    assert ci.audit({"rho": 0.93})["verdict"] == "PASS"
+    assert ci.audit({"rho": 1.2})["verdict"] == "FLAG"
+    assert ci.audit({"F": 0.31})["verdict"] == "PASS"
+    assert ci.audit({"F": -0.02})["verdict"] == "FLAG"
