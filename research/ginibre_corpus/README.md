@@ -160,3 +160,11 @@ Re-sellado de la recodificación (mismo día, tras aceptar Ginibre la refutació
 (sha256 b13f3211…, 22 payloads mutados según `recodif_validez.jsonl`, 154 byte-idénticos) contra v2 en worktree →
 `DE_CAPAS_veredictos_recodif.jsonl` (sha256 8aa94028…, `blind:false`). Principal (flag sellado): **53/82 y 57/63**;
 secundario (OR): 52/81 y 57/63. No es ciego; es una mutación declarada con cabecera. Queda así.
+
+### C6-06, partición pedida por la contra-firma (calculada por CAPAS, 2026-10-13)
+
+`rescore_baseline-7939d55.json` vs `rescore_levers-234.json`: 21 flips, todos ACCEPT→REWRITE/HOLD. Entre
+`proof_admissibility` limpios: 19 flips (11 malos, 8 buenos) y **los 19 tenían `independent_reproduction_pass`
+AUSENTE; 0 de 42 pruebas declaraban el campo**. Es decir: el 100 % de la "subida" 0,65→0,78 es ausencia del
+campo, no discriminación — exactamente lo que el auditor sospechó y lo que este README ya decía. Buenos en
+ACCEPT 43→34/63. La palanca es la regla §6 mecanizada (constructor ≠ verificador), y así hay que leerla.

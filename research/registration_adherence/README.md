@@ -71,3 +71,9 @@ python3 research/registration_adherence/validate.py val.json     # vs COMPare
 El cuello de botella no es el mapeo semántico, es el **acceso al texto del paper**.
 Sin él no hay adherencia que gatear, solo cambios de registro. Antes de escribir más
 código: decidir si ese texto es obtenible a escala y de forma legal.
+
+## Recomputo (§6, 2026-10-13)
+
+`data/phase0_n500.json`: 500 registros; `bucket == DECIDIBLE_ESTRUCTURADO` ⇔ `n_orig_primary > 0`: **467/500 =
+93,4 %**, reproducido desde el JSON versionado. Lo que no se puede reproducir sin red: repetir la muestra. El
+endpoint es `/api/int/` (interno, no versionado): la tasa es de un día, no una propiedad estable.
