@@ -38,3 +38,16 @@ def test_percent_inconsistent_flags():
 
 def test_percent_k_exceeds_N_flags():
     assert ci.audit({"reported_percent": {"k": 60, "N": 51, "pct": 117.6}})["verdict"] == "FLAG"
+
+
+def test_percent_truncation_convention_passes():
+    # 6/21 = 28.57%; reported "28%" is truncation, a reporting convention, not an error
+    assert ci.audit({"reported_percent": {"k": 6, "N": 21, "pct": 28, "decimals": 0}})["verdict"] == "PASS"
+    # 62/90 = 68.89% -> "68%"
+    assert ci.audit({"reported_percent": {"k": 62, "N": 90, "pct": 68, "decimals": 0}})["verdict"] == "PASS"
+
+def test_percent_beyond_truncation_still_flags():
+    # 4/13 = 30.77%: neither rounds (30.8) nor truncates (30.7) to 30.2
+    assert ci.audit({"reported_percent": {"k": 4, "N": 13, "pct": 30.2, "decimals": 1}})["verdict"] == "FLAG"
+    # 80/81 = 98.77%: "100%" is neither
+    assert ci.audit({"reported_percent": {"k": 80, "N": 81, "pct": 100, "decimals": 0}})["verdict"] == "FLAG"

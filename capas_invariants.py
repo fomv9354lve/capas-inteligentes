@@ -706,7 +706,12 @@ def check_reported_percent(ev: dict[str, Any]) -> dict[str, Any]:
     calc = 100.0 * k / N
     d = int(b.get("decimals", _decimals(b["pct"], 0)))
     tol = 0.5 * 10 ** (-d) + 1e-9
-    ok = abs(calc - pct) <= tol
+    # Dos convenciones de reporte coexisten: redondeo (28.57 -> 29) y truncamiento
+    # (28.57 -> 28). Ambas son licitas; lo que se marca es un valor que no sale por ninguna.
+    import math
+    scale = 10 ** d
+    truncated = math.floor(calc * scale + 1e-9) / scale
+    ok = abs(calc - pct) <= tol or abs(truncated - pct) <= 1e-9
     return {"applies": True, "verdict": "PASS" if ok else "FLAG", "law": "percent = 100*k/N",
             "why": (f"{k:g}/{N:g} = {calc:.{d+1}f}% matches reported {pct}%" if ok else
                     f"{k:g}/{N:g} = {calc:.{d+1}f}% but reported {pct}% — inconsistent")}
