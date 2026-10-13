@@ -855,7 +855,7 @@ def check_rmt_G(ev: dict[str, Any]) -> dict[str, Any]:
 #    edges: {id: error_float | {cz_error, rzz_error, ...}}, [layout: {qubits: [...], edges: [...]}],
 #    [job_date: ...], [thresholds: {edge_x_median, readout_x_median, t1_min_frac_median,
 #                                   t1_min_us, max_age_days}]}
-# Politica fijada por Osvaldo (2026-10-13): absoluta (propuesta de Atlas) + relativa, frescura = mismo dia.
+# Politica fijada por Osvaldo (2026-10-13): absoluta (propuesta de Atlas) + relativa, frescura <= 1 dia.
 # Un dispositivo uniformemente malo lo ve la absoluta; un outlier bajo el techo absoluto lo ve la relativa.
 # Cualquier valor se sobreescribe en `thresholds`; 0 desactiva un umbral absoluto.
 _SNAP_DEFAULTS = {
@@ -865,7 +865,9 @@ _SNAP_DEFAULTS = {
     "edge_max_abs": 1e-2,        # absoluta (Atlas): arista con error > 1e-2 -> rechazo
     "t1_min_us": 60.0,           # absoluta (Atlas): T1 < 60 us -> rechazo
     "readout_max_abs": 0.0,      # absoluta opcional de readout (0 = no aplica)
-    "max_age_days": 0.0,         # frescura por job: 0 = mismo dia calendario (Atlas); N>0 = ventana en dias
+    "max_age_days": 1.0,         # frescura por job: snapshot <= 1 dia antes del job (Osvaldo 2026-10-13, tras el lote
+                                 # ciego de Atlas: "mismo dia" marco 2/2 buenas sin cazar mala alguna; IBM recalibra ~a diario).
+                                 # 0 = mismo dia calendario; N>0 = ventana en dias
 }
 
 
@@ -976,14 +978,16 @@ def check_calibration_snapshot(ev: dict[str, Any]) -> dict[str, Any]:
     stale = None
     t_meas, t_job = _parse_ts(snap.get("measured")), _parse_ts(snap.get("job_date"))
     if t_meas is not None and t_job is not None:
+        from datetime import datetime as _dt
         age_days = (t_job - t_meas) / 86400.0
-        if th["max_age_days"] <= 0:
-            # politica "mismo dia": dia calendario de la medicion == dia calendario del job
-            from datetime import datetime as _dt
-            if _dt.fromtimestamp(t_meas).date() != _dt.fromtimestamp(t_job).date():
+        cal_days = (_dt.fromtimestamp(t_job).date() - _dt.fromtimestamp(t_meas).date()).days
+        if float(th["max_age_days"]).is_integer():
+            # politica en dias calendario (IBM recalibra ~a diario): 0 = mismo dia, 1 = hasta el dia anterior...
+            if cal_days > int(th["max_age_days"]):
                 stale = round(age_days, 2)
         elif age_days > th["max_age_days"]:
-            stale = round(age_days, 1)
+            # politica fraccionaria: ventana en dias reales (p.ej. 0.5 = 12 h)
+            stale = round(age_days, 2)
     elif snap.get("job_date") is not None and t_meas is None:
         holds.append("measured timestamp unparseable: cannot judge staleness")
 

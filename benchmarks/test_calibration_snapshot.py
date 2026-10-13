@@ -78,6 +78,18 @@ def test_absolute_t1_floor_60us_flags_59_not_61():
         s["thresholds"] = {"t1_min_us": 60.0, "t1_min_frac_median": 0.0}
         assert ci.audit({"calibration_snapshot": s})["verdict"] == want, t1
 
+def test_default_freshness_is_one_day_after_atlas_blind_batch():
+    # Atlas blind batch 2026-06: snapshot 06-22, job 06-23 -> must be fresh under the default (was stale under same-day)
+    s = {**HEALTHY, "measured": "2026-06-22 09:00:00", "job_date": "2026-06-23 15:00:00"}
+    assert ci.audit({"calibration_snapshot": s})["verdict"] == "PASS"
+    s = {**HEALTHY, "measured": "2026-06-21 09:00:00", "job_date": "2026-06-23 15:00:00"}
+    assert ci.audit({"calibration_snapshot": s})["verdict"] == "FLAG"
+    # integer policy counts calendar days (06-22 23:00 -> 06-23 01:00 is 1 day, fresh); fractional policy counts real days
+    s = {**HEALTHY, "measured": "2026-06-22 23:00:00", "job_date": "2026-06-23 01:00:00"}
+    assert ci.audit({"calibration_snapshot": s})["verdict"] == "PASS"
+    s = {**HEALTHY, "measured": "2026-06-22 23:00:00", "job_date": "2026-06-23 12:00:00", "thresholds": {"max_age_days": 0.25}}
+    assert ci.audit({"calibration_snapshot": s})["verdict"] == "FLAG"
+
 def test_same_day_freshness_policy():
     s = {**HEALTHY, "measured": "2026-10-12 23:00:00", "job_date": "2026-10-13 01:00:00", "thresholds": {"max_age_days": 0.0}}
     assert ci.audit({"calibration_snapshot": s})["verdict"] == "FLAG"   # different calendar day
