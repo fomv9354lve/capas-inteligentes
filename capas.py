@@ -332,6 +332,10 @@ def required_fields_for_claim(claim_type: str, evidence: dict[str, Any] | None =
         anchor_mode = evidence.get("anchor_mode")
         if isinstance(anchor_mode, str) and anchor_mode in ANCHOR_MODE_CONTRACTS:
             return list(ANCHOR_MODE_CONTRACTS[anchor_mode]["required"])
+    if claim_type == "exact_model_solution" and isinstance(evidence, dict):
+        _ts = evidence.get("test_statistic")
+        if isinstance(_ts, dict) and str(_ts.get("kind", "") or "").lower() in ("chi2_dof", "chi2", "chi2/dof", "chi_square"):
+            return []   # a joint chi2 criterion is a complete test on its own (Atlas phase 2(a), 2026-10-13)
     spec = CLAIM_TYPE_REGISTRY.get(claim_type)
     return list(spec["required"]) if spec else None
 
@@ -1783,6 +1787,9 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
         reason = f"unsupported claim type {claim_type!r}; no rule was applied"
     elif missing:
         reason = f"missing required evidence fields: {missing}"
+    elif claim_type == "exact_model_solution" and "abs_error" not in evidence and isinstance(evidence.get("test_statistic"), dict):
+        verdict = "ACCEPT"   # provisional: the joint chi2 stage (X) below decides; it HOLDs if dof is missing
+        reason = "no per-cell abs_error declared; judged by the joint test_statistic"
     elif claim_type == "exact_model_solution":
         abs_error = float(evidence["abs_error"])
         tolerance = float(evidence["tolerance"])
@@ -2179,7 +2186,7 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
                               + (f", beats every declared rival (best rival {min(_riv):.3g})" if _riv else "")
                               + (f"; self-refuting rivals ignored (constraint |z| > {_Z_CONSTRAINT:g}): {', '.join(_self_ref)}" if _self_ref else ""))
     # P. Potencia en regimen de precision de maquina: pregunta por el control negativo.
-    if verdict == "ACCEPT" and claim_type == "exact_model_solution":
+    if verdict == "ACCEPT" and claim_type == "exact_model_solution" and isinstance(evidence.get("abs_error"), (int, float)) and not isinstance(evidence.get("abs_error"), bool):
         _ae = float(evidence["abs_error"]); _rv = evidence.get("reference_value")
         _scale = max(1.0, abs(float(_rv))) if isinstance(_rv, (int, float)) and not isinstance(_rv, bool) else 1.0
         if _ae <= MACHINE_EPS * _scale:

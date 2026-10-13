@@ -156,3 +156,20 @@ def test_strong_markers_still_trigger():
     for t in STRONG:
         d = capas.decide_external_claim(_p(t))
         assert d["verdict"] == "REWRITE" and "scope" in d["reason"].lower(), (t, d["verdict"])
+
+
+# --- Atlas phase 2(a): a joint chi2 criterion (one test over the cells, no per-cell tolerance) is a complete
+# exact_model_solution on its own — abs_error/tolerance are not required when test_statistic carries the test.
+def _chi2only(value, dof, **extra):
+    return {"schema_version": capas.CAPAS_CLAIM_SCHEMA_VERSION,
+            "claim": {"id": "c", "type": "exact_model_solution", "text": "Falsador conjunto chi2 sobre las celdas pre-registradas."},
+            "evidence": {"test_statistic": {"kind": "chi2", "value": value, "dof": dof, "alpha": 0.05}, "n_replicates": 6, **extra}}
+
+def test_joint_chi2_alone_is_judged():
+    assert capas.decide_external_claim(_chi2only(83.354, 5))["verdict"] == "REJECT"     # mirror_ext v5: 83.35 > 11.07
+    assert capas.decide_external_claim(_chi2only(9.112, 3))["verdict"] == "REJECT"      # rep12 v8: 9.11 > 7.815
+    assert capas.decide_external_claim(_chi2only(0.933, 3))["verdict"] == "ACCEPT"      # regime S1: 0.93 < 7.815
+
+def test_chi2_without_dof_still_holds():
+    p = _chi2only(0.933, 3); del p["evidence"]["test_statistic"]["dof"]
+    assert capas.decide_external_claim(p)["verdict"] == "HOLD"
