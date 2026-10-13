@@ -36,9 +36,9 @@
  },
  {
   "id": "C6-06",
-  "claim": "Exigir independent_reproduction_pass para ACCEPT en pruebas sube la deteccion de 0.65 a 0.78 en el mismo corpus (post-hoc)",
+  "claim": "Exigir independent_reproduction_pass para ACCEPT en pruebas sube la 'deteccion' de 0.65 a 0.78 en el mismo corpus (post-hoc) — por reclasificacion mecanica (ausencia del campo), no por discriminacion",
   "estado": "empirical post-hoc",
-  "evidencia": "research/ginibre_corpus/rescore.py (POST-HOC, conoce desenlaces); research/ginibre_corpus/rescore_baseline-7939d55.json vs rescore_levers-234.json; commit ae739c3; README seccion 'Palanca 3'. Ya medido y declarado: 11/19 buenos pierden ACCEPT (43->33) — la palanca aplica §6 mecanicamente, no discrimina",
+  "evidencia": "research/ginibre_corpus/rescore.py (POST-HOC, conoce desenlaces); rescore_baseline-7939d55.json vs rescore_levers-234.json (palanca 3 sola: 53/82 -> 64/82; buenos en ACCEPT 43 -> 36, 7 buenos pierden ACCEPT, ninguno a REJECT; 19/19 flips de proof por AUSENCIA del campo, 0/42 proofs lo declaran). La cifra 43->33 (11 buenos) es la columna +A-E (rescore_levers-ABCDE.json), OTRO experimento. README seccion 'Palanca 3' y 'C6-06, particion'.",
   "como_refutar": "Mostrar que la ganancia es un artefacto: p.ej. que todo claim de prueba sin ese campo se vuelve REWRITE y por tanto 'deteccion' sube sin discriminar; proponer la medida que SI discriminaria."
  },
  {
