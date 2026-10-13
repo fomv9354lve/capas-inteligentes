@@ -142,11 +142,27 @@ def check_sum(ev: dict[str, Any]) -> dict[str, Any]:
         return {"applies": False}
     s = sum(_num(x) or 0.0 for x in parts)
     tol = max(_TOL, 1e-3 * max(abs(total), 1.0))
+    # Sumas de ESTIMADOS: si se declaran errores estandar, la tolerancia es k·sigma de la
+    # diferencia (sigma^2 = sum se_i^2 + se_total^2), no la contabilidad exacta. Sin ellos,
+    # el chequeo sigue siendo exacto -- declarar incertidumbre es lo que la compra.
+    # (Hallazgo del uso en Ginibre, 2026-10: 0.1066+0.124-0.008 vs 0.227 con se~0.005 era
+    # un REJECT falso con tol fija 0.001.)
+    se_parts, se_total = ev.get("parts_se"), _num(ev.get("total_se")) if "total_se" in ev else None
+    k_sigma = _num(ev.get("k_sigma")) or 2.0
+    if se_parts is not None or se_total is not None:
+        if se_parts is None:
+            se_parts = [0.0] * len(parts)
+        if not isinstance(se_parts, list) or len(se_parts) != len(parts):
+            return {"applies": True, "verdict": "FLAG", "law": "sum(parts) = total",
+                    "why": "parts_se must be a list with one standard error per part"}
+        var = sum((_num(x) or 0.0) ** 2 for x in se_parts) + ((se_total or 0.0) ** 2)
+        tol = max(tol, k_sigma * var ** 0.5)
     ok = abs(s - total) <= tol
     return {"applies": True, "verdict": "PASS" if ok else "FLAG",
             "law": "sum(parts) = total",
-            "why": (f"parts sum to the total ({s:.6g})" if ok else
-                    f"parts sum to {s:.6g} != declared total {total:.6g} — conservation violated")}
+            "tolerance": tol,
+            "why": (f"parts sum to {s:.6g}, consistent with declared total {total:.6g} (tol {tol:.3g})" if ok else
+                    f"parts sum to {s:.6g} != declared total {total:.6g} (|diff| {abs(s-total):.3g} > tol {tol:.3g}) — conservation violated")}
 
 
 import re as _re
