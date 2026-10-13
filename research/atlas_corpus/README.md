@@ -33,3 +33,9 @@ sobre ACCEPT.
 
 Fase 2 (propuesta): mismos pre-registros, codificación **post-corrida** por un coordinador ciego que solo ve resultados;
 Atlas no comunica desenlaces a CAPAS hasta el sellado. Ahí sí se mide generalización y v2 vs v3.
+
+**Corrección de Atlas tras el piloto:** al abrir los desenlaces se quemaron los dos limpios (false_cheap, mirror_ext v5).
+Fase 2 queda así: (a) recodificación post-corrida de los 10 ya corridos, sobre resultados saneados (sin cadenas de
+veredicto), todo `contaminado:true` — prueba de formato (¿con campos medidos el gate llega a ACCEPT/REJECT?), no
+validación; (b) limpios de verdad = E4 cuando se corra, Spend Frontier v4 regenerada y pre-registros nuevos,
+codificados post-corrida con desenlace retenido hasta el sellado. Tag vigente: `atlas-ciego-v3` (+ v2 para comparar).
