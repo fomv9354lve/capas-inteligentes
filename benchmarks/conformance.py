@@ -28,7 +28,8 @@ ROOT = Path(__file__).resolve().parents[1]
 SUITE = [
     ("fail_closed", "benchmarks/verify_fail_closed.py", "a structurally-deficient claim is never accepted"),
     ("robustness", "benchmarks/verify_robustness.py", "survives hostile input; no crash, no false-accept"),
-    ("no_llm_verdict", "benchmarks/verify_cara_decoupling.py", "no language model in the verdict"),
+    ("no_llm_verdict", "benchmarks/verify_determinism.py", "no language model, network, random or clock in the verdict; same payload -> same verdict+hash across interpreters"),
+    ("cara_decoupling", "benchmarks/verify_cara_decoupling.py", "product runs with the research layer blocked; no overclaim on the certificate surface"),
     ("quantum_commitment", "benchmarks/verify_quantum_commitment.py", "quantum-advantage defeater contract"),
     ("pharma_admissibility", "benchmarks/generate_pharma_corpus.py", "pharma statistical-admissibility, fail-closed"),
     ("proof_ledger", "benchmarks/generate_proof_ledger.py", "every public claim CLOSED/BACKED/SCOPED, none bare"),

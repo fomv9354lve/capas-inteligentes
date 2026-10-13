@@ -12,10 +12,10 @@ def _v(ctype, ev, text="x"):
 # 1. object_declared is OPTIONAL (an absent field is abstention, not detection -- Ginibre's
 #    objection); the teeth are object_matches_target: False -> HOLD in any claim type.
 def test_exact_model_solution_without_object_declared_is_unchanged():
-    assert _v("exact_model_solution", {"abs_error": 1e-15, "tolerance": 1e-12}) == "ACCEPT"
+    assert _v("exact_model_solution", {"abs_error": 1e-15, "tolerance": 1e-12, "negative_control_failed": True}) == "ACCEPT"
 
 def test_exact_model_solution_with_object_declared_accepts():
-    assert _v("exact_model_solution", {"abs_error": 1e-15, "tolerance": 1e-12,
+    assert _v("exact_model_solution", {"abs_error": 1e-15, "tolerance": 1e-12, "negative_control_failed": True,
                                        "object_declared": "m*tau at beta=1/2"}) == "ACCEPT"
 
 def test_object_matches_target_false_holds_in_any_type():
@@ -31,7 +31,7 @@ def test_unread_load_bearing_citation_rewrites():
     assert r["verdict"] == "REWRITE" and "not verified" in (r.get("reason") or "").lower()
 
 def test_citation_read_true_does_not_change_verdict():
-    ev = {"abs_error": 1e-15, "tolerance": 1e-12, "object_declared": "x",
+    ev = {"abs_error": 1e-15, "tolerance": 1e-12, "negative_control_failed": True, "object_declared": "x",
           "load_bearing_citation_read": True, "citation_hypotheses_checked": True}
     assert _v("exact_model_solution", ev) == "ACCEPT"
 

@@ -30,8 +30,13 @@ def key_for(prov):
     return (Path.home() / ".config/estandar" / PROVIDERS[prov]["key"]).read_text().strip()
 
 
+TOOLS = [{"type": "function", "function": {"name": "run",
+          "description": "Ejecuta un comando shell de SOLO LECTURA/ejecucion en la raiz del repo CAPAS INTELIGENTES (python3, pytest, cat, grep, git log/show/diff, ls, head, sed -n...). Sin red, sin escritura. Devuelve la salida cruda.",
+          "parameters": {"type": "object", "properties": {"cmd": {"type": "string", "description": "comando shell"}}, "required": ["cmd"]}}}]
+
+
 def chat(prov, model, messages):
-    body = {"model": model, "messages": messages, "temperature": 0.2, "max_tokens": 8000}
+    body = {"model": model, "messages": messages, "temperature": 0.2, "max_tokens": 8000, "tools": TOOLS, "tool_choice": "auto"}
     req = urllib.request.Request(PROVIDERS[prov]["url"], data=json.dumps(body).encode(),
                                  headers={"Content-Type": "application/json", "Authorization": f"Bearer {key_for(prov)}",
                                           "User-Agent": "capas-section6/1.0"})  # Cloudflare 1010 bloquea Python-urllib
@@ -41,7 +46,31 @@ def chat(prov, model, messages):
     except urllib.error.HTTPError as e:
         raise SystemExit(f"{prov} HTTP {e.code}: {e.read()[:300]!r}")
     m = d["choices"][0]["message"]
-    return m.get("content") or "", d.get("usage", {}), d.get("model", model)
+    return m, d.get("usage", {}), d.get("model", model)
+
+
+def _segments(line):
+    """Split a shell line on | ; && || that are OUTSIDE quotes (so `python3 -c "a; b"` is one segment)."""
+    segs, cur, q = [], "", None
+    i = 0
+    while i < len(line):
+        ch = line[i]
+        if q:
+            cur += ch
+            if ch == q: q = None
+        elif ch in ("'", '"'):
+            q = ch; cur += ch
+        elif ch in "|;&":
+            if cur.strip(): segs.append(cur.strip())
+            cur = ""
+        else:
+            cur += ch
+        i += 1
+    if cur.strip(): segs.append(cur.strip())
+    return segs
+
+
+PY_WRITE = re.compile(r"(open\([^)]*['\"][wax]|write_text|write_bytes|os\.(remove|unlink|rename|system|makedirs|mkdir)|shutil\.|subprocess|\bsocket\b|urllib|requests|pathlib[^\n]*\.(unlink|rmdir|touch))")
 
 
 def run_cmd(cmd):
@@ -49,11 +78,11 @@ def run_cmd(cmd):
         line = line.strip()
         if not line or line.startswith("#"):
             continue
-        # cada segmento de pipe/; debe empezar por un binario permitido
-        for seg in re.split(r"\|\||&&|\||;", line):
-            seg = seg.strip()
-            if seg and not ALLOW.match(seg):
+        for seg in _segments(line):
+            if not ALLOW.match(seg):
                 return f"[DENEGADO: segmento no permitido: {seg[:80]!r}]"
+            if seg.startswith(("python", "pytest")) and PY_WRITE.search(seg):
+                return f"[DENEGADO: escritura/red desde python: {seg[:80]!r}]"
         if DENY.search(line):
             return f"[DENEGADO: patrón prohibido en: {line[:80]!r}]"
     try:
@@ -62,6 +91,9 @@ def run_cmd(cmd):
         out = (r.stdout + ("\n[stderr]\n" + r.stderr if r.stderr.strip() else "")).strip()
     except subprocess.TimeoutExpired:
         out = "[TIMEOUT 600s]"
+    dirty = subprocess.run(["git", "status", "--porcelain"], cwd=ROOT, capture_output=True, text=True).stdout
+    if dirty != run_cmd.baseline:
+        out += "\n[ALERTA: el comando modificó el árbol de trabajo]\n" + dirty
     if len(out) > MAX_OUT:
         out = out[:MAX_OUT // 2] + f"\n…[{len(out) - MAX_OUT} chars omitidos]…\n" + out[-MAX_OUT // 2:]
     return out or "[sin salida]"
@@ -95,21 +127,38 @@ def main():
               "ejecución: python3/pytest/cat/grep/git log|show|diff…; sin red, sin escritura). Recibirás la salida CRUDA, sin "
               "edición. Nadie responderá preguntas: solo salidas de comandos. Cuando termines, escribe tu informe final "
               "empezando con la línea `## VEREDICTOS` y sin bloques run. Usa como máximo ~" + str(a.rounds) + " turnos.")
+    run_cmd.baseline = subprocess.run(["git", "status", "--porcelain"], cwd=ROOT, capture_output=True, text=True).stdout
     messages = [{"role": "system", "content": system},
                 {"role": "user", "content": f"## claims.json\n```json\n{claims}\n```\n\n## Mapa del repo\n{repo_map()}\n\nEmpieza."}]
     log = [f"# Contra-firma §6 — {a.provider} / {model} — {date}\n", f"HEAD: {repo_map().splitlines()[0]}\n",
            "Transcripción literal: cada comando pedido por el modelo y su salida cruda. El constructor no editó nada.\n"]
     usage_tot = {}
     for rnd in range(1, a.rounds + 2):
-        content, usage, served = chat(a.provider, model, messages)
+        m, usage, served = chat(a.provider, model, messages)
+        content = m.get("content") or ""
+        reasoning = m.get("reasoning") or ""
         for k, v in usage.items():
             if isinstance(v, (int, float)): usage_tot[k] = usage_tot.get(k, 0) + v
-        messages.append({"role": "assistant", "content": content})
-        log.append(f"\n## Turno {rnd} — modelo ({served})\n\n{content}\n")
-        print(f"[turno {rnd}] {len(content)} chars", file=sys.stderr)
+        tool_calls = m.get("tool_calls") or []
+        messages.append({"role": "assistant", "content": content, **({"tool_calls": tool_calls} if tool_calls else {})})
+        log.append(f"\n## Turno {rnd} — modelo ({served})\n\n{content}\n" + (f"\n<details><summary>razonamiento</summary>\n\n{reasoning}\n</details>\n" if reasoning else ""))
+        print(f"[turno {rnd}] {len(content)} chars, {len(tool_calls)} tool calls", file=sys.stderr)
         blocks = re.findall(r"```run\s*\n(.*?)```", content, re.S)
-        if not blocks or content.lstrip().startswith("## VEREDICTOS") or "## VEREDICTOS" in content:
+        if "## VEREDICTOS" in content:
             break
+        if not blocks and not tool_calls:
+            if rnd >= a.rounds:
+                break
+            messages.append({"role": "user", "content": "[Sin comandos ni informe. Usa la herramienta `run` para verificar, o emite el informe final con `## VEREDICTOS`.]"})
+            continue
+        for tc in tool_calls:
+            try:
+                cmd = json.loads(tc["function"]["arguments"]).get("cmd", "")
+            except Exception:
+                cmd = tc["function"].get("arguments", "")
+            o = run_cmd(cmd)
+            log.append(f"\n### ejecutado (tool)\n```\n$ {cmd.strip()}\n{o}\n```\n")
+            messages.append({"role": "tool", "tool_call_id": tc["id"], "content": f"$ {cmd.strip()}\n{o}"})
         reply = []
         for b in blocks:
             o = run_cmd(b)
@@ -117,7 +166,8 @@ def main():
             log.append(f"\n### ejecutado\n```\n$ {b.strip()}\n{o}\n```\n")
         if rnd >= a.rounds:
             reply.append("[Último turno disponible: emite ahora el informe final con `## VEREDICTOS`.]")
-        messages.append({"role": "user", "content": "\n\n".join(reply)})
+        if reply:
+            messages.append({"role": "user", "content": "\n\n".join(reply)})
     log.append(f"\n---\nuso de tokens: {json.dumps(usage_tot)}\n")
     out.write_text("\n".join(log))
     print(out)

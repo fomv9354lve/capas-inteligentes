@@ -52,7 +52,7 @@ def test_align_aligned() -> None:
     p = _payload(
         "exact_model_solution",
         "the exact solution within the model is reproduced to tolerance",
-        {"abs_error": 0.0, "tolerance": 1e-3},
+        {"abs_error": 0.0, "tolerance": 1e-3, "negative_control_failed": True},
     )
     out = capas.align_claim_text(p)
     assert out["alignment_status"] == "ALIGNED"
@@ -80,7 +80,7 @@ def test_align_misaligned_exact_model_with_experimental_scope() -> None:
     p = _payload(
         "exact_model_solution",
         "measured experimentally in a real-world laboratory device",
-        {"abs_error": 0.0, "tolerance": 1e-3},
+        {"abs_error": 0.0, "tolerance": 1e-3, "negative_control_failed": True},
     )
     out = capas.align_claim_text(p)
     assert out["alignment_status"] == "MISALIGNED"
@@ -238,7 +238,7 @@ def test_reasoning_block_accept_when_gate_accepts_with_open_risk() -> None:
     candidate = {
         "schema_version": SCHEMA,
         "claim": {"id": "c1", "type": "exact_model_solution", "text": "exact model solution to tolerance"},
-        "evidence": {"abs_error": 0.0, "tolerance": 1e-3},
+        "evidence": {"abs_error": 0.0, "tolerance": 1e-3, "negative_control_failed": True},
     }
     gate = capas.decide_external_claim(candidate)
     assert gate["verdict"] == "ACCEPT"  # structurally complete evidence -> ACCEPT

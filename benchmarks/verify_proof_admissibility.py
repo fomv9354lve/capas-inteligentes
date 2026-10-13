@@ -14,9 +14,15 @@ def v(ev):
     return C.gate("proof_admissibility", ev, claim_text="X is a theorem")["verdict"]
 
 def main() -> int:
+    # Since ae739c3 (GOVERNANCE §6 in the engine) ACCEPT on a proof also needs an independent re-derivation;
+    # without it the verdict is REWRITE even when scope and bound are fine. The §6 counter-signature of
+    # 2026-10-13 (xAI) found this verifier still expecting the pre-§6 behaviour: evidence and code had diverged.
     base = {"claim_scope": "universal", "steps_all_valid": True,
-            "load_bearing_step_identified": True, "uniform_bound_proven": True}
+            "load_bearing_step_identified": True, "uniform_bound_proven": True,
+            "independent_reproduction_pass": True}
     checks = [
+        ("universal + uniform bound, but NO independent re-derivation -> REWRITE (GOVERNANCE §6)",
+         {"independent_reproduction_pass": None}, "REWRITE"),
         # (label, evidence patch, expected verdict)
         ("universal + uniform bound proven -> theorem licensed", {}, "ACCEPT"),
         ("bounded claim, steps+crux ok -> licensed", {"claim_scope": "bounded", "uniform_bound_proven": False}, "ACCEPT"),
@@ -46,7 +52,8 @@ def main() -> int:
     ]
     fails = []
     for label, patch, expected in checks:
-        got = v({**base, **patch})
+        ev = {k: val for k, val in {**base, **patch}.items() if val is not None}
+        got = v(ev)
         if got != expected:
             fails.append(f"{label}: expected {expected}, got {got}")
     # fail-closed: a missing required field HOLDs, never a false ACCEPT

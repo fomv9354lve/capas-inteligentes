@@ -49,7 +49,7 @@ def _assert_legal_and_reproducible(r, ctx):
 # Verdicts here are DETERMINABLE from the contract, so we assert the exact value.
 SCENARIOS = [
     ("exact_model_solution", {
-        "ACCEPT": {"abs_error": 0.0, "tolerance": 1e-3},
+        "ACCEPT": {"abs_error": 0.0, "tolerance": 1e-3, "negative_control_failed": True},
         "REJECT": {"abs_error": 5.0, "tolerance": 1e-3},
     }),
     ("physical_accuracy", {
@@ -279,7 +279,7 @@ def test_align_claim_text_statuses():
 
 def test_audit_hash_tamper_evidence():
     """Mutating any hashed field of a returned result must break verification (tamper-evidence)."""
-    r = _decide("exact_model_solution", {"abs_error": 0.0, "tolerance": 1e-3}, "exact", "tamper")
+    r = _decide("exact_model_solution", {"abs_error": 0.0, "tolerance": 1e-3, "negative_control_failed": True}, "exact", "tamper")
     assert capas.verify_audit_hash(r)["verified"] is True
     tampered = dict(r, verdict="REJECT")  # flip a hashed field
     assert capas.verify_audit_hash(tampered)["verified"] is False
