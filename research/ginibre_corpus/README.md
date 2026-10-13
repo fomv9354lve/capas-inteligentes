@@ -28,3 +28,32 @@ no produce ACCEPT. Eso es una decisión de gobierno, no un ajuste de precisión.
 
 **Para que 0,78 sea una tasa:** un lote ciego nuevo (no visto al diseñar las palancas), evaluado contra
 un tag congelado posterior a ae739c3.
+
+## Palancas discriminantes A–E (commits 05d9d0a + f782244) — post-hoc, misma muestra
+
+Partiendo de los 18 malos que seguían en ACCEPT, cinco reglas que disparan por un rasgo declarable del
+documento (no por manta): A) tolerancia en SE exige `n_replicates ≥ 8`; B) "converge/satura" en el
+texto exige `n_points ≥ 3` y `alternative_model_rejected`; C) `statistical_confidence` con wording de
+mecanismo exige `null_control_passed`; D) `null_control_passed: False` → REJECT en cualquier tipo;
+E) cuantificador en el texto de un `reproducibility_check` exige `scope_count_verified`.
+
+| | baseline | +§6 (palanca 3) | +A–E |
+|---|---|---|---|
+| malos no-ACCEPT (82) | 53 = 0,65 | 64 = 0,78 | **71 = 0,87** |
+| buenos no-REJECT (63) | 52 = 0,83 | 52 | 52 = 0,83 |
+| buenos que siguen en ACCEPT (63) | 43 | 36 | **33** |
+
+Por tipo (malos): proof 23/23 · reproducibility 18/20 · statistical 7/9 · exact_model 4/11.
+
+**Coste, explícito.** Diez buenos perdieron el ACCEPT (ninguno pasó a REJECT): 7 por la regla §6 (pruebas
+sin re-derivación independiente, X1-031, X2-045..048, X2-058/059, X3-059) y 3 por las palancas nuevas
+(X1-058 → HOLD por cita en texto sin campo; X1-059 → REWRITE por cuantificador sin verificar; un tercero
+por mecanismo). La métrica "no rechazado" no lo ve; ésta sí. A–E sólo pudieron disparar por texto —
+nadie declaró `n_replicates`, `null_control_passed` ni `scope_count_verified` porque no existían al
+codificar — así que X4, con los campos declarados, puede dar más detección **o** más coste en buenos.
+
+**Un incidente de proceso que conviene dejar escrito:** 05d9d0a salió con un `SyntaxError` en `capas.py`
+porque el guardia de commit buscaba "failed" y pytest dijo "errors". Se detectó porque el rescore dio
+1,00/1,00 — imposible — y cada `decide` devolvía ERROR, que no es ACCEPT ni REJECT. Arreglado en
+f782244: el guardia mira "error" y `rescore.py` aborta ante cualquier ERROR. Un número perfecto es
+el primer sospechoso.
