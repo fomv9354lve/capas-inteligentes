@@ -118,8 +118,8 @@ una query sin codificar. Ninguno toca el motor.
 No es parte de este experimento, pero es la primera tasa ciega del motor y conviene tenerla al
 lado. 176 claims de un proyecto real (110 malos / 66 buenos), evidencia codificada por dos agentes
 sin ver el desenlace, motor congelado (`ginibre-ciego-v1` = a78cadf). Sin contaminar: detección
-53/82 = 0,65 [0,54–0,74]; buenos no rechazados 52/63 = 0,83 (0,94 como cota al corregir una
-traducción). Reproducido 176/176 entre las dos sesiones. Ficheros, hashes e informe en el repo de
+53/82 = 0,65 [0,54–0,74]; buenos no rechazados **57/63 = 0,90 [0,81–0,96]** (cifra cerrada por recodificación ciega
+de los 22 `steps_all_valid: false`; detección 52/81 = 0,64). Reproducido 176/176 entre las dos sesiones. Ficheros, hashes e informe en el repo de
 Ginibre, `CAPAS_CORPUS_2026-10-12/`. Límites literales de Ginibre: un proyecto, números del
 codificador en ~20 claims, "bueno" = ausencia de corrección posterior.
 
