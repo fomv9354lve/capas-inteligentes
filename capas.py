@@ -214,6 +214,11 @@ CLAIM_TYPE_REGISTRY = {
 # verdadera pero muda. Estos campos obligan a hacer las tres preguntas que nadie hacia.
 # Todos OPCIONALES: un campo ausente no es una deteccion (objecion de Ginibre), es abstencion.
 # object_declared debe nombrar objeto Y convencion ("m*tau at beta=1/2", no solo "m*tau").
+MECH_RE = re.compile(r"\b(sesgo|mecanism\w*|porque|debido a|causa\w*|decrece con|crece con|depende de|efecto de|"
+                     r"driven by|due to|because|bias|caused by|mechanism\w*|explains?|explica\w*)\b", re.I)
+COUNT_RE = re.compile(r"\b(\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|\w+teen|twenty|\w+ty)"
+                      r"\s+(of|de)\s+(the\s+|los\s+|las\s+)?(\d+|\w+)\b|\b(all|every|todos|todas|formaliz\w*|complet\w*)\b", re.I)
+
 CROSS_CUTTING_OPTIONAL = ["object_declared", "object_matches_target",
                          "load_bearing_citation_read", "citation_hypotheses_checked",
                          "null_control_passed"]
@@ -300,7 +305,8 @@ def allowed_evidence_fields_for_claim(claim_type: str) -> set[str] | None:
 NUMERIC_EVIDENCE_FIELDS = [
     "abs_error", "tolerance", "p_value", "alpha",
     "reported_value", "reference_value", "empirical_tolerance",
-, "n_replicates", "n_points"]
+    "n_replicates", "n_points",
+]
 BOOL_EVIDENCE_FIELDS = [
     "within_chemical_accuracy", "local_property_tests_pass", "universal_anchor_pass",
     "upgrade_evidence_present", "effect_direction_confirmed", "artifact_available",
@@ -2018,17 +2024,13 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
             rewrite = "trend observed; convergence not licensed until a non-saturating alternative is rejected"
             licensed_claim = rewrite
     # C. statistical_confidence con wording de mecanismo: la asociacion esta licenciada, el mecanismo no.
-    if verdict == "ACCEPT" and claim_type == "statistical_confidence" and re.search(
-            r"\b(sesgo|mecanism|porque|debido a|causa|decrece con|crece con|depende de|efecto de|driven by|due to|because|"
-            r"bias|caused by|mechanism|explains?|explica)\b", _txt, re.I) and evidence.get("null_control_passed") is not True:
+    if verdict == "ACCEPT" and claim_type == "statistical_confidence" and MECH_RE.search(_txt) and evidence.get("null_control_passed") is not True:
         verdict = "REWRITE"
         reason = f"{reason}; the text attributes a MECHANISM but no null control is declared — a significant p licenses the association, not its cause"
         rewrite = "statistical association licensed; the attributed mechanism is not (declare null_control_passed)"
         licensed_claim = rewrite
     # E. Cuantificador en el texto ("12 of 13", "all", "formalized"): exige alcance verificado.
-    if verdict == "ACCEPT" and claim_type == "reproducibility_check" and re.search(
-            r"\b(\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|\w+teen|twenty|\w+ty)\s+(of|de)\s+(the\s+|los\s+|las\s+)?(\d+|\w+)\b"
-            r"|\b(all|every|todos|todas|formaliz\w*|complet\w*)\b", _txt, re.I) and evidence.get("scope_count_verified") is not True:
+    if verdict == "ACCEPT" and claim_type == "reproducibility_check" and COUNT_RE.search(_txt) and evidence.get("scope_count_verified") is not True:
         verdict = "REWRITE"
         reason = f"{reason}; the text states a count/scope but scope_count_verified is not declared — counts inflate easily"
         rewrite = "reproduction licensed for the items actually verified; the stated count/scope is not licensed until counted"
