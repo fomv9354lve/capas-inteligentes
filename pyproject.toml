@@ -23,6 +23,8 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+# G-CLOSED (rmt_G for gamma > 1, state reduced) evaluates a symbolic closed form; without sympy the gate HOLDs, never errors
+rmt = ["sympy"]
 corpus = [
   "scipy",
   "pyscf",
