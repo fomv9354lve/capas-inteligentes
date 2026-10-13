@@ -146,3 +146,17 @@ def test_many_ulp_error_at_high_declared_precision_flags():
     assert r["verdict"] == "FLAG", r["why"][:80]
     r = ci.audit({"rmt_closed_form": {"x": 0.5, "d": 0.25, "A": "1.391304347826"}})["results"]["rmt_closed_form"]
     assert r["verdict"] == "PASS", r["why"][:80]   # correctly rounded to 12 decimals
+
+
+# --- §6 run 8 (xAI) named two silent skips: a declared C with no d, and a G with gamma = 1+1e-9, both returned
+# applies=False — i.e. a declared value escaped judgement. A declared RMT value with an incomplete or off-law
+# input is a HOLD (cannot judge), never a silent pass-through.
+def test_declared_C_without_d_holds_not_skips():
+    r = ci.audit({"rmt_closed_form": {"x": 0.5, "C": 0.8488263631567751}})
+    assert r["verdict"] == "HOLD" and "d" in r["results"]["rmt_closed_form"]["why"]
+
+def test_declared_G_with_gamma_near_one_holds_not_skips():
+    r = ci.audit({"rmt_G": {"a": 0.5, "b": 0.5, "gamma": 1 + 1e-9, "G": 0.3}})
+    assert r["verdict"] == "HOLD" and "gamma" in r["results"]["rmt_G"]["why"]
+    r = ci.audit({"rmt_G": {"a": 0.5, "b": 0.5, "gamma": 2.0, "G": 0.3}})
+    assert r["verdict"] == "HOLD"   # G(a,b,gamma) for gamma != 1 is not a law the engine knows: say so, do not skip

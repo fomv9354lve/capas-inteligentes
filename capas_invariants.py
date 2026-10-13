@@ -784,7 +784,13 @@ def check_rmt_closed_form(ev: dict[str, Any]) -> dict[str, Any]:
     Needs `rmt_closed_form`: {x, d, tau?, A?, C?}. Domain: x in (0,1), d in [0,1) (and d < 1+tau,
     |tau| < 1 when tau given), and 1 - x u > 0."""
     b = ev.get("rmt_closed_form")
-    if not isinstance(b, dict) or "x" not in b or "d" not in b:
+    if not isinstance(b, dict):
+        return {"applies": False}
+    if "x" not in b or "d" not in b:
+        # §6 run 8: a declared A/C with no x or d used to escape judgement (applies=False). Declared -> judged or HOLD.
+        if any(k in b for k in ("A", "C")):
+            return {"applies": True, "verdict": "HOLD", "law": "RMT closed form: A = 1/(1-xu), C = (4/pi^2) u/(1-xu)",
+                    "why": f"rmt_closed_form declares {[k for k in ('A','C') if k in b]} but not both x and d — cannot judge; declare x and d"}
         return {"applies": False}
     import math
     x, d, tau = _num(b["x"]), _num(b["d"]), (_num(b["tau"]) if "tau" in b else None)
@@ -839,13 +845,21 @@ def check_rmt_G(ev: dict[str, Any]) -> dict[str, Any]:
     a declared G must come with G_se; flag only beyond 4*SE; no SE -> HOLD.
     Needs `rmt_G`: {a, b, gamma, G, G_se?}. Only gamma == 1 is a law; other gamma -> not applicable."""
     b = ev.get("rmt_G")
-    if not isinstance(b, dict) or not all(k in b for k in ("a", "b", "gamma", "G")):
+    if not isinstance(b, dict):
+        return {"applies": False}
+    law = "RMT G(a,b,1) = (4/pi^2) a/(1-ab)"
+    if "G" in b and not all(k in b for k in ("a", "b", "gamma")):
+        return {"applies": True, "verdict": "HOLD", "law": law, "why": "rmt_G declares G but not a, b and gamma — cannot judge; declare them"}
+    if not all(k in b for k in ("a", "b", "gamma", "G")):
         return {"applies": False}
     import math
     a, bb, g, G = _num(b["a"]), _num(b["b"]), _num(b["gamma"]), _num(b["G"])
-    if None in (a, bb, g, G) or abs(g - 1) > 1e-12:
-        return {"applies": False}
-    law = "RMT G(a,b,1) = (4/pi^2) a/(1-ab)"
+    if None in (a, bb, g, G):
+        return {"applies": True, "verdict": "HOLD", "law": law, "why": "rmt_G has a non-numeric a, b, gamma or G — cannot judge"}
+    if abs(g - 1) > 1e-12:
+        # §6 run 8: gamma = 1+1e-9 used to skip silently. The engine only knows the gamma == 1 law: say so.
+        return {"applies": True, "verdict": "HOLD", "law": law,
+                "why": f"rmt_G declares G with gamma={g!r}: the engine's law is G(a,b,1) (gamma == 1 exactly); for other gamma no closed form is known here — cannot judge, not a pass"}
     if not (0 < a < 1 and 0 < bb < 1):
         return {"applies": True, "verdict": "FLAG", "law": law, "why": f"domain: a, b in (0,1) (got {a}, {bb})"}
     Gf = (4 / math.pi ** 2) * a / (1 - a * bb)
