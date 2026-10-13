@@ -141,6 +141,7 @@ def main():
     log = [f"# Contra-firma §6 — {a.provider} / {model} — {date}\n", f"HEAD: {repo_map().splitlines()[0]}\n",
            "Transcripción literal: cada comando pedido por el modelo y su salida cruda. El constructor no editó nada.\n"]
     usage_tot = {}
+    executed_cmds = []
     for rnd in range(1, a.rounds + 2):
         m, usage, served = chat(a.provider, model, messages)
         content = m.get("content") or ""
@@ -164,18 +165,39 @@ def main():
                 cmd = json.loads(tc["function"]["arguments"]).get("cmd", "")
             except Exception:
                 cmd = tc["function"].get("arguments", "")
-            o = run_cmd(cmd)
+            o = run_cmd(cmd); executed_cmds.append(cmd)
             log.append(f"\n### ejecutado (tool)\n```\n$ {cmd.strip()}\n{o}\n```\n")
             messages.append({"role": "tool", "tool_call_id": tc["id"], "content": f"$ {cmd.strip()}\n{o}"})
         reply = []
         for b in blocks:
-            o = run_cmd(b)
+            o = run_cmd(b); executed_cmds.append(b)
             reply.append(f"$ {b.strip()}\n{o}")
             log.append(f"\n### ejecutado\n```\n$ {b.strip()}\n{o}\n```\n")
         if rnd >= a.rounds:
             reply.append("[Último turno disponible: emite ahora el informe final con `## VEREDICTOS`.]")
         if reply:
             messages.append({"role": "user", "content": "\n\n".join(reply)})
+    # --- Gate sobre el informe (run 4 del 13-oct: el auditor cito `ls` que nunca ejecuto). Cada comando que el
+    # informe final presenta como ejecutado debe aparecer entre los realmente ejecutados; si no, se marca.
+    executed = {c.strip() for c in executed_cmds}
+    final = messages[-1]["content"] if messages and messages[-1]["role"] == "assistant" else ""
+    report = final.split("## VEREDICTOS", 1)[1] if "## VEREDICTOS" in final else final
+    quoted = []
+    for blk in re.findall(r"```[a-z]*\s*\n(.*?)```", report, re.S):
+        for ln in blk.splitlines():
+            ln = ln.strip()
+            if ln.startswith("$ "):
+                quoted.append(ln[2:].strip())
+            elif ln and not ln.startswith(("→", "->", "#", "[")) and re.match(r"^(python3?|pytest|cat|head|tail|sed|grep|rg|ls|wc|shasum|jq|git|find|diff|sort|uniq|cut|tr|awk)\b", ln):
+                quoted.append(ln)
+    def _norm(c): return re.sub(r"\s+", " ", c).strip()
+    ex_norm = {_norm(c) for c in executed}
+    unexecuted = [q for q in quoted if _norm(q) not in ex_norm and not any(_norm(q) in e or e in _norm(q) for e in ex_norm)]
+    gate = (f"\n## GATE sobre el informe\ncomandos citados en VEREDICTOS: {len(quoted)}; ejecutados de verdad: {len(quoted) - len(unexecuted)}; "
+            f"**NO EJECUTADOS: {len(unexecuted)}**\n" + "".join(f"- `{q[:160]}`\n" for q in unexecuted) +
+            ("\nTodo veredicto apoyado en un comando NO EJECUTADO carece de valor; verificar contra los bloques `### ejecutado`.\n" if unexecuted else "\nTodos los comandos citados fueron ejecutados.\n"))
+    log.append(gate)
+    print(gate, file=sys.stderr)
     log.append(f"\n---\nuso de tokens: {json.dumps(usage_tot)}\n")
     out.write_text("\n".join(log))
     print(out)
