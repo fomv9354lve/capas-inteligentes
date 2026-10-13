@@ -190,3 +190,18 @@ def test_rmt_G_gamma_gt_one_judged_only_with_gaussian_declaration():
     assert r["verdict"] == "HOLD" and "gaussian" in r["results"]["rmt_G"]["why"].lower()
     r = ci.audit({"rmt_G": {"a": 0.5, "b": 0.5, "gamma": 2.0, "G": 0.18575294, "design_response": "student_t"}})
     assert r["verdict"] == "HOLD"
+
+
+# --- Must-fail / must-pass cases from Ginibre (2026-10-13) for G-CLOSED at (a,b,gamma) = (1/2,1/2,2), G* = 0.18575:
+# Rademacher response (kappa4 = -2) declared FALSELY as gaussian: G = 0.16515 (4 decimals) = G* + kappa4*J_y with
+# J_y = 0.0103001091068817 (Y-KURT, Codex) -> must FLAG. Gaussian control, measured 0.1857 +/- 0.0096 (z -0.01) -> PASS.
+# (The measured Rademacher limit 0.1635 +/- 0.0092 gives z -2.41: FLAG at 2 SE, but the margin is thin — not a hard test.)
+def test_gclosed_rademacher_declared_gaussian_flags():
+    r = ci.audit({"rmt_G": {"a": 0.5, "b": 0.5, "gamma": 2.0, "G": "0.16515", "design_response": "gaussian"}})
+    assert r["verdict"] == "FLAG", r["results"]["rmt_G"]["why"]
+    import capas_rmt
+    assert abs((capas_rmt.G_closed_gamma(0.5, 0.5, 2.0) + (-2) * 0.0103001091068817) - 0.16515) < 1e-4   # the origin of the number
+
+def test_gclosed_gaussian_measured_control_passes():
+    r = ci.audit({"rmt_G": {"a": 0.5, "b": 0.5, "gamma": 2.0, "G": 0.1857, "G_se": 0.0096, "design_response": "gaussian"}})
+    assert r["verdict"] == "PASS", r["results"]["rmt_G"]["why"]
