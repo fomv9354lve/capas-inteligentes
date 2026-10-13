@@ -169,7 +169,16 @@ def _ui_gate() -> bool:
     return r.returncode == 0
 
 
+KNOWN_FLAGS = {"--verify", "--ui"}
+
+
 def main() -> int:
+    # 2026-10-13: `--help` (or any typo) used to run a FULL deploy. Unknown flags now print usage and exit.
+    unknown = [a for a in sys.argv[1:] if a not in KNOWN_FLAGS]
+    if unknown or "-h" in sys.argv or "--help" in sys.argv:
+        print(__doc__ or "usage: deploy_site.py [--verify] [--ui]")
+        print(f"unknown argument(s): {unknown} — nothing was deployed. Use --verify (read-only) or no flag (DEPLOYS).")
+        return 2
     if "--verify" in sys.argv:
         return 0 if verify_live() else 1
     if not validate():
