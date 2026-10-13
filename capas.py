@@ -114,6 +114,12 @@ SCOPE_RE = re.compile(r"(\bpara tod[oa]s?\b|\ben tod[oa]s?\b|\bventana\b|\bwindo
 # que las separa es si se vio FALLAR a una variante falsa: negative_control_failed. (Regla de Ginibre, 2026-10-13;
 # la razon tolerance/abs_error fue refutada: castiga acertar por suerte y no detecta la circularidad.)
 MACHINE_EPS = 1e-12
+# Cuantificador universal en el TEXTO de una prueba (§6 run 2, xAI, C6-02 REFUTADO): la evidencia declaraba
+# claim_scope "bounded" y el texto decia "for every writing, with no restriction on scope"; el gate licencio el
+# texto. Un alcance declarado acotado no puede licenciar un texto universal sin cota uniforme.
+UNIVERSAL_TEXT_RE = re.compile(r"(\bfor (all|every|any|each)\b|\bevery\b|\ball orders\b|\bany writing\b|\bno restriction\b|"
+                               r"\bunrestricted\b|\bin general\b|\bpara (toda|todo|todas|todos|cualquier)\b|\bcualquier\w*\b|"
+                               r"\bsin restricci\w+\b|\btodo orden\b|\ba todo orden\b|∀)", re.I)
 _SE_UNITS = ("se", "sigma", "sd", "std")
 
 
@@ -2013,6 +2019,8 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
         BOUNDED_SCOPES = {"bounded", "finite", "local", "instance", "single", "fixed",
                           "leading_order", "leading-order", "leading order"}
         universal = scope not in BOUNDED_SCOPES
+        _ptxt = str((claim.get("text") if isinstance(claim, dict) else "") or "")
+        text_universal = bool(UNIVERSAL_TEXT_RE.search(_ptxt))
         remainder = str(evidence.get("conjectured_remainder", "")).strip() or "the unproven remainder"
         if not crux:
             verdict = "REJECT"
@@ -2020,6 +2028,13 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
         elif not valid:
             verdict = "REJECT"
             reason = "a step in the claimed proof does not re-derive/validate — there is a gap, not a proof"
+        elif not universal and text_universal and not uniform:
+            verdict = "REWRITE"
+            reason = (f"evidence declares claim_scope {scope!r} (bounded) but the claim text quantifies universally "
+                      "and no uniform bound is proven — the declared scope does not license the text's scope")
+            rewrite = (f"result established on the declared bounded scope ({scope.strip()}); the universal statement in "
+                       f"the text is CONJECTURED — restrict the text to the bounded scope or prove a uniform bound")
+            licensed_claim = rewrite
         elif universal and not uniform:
             verdict = "REWRITE"
             reason = ("the claim is universally quantified but the evidence proves no bound uniform over the "

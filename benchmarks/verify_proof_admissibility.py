@@ -20,6 +20,7 @@ def main() -> int:
     base = {"claim_scope": "universal", "steps_all_valid": True,
             "load_bearing_step_identified": True, "uniform_bound_proven": True,
             "independent_reproduction_pass": True}
+    fails = []
     checks = [
         ("universal + uniform bound, but NO independent re-derivation -> REWRITE (GOVERNANCE §6)",
          {"independent_reproduction_pass": None}, "REWRITE"),
@@ -50,7 +51,13 @@ def main() -> int:
         ("scope 'finite', no uniform bound -> still ACCEPT (finite is genuinely bounded)",
          {"claim_scope": "finite", "uniform_bound_proven": False}, "ACCEPT"),
     ]
-    fails = []
+    # §6 run 2 (xAI, 2026-10-13) refuted C6-02 with: declared scope "bounded " + text "for every writing, with no
+    # restriction on scope" + no uniform bound -> ACCEPT. Declared bounded scope must not license a universal text.
+    for sc in ("bounded ", "bounded\t", "bounded\n", "bounded\xa0", "bounded", "finite"):
+        got = C.gate("proof_admissibility", {**base, "claim_scope": sc, "uniform_bound_proven": False},
+                     claim_text="Theorem: the identity holds for every writing of the formula, with no restriction on scope.")["verdict"]
+        if got != "REWRITE":
+            fails.append(f"bounded scope {sc!r} + universal text, no uniform bound: expected REWRITE, got {got}")
     for label, patch, expected in checks:
         ev = {k: val for k, val in {**base, **patch}.items() if val is not None}
         got = v(ev)

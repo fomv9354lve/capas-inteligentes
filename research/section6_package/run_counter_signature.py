@@ -91,7 +91,8 @@ def run_cmd(cmd):
         out = (r.stdout + ("\n[stderr]\n" + r.stderr if r.stderr.strip() else "")).strip()
     except subprocess.TimeoutExpired:
         out = "[TIMEOUT 600s]"
-    dirty = subprocess.run(["git", "status", "--porcelain"], cwd=ROOT, capture_output=True, text=True).stdout
+    dirty = "\n".join(l for l in subprocess.run(["git", "status", "--porcelain"], cwd=ROOT, capture_output=True, text=True).stdout.splitlines()
+                      if " outputs/" not in l and ".coverage" not in l)  # artefactos generados por los propios verificadores
     if dirty != run_cmd.baseline:
         out += "\n[ALERTA: el comando modificó el árbol de trabajo]\n" + dirty
     if len(out) > MAX_OUT:
@@ -127,7 +128,8 @@ def main():
               "ejecución: python3/pytest/cat/grep/git log|show|diff…; sin red, sin escritura). Recibirás la salida CRUDA, sin "
               "edición. Nadie responderá preguntas: solo salidas de comandos. Cuando termines, escribe tu informe final "
               "empezando con la línea `## VEREDICTOS` y sin bloques run. Usa como máximo ~" + str(a.rounds) + " turnos.")
-    run_cmd.baseline = subprocess.run(["git", "status", "--porcelain"], cwd=ROOT, capture_output=True, text=True).stdout
+    run_cmd.baseline = "\n".join(l for l in subprocess.run(["git", "status", "--porcelain"], cwd=ROOT, capture_output=True, text=True).stdout.splitlines()
+                                 if " outputs/" not in l and ".coverage" not in l)
     messages = [{"role": "system", "content": system},
                 {"role": "user", "content": f"## claims.json\n```json\n{claims}\n```\n\n## Mapa del repo\n{repo_map()}\n\nEmpieza."}]
     log = [f"# Contra-firma §6 — {a.provider} / {model} — {date}\n", f"HEAD: {repo_map().splitlines()[0]}\n",
