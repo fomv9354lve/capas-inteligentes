@@ -63,3 +63,23 @@ Fisher exacto por ítem: OR ≈ 2.3, p ≈ 0.03. Por paper (entre chequeables): 
 
 **Lo que salió del experimento para el motor:** dos leyes nuevas (`pvalue_test` statcheck con
 método de intervalo, `reported_percent`), `check_sum` con errores estándar, y el estado HOLD.
+
+## Segunda pasada: severidad y puerta de columnas (2026-10-12, mismo día)
+
+Dos cambios. (1) La puerta de autoconsistencia se saltaba columnas con <3 celdas y aceptaba
+`k > N`: un solo control (`PMC8216857`) aportaba 9 de 14 flags severos por un N mal leído.
+Corregido para ambos grupos. (2) Cada flag se gradúa: `decision_error` (p recalculado cruza .05),
+`impossible` (k > N, 100% con 80/81, 0/40 = 1.9%), `numeric_mismatch`, y los no severos
+`rounding` / `truncation`.
+
+| grupo | items | FLAGs | % | severos | % severos |
+|---|---|---|---|---|---|
+| fabricados (11 papers chequeables) | 150 | 11 | 7,3% | 8 | **5,3%** |
+| control (17 chequeables) | 804 | 14 | 1,7% | 6 | **0,7%** |
+
+Fisher severos por ítem: **OR 7,5, p = 0,0004**. Por paper: sin separación (3/11 vs 5/17).
+
+La separación es por ítem, no por paper: un paper fabricado chequeable concentra más
+inconsistencias severas, pero "tener al menos una" no distingue. **Sigue sobre 11 papers.**
+La tanda 2 (clínica/psicología, razones de datos, 7.934 candidatos) está descargando; su etiqueta
+es más débil ("Unreliable Results" domina) y hay que estratificar por razón antes de sumar.

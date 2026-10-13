@@ -76,7 +76,12 @@ def table_items(path, min_consistent=0.7):
             # puerta de autoconsistencia: si el N de cabecera no explica la mayoria de celdas,
             # es que lo lei mal -> no chequear esa columna (nunca marcar por un N mal leido)
             ok=sum(1 for k,N,pc,d in items_ if abs(100*k/N-pc)<=0.5*10**(-d)+1e-9)
+            # Con <3 celdas no hay como validar que N es el de esa columna: si alguna no
+            # cuadra, se salta. Nunca marcar por un N que no se pudo confirmar.
+            if len(items_)<3 and ok<len(items_): continue
             if len(items_)>=3 and ok/len(items_)<min_consistent: continue
+            # k > N nunca es un dato: es N mal leido. Columna entera descartada.
+            if any(k>N for k,N,pc,d in items_): continue
             for k,N,pc,d in items_:
                 out.append({"kind":"pct","k":k,"N":N,"pct":pc,"decimals":d,"src":"table"})
     return out
