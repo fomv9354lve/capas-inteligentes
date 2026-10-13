@@ -2094,6 +2094,9 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
         _sd, _st = evidence.get("scope_declared"), evidence.get("scope_tested")
         if isinstance(_sd, list) and isinstance(_st, list):
             _missing = [str(x) for x in _sd if str(x).strip().lower() not in {str(y).strip().lower() for y in _st}]
+            if not _missing:
+                # licensed on the declared scope: annotate, never license the raw sentence (§6 run 8 lesson)
+                licensed_claim = f"[licensed on the declared scope: {', '.join(str(x) for x in _sd)}] {_txt}".strip()
             if _missing:
                 verdict = "REWRITE"
                 reason = f"{reason}; scope_declared is not covered by scope_tested (untested: {_missing[:5]}): the number holds where it was tested, not over the declared scope"
