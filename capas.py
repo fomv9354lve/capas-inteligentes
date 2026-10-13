@@ -2074,6 +2074,12 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
             verdict = "ACCEPT"
             reason = ("each step validates, the load-bearing step is identified, the claim's scope is "
                       "licensed, and an independent re-derivation passed")
+            if not universal and not uniform:
+                # §6 run 8: the gate does not read prose, so a declared bounded scope must never license the RAW text
+                # (70/95 universal paraphrases slipped past the marker list). What is licensed is the text annotated
+                # with the scope it was declared and tested on; the reusable sentence carries its own limit.
+                licensed_claim = f"[licensed on the declared bounded scope: {scope.strip()}; no uniform bound proven] {_ptxt}".strip()
+                reason += f"; licensed on the declared bounded scope ({scope.strip()}) only — the text is annotated, not licensed raw"
 
     # ---- Palancas discriminantes (18 malos residuales del corpus Ginibre, 2026-10-13) ----
     _txt = ((claim.get("text") if isinstance(claim, dict) else "") or "")

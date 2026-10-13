@@ -736,7 +736,7 @@ def check_reported_percent(ev: dict[str, Any]) -> dict[str, Any]:
 # exact, and a pair that does not agree is caught. Exact identities: relative tol 1e-9. An
 # ESTIMATED quantity must declare its standard error: FLAG only beyond 4*SE, and with no SE the
 # verdict is HOLD (cannot judge), never a flag.
-_RMT_REL = 1e-9
+_RMT_REL = 1e-12   # double-precision noise is ~1e-16; 1e-9 hid 999-ulp errors (§6 run 8)
 _RMT_K = 4.0
 
 
@@ -754,7 +754,13 @@ def _rmt_compare(name: str, declared: Any, formula: float, se: float | None,
         return "PASS", f"{name} not declared"
     if exact:
         d = _decimals(raw, default=12, cap=40)   # cap by magnitude, not by 15: 4.0528482e-10 has 17 decimal places
-        tol = max(_RMT_REL * max(abs(formula), 1e-12), 0.5 * 10 ** (-d))
+        half_unit = 0.5 * 10 ** (-d)
+        if half_unit > 0.1 * abs(formula) and abs(formula) > 0:
+            # §6 run 8: "0.0" declared for C* = 4e-4 passed (its half-unit 0.05 swallows the value). A literal whose
+            # declared precision is coarser than the identity's own magnitude says nothing about it: cannot judge.
+            return "HOLD", (f"{name}: declared {raw!r} is too coarse to test the identity ({formula:.6g}): half a unit of its "
+                            f"last digit ({half_unit:.2g}) exceeds 10% of the value — declare the value to its working precision")
+        tol = max(_RMT_REL * max(abs(formula), 1e-12), half_unit)
         ok = abs(declared - formula) <= tol
         return ("PASS" if ok else "FLAG",
                 f"{name}: declared {declared:.10g} vs identity {formula:.10g}" + ("" if ok else " — exact identity violated"))

@@ -94,6 +94,7 @@ def run_cmd(cmd):
             i += 1  # consume terminator
         clean = re.sub(r"\d?>&\d", " ", line)
         for seg in _segments(clean):
+            seg = re.sub(r"^(\s*[A-Z_][A-Z0-9_]*=\S*\s+)+", "", seg)   # prefijos VAR=valor (PYTHONHASHSEED=1 python3 ...)
             if not ALLOW.match(seg):
                 return f"[DENEGADO: segmento no permitido: {seg[:80]!r}]"
             if seg.startswith(("python", "pytest")) and PY_WRITE.search(seg):

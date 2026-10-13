@@ -79,3 +79,23 @@ def test_run7_declared_bounded_but_run6_universal_texts_are_contradictions():
 
 def test_scope_unstated_lemma_with_declared_bounded_quantifier_accepts():
     assert capas.decide_external_claim(_p("Lemma: an identity (scope unstated).", "bounded", text_quantifier="bounded"))["verdict"] == "ACCEPT"
+
+
+# --- Run 8 (xAI, executed): 70/95 universal paraphrases (German, French, Latin, NBSP, fullwidth, Cyrillic homoglyph,
+# subordinate clauses) ACCEPT with declared bounded scope + text_quantifier="bounded" + no uniform bound. By design the
+# gate does not read prose and a false declaration is GIGO — but then the gate must never license the RAW text: an ACCEPT
+# on a declared bounded scope licenses the text ANNOTATED with that scope, so what is reused carries its own limit.
+RUN8_TEXTS = ["The identity is valid no matter which writing one chooses, and the scope is not limited.",
+              "Holds uniformly in n, for n as large as one likes.", "Der Satz gilt für alle Ordnungen ohne obere Schranke.",
+              "Le résultat vaut pour tout ordre, sans borne supérieure.", "for all writings of the expansion",
+              "for аll orders", "Identitas valet pro omni ordine.", "f o r   a l l  orders"]
+
+def test_run8_bounded_accept_never_licenses_the_raw_text():
+    for t in RUN8_TEXTS:
+        d = capas.decide_external_claim(_p(t, "bounded", text_quantifier="bounded"))
+        assert d["verdict"] in ("ACCEPT", "REWRITE"), (t, d["verdict"])
+        assert d["licensed_claim"] != t and "bounded" in d["licensed_claim"].lower(), (t, d["licensed_claim"])
+
+def test_uniform_bound_proven_licenses_raw_text():
+    d = capas.decide_external_claim(_p("Theorem: holds universally.", "universal", uniform_bound_proven=True))
+    assert d["verdict"] == "ACCEPT" and d["licensed_claim"] == "Theorem: holds universally."

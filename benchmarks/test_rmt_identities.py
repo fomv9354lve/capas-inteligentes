@@ -127,3 +127,22 @@ def test_decimals_reads_scientific_notation():
     assert ci._decimals("1.2732e-03", default=12, cap=15) == 7
     assert ci._decimals(1e-12, default=12, cap=15) == 12
     assert ci._decimals(0.4053) == 4 and ci._decimals("0.5") == 1 and ci._decimals(2) == 2
+
+
+# --- §6 run 8 (xAI, executed): "0.0" declared for C* = 4.05e-04 PASSED (1 decimal -> half-unit 0.05 swallows the value),
+# and the 1e-9 relative floor let a 999-ulp error pass at 12 declared decimals. A literal whose half-unit exceeds the
+# identity's own magnitude carries no information about it -> HOLD (cannot judge), never PASS; the relative floor is
+# now 1e-12 (double precision noise is ~1e-16; 1e-9 was generous enough to hide real errors).
+def test_coarse_literal_cannot_pass_a_small_identity():
+    for lit in ("0.0", "0.00", 0.0):
+        r = ci.audit({"rmt_closed_form": {"x": 0.001, "d": 0, "C": lit}})["results"]["rmt_closed_form"]
+        assert r["verdict"] == "HOLD" and "coarse" in r["why"].lower(), (lit, r["verdict"], r["why"][:80])
+    r = ci.audit({"rmt_F": {"a": 0.5, "b": 0.5, "gamma": 2, "F": "0.0"}})["results"]["rmt_F"]
+    assert r["verdict"] == "HOLD", r["why"][:80]
+
+def test_many_ulp_error_at_high_declared_precision_flags():
+    # x=0.5, d=0.25 -> A* = 1.3913043478...; 1.391304348826 is 1e-9 off at 12 declared decimals -> must FLAG
+    r = ci.audit({"rmt_closed_form": {"x": 0.5, "d": 0.25, "A": "1.391304348826"}})["results"]["rmt_closed_form"]
+    assert r["verdict"] == "FLAG", r["why"][:80]
+    r = ci.audit({"rmt_closed_form": {"x": 0.5, "d": 0.25, "A": "1.391304347826"}})["results"]["rmt_closed_form"]
+    assert r["verdict"] == "PASS", r["why"][:80]   # correctly rounded to 12 decimals
