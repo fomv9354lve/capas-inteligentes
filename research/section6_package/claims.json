@@ -1,0 +1,51 @@
+[
+ {
+  "id": "C6-01",
+  "claim": "El motor CAPAS es determinista, fail-closed y no tiene modelo de lenguaje en el veredicto",
+  "estado": "empirical",
+  "evidencia": "394 tests; benchmarks/conformance.py -> CAPAS-CONFORMANT (Sigstore en CI); verify_cara_decoupling.py; verify_audit_hash_reproduces.py",
+  "como_refutar": "Encontrar dos entradas identicas con veredicto distinto, o una ruta en capas.py decide donde un LLM influya en verdict."
+ },
+ {
+  "id": "C6-02",
+  "claim": "proof_admissibility no licencia 'teorema' sin cota uniforme: no hay false-accept por alcance",
+  "estado": "empirical",
+  "evidencia": "benchmarks/verify_proof_admissibility.py; capas.py rama proof_admissibility (BOUNDED_SCOPES, polaridad invertida)",
+  "como_refutar": "Construir un payload con claim_scope universal (cualquier escritura) y uniform_bound_proven False que de ACCEPT."
+ },
+ {
+  "id": "C6-03",
+  "claim": "Las identidades RMT (C(x,d), C(x,d,tau), F(a,b,gamma), G(a,b,1)) son coherencia exacta entre cantidades declaradas, a la precision declarada",
+  "estado": "closed-local",
+  "evidencia": "capas_invariants.py check_rmt_*; benchmarks/test_rmt_identities.py (casos a 10 cifras y casos-que-deben-fallar de Ginibre)",
+  "como_refutar": "Un par (x,d[,tau]) con A y C correctos que FLAG, o un par incorrecto que PASS, dentro del dominio declarado."
+ },
+ {
+  "id": "C6-04",
+  "claim": "Sobre 176 claims reales codificados a ciegas, CAPAS no deja en ACCEPT ~2/3 de los malos (52/81) y no rechaza ~90% de los buenos (57/63)",
+  "estado": "empirical",
+  "evidencia": "Paper - Inverse Ginibre Overlap/CAPAS_CORPUS_2026-10-12/ (claims, desenlaces, veredictos v1/v2 con hashes; INFORME_CORPUS.md adendas 1-2); tag ginibre-ciego-v2",
+  "como_refutar": "Reproducir la evaluacion contra el tag y obtener otros veredictos; o mostrar que la codificacion ciega filtra desenlace (contaminacion no declarada); o que la etiqueta 'bueno' (= sin correccion posterior) invalida la tasa."
+ },
+ {
+  "id": "C6-05",
+  "claim": "Las inconsistencias numericas recomputables NO separan papers retractados por fraude de papers limpios (tasa base ~2% en limpios)",
+  "estado": "refuted (como via)",
+  "evidencia": "research/retraction_audit/README.md; audit_results.json; control de 888 papers (86 chequeables): 2.13% severos vs 1.58% en retractados",
+  "como_refutar": "Mostrar que el control no esta emparejado (revistas/anos), que el extractor pierde items sistematicamente en un grupo, o que la graduacion de severidad esta sesgada."
+ },
+ {
+  "id": "C6-06",
+  "claim": "Exigir independent_reproduction_pass para ACCEPT en pruebas sube la deteccion de 0.65 a 0.78 en el mismo corpus (post-hoc)",
+  "estado": "empirical post-hoc",
+  "evidencia": "research/ginibre_corpus/rescore.py; commit ae739c3; README",
+  "como_refutar": "Mostrar que la ganancia es un artefacto: p.ej. que todo claim de prueba sin ese campo se vuelve REWRITE y por tanto 'deteccion' sube sin discriminar; proponer la medida que SI discriminaria."
+ },
+ {
+  "id": "C6-07",
+  "claim": "El historial de ClinicalTrials.gov es accesible estructurado por API (originalData.primaryOutcomes), 93.4% sobre n=500",
+  "estado": "empirical",
+  "evidencia": "research/registration_adherence/phase0.py; data/phase0_n500.json",
+  "como_refutar": "Correr phase0.py sobre otra muestra y obtener <80%; o mostrar que el endpoint /api/int no es estable/publico."
+ }
+]
