@@ -5,11 +5,37 @@ engine does not guess — it refuses to ACCEPT (REWRITE or HOLD) and says which 
 declaration is the coder's responsibility (declared GIGO), not a gate hole. All fields are optional unless
 the claim type lists them as required.
 
+## The envelope (every payload)
+
+```json
+{"schema_version": "capas-claim-payload-v3",
+ "claim": {"id": "<stable id>", "type": "<claim type>", "text": "<the sentence as the document states it>"},
+ "evidence": {"<fields of the claim type>": "...", "invariants": {"calibration_snapshot": {...}, "rmt_G": {...}}}}
+```
+Batches: one JSON object per line, `{"claim_id", "contaminado", "payload"}`. Cross-domain laws (RMT identities,
+calibration snapshots, GRIM, sums…) go under `evidence.invariants`.
+
+## Pre-registration vs. result: two moments, two claims (Atlas pilot, 2026-10-13)
+
+A **pre-registration** has no measured fields yet. Code it as `claim_transition` (`current_claim` = the strong
+statement, `upgrade_evidence_present: false`) → REWRITE "not licensed yet". The **measurable claim** is coded
+after the run by someone who reads only the results file (blind to the verdict, not to the data): then the
+type is `exact_model_solution` / `statistical_confidence` / … with its measured fields. Coding a
+pre-registration as a measured type yields HOLD "missing required evidence fields" — correct, and vacuous.
+
+## claim_transition (current_claim, upgrade_evidence_present required)
+
+| situation | declare | if you don't |
+|---|---|---|
+| a stronger claim replaces a weaker one and the upgrade is backed | `upgrade_evidence_present: true` + the evidence of the stronger type in the same payload | REWRITE: the stronger claim is not licensed |
+| the upgrade is pending (pre-registration) | `upgrade_evidence_present: false` | — (REWRITE is the right verdict) |
+
 ## exact_model_solution (abs_error, tolerance required)
 
 | situation in the source | declare | if you don't |
 |---|---|---|
 | tolerance is in standard errors ("within 2 SE") | `tolerance_unit: "SE"` and `n_replicates` (≥ 8) — **the number of independent draws behind the SE** (for a Monte Carlo, N; one seed with N iid matrices counts as N) | REWRITE: an SE from fewer than 8 draws is not validated |
+| a joint χ² criterion (one test over k cells, no per-cell tolerance) | `test_statistic: {kind: "chi2", value: <total χ²>, dof}` (+ `rivals` if any) and a nominal `abs_error`/`tolerance` only if the document gives them — otherwise HOLD is correct, not an error | HOLD |
 | the closed form is sustained by a goodness-of-fit **and** a comparison with rival forms — **the χ² of `value` and of every rival is the fit WITH the claim's constraint imposed** (no free parameter absorbing the difference); if the document only gives free fits, give `rivals: [{chi2_dof, z_constraint}]` and `z_constraint` for the claim: a rival at \|z\| > 4 is self-refuting and does not count; the claim at \|z\| > 4 is REJECTed; a free fit without z → HOLD | `test_statistic: {kind: "chi2_dof", value, dof, rivals: [chi2/dof of each rival], alpha?}` | the fit is not judged; with it: a rival that fits better → REJECT; best of the rivals but p < alpha in absolute terms → REWRITE (best of the rivals, not an exact fit); consistent → ACCEPT; missing dof → HOLD |
 | abs_error is the **maximum** pull over k cells | `error_statistic: "max"`, `n_cells: k` | judged as a single cell (2 SE on a max of 6 cells is a 24 % false-fail test); `max` without `n_cells` → HOLD |
 | abs_error is an RMS or a single cell | `error_statistic: "rms"` / `"single"` | judged as single cell (no correction) |
