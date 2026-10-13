@@ -117,9 +117,13 @@ MACHINE_EPS = 1e-12
 # Cuantificador universal en el TEXTO de una prueba (§6 run 2, xAI, C6-02 REFUTADO): la evidencia declaraba
 # claim_scope "bounded" y el texto decia "for every writing, with no restriction on scope"; el gate licencio el
 # texto. Un alcance declarado acotado no puede licenciar un texto universal sin cota uniforme.
-UNIVERSAL_TEXT_RE = re.compile(r"(\bfor (all|every|any|each)\b|\bevery\b|\ball orders\b|\bany writing\b|\bno restriction\b|"
-                               r"\bunrestricted\b|\bin general\b|\bpara (toda|todo|todas|todos|cualquier)\b|\bcualquier\w*\b|"
-                               r"\bsin restricci\w+\b|\btodo orden\b|\ba todo orden\b|∀)", re.I)
+UNIVERSAL_TEXT_RE = re.compile(
+    r"(\bfor (all|every|any|each|arbitrary|infinitely many|the entire|the whole)\b|\bevery\b|\ball orders\b|\bany writing\b|"
+    r"\bno restrictions?\b|\bwithout restrictions?\b|\bunrestricted\b|\bin general\b|\buniversal(ly)?\b|\barbitrary\b|"
+    r"\bin all cases\b|\bforall\b|\birrespective of\b|\bindependently of\b|\bwhichever\b|\bwhatever\b|\bno bound on\b|"
+    r"\bover the (whole|entire)\b|\bthe entire family\b|\balways\b|\bfor n = 1, 2, 3\b|"
+    r"\bpara (toda|todo|todas|todos|cualquier\w*|cualesquiera|cada)\b|\bcualquier\w*\b|\bcualesquiera\b|\bsiempre\b|"
+    r"\bsin restricci\w+\b|\btodo orden\b|\ba todo orden\b|\ben general\b|\bvale para cada\b|∀)", re.I)
 _SE_UNITS = ("se", "sigma", "sd", "std")
 
 

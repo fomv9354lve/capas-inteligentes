@@ -77,17 +77,31 @@ PY_WRITE = re.compile(r"(open\([^)]*['\"][wax]|write_text|write_bytes|os\.(remov
 
 
 def run_cmd(cmd):
-    for line in cmd.strip().splitlines():
-        line = line.strip()
+    """Lista blanca por LINEA de shell; el cuerpo de un heredoc (python3 - <<'PY' ... PY) no es shell y solo pasa por
+    la lista de denegacion de python. `2>&1` / `>&2` no son separadores de segmento."""
+    lines = cmd.strip().splitlines()
+    i = 0
+    while i < len(lines):
+        line = lines[i].strip(); i += 1
         if not line or line.startswith("#"):
             continue
-        for seg in _segments(line):
+        hd = re.search(r"<<-?\s*['\"]?(\w+)['\"]?", line)
+        body = []
+        if hd:
+            term = hd.group(1)
+            while i < len(lines) and lines[i].strip() != term:
+                body.append(lines[i]); i += 1
+            i += 1  # consume terminator
+        clean = re.sub(r"\d?>&\d", " ", line)
+        for seg in _segments(clean):
             if not ALLOW.match(seg):
                 return f"[DENEGADO: segmento no permitido: {seg[:80]!r}]"
             if seg.startswith(("python", "pytest")) and PY_WRITE.search(seg):
                 return f"[DENEGADO: escritura/red desde python: {seg[:80]!r}]"
-        if DENY.search(line):
+        if DENY.search(clean):
             return f"[DENEGADO: patrón prohibido en: {line[:80]!r}]"
+        if body and PY_WRITE.search("\n".join(body)):
+            return "[DENEGADO: escritura/red/carga dinámica dentro del heredoc]"
     try:
         r = subprocess.run(cmd, shell=True, cwd=ROOT, capture_output=True, text=True, timeout=600,
                            env={"PATH": os.environ["PATH"], "HOME": os.environ["HOME"], "LANG": "C.UTF-8", "PYTHONDONTWRITEBYTECODE": "1"})

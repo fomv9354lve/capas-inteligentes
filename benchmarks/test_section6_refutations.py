@@ -66,3 +66,16 @@ def test_declared_bounded_but_text_visibly_universal_is_a_contradiction():
 
 def test_uniform_bound_proven_still_licenses_universal_text():
     assert capas.decide_external_claim(_p("Theorem: holds universally.", "universal", uniform_bound_proven=True))["verdict"] == "ACCEPT"
+
+
+# --- Run 7 (xAI, 2026-10-13), by reading (it could not execute): "Theorem: holds universally." with text_quantifier
+# declared "bounded" falls to ACCEPT because UNIVERSAL_TEXT_RE lacks 'universally'. The structural rule carries the
+# weight (missing declaration -> REWRITE); the regex is the CONTRADICTION guard, so it must at least cover every
+# universal marker an auditor has already produced. Declared bounded + any run-6 text -> REWRITE (contradiction).
+def test_run7_declared_bounded_but_run6_universal_texts_are_contradictions():
+    for t in RUN6_TEXTS[:-1]:   # the last one is the genuinely scope-unstated lemma
+        d = capas.decide_external_claim(_p(t, "bounded", text_quantifier="bounded"))
+        assert d["verdict"] == "REWRITE" and "contradict" in d["reason"].lower(), (t, d["verdict"], d["reason"][:80])
+
+def test_scope_unstated_lemma_with_declared_bounded_quantifier_accepts():
+    assert capas.decide_external_claim(_p("Lemma: an identity (scope unstated).", "bounded", text_quantifier="bounded"))["verdict"] == "ACCEPT"
