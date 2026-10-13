@@ -72,10 +72,22 @@ los 4 motores: un campo DECLARADO se saltó en silencio. Ahora la forma cruda se
 cualquier otra forma declarada es HOLD. Sobre el snapshot de E4 la ley da PASS (peor arista 0,62 %, T1 mínimo 122 µs),
 igual que la ley de Atlas: **no anticipó la caída**. No cambia el veredicto de E4 (la ley solo degrada).
 
-**Regla pre-especificada (NO implementada, no probada contra datos):** frescura POR CAMPO. Atlas comparó los snapshots de
-02:16 y 11:51 en los 12 qubits: T1, readout y sx idénticos al último decimal (IBM no los re-midió; solo actualizó CZ); las
-CZ empeoraron 1,3–1,8× en 5 aristas; la calibración predecía ~+17 % de error por capa y se observó ~+70 %. Propuesta a
-fijar antes de verla contra datos nuevos: si el payload declara `previous_snapshot` (misma forma) y un campo por elemento
-es idéntico al último decimal entre dos `measured` distintos, ese campo cuenta como medido en el `measured` anterior y la
-frescura se juzga por campo; sin `previous_snapshot` la regla no aplica (no HOLD). Se implementará solo tras registrar
-esta redacción en CURRENT_TRUTH y antes del siguiente claim limpio que la use.
+**Regla pre-especificada v2 (NO implementada, no probada contra datos; v1 corregida por Atlas en 4 puntos el mismo
+día):** frescura POR CAMPO. Motivación: Atlas comparó los snapshots de 02:16 y 11:51 en los 12 qubits: T1, readout y sx
+idénticos al último decimal en los 156 qubits (IBM no los re-midió; solo actualizó CZ); las CZ empeoraron 1,3–1,8× en 5
+aristas; la calibración predecía ~+17 % de error por capa y se observó ~+70 %.
+1. **Fuente primaria: fechas por parámetro.** Si el payload trae `field_dates` (IBM `BackendProperties` da una fecha por
+   parámetro: `qubits[i][k].date`, `gates[j].parameters[k].date`; Atlas corrige su fetcher para conservarlas), la
+   frescura se juzga por campo con esas fechas y **mandan sobre cualquier inferencia**.
+2. **Inferencia por identidad, solo sin `field_dates` y solo con `previous_snapshot`** (misma forma, `measured` anterior
+   distinto). Campos **continuos** (t1_us, t2_us, cz/ecr): un elemento idéntico al último decimal entre los dos
+   `measured` ⇒ ese elemento se considera medido **a más tardar** en `measured_prev` (cota: si el previo también estaba
+   rancio, la edad inferida es un mínimo). Campos **cuantizados** (readout = fracción de shots, p.ej. 64,5/4096; sx):
+   dos medidas reales pueden coincidir exacto ⇒ se juzga el **campo entero**: todos los elementos idénticos ⇒ campo
+   rancio; coincidencias parciales no cuentan. (El caso real de hoy fue campo entero idéntico: lo cubre.)
+3. La frescura por campo usa el mismo umbral `max_age_days` que la frescura por archivo; un campo rancio del layout ⇒
+   FLAG `stale_field` con el campo y la edad mínima inferida.
+4. **Sin `field_dates` ni `previous_snapshot`: no HOLD, pero nunca silencio** — el resultado lleva
+   `field_freshness: "not evaluable"` como aviso informativo (el fallo de hoy fue exactamente el silencio).
+Se implementará solo tras registrar esta redacción en CURRENT_TRUTH y antes del siguiente claim limpio que la use (E4b
+está en auditoría de diseño; su desenlace queda retenido como siempre).
