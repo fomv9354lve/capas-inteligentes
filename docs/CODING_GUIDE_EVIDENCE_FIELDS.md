@@ -80,7 +80,10 @@ pre-registration as a measured type yields HOLD "missing required evidence field
 ## calibration_snapshot (quantum hardware, Atlas)
 
 Pass the **whole-device** snapshot with `layout` inside (medians are device medians), `measured` and
-`job_date`. Defaults: edge > 1e-2 or > 5× median → FLAG; T1 < 60 µs or < median/3 → FLAG; freshness ≤ 1
+`job_date`. Two shapes are read: canonical `{qubits{id:{t1_us,t2_us,readout}}, edges{id:error}, layout{qubits,edges}}`
+and the raw IBM device file copied verbatim `{t1_us{}, readout{}, t2_us{}, cz{} (or ecr{}), edges[[a,b]], layout[q…]}`
+(a qubit-list layout selects the edges with both ends in it). A declared snapshot in any other shape is **HOLD**
+(the law never answers "not applicable" to a declared field — Atlas E4, 2026-10-13). Defaults: edge > 1e-2 or > 5× median → FLAG; T1 < 60 µs or < median/3 → FLAG; freshness ≤ 1
 calendar day; T2 floor off (`t2_min_frac_median` / `t2_min_us` to enable). Override anything in `thresholds`.
 
 ## The rule behind all of this

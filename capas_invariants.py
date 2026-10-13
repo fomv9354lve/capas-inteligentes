@@ -934,12 +934,51 @@ def _parse_ts(x: Any) -> float | None:
     return None
 
 
+def _normalize_snapshot(snap: Any) -> tuple[dict[str, Any] | None, bool]:
+    """Return (canonical snapshot, was_normalized). Canonical = {qubits{id:{t1_us,t2_us,readout}}, edges{id:err},
+    layout{qubits,edges}}. The raw IBM device file Atlas copies verbatim ({t1_us{}, t2_us{}, readout{}, cz{} or
+    ecr{}, edges[[a,b]], layout[q...]}) is mapped field-by-field with no judgement: same names, same numbers;
+    a layout given as a qubit list selects the edges whose both ends are in it. Anything else -> None."""
+    if not isinstance(snap, dict):
+        return None, False
+    if isinstance(snap.get("qubits"), dict) or isinstance(snap.get("edges"), dict):
+        return snap, False
+    per_q = {k: snap[k] for k in ("t1_us", "t2_us", "readout") if isinstance(snap.get(k), dict)}
+    gate = next((snap[k] for k in ("cz", "ecr", "cx", "two_qubit_error") if isinstance(snap.get(k), dict)), None)
+    if not per_q and gate is None:
+        return None, False
+    qubits: dict[str, dict[str, Any]] = {}
+    for field, table in per_q.items():
+        for q, v in table.items():
+            qubits.setdefault(str(q), {})[field] = v
+    edges = {str(k): v for k, v in (gate or {}).items()}
+    out: dict[str, Any] = {k: v for k, v in snap.items() if k not in ("t1_us", "t2_us", "readout", "cz", "ecr", "cx",
+                                                                       "two_qubit_error", "edges", "layout", "sx")}
+    out["qubits"], out["edges"] = qubits, edges
+    lay = snap.get("layout")
+    if isinstance(lay, dict):
+        out["layout"] = lay
+    elif isinstance(lay, list) and lay:
+        sel = {str(q) for q in lay}
+        out["layout"] = {"qubits": sorted(sel), "edges": sorted(k for k in edges if set(k.split("_")) <= sel)}
+    return out, True
+
+
 def check_calibration_snapshot(ev: dict[str, Any]) -> dict[str, Any]:
     import statistics as _st
     snap = ev.get("calibration_snapshot")
-    if not isinstance(snap, dict) or not (isinstance(snap.get("qubits"), dict) or isinstance(snap.get("edges"), dict)):
+    if snap is None:
         return {"applies": False}
     law = "calibration_snapshot: no element outside the device distribution, no textbook violation, not stale"
+    # A snapshot that is DECLARED but whose shape the law cannot read is HOLD, never a silent skip
+    # (Atlas E4, 2026-10-13: a raw device file {t1_us, readout, cz, edges[], layout[]} was declared and the
+    # law answered "no invariant applies" — the one answer a declared invariant may never give).
+    snap, normalized = _normalize_snapshot(snap)
+    if snap is None:
+        return {"applies": True, "verdict": "HOLD", "law": law,
+                "why": ("calibration_snapshot declared but in no shape the law reads: need qubits{id:{t1_us,readout,...}} "
+                        "and/or edges{id:error} (layout {qubits,edges}), or the raw device file {t1_us{}, readout{}, "
+                        "cz{} , layout[]}; declare one of them")}
     # alias que usa Atlas en sus fixtures: edge_abs -> edge_max_abs, t1_abs_us -> t1_min_us
     _alias = {"edge_abs": "edge_max_abs", "t1_abs_us": "t1_min_us", "readout_abs": "readout_max_abs"}
     th = {**_SNAP_DEFAULTS, **{_alias.get(k, k): float(v) for k, v in (snap.get("thresholds") or {}).items() if _num(v) is not None}}
@@ -1068,7 +1107,7 @@ def check_calibration_snapshot(ev: dict[str, Any]) -> dict[str, Any]:
     n_j = (len(sel_q) if sel_q is not None else len(qubits)) + (len(sel_e) if sel_e is not None else len(edges))
     scope = f"layout ({n_j} elements judged, medians over whole device)" if layout else f"whole snapshot ({n_j} elements)"
     extra = {"outliers": outliers, "medians": {"edge_error": med_e if errs else None, "t1_us": med_t1, "t2_us": med_t2, "readout": med_ro},
-             "thresholds": th, "stale_days": stale}
+             "thresholds": th, "stale_days": stale, "normalized_from_raw_device_file": normalized}
     if outliers or stale is not None:
         parts = [_fmt(o) for o in outliers]
         if stale is not None:

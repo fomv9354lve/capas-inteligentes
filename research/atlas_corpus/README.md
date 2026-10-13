@@ -50,3 +50,32 @@ codificados post-corrida con desenlace retenido hasta el sellado. Tag vigente: `
 
 Archivos sellados: `phase2/DE_CAPAS_veredictos_atlas_postrun_{v2,v3,v4,v5}.jsonl` (sha256 en cabecera). Deuda: no existe
 tipo para un umbral unilateral sobre un estimador sin SE (S6). Tag vigente para los limpios: `atlas-ciego-v5`.
+
+## Fase 2(b) — primer claim LIMPIO: E4 `deriva_chi2` (2026-10-13, `contaminado:false`)
+
+Protocolo cumplido: Atlas selló el desenlace (sha256 `8782d4b2…`, 20:57Z) ANTES de que un subagente ciego codificara el
+claim desde números saneados (claims sha256 `89c1bf7a…`); CAPAS evaluó y selló veredictos (commit 8914d17) ANTES de abrir
+el desenlace; Atlas lo comunicó solo después. Runner reutilizable: `run_sealed.py`. Archivos: `phase2b/DE_CAPAS_veredictos_atlas_e4_{v5,v3,v2,head}.jsonl`.
+
+| motor | veredicto | desenlace | acierto |
+|---|---|---|---|
+| atlas-ciego-v5 (c3b445e) | REJECT (χ² 47,106 / 3 g.l., p = 3,3e-10) | FALSADO (χ² > 7,815; deriva detectada, rep12 caducó) | sí (malo ≠ ACCEPT) |
+| HEAD 15c9232 | REJECT, misma razón | — | sí |
+| atlas-ciego-v3 / v2 | HOLD (sin abs_error/tolerance) | — | vacuo (HOLD = no-ACCEPT) |
+
+Cuenta limpia de Atlas: **1/1 malo no-ACCEPT** (n = 1: anécdota, no tasa). Sigue el ledger: se acumula con los limpios
+siguientes (Spend Frontier v4, pre-registros nuevos).
+
+**Fallo de CAPAS encontrado por este claim (corregido, tag `atlas-ciego-v6`):** el `calibration_snapshot` iba como archivo
+crudo de IBM (`t1_us{}`, `readout{}`, `cz{}`, `edges[]`, `layout[]`) y la ley respondió "no domain invariant applies" en
+los 4 motores: un campo DECLARADO se saltó en silencio. Ahora la forma cruda se normaliza campo a campo (sin juicio) y
+cualquier otra forma declarada es HOLD. Sobre el snapshot de E4 la ley da PASS (peor arista 0,62 %, T1 mínimo 122 µs),
+igual que la ley de Atlas: **no anticipó la caída**. No cambia el veredicto de E4 (la ley solo degrada).
+
+**Regla pre-especificada (NO implementada, no probada contra datos):** frescura POR CAMPO. Atlas comparó los snapshots de
+02:16 y 11:51 en los 12 qubits: T1, readout y sx idénticos al último decimal (IBM no los re-midió; solo actualizó CZ); las
+CZ empeoraron 1,3–1,8× en 5 aristas; la calibración predecía ~+17 % de error por capa y se observó ~+70 %. Propuesta a
+fijar antes de verla contra datos nuevos: si el payload declara `previous_snapshot` (misma forma) y un campo por elemento
+es idéntico al último decimal entre dos `measured` distintos, ese campo cuenta como medido en el `measured` anterior y la
+frescura se juzga por campo; sin `previous_snapshot` la regla no aplica (no HOLD). Se implementará solo tras registrar
+esta redacción en CURRENT_TRUTH y antes del siguiente claim limpio que la use.

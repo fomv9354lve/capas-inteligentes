@@ -188,3 +188,51 @@ def test_t2_absolute_floor_flags_below_30us():
     assert ci.audit({"calibration_snapshot": s})["verdict"] == "FLAG"
     s["thresholds"] = {"t2_min_us": 25.0}
     assert ci.audit({"calibration_snapshot": s})["verdict"] == "PASS"
+
+
+# --- declared snapshot in a shape the law cannot read: HOLD, never a silent skip (Atlas E4, 2026-10-13) ---
+RAW_E4 = os.path.join(os.path.dirname(__file__), "..", "research", "atlas_corpus", "phase2b", "claims_e4_2026-10-13.jsonl")
+
+def _raw_e4_snapshot():
+    with open(RAW_E4, encoding="utf-8") as f:
+        rec = json.loads(f.readline())
+    return rec["payload"]["evidence"]["invariants"]["calibration_snapshot"]
+
+def test_unreadable_snapshot_shape_holds_not_skips():
+    a = ci.audit({"calibration_snapshot": {"backend": "x", "measured": "2026-10-13 11:51:12", "foo": [1, 2, 3]}})
+    assert a["applicable"] and a["verdict"] == "HOLD" and "calibration_snapshot" in a["holds"]
+
+def test_raw_ibm_device_file_is_normalized_and_judged():
+    snap = _raw_e4_snapshot()
+    a = ci.audit({"calibration_snapshot": snap})
+    r = a["results"]["calibration_snapshot"]
+    assert a["applicable"] and r["normalized_from_raw_device_file"] is True
+    assert "layout (24 elements judged" in r["why"]  # 12 qubits + 12 edges inside the layout
+    # the E4 layout the day of the run: worst edge 0.62 %, min T1 122 us -> PASS (Atlas's own law said PASS too)
+    assert a["verdict"] == "PASS", r["why"]
+
+def test_raw_and_canonical_shapes_agree():
+    snap = _raw_e4_snapshot()
+    canon = {"measured": snap["measured"], "job_date": snap["job_date"],
+             "qubits": {q: {"t1_us": snap["t1_us"].get(q), "readout": snap["readout"].get(q)} for q in snap["readout"]},
+             "edges": dict(snap["cz"]),
+             "layout": {"qubits": [str(q) for q in snap["layout"]],
+                        "edges": [k for k in snap["cz"] if set(k.split("_")) <= {str(q) for q in snap["layout"]}]}}
+    a1 = ci.audit({"calibration_snapshot": snap})["results"]["calibration_snapshot"]
+    a2 = ci.audit({"calibration_snapshot": canon})["results"]["calibration_snapshot"]
+    assert a1["verdict"] == a2["verdict"] and a1["outliers"] == a2["outliers"] and a1["medians"] == a2["medians"]
+
+def test_raw_snapshot_with_degraded_layout_edge_flags():
+    snap = json.loads(json.dumps(_raw_e4_snapshot()))
+    snap["cz"]["57_67"] = 0.03  # x~20 the device median -> the layout edge is an outlier
+    a = ci.audit({"calibration_snapshot": snap})
+    assert a["verdict"] == "FLAG" and "57_67" in a["results"]["calibration_snapshot"]["why"]
+
+def test_engine_holds_accept_when_declared_snapshot_is_unreadable():
+    import capas
+    payload = {"schema_version": "capas-claim-payload-v3",
+               "claim": {"id": "t", "type": "exact_model_solution", "text": "fit holds"},
+               "evidence": {"test_statistic": {"kind": "chi2", "value": 0.93, "dof": 3, "alpha": 0.05},
+                            "n_replicates": 8, "invariants": {"calibration_snapshot": {"backend": "x", "foo": 1}}}}
+    r = capas.decide_external_claim(payload)
+    assert r["verdict"] == "HOLD" and "could not judge" in r["reason"]
