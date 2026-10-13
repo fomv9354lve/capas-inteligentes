@@ -65,7 +65,15 @@ def _payloads() -> list[dict]:
                ("statistical_confidence", {"p_value": 0.01, "alpha": 0.05, "effect_direction_confirmed": True}),
                ("proof_admissibility", {"claim_scope": "universal", "steps_all_valid": True, "load_bearing_step_identified": True, "uniform_bound_proven": False}),
                ("reproducibility_check", {"artifact_available": True, "independent_reproduction_pass": False}),
+               # edge values named by the §6 auditor (run 6/7) and verified 2026-10-13: must decide identically
+               ("exact_model_solution", {"abs_error": -0.0, "tolerance": 1.0, "negative_control_failed": True}),
+               ("exact_model_solution", {"abs_error": float("nan"), "tolerance": 1.0}),      # schema -> HOLD
+               ("exact_model_solution", {"abs_error": float("inf"), "tolerance": 1.0}),      # schema -> HOLD
            ])]
+    import unicodedata
+    out.append({"schema_version": "capas-claim-payload-v3", "claim": {"id": "nfc", "type": "exact_model_solution", "text": unicodedata.normalize("NFC", "café")}, "evidence": {"abs_error": 0.3, "tolerance": 1.0}})
+    out.append({"schema_version": "capas-claim-payload-v3", "claim": {"id": "nfd", "type": "exact_model_solution", "text": unicodedata.normalize("NFD", "café")}, "evidence": {"abs_error": 0.3, "tolerance": 1.0}})
+    out.append({"evidence": {"tolerance": 1.0, "abs_error": 0.3}, "claim": {"text": "x", "type": "exact_model_solution", "id": "reordered"}, "schema_version": "capas-claim-payload-v3"})
     G = Path("/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/Paper - Inverse Ginibre Overlap/CAPAS_CORPUS_2026-10-12")
     for f in ("PARA_CAPAS_claims.jsonl", "PARA_CAPAS_claims_X4.jsonl", "PARA_CAPAS_claims_X5.jsonl"):
         if (G / f).exists():

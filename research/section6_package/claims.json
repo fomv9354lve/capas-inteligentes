@@ -3,7 +3,7 @@
   "id": "C6-01",
   "claim": "El motor CAPAS es determinista, fail-closed y no tiene modelo de lenguaje en el veredicto",
   "estado": "empirical",
-  "evidencia": "benchmarks/verify_determinism.py (no LLM/network/random/clock in decide path + same payload -> same verdict+hash in two interpreters, network blocked); benchmarks/conformance.py -> CAPAS-CONFORMANT; benchmarks/verify_audit_hash_reproduces.py; 449 tests (python3 -m pytest -q)",
+  "evidencia": "benchmarks/verify_determinism.py (no LLM/network/random/clock in decide path + same payload -> same verdict+hash in two interpreters, network blocked); benchmarks/conformance.py -> CAPAS-CONFORMANT; benchmarks/verify_audit_hash_reproduces.py; 449 tests (python3 -m pytest -q); 2026-10-13: verify_determinism incluye -0.0, NaN, inf (→ HOLD por esquema), NFC vs NFD (hashes distintos: entradas distintas), claves reordenadas (mismo hash), dos procesos con PYTHONHASHSEED distinto",
   "como_refutar": "Encontrar dos entradas identicas con veredicto distinto, o una ruta en capas.py decide donde un LLM influya en verdict."
  },
  {
