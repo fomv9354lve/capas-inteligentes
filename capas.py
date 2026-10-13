@@ -209,6 +209,18 @@ CLAIM_TYPE_REGISTRY = {
     },
 }
 
+# Campos transversales (backtest Ginibre ac6a70f): los tres fallos del gate fueron evidencia
+# verdadera pero muda. Estos campos obligan a hacer las tres preguntas que nadie hacia.
+# Todos OPCIONALES: un campo ausente no es una deteccion (objecion de Ginibre), es abstencion.
+# object_declared debe nombrar objeto Y convencion ("m*tau at beta=1/2", no solo "m*tau").
+CROSS_CUTTING_OPTIONAL = ["object_declared", "object_matches_target",
+                         "load_bearing_citation_read", "citation_hypotheses_checked"]
+for _t, _spec in CLAIM_TYPE_REGISTRY.items():
+    _opt = _spec.setdefault("optional", [])
+    for _f in CROSS_CUTTING_OPTIONAL:
+        if _f not in _opt and _f not in _spec.get("required", []):
+            _opt.append(_f)
+
 REQUIRED_DECISION_FIELDS = {
     claim_type: list(spec["required"])
     for claim_type, spec in CLAIM_TYPE_REGISTRY.items()
@@ -299,6 +311,7 @@ BOOL_EVIDENCE_FIELDS = [
     "execution_observed", "runtime_environment_declared",
     "steps_all_valid", "load_bearing_step_identified", "uniform_bound_proven",
     "leading_order_established",
+    "object_matches_target", "load_bearing_citation_read", "citation_hypotheses_checked",
 ]
 STRING_EVIDENCE_FIELDS = [
     "anchor_mode", "relative_anchor_reference", "benchmark_name", "benchmark_metric",
@@ -306,7 +319,7 @@ STRING_EVIDENCE_FIELDS = [
     "conflict_resolution_method", "modality", "language", "language_version",
     "claim_api", "docs_reference", "current_claim",
     "code_snippet", "expected_output", "observed_output",
-    "claim_scope", "conjectured_remainder",
+    "claim_scope", "conjectured_remainder", "object_declared",
 ]
 LIST_EVIDENCE_FIELDS = ["supporting_sources", "contradicting_sources"]
 
@@ -1945,6 +1958,23 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
             verdict = "ACCEPT"
             reason = ("each step validates, the load-bearing step is identified, and the claim's scope is "
                       "licensed (a uniform bound is proven, or the claim is bounded/finite)")
+
+    # Campos transversales (backtest Ginibre): downgrade-only, en cualquier tipo de claim.
+    # Un objeto declarado que NO es el objetivo -> HOLD: la evidencia puede ser cierta sobre
+    # otra cosa (m*tau=2.39 a 15 cifras... en beta=1, cuando el objetivo era beta=1/2).
+    if evidence.get("object_matches_target") is False and verdict != "REJECT":
+        verdict = "HOLD"
+        reason = f"{reason}; object_matches_target is False: the evidence is about a different object/convention than the claim targets"
+        licensed_claim = None
+        rewrite = None
+    # Una cita portante sin leer o con hipotesis sin comprobar no respalda nada todavia.
+    if verdict == "ACCEPT" and (evidence.get("load_bearing_citation_read") is False
+                                or evidence.get("citation_hypotheses_checked") is False):
+        verdict = "REWRITE"
+        reason = (f"{reason}; load-bearing citation support is NOT verified "
+                  "(citation unread or its hypotheses unchecked)")
+        rewrite = "claim stands only as 'support claimed, not verified' until the load-bearing citation is read and its hypotheses checked against this setting"
+        licensed_claim = rewrite
 
     # Cross-domain INVARIANT filter (downgrade-only, fail-closed). A claim whose declared
     # quantities violate a domain law (accounting identity, quantum physics, GRIM, probability

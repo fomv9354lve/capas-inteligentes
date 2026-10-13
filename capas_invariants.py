@@ -282,6 +282,9 @@ _BOUNDS = {  # name -> (low, high, reason)
     "temperature_K": (0.0, float("inf"), "absolute temperature >= 0 K"),
     "speed_m_s": (0.0, 299792458.0, "speed <= c"),
     "ph": (-1.0, 15.0, "pH roughly in [-1,15] for aqueous solutions"),
+    # Numerica de algebra lineal (backtest Ginibre): un numero de condicion de 9e17 vuelve la
+    # tabla basura aunque el error declarado sea 0.002. Regla 4 del proyecto Ginibre.
+    "cond_max": (0.0, 1e12, "matrix condition number must stay <= 1e12 for a numeric result to mean anything"),
     # RMT / Ginibre (pedido por la sesion Ginibre, 2026-10): correlaciones y fracciones son
     # fracciones. rho es un coeficiente de correlacion/solapamiento; F es una fraccion limite.
     "rho": (-1.0, 1.0, "a correlation/overlap coefficient rho lies in [-1, 1]"),

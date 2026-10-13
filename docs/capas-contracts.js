@@ -75,36 +75,89 @@ window.CAPAS_CONTRACTS = {
   "generated_from": "capas.py CLAIM_TYPE_REGISTRY + ANCHOR_MODE_CONTRACTS",
   "optional": {
     "causal_mechanism_claim": [
-      "verification_independence"
+      "verification_independence",
+      "object_declared",
+      "object_matches_target",
+      "load_bearing_citation_read",
+      "citation_hypotheses_checked"
     ],
     "claim_transition": [
-      "current_claim"
+      "current_claim",
+      "object_declared",
+      "object_matches_target",
+      "load_bearing_citation_read",
+      "citation_hypotheses_checked"
     ],
-    "evidence_conflict_claim": [],
+    "evidence_conflict_claim": [
+      "object_declared",
+      "object_matches_target",
+      "load_bearing_citation_read",
+      "citation_hypotheses_checked"
+    ],
     "exact_model_solution": [
       "bound_scope",
       "physical_evidence_level",
-      "verification_independence"
+      "verification_independence",
+      "object_declared",
+      "object_matches_target",
+      "load_bearing_citation_read",
+      "citation_hypotheses_checked"
     ],
     "financial_metric_claim": [
       "metric_name",
-      "audit_trail"
+      "audit_trail",
+      "object_declared",
+      "object_matches_target",
+      "load_bearing_citation_read",
+      "citation_hypotheses_checked"
     ],
-    "multimodal_evidence_claim": [],
+    "multimodal_evidence_claim": [
+      "object_declared",
+      "object_matches_target",
+      "load_bearing_citation_read",
+      "citation_hypotheses_checked"
+    ],
     "physical_accuracy": [
       "physical_evidence_level",
-      "reference_truth"
+      "reference_truth",
+      "object_declared",
+      "object_matches_target",
+      "load_bearing_citation_read",
+      "citation_hypotheses_checked"
     ],
     "programming_language_behavior_claim": [
-      "docs_reference"
+      "docs_reference",
+      "object_declared",
+      "object_matches_target",
+      "load_bearing_citation_read",
+      "citation_hypotheses_checked"
     ],
     "proof_admissibility": [
       "leading_order_established",
-      "conjectured_remainder"
+      "conjectured_remainder",
+      "object_declared",
+      "object_matches_target",
+      "load_bearing_citation_read",
+      "citation_hypotheses_checked"
     ],
-    "reproducibility_check": [],
-    "statistical_confidence": [],
-    "systematic_review_claim": [],
+    "reproducibility_check": [
+      "object_declared",
+      "object_matches_target",
+      "load_bearing_citation_read",
+      "citation_hypotheses_checked"
+    ],
+    "statistical_confidence": [
+      "object_declared",
+      "object_matches_target",
+      "load_bearing_citation_read",
+      "citation_hypotheses_checked"
+    ],
+    "systematic_review_claim": [
+      "object_declared",
+      "object_matches_target",
+      "load_bearing_citation_read",
+      "citation_hypotheses_checked"
+    ],
     "universal_anchor_claim": [
       "benchmark_metric",
       "benchmark_name",
@@ -115,7 +168,11 @@ window.CAPAS_CONTRACTS = {
       "physical_evidence_level",
       "relative_anchor_comparison_pass",
       "relative_anchor_reference",
-      "verification_independence"
+      "verification_independence",
+      "object_declared",
+      "object_matches_target",
+      "load_bearing_citation_read",
+      "citation_hypotheses_checked"
     ]
   },
   "required": {
