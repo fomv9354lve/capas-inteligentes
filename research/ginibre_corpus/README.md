@@ -57,3 +57,31 @@ porque el guardia de commit buscaba "failed" y pytest dijo "errors". Se detectó
 1,00/1,00 — imposible — y cada `decide` devolvía ERROR, que no es ACCEPT ni REJECT. Arreglado en
 f782244: el guardia mira "error" y `rescore.py` aborta ante cualquier ERROR. Un número perfecto es
 el primer sospechoso.
+
+## X4 — fuera de muestra (2026-10-13): la cifra que sí es tasa
+
+Motor congelado en `ginibre-ciego-v4` (bf09faa) **antes** de que Ginibre codificara X4; 37 claims
+nuevos (excluidos los 176 del corpus y los 13 de la retrospectiva), evaluados en un worktree al tag,
+veredictos escritos en `DE_CAPAS_veredictos_X4.jsonl` (sha256 `027be127…`, cabecera
+`outcomes_file_opened: false`) y sólo entonces abiertos los desenlaces.
+
+| | limpios (20) | contaminados (17) | todos (37) |
+|---|---|---|---|
+| malos no-ACCEPT | **11/13 = 0,85** [0,58–0,96] | 10/12 = 0,83 | 21/25 = 0,84 [0,65–0,94] |
+| buenos no-REJECT | **6/7 = 0,86** [0,49–0,97] | 3/5 = 0,60 | 9/12 = 0,75 [0,47–0,91] |
+| buenos en ACCEPT | 5/7 | 3/5 | 8/12 |
+
+Intervalos Wilson 95%. **n = 20 limpios es pequeño**: el 0,85 es compatible con el 0,87 post-hoc y
+con el 0,64 ciego de X1–X3; lo que X4 descarta es que las palancas hayan destruido la detección o
+los buenos. No es evidencia de que 0,87 sea la tasa.
+
+Los 7 fallos, con la lectura: FALSE-ACCEPT X4-001 (refutado por medición posterior: techo GIGO),
+X4-002 (alcance sobreafirmado en el texto de un `exact_model_solution`: el gate no juzga alcance),
+X4-008 C (`proof_admissibility` con sobreafirmación de alcance distinta de "universal"), X4-009 C
+(p = 1e-100 sin `test_statistic`: no recomputable). FALSE-REJECT X4-026, X4-029 C, X4-031 C: los
+tres con tolerancia 2 SE y abs_error 2,84 / 2,2 / 5,6 SE pero desenlace "resiste" — pregunta de
+codificación (¿con qué tolerancia se decidió "resiste"?) enviada a Ginibre, no cambio de motor.
+
+Deudas de motor que X4 deja escritas: (1) `exact_model_solution` no juzga alcance declarado vs
+probado; (2) `proof_admissibility` acepta sobreafirmaciones de alcance que no son cuantificador
+universal. Ambas piden un campo de evidencia nuevo, no un umbral.
