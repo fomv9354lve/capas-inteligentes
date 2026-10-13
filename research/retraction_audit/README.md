@@ -147,3 +147,15 @@ retractados de limpios en este corpus. Como vía de detección de fraude a escal
 motor no falló: midió bien, y lo que midió es que la señal no está donde se buscaba. Queda en pie
 el hallazgo estructural (94% del fraude por fabricación no tiene nada recomputable en texto) y
 las siete leyes que el experimento dejó en el motor.
+
+## Corrección de reproducibilidad (§6 run 4, xAI, 2026-10-13)
+
+El auditor de otra familia marcó la cifra 2,13 % vs 1,58 % como **irreproducible desde el repo**: tenía
+razón — la regla que gradúa severidad (`decision_error` / `impossible` / `numeric_mismatch` vs `rounding`)
+vivía solo en un scratchpad de sesión. Versionada en `grade_severity.py`; reproduce exactamente: control
+85/3.988 = 2,13 %, retractados 286/18.111 = 1,58 %, Fisher OR 0,74 p 0,017 (`data/severity_summary.json`).
+Lo que del ataque sigue en pie, como límite declarado: `ctl_ft.json` no trae año (el emparejamiento por
+año no es verificable desde los datos versionados) y el control rinde 4,5 ítems chequeables por paper
+frente a 2,85 en retractados — la mezcla de revistas/tipos no es la misma aunque salga de "las mismas 60".
+El "no separa" se sostiene con ese emparejamiento imperfecto; una versión emparejada por año y tipo de
+artículo queda `open`.
