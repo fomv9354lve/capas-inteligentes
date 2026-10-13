@@ -93,3 +93,37 @@ def test_cxd_A_not_declared_is_not_a_flag():
 
 def test_rmt_F_rounded_passes():
     assert _v({"rmt_F": {"a": 0.5, "b": 0.5, "gamma": 2, "rho": 0.2857, "F": 0.0340}}) == "PASS"
+
+
+# --- C6-03 boundary named by §6 runs 6/7 (xAI) and verified here before any auditor executed it:
+# _decimals read "1.2732e-03" as 8 decimals (split on "."), so a CORRECTLY ROUNDED value in scientific notation
+# was flagged (tolerance 5e-9 against a rounding error of 4e-8), while "1e-12" (no ".") fell to the default.
+# Precision of a scientific-notation literal = -exponent of its shortest decimal form.
+import math as _m
+_C = lambda x: (4 / _m.pi ** 2) * x / (1 - x * x)
+
+def _cf(x, C):
+    return ci.audit({"rmt_closed_form": {"x": x, "d": 0, "C": C}})["verdict"]
+
+def test_sci_notation_correctly_rounded_passes():
+    # for several x (incl. ones whose C prints in scientific notation) and several significant-figure counts,
+    # the correctly rounded literal must PASS
+    for x in (0.3, 0.001, 1e-6, 1e-9):
+        C = _C(x)
+        for sf in (2, 3, 5, 8):
+            declared = float(f"{C:.{sf - 1}e}")
+            assert _cf(x, declared) == "PASS", (x, sf, declared, C)
+
+def test_sci_notation_wrong_value_flags():
+    # two units of the last significant digit off must FLAG at every scale
+    for x in (0.3, 0.001, 1e-6, 1e-9):
+        C = _C(x)
+        for sf in (2, 3, 5, 8):
+            wrong = float(f"{C * (1 + 2 * 10 ** (-(sf - 1))):.{sf - 1}e}")
+            assert _cf(x, wrong) == "FLAG", (x, sf, wrong, C)
+
+def test_decimals_reads_scientific_notation():
+    assert ci._decimals(1.23e-05, default=12, cap=15) == 7
+    assert ci._decimals("1.2732e-03", default=12, cap=15) == 7
+    assert ci._decimals(1e-12, default=12, cap=15) == 12
+    assert ci._decimals(0.4053) == 4 and ci._decimals("0.5") == 1 and ci._decimals(2) == 2

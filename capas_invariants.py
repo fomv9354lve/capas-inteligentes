@@ -608,7 +608,16 @@ def check_hardy_weinberg(ev):
 
 
 def _decimals(x: Any, default: int = 2, cap: int = 6) -> int:
-    t = str(x)
+    """Declared decimal places of a reported number. Scientific notation ("1.2732e-03") counts the precision of
+    its shortest decimal form (-exponent = 7), not the characters after the dot (§6 C6-03 boundary, 2026-10-13:
+    the old split-on-dot read 8 and FLAGGED a correctly rounded value)."""
+    t = str(x).strip()
+    if "e" in t.lower():
+        try:
+            from decimal import Decimal
+            return min(cap, max(0, -Decimal(t).as_tuple().exponent))
+        except Exception:
+            return default
     return min(cap, len(t.split(".")[1])) if "." in t else default
 
 
@@ -744,7 +753,7 @@ def _rmt_compare(name: str, declared: Any, formula: float, se: float | None,
     if declared is None:
         return "PASS", f"{name} not declared"
     if exact:
-        d = _decimals(raw, default=12, cap=15)
+        d = _decimals(raw, default=12, cap=40)   # cap by magnitude, not by 15: 4.0528482e-10 has 17 decimal places
         tol = max(_RMT_REL * max(abs(formula), 1e-12), 0.5 * 10 ** (-d))
         ok = abs(declared - formula) <= tol
         return ("PASS" if ok else "FLAG",
