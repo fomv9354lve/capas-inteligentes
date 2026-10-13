@@ -112,3 +112,13 @@ las razones por encima de la primera fila es un hallazgo.
 Dos bugs míos corregidos en esta pasada, ambos del lado del experimento: truncaba la razón de
 retractación a 120 caracteres (4.541 papers caían en "?"), y la lista de control se construía con
 una query sin codificar. Ninguno toca el motor.
+
+## Resultado externo relacionado: corpus ciego de Ginibre (2026-10-13)
+
+No es parte de este experimento, pero es la primera tasa ciega del motor y conviene tenerla al
+lado. 176 claims de un proyecto real (110 malos / 66 buenos), evidencia codificada por dos agentes
+sin ver el desenlace, motor congelado (`ginibre-ciego-v1` = a78cadf). Sin contaminar: detección
+53/82 = 0,65 [0,54–0,74]; buenos no rechazados 52/63 = 0,83 (0,94 como cota al corregir una
+traducción). Reproducido 176/176 entre las dos sesiones. Ficheros, hashes e informe en el repo de
+Ginibre, `CAPAS_CORPUS_2026-10-12/`. Límites literales de Ginibre: un proyecto, números del
+codificador en ~20 claims, "bueno" = ausencia de corrección posterior.
