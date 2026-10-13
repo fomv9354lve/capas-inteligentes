@@ -1,0 +1,103 @@
+{
+ "_header": {
+  "engine_tag": "atlas-ciego-v1",
+  "evaluated_at": "2026-10-13T02:26:40",
+  "note": "SUPPLEMENTARY, sealed before outcomes: same law with job_date removed (freshness not judged). Computed because the 1-day gap makes A and C FLAG on staleness alone under the same-day policy, which would hide whether the physical filters discriminate.",
+  "outcomes_file_opened": false,
+  "verdicts_body_sha256": "57b5726bdf76a0b40e574b44ecd7bb5a7671f7888c0847840b3af5ec128f328a"
+ },
+ "verdicts": {
+  "A": {
+   "outliers": [],
+   "verdict": "PASS",
+   "why": "layout (7 elements judged, medians over whole device): every element within device distribution, no textbook violation, fresh"
+  },
+  "B": {
+   "outliers": [
+    {
+     "element": "120_121",
+     "kind": "edge_error",
+     "limit": 5.0,
+     "ratio_to_median": 108.76,
+     "value": 0.201146
+    },
+    {
+     "element": "121_122",
+     "kind": "edge_error",
+     "limit": 5.0,
+     "ratio_to_median": 31.76,
+     "value": 0.058731
+    },
+    {
+     "element": "120",
+     "kind": "readout_high",
+     "limit": 5.0,
+     "ratio_to_median": 30.91,
+     "value": 0.25281
+    },
+    {
+     "element": "121",
+     "kind": "t1_low",
+     "limit": 0.3333333333333333,
+     "ratio_to_median": 0.05,
+     "value": 11.2
+    },
+    {
+     "element": "121",
+     "kind": "readout_high",
+     "limit": 5.0,
+     "ratio_to_median": 24.76,
+     "value": 0.20251
+    }
+   ],
+   "verdict": "FLAG",
+   "why": "layout (7 elements judged, medians over whole device): edge 120_121 error 0.201 = 108.76x median (> 5.0x); edge 121_122 error 0.0587 = 31.76x median (> 5.0x); qubit 120 readout 0.253 = 30.91x median (> 5.0x); qubit 121 T1 11.2 us = 0.05x median (< 0.3333333333333333); qubit 121 readout 0.203 = 24.76x median (> 5.0x)"
+  },
+  "C": {
+   "outliers": [],
+   "verdict": "PASS",
+   "why": "layout (11 elements judged, medians over whole device): every element within device distribution, no textbook violation, fresh"
+  },
+  "D": {
+   "outliers": [
+    {
+     "element": "111_112",
+     "kind": "edge_error",
+     "limit": 5.0,
+     "ratio_to_median": 76.78,
+     "value": 0.141997
+    },
+    {
+     "element": "112_113",
+     "kind": "edge_error",
+     "limit": 5.0,
+     "ratio_to_median": 540.69,
+     "value": 1.0
+    },
+    {
+     "element": "113_114",
+     "kind": "edge_error",
+     "limit": 5.0,
+     "ratio_to_median": 18.14,
+     "value": 0.033547
+    },
+    {
+     "element": "112",
+     "kind": "readout_high",
+     "limit": 5.0,
+     "ratio_to_median": 10.09,
+     "value": 0.08252
+    },
+    {
+     "element": "113",
+     "kind": "readout_high",
+     "limit": 5.0,
+     "ratio_to_median": 18.83,
+     "value": 0.15405
+    }
+   ],
+   "verdict": "FLAG",
+   "why": "layout (11 elements judged, medians over whole device): edge 111_112 error 0.142 = 76.78x median (> 5.0x); edge 112_113 error 1 = 540.69x median (> 5.0x); edge 113_114 error 0.0335 = 18.14x median (> 5.0x); qubit 112 readout 0.0825 = 10.09x median (> 5.0x); qubit 113 readout 0.154 = 18.83x median (> 5.0x)"
+  }
+ }
+}

@@ -127,13 +127,24 @@ def test_atlas_synthetic_stale_variant_flags():
 # Same circuits as the June-layout n=12 (job db6tn74lf4us73dat2sg). Law-chosen layout: job db6uisamb58s738cem4g,
 # prereg mirror_rep12_2026_10_v8. Outcome: F 0.232/0.205/0.145 (d=10/12/16) vs 0.030/0.022/0.011 with the June
 # layout; r/layer 15.6% -> 7.6% with equivalent physical CZ counts. PASS/FLAG separated 15.6% from 7.6%.
-_FIX4 = os.path.join(os.path.dirname(__file__), "fixtures", "atlas_kingston_2026-10-13_rep12.json")
+_FIX4 = os.path.join(os.path.dirname(__file__), "fixtures", "atlas_kingston_2026-10-13_rep12.json")             # layout-only, as Atlas's script wrote it (prereg v8)
+_FIX4_FULL = os.path.join(os.path.dirname(__file__), "fixtures", "atlas_kingston_2026-10-13_rep12_fulldevice.json")  # whole device, medians over 156 qubits
+
+def _case4_full():
+    w = json.load(open(_FIX4_FULL)); return w.get("calibration_snapshot", w)
 
 def test_atlas_case4_prospective_law_chosen_layout_passes():
     w = json.load(open(_FIX4))
     a = ci.audit({"calibration_snapshot": w["calibration_snapshot"]})
     r = a["results"]["calibration_snapshot"]
     assert a["verdict"] == "PASS" == w["law_verdict_local"] and r["outliers"] == [] and r["stale_days"] is None
+
+def test_atlas_case4_full_device_passes_with_device_medians():
+    a = ci.audit({"calibration_snapshot": _case4_full()})
+    r = a["results"]["calibration_snapshot"]
+    assert a["verdict"] == "PASS" and r["outliers"] == []
+    # medians over the whole device, as Atlas states: cz 0.00203, T1 241.4, readout 0.0115
+    assert abs(r["medians"]["edge_error"] - 0.00203) < 5e-5 and abs(r["medians"]["t1_us"] - 241.4) < 0.5 and abs(r["medians"]["readout"] - 0.0115) < 2e-4
 
 def test_atlas_threshold_aliases_are_honoured():
     # Atlas writes edge_abs / t1_abs_us; a stricter alias value must change the verdict

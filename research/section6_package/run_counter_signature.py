@@ -1,0 +1,127 @@
+#!/usr/bin/env python3
+# SPDX-License-Identifier: Apache-2.0
+"""Contra-firma §6 con un modelo de OTRA familia, que DIRIGE la verificación.
+
+El modelo remoto no puede ejecutar; este script es sus manos: le entrega INSTRUCCION.md + claims.json
++ un mapa del repo, y en cada turno ejecuta los comandos que pida (bloques ```run), con lista blanca,
+y le devuelve la salida CRUDA. El constructor (Claude) no interviene en el juicio: no edita salidas,
+no resume, no responde preguntas. Transcripción completa (comandos + salidas + veredictos) a
+section6_<proveedor>_<fecha>.md.
+
+Uso: python3 research/section6_package/run_counter_signature.py deepseek|groq [--model M] [--rounds N]
+Llaves: ~/.config/estandar/<proveedor>.key (mismo mecanismo que integropoly). Nunca se imprimen.
+"""
+import argparse, datetime, json, os, re, subprocess, sys, urllib.request
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[2]
+PKG = Path(__file__).resolve().parent
+PROVIDERS = {
+    "deepseek": {"url": "https://api.deepseek.com/chat/completions", "key": "deepseek.key", "model": "deepseek-reasoner"},
+    "groq": {"url": "https://api.groq.com/openai/v1/chat/completions", "key": "groq.key", "model": "openai/gpt-oss-120b"},
+    "xai": {"url": "https://api.x.ai/v1/chat/completions", "key": "xai.key", "model": "grok-4"},
+}
+ALLOW = re.compile(r"^(python3?|pytest|cat|head|tail|sed|grep|rg|ls|wc|shasum|sha256sum|jq|git|find|diff|sort|uniq|cut|tr|awk|echo|printf|stat|file)\b")
+DENY = re.compile(r"(\brm\b|\bmv\b|\bcp\b|\bsudo\b|\bcurl\b|\bwget\b|\bssh\b|\baz\b|\bpip\b|\bnpm\b|>\s*[^&]|\btee\b|\bchmod\b|\bchown\b|\bkill\b|git\s+(commit|push|reset|checkout|switch|restore|rebase|merge|tag\s+-d|branch\s+-[dD]|clean|stash|rm|mv)|\bopen\b|\bosascript\b|\bexec\b|\beval\b|\bsource\b|\bexport\b|\$\(|`)")
+MAX_OUT = 12000
+
+
+def key_for(prov):
+    return (Path.home() / ".config/estandar" / PROVIDERS[prov]["key"]).read_text().strip()
+
+
+def chat(prov, model, messages):
+    body = {"model": model, "messages": messages, "temperature": 0.2, "max_tokens": 8000}
+    req = urllib.request.Request(PROVIDERS[prov]["url"], data=json.dumps(body).encode(),
+                                 headers={"Content-Type": "application/json", "Authorization": f"Bearer {key_for(prov)}",
+                                          "User-Agent": "capas-section6/1.0"})  # Cloudflare 1010 bloquea Python-urllib
+    try:
+        with urllib.request.urlopen(req, timeout=900) as r:
+            d = json.load(r)
+    except urllib.error.HTTPError as e:
+        raise SystemExit(f"{prov} HTTP {e.code}: {e.read()[:300]!r}")
+    m = d["choices"][0]["message"]
+    return m.get("content") or "", d.get("usage", {}), d.get("model", model)
+
+
+def run_cmd(cmd):
+    for line in cmd.strip().splitlines():
+        line = line.strip()
+        if not line or line.startswith("#"):
+            continue
+        # cada segmento de pipe/; debe empezar por un binario permitido
+        for seg in re.split(r"\|\||&&|\||;", line):
+            seg = seg.strip()
+            if seg and not ALLOW.match(seg):
+                return f"[DENEGADO: segmento no permitido: {seg[:80]!r}]"
+        if DENY.search(line):
+            return f"[DENEGADO: patrón prohibido en: {line[:80]!r}]"
+    try:
+        r = subprocess.run(cmd, shell=True, cwd=ROOT, capture_output=True, text=True, timeout=600,
+                           env={"PATH": os.environ["PATH"], "HOME": os.environ["HOME"], "LANG": "C.UTF-8", "PYTHONDONTWRITEBYTECODE": "1"})
+        out = (r.stdout + ("\n[stderr]\n" + r.stderr if r.stderr.strip() else "")).strip()
+    except subprocess.TimeoutExpired:
+        out = "[TIMEOUT 600s]"
+    if len(out) > MAX_OUT:
+        out = out[:MAX_OUT // 2] + f"\n…[{len(out) - MAX_OUT} chars omitidos]…\n" + out[-MAX_OUT // 2:]
+    return out or "[sin salida]"
+
+
+def repo_map():
+    g = lambda *a: subprocess.run(["git", *a], cwd=ROOT, capture_output=True, text=True).stdout.strip()
+    return (f"HEAD: {g('rev-parse', 'HEAD')}\nrama: {g('rev-parse', '--abbrev-ref', 'HEAD')}\n"
+            f"tags: {g('tag', '-l', 'ginibre-ciego-*')}\n"
+            f"raíz: {', '.join(sorted(p.name for p in ROOT.iterdir() if not p.name.startswith('.')))}\n"
+            f"benchmarks/: {', '.join(sorted(p.name for p in (ROOT / 'benchmarks').iterdir()))}\n"
+            f"research/: {', '.join(sorted(p.name for p in (ROOT / 'research').iterdir()))}\n"
+            "Repo de Ginibre (solo lectura): /Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/Paper - Inverse Ginibre Overlap/\n"
+            "Rutas citadas en claims.json que NO existen con ese nombre: verify_cara_decoupling.py, verify_audit_hash_reproduces.py, "
+            "INFORME_CORPUS.md (está en el repo de Ginibre), audit_results.json, phase0_n500.json (buscar bajo research/).")
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("provider", choices=PROVIDERS)
+    ap.add_argument("--model")
+    ap.add_argument("--rounds", type=int, default=14)
+    a = ap.parse_args()
+    model = a.model or PROVIDERS[a.provider]["model"]
+    date = datetime.date.today().isoformat()
+    out = PKG / f"section6_{a.provider}_{date}.md"
+    instr = (PKG / "INSTRUCCION.md").read_text()
+    claims = (PKG / "claims.json").read_text()
+    system = (instr + "\n\n## Protocolo de ejecución\nNo puedes ejecutar directamente. Pide comandos en bloques\n"
+              "```run\n<comando shell>\n```\n(uno o varios por turno; cwd = raíz del repo CAPAS INTELIGENTES; solo lectura y "
+              "ejecución: python3/pytest/cat/grep/git log|show|diff…; sin red, sin escritura). Recibirás la salida CRUDA, sin "
+              "edición. Nadie responderá preguntas: solo salidas de comandos. Cuando termines, escribe tu informe final "
+              "empezando con la línea `## VEREDICTOS` y sin bloques run. Usa como máximo ~" + str(a.rounds) + " turnos.")
+    messages = [{"role": "system", "content": system},
+                {"role": "user", "content": f"## claims.json\n```json\n{claims}\n```\n\n## Mapa del repo\n{repo_map()}\n\nEmpieza."}]
+    log = [f"# Contra-firma §6 — {a.provider} / {model} — {date}\n", f"HEAD: {repo_map().splitlines()[0]}\n",
+           "Transcripción literal: cada comando pedido por el modelo y su salida cruda. El constructor no editó nada.\n"]
+    usage_tot = {}
+    for rnd in range(1, a.rounds + 2):
+        content, usage, served = chat(a.provider, model, messages)
+        for k, v in usage.items():
+            if isinstance(v, (int, float)): usage_tot[k] = usage_tot.get(k, 0) + v
+        messages.append({"role": "assistant", "content": content})
+        log.append(f"\n## Turno {rnd} — modelo ({served})\n\n{content}\n")
+        print(f"[turno {rnd}] {len(content)} chars", file=sys.stderr)
+        blocks = re.findall(r"```run\s*\n(.*?)```", content, re.S)
+        if not blocks or content.lstrip().startswith("## VEREDICTOS") or "## VEREDICTOS" in content:
+            break
+        reply = []
+        for b in blocks:
+            o = run_cmd(b)
+            reply.append(f"$ {b.strip()}\n{o}")
+            log.append(f"\n### ejecutado\n```\n$ {b.strip()}\n{o}\n```\n")
+        if rnd >= a.rounds:
+            reply.append("[Último turno disponible: emite ahora el informe final con `## VEREDICTOS`.]")
+        messages.append({"role": "user", "content": "\n\n".join(reply)})
+    log.append(f"\n---\nuso de tokens: {json.dumps(usage_tot)}\n")
+    out.write_text("\n".join(log))
+    print(out)
+
+
+if __name__ == "__main__":
+    main()

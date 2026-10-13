@@ -1,0 +1,150 @@
+{
+ "_header": {
+  "batch_sha256": "19cae306ae7b6ef5de97fba7babe5ad090ce1d57716ea1d549eaffb599b062b4",
+  "engine_commit": "bd50effa7520b272cfa7ab3999d1941c61b068a4",
+  "engine_tag": "atlas-ciego-v1",
+  "evaluated_at": "2026-10-13T02:26:23",
+  "outcomes_file_opened": false,
+  "thresholds": "defaults (absolute edge>1e-2, T1<60us, same-day; relative 5x median, T1<median/3, readout 5x)",
+  "verdict_counts": {
+   "FLAG": 4,
+   "HOLD": 0,
+   "PASS": 0
+  },
+  "verdicts_body_sha256": "7c400b60c1e38c4b9de01f3af4e9be5d6916a2ae5ed8ec06fa6822de955e406d"
+ },
+ "verdicts": {
+  "A": {
+   "medians": {
+    "edge_error": 0.0018495,
+    "readout": 0.00818,
+    "t1_us": 241.4
+   },
+   "n_layout": {
+    "edges": 3,
+    "qubits": 4
+   },
+   "outliers": [],
+   "stale_days": 1.0,
+   "verdict": "FLAG",
+   "why": "layout (7 elements judged, medians over whole device): stale: measured 1.0 days before job (policy: same calendar day)"
+  },
+  "B": {
+   "medians": {
+    "edge_error": 0.0018495,
+    "readout": 0.00818,
+    "t1_us": 241.4
+   },
+   "n_layout": {
+    "edges": 3,
+    "qubits": 4
+   },
+   "outliers": [
+    {
+     "element": "120_121",
+     "kind": "edge_error",
+     "limit": 5.0,
+     "ratio_to_median": 108.76,
+     "value": 0.201146
+    },
+    {
+     "element": "121_122",
+     "kind": "edge_error",
+     "limit": 5.0,
+     "ratio_to_median": 31.76,
+     "value": 0.058731
+    },
+    {
+     "element": "120",
+     "kind": "readout_high",
+     "limit": 5.0,
+     "ratio_to_median": 30.91,
+     "value": 0.25281
+    },
+    {
+     "element": "121",
+     "kind": "t1_low",
+     "limit": 0.3333333333333333,
+     "ratio_to_median": 0.05,
+     "value": 11.2
+    },
+    {
+     "element": "121",
+     "kind": "readout_high",
+     "limit": 5.0,
+     "ratio_to_median": 24.76,
+     "value": 0.20251
+    }
+   ],
+   "stale_days": 1.0,
+   "verdict": "FLAG",
+   "why": "layout (7 elements judged, medians over whole device): edge 120_121 error 0.201 = 108.76x median (> 5.0x); edge 121_122 error 0.0587 = 31.76x median (> 5.0x); qubit 120 readout 0.253 = 30.91x median (> 5.0x); qubit 121 T1 11.2 us = 0.05x median (< 0.3333333333333333); qubit 121 readout 0.203 = 24.76x median (> 5.0x); stale: measured 1.0 days before job (policy: same calendar day)"
+  },
+  "C": {
+   "medians": {
+    "edge_error": 0.0018495,
+    "readout": 0.00818,
+    "t1_us": 241.4
+   },
+   "n_layout": {
+    "edges": 5,
+    "qubits": 6
+   },
+   "outliers": [],
+   "stale_days": 1.0,
+   "verdict": "FLAG",
+   "why": "layout (11 elements judged, medians over whole device): stale: measured 1.0 days before job (policy: same calendar day)"
+  },
+  "D": {
+   "medians": {
+    "edge_error": 0.0018495,
+    "readout": 0.00818,
+    "t1_us": 241.4
+   },
+   "n_layout": {
+    "edges": 5,
+    "qubits": 6
+   },
+   "outliers": [
+    {
+     "element": "111_112",
+     "kind": "edge_error",
+     "limit": 5.0,
+     "ratio_to_median": 76.78,
+     "value": 0.141997
+    },
+    {
+     "element": "112_113",
+     "kind": "edge_error",
+     "limit": 5.0,
+     "ratio_to_median": 540.69,
+     "value": 1.0
+    },
+    {
+     "element": "113_114",
+     "kind": "edge_error",
+     "limit": 5.0,
+     "ratio_to_median": 18.14,
+     "value": 0.033547
+    },
+    {
+     "element": "112",
+     "kind": "readout_high",
+     "limit": 5.0,
+     "ratio_to_median": 10.09,
+     "value": 0.08252
+    },
+    {
+     "element": "113",
+     "kind": "readout_high",
+     "limit": 5.0,
+     "ratio_to_median": 18.83,
+     "value": 0.15405
+    }
+   ],
+   "stale_days": 1.0,
+   "verdict": "FLAG",
+   "why": "layout (11 elements judged, medians over whole device): edge 111_112 error 0.142 = 76.78x median (> 5.0x); edge 112_113 error 1 = 540.69x median (> 5.0x); edge 113_114 error 0.0335 = 18.14x median (> 5.0x); qubit 112 readout 0.0825 = 10.09x median (> 5.0x); qubit 113 readout 0.154 = 18.83x median (> 5.0x); stale: measured 1.0 days before job (policy: same calendar day)"
+  }
+ }
+}
