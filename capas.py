@@ -2731,43 +2731,22 @@ def extract_evidence(payload: dict[str, Any], *, allow_web: bool = False) -> dic
         if source.get("retrieval_note")
     ]
 
-    for field in ("abs_error", "tolerance"):
+    # Single source of truth (2026-10-13): extract every registry field by its declared type, not a hand-kept
+    # subset — the subset silently ignored independent_reproduction_pass, negative_control_failed, n_cells,
+    # error_statistic, text_quantifier… so a solver log could never declare them.
+    for field in NUMERIC_EVIDENCE_FIELDS:
         value, span = _extract_field_from_sources(sources, field, "number")
         if span is not None:
             extracted[field] = value
             evidence_spans[field] = span
 
-    for field in (
-        "within_chemical_accuracy",
-        "local_property_tests_pass",
-        "universal_anchor_pass",
-        "upgrade_evidence_present",
-        "intervention_or_natural_experiment",
-        "temporal_order_established",
-        "confounders_controlled",
-        "mechanism_evidence_present",
-        "protocol_registered",
-        "inclusion_criteria_declared",
-        "risk_of_bias_assessed",
-        "effect_consistency",
-        "resolution_pre_registered",
-        "source_hashes_verified",
-        "cross_modal_alignment",
-        "extraction_method_declared",
-    ):
+    for field in BOOL_EVIDENCE_FIELDS:
         value, span = _extract_field_from_sources(sources, field, "boolean")
         if span is not None:
             extracted[field] = value
             evidence_spans[field] = span
 
-    for field in (
-        "anchor_mode",
-        "physical_evidence_level",
-        "verification_independence",
-        "bound_scope",
-        "conflict_resolution_method",
-        "modality",
-    ):
+    for field in STRING_EVIDENCE_FIELDS:
         value, span = _extract_field_from_sources(sources, field, "string")
         if span is not None:
             extracted[field] = value
