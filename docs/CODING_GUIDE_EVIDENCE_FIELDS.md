@@ -1,0 +1,62 @@
+# Coding guide — which evidence field to declare, and what happens if you don't (2026-10-13)
+
+CAPAS never reads prose. Every rule below fires on a **declared field**; when the field is missing, the
+engine does not guess — it refuses to ACCEPT (REWRITE or HOLD) and says which field to declare. A false
+declaration is the coder's responsibility (declared GIGO), not a gate hole. All fields are optional unless
+the claim type lists them as required.
+
+## exact_model_solution (abs_error, tolerance required)
+
+| situation in the source | declare | if you don't |
+|---|---|---|
+| tolerance is in standard errors ("within 2 SE") | `tolerance_unit: "SE"` and `n_replicates` (≥ 8) | REWRITE: single-seed SE is not validated |
+| abs_error is the **maximum** pull over k cells | `error_statistic: "max"`, `n_cells: k` | judged as a single cell (2 SE on a max of 6 cells is a 24 % false-fail test); `max` without `n_cells` → HOLD |
+| abs_error is an RMS or a single cell | `error_statistic: "rms"` / `"single"` | judged as single cell (no correction) |
+| the text claims a window / regime / "for all" | `scope_declared: [...]`, `scope_tested: [...]` (lists of cells or regimes) | REWRITE: the gate cannot license a scope it cannot see; declared ⊄ tested → REWRITE; ACCEPT licenses the text **annotated** with the declared scope |
+| the text claims convergence / saturation | `n_points` (≥ 3) and `alternative_model_rejected: true` | REWRITE |
+| abs_error is at machine precision (≤ 1e-12 · max(1, \|reference_value\|)) | `negative_control_failed: true` (a false variant was seen to fail) | HOLD: a check that cannot fail verifies nothing; `false` → REWRITE |
+| the tolerance is unusually wide | `tolerance_rationale` (string) and `reference_value` | tolerance > 50 % of the object → HOLD |
+| the number is the model's own value | `reference_value` | enables the machine-precision scale and the "order of the object" check |
+
+## proof_admissibility (claim_scope, steps_all_valid, load_bearing_step_identified, uniform_bound_proven required)
+
+| situation | declare | if you don't |
+|---|---|---|
+| the proof was re-derived by someone else | `independent_reproduction_pass: true` | REWRITE (GOVERNANCE §6: constructor ≠ verifier) |
+| declared scope is bounded (finite / local / leading-order) and no uniform bound | `text_quantifier: "bounded"` | REWRITE; with the field, ACCEPT licenses the text annotated with its scope, never raw |
+| the text visibly quantifies universally | prove `uniform_bound_proven: true` or restrict the text | REWRITE (contradiction with a bounded declaration) |
+| the proof has a gap you know of | `steps_all_valid: false` | — (REJECT is the right verdict) |
+
+## statistical_confidence (p_value, alpha, effect_direction_confirmed required)
+
+| situation | declare | if you don't |
+|---|---|---|
+| the paper reports the test statistic | `test_statistic: {kind, value, df...}` | p is taken as declared (not recomputed) |
+| the text attributes a mechanism | `null_control_passed: true` | REWRITE: a significant p licenses the association, not its cause |
+
+## reproducibility_check (artifact_available, independent_reproduction_pass required)
+
+| situation | declare | if you don't |
+|---|---|---|
+| the text states a count / scope ("all 12 cases") | `scope_count_verified: true` | REWRITE |
+| a citation carries the claim | `load_bearing_citation_read: true`, `citation_hypotheses_checked: true` | HOLD |
+
+## RMT identities (evidence.invariants.rmt_closed_form / rmt_F / rmt_G)
+
+- Declare every input the identity needs (`x`, `d` for C/A; `a`, `b`, `gamma` for F/G). A declared value with
+  an incomplete input is **HOLD**, never a silent pass.
+- Declare values to their working precision (a literal coarser than the identity's magnitude → HOLD).
+- `rmt_G` with `gamma > 1` is judged by G-CLOSED (state `reduced`, **gaussian design and response only**):
+  declare `design_response: "gaussian"`; a non-gaussian response adds κ₄·J_y and is not judged.
+- Measured quantities carry `*_se`; without it → HOLD.
+
+## calibration_snapshot (quantum hardware, Atlas)
+
+Pass the **whole-device** snapshot with `layout` inside (medians are device medians), `measured` and
+`job_date`. Defaults: edge > 1e-2 or > 5× median → FLAG; T1 < 60 µs or < median/3 → FLAG; freshness ≤ 1
+calendar day; T2 floor off (`t2_min_frac_median` / `t2_min_us` to enable). Override anything in `thresholds`.
+
+## The rule behind all of this
+
+If a judgement would require reading the text, the engine asks for a field instead. Declare it and the
+sentence that gets licensed carries its own limit; leave it out and the sentence is not licensed as written.
