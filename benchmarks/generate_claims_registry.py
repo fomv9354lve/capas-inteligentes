@@ -34,6 +34,9 @@ WHERE = {
     "retrospective_28": "Home + Pilot (28 retracted-vs-replicated)",
     "head_to_head": "Benchmark (vs LLM-judge)",
     "pip_install": "Home / README install CTA",
+    "blind_corpus_sealed": "Home (honesty section: blind self-gating corpus), README",
+    "section6_counter_signature": "Home (honesty section: §6 counter-signatures), README",
+    "replica_parity": "Gate App (offline → HOLD; engine label on every verdict)",
 }
 RISK = {"CLOSED": "low · test-locked", "BACKED": "low · regenerates", "SCOPED": "declared estimate — read the scope"}
 
