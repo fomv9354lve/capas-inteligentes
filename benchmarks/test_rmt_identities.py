@@ -75,3 +75,21 @@ def test_check_sum_default_k_is_4():
 def test_audit_hold_is_not_a_violation():
     a = ci.audit({"rmt_G": {"a": 0.3, "b": 0.6, "gamma": 1, "G": 0.148}})
     assert a["verdict"] == "HOLD" and a["violations"] == [] and "rmt_G" in a.get("holds", [])
+
+
+# --- Ginibre corpus finding (2026-10-13): a declared C rounded to its reported precision is
+#     not a violation; tolerance is half a unit in the last declared digit (or SE if given).
+def test_cxd_rounded_C_at_declared_precision_passes():
+    # exact C(0.5, d=0.5) = 0.4863416815; declared to 5 significant digits
+    assert _v({"rmt_closed_form": {"x": 0.5, "d": 0.5, "C": 0.48634}}) == "PASS"
+    assert _v({"rmt_closed_form": {"x": 0.5, "d": 0.5, "C": "0.48634"}}) == "PASS"
+
+def test_cxd_wrong_C_beyond_declared_precision_still_flags():
+    assert _v({"rmt_closed_form": {"x": 0.5, "d": 0.5, "C": 0.48700}}) == "FLAG"
+
+def test_cxd_A_not_declared_is_not_a_flag():
+    assert _v({"rmt_closed_form": {"x": 0.5, "d": 0.5, "C": 0.4863416815}}) == "PASS"
+    assert _v({"rmt_closed_form": {"x": 0.5, "d": 0.5, "A": None, "C": 0.4863416815}}) == "PASS"
+
+def test_rmt_F_rounded_passes():
+    assert _v({"rmt_F": {"a": 0.5, "b": 0.5, "gamma": 2, "rho": 0.2857, "F": 0.0340}}) == "PASS"

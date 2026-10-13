@@ -731,13 +731,21 @@ _RMT_REL = 1e-9
 _RMT_K = 4.0
 
 
-def _rmt_compare(name: str, declared: float | None, formula: float, se: float | None,
+def _rmt_compare(name: str, declared: Any, formula: float, se: float | None,
                  exact: bool) -> tuple[str, str]:
-    """-> (verdict, why) for one declared-vs-formula comparison."""
+    """-> (verdict, why) for one declared-vs-formula comparison.
+
+    `declared` may be the raw value (float or string) so its reported precision can be read:
+    a C declared as 0.48634 is a 5-digit statement, and half a unit in its last digit is the
+    honest tolerance (Ginibre corpus finding, 2026-10-13: 1e-9 flagged correctly rounded
+    values). Exactness still applies beyond that: 0.48700 against 0.486342 flags."""
+    raw = declared
+    declared = _num(declared)
     if declared is None:
         return "PASS", f"{name} not declared"
     if exact:
-        tol = _RMT_REL * max(abs(formula), 1e-12)
+        d = _decimals(raw, default=12, cap=15)
+        tol = max(_RMT_REL * max(abs(formula), 1e-12), 0.5 * 10 ** (-d))
         ok = abs(declared - formula) <= tol
         return ("PASS" if ok else "FLAG",
                 f"{name}: declared {declared:.10g} vs identity {formula:.10g}" + ("" if ok else " — exact identity violated"))
@@ -780,8 +788,8 @@ def check_rmt_closed_form(ev: dict[str, Any]) -> dict[str, Any]:
         return {"applies": True, "verdict": "FLAG", "law": law, "why": f"domain: 1 - x·u must be > 0 (x·u = {x*u:.6g})"}
     A = 1 / (1 - x * u)
     C = (4 / math.pi ** 2) * u / (1 - x * u)
-    parts = [_rmt_compare("A", _num(b.get("A")), A, None, True),
-             _rmt_compare("C", _num(b.get("C")), C, None, True)]
+    parts = [_rmt_compare("A", b.get("A"), A, None, True),
+             _rmt_compare("C", b.get("C"), C, None, True)]
     out = _rmt_combine(parts, law); out["u"] = u; out["A_formula"] = A; out["C_formula"] = C
     return out
 
@@ -801,8 +809,8 @@ def check_rmt_F(ev: dict[str, Any]) -> dict[str, Any]:
     lam = 1 / g
     rho = a * (1 - lam) / (1 - a * bb * lam)
     F = ((2 / math.pi) * math.asin(rho)) ** 2
-    parts = [_rmt_compare("rho", _num(b.get("rho")), rho, None, True),
-             _rmt_compare("F", _num(b.get("F")), F, None, True)]
+    parts = [_rmt_compare("rho", b.get("rho"), rho, None, True),
+             _rmt_compare("F", b.get("F"), F, None, True)]
     for nm, val in (("rho", _num(b.get("rho"))), ("F", _num(b.get("F")))):
         if val is not None and not (0 <= val < 1):
             parts.append(("FLAG", f"{nm}={val} outside [0,1)"))
