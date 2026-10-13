@@ -102,7 +102,8 @@ ANCHOR_MODE_CONTRACTS = {
 CLAIM_TYPE_REGISTRY = {
     "exact_model_solution": {
         "required": ["abs_error", "tolerance"],
-        "optional": ["bound_scope", "physical_evidence_level", "verification_independence"],
+        "optional": ["bound_scope", "physical_evidence_level", "verification_independence",
+                     "tolerance_unit", "n_replicates", "n_points", "alternative_model_rejected"],
         "description": "Exact or bounded-error model solution claims.",
     },
     "physical_accuracy": {
@@ -129,12 +130,12 @@ CLAIM_TYPE_REGISTRY = {
     },
     "statistical_confidence": {
         "required": ["p_value", "alpha", "effect_direction_confirmed"],
-        "optional": ["test_statistic"],
+        "optional": ["test_statistic", "null_control_passed"],
         "description": "Statistical threshold and effect-direction claims.",
     },
     "reproducibility_check": {
         "required": ["artifact_available", "independent_reproduction_pass"],
-        "optional": [],
+        "optional": ["scope_count_verified"],
         "description": "Artifact availability and independent reproduction claims.",
     },
     "financial_metric_claim": {
@@ -214,7 +215,8 @@ CLAIM_TYPE_REGISTRY = {
 # Todos OPCIONALES: un campo ausente no es una deteccion (objecion de Ginibre), es abstencion.
 # object_declared debe nombrar objeto Y convencion ("m*tau at beta=1/2", no solo "m*tau").
 CROSS_CUTTING_OPTIONAL = ["object_declared", "object_matches_target",
-                         "load_bearing_citation_read", "citation_hypotheses_checked"]
+                         "load_bearing_citation_read", "citation_hypotheses_checked",
+                         "null_control_passed"]
 for _t, _spec in CLAIM_TYPE_REGISTRY.items():
     _opt = _spec.setdefault("optional", [])
     for _f in CROSS_CUTTING_OPTIONAL:
@@ -298,7 +300,7 @@ def allowed_evidence_fields_for_claim(claim_type: str) -> set[str] | None:
 NUMERIC_EVIDENCE_FIELDS = [
     "abs_error", "tolerance", "p_value", "alpha",
     "reported_value", "reference_value", "empirical_tolerance",
-]
+, "n_replicates", "n_points"]
 BOOL_EVIDENCE_FIELDS = [
     "within_chemical_accuracy", "local_property_tests_pass", "universal_anchor_pass",
     "upgrade_evidence_present", "effect_direction_confirmed", "artifact_available",
@@ -312,6 +314,7 @@ BOOL_EVIDENCE_FIELDS = [
     "steps_all_valid", "load_bearing_step_identified", "uniform_bound_proven",
     "leading_order_established",
     "object_matches_target", "load_bearing_citation_read", "citation_hypotheses_checked",
+    "alternative_model_rejected", "null_control_passed", "scope_count_verified",
 ]
 STRING_EVIDENCE_FIELDS = [
     "anchor_mode", "relative_anchor_reference", "benchmark_name", "benchmark_metric",
@@ -319,7 +322,7 @@ STRING_EVIDENCE_FIELDS = [
     "conflict_resolution_method", "modality", "language", "language_version",
     "claim_api", "docs_reference", "current_claim",
     "code_snippet", "expected_output", "observed_output",
-    "claim_scope", "conjectured_remainder", "object_declared",
+    "claim_scope", "conjectured_remainder", "object_declared", "tolerance_unit",
 ]
 LIST_EVIDENCE_FIELDS = ["supporting_sources", "contradicting_sources"]
 DICT_EVIDENCE_FIELDS = ["test_statistic"]
@@ -1981,6 +1984,55 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
             verdict = "ACCEPT"
             reason = ("each step validates, the load-bearing step is identified, the claim's scope is "
                       "licensed, and an independent re-derivation passed")
+
+    # ---- Palancas discriminantes (18 malos residuales del corpus Ginibre, 2026-10-13) ----
+    _txt = ((claim.get("text") if isinstance(claim, dict) else "") or "")
+    # D. Un control nulo que fallo refuta el estimador: REJECT en cualquier tipo.
+    if evidence.get("null_control_passed") is False and verdict != "REJECT":
+        verdict = "REJECT"
+        reason = f"{reason}; null_control_passed is False: the estimator produces the effect on a null — the signal is fabricated by the method"
+        licensed_claim = None
+        rewrite = None
+    # A. "dentro de k·SE" con una semilla: la SE no esta validada. Exige replicas.
+    if verdict == "ACCEPT" and claim_type == "exact_model_solution":
+        _unit = str(evidence.get("tolerance_unit", "") or "").lower()
+        if _unit in ("se", "sigma", "sd", "std"):
+            _nrep = evidence.get("n_replicates")
+            if not isinstance(_nrep, (int, float)) or _nrep < 8:
+                verdict = "REWRITE"
+                reason = (f"{reason}; tolerance is in SE units but n_replicates={_nrep!r} (< 8): a single-seed / "
+                          "low-replicate estimate does not license 'within k SE'")
+                rewrite = "within-SE agreement from too few replicates — licensed as a single-run observation, not as agreement"
+                licensed_claim = rewrite
+    # B. "converge / satura / plateau" exige >= 3 puntos y una alternativa rechazada.
+    if verdict == "ACCEPT" and re.search(r"converg|satur|plateau|estabiliz|asint|asympt", _txt, re.I):
+        _np = evidence.get("n_points")
+        if not isinstance(_np, (int, float)) or _np < 3:
+            verdict = "REWRITE"
+            reason = f"{reason}; convergence claimed from n_points={_np!r}: a two-point test cannot distinguish convergence from a slow drift"
+            rewrite = "difference between two points observed; convergence not licensed (needs >= 3 points and a rejected alternative model)"
+            licensed_claim = rewrite
+        elif evidence.get("alternative_model_rejected") is not True:
+            verdict = "REWRITE"
+            reason = f"{reason}; convergence claimed but no alternative model (e.g. log(k), no asymptote) was declared rejected"
+            rewrite = "trend observed; convergence not licensed until a non-saturating alternative is rejected"
+            licensed_claim = rewrite
+    # C. statistical_confidence con wording de mecanismo: la asociacion esta licenciada, el mecanismo no.
+    if verdict == "ACCEPT" and claim_type == "statistical_confidence" and re.search(
+            r"\b(sesgo|mecanism|porque|debido a|causa|decrece con|crece con|depende de|efecto de|driven by|due to|because|"
+            r"bias|caused by|mechanism|explains?|explica)\b", _txt, re.I) and evidence.get("null_control_passed") is not True:
+        verdict = "REWRITE"
+        reason = f"{reason}; the text attributes a MECHANISM but no null control is declared — a significant p licenses the association, not its cause"
+        rewrite = "statistical association licensed; the attributed mechanism is not (declare null_control_passed)"
+        licensed_claim = rewrite
+    # E. Cuantificador en el texto ("12 of 13", "all", "formalized"): exige alcance verificado.
+    if verdict == "ACCEPT" and claim_type == "reproducibility_check" and re.search(
+            r"\b(\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|\w+teen|twenty|\w+ty)\s+(of|de)\s+(the\s+|los\s+|las\s+)?(\d+|\w+)\b"
+            r"|\b(all|every|todos|todas|formaliz\w*|complet\w*)\b", _txt, re.I) and evidence.get("scope_count_verified") is not True:
+        verdict = "REWRITE"
+        reason = f"{reason}; the text states a count/scope but scope_count_verified is not declared — counts inflate easily"
+        rewrite = "reproduction licensed for the items actually verified; the stated count/scope is not licensed until counted"
+        licensed_claim = rewrite
 
     # Palanca 2 (corpus Ginibre): si el TEXTO del claim invoca una cita portante, la evidencia
     # debe decir si sus hipotesis se comprobaron. Sin ese campo, HOLD (no se puede juzgar).
