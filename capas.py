@@ -99,11 +99,32 @@ ANCHOR_MODE_CONTRACTS = {
     },
 }
 
+# Regla (b) del post-mortem X4 (Ginibre): si abs_error es el MAXIMO pull sobre k celdas en unidades SE,
+# una tolerancia fija de 2 SE es un test de maximo sin correccion (k=6: P(max|z|>2) ~ 0,24 bajo la ley
+# exacta). Sidak: alpha = 2(1-Phi(t)); alpha' = 1-(1-alpha)^(1/k); t_k = Phi^-1(1-alpha'/2).
+# Solo dispara si el codificador DECLARA error_statistic="max" y n_cells; sin eso, celda unica.
+ERROR_STATISTICS = {"single", "max", "rms"}
+_SE_UNITS = ("se", "sigma", "sd", "std")
+
+
+def sidak_tolerance(t_se: float, k: int) -> float:
+    """Per-cell SE tolerance t_se, family of k independent cells -> family-wise tolerance for max|z|."""
+    from statistics import NormalDist
+    N = NormalDist()
+    k = int(k)
+    if k <= 1:
+        return float(t_se)
+    alpha = 2.0 * (1.0 - N.cdf(float(t_se)))
+    alpha_k = 1.0 - (1.0 - alpha) ** (1.0 / k)
+    return N.inv_cdf(1.0 - alpha_k / 2.0)
+
+
 CLAIM_TYPE_REGISTRY = {
     "exact_model_solution": {
         "required": ["abs_error", "tolerance"],
         "optional": ["bound_scope", "physical_evidence_level", "verification_independence",
-                     "tolerance_unit", "n_replicates", "n_points", "alternative_model_rejected"],
+                     "tolerance_unit", "n_replicates", "n_points", "alternative_model_rejected",
+                     "error_statistic", "n_cells"],
         "description": "Exact or bounded-error model solution claims.",
     },
     "physical_accuracy": {
@@ -305,7 +326,7 @@ def allowed_evidence_fields_for_claim(claim_type: str) -> set[str] | None:
 NUMERIC_EVIDENCE_FIELDS = [
     "abs_error", "tolerance", "p_value", "alpha",
     "reported_value", "reference_value", "empirical_tolerance",
-    "n_replicates", "n_points",
+    "n_replicates", "n_points", "n_cells",
 ]
 BOOL_EVIDENCE_FIELDS = [
     "within_chemical_accuracy", "local_property_tests_pass", "universal_anchor_pass",
@@ -328,7 +349,7 @@ STRING_EVIDENCE_FIELDS = [
     "conflict_resolution_method", "modality", "language", "language_version",
     "claim_api", "docs_reference", "current_claim",
     "code_snippet", "expected_output", "observed_output",
-    "claim_scope", "conjectured_remainder", "object_declared", "tolerance_unit",
+    "claim_scope", "conjectured_remainder", "object_declared", "tolerance_unit", "error_statistic",
 ]
 LIST_EVIDENCE_FIELDS = ["supporting_sources", "contradicting_sources"]
 DICT_EVIDENCE_FIELDS = ["test_statistic"]
@@ -1038,6 +1059,8 @@ def validate_external_payload(payload: dict[str, Any]) -> list[str]:
     anchor_mode = evidence.get("anchor_mode")
     if isinstance(anchor_mode, str) and anchor_mode not in ANCHOR_MODE_CONTRACTS:
         errors.append("evidence.anchor_mode must be one of: " + ", ".join(sorted(ANCHOR_MODE_CONTRACTS)))
+    if "error_statistic" in evidence and str(evidence.get("error_statistic")).lower() not in ERROR_STATISTICS:
+        errors.append("evidence.error_statistic must be one of: " + ", ".join(sorted(ERROR_STATISTICS)))
     if "current_claim" in evidence:
         current_claim = evidence["current_claim"]
         if not isinstance(current_claim, str):
@@ -1732,12 +1755,28 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
     elif claim_type == "exact_model_solution":
         abs_error = float(evidence["abs_error"])
         tolerance = float(evidence["tolerance"])
-        if abs_error <= tolerance:
+        _stat = str(evidence.get("error_statistic", "") or "").lower()
+        _unit = str(evidence.get("tolerance_unit", "") or "").lower()
+        _k = evidence.get("n_cells")
+        _tol_note = ""
+        _cannot_judge = False
+        if _stat == "max" and _unit in _SE_UNITS:
+            if not isinstance(_k, (int, float)) or isinstance(_k, bool) or _k < 1:
+                _cannot_judge = True
+            elif int(_k) > 1:
+                _t0 = tolerance
+                tolerance = sidak_tolerance(_t0, int(_k))
+                _tol_note = f" (Sidak over n_cells={int(_k)}: {_t0} SE -> {tolerance:.3f} SE)"
+        if _cannot_judge:
+            verdict = "HOLD"
+            reason = ("abs_error is declared a maximum over cells in SE units but n_cells is missing: "
+                      "the multiplicity-corrected tolerance cannot be computed")
+        elif abs_error <= tolerance:
             verdict = "ACCEPT"
-            reason = f"abs_error {abs_error} <= tolerance {tolerance}"
+            reason = f"abs_error {abs_error} <= tolerance {tolerance:.4g}{_tol_note}"
         else:
             verdict = "REJECT"
-            reason = f"abs_error {abs_error} > tolerance {tolerance}"
+            reason = f"abs_error {abs_error} > tolerance {tolerance:.4g}{_tol_note}"
     elif claim_type == "physical_accuracy":
         if evidence["within_chemical_accuracy"] is True:
             verdict = "ACCEPT"
