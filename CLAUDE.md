@@ -43,6 +43,16 @@ az containerapp update -n capas -g capas-rg --image "caf7ef600384acr.azurecr.io/
 ```
 `.dockerignore` excluye `designlab/`, `outputs/`, `audits/`, `__pycache__`, `*.png/jpeg` — mantén el contexto liviano (~50 MB).
 
+### 3b. Lecciones de deploy del 2026-10-13 (léelas antes de tocar `deploy_site.py`)
+- `python3 deploy_site.py` **sin flags DESPLIEGA** (`az containerapp up --source`). `--verify` es solo lectura (live == local).
+  Cualquier otro flag (incl. `--help`) ahora imprime uso y sale sin desplegar — antes desplegaba (incidente 03:15).
+- Los `az` mutantes los corre Osvaldo. La sesión prepara y verifica; no despliega salvo instrucción explícita.
+- Tras un deploy: `curl -sI` a **los tres** hostnames (krenniq.com, capas.krenniq.com, atlas.krenniq.com); el `up --source`
+  de hoy no tumbó el SNI, pero la regla de re-bind del §2 sigue vigente.
+- La Gate App decide con el motor Python vía `/api/decide` (individual Y lote); la réplica JS `rule()` no es el motor
+  (paridad 130/233) y sin backend la página da HOLD. `python3 benchmarks/replica_parity.py` mide la deriva.
+- `python3 -m pytest` verde no implica la puerta de producto verde: corre `capas validate` tras cambiar reglas del motor.
+
 ## 4. Shell de marca = fuente única, no forkear
 - `docs/kreniq-shell.css` es la **fuente única** del shell (nav, bg-logo flotante canónico, cards, tokens de layout: --col 1200px, --gutter 48px, --nav-h 60px, --radius 14px, --pink #e8185d). `../corporate-platform/design-system/` lo espeja para apps nuevas. **No dupliques/forkees estilos por página.**
 - **Nav canónico** (idéntico en las 7 páginas `docs/*.html`):
