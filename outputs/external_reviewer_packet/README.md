@@ -1,9 +1,68 @@
 # CAPAS INTELIGENTES
 
 [![CAPAS CI](https://github.com/fomv9354lve/capas-inteligentes/actions/workflows/ci.yml/badge.svg)](https://github.com/fomv9354lve/capas-inteligentes/actions/workflows/ci.yml)
-[![Release](https://img.shields.io/github/v/release/fomv9354lve/capas-inteligentes)](https://github.com/fomv9354lve/capas-inteligentes/releases/tag/v0.1.1)
+[![Conformance](https://github.com/fomv9354lve/capas-inteligentes/actions/workflows/conformance.yml/badge.svg)](https://github.com/fomv9354lve/capas-inteligentes/actions/workflows/conformance.yml)
+[![PyPI](https://img.shields.io/pypi/v/capas-claim-gate)](https://pypi.org/project/capas-claim-gate/)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20808512.svg)](https://doi.org/10.5281/zenodo.20808512)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/fomv9354lve/capas-inteligentes/badge)](https://scorecard.dev/viewer/?uri=github.com/fomv9354lve/capas-inteligentes)
+[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/13338/badge)](https://www.bestpractices.dev/projects/13338)
+[![OpenSSF Baseline](https://www.bestpractices.dev/projects/13338/baseline)](https://www.bestpractices.dev/projects/13338)
+[![License](https://img.shields.io/badge/license-Apache--2.0-blue)](LICENSE)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/fomv9354lve/capas-inteligentes/main?labpath=notebooks/run_a_claim.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fomv9354lve/capas-inteligentes/blob/main/notebooks/run_a_claim.ipynb)
 
-CAPAS is a small evidence-typed claim gate for scientific computation.
+### Verify it yourself — free, neutral infrastructure (don't trust us, reproduce it)
+
+A claim is only worth the badge if a *third party* can reproduce it. Every public claim here is checkable
+on infra we don't control:
+
+- **Conformance on neutral CI, signed.** GitHub Actions runs `python3 benchmarks/conformance.py` on every
+  push and **Sigstore-signs** the result into a public transparency log (keyless). The badge above is that
+  run — green means the load-bearing invariants hold on GitHub's runners, not just a laptop.
+- **Run a claim yourself** — the Binder / Colab badges open `notebooks/run_a_claim.ipynb`: install nothing,
+  run the gate in your browser, get the same verdict and audit hash we publish.
+- **Independent supply-chain score** — the OpenSSF Scorecard badge is a third party's assessment.
+- **Every number is re-derivable** — see [`docs/CLAIMS_REGISTRY.md`](docs/CLAIMS_REGISTRY.md); each claim
+  carries the command that reproduces it. Governance: [`GOVERNANCE.md`](GOVERNANCE.md).
+
+*Your turn (account-gated, one-time):* connect the repo to **Zenodo** + cut a release → mints a citable DOI
+(`.zenodo.json` is ready); add a **PyPI Trusted Publisher** → `pip install` goes live via `publish.yml`;
+push `spaces/` to a **Hugging Face Space** → a neutral hosted demo; register at **bestpractices.dev** for
+the OpenSSF Best Practices badge.
+
+**CAPAS does not determine truth. It evaluates whether supplied evidence licenses a
+specific claim under a declared admissibility contract** — deterministically, with no
+language model in the verdict, and re-derivably (same input → same verdict → same audit
+hash). A claim + its structured evidence goes in; ACCEPT / REWRITE / REJECT / HOLD comes out.
+
+CAPAS ships **open-core + open standard** (Apache-2.0). The defensible asset is the schema,
+the admissibility calculus, the certificate, and the benchmark corpus — not the code. It is a
+reference implementation in the lineage of OPA / SPDX / RO-Crate, not a closed SaaS. The CAPAS
+name, certification, and official benchmark are reserved (see `NOTICE`).
+
+**It gates its own claims:** every public number is `CLOSED` (proven by a test), `BACKED`
+(regenerates from a command), or `SCOPED` (a declared estimate) — see
+[`docs/CLAIMS_REGISTRY.md`](docs/CLAIMS_REGISTRY.md). Nothing bare.
+
+### What is validated, as of 2026-10-13 (and what is not)
+
+- **Blind self-gating corpus (real research claims, sister project):** 233 claims coded blind by a
+  separate session; engine frozen at a git tag *before* coding; verdicts sealed by sha256 *before*
+  outcomes were opened; double-counted. Blind X1–3: bad-not-ACCEPT 53/82, good-not-REJECT 52/63.
+  **Out-of-sample X4+X5: 17/21 and 16/17** (Wilson 95% [0.60–0.92], [0.73–0.99]). Outcomes are the
+  project's own later corrections, not an external oracle. `python3 research/ginibre_corpus/score_sealed.py`
+- **Not a fraud detector, measured:** on 888 clean control papers vs 6,348 retracted-for-data papers,
+  recomputable numeric inconsistencies did not separate the groups (2.13% vs 1.58% severe).
+  `python3 research/retraction_audit/grade_severity.py`
+- **Cross-family counter-signature (GOVERNANCE §6):** every public claim was attacked by a model of
+  another family (8 runs); 3 of 7 claims were refuted the same day and each fix is frozen as a test or a
+  sealed file. Verbatim transcripts in `research/section6_package/`. Nothing is marked *proved*.
+- **Physical law for quantum calibration (Atlas):** `calibration_snapshot` separated 4/4 real GHZ runs
+  (GOOD vs DEGRADED) blind, and prospectively chose a layout that halved the per-layer error on
+  ibm_kingston with identical circuits. `benchmarks/test_calibration_snapshot.py`
+- **Known limits:** the in-browser JS replica is not the engine (parity 130/233; offline → HOLD); the
+  GIGO ceiling stands (a self-consistent fabrication passes); a declared field is the coder's
+  responsibility — the gate does not read prose.
 
 It is not a new provenance standard, benchmark suite, workflow engine, or VVUQ
 methodology. CAPAS is a profile/costurero over existing standards:
@@ -67,7 +126,7 @@ For reviewers and potential users:
 - Public demo: `https://fomv9354lve.github.io/capas-inteligentes/`
 - Current release: `https://github.com/fomv9354lve/capas-inteligentes/releases/tag/v0.1.1`
 - Public feedback issue: `https://github.com/fomv9354lve/capas-inteligentes/issues/1`
-- License: proprietary research prototype; see `LICENSE`.
+- License: **Apache-2.0** (open-core); the CAPAS mark + official certification are reserved — see `LICENSE` and `NOTICE`.
 
 The current validation question is not "is CAPAS broadly useful?" It is narrower:
 do the explicit evidence fields help audit or exchange one scientific-agent

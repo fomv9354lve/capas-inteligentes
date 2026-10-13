@@ -9,7 +9,12 @@
       "description": "Direct physical or chemical-accuracy claims.",
       "optional_fields": [
         "physical_evidence_level",
-        "reference_truth"
+        "reference_truth",
+        "object_declared",
+        "object_matches_target",
+        "load_bearing_citation_read",
+        "citation_hypotheses_checked",
+        "null_control_passed"
       ],
       "registered": true,
       "required_fields": [
@@ -71,6 +76,7 @@
     ]
   },
   "audit_hash": "sha256:585964ad78a24d4f060adedb6b9081c0bbab0213523e1eded2e61bb308b97126",
+  "did_you_mean": {},
   "fine_tune_blockers": [
     "claim verdict is not ACCEPT",
     "schema or required-field blockers remain",
@@ -111,6 +117,7 @@
   },
   "invariant_audit": {
     "applicable": false,
+    "holds": [],
     "laws_checked": [],
     "results": {},
     "summary": "no domain invariant applies to this evidence",
@@ -126,6 +133,21 @@
   "required_fields": [
     "within_chemical_accuracy"
   ],
+  "resolution": {
+    "did_you_mean": {},
+    "evidence_template": {
+      "within_chemical_accuracy": true
+    },
+    "fields": [
+      {
+        "example": true,
+        "name": "within_chemical_accuracy",
+        "type": "boolean"
+      }
+    ],
+    "kind": "supply_fields",
+    "message": "Supply these evidence fields (types and examples given), then resubmit."
+  },
   "rewrite": null,
   "schema_errors": [],
   "schema_version": "capas-claim-payload-v3",

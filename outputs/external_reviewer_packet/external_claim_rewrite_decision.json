@@ -11,9 +11,14 @@
         "benchmark_metric",
         "benchmark_name",
         "benchmark_pass",
+        "citation_hypotheses_checked",
         "empirical_anchor_pass",
         "empirical_reference_present",
         "empirical_tolerance",
+        "load_bearing_citation_read",
+        "null_control_passed",
+        "object_declared",
+        "object_matches_target",
         "physical_evidence_level",
         "relative_anchor_comparison_pass",
         "relative_anchor_reference",
@@ -84,6 +89,8 @@
       "boundary: edit claim.text to the licensed_claim and resubmit before ACCEPT"
     ]
   },
+  "audit_hash": "sha256:a67d0e913561024087a5459f5b301545c8b4c28f517fd4b9de1faef61bc5a398",
+  "did_you_mean": {},
   "fine_tune_blockers": [
     "claim verdict is not ACCEPT",
     "source-backed evidence is not attached",
@@ -121,6 +128,15 @@
     "text": "Local monotonicity proves the generated scaling result is physically correct.",
     "type": "universal_anchor_claim"
   },
+  "invariant_audit": {
+    "applicable": false,
+    "holds": [],
+    "laws_checked": [],
+    "results": {},
+    "summary": "no domain invariant applies to this evidence",
+    "verdict": "N/A",
+    "violations": []
+  },
   "licensed_claim": "local plausibility only; universal physical correctness is not licensed",
   "missing_fields": [],
   "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
@@ -130,6 +146,10 @@
     "local_property_tests_pass",
     "universal_anchor_pass"
   ],
+  "resolution": {
+    "kind": "edit_and_resubmit",
+    "message": "Replace claim.text with the licensed (weaker) wording in `rewrite`, then resubmit."
+  },
   "rewrite": "local plausibility only; universal physical correctness is not licensed",
   "schema_errors": [],
   "schema_version": "capas-claim-payload-v3",
