@@ -129,7 +129,7 @@ CLAIM_TYPE_REGISTRY = {
     },
     "statistical_confidence": {
         "required": ["p_value", "alpha", "effect_direction_confirmed"],
-        "optional": [],
+        "optional": ["test_statistic"],
         "description": "Statistical threshold and effect-direction claims.",
     },
     "reproducibility_check": {
@@ -198,7 +198,7 @@ CLAIM_TYPE_REGISTRY = {
     },
     "proof_admissibility": {
         "required": ["claim_scope", "steps_all_valid", "load_bearing_step_identified", "uniform_bound_proven"],
-        "optional": ["leading_order_established", "conjectured_remainder"],
+        "optional": ["leading_order_established", "conjectured_remainder", "independent_reproduction_pass"],
         "description": (
             "Claims that a result is PROVEN (a 'theorem'): gates whether the evidence licenses the word. "
             "Each step must validate, the load-bearing step must be identified, and a universally-quantified "
@@ -322,6 +322,7 @@ STRING_EVIDENCE_FIELDS = [
     "claim_scope", "conjectured_remainder", "object_declared",
 ]
 LIST_EVIDENCE_FIELDS = ["supporting_sources", "contradicting_sources"]
+DICT_EVIDENCE_FIELDS = ["test_statistic"]
 
 # Example values for a fillable requirements template (A3): type defaults + a few overrides
 # that make the expected shape obvious to a first-time caller.
@@ -1794,7 +1795,20 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
     elif claim_type == "statistical_confidence":
         p_value = float(evidence["p_value"])
         alpha = float(evidence["alpha"])
-        if p_value <= alpha and evidence["effect_direction_confirmed"] is True:
+        # Palanca 4 (corpus Ginibre): si se declara el estadistico, el p no lo pone el
+        # codificador -- lo recomputa la ley statcheck. Inconsistente -> REJECT.
+        _ts = evidence.get("test_statistic")
+        _p_bad = None
+        if isinstance(_ts, dict):
+            import capas_invariants as _ci
+            _blk = {**_ts, "p": p_value, "op": _ts.get("op", "=")}
+            _a = _ci.audit({"pvalue_test": _blk})
+            if _a["applicable"] and _a["verdict"] == "FLAG":
+                _p_bad = _a["summary"]
+        if _p_bad:
+            verdict = "REJECT"
+            reason = f"declared p_value {p_value} is inconsistent with its own test statistic (recomputed): {_p_bad}"
+        elif p_value <= alpha and evidence["effect_direction_confirmed"] is True:
             verdict = "ACCEPT"
             reason = f"p_value {p_value} <= alpha {alpha} and effect direction is confirmed"
         elif p_value <= alpha:
@@ -1954,10 +1968,30 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
             rewrite = (f"leading-order result established; {remainder} is CONJECTURED, not proven — supply a bound "
                        f"uniform over the quantified index to license the full 'theorem'")
             licensed_claim = rewrite
+        elif evidence.get("independent_reproduction_pass") is not True:
+            # Palanca 3 (GOVERNANCE §6, constructor != verificador): steps_all_valid lo declara quien
+            # construyo. ACCEPT solo cuando alguien distinto re-derivo. Sin eso, REWRITE: la prueba
+            # esta licenciada como construida, no como verificada.
+            verdict = "REWRITE"
+            reason = ("proof structure is licensed, but no independent re-derivation is declared "
+                      "(independent_reproduction_pass) — constructor-only; §6 requires a separate verifier")
+            rewrite = "proof as constructed; independent re-derivation pending — 'proven' is not licensed until it passes"
+            licensed_claim = rewrite
         else:
             verdict = "ACCEPT"
-            reason = ("each step validates, the load-bearing step is identified, and the claim's scope is "
-                      "licensed (a uniform bound is proven, or the claim is bounded/finite)")
+            reason = ("each step validates, the load-bearing step is identified, the claim's scope is "
+                      "licensed, and an independent re-derivation passed")
+
+    # Palanca 2 (corpus Ginibre): si el TEXTO del claim invoca una cita portante, la evidencia
+    # debe decir si sus hipotesis se comprobaron. Sin ese campo, HOLD (no se puede juzgar).
+    _cite = re.search(r"\b(backed by|according to|by the theorem of|theorem of|following|as shown by|"
+                      r"respaldad[oa] por|seg[uú]n|por el teorema de|et al\.?)\b|\(\w[\w\s&.-]*,? ?(19|20)\d{2}[a-z]?\)|\[\d+\]",
+                      (claim.get("text") if isinstance(claim, dict) else "") or "", re.I)
+    if _cite and "citation_hypotheses_checked" not in evidence and verdict != "REJECT":
+        verdict = "HOLD"
+        reason = f"{reason}; the claim text invokes a citation but citation_hypotheses_checked is not declared — cannot judge the support"
+        licensed_claim = None
+        rewrite = None
 
     # Campos transversales (backtest Ginibre): downgrade-only, en cualquier tipo de claim.
     # Un objeto declarado que NO es el objetivo -> HOLD: la evidencia puede ser cierta sobre
@@ -1968,8 +2002,8 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
         licensed_claim = None
         rewrite = None
     # Una cita portante sin leer o con hipotesis sin comprobar no respalda nada todavia.
-    if verdict == "ACCEPT" and (evidence.get("load_bearing_citation_read") is False
-                                or evidence.get("citation_hypotheses_checked") is False):
+    if verdict in ("ACCEPT", "REWRITE") and (evidence.get("load_bearing_citation_read") is False
+                                             or evidence.get("citation_hypotheses_checked") is False):
         verdict = "REWRITE"
         reason = (f"{reason}; load-bearing citation support is NOT verified "
                   "(citation unread or its hypotheses unchecked)")
