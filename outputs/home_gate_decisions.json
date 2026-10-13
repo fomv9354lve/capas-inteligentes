@@ -1,0 +1,66 @@
+[
+  {
+    "label": "ACCEPT",
+    "claim_type": "statistical_confidence",
+    "evidence": {
+      "p_value": 0.03,
+      "alpha": 0.05,
+      "effect_direction_confirmed": true
+    },
+    "verdict": "ACCEPT",
+    "reason": "p_value 0.03 <= alpha 0.05 and effect direction is confirmed",
+    "rewrite": null,
+    "audit_hash": "sha256:ff23bfcc86b7974c15dbd5e4e0d948eace96d9e7fbf54315fb4938aa02c6a387"
+  },
+  {
+    "label": "REWRITE",
+    "claim_type": "statistical_confidence",
+    "evidence": {
+      "p_value": 0.03,
+      "alpha": 0.05,
+      "effect_direction_confirmed": false
+    },
+    "verdict": "REWRITE",
+    "reason": "statistical threshold passes, but effect direction is not licensed",
+    "rewrite": "statistical threshold only; directional or causal wording is not licensed",
+    "audit_hash": "sha256:2a2c523456f02de1b99b9ccce9bb22a02f3412110d3d44a9cf837321ff6a3044"
+  },
+  {
+    "label": "REJECT",
+    "claim_type": "reproducibility_check",
+    "evidence": {
+      "artifact_available": false,
+      "independent_reproduction_pass": false
+    },
+    "verdict": "REJECT",
+    "reason": "required artifact is not available for reproducibility",
+    "rewrite": null,
+    "audit_hash": "sha256:1cc473f89e2c66944c0fd856641a243621dba9839ce28dc1fabf1c37e10e7dd8"
+  },
+  {
+    "label": "HOLD",
+    "claim_type": "statistical_confidence",
+    "evidence": {
+      "p_value": 0.03,
+      "alpha": 0.05
+    },
+    "verdict": "HOLD",
+    "reason": "missing required evidence fields: ['effect_direction_confirmed']",
+    "rewrite": null,
+    "audit_hash": "sha256:9033f4c14ab890cec4e25dd14ac2807b6bdc5b1e435038e24b34010e573455d4"
+  },
+  {
+    "label": "REJECT",
+    "claim_type": "causal_mechanism_claim",
+    "evidence": {
+      "intervention_or_natural_experiment": false,
+      "temporal_order_established": true,
+      "confounders_controlled": true,
+      "mechanism_evidence_present": true
+    },
+    "verdict": "REJECT",
+    "reason": "causal claim lacks intervention/natural experiment evidence or temporal order",
+    "rewrite": null,
+    "audit_hash": "sha256:392234b5fb245c166f0e2dd46b9bc1ffff1f2c6d52b20cd3b8f0b9ea6667034d"
+  }
+]
