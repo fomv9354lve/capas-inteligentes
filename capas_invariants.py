@@ -584,6 +584,101 @@ def check_hardy_weinberg(ev):
                "genotype/allele frequencies are internally consistent" if not bad else "; ".join(bad))
 
 
+def _decimals(x: Any, default: int = 2, cap: int = 6) -> int:
+    t = str(x)
+    return min(cap, len(t.split(".")[1])) if "." in t else default
+
+
+def check_pvalue_consistency(ev: dict[str, Any]) -> dict[str, Any]:
+    """statcheck as a law: a reported p must be the p its own test statistic implies.
+    Needs a `pvalue_test` block: {stat: t|F|chi2|z|r, df1, df2?, value, op: =|<|>|<=|>=, p}.
+    The p is recomputed from (stat, df, value) with scipy and compared at the reported
+    precision. An equality that does not round to the recomputed p, or an inequality the
+    recomputed p does not satisfy, FLAGs. This is the single most replicated fraud/error
+    detector in the literature (Nuijten et al.); here it is just one more invariant."""
+    b = ev.get("pvalue_test")
+    if not isinstance(b, dict) or not all(k in b for k in ("stat", "df1", "value", "p")):
+        return {"applies": False}
+    try:
+        from scipy import stats as st
+    except Exception as exc:
+        return {"applies": True, "verdict": "FLAG", "law": "p recomputes from its test statistic",
+                "why": f"scipy unavailable: {exc}"}
+    stat = str(b["stat"]).lower().replace("χ", "chi").replace("-square", "2").replace("square", "2")
+    df1, df2, val, p = _num(b["df1"]), _num(b.get("df2")), _num(b["value"]), _num(b["p"])
+    op = str(b.get("op", "=")).strip()
+    if None in (df1, val, p) or df1 <= 0:
+        return {"applies": True, "verdict": "FLAG", "law": "p recomputes from its test statistic",
+                "why": "non-numeric or invalid inputs"}
+    if stat == "t":
+        pc = 2 * st.t.sf(abs(val), df1)
+    elif stat == "f":
+        if df2 is None or df2 <= 0:
+            return {"applies": True, "verdict": "FLAG", "law": "p recomputes from its test statistic",
+                    "why": "F test needs df2"}
+        pc = st.f.sf(val, df1, df2)
+    elif stat in ("chi2", "chi"):
+        pc = st.chi2.sf(val, df1)
+    elif stat == "z":
+        pc = 2 * st.norm.sf(abs(val))
+    elif stat == "r":
+        if abs(val) >= 1:
+            return {"applies": True, "verdict": "FLAG", "law": "p recomputes from its test statistic",
+                    "why": f"|r|={val} >= 1 is impossible"}
+        tval = val * ((df1 / (1 - val * val)) ** 0.5)
+        pc = 2 * st.t.sf(abs(tval), df1)
+    else:
+        return {"applies": False}
+    d = int(b.get("decimals", _decimals(b["p"], 2)))
+    tol = 0.5 * 10 ** (-d) + 1e-9
+    # Igualdad: consistente si p recalculado REDONDEA al p reportado.
+    # Desigualdad: estricta, como statcheck — "p < .05" con p recalculado .0501 es un flag.
+    if op == "=":
+        ok = abs(pc - p) <= tol
+    elif op == "<":
+        ok = pc < p + 1e-9
+    elif op == "<=":
+        ok = pc <= p + 1e-9
+    elif op == ">":
+        ok = pc > p - 1e-9
+    elif op == ">=":
+        ok = pc >= p - 1e-9
+    else:
+        ok = abs(pc - p) <= tol
+    # Error de decision: ambos lados claramente a distinto lado de .05. Un p reportado
+    # exactamente en .05 es ambiguo por construccion y no cuenta como cruce.
+    crosses = (op == "=" and (pc < 0.05) != (p < 0.05)
+               and abs(pc - 0.05) > tol and abs(p - 0.05) > tol)
+    return {"applies": True, "verdict": "PASS" if (ok and not crosses) else "FLAG",
+            "law": "p recomputes from its test statistic (statcheck)",
+            "recomputed_p": round(pc, 6),
+            "why": (f"{stat}({df1}{', '+str(df2) if df2 else ''})={val} -> p={pc:.4g}, reported p{op}{p}: consistent" if ok and not crosses else
+                    f"{stat}({df1}{', '+str(df2) if df2 else ''})={val} -> p={pc:.4g}, but reported p{op}{p}"
+                    + (" — DECISION ERROR across .05" if crosses else " — inconsistent at reported precision"))}
+
+
+def check_reported_percent(ev: dict[str, Any]) -> dict[str, Any]:
+    """A reported percentage must equal 100*k/N at the reported precision. Catches the
+    cheapest fabrication tell: a fraction and its percentage that do not agree, or k > N.
+    Needs a `reported_percent` block: {k, N, pct, decimals?}."""
+    b = ev.get("reported_percent")
+    if not isinstance(b, dict) or not all(k in b for k in ("k", "N", "pct")):
+        return {"applies": False}
+    k, N, pct = _num(b["k"]), _num(b["N"]), _num(b["pct"])
+    if None in (k, N, pct) or N <= 0:
+        return {"applies": True, "verdict": "FLAG", "law": "percent = 100*k/N", "why": "invalid inputs"}
+    if k > N:
+        return {"applies": True, "verdict": "FLAG", "law": "percent = 100*k/N",
+                "why": f"k={k:g} exceeds N={N:g}: impossible count"}
+    calc = 100.0 * k / N
+    d = int(b.get("decimals", _decimals(b["pct"], 0)))
+    tol = 0.5 * 10 ** (-d) + 1e-9
+    ok = abs(calc - pct) <= tol
+    return {"applies": True, "verdict": "PASS" if ok else "FLAG", "law": "percent = 100*k/N",
+            "why": (f"{k:g}/{N:g} = {calc:.{d+1}f}% matches reported {pct}%" if ok else
+                    f"{k:g}/{N:g} = {calc:.{d+1}f}% but reported {pct}% — inconsistent")}
+
+
 REGISTRY: dict[str, Callable[[dict[str, Any]], dict[str, Any]]] = {
     "accounting": check_accounting,
     "quantum": check_quantum,
@@ -607,6 +702,8 @@ REGISTRY: dict[str, Callable[[dict[str, Any]], dict[str, Any]]] = {
     "ohms_law": check_ohms_law,                   # engineering
     "mark_recapture": check_mark_recapture,       # biology
     "hardy_weinberg": check_hardy_weinberg,       # biology
+    "pvalue_test": check_pvalue_consistency,
+    "reported_percent": check_reported_percent,
 }
 
 
