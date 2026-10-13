@@ -112,3 +112,24 @@ def test_chi2_no_rivals_inconsistent_rejects_and_consistent_accepts():
 
 def test_chi2_missing_dof_holds():
     assert capas.decide_external_claim(_ts(kind="chi2_dof", value=4.23))["verdict"] == "HOLD"
+
+
+# --- Ginibre trap (CRIT_FINO, cell CA): each model fitted with free alpha, beta on the residual. principal chi2/dof 0.74
+# with its constraint at z +1.20; rival_limite chi2/dof 0.40 but with alpha at z -64.1 — the free parameter absorbed the
+# difference. A copied chi2/dof would REJECT the correct law. Rule: rivals are chi2/dof WITH the claim's constraint
+# imposed; a rival given as {chi2_dof, z_constraint} with |z| > 4 is self-refuting and does not count as a rival.
+def test_rival_whose_constraint_is_rejected_does_not_count():
+    d = capas.decide_external_claim(_ts(kind="chi2_dof", value=0.74, dof=6, z_constraint=1.20,
+                                        rivals=[{"chi2_dof": 0.40, "z_constraint": -64.1}]))
+    assert d["verdict"] == "ACCEPT" and "self-refuting" in d["reason"].lower(), d["reason"]
+
+def test_rival_with_consistent_constraint_counts():
+    d = capas.decide_external_claim(_ts(kind="chi2_dof", value=0.74, dof=6, rivals=[{"chi2_dof": 0.40, "z_constraint": 0.3}]))
+    assert d["verdict"] == "REJECT"
+
+def test_principal_own_constraint_rejected():
+    d = capas.decide_external_claim(_ts(kind="chi2_dof", value=0.74, dof=6, z_constraint=-64.1))
+    assert d["verdict"] == "REJECT" and "constraint" in d["reason"].lower()
+
+def test_rival_dict_without_chi2_holds():
+    assert capas.decide_external_claim(_ts(kind="chi2_dof", value=0.74, dof=6, rivals=[{"z_constraint": 0.3}]))["verdict"] == "HOLD"

@@ -2127,9 +2127,32 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
                     _pfit = float(_chi2.sf(_total, float(_dof)))
                 except ImportError:
                     _pfit = None
-                _riv = [float(r) for r in (_tsx.get("rivals") or []) if isinstance(r, (int, float)) and not isinstance(r, bool)]
+                # rivals: numbers = chi2/dof WITH the claim's constraint imposed; dicts {chi2_dof, z_constraint}: a rival whose
+                # free parameter sits |z| > 4 from the constraint is self-refuting (Ginibre, CRIT_FINO cell CA: 0.40 at z -64)
+                _Z_CONSTRAINT = 4.0
+                _riv, _self_ref, _bad_riv = [], [], False
+                for r in (_tsx.get("rivals") or []):
+                    if isinstance(r, (int, float)) and not isinstance(r, bool):
+                        _riv.append(float(r))
+                    elif isinstance(r, dict) and isinstance(r.get("chi2_dof"), (int, float)):
+                        _zc = r.get("z_constraint")
+                        if isinstance(_zc, (int, float)) and abs(float(_zc)) > _Z_CONSTRAINT:
+                            _self_ref.append(f"{float(r['chi2_dof']):.3g}@z={float(_zc):+.3g}")
+                        else:
+                            _riv.append(float(r["chi2_dof"]))
+                    else:
+                        _bad_riv = True
                 _per_dof = _total / float(_dof)
-                if _riv and _per_dof >= min(_riv):
+                _zp = _tsx.get("z_constraint")
+                if _bad_riv:
+                    verdict = "HOLD"
+                    reason = f"{reason}; a rival in test_statistic lacks chi2_dof — declare chi2/dof with the claim's constraint imposed (and z_constraint if fitted free)"
+                    licensed_claim = None
+                elif isinstance(_zp, (int, float)) and not isinstance(_zp, bool) and abs(float(_zp)) > _Z_CONSTRAINT:
+                    verdict = "REJECT"
+                    reason = f"{reason}; the claim's own fitted constraint sits at z = {float(_zp):+.3g} (|z| > {_Z_CONSTRAINT:g}): the constraint is rejected by the fit"
+                    licensed_claim = None
+                elif _riv and _per_dof >= min(_riv):
                     verdict = "REJECT"
                     reason = f"{reason}; chi2/dof {_per_dof:.3g} does not beat a declared rival ({min(_riv):.3g}) — the claimed closed form is not the best fit"
                     licensed_claim = None
@@ -2145,7 +2168,9 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
                         reason = f"{reason}; chi2/dof {_per_dof:.3g} on {int(_dof)} dof: p = {_pfit:.2g} < {_alpha} — the model is rejected by its own fit test"
                         licensed_claim = None
                 else:
-                    reason = f"{reason}; chi2/dof {_per_dof:.3g} on {int(_dof)} dof consistent (p = {_pfit if _pfit is not None else 'n/a'})" + (f", beats every declared rival (best rival {min(_riv):.3g})" if _riv else "")
+                    reason = (f"{reason}; chi2/dof {_per_dof:.3g} on {int(_dof)} dof consistent (p = {_pfit if _pfit is not None else 'n/a'})"
+                              + (f", beats every declared rival (best rival {min(_riv):.3g})" if _riv else "")
+                              + (f"; self-refuting rivals ignored (constraint |z| > {_Z_CONSTRAINT:g}): {', '.join(_self_ref)}" if _self_ref else ""))
     # P. Potencia en regimen de precision de maquina: pregunta por el control negativo.
     if verdict == "ACCEPT" and claim_type == "exact_model_solution":
         _ae = float(evidence["abs_error"]); _rv = evidence.get("reference_value")
