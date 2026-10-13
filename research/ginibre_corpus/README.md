@@ -100,3 +100,31 @@ y `n_cells`, Šidák con 2 SE → 2,525 / 2,664 / 2,888 SE para k = 4 / 6 / 12
 (`benchmarks/test_multiplicity_tolerance.py`). Sin la declaración el motor juzga celda única:
 los 37 payloads de X4 dan **0 cambios de veredicto** entre v4 y v5. X4-026 (2,84 SE, k=6) sigue
 REJECT bajo (b) sola; lo habría decidido (a).
+
+## X5 — segundo lote fuera de muestra (2026-10-13), con el esquema corregido
+
+Motor congelado en `ginibre-ciego-v6` (481d5cf, regla (b) Šidák viva) **antes** de codificar; 20 claims
+(la lista de exclusión de 228 textos agotó el repo), codificados con (a)–(d) y `error_statistic`/`n_cells`
+declarados; veredictos sellados (sha256 `acbe3c2d…`, `outcomes_file_opened: false`) y sólo entonces
+abiertos los desenlaces. Análisis pre-especificado: principal = 18 limpios; los 6 `\bibitem` (X5-014–019,
+todos buenos y homogéneos) como subgrupo aparte.
+
+| | limpios (18) | sin bibitem (12) | bibitem (6) | todos (20) |
+|---|---|---|---|---|
+| malos no-ACCEPT | **6/8 = 0,75** [0,41–0,93] | 6/8 | — | 8/10 |
+| buenos no-REJECT | **10/10 = 1,00** [0,72–1,00] | 4/4 | 6/6 | 10/10 |
+| buenos en ACCEPT | 6/10 | 3/4 | 3/6 | 6/10 |
+
+Cero falsos-REJECT: las reglas (a)(c)(d) de codificación eliminaron la clase de fallo de X4 (tolerancia 2 SE
+sobre máximos). Regla (b) disparó en X5-011 (k=2 → 2,273 SE) y X5-012 (k=14 → 2,936 SE), ambos buenos,
+ambos ACCEPT; X5-008 (`max` sin `n_cells`) → HOLD, como se esperaba.
+
+Dos falsos-ACCEPT, los dos con nombre de deuda de motor:
+- **X5-003** (sobreafirmación de alcance): mismo hueco que X4-002. `exact_model_solution` no juzga alcance
+  declarado vs probado. Segunda caída → pasa de deuda a construcción (campo nuevo, no umbral).
+- **X5-010** (test sin potencia): abs_error 3e-14 ≤ tolerance 1e-10. El motor no mide la potencia del test:
+  una tolerancia 4 órdenes por encima del error acepta cualquier cosa. Deuda nueva: tolerancia absoluta
+  debe ser comparable a la escala del objeto o venir con `tolerance_rationale`; si no, HOLD/REWRITE.
+
+**Acumulado fuera de muestra (X4 + X5, limpios): malos no-ACCEPT 17/21 = 0,81 [0,60–0,92]; buenos no-REJECT
+16/17 = 0,94 [0,73–0,99].** Sigue siendo n chico; es la primera cifra que no es post-hoc y no es n=20.
