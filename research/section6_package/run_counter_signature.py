@@ -117,17 +117,20 @@ def main():
     ap.add_argument("provider", choices=PROVIDERS)
     ap.add_argument("--model")
     ap.add_argument("--rounds", type=int, default=14)
+    ap.add_argument("--focus", default="", help="instrucción adicional (p.ej. qué claims priorizar)")
+    ap.add_argument("--suffix", default="", help="sufijo del archivo de salida")
     a = ap.parse_args()
     model = a.model or PROVIDERS[a.provider]["model"]
     date = datetime.date.today().isoformat()
-    out = PKG / f"section6_{a.provider}_{date}.md"
+    out = PKG / f"section6_{a.provider}_{date}{a.suffix}.md"
     instr = (PKG / "INSTRUCCION.md").read_text()
     claims = (PKG / "claims.json").read_text()
     system = (instr + "\n\n## Protocolo de ejecución\nNo puedes ejecutar directamente. Pide comandos en bloques\n"
               "```run\n<comando shell>\n```\n(uno o varios por turno; cwd = raíz del repo CAPAS INTELIGENTES; solo lectura y "
               "ejecución: python3/pytest/cat/grep/git log|show|diff…; sin red, sin escritura). Recibirás la salida CRUDA, sin "
               "edición. Nadie responderá preguntas: solo salidas de comandos. Cuando termines, escribe tu informe final "
-              "empezando con la línea `## VEREDICTOS` y sin bloques run. Usa como máximo ~" + str(a.rounds) + " turnos.")
+              "empezando con la línea `## VEREDICTOS` y sin bloques run. Usa como máximo ~" + str(a.rounds) + " turnos."
+              + (f"\n\n## Foco de esta corrida\n{a.focus}" if a.focus else ""))
     run_cmd.baseline = "\n".join(l for l in subprocess.run(["git", "status", "--porcelain"], cwd=ROOT, capture_output=True, text=True).stdout.splitlines()
                                  if " outputs/" not in l and ".coverage" not in l)
     messages = [{"role": "system", "content": system},
