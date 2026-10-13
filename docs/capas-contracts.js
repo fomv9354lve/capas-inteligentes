@@ -112,6 +112,7 @@ window.CAPAS_CONTRACTS = {
       "negative_control_failed",
       "tolerance_rationale",
       "reference_value",
+      "test_statistic",
       "object_declared",
       "object_matches_target",
       "load_bearing_citation_read",

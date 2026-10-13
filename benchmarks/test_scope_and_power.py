@@ -85,3 +85,30 @@ def test_accept_with_declared_scope_annotates_licensed_claim():
 def test_accept_without_scope_fields_and_local_text_keeps_raw_text():
     d = capas.decide_external_claim(_p(LOCAL))
     assert d["verdict"] == "ACCEPT" and d["licensed_claim"] == LOCAL
+
+
+# --- Ginibre convention (a), 2026-10-13: a closed form sustained by chi2/dof + rivals is coded in test_statistic on the
+# exact_model_solution itself (the engine used to read test_statistic only on statistical_confidence and ignored it here).
+# rivals decide ACCEPT-vs-REJECT (the claimed form must beat every declared rival); absolute fit decides ACCEPT-vs-REWRITE
+# (best of the rivals but not consistent in absolute terms = X4-026's honest reading: SE underestimated at low R).
+def _ts(**ts):
+    return _p(LOCAL, abs_error=0.5, tolerance=2.0, tolerance_unit="SE", n_replicates=200, test_statistic=ts)
+
+def test_chi2_best_of_rivals_and_consistent_accepts():
+    d = capas.decide_external_claim(_ts(kind="chi2_dof", value=1.1, dof=6, rivals=[1027, 44030]))
+    assert d["verdict"] == "ACCEPT" and "rival" in d["reason"].lower()
+
+def test_chi2_best_of_rivals_but_inconsistent_rewrites():
+    d = capas.decide_external_claim(_ts(kind="chi2_dof", value=4.23, dof=6, rivals=[1027, 44030]))   # X4-026 shape
+    assert d["verdict"] == "REWRITE" and "absolute" in d["reason"].lower()
+
+def test_chi2_rival_fits_better_rejects():
+    d = capas.decide_external_claim(_ts(kind="chi2_dof", value=4.23, dof=6, rivals=[1.2, 44030]))
+    assert d["verdict"] == "REJECT"
+
+def test_chi2_no_rivals_inconsistent_rejects_and_consistent_accepts():
+    assert capas.decide_external_claim(_ts(kind="chi2_dof", value=4.23, dof=6))["verdict"] == "REJECT"
+    assert capas.decide_external_claim(_ts(kind="chi2_dof", value=0.9, dof=6))["verdict"] == "ACCEPT"
+
+def test_chi2_missing_dof_holds():
+    assert capas.decide_external_claim(_ts(kind="chi2_dof", value=4.23))["verdict"] == "HOLD"

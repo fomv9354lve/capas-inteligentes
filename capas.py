@@ -145,7 +145,7 @@ CLAIM_TYPE_REGISTRY = {
         "optional": ["bound_scope", "physical_evidence_level", "verification_independence",
                      "tolerance_unit", "n_replicates", "n_points", "alternative_model_rejected",
                      "error_statistic", "n_cells", "scope_declared", "scope_tested",
-                     "negative_control_failed", "tolerance_rationale", "reference_value"],
+                     "negative_control_failed", "tolerance_rationale", "reference_value", "test_statistic"],
         "description": "Exact or bounded-error model solution claims.",
     },
     "physical_accuracy": {
@@ -2107,6 +2107,45 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
             reason = f"{reason}; the text asserts a scope (window/regime/for all) but scope_declared/scope_tested are not declared: the gate cannot license a scope it cannot see"
             rewrite = "agreement licensed on the tested cells; the scope asserted in the text is not (declare scope_declared and scope_tested)"
             licensed_claim = rewrite
+    # X. Forma cerrada sostenida por chi2/dof + rivales (convencion (a) de Ginibre): rivals deciden ACCEPT vs REJECT (la forma
+    #    afirmada debe batir a todo rival declarado); el ajuste absoluto decide ACCEPT vs REWRITE (mejor que los rivales pero no
+    #    consistente en terminos absolutos = X4-026: SE subestimada a R bajo). Sin dof no se puede juzgar -> HOLD.
+    if verdict == "ACCEPT" and claim_type == "exact_model_solution" and isinstance(evidence.get("test_statistic"), dict):
+        _tsx = evidence["test_statistic"]
+        _kind = str(_tsx.get("kind", "") or "").lower()
+        if _kind in ("chi2_dof", "chi2", "chi2/dof", "chi_square"):
+            _val, _dof = _tsx.get("value"), _tsx.get("dof", _tsx.get("df"))
+            _alpha = float(_tsx.get("alpha", 0.05) or 0.05)
+            if not isinstance(_val, (int, float)) or isinstance(_val, bool) or not isinstance(_dof, (int, float)) or isinstance(_dof, bool) or _dof <= 0:
+                verdict = "HOLD"
+                reason = f"{reason}; test_statistic {_kind} needs numeric value and dof > 0 to be judged — declare them"
+                licensed_claim = None
+            else:
+                _total = float(_val) * float(_dof) if _kind != "chi2" else float(_val)
+                try:
+                    from scipy.stats import chi2 as _chi2
+                    _pfit = float(_chi2.sf(_total, float(_dof)))
+                except ImportError:
+                    _pfit = None
+                _riv = [float(r) for r in (_tsx.get("rivals") or []) if isinstance(r, (int, float)) and not isinstance(r, bool)]
+                _per_dof = _total / float(_dof)
+                if _riv and _per_dof >= min(_riv):
+                    verdict = "REJECT"
+                    reason = f"{reason}; chi2/dof {_per_dof:.3g} does not beat a declared rival ({min(_riv):.3g}) — the claimed closed form is not the best fit"
+                    licensed_claim = None
+                elif _pfit is not None and _pfit < _alpha:
+                    if _riv:
+                        verdict = "REWRITE"
+                        reason = (f"{reason}; chi2/dof {_per_dof:.3g} beats every declared rival (best rival {min(_riv):.3g}) but is not consistent in "
+                                  f"absolute terms (p = {_pfit:.2g} < {_alpha}) — best of the rivals, not an exact fit (SE possibly underestimated)")
+                        rewrite = "closed form licensed as the best of the declared rivals; absolute consistency not licensed"
+                        licensed_claim = rewrite
+                    else:
+                        verdict = "REJECT"
+                        reason = f"{reason}; chi2/dof {_per_dof:.3g} on {int(_dof)} dof: p = {_pfit:.2g} < {_alpha} — the model is rejected by its own fit test"
+                        licensed_claim = None
+                else:
+                    reason = f"{reason}; chi2/dof {_per_dof:.3g} on {int(_dof)} dof consistent (p = {_pfit if _pfit is not None else 'n/a'})" + (f", beats every declared rival (best rival {min(_riv):.3g})" if _riv else "")
     # P. Potencia en regimen de precision de maquina: pregunta por el control negativo.
     if verdict == "ACCEPT" and claim_type == "exact_model_solution":
         _ae = float(evidence["abs_error"]); _rv = evidence.get("reference_value")
