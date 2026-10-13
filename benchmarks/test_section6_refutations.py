@@ -99,3 +99,21 @@ def test_run8_bounded_accept_never_licenses_the_raw_text():
 def test_uniform_bound_proven_licenses_raw_text():
     d = capas.decide_external_claim(_p("Theorem: holds universally.", "universal", uniform_bound_proven=True))
     assert d["verdict"] == "ACCEPT" and d["licensed_claim"] == "Theorem: holds universally."
+
+
+# --- Atlas format pilot (2026-10-13): claim texts with scientific inequalities ("chi2 > 11.07", "MMI >= 0.6 bits") were
+# rejected by the blanket angle-bracket rule. Security property kept: tag-like sequences and spoofing homoglyphs still
+# fail validation; bare comparison operators and bra-ket ⟨ ⟩ are legitimate scientific text.
+def _text_ok(t):
+    d = capas.decide_external_claim({"schema_version": capas.CAPAS_CLAIM_SCHEMA_VERSION, "claim": {"id": "t", "type": "exact_model_solution", "text": t},
+                                     "evidence": {"abs_error": 0.3, "tolerance": 1.0}})
+    return d["verdict"] != "HOLD" or "angle" not in " ".join(d.get("schema_errors", []))
+
+def test_scientific_inequalities_are_allowed_in_claim_text():
+    for t in ("Falsador conjunto: chi2 = 83.35 > 11.07 (5 g.l.)", "MMI_pareada(d=2) >= 0.6 bits", "x < 1 and d >= 0",
+              "⟨ψ|H|ψ⟩ = E0", "a <= b < c"):
+        assert _text_ok(t), t
+
+def test_tag_like_and_spoofing_text_still_rejected():
+    for t in ("<script>alert(1)</script>", "x </b> y", "<!-- hidden -->", "<img src=x onerror=1>", "a ＜script＞ b", "x ‹b› y", "<?php echo 1 ?>"):
+        assert not _text_ok(t), t

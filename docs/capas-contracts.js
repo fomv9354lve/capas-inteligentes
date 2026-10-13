@@ -174,6 +174,7 @@ window.CAPAS_CONTRACTS = {
     "statistical_confidence": [
       "test_statistic",
       "null_control_passed",
+      "n_replicates",
       "object_declared",
       "object_matches_target",
       "load_bearing_citation_read",

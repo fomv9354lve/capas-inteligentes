@@ -269,7 +269,12 @@ def test_angle_guard_helper_directly():
     errs: list[str] = []
     capas._validate_no_angle_like("safe value", "evidence.x", errs)
     assert errs == []
-    capas._validate_no_angle_like("has < bracket", "evidence.x", errs)
+    capas._validate_no_angle_like("x < 1 and chi2 > 11.07", "evidence.x", errs)   # bare comparison operators: scientific text (2026-10-13)
+    assert errs == []
+    capas._validate_no_angle_like("has <b>tag</b>", "evidence.x", errs)            # tag-like: still rejected
+    assert errs and "angle" in errs[0]
+    errs.clear()
+    capas._validate_no_angle_like("spoof \uff1cscript\uff1e", "evidence.x", errs)  # fullwidth homoglyphs: still rejected
     assert errs and "angle" in errs[0]
 
 

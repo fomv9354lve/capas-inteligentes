@@ -175,7 +175,7 @@ CLAIM_TYPE_REGISTRY = {
     },
     "statistical_confidence": {
         "required": ["p_value", "alpha", "effect_direction_confirmed"],
-        "optional": ["test_statistic", "null_control_passed"],
+        "optional": ["test_statistic", "null_control_passed", "n_replicates"],
         "description": "Statistical threshold and effect-direction claims.",
     },
     "reproducibility_check": {
@@ -737,10 +737,13 @@ EXPERIMENT_SCOPE_PATTERNS = [
 NUMBER_PATTERN = r"[-+]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][-+]?\d+)?"
 BOOLEAN_PATTERN = r"(true|false|yes|no|pass|fail|passed|failed|1|0)"
 WEB_FETCH_TIMEOUT_SECONDS = 15
-DISALLOWED_ANGLE_CHARS = "<>\u02c2\u02c3\u2039\u203a"
-DISALLOWED_ANGLE_RANGES = "\u2329-\u232a\u276c-\u276d\u27e8-\u27e9\u29fc-\u29fd\u3008-\u3009\ufe64-\ufe65\uff1c-\uff1e"
-DISALLOWED_ANGLE_REGEX = re.compile(f"[{re.escape(DISALLOWED_ANGLE_CHARS)}{DISALLOWED_ANGLE_RANGES}]")
-NO_ANGLE_PATTERN = f"^[^{re.escape(DISALLOWED_ANGLE_CHARS)}{DISALLOWED_ANGLE_RANGES}]*$"
+# 2026-10-13 (Atlas format pilot): the blanket rule rejected "chi2 > 11.07" and "MMI >= 0.6 bits". Security property kept:
+# tag-like sequences (`<` followed by a letter, `/`, `!` or `?`) and spoofing homoglyphs fail; bare comparison operators
+# and bra-ket ⟨ ⟩ (U+27E8/9) are legitimate scientific text. The published JSON schema carries the same pattern.
+DISALLOWED_ANGLE_HOMOGLYPHS = "\u02c2\u02c3\u2039\u203a"
+DISALLOWED_ANGLE_RANGES = "\u2329-\u232a\u276c-\u276d\u29fc-\u29fd\u3008-\u3009\ufe64-\ufe65\uff1c-\uff1e"
+DISALLOWED_ANGLE_REGEX = re.compile(f"(<[A-Za-z/!?]|[{re.escape(DISALLOWED_ANGLE_HOMOGLYPHS)}{DISALLOWED_ANGLE_RANGES}])")
+NO_ANGLE_PATTERN = f"^(?:(?!<[A-Za-z/!?])[^{re.escape(DISALLOWED_ANGLE_HOMOGLYPHS)}{DISALLOWED_ANGLE_RANGES}])*$"
 
 
 def _contains_angle_like_character(value: str) -> bool:

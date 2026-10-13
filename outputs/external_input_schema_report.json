@@ -231,6 +231,7 @@
               "negative_control_failed",
               "tolerance_rationale",
               "reference_value",
+              "test_statistic",
               "object_declared",
               "object_matches_target",
               "load_bearing_citation_read",
@@ -389,6 +390,7 @@
               "negative_control_failed",
               "tolerance_rationale",
               "reference_value",
+              "test_statistic",
               "object_declared",
               "object_matches_target",
               "load_bearing_citation_read",
@@ -547,6 +549,7 @@
               "negative_control_failed",
               "tolerance_rationale",
               "reference_value",
+              "test_statistic",
               "object_declared",
               "object_matches_target",
               "load_bearing_citation_read",
@@ -705,6 +708,7 @@
               "negative_control_failed",
               "tolerance_rationale",
               "reference_value",
+              "test_statistic",
               "object_declared",
               "object_matches_target",
               "load_bearing_citation_read",
@@ -863,6 +867,7 @@
               "negative_control_failed",
               "tolerance_rationale",
               "reference_value",
+              "test_statistic",
               "object_declared",
               "object_matches_target",
               "load_bearing_citation_read",
@@ -1027,6 +1032,7 @@
               "negative_control_failed",
               "tolerance_rationale",
               "reference_value",
+              "test_statistic",
               "object_declared",
               "object_matches_target",
               "load_bearing_citation_read",
@@ -1185,6 +1191,7 @@
               "negative_control_failed",
               "tolerance_rationale",
               "reference_value",
+              "test_statistic",
               "object_declared",
               "object_matches_target",
               "load_bearing_citation_read",
@@ -1496,6 +1503,7 @@
               "negative_control_failed",
               "tolerance_rationale",
               "reference_value",
+              "test_statistic",
               "object_declared",
               "object_matches_target",
               "load_bearing_citation_read",
@@ -1654,6 +1662,7 @@
               "negative_control_failed",
               "tolerance_rationale",
               "reference_value",
+              "test_statistic",
               "object_declared",
               "object_matches_target",
               "load_bearing_citation_read",
@@ -1801,6 +1810,7 @@
             "optional_fields": [
               "test_statistic",
               "null_control_passed",
+              "n_replicates",
               "object_declared",
               "object_matches_target",
               "load_bearing_citation_read",
@@ -2985,7 +2995,18 @@
           },
           "dialectic": {
             "burden_of_proof": [
-              "schema: claim.text must not contain angle brackets or Unicode angle-bracket homoglyphs"
+              "training: source-backed evidence is not attached",
+              "training: external review is not attached",
+              "training: claim.text semantic alignment is not externally certified",
+              "training: witness independence is not externally certified",
+              "training: provenance.sources or provenance.source_urls is empty",
+              "training: external review hash is missing or does not match review_packet",
+              "training: source URLs are not recoverable with matching hashes",
+              "training: witness_id is not resolvable in the witness registry",
+              "training: RO-Crate provenance packet is missing, invalid, or hash-mismatched",
+              "training: reviewer identity or attestation is not verifiable",
+              "training: provenance.review_id is missing",
+              "training: provenance.witness_id is missing"
             ],
             "licensed_thesis": "\u27e8img src=x onerror=alert(1)\u27e9",
             "optional_supports": [],
@@ -2994,53 +3015,60 @@
               "evidence.within_chemical_accuracy"
             ],
             "thesis": "\u27e8img src=x onerror=alert(1)\u27e9",
-            "undercutters": [
-              "claim.text must not contain angle brackets or Unicode angle-bracket homoglyphs"
-            ],
-            "warrant": "input payload failed CAPAS schema validation"
+            "undercutters": [],
+            "warrant": "within_chemical_accuracy is true"
           },
           "lattice": {
             "axes": {
               "boundary": {
-                "level": "schema_blocked",
-                "score": 1
+                "level": "claim_licensed",
+                "score": 4
               },
               "contract": {
-                "level": "registered",
-                "score": 1
+                "level": "contract_complete",
+                "score": 3
               },
               "defeaters": {
-                "level": "schema_undercut",
-                "score": 1
+                "level": "no_active_defeater",
+                "score": 4
               },
               "evidence": {
-                "level": "none",
-                "score": 0
+                "level": "supports_claim_boundary",
+                "score": 4
               },
               "provenance": {
                 "level": "none",
                 "score": 0
               }
             },
-            "controlled_reuse_meet": 0,
+            "controlled_reuse_meet": 3,
             "non_claim": "This lattice orders admissibility of supplied evidence, not scientific truth.",
-            "reuse_boundary": "schema_blocked",
+            "reuse_boundary": "claim_licensed",
             "training_reuse_meet": 0
           },
           "metaphor": "compiler_certificate",
           "next_action": {
-            "kind": "repair_schema",
-            "label": "Repair schema and field placement before CAPAS can decide."
+            "kind": "verify_provenance_for_training",
+            "label": "Claim is licensed; verify provenance before using as fine-tuning data."
           },
           "proof_obligations": [
-            "schema: claim.text must not contain angle brackets or Unicode angle-bracket homoglyphs"
+            "training: source-backed evidence is not attached",
+            "training: external review is not attached",
+            "training: claim.text semantic alignment is not externally certified",
+            "training: witness independence is not externally certified",
+            "training: provenance.sources or provenance.source_urls is empty",
+            "training: external review hash is missing or does not match review_packet",
+            "training: source URLs are not recoverable with matching hashes",
+            "training: witness_id is not resolvable in the witness registry",
+            "training: RO-Crate provenance packet is missing, invalid, or hash-mismatched",
+            "training: reviewer identity or attestation is not verifiable",
+            "training: provenance.review_id is missing",
+            "training: provenance.witness_id is missing"
           ]
         },
-        "audit_hash": "sha256:078fd9f9a0ce8e53e3e2885545134ccf816e97b0c6deb61d1ff2834a53482eab",
+        "audit_hash": "sha256:5a8740465cd975f146857bda2e060556d2539df0b9fbbd0fa2118f0476b27840",
         "did_you_mean": {},
         "fine_tune_blockers": [
-          "claim verdict is not ACCEPT",
-          "schema or required-field blockers remain",
           "source-backed evidence is not attached",
           "external review is not attached",
           "claim.text semantic alignment is not externally certified",
@@ -3061,11 +3089,11 @@
           "review_id_present": false,
           "reviewer_attestation_verified": false,
           "ro_crate_validated": false,
-          "schema_clean": false,
+          "schema_clean": true,
           "semantic_alignment": false,
           "source_backed_evidence": false,
           "source_urls_recoverable_hashable": false,
-          "verdict_accept": false,
+          "verdict_accept": true,
           "witness_id_present": false,
           "witness_independence": false,
           "witness_registry_resolved": false
@@ -3076,31 +3104,34 @@
           "text": "\u27e8img src=x onerror=alert(1)\u27e9",
           "type": "physical_accuracy"
         },
+        "invariant_audit": {
+          "applicable": false,
+          "holds": [],
+          "laws_checked": [],
+          "results": {},
+          "summary": "no domain invariant applies to this evidence",
+          "verdict": "N/A",
+          "violations": []
+        },
         "licensed_claim": "\u27e8img src=x onerror=alert(1)\u27e9",
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
-        "reason": "input payload failed CAPAS schema validation",
-        "required_fields": [],
+        "reason": "within_chemical_accuracy is true",
+        "required_fields": [
+          "within_chemical_accuracy"
+        ],
         "resolution": {
-          "did_you_mean": {},
-          "errors": [
-            "claim.text must not contain angle brackets or Unicode angle-bracket homoglyphs"
-          ],
-          "kind": "fix_schema_errors",
-          "message": "Correct the listed schema errors (each names its own fix), then resubmit."
+          "kind": "accepted",
+          "message": "The evidence licenses the claim as worded."
         },
         "rewrite": null,
-        "schema_errors": [
-          "claim.text must not contain angle brackets or Unicode angle-bracket homoglyphs"
-        ],
+        "schema_errors": [],
         "schema_version": "capas-claim-payload-v3",
-        "verdict": "HOLD"
+        "verdict": "ACCEPT"
       },
-      "errors": [
-        "claim.text must not contain angle brackets or Unicode angle-bracket homoglyphs"
-      ],
+      "errors": [],
       "expected_error": "claim.text must not contain angle brackets or Unicode angle-bracket homoglyphs",
-      "passed": true
+      "passed": false
     },
     {
       "check": "adversarial_payload:claim_text_second_generation_angle_homoglyphs",
@@ -3568,6 +3599,7 @@
             "optional_fields": [
               "test_statistic",
               "null_control_passed",
+              "n_replicates",
               "object_declared",
               "object_matches_target",
               "load_bearing_citation_read",
@@ -3875,6 +3907,7 @@
               "negative_control_failed",
               "tolerance_rationale",
               "reference_value",
+              "test_statistic",
               "object_declared",
               "object_matches_target",
               "load_bearing_citation_read",
@@ -4683,6 +4716,7 @@
             "optional_fields": [
               "test_statistic",
               "null_control_passed",
+              "n_replicates",
               "object_declared",
               "object_matches_target",
               "load_bearing_citation_read",
@@ -7212,6 +7246,7 @@
                     "negative_control_failed",
                     "tolerance_rationale",
                     "reference_value",
+                    "test_statistic",
                     "object_declared",
                     "object_matches_target",
                     "load_bearing_citation_read",
@@ -8266,7 +8301,7 @@
       "passed": true
     }
   ],
-  "external_input_schema_ready": true,
+  "external_input_schema_ready": false,
   "invalid_example": "examples/external_claim_invalid.json",
   "schema": "docs/schema/capas_claim_payload.schema.json",
   "valid_examples": [
