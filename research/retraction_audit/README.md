@@ -122,3 +122,28 @@ sin ver el desenlace, motor congelado (`ginibre-ciego-v1` = a78cadf). Sin contam
 traducción). Reproducido 176/176 entre las dos sesiones. Ficheros, hashes e informe en el repo de
 Ginibre, `CAPAS_CORPUS_2026-10-12/`. Límites literales de Ginibre: un proyecto, números del
 codificador en ~20 claims, "bueno" = ausencia de corrección posterior.
+
+## Cuarta pasada: control grande. Veredicto final: REFUTADO como vía de detección (2026-10-13)
+
+Control de 888 papers OA no retractados, mismas 60 revistas, 2012–2022; 86 chequeables, 3.988 ítems.
+
+| grupo | papers | chequeables | items | severos | % sev | OR vs ctl | p |
+|---|---|---|---|---|---|---|---|
+| Falsification/Fabrication of Data | 175 | 11 | 150 | 8 | 5,3 | 2,59 | 0,019 |
+| Unreliable Results | 5.569 | 616 | 16.725 | 265 | 1,6 | 0,74 | 0,020 |
+| todos los retractados por datos/resultados | 6.308 | 670 | 18.093 | 286 | **1,58** | 0,74 | 0,017 |
+| **control** | 888 | 86 | 3.988 | 85 | **2,13** | — | — |
+
+Por paper: 17,8% de retractados chequeables con ≥1 severo vs 19,8% de controles. OR 0,88, p 0,66.
+
+**Lo que esto dice.** El control de 17 papers de las pasadas anteriores era bajo por azar. Con 86, la
+tasa base de inconsistencias numéricas severas en literatura limpia es ~2%, en línea con lo que
+statcheck lleva una década midiendo. Los papers retractados por razones de datos **no tienen más**:
+en el agregado tienen ligeramente menos. La única franja que conserva señal es "Falsification/
+Fabrication of Data" (5,3% vs 2,1%), sobre 11 papers; sin más n no es un hallazgo.
+
+**Conclusión.** Las inconsistencias numéricas recomputables desde el texto **no separan** papers
+retractados de limpios en este corpus. Como vía de detección de fraude a escala, refutada. El
+motor no falló: midió bien, y lo que midió es que la señal no está donde se buscaba. Queda en pie
+el hallazgo estructural (94% del fraude por fabricación no tiene nada recomputable en texto) y
+las siete leyes que el experimento dejó en el motor.
