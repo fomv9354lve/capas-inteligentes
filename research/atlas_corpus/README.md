@@ -95,3 +95,26 @@ aristas; la calibración predecía ~+17 % de error por capa y se observó ~+70 %
    `field_freshness: "not evaluable"` como aviso informativo (el fallo de hoy fue exactamente el silencio).
 Se implementará solo tras registrar esta redacción en CURRENT_TRUTH y antes del siguiente claim limpio que la use (E4b
 está en auditoría de diseño; su desenlace queda retenido como siempre).
+
+## Fase 2(c) — E4b (pre-registro `mirror_e4_drift_v5`, P1/P2/P3; 2026-10-13, `contaminado:false`) — codificado por CAPAS
+
+Nuevo modo de trabajo (decisión de Osvaldo): **Atlas primero**. Atlas corre y sella el desenlace; **la sesión de CAPAS codifica**
+desde datos saneados (sin cadenas de veredicto), sella veredictos (commit 7531e7c) y solo entonces abre el desenlace. Atlas
+no adapta el diseño de sus experimentos a la guía de CAPAS; un fallo de CAPAS se comunica en una línea y el arreglo es de CAPAS.
+Generador: `phase2c/build_claims_e4b.py` (determinista; aborta si un input trae palabra de veredicto). Claims sha256 `58b74c2b…`.
+
+| métrica | codificado como | veredicto v6 = HEAD | desenlace sellado de Atlas | acierto |
+|---|---|---|---|---|
+| P1 deriva del layout | statistical_confidence (p 7,63e-6, α 0,05 nominal, 18 pares, sign-flip pareado) + snapshot 15:28 con layout rep12 | ACCEPT | DERIVA DE F EN EL LAYOUT (media +0,0466) | sí (bueno ≠ REJECT) |
+| P2 persistencia | exact_model_solution con theta, IC95 [1,259, 1,550], reference_value 0,5 — **sin** abs_error/tolerance (no se inventan) | HOLD | RECUPERA | vacuo (HOLD = no-ACCEPT; no hay tipo de claim para "IC dentro de una banda pre-registrada") |
+| P3 decisión (control simultáneo, gap 6,1 s) | statistical_confidence (p 7,63e-6, media −0,128 sobre F cruda, misma lectura corregida) | ACCEPT | EL LAYOUT VIEJO SIGUE MEJOR (más CZ en el control) | sí (bueno ≠ REJECT) |
+
+Lectura honesta: los tres desenlaces coincidieron con la hipótesis pre-registrada, así que este lote solo mide
+**bueno-no-REJECT** (2/2 + 1 vacuo); no hay "malo" en E4b. Cuenta limpia acumulada de Atlas: malo-no-ACCEPT **1/1** (E4),
+bueno-no-REJECT **2/2** (E4b), 1 HOLD vacuo. n sigue siendo anécdota.
+
+Hallazgo contra CAPAS (una línea, como pide el modo nuevo): **no existe tipo de claim para un intervalo contra una banda
+pre-registrada** (P2; misma familia que la deuda S6 del umbral unilateral). Diseño pendiente: `interval_band_claim`
+{estimate, ci, ci_level, band_rule pre-registrada} → ACCEPT solo si el IC entero cae en la banda declarada.
+`field_dates` llegaron por primera vez en el snapshot de las 15:28 (t1 medido 12-oct 23:28, readout 13-oct 12:36, sx 00:23,
+cz 04:08): la ley aún no las lee (regla v2 pre-especificada, sin código); sobre el layout rep12 dio PASS.
