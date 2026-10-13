@@ -168,3 +168,12 @@ secundario (OR): 52/81 y 57/63. No es ciego; es una mutación declarada con cabe
 AUSENTE; 0 de 42 pruebas declaraban el campo**. Es decir: el 100 % de la "subida" 0,65→0,78 es ausencia del
 campo, no discriminación — exactamente lo que el auditor sospechó y lo que este README ya decía. Buenos en
 ACCEPT 43→34/63. La palanca es la regla §6 mecanizada (constructor ≠ verificador), y así hay que leerla.
+
+### Coste post-hoc de `text_quantifier` (§6 run 6 → 1f192bd), X1–X5
+
+16 pruebas con alcance acotado y sin cota uniforme citan hoy `text_quantifier` ausente. De ellas, 12 ya eran
+REWRITE por la palanca 3 (sin `independent_reproduction_pass`), 3 ya eran REWRITE en el sellado; **el único
+cambio neto de veredicto es X4-033 (buena, ACCEPT → REWRITE)**. Malos cazados de nuevo: 0 — ninguno de esos
+textos cuantificaba en universal. La regla no gana detección en estos corpus; cierra el hueco que el auditor
+demostró (texto universal con alcance declarado acotado) al precio de 1 buena, y el precio desaparece en
+cuanto el codificador declara el campo.
