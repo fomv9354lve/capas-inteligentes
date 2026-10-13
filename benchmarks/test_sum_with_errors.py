@@ -24,7 +24,7 @@ def test_malformed_se_length_flags():
 
 
 def test_rmt_bounds_rho_and_F():
-    assert ci.audit({"rho": 0.93})["verdict"] == "PASS"
-    assert ci.audit({"rho": 1.2})["verdict"] == "FLAG"
-    assert ci.audit({"F": 0.31})["verdict"] == "PASS"
-    assert ci.audit({"F": -0.02})["verdict"] == "FLAG"
+    assert ci.audit({"bounds": {"rho": 0.93}})["verdict"] == "PASS"
+    assert ci.audit({"bounds": {"rho": 1.2}})["verdict"] == "FLAG"
+    assert ci.audit({"bounds": {"F": 0.31}})["verdict"] == "PASS"
+    assert ci.audit({"bounds": {"F": -0.02}})["verdict"] == "FLAG"
