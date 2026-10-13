@@ -332,26 +332,26 @@ footer{border-top:1px solid rgba(255,255,255,0.06);padding:32px 48px;display:fle
     <div class="verdicts-grid">
       <div class="verdict-card" style="border-color:rgba(72,187,120,0.18)">
         <span class="verdict-card-badge" style="background:rgba(72,187,120,0.12);color:#48bb78;border:1px solid rgba(72,187,120,0.3)">ACCEPT</span>
-        <h4>Claim is admissible</h4>
-        <p>All schema constraints pass. Evidence fully supports the claim as stated. No licensing or reproducibility blockers found.</p>
+        <h4 data-es="El claim es admisible">Claim is admissible</h4>
+        <p data-es="Todas las restricciones del esquema pasan. La evidencia sostiene el claim tal como está escrito. Sin bloqueos de licencia ni de reproducibilidad.">All schema constraints pass. Evidence fully supports the claim as stated. No licensing or reproducibility blockers found.</p>
         <div class="verdict-card-ex">p_value=0.03, alpha=0.05<br>effect_direction_confirmed: true<br>&rarr; ACCEPT &middot; audit_hash ff23bfcc</div>
       </div>
       <div class="verdict-card" style="border-color:rgba(0,200,200,0.18)">
         <span class="verdict-card-badge" style="background:rgba(0,200,200,0.12);color:#00c8c8;border:1px solid rgba(0,200,200,0.35)">REWRITE</span>
-        <h4>Claim needs adjustment</h4>
-        <p>Evidence is present but the claim overreaches. Direction, scope, or causal language must be corrected before resubmission.</p>
+        <h4 data-es="El claim necesita ajuste">Claim needs adjustment</h4>
+        <p data-es="Hay evidencia, pero el claim se pasa. Dirección, alcance o lenguaje causal deben corregirse antes de reenviar.">Evidence is present but the claim overreaches. Direction, scope, or causal language must be corrected before resubmission.</p>
         <div class="verdict-card-ex">p_value=0.03, alpha=0.05<br>effect_direction_confirmed: false<br>&rarr; REWRITE &middot; audit_hash 2a2c5234</div>
       </div>
       <div class="verdict-card" style="border-color:rgba(232,24,93,0.18)">
         <span class="verdict-card-badge" style="background:rgba(232,24,93,0.12);color:#e8185d;border:1px solid rgba(232,24,93,0.3)">REJECT</span>
-        <h4>Claim is inadmissible</h4>
-        <p>Critical evidence is missing, contradicted, or irreproducible. The claim cannot be licensed in its current form.</p>
+        <h4 data-es="El claim es inadmisible">Claim is inadmissible</h4>
+        <p data-es="Falta evidencia crítica, está contradicha o no es reproducible. El claim no puede licenciarse en su forma actual.">Critical evidence is missing, contradicted, or irreproducible. The claim cannot be licensed in its current form.</p>
         <div class="verdict-card-ex">artifact_available: false<br>independent_reproduction_pass: false<br>&rarr; REJECT &middot; audit_hash 1cc473f8</div>
       </div>
       <div class="verdict-card" style="border-color:rgba(200,150,10,0.18)">
         <span class="verdict-card-badge" style="background:rgba(200,150,10,0.12);color:#d4a820;border:1px solid rgba(200,150,10,0.35)">HOLD</span>
-        <h4>Pending verification</h4>
-        <p>Evidence is incomplete or no external oracle is available; the gate fail-closes to HOLD instead of guessing.</p>
+        <h4 data-es="Verificación pendiente">Pending verification</h4>
+        <p data-es="La evidencia está incompleta o no hay oráculo externo disponible; la puerta cierra en HOLD en vez de adivinar.">Evidence is incomplete or no external oracle is available; the gate fail-closes to HOLD instead of guessing.</p>
         <div class="verdict-card-ex">p_value=0.03, alpha=0.05<br>effect_direction_confirmed: (missing)<br>&rarr; HOLD &middot; audit_hash 9033f4c1</div>
       </div>
     </div>
@@ -587,8 +587,8 @@ footer{border-top:1px solid rgba(255,255,255,0.06);padding:32px 48px;display:fle
       <div style="color:rgba(255,255,255,.4)" data-es="# -> ACCEPT / REWRITE / REJECT / HOLD  (nunca lo decide el LLM)"># -> ACCEPT / REWRITE / REJECT / HOLD  (never the LLM&rsquo;s call)</div>
     </div>
     <div style="display:flex;gap:14px;margin-top:20px;flex-wrap:wrap;align-items:center">
-      <div style="border:1px solid rgba(72,187,120,.3);border-radius:10px;background:rgba(72,187,120,.06);padding:14px 18px"><strong style="color:#48bb78;font-size:18px">0/5</strong> <span style="font-size:13px;color:rgba(255,255,255,.6)">false-accepts &mdash; CAPAS gate</span></div>
-      <div style="border:1px solid rgba(255,255,255,.08);border-radius:10px;background:rgba(255,255,255,.02);padding:14px 18px"><strong style="color:rgba(255,255,255,.4);font-size:18px">5/5</strong> <span style="font-size:13px;color:rgba(255,255,255,.45)">accept-if-undisputed default</span></div>
+      <div style="border:1px solid rgba(72,187,120,.3);border-radius:10px;background:rgba(72,187,120,.06);padding:14px 18px"><strong style="color:#48bb78;font-size:18px">0/5</strong> <span style="font-size:13px;color:rgba(255,255,255,.6)" data-es="falsos ACCEPT &mdash; puerta CAPAS">false-accepts &mdash; CAPAS gate</span></div>
+      <div style="border:1px solid rgba(255,255,255,.08);border-radius:10px;background:rgba(255,255,255,.02);padding:14px 18px"><strong style="color:rgba(255,255,255,.4);font-size:18px">5/5</strong> <span style="font-size:13px;color:rgba(255,255,255,.45)" data-es="por defecto: aceptar si nadie lo disputa">accept-if-undisputed default</span></div>
       <span style="font-size:11px;color:rgba(255,255,255,.35)" data-es="5 claims comprobablemente FALSOS &middot; un LLM-juez fuerte empata aquí con CAPAS (0/5) &mdash; la ventaja del gate es el determinismo, no la precisión &middot; re-deriva: <code>python3 benchmarks/head_to_head_sota.py</code>">5 checkable-FALSE claims &middot; a strong LLM-judge ties CAPAS here (0/5) &mdash; the gate&rsquo;s edge is determinism, not accuracy &middot; re-derive: <code>python3 benchmarks/head_to_head_sota.py</code></span>
     </div>
     <p class="section-sub" style="margin-top:18px;font-size:13px;color:rgba(255,255,255,.5)" data-es="La mejora es <strong>fiabilidad, no capacidad</strong> &mdash; el modelo no se vuelve más listo; su salida se vuelve admisible-o-diferida. Alcance honesto: ancla registro&harr;texto, no texto&harr;realidad &mdash; una fuente que miente sobre sus métodos y oculta sus datos pasa (el techo GIGO), así que CAPAS dice exactamente qué rebanada re-derivó y cuál solo pudo atestar.">The boost is <strong>reliability, not capability</strong> &mdash; the model doesn&rsquo;t get smarter, its output becomes admissible-or-deferred. Honest scope: it grounds record&harr;text, not text&harr;reality &mdash; a source that lies about its methods and withholds its data passes (the GIGO ceiling), so CAPAS says exactly which slice it re-derived and which it could only attest.</p>
@@ -601,18 +601,18 @@ footer{border-top:1px solid rgba(255,255,255,0.06);padding:32px 48px;display:fle
     <p class="section-sub" data-es="El mismo motor determinista, expuesto de tres maneras. CAPAS nunca es el modelo de lenguaje &mdash; es la capa fail-closed hacia la que el modelo propone.">The same deterministic engine, exposed three ways. CAPAS is never the language model &mdash; it is the fail-closed layer the model proposes into.</p>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;margin-top:28px">
       <div class="core-card">
-        <h4 style="margin:0 0 8px;font-size:16px">Library &middot; <span style="color:#48bb78">pip</span></h4>
-        <p style="font-size:13px;color:rgba(255,255,255,.55);line-height:1.6;margin:0 0 12px">Wrap your LLM in code. <code>gate &middot; reward &middot; certificate &middot; invariants &middot; gate_quantum</code>.</p>
-        <div style="font-family:'SF Mono',ui-monospace,monospace;font-size:12px;color:rgba(255,255,255,.45);background:rgba(0,0,0,.3);border-radius:7px;padding:10px">pip install capas-claim-gate<br><span style="color:rgba(255,255,255,.3)">live on PyPI</span></div>
+        <h4 style="margin:0 0 8px;font-size:16px" data-es="Biblioteca &middot; <span style=&quot;color:#48bb78&quot;>pip</span>">Library &middot; <span style="color:#48bb78">pip</span></h4>
+        <p style="font-size:13px;color:rgba(255,255,255,.55);line-height:1.6;margin:0 0 12px" data-es="Envuelve tu LLM en código. <code>gate &middot; reward &middot; certificate &middot; invariants &middot; gate_quantum</code>.">Wrap your LLM in code. <code>gate &middot; reward &middot; certificate &middot; invariants &middot; gate_quantum</code>.</p>
+        <div style="font-family:'SF Mono',ui-monospace,monospace;font-size:12px;color:rgba(255,255,255,.45);background:rgba(0,0,0,.3);border-radius:7px;padding:10px">pip install capas-claim-gate<br><span style="color:rgba(255,255,255,.3)" data-es="en PyPI">live on PyPI</span></div>
       </div>
       <div class="core-card">
-        <h4 style="margin:0 0 8px;font-size:16px">Skill &middot; <span style="color:#4f5ef7">MCP server</span></h4>
-        <p style="font-size:13px;color:rgba(255,255,255,.55);line-height:1.6;margin:0 0 12px">A tool any agent calls &mdash; Claude Code, Desktop, Cursor. Zero dependencies. The agent proposes, CAPAS disposes.</p>
+        <h4 style="margin:0 0 8px;font-size:16px" data-es="Skill &middot; <span style=&quot;color:#4f5ef7&quot;>servidor MCP</span>">Skill &middot; <span style="color:#4f5ef7" data-es="servidor MCP">MCP server</span></h4>
+        <p style="font-size:13px;color:rgba(255,255,255,.55);line-height:1.6;margin:0 0 12px" data-es="Una herramienta que llama cualquier agente &mdash; Claude Code, Desktop, Cursor. Cero dependencias. El agente propone, CAPAS dispone.">A tool any agent calls &mdash; Claude Code, Desktop, Cursor. Zero dependencies. The agent proposes, CAPAS disposes.</p>
         <div style="font-family:'SF Mono',ui-monospace,monospace;font-size:12px;color:rgba(255,255,255,.45);background:rgba(0,0,0,.3);border-radius:7px;padding:10px">python3 capas_mcp.py &nbsp;<span style="color:rgba(255,255,255,.3)"># see docs/mcp.md</span></div>
       </div>
       <div class="core-card">
-        <h4 style="margin:0 0 8px;font-size:16px">API &middot; <span style="color:#e8185d">signed certificate</span></h4>
-        <p style="font-size:13px;color:rgba(255,255,255,.55);line-height:1.6;margin:0 0 12px">Hosted, auth-gated issuance of a <strong>signed, persisted, tamper-evident</strong> admissibility certificate &mdash; the audit artifact a regulated buyer purchases.</p>
+        <h4 style="margin:0 0 8px;font-size:16px" data-es="API &middot; <span style=&quot;color:#e8185d&quot;>certificado firmado</span>">API &middot; <span style="color:#e8185d" data-es="certificado firmado">signed certificate</span></h4>
+        <p style="font-size:13px;color:rgba(255,255,255,.55);line-height:1.6;margin:0 0 12px" data-es="Emisión alojada y autenticada de un certificado de admisibilidad <strong>firmado, persistido y a prueba de manipulación</strong> &mdash; el artefacto de auditoría que compra un comprador regulado.">Hosted, auth-gated issuance of a <strong>signed, persisted, tamper-evident</strong> admissibility certificate &mdash; the audit artifact a regulated buyer purchases.</p>
         <div style="font-family:'SF Mono',ui-monospace,monospace;font-size:12px;color:rgba(255,255,255,.45);background:rgba(0,0,0,.3);border-radius:7px;padding:10px">POST /api/certificate &rarr; id + signature</div>
       </div>
     </div>

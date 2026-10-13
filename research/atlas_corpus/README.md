@@ -59,7 +59,7 @@ el desenlace; Atlas lo comunicó solo después. Runner reutilizable: `run_sealed
 
 | motor | veredicto | desenlace | acierto |
 |---|---|---|---|
-| atlas-ciego-v5 (c3b445e) | REJECT (χ² 47,106 / 3 g.l., p = 3,3e-10) | FALSADO (χ² > 7,815; deriva detectada, rep12 caducó) | sí (malo ≠ ACCEPT) |
+| atlas-ciego-v5 (c3b445e) | REJECT (χ² 47,106 / 3 g.l., p = 3,3e-10) | FALSADO (χ² > 7,815: la F de ESE layout derivó; **no** dice que la decisión de ruteo caducara — si todo el chip empeoró, el layout viejo podría seguir siendo el mejor; E4b añade un layout de control medido a la vez) | sí (malo ≠ ACCEPT) |
 | HEAD 15c9232 | REJECT, misma razón | — | sí |
 | atlas-ciego-v3 / v2 | HOLD (sin abs_error/tolerance) | — | vacuo (HOLD = no-ACCEPT) |
 
@@ -76,7 +76,11 @@ igual que la ley de Atlas: **no anticipó la caída**. No cambia el veredicto de
 día):** frescura POR CAMPO. Motivación: Atlas comparó los snapshots de 02:16 y 11:51 en los 12 qubits: T1, readout y sx
 idénticos al último decimal en los 156 qubits (IBM no los re-midió; solo actualizó CZ); las CZ empeoraron 1,3–1,8× en 5
 aristas; la calibración predecía ~+17 % de error por capa y se observó ~+70 %.
-1. **Fuente primaria: fechas por parámetro.** Si el payload trae `field_dates` (IBM `BackendProperties` da una fecha por
+1. **Fuente primaria: fechas por parámetro.** Forma acordada con Atlas (su `qpu_cal_fetch.py`, desde E4b), al nivel
+   superior del snapshot: `"field_dates": {"t1_us": {"<q>": iso8601+zona}, "readout": {...}, "sx": {...}, "cz": {"a_b": iso}}`
+   (qubits como string; aristas `a_b` con a<b, igual que en `cz`); si `properties()` falla, `"field_dates": null` +
+   `"field_dates_error": "<Tipo>: <msg>"`, nunca ausente en silencio; `measured` = hora de DESCARGA (`measured_note` lo
+   dice); sin `t2_us` en ese esquema. Si el payload trae `field_dates` (IBM `BackendProperties` da una fecha por
    parámetro: `qubits[i][k].date`, `gates[j].parameters[k].date`; Atlas corrige su fetcher para conservarlas), la
    frescura se juzga por campo con esas fechas y **mandan sobre cualquier inferencia**.
 2. **Inferencia por identidad, solo sin `field_dates` y solo con `previous_snapshot`** (misma forma, `measured` anterior
