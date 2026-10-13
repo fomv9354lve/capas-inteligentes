@@ -128,3 +128,20 @@ Dos falsos-ACCEPT, los dos con nombre de deuda de motor:
 
 **Acumulado fuera de muestra (X4 + X5, limpios): malos no-ACCEPT 17/21 = 0,81 [0,60–0,92]; buenos no-REJECT
 16/17 = 0,94 [0,73–0,99].** Sigue siendo n chico; es la primera cifra que no es post-hoc y no es n=20.
+
+### Post-hoc: coste y ganancia de las reglas nuevas del 13-oct sobre X1–X5 (conoce desenlaces; NO es tasa)
+
+Árbol 8ddceac vs veredictos sellados (X1–3 en v2; X4 en v4; X5 en v6). 40 flips en 233 claims, ninguno a
+REJECT. Atribuibles SOLO a las tres reglas nuevas de hoy (el resto son palancas §6/A–E ya medidas):
+
+| regla | malos → detectados | buenos pierden ACCEPT (→ REWRITE/HOLD) |
+|---|---|---|
+| alcance en texto sin `scope_declared/tested` (exact_model) | 2 (X4-001, X4-002) | **5** (X3-010, X3-039, X3-045, X4-030 C, X4-035 C) |
+| alcance declarado acotado + texto universal (C6-02 fix, proofs) | 3 (X1-008, X2-008, X3-041) | 0 |
+| precisión de máquina sin control negativo | 3 (X1-005, X5-010, X4-014 REWRITE→HOLD) | 1 (X1-054) |
+
+Lectura: el fix de C6-02 es ganancia neta; el control negativo casi; **la regla de alcance en texto cuesta 5
+buenos por 2 malos** porque nadie declaró `scope_declared/scope_tested` (no existían al codificar) — sólo
+dispara por prosa. Es lo mismo que pasó con A–E: la regla sirve cuando el codificador declara; sin
+declaración, degrada a REWRITE (nunca REJECT) y el coste es ese. Se deja como está: lo que pide es un campo,
+y el campo ahora existe.
