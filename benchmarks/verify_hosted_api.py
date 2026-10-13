@@ -55,9 +55,12 @@ def run() -> int:
         # 2. issuance with auth -> signed + persisted record with an id
         st, rec = _req(port, "POST", "/api/certificate", issue_body,
                        {"Authorization": "Bearer test-key-123"})
-        cid = rec.get("certificate_id")
+        # since e5e513c the issuance response is self-explanatory: the persisted, signed record is nested under
+        # "certificate" beside the top-level verdict/gate_verdict (verifier aligned 2026-10-13)
+        record = rec.get("certificate", rec)
+        cid = record.get("certificate_id")
         checks.append((f"issue with API key -> signed cert id={str(cid)[:12]}…",
-                       st == 200 and bool(cid) and "signature" in rec))
+                       st == 200 and bool(cid) and "signature" in record))
 
         # 3. retrieve by id (public) and the server self-verifies it
         st, got = _req(port, "GET", f"/api/certificate/{cid}")
@@ -65,13 +68,13 @@ def run() -> int:
                        st == 200 and got.get("verification", {}).get("valid") is True))
 
         # 4. tamper detection: alter the certificate, signature must fail
-        tampered = json.loads(json.dumps(rec))
+        tampered = json.loads(json.dumps(record))
         tampered["certificate"]["verdict"] = "FORGED-ACCEPT"
         st, ver = _req(port, "POST", "/api/certificate/verify", {"record": tampered})
         checks.append(("tampered certificate -> verify.valid is False", ver.get("valid") is False))
 
         # 5. untampered record verifies true
-        st, ver2 = _req(port, "POST", "/api/certificate/verify", {"record": rec})
+        st, ver2 = _req(port, "POST", "/api/certificate/verify", {"record": record})
         checks.append(("original record -> verify.valid is True", ver2.get("valid") is True))
 
         # 6. health + the new gate endpoints still work
