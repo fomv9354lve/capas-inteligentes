@@ -58,8 +58,12 @@ def compute_hashes(html: str) -> tuple[list[str], list[str]]:
     markup = re.sub(r"<script>.*?</script>", "", html, flags=re.S)
     markup = re.sub(r"<style[^>]*>.*?</style>", "", markup, flags=re.S)
 
-    # inline style="..." attribute values (double-quoted)
+    # inline style="..." attribute values (double-quoted) in markup AND in the <script> template literals:
+    # batch mode injects `style="display:flex;gap:8px;flex-wrap:wrap"` / `style="--batch-progress:100%"` via
+    # innerHTML, and those attribute values are hashed by the browser like static ones (found 2026-10-13:
+    # every batch render logged 4 CSP style violations). Interpolated values (${...}) cannot be hashed and are skipped.
     style_attrs = attr_values(markup, r'\sstyle="([^"]*)"')
+    style_attrs += [v for v in attr_values(script_block, r'\sstyle="([^"]*)"') if "${" not in v]
     # inline event handlers on*="..." (double-quoted)
     handlers = attr_values(markup, r'\son[a-z]+="([^"]*)"')
 
