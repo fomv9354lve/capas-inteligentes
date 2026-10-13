@@ -173,3 +173,16 @@ def test_joint_chi2_alone_is_judged():
 def test_chi2_without_dof_still_holds():
     p = _chi2only(0.933, 3); del p["evidence"]["test_statistic"]["dof"]
     assert capas.decide_external_claim(p)["verdict"] == "HOLD"
+
+
+# --- LIVE BUG (deploy 2026-10-13 11:40): the container has no scipy, so the joint chi2 p-value was None and the stage
+# fell through to ACCEPT (83.35 on 5 dof accepted live). Without scipy the joint test must HOLD — never fail open.
+def test_joint_chi2_without_scipy_holds(monkeypatch):
+    import builtins
+    real_import = builtins.__import__
+    def fake(name, *a, **k):
+        if name.startswith("scipy"): raise ImportError("no scipy")
+        return real_import(name, *a, **k)
+    monkeypatch.setattr(builtins, "__import__", fake)
+    d = capas.decide_external_claim(_chi2only(83.354, 5))
+    assert d["verdict"] == "HOLD" and "scipy" in d["reason"].lower(), d["reason"]

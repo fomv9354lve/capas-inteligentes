@@ -2166,6 +2166,10 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
                     verdict = "REJECT"
                     reason = f"{reason}; the claim's own fitted constraint sits at z = {float(_zp):+.3g} (|z| > {_Z_CONSTRAINT:g}): the constraint is rejected by the fit"
                     licensed_claim = None
+                elif _pfit is None:
+                    verdict = "HOLD"
+                    reason = f"{reason}; the joint chi2 p-value needs scipy, which is not installed on this engine — cannot judge (fail-closed)"
+                    licensed_claim = None
                 elif _riv and _per_dof >= min(_riv):
                     verdict = "REJECT"
                     reason = f"{reason}; chi2/dof {_per_dof:.3g} does not beat a declared rival ({min(_riv):.3g}) — the claimed closed form is not the best fit"

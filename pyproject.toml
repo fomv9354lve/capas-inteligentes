@@ -20,6 +20,7 @@ classifiers = [
 ]
 dependencies = [
   "numpy",
+  "scipy",   # load-bearing since 2026-10-13: p-value recomputation and joint chi2 criteria (the engine HOLDs without it, never fails open)
 ]
 
 [project.optional-dependencies]
