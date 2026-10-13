@@ -29,7 +29,7 @@
           "type": "string",
           "minLength": 1,
           "maxLength": 256,
-          "pattern": "^(?:(?!<[A-Za-z/!?])[^˂˃‹›〈-〉❬-❭⧼-⧽〈-〉﹤-﹥＜-＞])*$",
+          "pattern": "^(?:(?![<⟨][A-Za-z/!?])[^˂˃‹›〈-〉❬-❭⧼-⧽〈-〉﹤-﹥＜-＞])*$",
           "description": "Claim ids must not contain HTML angle brackets or common Unicode angle-bracket homoglyphs."
         },
         "type": {
@@ -54,7 +54,7 @@
           "type": "string",
           "minLength": 1,
           "maxLength": 2000,
-          "pattern": "^(?:(?!<[A-Za-z/!?])[^˂˃‹›〈-〉❬-❭⧼-⧽〈-〉﹤-﹥＜-＞])*$",
+          "pattern": "^(?:(?![<⟨][A-Za-z/!?])[^˂˃‹›〈-〉❬-❭⧼-⧽〈-〉﹤-﹥＜-＞])*$",
           "description": "Claim text must not contain HTML angle brackets or common Unicode angle-bracket homoglyphs because payloads may be displayed by downstream consumers."
         }
       }
@@ -83,7 +83,7 @@
             "empirical_anchor",
             "relative_anchor"
           ],
-          "pattern": "^(?:(?!<[A-Za-z/!?])[^˂˃‹›〈-〉❬-❭⧼-⧽〈-〉﹤-﹥＜-＞])*$"
+          "pattern": "^(?:(?![<⟨][A-Za-z/!?])[^˂˃‹›〈-〉❬-❭⧼-⧽〈-〉﹤-﹥＜-＞])*$"
         },
         "local_property_tests_pass": {
           "type": "boolean"
@@ -94,7 +94,7 @@
         "relative_anchor_reference": {
           "type": "string",
           "minLength": 1,
-          "pattern": "^(?:(?!<[A-Za-z/!?])[^˂˃‹›〈-〉❬-❭⧼-⧽〈-〉﹤-﹥＜-＞])*$"
+          "pattern": "^(?:(?![<⟨][A-Za-z/!?])[^˂˃‹›〈-〉❬-❭⧼-⧽〈-〉﹤-﹥＜-＞])*$"
         },
         "relative_anchor_comparison_pass": {
           "type": "boolean"
@@ -112,12 +112,12 @@
         "benchmark_name": {
           "type": "string",
           "minLength": 1,
-          "pattern": "^(?:(?!<[A-Za-z/!?])[^˂˃‹›〈-〉❬-❭⧼-⧽〈-〉﹤-﹥＜-＞])*$"
+          "pattern": "^(?:(?![<⟨][A-Za-z/!?])[^˂˃‹›〈-〉❬-❭⧼-⧽〈-〉﹤-﹥＜-＞])*$"
         },
         "benchmark_metric": {
           "type": "string",
           "minLength": 1,
-          "pattern": "^(?:(?!<[A-Za-z/!?])[^˂˃‹›〈-〉❬-❭⧼-⧽〈-〉﹤-﹥＜-＞])*$"
+          "pattern": "^(?:(?![<⟨][A-Za-z/!?])[^˂˃‹›〈-〉❬-❭⧼-⧽〈-〉﹤-﹥＜-＞])*$"
         },
         "benchmark_pass": {
           "type": "boolean"
@@ -155,12 +155,12 @@
         },
         "metric_name": {
           "type": "string",
-          "pattern": "^(?:(?!<[A-Za-z/!?])[^˂˃‹›〈-〉❬-❭⧼-⧽〈-〉﹤-﹥＜-＞])*$"
+          "pattern": "^(?:(?![<⟨][A-Za-z/!?])[^˂˃‹›〈-〉❬-❭⧼-⧽〈-〉﹤-﹥＜-＞])*$"
         },
         "audit_trail": {},
         "bound_scope": {
           "type": "string",
-          "pattern": "^(?:(?!<[A-Za-z/!?])[^˂˃‹›〈-〉❬-❭⧼-⧽〈-〉﹤-﹥＜-＞])*$"
+          "pattern": "^(?:(?![<⟨][A-Za-z/!?])[^˂˃‹›〈-〉❬-❭⧼-⧽〈-〉﹤-﹥＜-＞])*$"
         },
         "intervention_or_natural_experiment": {
           "type": "boolean"
@@ -200,14 +200,14 @@
         },
         "conflict_resolution_method": {
           "type": "string",
-          "pattern": "^(?:(?!<[A-Za-z/!?])[^˂˃‹›〈-〉❬-❭⧼-⧽〈-〉﹤-﹥＜-＞])*$"
+          "pattern": "^(?:(?![<⟨][A-Za-z/!?])[^˂˃‹›〈-〉❬-❭⧼-⧽〈-〉﹤-﹥＜-＞])*$"
         },
         "resolution_pre_registered": {
           "type": "boolean"
         },
         "modality": {
           "type": "string",
-          "pattern": "^(?:(?!<[A-Za-z/!?])[^˂˃‹›〈-〉❬-❭⧼-⧽〈-〉﹤-﹥＜-＞])*$"
+          "pattern": "^(?:(?![<⟨][A-Za-z/!?])[^˂˃‹›〈-〉❬-❭⧼-⧽〈-〉﹤-﹥＜-＞])*$"
         },
         "source_hashes_verified": {
           "type": "boolean"
@@ -221,17 +221,17 @@
         "language": {
           "type": "string",
           "minLength": 1,
-          "pattern": "^(?:(?!<[A-Za-z/!?])[^˂˃‹›〈-〉❬-❭⧼-⧽〈-〉﹤-﹥＜-＞])*$"
+          "pattern": "^(?:(?![<⟨][A-Za-z/!?])[^˂˃‹›〈-〉❬-❭⧼-⧽〈-〉﹤-﹥＜-＞])*$"
         },
         "language_version": {
           "type": "string",
           "minLength": 1,
-          "pattern": "^(?:(?!<[A-Za-z/!?])[^˂˃‹›〈-〉❬-❭⧼-⧽〈-〉﹤-﹥＜-＞])*$"
+          "pattern": "^(?:(?![<⟨][A-Za-z/!?])[^˂˃‹›〈-〉❬-❭⧼-⧽〈-〉﹤-﹥＜-＞])*$"
         },
         "claim_api": {
           "type": "string",
           "minLength": 1,
-          "pattern": "^(?:(?!<[A-Za-z/!?])[^˂˃‹›〈-〉❬-❭⧼-⧽〈-〉﹤-﹥＜-＞])*$"
+          "pattern": "^(?:(?![<⟨][A-Za-z/!?])[^˂˃‹›〈-〉❬-❭⧼-⧽〈-〉﹤-﹥＜-＞])*$"
         },
         "code_snippet": {
           "type": "string",
@@ -255,21 +255,21 @@
         },
         "docs_reference": {
           "type": "string",
-          "pattern": "^(?:(?!<[A-Za-z/!?])[^˂˃‹›〈-〉❬-❭⧼-⧽〈-〉﹤-﹥＜-＞])*$"
+          "pattern": "^(?:(?![<⟨][A-Za-z/!?])[^˂˃‹›〈-〉❬-❭⧼-⧽〈-〉﹤-﹥＜-＞])*$"
         },
         "physical_evidence_level": {
           "type": "string",
-          "pattern": "^(?:(?!<[A-Za-z/!?])[^˂˃‹›〈-〉❬-❭⧼-⧽〈-〉﹤-﹥＜-＞])*$"
+          "pattern": "^(?:(?![<⟨][A-Za-z/!?])[^˂˃‹›〈-〉❬-❭⧼-⧽〈-〉﹤-﹥＜-＞])*$"
         },
         "verification_independence": {
           "type": "string",
-          "pattern": "^(?:(?!<[A-Za-z/!?])[^˂˃‹›〈-〉❬-❭⧼-⧽〈-〉﹤-﹥＜-＞])*$"
+          "pattern": "^(?:(?![<⟨][A-Za-z/!?])[^˂˃‹›〈-〉❬-❭⧼-⧽〈-〉﹤-﹥＜-＞])*$"
         },
         "reference_truth": {},
         "current_claim": {
           "type": "string",
           "maxLength": 4000,
-          "pattern": "^(?:(?!<[A-Za-z/!?])[^˂˃‹›〈-〉❬-❭⧼-⧽〈-〉﹤-﹥＜-＞])*$",
+          "pattern": "^(?:(?![<⟨][A-Za-z/!?])[^˂˃‹›〈-〉❬-❭⧼-⧽〈-〉﹤-﹥＜-＞])*$",
           "description": "Optional weaker claim text for REWRITE. HTML angle brackets and common Unicode angle-bracket homoglyphs are rejected because this value can be displayed by downstream consumers."
         }
       }

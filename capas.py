@@ -742,8 +742,9 @@ WEB_FETCH_TIMEOUT_SECONDS = 15
 # and bra-ket ⟨ ⟩ (U+27E8/9) are legitimate scientific text. The published JSON schema carries the same pattern.
 DISALLOWED_ANGLE_HOMOGLYPHS = "\u02c2\u02c3\u2039\u203a"
 DISALLOWED_ANGLE_RANGES = "\u2329-\u232a\u276c-\u276d\u29fc-\u29fd\u3008-\u3009\ufe64-\ufe65\uff1c-\uff1e"
-DISALLOWED_ANGLE_REGEX = re.compile(f"(<[A-Za-z/!?]|[{re.escape(DISALLOWED_ANGLE_HOMOGLYPHS)}{DISALLOWED_ANGLE_RANGES}])")
-NO_ANGLE_PATTERN = f"^(?:(?!<[A-Za-z/!?])[^{re.escape(DISALLOWED_ANGLE_HOMOGLYPHS)}{DISALLOWED_ANGLE_RANGES}])*$"
+# bra-ket ⟨ ⟩ (U+27E8/9) is allowed as such but, like `<`, not when it opens an ASCII tag name (⟨img src=x onerror=…⟩).
+DISALLOWED_ANGLE_REGEX = re.compile(f"([<\u27e8][A-Za-z/!?]|[{re.escape(DISALLOWED_ANGLE_HOMOGLYPHS)}{DISALLOWED_ANGLE_RANGES}])")
+NO_ANGLE_PATTERN = f"^(?:(?![<\u27e8][A-Za-z/!?])[^{re.escape(DISALLOWED_ANGLE_HOMOGLYPHS)}{DISALLOWED_ANGLE_RANGES}])*$"
 
 
 def _contains_angle_like_character(value: str) -> bool:

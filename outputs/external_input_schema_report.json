@@ -2995,18 +2995,7 @@
           },
           "dialectic": {
             "burden_of_proof": [
-              "training: source-backed evidence is not attached",
-              "training: external review is not attached",
-              "training: claim.text semantic alignment is not externally certified",
-              "training: witness independence is not externally certified",
-              "training: provenance.sources or provenance.source_urls is empty",
-              "training: external review hash is missing or does not match review_packet",
-              "training: source URLs are not recoverable with matching hashes",
-              "training: witness_id is not resolvable in the witness registry",
-              "training: RO-Crate provenance packet is missing, invalid, or hash-mismatched",
-              "training: reviewer identity or attestation is not verifiable",
-              "training: provenance.review_id is missing",
-              "training: provenance.witness_id is missing"
+              "schema: claim.text must not contain angle brackets or Unicode angle-bracket homoglyphs"
             ],
             "licensed_thesis": "\u27e8img src=x onerror=alert(1)\u27e9",
             "optional_supports": [],
@@ -3015,60 +3004,53 @@
               "evidence.within_chemical_accuracy"
             ],
             "thesis": "\u27e8img src=x onerror=alert(1)\u27e9",
-            "undercutters": [],
-            "warrant": "within_chemical_accuracy is true"
+            "undercutters": [
+              "claim.text must not contain angle brackets or Unicode angle-bracket homoglyphs"
+            ],
+            "warrant": "input payload failed CAPAS schema validation"
           },
           "lattice": {
             "axes": {
               "boundary": {
-                "level": "claim_licensed",
-                "score": 4
+                "level": "schema_blocked",
+                "score": 1
               },
               "contract": {
-                "level": "contract_complete",
-                "score": 3
+                "level": "registered",
+                "score": 1
               },
               "defeaters": {
-                "level": "no_active_defeater",
-                "score": 4
+                "level": "schema_undercut",
+                "score": 1
               },
               "evidence": {
-                "level": "supports_claim_boundary",
-                "score": 4
+                "level": "none",
+                "score": 0
               },
               "provenance": {
                 "level": "none",
                 "score": 0
               }
             },
-            "controlled_reuse_meet": 3,
+            "controlled_reuse_meet": 0,
             "non_claim": "This lattice orders admissibility of supplied evidence, not scientific truth.",
-            "reuse_boundary": "claim_licensed",
+            "reuse_boundary": "schema_blocked",
             "training_reuse_meet": 0
           },
           "metaphor": "compiler_certificate",
           "next_action": {
-            "kind": "verify_provenance_for_training",
-            "label": "Claim is licensed; verify provenance before using as fine-tuning data."
+            "kind": "repair_schema",
+            "label": "Repair schema and field placement before CAPAS can decide."
           },
           "proof_obligations": [
-            "training: source-backed evidence is not attached",
-            "training: external review is not attached",
-            "training: claim.text semantic alignment is not externally certified",
-            "training: witness independence is not externally certified",
-            "training: provenance.sources or provenance.source_urls is empty",
-            "training: external review hash is missing or does not match review_packet",
-            "training: source URLs are not recoverable with matching hashes",
-            "training: witness_id is not resolvable in the witness registry",
-            "training: RO-Crate provenance packet is missing, invalid, or hash-mismatched",
-            "training: reviewer identity or attestation is not verifiable",
-            "training: provenance.review_id is missing",
-            "training: provenance.witness_id is missing"
+            "schema: claim.text must not contain angle brackets or Unicode angle-bracket homoglyphs"
           ]
         },
-        "audit_hash": "sha256:5a8740465cd975f146857bda2e060556d2539df0b9fbbd0fa2118f0476b27840",
+        "audit_hash": "sha256:078fd9f9a0ce8e53e3e2885545134ccf816e97b0c6deb61d1ff2834a53482eab",
         "did_you_mean": {},
         "fine_tune_blockers": [
+          "claim verdict is not ACCEPT",
+          "schema or required-field blockers remain",
           "source-backed evidence is not attached",
           "external review is not attached",
           "claim.text semantic alignment is not externally certified",
@@ -3089,11 +3071,11 @@
           "review_id_present": false,
           "reviewer_attestation_verified": false,
           "ro_crate_validated": false,
-          "schema_clean": true,
+          "schema_clean": false,
           "semantic_alignment": false,
           "source_backed_evidence": false,
           "source_urls_recoverable_hashable": false,
-          "verdict_accept": true,
+          "verdict_accept": false,
           "witness_id_present": false,
           "witness_independence": false,
           "witness_registry_resolved": false
@@ -3104,34 +3086,31 @@
           "text": "\u27e8img src=x onerror=alert(1)\u27e9",
           "type": "physical_accuracy"
         },
-        "invariant_audit": {
-          "applicable": false,
-          "holds": [],
-          "laws_checked": [],
-          "results": {},
-          "summary": "no domain invariant applies to this evidence",
-          "verdict": "N/A",
-          "violations": []
-        },
         "licensed_claim": "\u27e8img src=x onerror=alert(1)\u27e9",
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
-        "reason": "within_chemical_accuracy is true",
-        "required_fields": [
-          "within_chemical_accuracy"
-        ],
+        "reason": "input payload failed CAPAS schema validation",
+        "required_fields": [],
         "resolution": {
-          "kind": "accepted",
-          "message": "The evidence licenses the claim as worded."
+          "did_you_mean": {},
+          "errors": [
+            "claim.text must not contain angle brackets or Unicode angle-bracket homoglyphs"
+          ],
+          "kind": "fix_schema_errors",
+          "message": "Correct the listed schema errors (each names its own fix), then resubmit."
         },
         "rewrite": null,
-        "schema_errors": [],
+        "schema_errors": [
+          "claim.text must not contain angle brackets or Unicode angle-bracket homoglyphs"
+        ],
         "schema_version": "capas-claim-payload-v3",
-        "verdict": "ACCEPT"
+        "verdict": "HOLD"
       },
-      "errors": [],
+      "errors": [
+        "claim.text must not contain angle brackets or Unicode angle-bracket homoglyphs"
+      ],
       "expected_error": "claim.text must not contain angle brackets or Unicode angle-bracket homoglyphs",
-      "passed": false
+      "passed": true
     },
     {
       "check": "adversarial_payload:claim_text_second_generation_angle_homoglyphs",
@@ -8301,7 +8280,7 @@
       "passed": true
     }
   ],
-  "external_input_schema_ready": false,
+  "external_input_schema_ready": true,
   "invalid_example": "examples/external_claim_invalid.json",
   "schema": "docs/schema/capas_claim_payload.schema.json",
   "valid_examples": [

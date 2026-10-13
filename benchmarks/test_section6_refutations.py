@@ -115,5 +115,5 @@ def test_scientific_inequalities_are_allowed_in_claim_text():
         assert _text_ok(t), t
 
 def test_tag_like_and_spoofing_text_still_rejected():
-    for t in ("<script>alert(1)</script>", "x </b> y", "<!-- hidden -->", "<img src=x onerror=1>", "a ＜script＞ b", "x ‹b› y", "<?php echo 1 ?>"):
+    for t in ("<script>alert(1)</script>", "x </b> y", "<!-- hidden -->", "<img src=x onerror=1>", "a ＜script＞ b", "x ‹b› y", "<?php echo 1 ?>", "\u27e8img src=x onerror=alert(1)\u27e9"):
         assert not _text_ok(t), t
