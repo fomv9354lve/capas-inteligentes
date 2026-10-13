@@ -39,3 +39,14 @@ Fase 2 queda así: (a) recodificación post-corrida de los 10 ya corridos, sobre
 veredicto), todo `contaminado:true` — prueba de formato (¿con campos medidos el gate llega a ACCEPT/REJECT?), no
 validación; (b) limpios de verdad = E4 cuando se corra, Spend Frontier v4 regenerada y pre-registros nuevos,
 codificados post-corrida con desenlace retenido hasta el sellado. Tag vigente: `atlas-ciego-v3` (+ v2 para comparar).
+
+## Fase 2(a) — recodificación post-corrida (contaminada, prueba de formato), claims sha256 `99dddd79…`
+
+| motor | veredictos | lo que enseñó |
+|---|---|---|
+| v2 (e83e870) / v3 (eb45820) | 9 HOLD, 1 ACCEPT | 5 HOLD por esquema: el validador rechazaba `<`/`>` en el texto ("χ² > 11.07", "MMI ≥ 0.6 bits") → **fallo de CAPAS**, corregido en v4 |
+| v4 (99d8213) | 8 HOLD, 2 ACCEPT | los χ² conjuntos seguían en HOLD: exact_model_solution exigía abs_error/tolerance con `test_statistic` presente → **fallo de CAPAS**, corregido en v5 |
+| v5 (c3b445e) | 3 ACCEPT, 2 REJECT, 5 HOLD | **5/5 coinciden con los desenlaces donde hay campos** (mirror_ext y rep12 FALSADO → REJECT; S1, S4, S5 CONFIRMADO → ACCEPT); los 5 HOLD son ausencias a propósito (p/alpha desde SEM, umbral unilateral sin SE, sin reproducción independiente) y son correctos |
+
+Archivos sellados: `phase2/DE_CAPAS_veredictos_atlas_postrun_{v2,v3,v4,v5}.jsonl` (sha256 en cabecera). Deuda: no existe
+tipo para un umbral unilateral sobre un estimador sin SE (S6). Tag vigente para los limpios: `atlas-ciego-v5`.
