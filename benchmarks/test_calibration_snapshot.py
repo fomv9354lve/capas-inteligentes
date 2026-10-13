@@ -55,3 +55,27 @@ def test_real_kingston_snapshot_reports_its_outliers():
     a = ci.audit({"calibration_snapshot": json.load(open(f))})
     r = a["results"]["calibration_snapshot"]
     assert "outliers" in r and isinstance(r["outliers"], list)
+
+
+# --- Atlas's proposed ABSOLUTE policy (pending Osvaldo): edge > 1e-2, T1 < 60 us, freshness same day.
+ATLAS_ABS = {"edge_max_abs": 1e-2, "t1_min_us": 60.0, "max_age_days": 0.0}
+
+def test_absolute_edge_threshold_flags_above_1e_2_even_if_relative_passes():
+    # all edges ~equally bad: relative filter sees no outlier, absolute one must still flag
+    bad = _snap([0.02, 0.021, 0.019, 0.02, 0.022, 0.02], [210] * 6)
+    bad["thresholds"] = ATLAS_ABS
+    a = ci.audit({"calibration_snapshot": bad})
+    assert a["verdict"] == "FLAG" and "1e-02" in a["results"]["calibration_snapshot"]["why"] or "0.01" in a["results"]["calibration_snapshot"]["why"]
+    assert ci.audit({"calibration_snapshot": _snap([0.02, 0.021, 0.019, 0.02, 0.022, 0.02], [210] * 6)})["verdict"] == "PASS"
+
+def test_absolute_t1_floor_60us_flags_59_not_61():
+    for t1, want in ((59.0, "FLAG"), (61.0, "PASS")):
+        s = _snap([0.002] * 6, [210, 200, t1, 190, 250, 220])
+        s["thresholds"] = {"t1_min_us": 60.0, "t1_min_frac_median": 0.0}
+        assert ci.audit({"calibration_snapshot": s})["verdict"] == want, t1
+
+def test_same_day_freshness_policy():
+    s = {**HEALTHY, "measured": "2026-10-12 23:00:00", "job_date": "2026-10-13 01:00:00", "thresholds": {"max_age_days": 0.0}}
+    assert ci.audit({"calibration_snapshot": s})["verdict"] == "FLAG"   # different calendar day
+    s = {**HEALTHY, "measured": "2026-10-13 00:25:48", "job_date": "2026-10-13 18:00:00", "thresholds": {"max_age_days": 0.0}}
+    assert ci.audit({"calibration_snapshot": s})["verdict"] == "PASS"   # same day

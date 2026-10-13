@@ -861,7 +861,9 @@ _SNAP_DEFAULTS = {
     "readout_x_median": 5.0,     # readout > 5x la mediana -> outlier
     "t1_min_frac_median": 1 / 3, # T1 < mediana/3 -> outlier (54 us vs mediana 209 = 0.26x)
     "t1_min_us": 0.0,            # piso absoluto opcional (0 = no aplica)
-    "max_age_days": 7.0,         # snapshot medido > 7 dias antes del job -> stale
+    "edge_max_abs": 0.0,         # techo absoluto opcional de error por arista (0 = no aplica)
+    "readout_max_abs": 0.0,      # techo absoluto opcional de readout (0 = no aplica)
+    "max_age_days": 7.0,         # snapshot medido > N dias antes del job -> stale; 0 = mismo dia calendario
 }
 
 
@@ -913,6 +915,8 @@ def check_calibration_snapshot(ev: dict[str, Any]) -> dict[str, Any]:
             if med_e > 0 and v / med_e > th["edge_x_median"]:
                 outliers.append({"element": k, "kind": "edge_error", "value": v,
                                  "ratio_to_median": round(v / med_e, 2), "limit": th["edge_x_median"]})
+            elif th["edge_max_abs"] > 0 and v > th["edge_max_abs"]:
+                outliers.append({"element": k, "kind": "edge_error_abs", "value": v, "limit_abs": th["edge_max_abs"]})
 
     # 2) qubits: T1 piso (relativo a la mediana y absoluto) + readout relativo a la mediana
     t1s = {str(k): _num((v or {}).get("t1_us")) for k, v in qubits.items() if isinstance(v, dict)}
@@ -929,7 +933,7 @@ def check_calibration_snapshot(ev: dict[str, Any]) -> dict[str, Any]:
             continue
         t1 = t1s.get(k)
         if t1 is not None:
-            if med_t1 and t1 / med_t1 < th["t1_min_frac_median"]:
+            if med_t1 and th["t1_min_frac_median"] > 0 and t1 / med_t1 < th["t1_min_frac_median"]:
                 outliers.append({"element": k, "kind": "t1_low", "value": t1,
                                  "ratio_to_median": round(t1 / med_t1, 2), "limit": th["t1_min_frac_median"]})
             elif th["t1_min_us"] > 0 and t1 < th["t1_min_us"]:
@@ -938,6 +942,8 @@ def check_calibration_snapshot(ev: dict[str, Any]) -> dict[str, Any]:
         if ro is not None and med_ro and ro / med_ro > th["readout_x_median"]:
             outliers.append({"element": k, "kind": "readout_high", "value": ro,
                              "ratio_to_median": round(ro / med_ro, 2), "limit": th["readout_x_median"]})
+        elif ro is not None and th["readout_max_abs"] > 0 and ro > th["readout_max_abs"]:
+            outliers.append({"element": k, "kind": "readout_abs", "value": ro, "limit_abs": th["readout_max_abs"]})
         # 3) leyes de libro por fila (T2 <= 2 T1, termico, piso de compuerta...) via capas_quantum_physics
         row_keys = {"t1_us", "t2_us", "p01", "p10", "readout_isolated", "readout_parallel",
                     "gate_error", "gate_time_ns", "zz_residual_hz"}
@@ -967,7 +973,12 @@ def check_calibration_snapshot(ev: dict[str, Any]) -> dict[str, Any]:
     t_meas, t_job = _parse_ts(snap.get("measured")), _parse_ts(snap.get("job_date"))
     if t_meas is not None and t_job is not None:
         age_days = (t_job - t_meas) / 86400.0
-        if age_days > th["max_age_days"]:
+        if th["max_age_days"] <= 0:
+            # politica "mismo dia": dia calendario de la medicion == dia calendario del job
+            from datetime import datetime as _dt
+            if _dt.fromtimestamp(t_meas).date() != _dt.fromtimestamp(t_job).date():
+                stale = round(age_days, 2)
+        elif age_days > th["max_age_days"]:
             stale = round(age_days, 1)
     elif snap.get("job_date") is not None and t_meas is None:
         holds.append("measured timestamp unparseable: cannot judge staleness")
@@ -978,6 +989,10 @@ def check_calibration_snapshot(ev: dict[str, Any]) -> dict[str, Any]:
         if o["kind"] == "t1_low":
             return (f"qubit {o['element']} T1 {o['value']:.4g} us = {o.get('ratio_to_median', '?')}x median "
                     f"(< {o.get('limit', o.get('limit_us'))})")
+        if o["kind"] == "edge_error_abs":
+            return f"edge {o['element']} error {o['value']:.3g} > absolute limit {o['limit_abs']:.3g}"
+        if o["kind"] == "readout_abs":
+            return f"qubit {o['element']} readout {o['value']:.3g} > absolute limit {o['limit_abs']:.3g}"
         if o["kind"] == "readout_high":
             return f"qubit {o['element']} readout {o['value']:.3g} = {o['ratio_to_median']}x median (> {o['limit']}x)"
         return f"{o['element']}: {o['kind']} — {o.get('why')}"
@@ -989,7 +1004,8 @@ def check_calibration_snapshot(ev: dict[str, Any]) -> dict[str, Any]:
     if outliers or stale is not None:
         parts = [_fmt(o) for o in outliers]
         if stale is not None:
-            parts.append(f"stale: measured {stale} days before job (> {th['max_age_days']} days)")
+            parts.append(f"stale: measured {stale} days before job " +
+                         ("(policy: same calendar day)" if th["max_age_days"] <= 0 else f"(> {th['max_age_days']} days)"))
         return {"applies": True, "verdict": "FLAG", "law": law, "why": f"{scope}: " + "; ".join(parts), **extra}
     if holds:
         return {"applies": True, "verdict": "HOLD", "law": law, "why": f"{scope}: " + "; ".join(holds), **extra}
