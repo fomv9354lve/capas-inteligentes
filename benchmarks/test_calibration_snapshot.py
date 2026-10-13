@@ -66,7 +66,11 @@ def test_absolute_edge_threshold_flags_above_1e_2_even_if_relative_passes():
     bad["thresholds"] = ATLAS_ABS
     a = ci.audit({"calibration_snapshot": bad})
     assert a["verdict"] == "FLAG" and "1e-02" in a["results"]["calibration_snapshot"]["why"] or "0.01" in a["results"]["calibration_snapshot"]["why"]
-    assert ci.audit({"calibration_snapshot": _snap([0.02, 0.021, 0.019, 0.02, 0.022, 0.02], [210] * 6)})["verdict"] == "PASS"
+    # relative-only policy (absolute switched off) is blind to a uniformly bad device: documents the gap
+    rel_only = _snap([0.02, 0.021, 0.019, 0.02, 0.022, 0.02], [210] * 6); rel_only["thresholds"] = {"edge_max_abs": 0.0}
+    assert ci.audit({"calibration_snapshot": rel_only})["verdict"] == "PASS"
+    # default policy (Osvaldo 2026-10-13: absolute + relative) catches it
+    assert ci.audit({"calibration_snapshot": _snap([0.02, 0.021, 0.019, 0.02, 0.022, 0.02], [210] * 6)})["verdict"] == "FLAG"
 
 def test_absolute_t1_floor_60us_flags_59_not_61():
     for t1, want in ((59.0, "FLAG"), (61.0, "PASS")):

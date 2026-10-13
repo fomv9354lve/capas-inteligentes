@@ -855,15 +855,17 @@ def check_rmt_G(ev: dict[str, Any]) -> dict[str, Any]:
 #    edges: {id: error_float | {cz_error, rzz_error, ...}}, [layout: {qubits: [...], edges: [...]}],
 #    [job_date: ...], [thresholds: {edge_x_median, readout_x_median, t1_min_frac_median,
 #                                   t1_min_us, max_age_days}]}
-# Umbrales por defecto = propuesta; Atlas los declara en `thresholds` cuando tenga los suyos.
+# Politica fijada por Osvaldo (2026-10-13): absoluta (propuesta de Atlas) + relativa, frescura = mismo dia.
+# Un dispositivo uniformemente malo lo ve la absoluta; un outlier bajo el techo absoluto lo ve la relativa.
+# Cualquier valor se sobreescribe en `thresholds`; 0 desactiva un umbral absoluto.
 _SNAP_DEFAULTS = {
-    "edge_x_median": 5.0,        # arista con error > 5x la mediana del dispositivo -> outlier
-    "readout_x_median": 5.0,     # readout > 5x la mediana -> outlier
-    "t1_min_frac_median": 1 / 3, # T1 < mediana/3 -> outlier (54 us vs mediana 209 = 0.26x)
-    "t1_min_us": 0.0,            # piso absoluto opcional (0 = no aplica)
-    "edge_max_abs": 0.0,         # techo absoluto opcional de error por arista (0 = no aplica)
-    "readout_max_abs": 0.0,      # techo absoluto opcional de readout (0 = no aplica)
-    "max_age_days": 7.0,         # snapshot medido > N dias antes del job -> stale; 0 = mismo dia calendario
+    "edge_x_median": 5.0,        # relativa: arista con error > 5x la mediana del dispositivo -> outlier
+    "readout_x_median": 5.0,     # relativa: readout > 5x la mediana -> outlier
+    "t1_min_frac_median": 1 / 3, # relativa: T1 < mediana/3 -> outlier (54 us vs mediana 209 = 0.26x)
+    "edge_max_abs": 1e-2,        # absoluta (Atlas): arista con error > 1e-2 -> rechazo
+    "t1_min_us": 60.0,           # absoluta (Atlas): T1 < 60 us -> rechazo
+    "readout_max_abs": 0.0,      # absoluta opcional de readout (0 = no aplica)
+    "max_age_days": 0.0,         # frescura por job: 0 = mismo dia calendario (Atlas); N>0 = ventana en dias
 }
 
 
