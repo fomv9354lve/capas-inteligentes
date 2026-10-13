@@ -865,6 +865,8 @@ _SNAP_DEFAULTS = {
     "edge_max_abs": 1e-2,        # absoluta (Atlas): arista con error > 1e-2 -> rechazo
     "t1_min_us": 60.0,           # absoluta (Atlas): T1 < 60 us -> rechazo
     "readout_max_abs": 0.0,      # absoluta opcional de readout (0 = no aplica)
+    "t2_min_frac_median": 0.0,   # T2 piso relativo (0 = apagado; Atlas propone 1/3 tras el CSV IBM 2026-10-13)
+    "t2_min_us": 0.0,            # T2 piso absoluto en us (0 = apagado; Atlas propone 30)
     "max_age_days": 1.0,         # frescura por job: snapshot <= 1 dia antes del job (Osvaldo 2026-10-13, tras el lote
                                  # ciego de Atlas: "mismo dia" marco 2/2 buenas sin cazar mala alguna; IBM recalibra ~a diario).
                                  # 0 = mismo dia calendario; N>0 = ventana en dias
@@ -929,6 +931,9 @@ def check_calibration_snapshot(ev: dict[str, Any]) -> dict[str, Any]:
     t1s = {k: v for k, v in t1s.items() if v is not None and v > 0}
     ros = {str(k): _num((v or {}).get("readout")) for k, v in qubits.items() if isinstance(v, dict)}
     ros = {k: v for k, v in ros.items() if v is not None and v >= 0}
+    t2s = {str(k): _num((v or {}).get("t2_us")) for k, v in qubits.items() if isinstance(v, dict)}
+    t2s = {k: v for k, v in t2s.items() if v is not None and v > 0}
+    med_t2 = _st.median(t2s.values()) if t2s else None
     med_t1 = _st.median(t1s.values()) if t1s else None
     med_ro = _st.median(ros.values()) if ros else None
     for k, v in qubits.items():
@@ -944,6 +949,13 @@ def check_calibration_snapshot(ev: dict[str, Any]) -> dict[str, Any]:
                                  "ratio_to_median": round(t1 / med_t1, 2), "limit": th["t1_min_frac_median"]})
             elif th["t1_min_us"] > 0 and t1 < th["t1_min_us"]:
                 outliers.append({"element": k, "kind": "t1_low", "value": t1, "limit_us": th["t1_min_us"]})
+        t2 = t2s.get(k)
+        if t2 is not None:
+            if med_t2 and th["t2_min_frac_median"] > 0 and t2 / med_t2 < th["t2_min_frac_median"]:
+                outliers.append({"element": k, "kind": "t2_low", "value": t2,
+                                 "ratio_to_median": round(t2 / med_t2, 2), "limit": th["t2_min_frac_median"]})
+            elif th["t2_min_us"] > 0 and t2 < th["t2_min_us"]:
+                outliers.append({"element": k, "kind": "t2_low", "value": t2, "limit_us": th["t2_min_us"]})
         ro = ros.get(k)
         if ro is not None and med_ro and ro / med_ro > th["readout_x_median"]:
             outliers.append({"element": k, "kind": "readout_high", "value": ro,
@@ -997,6 +1009,9 @@ def check_calibration_snapshot(ev: dict[str, Any]) -> dict[str, Any]:
         if o["kind"] == "t1_low":
             return (f"qubit {o['element']} T1 {o['value']:.4g} us = {o.get('ratio_to_median', '?')}x median "
                     f"(< {o.get('limit', o.get('limit_us'))})")
+        if o["kind"] == "t2_low":
+            return (f"qubit {o['element']} T2 {o['value']:.4g} us = {o.get('ratio_to_median', '?')}x median "
+                    f"(< {o.get('limit', o.get('limit_us'))})")
         if o["kind"] == "edge_error_abs":
             return f"edge {o['element']} error {o['value']:.3g} > absolute limit {o['limit_abs']:.3g}"
         if o["kind"] == "readout_abs":
@@ -1007,7 +1022,7 @@ def check_calibration_snapshot(ev: dict[str, Any]) -> dict[str, Any]:
 
     n_j = (len(sel_q) if sel_q is not None else len(qubits)) + (len(sel_e) if sel_e is not None else len(edges))
     scope = f"layout ({n_j} elements judged, medians over whole device)" if layout else f"whole snapshot ({n_j} elements)"
-    extra = {"outliers": outliers, "medians": {"edge_error": med_e if errs else None, "t1_us": med_t1, "readout": med_ro},
+    extra = {"outliers": outliers, "medians": {"edge_error": med_e if errs else None, "t1_us": med_t1, "t2_us": med_t2, "readout": med_ro},
              "thresholds": th, "stale_days": stale}
     if outliers or stale is not None:
         parts = [_fmt(o) for o in outliers]

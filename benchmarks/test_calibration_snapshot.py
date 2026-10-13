@@ -165,3 +165,26 @@ def test_atlas_threshold_aliases_are_honoured():
     assert ci.audit({"calibration_snapshot": strict})["verdict"] == "FLAG"
     strict_t1 = {**w, "thresholds": {**w["thresholds"], "t1_abs_us": 130.0}}  # min T1 in layout is ~122
     assert ci.audit({"calibration_snapshot": strict_t1})["verdict"] == "FLAG"
+
+
+# --- T2 floor (Atlas, 2026-10-13: official IBM CSV carries T2; 12 qubits < 30 us, three inside layouts that PASSED).
+# Off by default until Osvaldo fixes the policy; declarable in thresholds as t2_min_frac_median / t2_min_us.
+def _snap_t2(t2s, t1=210.0):
+    s = _snap([0.002] * 6, [t1] * 6)
+    for i, t2 in enumerate(t2s):
+        s["qubits"][str(i)]["t2_us"] = t2; s["qubits"][str(i)]["t2_method"] = "echo"
+    return s
+
+def test_t2_floor_off_by_default():
+    assert ci.audit({"calibration_snapshot": _snap_t2([140, 150, 19.3, 130, 160, 145])})["verdict"] == "PASS"
+
+def test_t2_relative_floor_flags_below_median_third():
+    s = _snap_t2([140, 150, 19.3, 130, 160, 145]); s["thresholds"] = {"t2_min_frac_median": 1 / 3}
+    a = ci.audit({"calibration_snapshot": s})
+    assert a["verdict"] == "FLAG" and {o["element"] for o in a["results"]["calibration_snapshot"]["outliers"]} == {"2"}
+
+def test_t2_absolute_floor_flags_below_30us():
+    s = _snap_t2([140, 150, 28.5, 130, 160, 145]); s["thresholds"] = {"t2_min_us": 30.0}
+    assert ci.audit({"calibration_snapshot": s})["verdict"] == "FLAG"
+    s["thresholds"] = {"t2_min_us": 25.0}
+    assert ci.audit({"calibration_snapshot": s})["verdict"] == "PASS"
