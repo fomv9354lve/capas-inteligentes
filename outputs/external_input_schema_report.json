@@ -3,7 +3,7 @@
     {
       "check": "published_schema_matches_cli_schema",
       "detail": "docs/schema/capas_claim_payload.schema.json",
-      "passed": true
+      "passed": false
     },
     {
       "check": "valid_example:external_claim_accept.json",
@@ -60,7 +60,7 @@
         "passed": false,
         "returncode": 1,
         "stderr_tail": "",
-        "stdout_tail": "INVALID: examples/external_claim_invalid.json\n- evidence must be an object\n- claim.id must be a non-empty string\n- claim.type must be one of: causal_mechanism_claim, claim_transition, evidence_conflict_claim, exact_model_solution, financial_metric_claim, multimodal_evidence_claim, physical_accuracy, programming_language_behavior_claim, reproducibility_check, statistical_confidence, systematic_review_claim, universal_anchor_claim; unsupported claim type 'unsupported_claim_type' requires a registered evidence contract before CAPAS can decide it\n"
+        "stdout_tail": "INVALID: examples/external_claim_invalid.json\n- evidence must be an object\n- claim.id must be a non-empty string\n- claim.type must be one of: causal_mechanism_claim, claim_transition, evidence_conflict_claim, exact_model_solution, financial_metric_claim, multimodal_evidence_claim, physical_accuracy, programming_language_behavior_claim, proof_admissibility, reproducibility_check, statistical_confidence, systematic_review_claim, universal_anchor_claim; unsupported claim type 'unsupported_claim_type' requires a registered evidence contract before CAPAS can decide it\n"
       },
       "decision": {
         "admissibility_certificate": {
@@ -79,7 +79,7 @@
             "burden_of_proof": [
               "schema: evidence must be an object",
               "schema: claim.id must be a non-empty string",
-              "schema: claim.type must be one of: causal_mechanism_claim, claim_transition, evidence_conflict_claim, exact_model_solution, financial_metric_claim, multimodal_evidence_claim, physical_accuracy, programming_language_behavior_claim, reproducibility_check, statistical_confidence, systematic_review_claim, universal_anchor_claim; unsupported claim type 'unsupported_claim_type' requires a registered evidence contract before CAPAS can decide it",
+              "schema: claim.type must be one of: causal_mechanism_claim, claim_transition, evidence_conflict_claim, exact_model_solution, financial_metric_claim, multimodal_evidence_claim, physical_accuracy, programming_language_behavior_claim, proof_admissibility, reproducibility_check, statistical_confidence, systematic_review_claim, universal_anchor_claim; unsupported claim type 'unsupported_claim_type' requires a registered evidence contract before CAPAS can decide it",
               "contract: register evidence contract for claim.type 'unsupported_claim_type'"
             ],
             "licensed_thesis": "This payload is structurally invalid because the claim id is empty.",
@@ -90,7 +90,7 @@
             "undercutters": [
               "evidence must be an object",
               "claim.id must be a non-empty string",
-              "claim.type must be one of: causal_mechanism_claim, claim_transition, evidence_conflict_claim, exact_model_solution, financial_metric_claim, multimodal_evidence_claim, physical_accuracy, programming_language_behavior_claim, reproducibility_check, statistical_confidence, systematic_review_claim, universal_anchor_claim; unsupported claim type 'unsupported_claim_type' requires a registered evidence contract before CAPAS can decide it"
+              "claim.type must be one of: causal_mechanism_claim, claim_transition, evidence_conflict_claim, exact_model_solution, financial_metric_claim, multimodal_evidence_claim, physical_accuracy, programming_language_behavior_claim, proof_admissibility, reproducibility_check, statistical_confidence, systematic_review_claim, universal_anchor_claim; unsupported claim type 'unsupported_claim_type' requires a registered evidence contract before CAPAS can decide it"
             ],
             "warrant": "input payload failed CAPAS schema validation"
           },
@@ -130,10 +130,12 @@
           "proof_obligations": [
             "schema: evidence must be an object",
             "schema: claim.id must be a non-empty string",
-            "schema: claim.type must be one of: causal_mechanism_claim, claim_transition, evidence_conflict_claim, exact_model_solution, financial_metric_claim, multimodal_evidence_claim, physical_accuracy, programming_language_behavior_claim, reproducibility_check, statistical_confidence, systematic_review_claim, universal_anchor_claim; unsupported claim type 'unsupported_claim_type' requires a registered evidence contract before CAPAS can decide it",
+            "schema: claim.type must be one of: causal_mechanism_claim, claim_transition, evidence_conflict_claim, exact_model_solution, financial_metric_claim, multimodal_evidence_claim, physical_accuracy, programming_language_behavior_claim, proof_admissibility, reproducibility_check, statistical_confidence, systematic_review_claim, universal_anchor_claim; unsupported claim type 'unsupported_claim_type' requires a registered evidence contract before CAPAS can decide it",
             "contract: register evidence contract for claim.type 'unsupported_claim_type'"
           ]
         },
+        "audit_hash": "sha256:ef0e656b32471850f58f839d61b101578da18627186604b0b2ac9b3bc422fd71",
+        "did_you_mean": {},
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "schema or required-field blockers remain",
@@ -177,11 +179,21 @@
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
         "reason": "input payload failed CAPAS schema validation",
         "required_fields": [],
+        "resolution": {
+          "did_you_mean": {},
+          "errors": [
+            "evidence must be an object",
+            "claim.id must be a non-empty string",
+            "claim.type must be one of: causal_mechanism_claim, claim_transition, evidence_conflict_claim, exact_model_solution, financial_metric_claim, multimodal_evidence_claim, physical_accuracy, programming_language_behavior_claim, proof_admissibility, reproducibility_check, statistical_confidence, systematic_review_claim, universal_anchor_claim; unsupported claim type 'unsupported_claim_type' requires a registered evidence contract before CAPAS can decide it"
+          ],
+          "kind": "fix_schema_errors",
+          "message": "Correct the listed schema errors (each names its own fix), then resubmit."
+        },
         "rewrite": null,
         "schema_errors": [
           "evidence must be an object",
           "claim.id must be a non-empty string",
-          "claim.type must be one of: causal_mechanism_claim, claim_transition, evidence_conflict_claim, exact_model_solution, financial_metric_claim, multimodal_evidence_claim, physical_accuracy, programming_language_behavior_claim, reproducibility_check, statistical_confidence, systematic_review_claim, universal_anchor_claim; unsupported claim type 'unsupported_claim_type' requires a registered evidence contract before CAPAS can decide it"
+          "claim.type must be one of: causal_mechanism_claim, claim_transition, evidence_conflict_claim, exact_model_solution, financial_metric_claim, multimodal_evidence_claim, physical_accuracy, programming_language_behavior_claim, proof_admissibility, reproducibility_check, statistical_confidence, systematic_review_claim, universal_anchor_claim; unsupported claim type 'unsupported_claim_type' requires a registered evidence contract before CAPAS can decide it"
         ],
         "schema_version": "capas-claim-payload-v3",
         "verdict": "HOLD"
@@ -189,7 +201,7 @@
       "errors": [
         "evidence must be an object",
         "claim.id must be a non-empty string",
-        "claim.type must be one of: causal_mechanism_claim, claim_transition, evidence_conflict_claim, exact_model_solution, financial_metric_claim, multimodal_evidence_claim, physical_accuracy, programming_language_behavior_claim, reproducibility_check, statistical_confidence, systematic_review_claim, universal_anchor_claim; unsupported claim type 'unsupported_claim_type' requires a registered evidence contract before CAPAS can decide it"
+        "claim.type must be one of: causal_mechanism_claim, claim_transition, evidence_conflict_claim, exact_model_solution, financial_metric_claim, multimodal_evidence_claim, physical_accuracy, programming_language_behavior_claim, proof_admissibility, reproducibility_check, statistical_confidence, systematic_review_claim, universal_anchor_claim; unsupported claim type 'unsupported_claim_type' requires a registered evidence contract before CAPAS can decide it"
       ],
       "passed": true
     },
@@ -207,7 +219,23 @@
             "optional_fields": [
               "bound_scope",
               "physical_evidence_level",
-              "verification_independence"
+              "verification_independence",
+              "tolerance_unit",
+              "n_replicates",
+              "n_points",
+              "alternative_model_rejected",
+              "error_statistic",
+              "n_cells",
+              "scope_declared",
+              "scope_tested",
+              "negative_control_failed",
+              "tolerance_rationale",
+              "reference_value",
+              "object_declared",
+              "object_matches_target",
+              "load_bearing_citation_read",
+              "citation_hypotheses_checked",
+              "null_control_passed"
             ],
             "registered": true,
             "required_fields": [
@@ -269,6 +297,8 @@
             "schema: schema_version must be capas-claim-payload-v3"
           ]
         },
+        "audit_hash": "sha256:ea86c8665eab5b6c0fc52e158697a5a04546cd0547519b902dd5402ead88b507",
+        "did_you_mean": {},
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "schema or required-field blockers remain",
@@ -312,6 +342,14 @@
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
         "reason": "input payload failed CAPAS schema validation",
         "required_fields": [],
+        "resolution": {
+          "did_you_mean": {},
+          "errors": [
+            "schema_version must be capas-claim-payload-v3"
+          ],
+          "kind": "fix_schema_errors",
+          "message": "Correct the listed schema errors (each names its own fix), then resubmit."
+        },
         "rewrite": null,
         "schema_errors": [
           "schema_version must be capas-claim-payload-v3"
@@ -339,7 +377,23 @@
             "optional_fields": [
               "bound_scope",
               "physical_evidence_level",
-              "verification_independence"
+              "verification_independence",
+              "tolerance_unit",
+              "n_replicates",
+              "n_points",
+              "alternative_model_rejected",
+              "error_statistic",
+              "n_cells",
+              "scope_declared",
+              "scope_tested",
+              "negative_control_failed",
+              "tolerance_rationale",
+              "reference_value",
+              "object_declared",
+              "object_matches_target",
+              "load_bearing_citation_read",
+              "citation_hypotheses_checked",
+              "null_control_passed"
             ],
             "registered": true,
             "required_fields": [
@@ -401,6 +455,8 @@
             "schema: schema_version must be capas-claim-payload-v3"
           ]
         },
+        "audit_hash": "sha256:ea86c8665eab5b6c0fc52e158697a5a04546cd0547519b902dd5402ead88b507",
+        "did_you_mean": {},
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "schema or required-field blockers remain",
@@ -444,6 +500,14 @@
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
         "reason": "input payload failed CAPAS schema validation",
         "required_fields": [],
+        "resolution": {
+          "did_you_mean": {},
+          "errors": [
+            "schema_version must be capas-claim-payload-v3"
+          ],
+          "kind": "fix_schema_errors",
+          "message": "Correct the listed schema errors (each names its own fix), then resubmit."
+        },
         "rewrite": null,
         "schema_errors": [
           "schema_version must be capas-claim-payload-v3"
@@ -471,7 +535,23 @@
             "optional_fields": [
               "bound_scope",
               "physical_evidence_level",
-              "verification_independence"
+              "verification_independence",
+              "tolerance_unit",
+              "n_replicates",
+              "n_points",
+              "alternative_model_rejected",
+              "error_statistic",
+              "n_cells",
+              "scope_declared",
+              "scope_tested",
+              "negative_control_failed",
+              "tolerance_rationale",
+              "reference_value",
+              "object_declared",
+              "object_matches_target",
+              "load_bearing_citation_read",
+              "citation_hypotheses_checked",
+              "null_control_passed"
             ],
             "registered": true,
             "required_fields": [
@@ -533,6 +613,8 @@
             "schema: evidence.abs_error must be >= 0"
           ]
         },
+        "audit_hash": "sha256:5d24cbbac8ba4120e02c1ce9ae7347872ed38a7cca6547a7c728b33fdfc8731c",
+        "did_you_mean": {},
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "schema or required-field blockers remain",
@@ -576,6 +658,14 @@
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
         "reason": "input payload failed CAPAS schema validation",
         "required_fields": [],
+        "resolution": {
+          "did_you_mean": {},
+          "errors": [
+            "evidence.abs_error must be >= 0"
+          ],
+          "kind": "fix_schema_errors",
+          "message": "Correct the listed schema errors (each names its own fix), then resubmit."
+        },
         "rewrite": null,
         "schema_errors": [
           "evidence.abs_error must be >= 0"
@@ -603,7 +693,23 @@
             "optional_fields": [
               "bound_scope",
               "physical_evidence_level",
-              "verification_independence"
+              "verification_independence",
+              "tolerance_unit",
+              "n_replicates",
+              "n_points",
+              "alternative_model_rejected",
+              "error_statistic",
+              "n_cells",
+              "scope_declared",
+              "scope_tested",
+              "negative_control_failed",
+              "tolerance_rationale",
+              "reference_value",
+              "object_declared",
+              "object_matches_target",
+              "load_bearing_citation_read",
+              "citation_hypotheses_checked",
+              "null_control_passed"
             ],
             "registered": true,
             "required_fields": [
@@ -665,6 +771,8 @@
             "schema: evidence.tolerance must be >= 0"
           ]
         },
+        "audit_hash": "sha256:a0b7f4049f3ff9efdc7c4068576abbd8c8200b16d298e42c4ceb7c4efb31b15d",
+        "did_you_mean": {},
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "schema or required-field blockers remain",
@@ -708,6 +816,14 @@
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
         "reason": "input payload failed CAPAS schema validation",
         "required_fields": [],
+        "resolution": {
+          "did_you_mean": {},
+          "errors": [
+            "evidence.tolerance must be >= 0"
+          ],
+          "kind": "fix_schema_errors",
+          "message": "Correct the listed schema errors (each names its own fix), then resubmit."
+        },
         "rewrite": null,
         "schema_errors": [
           "evidence.tolerance must be >= 0"
@@ -735,7 +851,23 @@
             "optional_fields": [
               "bound_scope",
               "physical_evidence_level",
-              "verification_independence"
+              "verification_independence",
+              "tolerance_unit",
+              "n_replicates",
+              "n_points",
+              "alternative_model_rejected",
+              "error_statistic",
+              "n_cells",
+              "scope_declared",
+              "scope_tested",
+              "negative_control_failed",
+              "tolerance_rationale",
+              "reference_value",
+              "object_declared",
+              "object_matches_target",
+              "load_bearing_citation_read",
+              "citation_hypotheses_checked",
+              "null_control_passed"
             ],
             "registered": true,
             "required_fields": [
@@ -800,6 +932,8 @@
             "schema: evidence.tolerance must be >= 0"
           ]
         },
+        "audit_hash": "sha256:a71d9695c5515a6daeee675837a7d79484554836666a0cbba404f9d454c8170b",
+        "did_you_mean": {},
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "schema or required-field blockers remain",
@@ -843,6 +977,15 @@
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
         "reason": "input payload failed CAPAS schema validation",
         "required_fields": [],
+        "resolution": {
+          "did_you_mean": {},
+          "errors": [
+            "evidence.abs_error must be >= 0",
+            "evidence.tolerance must be >= 0"
+          ],
+          "kind": "fix_schema_errors",
+          "message": "Correct the listed schema errors (each names its own fix), then resubmit."
+        },
         "rewrite": null,
         "schema_errors": [
           "evidence.abs_error must be >= 0",
@@ -872,7 +1015,23 @@
             "optional_fields": [
               "bound_scope",
               "physical_evidence_level",
-              "verification_independence"
+              "verification_independence",
+              "tolerance_unit",
+              "n_replicates",
+              "n_points",
+              "alternative_model_rejected",
+              "error_statistic",
+              "n_cells",
+              "scope_declared",
+              "scope_tested",
+              "negative_control_failed",
+              "tolerance_rationale",
+              "reference_value",
+              "object_declared",
+              "object_matches_target",
+              "load_bearing_citation_read",
+              "citation_hypotheses_checked",
+              "null_control_passed"
             ],
             "registered": true,
             "required_fields": [
@@ -882,7 +1041,7 @@
           },
           "dialectic": {
             "burden_of_proof": [
-              "schema: evidence.abs_error must be a number"
+              "schema: evidence.abs_error must be a number \u2014 you sent the boolean True; use a number"
             ],
             "licensed_thesis": "Boolean values must not be accepted as numeric error fields.",
             "optional_supports": [],
@@ -893,7 +1052,7 @@
             ],
             "thesis": "Boolean values must not be accepted as numeric error fields.",
             "undercutters": [
-              "evidence.abs_error must be a number"
+              "evidence.abs_error must be a number \u2014 you sent the boolean True; use a number"
             ],
             "warrant": "input payload failed CAPAS schema validation"
           },
@@ -931,9 +1090,11 @@
             "label": "Repair schema and field placement before CAPAS can decide."
           },
           "proof_obligations": [
-            "schema: evidence.abs_error must be a number"
+            "schema: evidence.abs_error must be a number \u2014 you sent the boolean True; use a number"
           ]
         },
+        "audit_hash": "sha256:66c240e36b89333a579704934ec5855e8450de57c6127a4824e2b3f9b001fd67",
+        "did_you_mean": {},
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "schema or required-field blockers remain",
@@ -977,15 +1138,23 @@
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
         "reason": "input payload failed CAPAS schema validation",
         "required_fields": [],
+        "resolution": {
+          "did_you_mean": {},
+          "errors": [
+            "evidence.abs_error must be a number \u2014 you sent the boolean True; use a number"
+          ],
+          "kind": "fix_schema_errors",
+          "message": "Correct the listed schema errors (each names its own fix), then resubmit."
+        },
         "rewrite": null,
         "schema_errors": [
-          "evidence.abs_error must be a number"
+          "evidence.abs_error must be a number \u2014 you sent the boolean True; use a number"
         ],
         "schema_version": "capas-claim-payload-v3",
         "verdict": "HOLD"
       },
       "errors": [
-        "evidence.abs_error must be a number"
+        "evidence.abs_error must be a number \u2014 you sent the boolean True; use a number"
       ],
       "expected_error": "evidence.abs_error must be a number",
       "passed": true
@@ -1004,7 +1173,23 @@
             "optional_fields": [
               "bound_scope",
               "physical_evidence_level",
-              "verification_independence"
+              "verification_independence",
+              "tolerance_unit",
+              "n_replicates",
+              "n_points",
+              "alternative_model_rejected",
+              "error_statistic",
+              "n_cells",
+              "scope_declared",
+              "scope_tested",
+              "negative_control_failed",
+              "tolerance_rationale",
+              "reference_value",
+              "object_declared",
+              "object_matches_target",
+              "load_bearing_citation_read",
+              "citation_hypotheses_checked",
+              "null_control_passed"
             ],
             "registered": true,
             "required_fields": [
@@ -1066,6 +1251,8 @@
             "schema: training_evidence.source_backed_evidence must be a boolean"
           ]
         },
+        "audit_hash": "sha256:e70db9cd284639ea48d0bffd7752b553912d2839f6994ae8cdade80b66158fe5",
+        "did_you_mean": {},
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "schema or required-field blockers remain",
@@ -1106,6 +1293,14 @@
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
         "reason": "input payload failed CAPAS schema validation",
         "required_fields": [],
+        "resolution": {
+          "did_you_mean": {},
+          "errors": [
+            "training_evidence.source_backed_evidence must be a boolean"
+          ],
+          "kind": "fix_schema_errors",
+          "message": "Correct the listed schema errors (each names its own fix), then resubmit."
+        },
         "rewrite": null,
         "schema_errors": [
           "training_evidence.source_backed_evidence must be a boolean"
@@ -1134,9 +1329,14 @@
               "benchmark_metric",
               "benchmark_name",
               "benchmark_pass",
+              "citation_hypotheses_checked",
               "empirical_anchor_pass",
               "empirical_reference_present",
               "empirical_tolerance",
+              "load_bearing_citation_read",
+              "null_control_passed",
+              "object_declared",
+              "object_matches_target",
               "physical_evidence_level",
               "relative_anchor_comparison_pass",
               "relative_anchor_reference",
@@ -1204,6 +1404,8 @@
             "schema: evidence.training_evidence is not allowed; move training_evidence to the payload root"
           ]
         },
+        "audit_hash": "sha256:7ae8ebda7ce4e68cc7df1856f6038c398950d3330644f3e5ebfd28a84a788a77",
+        "did_you_mean": {},
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "schema or required-field blockers remain",
@@ -1247,6 +1449,14 @@
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
         "reason": "input payload failed CAPAS schema validation",
         "required_fields": [],
+        "resolution": {
+          "did_you_mean": {},
+          "errors": [
+            "evidence.training_evidence is not allowed; move training_evidence to the payload root"
+          ],
+          "kind": "fix_schema_errors",
+          "message": "Correct the listed schema errors (each names its own fix), then resubmit."
+        },
         "rewrite": null,
         "schema_errors": [
           "evidence.training_evidence is not allowed; move training_evidence to the payload root"
@@ -1274,7 +1484,23 @@
             "optional_fields": [
               "bound_scope",
               "physical_evidence_level",
-              "verification_independence"
+              "verification_independence",
+              "tolerance_unit",
+              "n_replicates",
+              "n_points",
+              "alternative_model_rejected",
+              "error_statistic",
+              "n_cells",
+              "scope_declared",
+              "scope_tested",
+              "negative_control_failed",
+              "tolerance_rationale",
+              "reference_value",
+              "object_declared",
+              "object_matches_target",
+              "load_bearing_citation_read",
+              "citation_hypotheses_checked",
+              "null_control_passed"
             ],
             "registered": true,
             "required_fields": [
@@ -1336,6 +1562,8 @@
             "schema: payload.silent_bypass is not allowed by capas-claim-payload-v3"
           ]
         },
+        "audit_hash": "sha256:a09540684bf352caa59d925f3ffc326e720650d0aca5c3c17ec6723ca3b5eb9a",
+        "did_you_mean": {},
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "schema or required-field blockers remain",
@@ -1379,6 +1607,14 @@
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
         "reason": "input payload failed CAPAS schema validation",
         "required_fields": [],
+        "resolution": {
+          "did_you_mean": {},
+          "errors": [
+            "payload.silent_bypass is not allowed by capas-claim-payload-v3"
+          ],
+          "kind": "fix_schema_errors",
+          "message": "Correct the listed schema errors (each names its own fix), then resubmit."
+        },
         "rewrite": null,
         "schema_errors": [
           "payload.silent_bypass is not allowed by capas-claim-payload-v3"
@@ -1406,7 +1642,23 @@
             "optional_fields": [
               "bound_scope",
               "physical_evidence_level",
-              "verification_independence"
+              "verification_independence",
+              "tolerance_unit",
+              "n_replicates",
+              "n_points",
+              "alternative_model_rejected",
+              "error_statistic",
+              "n_cells",
+              "scope_declared",
+              "scope_tested",
+              "negative_control_failed",
+              "tolerance_rationale",
+              "reference_value",
+              "object_declared",
+              "object_matches_target",
+              "load_bearing_citation_read",
+              "citation_hypotheses_checked",
+              "null_control_passed"
             ],
             "registered": true,
             "required_fields": [
@@ -1468,6 +1720,8 @@
             "schema: claim.verdict is not allowed by capas-claim-payload-v3"
           ]
         },
+        "audit_hash": "sha256:398412b22d80941426d80773fa1f7fb8c423dae361ca57570f0db34aa7e6de0d",
+        "did_you_mean": {},
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "schema or required-field blockers remain",
@@ -1512,6 +1766,14 @@
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
         "reason": "input payload failed CAPAS schema validation",
         "required_fields": [],
+        "resolution": {
+          "did_you_mean": {},
+          "errors": [
+            "claim.verdict is not allowed by capas-claim-payload-v3"
+          ],
+          "kind": "fix_schema_errors",
+          "message": "Correct the listed schema errors (each names its own fix), then resubmit."
+        },
         "rewrite": null,
         "schema_errors": [
           "claim.verdict is not allowed by capas-claim-payload-v3"
@@ -1536,7 +1798,14 @@
             "anchor_mode": null,
             "claim_type": "statistical_confidence",
             "description": "Statistical threshold and effect-direction claims.",
-            "optional_fields": [],
+            "optional_fields": [
+              "test_statistic",
+              "null_control_passed",
+              "object_declared",
+              "object_matches_target",
+              "load_bearing_citation_read",
+              "citation_hypotheses_checked"
+            ],
             "registered": true,
             "required_fields": [
               "p_value",
@@ -1599,6 +1868,8 @@
             "schema: evidence.universal_anchor_pass is not allowed for claim.type statistical_confidence"
           ]
         },
+        "audit_hash": "sha256:4b23bbd523308ee6f90b31ff95cdac5fb371484c15660160a3f472784f388af4",
+        "did_you_mean": {},
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "schema or required-field blockers remain",
@@ -1642,6 +1913,14 @@
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
         "reason": "input payload failed CAPAS schema validation",
         "required_fields": [],
+        "resolution": {
+          "did_you_mean": {},
+          "errors": [
+            "evidence.universal_anchor_pass is not allowed for claim.type statistical_confidence"
+          ],
+          "kind": "fix_schema_errors",
+          "message": "Correct the listed schema errors (each names its own fix), then resubmit."
+        },
         "rewrite": null,
         "schema_errors": [
           "evidence.universal_anchor_pass is not allowed for claim.type statistical_confidence"
@@ -1672,7 +1951,7 @@
           },
           "dialectic": {
             "burden_of_proof": [
-              "schema: claim.type must be one of: causal_mechanism_claim, claim_transition, evidence_conflict_claim, exact_model_solution, financial_metric_claim, multimodal_evidence_claim, physical_accuracy, programming_language_behavior_claim, reproducibility_check, statistical_confidence, systematic_review_claim, universal_anchor_claim; unsupported claim type 'quantum_oracle_claim' requires a registered evidence contract before CAPAS can decide it",
+              "schema: claim.type must be one of: causal_mechanism_claim, claim_transition, evidence_conflict_claim, exact_model_solution, financial_metric_claim, multimodal_evidence_claim, physical_accuracy, programming_language_behavior_claim, proof_admissibility, reproducibility_check, statistical_confidence, systematic_review_claim, universal_anchor_claim; unsupported claim type 'quantum_oracle_claim' requires a registered evidence contract before CAPAS can decide it",
               "contract: register evidence contract for claim.type 'quantum_oracle_claim'"
             ],
             "licensed_thesis": "Unknown claim types require a registered evidence contract.",
@@ -1681,7 +1960,7 @@
             "supports": [],
             "thesis": "Unknown claim types require a registered evidence contract.",
             "undercutters": [
-              "claim.type must be one of: causal_mechanism_claim, claim_transition, evidence_conflict_claim, exact_model_solution, financial_metric_claim, multimodal_evidence_claim, physical_accuracy, programming_language_behavior_claim, reproducibility_check, statistical_confidence, systematic_review_claim, universal_anchor_claim; unsupported claim type 'quantum_oracle_claim' requires a registered evidence contract before CAPAS can decide it"
+              "claim.type must be one of: causal_mechanism_claim, claim_transition, evidence_conflict_claim, exact_model_solution, financial_metric_claim, multimodal_evidence_claim, physical_accuracy, programming_language_behavior_claim, proof_admissibility, reproducibility_check, statistical_confidence, systematic_review_claim, universal_anchor_claim; unsupported claim type 'quantum_oracle_claim' requires a registered evidence contract before CAPAS can decide it"
             ],
             "warrant": "input payload failed CAPAS schema validation"
           },
@@ -1719,10 +1998,12 @@
             "label": "Register a claim type and evidence contract before deciding."
           },
           "proof_obligations": [
-            "schema: claim.type must be one of: causal_mechanism_claim, claim_transition, evidence_conflict_claim, exact_model_solution, financial_metric_claim, multimodal_evidence_claim, physical_accuracy, programming_language_behavior_claim, reproducibility_check, statistical_confidence, systematic_review_claim, universal_anchor_claim; unsupported claim type 'quantum_oracle_claim' requires a registered evidence contract before CAPAS can decide it",
+            "schema: claim.type must be one of: causal_mechanism_claim, claim_transition, evidence_conflict_claim, exact_model_solution, financial_metric_claim, multimodal_evidence_claim, physical_accuracy, programming_language_behavior_claim, proof_admissibility, reproducibility_check, statistical_confidence, systematic_review_claim, universal_anchor_claim; unsupported claim type 'quantum_oracle_claim' requires a registered evidence contract before CAPAS can decide it",
             "contract: register evidence contract for claim.type 'quantum_oracle_claim'"
           ]
         },
+        "audit_hash": "sha256:f2cc94cdc6c31cc6267753ebc70d152cd373c0b0844731e1eed433fcbf1636bb",
+        "did_you_mean": {},
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "schema or required-field blockers remain",
@@ -1766,15 +2047,23 @@
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
         "reason": "input payload failed CAPAS schema validation",
         "required_fields": [],
+        "resolution": {
+          "did_you_mean": {},
+          "errors": [
+            "claim.type must be one of: causal_mechanism_claim, claim_transition, evidence_conflict_claim, exact_model_solution, financial_metric_claim, multimodal_evidence_claim, physical_accuracy, programming_language_behavior_claim, proof_admissibility, reproducibility_check, statistical_confidence, systematic_review_claim, universal_anchor_claim; unsupported claim type 'quantum_oracle_claim' requires a registered evidence contract before CAPAS can decide it"
+          ],
+          "kind": "fix_schema_errors",
+          "message": "Correct the listed schema errors (each names its own fix), then resubmit."
+        },
         "rewrite": null,
         "schema_errors": [
-          "claim.type must be one of: causal_mechanism_claim, claim_transition, evidence_conflict_claim, exact_model_solution, financial_metric_claim, multimodal_evidence_claim, physical_accuracy, programming_language_behavior_claim, reproducibility_check, statistical_confidence, systematic_review_claim, universal_anchor_claim; unsupported claim type 'quantum_oracle_claim' requires a registered evidence contract before CAPAS can decide it"
+          "claim.type must be one of: causal_mechanism_claim, claim_transition, evidence_conflict_claim, exact_model_solution, financial_metric_claim, multimodal_evidence_claim, physical_accuracy, programming_language_behavior_claim, proof_admissibility, reproducibility_check, statistical_confidence, systematic_review_claim, universal_anchor_claim; unsupported claim type 'quantum_oracle_claim' requires a registered evidence contract before CAPAS can decide it"
         ],
         "schema_version": "capas-claim-payload-v3",
         "verdict": "HOLD"
       },
       "errors": [
-        "claim.type must be one of: causal_mechanism_claim, claim_transition, evidence_conflict_claim, exact_model_solution, financial_metric_claim, multimodal_evidence_claim, physical_accuracy, programming_language_behavior_claim, reproducibility_check, statistical_confidence, systematic_review_claim, universal_anchor_claim; unsupported claim type 'quantum_oracle_claim' requires a registered evidence contract before CAPAS can decide it"
+        "claim.type must be one of: causal_mechanism_claim, claim_transition, evidence_conflict_claim, exact_model_solution, financial_metric_claim, multimodal_evidence_claim, physical_accuracy, programming_language_behavior_claim, proof_admissibility, reproducibility_check, statistical_confidence, systematic_review_claim, universal_anchor_claim; unsupported claim type 'quantum_oracle_claim' requires a registered evidence contract before CAPAS can decide it"
       ],
       "expected_error": "requires a registered evidence contract before CAPAS can decide it",
       "passed": true
@@ -1794,9 +2083,14 @@
               "benchmark_metric",
               "benchmark_name",
               "benchmark_pass",
+              "citation_hypotheses_checked",
               "empirical_anchor_pass",
               "empirical_reference_present",
               "empirical_tolerance",
+              "load_bearing_citation_read",
+              "null_control_passed",
+              "object_declared",
+              "object_matches_target",
               "physical_evidence_level",
               "relative_anchor_comparison_pass",
               "relative_anchor_reference",
@@ -1864,6 +2158,8 @@
             "schema: claim.id must be at most 256 characters"
           ]
         },
+        "audit_hash": "sha256:28ab618b593b5ba561f091f8fa165927fbcbe07f1ab8b7cc32b47f3346f48ba3",
+        "did_you_mean": {},
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "schema or required-field blockers remain",
@@ -1907,6 +2203,14 @@
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
         "reason": "input payload failed CAPAS schema validation",
         "required_fields": [],
+        "resolution": {
+          "did_you_mean": {},
+          "errors": [
+            "claim.id must be at most 256 characters"
+          ],
+          "kind": "fix_schema_errors",
+          "message": "Correct the listed schema errors (each names its own fix), then resubmit."
+        },
         "rewrite": null,
         "schema_errors": [
           "claim.id must be at most 256 characters"
@@ -1935,9 +2239,14 @@
               "benchmark_metric",
               "benchmark_name",
               "benchmark_pass",
+              "citation_hypotheses_checked",
               "empirical_anchor_pass",
               "empirical_reference_present",
               "empirical_tolerance",
+              "load_bearing_citation_read",
+              "null_control_passed",
+              "object_declared",
+              "object_matches_target",
               "physical_evidence_level",
               "relative_anchor_comparison_pass",
               "relative_anchor_reference",
@@ -2005,6 +2314,8 @@
             "schema: claim.text must be at most 2000 characters"
           ]
         },
+        "audit_hash": "sha256:863e4a0042e57249ae2d4de803c673e30b8f7599cd5b2e8723d054683c5e5d9c",
+        "did_you_mean": {},
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "schema or required-field blockers remain",
@@ -2048,6 +2359,14 @@
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
         "reason": "input payload failed CAPAS schema validation",
         "required_fields": [],
+        "resolution": {
+          "did_you_mean": {},
+          "errors": [
+            "claim.text must be at most 2000 characters"
+          ],
+          "kind": "fix_schema_errors",
+          "message": "Correct the listed schema errors (each names its own fix), then resubmit."
+        },
         "rewrite": null,
         "schema_errors": [
           "claim.text must be at most 2000 characters"
@@ -2073,7 +2392,12 @@
             "claim_type": "claim_transition",
             "description": "Claims that upgrade a weaker licensed statement to a stronger one.",
             "optional_fields": [
-              "current_claim"
+              "current_claim",
+              "object_declared",
+              "object_matches_target",
+              "load_bearing_citation_read",
+              "citation_hypotheses_checked",
+              "null_control_passed"
             ],
             "registered": true,
             "required_fields": [
@@ -2135,6 +2459,8 @@
             "schema: evidence.current_claim must not contain angle brackets or Unicode angle-bracket homoglyphs"
           ]
         },
+        "audit_hash": "sha256:8ddc811222befff20abeda800e667e8da7f59f25f768da3d1325437751a1655a",
+        "did_you_mean": {},
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "schema or required-field blockers remain",
@@ -2178,6 +2504,14 @@
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
         "reason": "input payload failed CAPAS schema validation",
         "required_fields": [],
+        "resolution": {
+          "did_you_mean": {},
+          "errors": [
+            "evidence.current_claim must not contain angle brackets or Unicode angle-bracket homoglyphs"
+          ],
+          "kind": "fix_schema_errors",
+          "message": "Correct the listed schema errors (each names its own fix), then resubmit."
+        },
         "rewrite": null,
         "schema_errors": [
           "evidence.current_claim must not contain angle brackets or Unicode angle-bracket homoglyphs"
@@ -2203,7 +2537,12 @@
             "claim_type": "claim_transition",
             "description": "Claims that upgrade a weaker licensed statement to a stronger one.",
             "optional_fields": [
-              "current_claim"
+              "current_claim",
+              "object_declared",
+              "object_matches_target",
+              "load_bearing_citation_read",
+              "citation_hypotheses_checked",
+              "null_control_passed"
             ],
             "registered": true,
             "required_fields": [
@@ -2265,6 +2604,8 @@
             "schema: evidence.current_claim must not contain angle brackets or Unicode angle-bracket homoglyphs"
           ]
         },
+        "audit_hash": "sha256:80d0f2d3d3e71cd6a87d6af7e94cac0418952ca28ad742a10e8f2deb58d181b7",
+        "did_you_mean": {},
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "schema or required-field blockers remain",
@@ -2308,6 +2649,14 @@
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
         "reason": "input payload failed CAPAS schema validation",
         "required_fields": [],
+        "resolution": {
+          "did_you_mean": {},
+          "errors": [
+            "evidence.current_claim must not contain angle brackets or Unicode angle-bracket homoglyphs"
+          ],
+          "kind": "fix_schema_errors",
+          "message": "Correct the listed schema errors (each names its own fix), then resubmit."
+        },
         "rewrite": null,
         "schema_errors": [
           "evidence.current_claim must not contain angle brackets or Unicode angle-bracket homoglyphs"
@@ -2334,7 +2683,12 @@
             "description": "Direct physical or chemical-accuracy claims.",
             "optional_fields": [
               "physical_evidence_level",
-              "reference_truth"
+              "reference_truth",
+              "object_declared",
+              "object_matches_target",
+              "load_bearing_citation_read",
+              "citation_hypotheses_checked",
+              "null_control_passed"
             ],
             "registered": true,
             "required_fields": [
@@ -2394,6 +2748,8 @@
             "schema: claim.id must not contain angle brackets or Unicode angle-bracket homoglyphs"
           ]
         },
+        "audit_hash": "sha256:aedb57fcc585fcaed2122480ca092ed493605d61269e32c7c2c0c0a2463e5a9d",
+        "did_you_mean": {},
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "schema or required-field blockers remain",
@@ -2437,6 +2793,14 @@
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
         "reason": "input payload failed CAPAS schema validation",
         "required_fields": [],
+        "resolution": {
+          "did_you_mean": {},
+          "errors": [
+            "claim.id must not contain angle brackets or Unicode angle-bracket homoglyphs"
+          ],
+          "kind": "fix_schema_errors",
+          "message": "Correct the listed schema errors (each names its own fix), then resubmit."
+        },
         "rewrite": null,
         "schema_errors": [
           "claim.id must not contain angle brackets or Unicode angle-bracket homoglyphs"
@@ -2463,7 +2827,12 @@
             "description": "Direct physical or chemical-accuracy claims.",
             "optional_fields": [
               "physical_evidence_level",
-              "reference_truth"
+              "reference_truth",
+              "object_declared",
+              "object_matches_target",
+              "load_bearing_citation_read",
+              "citation_hypotheses_checked",
+              "null_control_passed"
             ],
             "registered": true,
             "required_fields": [
@@ -2523,6 +2892,8 @@
             "schema: claim.text must not contain angle brackets or Unicode angle-bracket homoglyphs"
           ]
         },
+        "audit_hash": "sha256:a7dbeb47159bf4bb923ee34c4da4eedbd7ae19e98a56c80026a7694a364043c8",
+        "did_you_mean": {},
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "schema or required-field blockers remain",
@@ -2566,6 +2937,14 @@
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
         "reason": "input payload failed CAPAS schema validation",
         "required_fields": [],
+        "resolution": {
+          "did_you_mean": {},
+          "errors": [
+            "claim.text must not contain angle brackets or Unicode angle-bracket homoglyphs"
+          ],
+          "kind": "fix_schema_errors",
+          "message": "Correct the listed schema errors (each names its own fix), then resubmit."
+        },
         "rewrite": null,
         "schema_errors": [
           "claim.text must not contain angle brackets or Unicode angle-bracket homoglyphs"
@@ -2592,7 +2971,12 @@
             "description": "Direct physical or chemical-accuracy claims.",
             "optional_fields": [
               "physical_evidence_level",
-              "reference_truth"
+              "reference_truth",
+              "object_declared",
+              "object_matches_target",
+              "load_bearing_citation_read",
+              "citation_hypotheses_checked",
+              "null_control_passed"
             ],
             "registered": true,
             "required_fields": [
@@ -2652,6 +3036,8 @@
             "schema: claim.text must not contain angle brackets or Unicode angle-bracket homoglyphs"
           ]
         },
+        "audit_hash": "sha256:078fd9f9a0ce8e53e3e2885545134ccf816e97b0c6deb61d1ff2834a53482eab",
+        "did_you_mean": {},
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "schema or required-field blockers remain",
@@ -2695,6 +3081,14 @@
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
         "reason": "input payload failed CAPAS schema validation",
         "required_fields": [],
+        "resolution": {
+          "did_you_mean": {},
+          "errors": [
+            "claim.text must not contain angle brackets or Unicode angle-bracket homoglyphs"
+          ],
+          "kind": "fix_schema_errors",
+          "message": "Correct the listed schema errors (each names its own fix), then resubmit."
+        },
         "rewrite": null,
         "schema_errors": [
           "claim.text must not contain angle brackets or Unicode angle-bracket homoglyphs"
@@ -2721,7 +3115,12 @@
             "description": "Direct physical or chemical-accuracy claims.",
             "optional_fields": [
               "physical_evidence_level",
-              "reference_truth"
+              "reference_truth",
+              "object_declared",
+              "object_matches_target",
+              "load_bearing_citation_read",
+              "citation_hypotheses_checked",
+              "null_control_passed"
             ],
             "registered": true,
             "required_fields": [
@@ -2781,6 +3180,8 @@
             "schema: claim.text must not contain angle brackets or Unicode angle-bracket homoglyphs"
           ]
         },
+        "audit_hash": "sha256:e146328c79d13f502795a50de5be0cdffc36275a7e3a154acb885fc8e4d937ee",
+        "did_you_mean": {},
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "schema or required-field blockers remain",
@@ -2824,6 +3225,14 @@
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
         "reason": "input payload failed CAPAS schema validation",
         "required_fields": [],
+        "resolution": {
+          "did_you_mean": {},
+          "errors": [
+            "claim.text must not contain angle brackets or Unicode angle-bracket homoglyphs"
+          ],
+          "kind": "fix_schema_errors",
+          "message": "Correct the listed schema errors (each names its own fix), then resubmit."
+        },
         "rewrite": null,
         "schema_errors": [
           "claim.text must not contain angle brackets or Unicode angle-bracket homoglyphs"
@@ -2858,7 +3267,12 @@
               "physical_evidence_level",
               "relative_anchor_comparison_pass",
               "relative_anchor_reference",
-              "verification_independence"
+              "verification_independence",
+              "object_declared",
+              "object_matches_target",
+              "load_bearing_citation_read",
+              "citation_hypotheses_checked",
+              "null_control_passed"
             ],
             "registered": true,
             "required_fields": [
@@ -2925,6 +3339,8 @@
             "schema: evidence.anchor_mode must be one of: absolute_anchor, benchmark_anchor, empirical_anchor, relative_anchor"
           ]
         },
+        "audit_hash": "sha256:953c615410a36204196ae12c54d778c346d04ff6f1d6adffd37b9ac0f9e96c30",
+        "did_you_mean": {},
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "schema or required-field blockers remain",
@@ -2968,6 +3384,15 @@
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
         "reason": "input payload failed CAPAS schema validation",
         "required_fields": [],
+        "resolution": {
+          "did_you_mean": {},
+          "errors": [
+            "evidence.anchor_mode must not contain angle brackets or Unicode angle-bracket homoglyphs",
+            "evidence.anchor_mode must be one of: absolute_anchor, benchmark_anchor, empirical_anchor, relative_anchor"
+          ],
+          "kind": "fix_schema_errors",
+          "message": "Correct the listed schema errors (each names its own fix), then resubmit."
+        },
         "rewrite": null,
         "schema_errors": [
           "evidence.anchor_mode must not contain angle brackets or Unicode angle-bracket homoglyphs",
@@ -2996,7 +3421,12 @@
             "description": "Direct physical or chemical-accuracy claims.",
             "optional_fields": [
               "physical_evidence_level",
-              "reference_truth"
+              "reference_truth",
+              "object_declared",
+              "object_matches_target",
+              "load_bearing_citation_read",
+              "citation_hypotheses_checked",
+              "null_control_passed"
             ],
             "registered": true,
             "required_fields": [
@@ -3058,6 +3488,8 @@
             "schema: evidence.physical_evidence_level must not contain angle brackets or Unicode angle-bracket homoglyphs"
           ]
         },
+        "audit_hash": "sha256:179204dd675681748eedf91b2b431c30322d73c8b9637cefc56737d6a64bcec4",
+        "did_you_mean": {},
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "schema or required-field blockers remain",
@@ -3101,6 +3533,14 @@
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
         "reason": "input payload failed CAPAS schema validation",
         "required_fields": [],
+        "resolution": {
+          "did_you_mean": {},
+          "errors": [
+            "evidence.physical_evidence_level must not contain angle brackets or Unicode angle-bracket homoglyphs"
+          ],
+          "kind": "fix_schema_errors",
+          "message": "Correct the listed schema errors (each names its own fix), then resubmit."
+        },
         "rewrite": null,
         "schema_errors": [
           "evidence.physical_evidence_level must not contain angle brackets or Unicode angle-bracket homoglyphs"
@@ -3125,7 +3565,14 @@
             "anchor_mode": null,
             "claim_type": "statistical_confidence",
             "description": "Statistical threshold and effect-direction claims.",
-            "optional_fields": [],
+            "optional_fields": [
+              "test_statistic",
+              "null_control_passed",
+              "object_declared",
+              "object_matches_target",
+              "load_bearing_citation_read",
+              "citation_hypotheses_checked"
+            ],
             "registered": true,
             "required_fields": [
               "p_value",
@@ -3188,6 +3635,8 @@
             "schema: evidence.p_value must be between 0 and 1"
           ]
         },
+        "audit_hash": "sha256:52405de8cd03771610b43698828dfa0e367f0df9755b152ddcaf9cb67e5e485f",
+        "did_you_mean": {},
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "schema or required-field blockers remain",
@@ -3231,6 +3680,14 @@
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
         "reason": "input payload failed CAPAS schema validation",
         "required_fields": [],
+        "resolution": {
+          "did_you_mean": {},
+          "errors": [
+            "evidence.p_value must be between 0 and 1"
+          ],
+          "kind": "fix_schema_errors",
+          "message": "Correct the listed schema errors (each names its own fix), then resubmit."
+        },
         "rewrite": null,
         "schema_errors": [
           "evidence.p_value must be between 0 and 1"
@@ -3255,7 +3712,13 @@
             "anchor_mode": null,
             "claim_type": "evidence_conflict_claim",
             "description": "Claims that resolve disclosed supporting and contradicting evidence.",
-            "optional_fields": [],
+            "optional_fields": [
+              "object_declared",
+              "object_matches_target",
+              "load_bearing_citation_read",
+              "citation_hypotheses_checked",
+              "null_control_passed"
+            ],
             "registered": true,
             "required_fields": [
               "supporting_sources",
@@ -3320,6 +3783,8 @@
             "schema: evidence.supporting_sources must be an array of strings"
           ]
         },
+        "audit_hash": "sha256:1343ebbb3c3f07db38fcb16074039d13c6944a8f1e340ed4884eb09567327114",
+        "did_you_mean": {},
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "schema or required-field blockers remain",
@@ -3363,6 +3828,14 @@
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
         "reason": "input payload failed CAPAS schema validation",
         "required_fields": [],
+        "resolution": {
+          "did_you_mean": {},
+          "errors": [
+            "evidence.supporting_sources must be an array of strings"
+          ],
+          "kind": "fix_schema_errors",
+          "message": "Correct the listed schema errors (each names its own fix), then resubmit."
+        },
         "rewrite": null,
         "schema_errors": [
           "evidence.supporting_sources must be an array of strings"
@@ -3390,7 +3863,23 @@
             "optional_fields": [
               "bound_scope",
               "physical_evidence_level",
-              "verification_independence"
+              "verification_independence",
+              "tolerance_unit",
+              "n_replicates",
+              "n_points",
+              "alternative_model_rejected",
+              "error_statistic",
+              "n_cells",
+              "scope_declared",
+              "scope_tested",
+              "negative_control_failed",
+              "tolerance_rationale",
+              "reference_value",
+              "object_declared",
+              "object_matches_target",
+              "load_bearing_citation_read",
+              "citation_hypotheses_checked",
+              "null_control_passed"
             ],
             "registered": true,
             "required_fields": [
@@ -3399,21 +3888,8 @@
             ]
           },
           "dialectic": {
-            "burden_of_proof": [
-              "training: source-backed evidence is not attached",
-              "training: external review is not attached",
-              "training: claim.text semantic alignment is not externally certified",
-              "training: witness independence is not externally certified",
-              "training: provenance.sources or provenance.source_urls is empty",
-              "training: external review hash is missing or does not match review_packet",
-              "training: source URLs are not recoverable with matching hashes",
-              "training: witness_id is not resolvable in the witness registry",
-              "training: RO-Crate provenance packet is missing, invalid, or hash-mismatched",
-              "training: reviewer identity or attestation is not verifiable",
-              "training: provenance.review_id is missing",
-              "training: provenance.witness_id is missing"
-            ],
-            "licensed_thesis": "A zero tolerance is allowed only as an exact equality check.",
+            "burden_of_proof": [],
+            "licensed_thesis": null,
             "optional_supports": [],
             "rebuttals": [],
             "supports": [
@@ -3422,58 +3898,47 @@
             ],
             "thesis": "A zero tolerance is allowed only as an exact equality check.",
             "undercutters": [],
-            "warrant": "abs_error 0.0 <= tolerance 0.0"
+            "warrant": "abs_error 0.0 <= tolerance 0; abs_error 0.0 is at machine precision (<= 1e-12 x scale): the tolerance does not inform here and no negative control is declared \u2014 identity at machine precision without a negative control"
           },
           "lattice": {
             "axes": {
               "boundary": {
-                "level": "claim_licensed",
-                "score": 4
+                "level": "none",
+                "score": 0
               },
               "contract": {
                 "level": "contract_complete",
                 "score": 3
               },
               "defeaters": {
-                "level": "no_active_defeater",
-                "score": 4
+                "level": "open_defeaters",
+                "score": 0
               },
               "evidence": {
-                "level": "supports_claim_boundary",
-                "score": 4
+                "level": "declared",
+                "score": 1
               },
               "provenance": {
                 "level": "none",
                 "score": 0
               }
             },
-            "controlled_reuse_meet": 3,
+            "controlled_reuse_meet": 0,
             "non_claim": "This lattice orders admissibility of supplied evidence, not scientific truth.",
-            "reuse_boundary": "claim_licensed",
+            "reuse_boundary": "none",
             "training_reuse_meet": 0
           },
           "metaphor": "compiler_certificate",
           "next_action": {
-            "kind": "verify_provenance_for_training",
-            "label": "Claim is licensed; verify provenance before using as fine-tuning data."
+            "kind": "hold_for_review",
+            "label": "Resolve open proof obligations before reuse."
           },
-          "proof_obligations": [
-            "training: source-backed evidence is not attached",
-            "training: external review is not attached",
-            "training: claim.text semantic alignment is not externally certified",
-            "training: witness independence is not externally certified",
-            "training: provenance.sources or provenance.source_urls is empty",
-            "training: external review hash is missing or does not match review_packet",
-            "training: source URLs are not recoverable with matching hashes",
-            "training: witness_id is not resolvable in the witness registry",
-            "training: RO-Crate provenance packet is missing, invalid, or hash-mismatched",
-            "training: reviewer identity or attestation is not verifiable",
-            "training: provenance.review_id is missing",
-            "training: provenance.witness_id is missing"
-          ]
+          "proof_obligations": []
         },
-        "audit_hash": "sha256:0b8524bdbf75e4ea0b34b1297d2718c232ed4739e9d6b3ad33b6f54b08eaebec",
+        "audit_hash": "sha256:41b508d0bf51282e6197ec9eb5cdc56f57391632ed8ff219b9da8eff5ba2f50d",
+        "did_you_mean": {},
         "fine_tune_blockers": [
+          "claim verdict is not ACCEPT",
           "source-backed evidence is not attached",
           "external review is not attached",
           "claim.text semantic alignment is not externally certified",
@@ -3498,7 +3963,7 @@
           "semantic_alignment": false,
           "source_backed_evidence": false,
           "source_urls_recoverable_hashable": false,
-          "verdict_accept": true,
+          "verdict_accept": false,
           "witness_id_present": false,
           "witness_independence": false,
           "witness_registry_resolved": false
@@ -3511,28 +3976,33 @@
         },
         "invariant_audit": {
           "applicable": false,
+          "holds": [],
           "laws_checked": [],
           "results": {},
           "summary": "no domain invariant applies to this evidence",
           "verdict": "N/A",
           "violations": []
         },
-        "licensed_claim": "A zero tolerance is allowed only as an exact equality check.",
+        "licensed_claim": null,
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
-        "reason": "abs_error 0.0 <= tolerance 0.0",
+        "reason": "abs_error 0.0 <= tolerance 0; abs_error 0.0 is at machine precision (<= 1e-12 x scale): the tolerance does not inform here and no negative control is declared \u2014 identity at machine precision without a negative control",
         "required_fields": [
           "abs_error",
           "tolerance"
         ],
+        "resolution": {
+          "kind": "hold_for_review",
+          "message": "Resolve the open proof obligations before reuse."
+        },
         "rewrite": null,
         "schema_errors": [],
         "schema_version": "capas-claim-payload-v3",
-        "verdict": "ACCEPT"
+        "verdict": "HOLD"
       },
       "expected_detail": "abs_error 0.0 <= tolerance 0.0",
       "expected_verdict": "ACCEPT",
-      "passed": true
+      "passed": false
     },
     {
       "check": "semantic_payload:anchor_mode_unknown_missing",
@@ -3555,7 +4025,12 @@
               "physical_evidence_level",
               "relative_anchor_comparison_pass",
               "relative_anchor_reference",
-              "verification_independence"
+              "verification_independence",
+              "object_declared",
+              "object_matches_target",
+              "load_bearing_citation_read",
+              "citation_hypotheses_checked",
+              "null_control_passed"
             ],
             "registered": true,
             "required_fields": [
@@ -3618,6 +4093,8 @@
             "schema: evidence.anchor_mode must be one of: absolute_anchor, benchmark_anchor, empirical_anchor, relative_anchor"
           ]
         },
+        "audit_hash": "sha256:a138ab9a82ee3e2aca6e6459b32cbbc00c0da376b34bd831adb16e3f09c6270f",
+        "did_you_mean": {},
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "schema or required-field blockers remain",
@@ -3661,6 +4138,14 @@
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
         "reason": "input payload failed CAPAS schema validation",
         "required_fields": [],
+        "resolution": {
+          "did_you_mean": {},
+          "errors": [
+            "evidence.anchor_mode must be one of: absolute_anchor, benchmark_anchor, empirical_anchor, relative_anchor"
+          ],
+          "kind": "fix_schema_errors",
+          "message": "Correct the listed schema errors (each names its own fix), then resubmit."
+        },
         "rewrite": null,
         "schema_errors": [
           "evidence.anchor_mode must be one of: absolute_anchor, benchmark_anchor, empirical_anchor, relative_anchor"
@@ -3687,9 +4172,14 @@
               "benchmark_metric",
               "benchmark_name",
               "benchmark_pass",
+              "citation_hypotheses_checked",
               "empirical_anchor_pass",
               "empirical_reference_present",
               "empirical_tolerance",
+              "load_bearing_citation_read",
+              "null_control_passed",
+              "object_declared",
+              "object_matches_target",
               "physical_evidence_level",
               "relative_anchor_comparison_pass",
               "relative_anchor_reference",
@@ -3765,6 +4255,7 @@
           ]
         },
         "audit_hash": "sha256:e7996d95e73b54e66ea890d71592e95a3c8b0322a290ee42b1c314f4108faf5a",
+        "did_you_mean": {},
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "source-backed evidence is not attached",
@@ -3804,6 +4295,7 @@
         },
         "invariant_audit": {
           "applicable": false,
+          "holds": [],
           "laws_checked": [],
           "results": {},
           "summary": "no domain invariant applies to this evidence",
@@ -3820,6 +4312,10 @@
           "relative_anchor_reference",
           "relative_anchor_comparison_pass"
         ],
+        "resolution": {
+          "kind": "edit_and_resubmit",
+          "message": "Replace claim.text with the licensed (weaker) wording in `rewrite`, then resubmit."
+        },
         "rewrite": "relative comparison against benchmark_model_v1 only; universal physical correctness is not licensed",
         "schema_errors": [],
         "schema_version": "capas-claim-payload-v3",
@@ -3844,9 +4340,14 @@
               "benchmark_metric",
               "benchmark_name",
               "benchmark_pass",
+              "citation_hypotheses_checked",
               "empirical_anchor_pass",
               "empirical_reference_present",
               "empirical_tolerance",
+              "load_bearing_citation_read",
+              "null_control_passed",
+              "object_declared",
+              "object_matches_target",
               "physical_evidence_level",
               "relative_anchor_comparison_pass",
               "relative_anchor_reference",
@@ -3925,6 +4426,7 @@
           ]
         },
         "audit_hash": "sha256:c0b73dfca078372907314981a6e4cc23be4abb2f27dd4c0cf71ffc0534dfd77d",
+        "did_you_mean": {},
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "source-backed evidence is not attached",
@@ -3964,6 +4466,7 @@
         },
         "invariant_audit": {
           "applicable": false,
+          "holds": [],
           "laws_checked": [],
           "results": {},
           "summary": "no domain invariant applies to this evidence",
@@ -3981,6 +4484,10 @@
           "empirical_tolerance",
           "empirical_anchor_pass"
         ],
+        "resolution": {
+          "kind": "edit_and_resubmit",
+          "message": "Replace claim.text with the licensed (weaker) wording in `rewrite`, then resubmit."
+        },
         "rewrite": "bounded empirical agreement only; universal physical correctness is not licensed",
         "schema_errors": [],
         "schema_version": "capas-claim-payload-v3",
@@ -4005,9 +4512,14 @@
               "benchmark_metric",
               "benchmark_name",
               "benchmark_pass",
+              "citation_hypotheses_checked",
               "empirical_anchor_pass",
               "empirical_reference_present",
               "empirical_tolerance",
+              "load_bearing_citation_read",
+              "null_control_passed",
+              "object_declared",
+              "object_matches_target",
               "physical_evidence_level",
               "relative_anchor_comparison_pass",
               "relative_anchor_reference",
@@ -4086,6 +4598,7 @@
           ]
         },
         "audit_hash": "sha256:8241b361f15ff553c906c0f004e8b3018c2973eeda132a473734100b7ba7c30c",
+        "did_you_mean": {},
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "source-backed evidence is not attached",
@@ -4125,6 +4638,7 @@
         },
         "invariant_audit": {
           "applicable": false,
+          "holds": [],
           "laws_checked": [],
           "results": {},
           "summary": "no domain invariant applies to this evidence",
@@ -4142,6 +4656,10 @@
           "benchmark_metric",
           "benchmark_pass"
         ],
+        "resolution": {
+          "kind": "edit_and_resubmit",
+          "message": "Replace claim.text with the licensed (weaker) wording in `rewrite`, then resubmit."
+        },
         "rewrite": "benchmark-limited claim for capas_benchmark_suite / pass_rate; universal physical correctness is not licensed",
         "schema_errors": [],
         "schema_version": "capas-claim-payload-v3",
@@ -4162,7 +4680,14 @@
             "anchor_mode": null,
             "claim_type": "statistical_confidence",
             "description": "Statistical threshold and effect-direction claims.",
-            "optional_fields": [],
+            "optional_fields": [
+              "test_statistic",
+              "null_control_passed",
+              "object_declared",
+              "object_matches_target",
+              "load_bearing_citation_read",
+              "citation_hypotheses_checked"
+            ],
             "registered": true,
             "required_fields": [
               "p_value",
@@ -4246,6 +4771,7 @@
           ]
         },
         "audit_hash": "sha256:2d30e74583a2e64d2ae1981ffcb70d92c3a1ac84b07d1df191d97db8de692660",
+        "did_you_mean": {},
         "fine_tune_blockers": [
           "source-backed evidence is not attached",
           "external review is not attached",
@@ -4284,6 +4810,7 @@
         },
         "invariant_audit": {
           "applicable": false,
+          "holds": [],
           "laws_checked": [],
           "results": {},
           "summary": "no domain invariant applies to this evidence",
@@ -4299,6 +4826,10 @@
           "alpha",
           "effect_direction_confirmed"
         ],
+        "resolution": {
+          "kind": "accepted",
+          "message": "The evidence licenses the claim as worded."
+        },
         "rewrite": null,
         "schema_errors": [],
         "schema_version": "capas-claim-payload-v3",
@@ -4319,7 +4850,14 @@
             "anchor_mode": null,
             "claim_type": "reproducibility_check",
             "description": "Artifact availability and independent reproduction claims.",
-            "optional_fields": [],
+            "optional_fields": [
+              "scope_count_verified",
+              "object_declared",
+              "object_matches_target",
+              "load_bearing_citation_read",
+              "citation_hypotheses_checked",
+              "null_control_passed"
+            ],
             "registered": true,
             "required_fields": [
               "artifact_available",
@@ -4381,6 +4919,7 @@
           ]
         },
         "audit_hash": "sha256:1b4755d115bc0d1d084d6352f950559b33e7e1792e01db9dd2a3f05530f3b69b",
+        "did_you_mean": {},
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "source-backed evidence is not attached",
@@ -4420,6 +4959,7 @@
         },
         "invariant_audit": {
           "applicable": false,
+          "holds": [],
           "laws_checked": [],
           "results": {},
           "summary": "no domain invariant applies to this evidence",
@@ -4434,6 +4974,10 @@
           "artifact_available",
           "independent_reproduction_pass"
         ],
+        "resolution": {
+          "kind": "edit_and_resubmit",
+          "message": "Replace claim.text with the licensed (weaker) wording in `rewrite`, then resubmit."
+        },
         "rewrite": "artifact available; independent reproduction is not yet licensed",
         "schema_errors": [],
         "schema_version": "capas-claim-payload-v3",
@@ -4456,7 +5000,12 @@
             "description": "Financial metric claims against a reference value and period.",
             "optional_fields": [
               "metric_name",
-              "audit_trail"
+              "audit_trail",
+              "object_declared",
+              "object_matches_target",
+              "load_bearing_citation_read",
+              "citation_hypotheses_checked",
+              "null_control_passed"
             ],
             "registered": true,
             "required_fields": [
@@ -4543,6 +5092,7 @@
           ]
         },
         "audit_hash": "sha256:e757a5ae766d7eecbe7d303e7ff4237af0994452688290f457514cd3ee203c73",
+        "did_you_mean": {},
         "fine_tune_blockers": [
           "source-backed evidence is not attached",
           "external review is not attached",
@@ -4581,6 +5131,7 @@
         },
         "invariant_audit": {
           "applicable": false,
+          "holds": [],
           "laws_checked": [],
           "results": {},
           "summary": "no domain invariant applies to this evidence",
@@ -4597,6 +5148,10 @@
           "tolerance",
           "metric_period_match"
         ],
+        "resolution": {
+          "kind": "accepted",
+          "message": "The evidence licenses the claim as worded."
+        },
         "rewrite": null,
         "schema_errors": [],
         "schema_version": "capas-claim-payload-v3",
@@ -4618,7 +5173,12 @@
             "claim_type": "causal_mechanism_claim",
             "description": "Causal-mechanism claims requiring design, temporal, confounder, and mechanism evidence.",
             "optional_fields": [
-              "verification_independence"
+              "verification_independence",
+              "object_declared",
+              "object_matches_target",
+              "load_bearing_citation_read",
+              "citation_hypotheses_checked",
+              "null_control_passed"
             ],
             "registered": true,
             "required_fields": [
@@ -4705,6 +5265,7 @@
           ]
         },
         "audit_hash": "sha256:ef3a3ca4fc94b99915608b002219deeeb0a298bd795e25349f682f106dc481a1",
+        "did_you_mean": {},
         "fine_tune_blockers": [
           "source-backed evidence is not attached",
           "external review is not attached",
@@ -4743,6 +5304,7 @@
         },
         "invariant_audit": {
           "applicable": false,
+          "holds": [],
           "laws_checked": [],
           "results": {},
           "summary": "no domain invariant applies to this evidence",
@@ -4759,6 +5321,10 @@
           "confounders_controlled",
           "mechanism_evidence_present"
         ],
+        "resolution": {
+          "kind": "accepted",
+          "message": "The evidence licenses the claim as worded."
+        },
         "rewrite": null,
         "schema_errors": [],
         "schema_version": "capas-claim-payload-v3",
@@ -4779,7 +5345,13 @@
             "anchor_mode": null,
             "claim_type": "systematic_review_claim",
             "description": "Systematic-review claims requiring protocol, inclusion, bias, and consistency evidence.",
-            "optional_fields": [],
+            "optional_fields": [
+              "object_declared",
+              "object_matches_target",
+              "load_bearing_citation_read",
+              "citation_hypotheses_checked",
+              "null_control_passed"
+            ],
             "registered": true,
             "required_fields": [
               "protocol_registered",
@@ -4845,6 +5417,7 @@
           ]
         },
         "audit_hash": "sha256:2f92d44997db4e9b43c75b6443d525423d28d26d95d375c56a1d586a5fc0365b",
+        "did_you_mean": {},
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "source-backed evidence is not attached",
@@ -4884,6 +5457,7 @@
         },
         "invariant_audit": {
           "applicable": false,
+          "holds": [],
           "laws_checked": [],
           "results": {},
           "summary": "no domain invariant applies to this evidence",
@@ -4900,6 +5474,10 @@
           "risk_of_bias_assessed",
           "effect_consistency"
         ],
+        "resolution": {
+          "kind": "edit_and_resubmit",
+          "message": "Replace claim.text with the licensed (weaker) wording in `rewrite`, then resubmit."
+        },
         "rewrite": "systematic review process is documented; strength or consistency of effect is not fully licensed",
         "schema_errors": [],
         "schema_version": "capas-claim-payload-v3",
@@ -4920,7 +5498,13 @@
             "anchor_mode": null,
             "claim_type": "evidence_conflict_claim",
             "description": "Claims that resolve disclosed supporting and contradicting evidence.",
-            "optional_fields": [],
+            "optional_fields": [
+              "object_declared",
+              "object_matches_target",
+              "load_bearing_citation_read",
+              "citation_hypotheses_checked",
+              "null_control_passed"
+            ],
             "registered": true,
             "required_fields": [
               "supporting_sources",
@@ -5006,6 +5590,7 @@
           ]
         },
         "audit_hash": "sha256:43880025869557548afc54e46c220522e6b30d74f41ccc312eb5e66044df51de",
+        "did_you_mean": {},
         "fine_tune_blockers": [
           "source-backed evidence is not attached",
           "external review is not attached",
@@ -5044,6 +5629,7 @@
         },
         "invariant_audit": {
           "applicable": false,
+          "holds": [],
           "laws_checked": [],
           "results": {},
           "summary": "no domain invariant applies to this evidence",
@@ -5060,6 +5646,10 @@
           "conflict_resolution_method",
           "resolution_pre_registered"
         ],
+        "resolution": {
+          "kind": "accepted",
+          "message": "The evidence licenses the claim as worded."
+        },
         "rewrite": null,
         "schema_errors": [],
         "schema_version": "capas-claim-payload-v3",
@@ -5080,7 +5670,13 @@
             "anchor_mode": null,
             "claim_type": "multimodal_evidence_claim",
             "description": "Claims supported by declared multimodal evidence and extraction method.",
-            "optional_fields": [],
+            "optional_fields": [
+              "object_declared",
+              "object_matches_target",
+              "load_bearing_citation_read",
+              "citation_hypotheses_checked",
+              "null_control_passed"
+            ],
             "registered": true,
             "required_fields": [
               "modality",
@@ -5166,6 +5762,7 @@
           ]
         },
         "audit_hash": "sha256:6291eb6dc304fcefddff2fa14172ac949fb4e0e18ae54f5895851de7f5416ace",
+        "did_you_mean": {},
         "fine_tune_blockers": [
           "source-backed evidence is not attached",
           "external review is not attached",
@@ -5204,6 +5801,7 @@
         },
         "invariant_audit": {
           "applicable": false,
+          "holds": [],
           "laws_checked": [],
           "results": {},
           "summary": "no domain invariant applies to this evidence",
@@ -5220,6 +5818,10 @@
           "cross_modal_alignment",
           "extraction_method_declared"
         ],
+        "resolution": {
+          "kind": "accepted",
+          "message": "The evidence licenses the claim as worded."
+        },
         "rewrite": null,
         "schema_errors": [],
         "schema_version": "capas-claim-payload-v3",
@@ -5241,7 +5843,12 @@
             "claim_type": "programming_language_behavior_claim",
             "description": "Executable programming-language behavior claims requiring snippet, runtime, and observed output evidence.",
             "optional_fields": [
-              "docs_reference"
+              "docs_reference",
+              "object_declared",
+              "object_matches_target",
+              "load_bearing_citation_read",
+              "citation_hypotheses_checked",
+              "null_control_passed"
             ],
             "registered": true,
             "required_fields": [
@@ -5338,6 +5945,7 @@
           ]
         },
         "audit_hash": "sha256:abbfd1031d8ed3724b91b7b0532034460fe9dfa0327ad18e34ce5d5393a12412",
+        "did_you_mean": {},
         "fine_tune_blockers": [
           "source-backed evidence is not attached",
           "external review is not attached",
@@ -5376,6 +5984,7 @@
         },
         "invariant_audit": {
           "applicable": false,
+          "holds": [],
           "laws_checked": [],
           "results": {},
           "summary": "no domain invariant applies to this evidence",
@@ -5396,6 +6005,10 @@
           "execution_observed",
           "runtime_environment_declared"
         ],
+        "resolution": {
+          "kind": "accepted",
+          "message": "The evidence licenses the claim as worded."
+        },
         "rewrite": null,
         "schema_errors": [],
         "schema_version": "capas-claim-payload-v3",
@@ -5417,7 +6030,12 @@
             "claim_type": "programming_language_behavior_claim",
             "description": "Executable programming-language behavior claims requiring snippet, runtime, and observed output evidence.",
             "optional_fields": [
-              "docs_reference"
+              "docs_reference",
+              "object_declared",
+              "object_matches_target",
+              "load_bearing_citation_read",
+              "citation_hypotheses_checked",
+              "null_control_passed"
             ],
             "registered": true,
             "required_fields": [
@@ -5494,6 +6112,7 @@
           ]
         },
         "audit_hash": "sha256:e43533d26f765c3457399e9bdfda94c8ea19516cf3dcc2ba73ab7b72f9f0cadb",
+        "did_you_mean": {},
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "source-backed evidence is not attached",
@@ -5533,6 +6152,7 @@
         },
         "invariant_audit": {
           "applicable": false,
+          "holds": [],
           "laws_checked": [],
           "results": {},
           "summary": "no domain invariant applies to this evidence",
@@ -5553,6 +6173,10 @@
           "execution_observed",
           "runtime_environment_declared"
         ],
+        "resolution": {
+          "kind": "edit_and_resubmit",
+          "message": "Replace claim.text with the licensed (weaker) wording in `rewrite`, then resubmit."
+        },
         "rewrite": "documented programming-language behavior; execution trace is not independently observed",
         "schema_errors": [],
         "schema_version": "capas-claim-payload-v3",
@@ -5574,7 +6198,12 @@
             "claim_type": "programming_language_behavior_claim",
             "description": "Executable programming-language behavior claims requiring snippet, runtime, and observed output evidence.",
             "optional_fields": [
-              "docs_reference"
+              "docs_reference",
+              "object_declared",
+              "object_matches_target",
+              "load_bearing_citation_read",
+              "citation_hypotheses_checked",
+              "null_control_passed"
             ],
             "registered": true,
             "required_fields": [
@@ -5645,6 +6274,7 @@
           "proof_obligations": []
         },
         "audit_hash": "sha256:a3bffb0f95b4cacdc55d1a80f7c3f1b618a2b1d6f69d3164aa0eaf073a398418",
+        "did_you_mean": {},
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "source-backed evidence is not attached",
@@ -5684,6 +6314,7 @@
         },
         "invariant_audit": {
           "applicable": false,
+          "holds": [],
           "laws_checked": [],
           "results": {},
           "summary": "no domain invariant applies to this evidence",
@@ -5704,6 +6335,10 @@
           "execution_observed",
           "runtime_environment_declared"
         ],
+        "resolution": {
+          "kind": "exclude_or_replace_evidence",
+          "message": "The evidence contradicts the claim. Exclude it, or supply new evidence that changes the contract outcome."
+        },
         "rewrite": null,
         "schema_errors": [],
         "schema_version": "capas-claim-payload-v3",
@@ -5725,7 +6360,12 @@
             "claim_type": "programming_language_behavior_claim",
             "description": "Executable programming-language behavior claims requiring snippet, runtime, and observed output evidence.",
             "optional_fields": [
-              "docs_reference"
+              "docs_reference",
+              "object_declared",
+              "object_matches_target",
+              "load_bearing_citation_read",
+              "citation_hypotheses_checked",
+              "null_control_passed"
             ],
             "registered": true,
             "required_fields": [
@@ -5801,6 +6441,7 @@
           ]
         },
         "audit_hash": "sha256:597c0c33e9a71bfb8438ea4438fbf661f72844ee6cdb33805c226917a0ba6feb",
+        "did_you_mean": {},
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "schema or required-field blockers remain",
@@ -5841,6 +6482,7 @@
         },
         "invariant_audit": {
           "applicable": false,
+          "holds": [],
           "laws_checked": [],
           "results": {},
           "summary": "no domain invariant applies to this evidence",
@@ -5864,6 +6506,27 @@
           "execution_observed",
           "runtime_environment_declared"
         ],
+        "resolution": {
+          "did_you_mean": {},
+          "evidence_template": {
+            "expected_output": "\u2026",
+            "observed_output": "\u2026"
+          },
+          "fields": [
+            {
+              "example": "\u2026",
+              "name": "expected_output",
+              "type": "string"
+            },
+            {
+              "example": "\u2026",
+              "name": "observed_output",
+              "type": "string"
+            }
+          ],
+          "kind": "supply_fields",
+          "message": "Supply these evidence fields (types and examples given), then resubmit."
+        },
         "rewrite": null,
         "schema_errors": [],
         "schema_version": "capas-claim-payload-v3",
@@ -5888,9 +6551,14 @@
               "benchmark_metric",
               "benchmark_name",
               "benchmark_pass",
+              "citation_hypotheses_checked",
               "empirical_anchor_pass",
               "empirical_reference_present",
               "empirical_tolerance",
+              "load_bearing_citation_read",
+              "null_control_passed",
+              "object_declared",
+              "object_matches_target",
               "physical_evidence_level",
               "relative_anchor_comparison_pass",
               "relative_anchor_reference",
@@ -5956,6 +6624,7 @@
           "proof_obligations": []
         },
         "audit_hash": "sha256:f110852578a06c8dc32c3a6fbf1e1859ce94a9b229fa9f69aabab724cbde468d",
+        "did_you_mean": {},
         "fine_tune_blockers": [],
         "fine_tune_criteria": {
           "external_review": true,
@@ -5981,6 +6650,7 @@
         },
         "invariant_audit": {
           "applicable": false,
+          "holds": [],
           "laws_checked": [],
           "results": {},
           "summary": "no domain invariant applies to this evidence",
@@ -5996,6 +6666,10 @@
           "local_property_tests_pass",
           "universal_anchor_pass"
         ],
+        "resolution": {
+          "kind": "accepted",
+          "message": "The evidence licenses the claim as worded."
+        },
         "rewrite": null,
         "schema_errors": [],
         "schema_version": "capas-claim-payload-v3",
@@ -6020,9 +6694,14 @@
               "benchmark_metric",
               "benchmark_name",
               "benchmark_pass",
+              "citation_hypotheses_checked",
               "empirical_anchor_pass",
               "empirical_reference_present",
               "empirical_tolerance",
+              "load_bearing_citation_read",
+              "null_control_passed",
+              "object_declared",
+              "object_matches_target",
               "physical_evidence_level",
               "relative_anchor_comparison_pass",
               "relative_anchor_reference",
@@ -6097,6 +6776,7 @@
           ]
         },
         "audit_hash": "sha256:64202f5feddbfe29d84bbe78ac28e19f1e2bd5fa4200ae778efe827622ca68b5",
+        "did_you_mean": {},
         "fine_tune_blockers": [
           "external review is not attached",
           "external review hash is missing or does not match review_packet",
@@ -6128,6 +6808,7 @@
         },
         "invariant_audit": {
           "applicable": false,
+          "holds": [],
           "laws_checked": [],
           "results": {},
           "summary": "no domain invariant applies to this evidence",
@@ -6143,6 +6824,10 @@
           "local_property_tests_pass",
           "universal_anchor_pass"
         ],
+        "resolution": {
+          "kind": "accepted",
+          "message": "The evidence licenses the claim as worded."
+        },
         "rewrite": null,
         "schema_errors": [],
         "schema_version": "capas-claim-payload-v3",
@@ -6167,9 +6852,14 @@
               "benchmark_metric",
               "benchmark_name",
               "benchmark_pass",
+              "citation_hypotheses_checked",
               "empirical_anchor_pass",
               "empirical_reference_present",
               "empirical_tolerance",
+              "load_bearing_citation_read",
+              "null_control_passed",
+              "object_declared",
+              "object_matches_target",
               "physical_evidence_level",
               "relative_anchor_comparison_pass",
               "relative_anchor_reference",
@@ -6245,6 +6935,7 @@
           ]
         },
         "audit_hash": "sha256:ea42b413c0c4ee97a4fb5de36549a7dc66a3882d2d82dcee3341b67d3f1749ee",
+        "did_you_mean": {},
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "source-backed evidence is not attached",
@@ -6284,6 +6975,7 @@
         },
         "invariant_audit": {
           "applicable": false,
+          "holds": [],
           "laws_checked": [],
           "results": {},
           "summary": "no domain invariant applies to this evidence",
@@ -6300,6 +6992,10 @@
           "relative_anchor_reference",
           "relative_anchor_comparison_pass"
         ],
+        "resolution": {
+          "kind": "edit_and_resubmit",
+          "message": "Replace claim.text with the licensed (weaker) wording in `rewrite`, then resubmit."
+        },
         "rewrite": "relative comparison against benchmark_model_v1 only; universal physical correctness is not licensed",
         "schema_errors": [],
         "schema_version": "capas-claim-payload-v3",
@@ -6324,7 +7020,7 @@
           },
           "dialectic": {
             "burden_of_proof": [
-              "schema: claim.type must be one of: causal_mechanism_claim, claim_transition, evidence_conflict_claim, exact_model_solution, financial_metric_claim, multimodal_evidence_claim, physical_accuracy, programming_language_behavior_claim, reproducibility_check, statistical_confidence, systematic_review_claim, universal_anchor_claim; unsupported claim type 'quantum_oracle_claim' requires a registered evidence contract before CAPAS can decide it",
+              "schema: claim.type must be one of: causal_mechanism_claim, claim_transition, evidence_conflict_claim, exact_model_solution, financial_metric_claim, multimodal_evidence_claim, physical_accuracy, programming_language_behavior_claim, proof_admissibility, reproducibility_check, statistical_confidence, systematic_review_claim, universal_anchor_claim; unsupported claim type 'quantum_oracle_claim' requires a registered evidence contract before CAPAS can decide it",
               "contract: register evidence contract for claim.type 'quantum_oracle_claim'"
             ],
             "licensed_thesis": "Unknown claims require a contract before CAPAS can decide them.",
@@ -6333,7 +7029,7 @@
             "supports": [],
             "thesis": "Unknown claims require a contract before CAPAS can decide them.",
             "undercutters": [
-              "claim.type must be one of: causal_mechanism_claim, claim_transition, evidence_conflict_claim, exact_model_solution, financial_metric_claim, multimodal_evidence_claim, physical_accuracy, programming_language_behavior_claim, reproducibility_check, statistical_confidence, systematic_review_claim, universal_anchor_claim; unsupported claim type 'quantum_oracle_claim' requires a registered evidence contract before CAPAS can decide it"
+              "claim.type must be one of: causal_mechanism_claim, claim_transition, evidence_conflict_claim, exact_model_solution, financial_metric_claim, multimodal_evidence_claim, physical_accuracy, programming_language_behavior_claim, proof_admissibility, reproducibility_check, statistical_confidence, systematic_review_claim, universal_anchor_claim; unsupported claim type 'quantum_oracle_claim' requires a registered evidence contract before CAPAS can decide it"
             ],
             "warrant": "input payload failed CAPAS schema validation"
           },
@@ -6371,10 +7067,12 @@
             "label": "Register a claim type and evidence contract before deciding."
           },
           "proof_obligations": [
-            "schema: claim.type must be one of: causal_mechanism_claim, claim_transition, evidence_conflict_claim, exact_model_solution, financial_metric_claim, multimodal_evidence_claim, physical_accuracy, programming_language_behavior_claim, reproducibility_check, statistical_confidence, systematic_review_claim, universal_anchor_claim; unsupported claim type 'quantum_oracle_claim' requires a registered evidence contract before CAPAS can decide it",
+            "schema: claim.type must be one of: causal_mechanism_claim, claim_transition, evidence_conflict_claim, exact_model_solution, financial_metric_claim, multimodal_evidence_claim, physical_accuracy, programming_language_behavior_claim, proof_admissibility, reproducibility_check, statistical_confidence, systematic_review_claim, universal_anchor_claim; unsupported claim type 'quantum_oracle_claim' requires a registered evidence contract before CAPAS can decide it",
             "contract: register evidence contract for claim.type 'quantum_oracle_claim'"
           ]
         },
+        "audit_hash": "sha256:e90c70f8fefbac9fcd30ba8e592fce4e3de3259289821a1e841f2d96ecca2e0e",
+        "did_you_mean": {},
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "schema or required-field blockers remain",
@@ -6418,9 +7116,17 @@
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
         "reason": "input payload failed CAPAS schema validation",
         "required_fields": [],
+        "resolution": {
+          "did_you_mean": {},
+          "errors": [
+            "claim.type must be one of: causal_mechanism_claim, claim_transition, evidence_conflict_claim, exact_model_solution, financial_metric_claim, multimodal_evidence_claim, physical_accuracy, programming_language_behavior_claim, proof_admissibility, reproducibility_check, statistical_confidence, systematic_review_claim, universal_anchor_claim; unsupported claim type 'quantum_oracle_claim' requires a registered evidence contract before CAPAS can decide it"
+          ],
+          "kind": "fix_schema_errors",
+          "message": "Correct the listed schema errors (each names its own fix), then resubmit."
+        },
         "rewrite": null,
         "schema_errors": [
-          "claim.type must be one of: causal_mechanism_claim, claim_transition, evidence_conflict_claim, exact_model_solution, financial_metric_claim, multimodal_evidence_claim, physical_accuracy, programming_language_behavior_claim, reproducibility_check, statistical_confidence, systematic_review_claim, universal_anchor_claim; unsupported claim type 'quantum_oracle_claim' requires a registered evidence contract before CAPAS can decide it"
+          "claim.type must be one of: causal_mechanism_claim, claim_transition, evidence_conflict_claim, exact_model_solution, financial_metric_claim, multimodal_evidence_claim, physical_accuracy, programming_language_behavior_claim, proof_admissibility, reproducibility_check, statistical_confidence, systematic_review_claim, universal_anchor_claim; unsupported claim type 'quantum_oracle_claim' requires a registered evidence contract before CAPAS can decide it"
         ],
         "schema_version": "capas-claim-payload-v3",
         "verdict": "HOLD"
@@ -6432,11 +7138,11 @@
         "admissibility_summary": {
           "next_actions": {
             "edit_and_resubmit": 1,
-            "verify_provenance_for_training": 1
+            "hold_for_review": 1
           },
           "reuse_boundaries": {
             "bounded_rewrite": 1,
-            "claim_licensed": 1
+            "none": 1
           }
         },
         "batch_mode": "decide",
@@ -6445,20 +7151,11 @@
             "claim_id": "batch_accept",
             "claim_type": "exact_model_solution",
             "index": 0,
-            "next_action": "verify_provenance_for_training",
-            "next_action_label": "Claim is licensed; verify provenance before using as fine-tuning data.",
-            "proof_obligations": [
-              "training: source-backed evidence is not attached",
-              "training: external review is not attached",
-              "training: claim.text semantic alignment is not externally certified",
-              "training: witness independence is not externally certified",
-              "training: provenance.sources or provenance.source_urls is empty",
-              "training: external review hash is missing or does not match review_packet",
-              "training: source URLs are not recoverable with matching hashes",
-              "training: witness_id is not resolvable in the witness registry"
-            ],
-            "reuse_boundary": "claim_licensed",
-            "verdict": "ACCEPT"
+            "next_action": "hold_for_review",
+            "next_action_label": "Resolve open proof obligations before reuse.",
+            "proof_obligations": [],
+            "reuse_boundary": "none",
+            "verdict": "HOLD"
           },
           {
             "claim_id": "batch_rewrite",
@@ -6494,7 +7191,23 @@
                   "optional_fields": [
                     "bound_scope",
                     "physical_evidence_level",
-                    "verification_independence"
+                    "verification_independence",
+                    "tolerance_unit",
+                    "n_replicates",
+                    "n_points",
+                    "alternative_model_rejected",
+                    "error_statistic",
+                    "n_cells",
+                    "scope_declared",
+                    "scope_tested",
+                    "negative_control_failed",
+                    "tolerance_rationale",
+                    "reference_value",
+                    "object_declared",
+                    "object_matches_target",
+                    "load_bearing_citation_read",
+                    "citation_hypotheses_checked",
+                    "null_control_passed"
                   ],
                   "registered": true,
                   "required_fields": [
@@ -6503,21 +7216,8 @@
                   ]
                 },
                 "dialectic": {
-                  "burden_of_proof": [
-                    "training: source-backed evidence is not attached",
-                    "training: external review is not attached",
-                    "training: claim.text semantic alignment is not externally certified",
-                    "training: witness independence is not externally certified",
-                    "training: provenance.sources or provenance.source_urls is empty",
-                    "training: external review hash is missing or does not match review_packet",
-                    "training: source URLs are not recoverable with matching hashes",
-                    "training: witness_id is not resolvable in the witness registry",
-                    "training: RO-Crate provenance packet is missing, invalid, or hash-mismatched",
-                    "training: reviewer identity or attestation is not verifiable",
-                    "training: provenance.review_id is missing",
-                    "training: provenance.witness_id is missing"
-                  ],
-                  "licensed_thesis": "The solution is within tolerance.",
+                  "burden_of_proof": [],
+                  "licensed_thesis": null,
                   "optional_supports": [],
                   "rebuttals": [],
                   "supports": [
@@ -6526,58 +7226,47 @@
                   ],
                   "thesis": "The solution is within tolerance.",
                   "undercutters": [],
-                  "warrant": "abs_error 0.0 <= tolerance 0.01"
+                  "warrant": "abs_error 0.0 <= tolerance 0.01; abs_error 0.0 is at machine precision (<= 1e-12 x scale): the tolerance does not inform here and no negative control is declared \u2014 identity at machine precision without a negative control"
                 },
                 "lattice": {
                   "axes": {
                     "boundary": {
-                      "level": "claim_licensed",
-                      "score": 4
+                      "level": "none",
+                      "score": 0
                     },
                     "contract": {
                       "level": "contract_complete",
                       "score": 3
                     },
                     "defeaters": {
-                      "level": "no_active_defeater",
-                      "score": 4
+                      "level": "open_defeaters",
+                      "score": 0
                     },
                     "evidence": {
-                      "level": "supports_claim_boundary",
-                      "score": 4
+                      "level": "declared",
+                      "score": 1
                     },
                     "provenance": {
                       "level": "none",
                       "score": 0
                     }
                   },
-                  "controlled_reuse_meet": 3,
+                  "controlled_reuse_meet": 0,
                   "non_claim": "This lattice orders admissibility of supplied evidence, not scientific truth.",
-                  "reuse_boundary": "claim_licensed",
+                  "reuse_boundary": "none",
                   "training_reuse_meet": 0
                 },
                 "metaphor": "compiler_certificate",
                 "next_action": {
-                  "kind": "verify_provenance_for_training",
-                  "label": "Claim is licensed; verify provenance before using as fine-tuning data."
+                  "kind": "hold_for_review",
+                  "label": "Resolve open proof obligations before reuse."
                 },
-                "proof_obligations": [
-                  "training: source-backed evidence is not attached",
-                  "training: external review is not attached",
-                  "training: claim.text semantic alignment is not externally certified",
-                  "training: witness independence is not externally certified",
-                  "training: provenance.sources or provenance.source_urls is empty",
-                  "training: external review hash is missing or does not match review_packet",
-                  "training: source URLs are not recoverable with matching hashes",
-                  "training: witness_id is not resolvable in the witness registry",
-                  "training: RO-Crate provenance packet is missing, invalid, or hash-mismatched",
-                  "training: reviewer identity or attestation is not verifiable",
-                  "training: provenance.review_id is missing",
-                  "training: provenance.witness_id is missing"
-                ]
+                "proof_obligations": []
               },
-              "audit_hash": "sha256:d5456dde1cf60e53a0098467d47eba38d04c2f350b54af6e18f7ad6248150e54",
+              "audit_hash": "sha256:8415032b9471f65ef438e9c5d23a060be78fa92117c97257189010b94474e80c",
+              "did_you_mean": {},
               "fine_tune_blockers": [
+                "claim verdict is not ACCEPT",
                 "source-backed evidence is not attached",
                 "external review is not attached",
                 "claim.text semantic alignment is not externally certified",
@@ -6602,7 +7291,7 @@
                 "semantic_alignment": false,
                 "source_backed_evidence": false,
                 "source_urls_recoverable_hashable": false,
-                "verdict_accept": true,
+                "verdict_accept": false,
                 "witness_id_present": false,
                 "witness_independence": false,
                 "witness_registry_resolved": false
@@ -6615,24 +7304,29 @@
               },
               "invariant_audit": {
                 "applicable": false,
+                "holds": [],
                 "laws_checked": [],
                 "results": {},
                 "summary": "no domain invariant applies to this evidence",
                 "verdict": "N/A",
                 "violations": []
               },
-              "licensed_claim": "The solution is within tolerance.",
+              "licensed_claim": null,
               "missing_fields": [],
               "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
-              "reason": "abs_error 0.0 <= tolerance 0.01",
+              "reason": "abs_error 0.0 <= tolerance 0.01; abs_error 0.0 is at machine precision (<= 1e-12 x scale): the tolerance does not inform here and no negative control is declared \u2014 identity at machine precision without a negative control",
               "required_fields": [
                 "abs_error",
                 "tolerance"
               ],
+              "resolution": {
+                "kind": "hold_for_review",
+                "message": "Resolve the open proof obligations before reuse."
+              },
               "rewrite": null,
               "schema_errors": [],
               "schema_version": "capas-claim-payload-v3",
-              "verdict": "ACCEPT"
+              "verdict": "HOLD"
             }
           },
           {
@@ -6646,7 +7340,14 @@
                   "anchor_mode": null,
                   "claim_type": "reproducibility_check",
                   "description": "Artifact availability and independent reproduction claims.",
-                  "optional_fields": [],
+                  "optional_fields": [
+                    "scope_count_verified",
+                    "object_declared",
+                    "object_matches_target",
+                    "load_bearing_citation_read",
+                    "citation_hypotheses_checked",
+                    "null_control_passed"
+                  ],
                   "registered": true,
                   "required_fields": [
                     "artifact_available",
@@ -6708,6 +7409,7 @@
                 ]
               },
               "audit_hash": "sha256:72d712660596e0e1bd42a99c0357f68237e2862186c2ddc0ef4a6ba7fa5de1f5",
+              "did_you_mean": {},
               "fine_tune_blockers": [
                 "claim verdict is not ACCEPT",
                 "source-backed evidence is not attached",
@@ -6747,6 +7449,7 @@
               },
               "invariant_audit": {
                 "applicable": false,
+                "holds": [],
                 "laws_checked": [],
                 "results": {},
                 "summary": "no domain invariant applies to this evidence",
@@ -6761,6 +7464,10 @@
                 "artifact_available",
                 "independent_reproduction_pass"
               ],
+              "resolution": {
+                "kind": "edit_and_resubmit",
+                "message": "Replace claim.text with the licensed (weaker) wording in `rewrite`, then resubmit."
+              },
               "rewrite": "artifact available; independent reproduction is not yet licensed",
               "schema_errors": [],
               "schema_version": "capas-claim-payload-v3",
@@ -6770,12 +7477,12 @@
         ],
         "schema_version": "capas-claim-payload-v3",
         "summary": {
-          "ACCEPT": 1,
+          "HOLD": 1,
           "REWRITE": 1
         }
       },
       "check": "admissibility_calculus:batch_exception_queue",
-      "passed": true
+      "passed": false
     },
     {
       "check": "fine_tune_external_verification:review_hash_mismatch",
@@ -6792,9 +7499,14 @@
               "benchmark_metric",
               "benchmark_name",
               "benchmark_pass",
+              "citation_hypotheses_checked",
               "empirical_anchor_pass",
               "empirical_reference_present",
               "empirical_tolerance",
+              "load_bearing_citation_read",
+              "null_control_passed",
+              "object_declared",
+              "object_matches_target",
               "physical_evidence_level",
               "relative_anchor_comparison_pass",
               "relative_anchor_reference",
@@ -6864,6 +7576,7 @@
           ]
         },
         "audit_hash": "sha256:f110852578a06c8dc32c3a6fbf1e1859ce94a9b229fa9f69aabab724cbde468d",
+        "did_you_mean": {},
         "fine_tune_blockers": [
           "external review hash is missing or does not match review_packet"
         ],
@@ -6891,6 +7604,7 @@
         },
         "invariant_audit": {
           "applicable": false,
+          "holds": [],
           "laws_checked": [],
           "results": {},
           "summary": "no domain invariant applies to this evidence",
@@ -6906,6 +7620,10 @@
           "local_property_tests_pass",
           "universal_anchor_pass"
         ],
+        "resolution": {
+          "kind": "accepted",
+          "message": "The evidence licenses the claim as worded."
+        },
         "rewrite": null,
         "schema_errors": [],
         "schema_version": "capas-claim-payload-v3",
@@ -6930,9 +7648,14 @@
               "benchmark_metric",
               "benchmark_name",
               "benchmark_pass",
+              "citation_hypotheses_checked",
               "empirical_anchor_pass",
               "empirical_reference_present",
               "empirical_tolerance",
+              "load_bearing_citation_read",
+              "null_control_passed",
+              "object_declared",
+              "object_matches_target",
               "physical_evidence_level",
               "relative_anchor_comparison_pass",
               "relative_anchor_reference",
@@ -7002,6 +7725,7 @@
           ]
         },
         "audit_hash": "sha256:f110852578a06c8dc32c3a6fbf1e1859ce94a9b229fa9f69aabab724cbde468d",
+        "did_you_mean": {},
         "fine_tune_blockers": [
           "source URLs are not recoverable with matching hashes"
         ],
@@ -7029,6 +7753,7 @@
         },
         "invariant_audit": {
           "applicable": false,
+          "holds": [],
           "laws_checked": [],
           "results": {},
           "summary": "no domain invariant applies to this evidence",
@@ -7044,6 +7769,10 @@
           "local_property_tests_pass",
           "universal_anchor_pass"
         ],
+        "resolution": {
+          "kind": "accepted",
+          "message": "The evidence licenses the claim as worded."
+        },
         "rewrite": null,
         "schema_errors": [],
         "schema_version": "capas-claim-payload-v3",
@@ -7068,9 +7797,14 @@
               "benchmark_metric",
               "benchmark_name",
               "benchmark_pass",
+              "citation_hypotheses_checked",
               "empirical_anchor_pass",
               "empirical_reference_present",
               "empirical_tolerance",
+              "load_bearing_citation_read",
+              "null_control_passed",
+              "object_declared",
+              "object_matches_target",
               "physical_evidence_level",
               "relative_anchor_comparison_pass",
               "relative_anchor_reference",
@@ -7140,6 +7874,7 @@
           ]
         },
         "audit_hash": "sha256:f110852578a06c8dc32c3a6fbf1e1859ce94a9b229fa9f69aabab724cbde468d",
+        "did_you_mean": {},
         "fine_tune_blockers": [
           "witness_id is not resolvable in the witness registry"
         ],
@@ -7167,6 +7902,7 @@
         },
         "invariant_audit": {
           "applicable": false,
+          "holds": [],
           "laws_checked": [],
           "results": {},
           "summary": "no domain invariant applies to this evidence",
@@ -7182,6 +7918,10 @@
           "local_property_tests_pass",
           "universal_anchor_pass"
         ],
+        "resolution": {
+          "kind": "accepted",
+          "message": "The evidence licenses the claim as worded."
+        },
         "rewrite": null,
         "schema_errors": [],
         "schema_version": "capas-claim-payload-v3",
@@ -7206,9 +7946,14 @@
               "benchmark_metric",
               "benchmark_name",
               "benchmark_pass",
+              "citation_hypotheses_checked",
               "empirical_anchor_pass",
               "empirical_reference_present",
               "empirical_tolerance",
+              "load_bearing_citation_read",
+              "null_control_passed",
+              "object_declared",
+              "object_matches_target",
               "physical_evidence_level",
               "relative_anchor_comparison_pass",
               "relative_anchor_reference",
@@ -7278,6 +8023,7 @@
           ]
         },
         "audit_hash": "sha256:f110852578a06c8dc32c3a6fbf1e1859ce94a9b229fa9f69aabab724cbde468d",
+        "did_you_mean": {},
         "fine_tune_blockers": [
           "RO-Crate provenance packet is missing, invalid, or hash-mismatched"
         ],
@@ -7305,6 +8051,7 @@
         },
         "invariant_audit": {
           "applicable": false,
+          "holds": [],
           "laws_checked": [],
           "results": {},
           "summary": "no domain invariant applies to this evidence",
@@ -7320,6 +8067,10 @@
           "local_property_tests_pass",
           "universal_anchor_pass"
         ],
+        "resolution": {
+          "kind": "accepted",
+          "message": "The evidence licenses the claim as worded."
+        },
         "rewrite": null,
         "schema_errors": [],
         "schema_version": "capas-claim-payload-v3",
@@ -7344,9 +8095,14 @@
               "benchmark_metric",
               "benchmark_name",
               "benchmark_pass",
+              "citation_hypotheses_checked",
               "empirical_anchor_pass",
               "empirical_reference_present",
               "empirical_tolerance",
+              "load_bearing_citation_read",
+              "null_control_passed",
+              "object_declared",
+              "object_matches_target",
               "physical_evidence_level",
               "relative_anchor_comparison_pass",
               "relative_anchor_reference",
@@ -7416,6 +8172,7 @@
           ]
         },
         "audit_hash": "sha256:f110852578a06c8dc32c3a6fbf1e1859ce94a9b229fa9f69aabab724cbde468d",
+        "did_you_mean": {},
         "fine_tune_blockers": [
           "reviewer identity or attestation is not verifiable"
         ],
@@ -7443,6 +8200,7 @@
         },
         "invariant_audit": {
           "applicable": false,
+          "holds": [],
           "laws_checked": [],
           "results": {},
           "summary": "no domain invariant applies to this evidence",
@@ -7458,6 +8216,10 @@
           "local_property_tests_pass",
           "universal_anchor_pass"
         ],
+        "resolution": {
+          "kind": "accepted",
+          "message": "The evidence licenses the claim as worded."
+        },
         "rewrite": null,
         "schema_errors": [],
         "schema_version": "capas-claim-payload-v3",
@@ -7468,7 +8230,7 @@
       "passed": true
     }
   ],
-  "external_input_schema_ready": true,
+  "external_input_schema_ready": false,
   "invalid_example": "examples/external_claim_invalid.json",
   "schema": "docs/schema/capas_claim_payload.schema.json",
   "valid_examples": [

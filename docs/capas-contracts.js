@@ -79,29 +79,44 @@ window.CAPAS_CONTRACTS = {
       "object_declared",
       "object_matches_target",
       "load_bearing_citation_read",
-      "citation_hypotheses_checked"
+      "citation_hypotheses_checked",
+      "null_control_passed"
     ],
     "claim_transition": [
       "current_claim",
       "object_declared",
       "object_matches_target",
       "load_bearing_citation_read",
-      "citation_hypotheses_checked"
+      "citation_hypotheses_checked",
+      "null_control_passed"
     ],
     "evidence_conflict_claim": [
       "object_declared",
       "object_matches_target",
       "load_bearing_citation_read",
-      "citation_hypotheses_checked"
+      "citation_hypotheses_checked",
+      "null_control_passed"
     ],
     "exact_model_solution": [
       "bound_scope",
       "physical_evidence_level",
       "verification_independence",
+      "tolerance_unit",
+      "n_replicates",
+      "n_points",
+      "alternative_model_rejected",
+      "error_statistic",
+      "n_cells",
+      "scope_declared",
+      "scope_tested",
+      "negative_control_failed",
+      "tolerance_rationale",
+      "reference_value",
       "object_declared",
       "object_matches_target",
       "load_bearing_citation_read",
-      "citation_hypotheses_checked"
+      "citation_hypotheses_checked",
+      "null_control_passed"
     ],
     "financial_metric_claim": [
       "metric_name",
@@ -109,13 +124,15 @@ window.CAPAS_CONTRACTS = {
       "object_declared",
       "object_matches_target",
       "load_bearing_citation_read",
-      "citation_hypotheses_checked"
+      "citation_hypotheses_checked",
+      "null_control_passed"
     ],
     "multimodal_evidence_claim": [
       "object_declared",
       "object_matches_target",
       "load_bearing_citation_read",
-      "citation_hypotheses_checked"
+      "citation_hypotheses_checked",
+      "null_control_passed"
     ],
     "physical_accuracy": [
       "physical_evidence_level",
@@ -123,14 +140,16 @@ window.CAPAS_CONTRACTS = {
       "object_declared",
       "object_matches_target",
       "load_bearing_citation_read",
-      "citation_hypotheses_checked"
+      "citation_hypotheses_checked",
+      "null_control_passed"
     ],
     "programming_language_behavior_claim": [
       "docs_reference",
       "object_declared",
       "object_matches_target",
       "load_bearing_citation_read",
-      "citation_hypotheses_checked"
+      "citation_hypotheses_checked",
+      "null_control_passed"
     ],
     "proof_admissibility": [
       "leading_order_established",
@@ -139,16 +158,20 @@ window.CAPAS_CONTRACTS = {
       "object_declared",
       "object_matches_target",
       "load_bearing_citation_read",
-      "citation_hypotheses_checked"
+      "citation_hypotheses_checked",
+      "null_control_passed"
     ],
     "reproducibility_check": [
+      "scope_count_verified",
       "object_declared",
       "object_matches_target",
       "load_bearing_citation_read",
-      "citation_hypotheses_checked"
+      "citation_hypotheses_checked",
+      "null_control_passed"
     ],
     "statistical_confidence": [
       "test_statistic",
+      "null_control_passed",
       "object_declared",
       "object_matches_target",
       "load_bearing_citation_read",
@@ -158,7 +181,8 @@ window.CAPAS_CONTRACTS = {
       "object_declared",
       "object_matches_target",
       "load_bearing_citation_read",
-      "citation_hypotheses_checked"
+      "citation_hypotheses_checked",
+      "null_control_passed"
     ],
     "universal_anchor_claim": [
       "benchmark_metric",
@@ -174,7 +198,8 @@ window.CAPAS_CONTRACTS = {
       "object_declared",
       "object_matches_target",
       "load_bearing_citation_read",
-      "citation_hypotheses_checked"
+      "citation_hypotheses_checked",
+      "null_control_passed"
     ]
   },
   "required": {
