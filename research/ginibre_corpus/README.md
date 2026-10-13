@@ -186,3 +186,12 @@ scope_tested not declared»). Ginibre reescribió v2 restringida al alcance prob
 **ACCEPT** con Šidák sobre n_cells = 2 (3,0 → 3,205 SE). Fuera de muestra: el gate no había visto el claim y el
 REWRITE era el veredicto correcto según el propio autor. n = 1; es el primer caso en que la regla del 13-oct
 hace su trabajo en vivo y no solo post-hoc. Log de Ginibre: `.claude/capas_shadow.log.jsonl`.
+
+### Ajuste de coste de la regla de alcance (Osvaldo, 2026-10-13 07:15) — post-hoc
+
+Los sustantivos débiles ('ventana', 'régimen', 'siempre', '-independiente') ya no disparan solos; solo cuantificadores o
+generalizaciones explícitas. Sobre X1–X5 (post-hoc): buenos que perdían ACCEPT por esta regla **5 → 1** (queda X3-045,
+"para todo S∈GL(m)", que sí es universal y debe declarar alcance); malos cazados **2 → 1** (se pierde X4-001,
+"k-casi-independiente", pérdida declarada). Flips totales motor vs sellado 41 → 37, sin ningún bueno a REJECT.
+Primera prueba fuera de muestra de esta versión: corpus ciego de Atlas, tag `atlas-ciego-v3` (eb45820), congelado
+antes de codificar.
