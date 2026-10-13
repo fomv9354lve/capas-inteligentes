@@ -19,7 +19,8 @@ PKG = Path(__file__).resolve().parent
 PROVIDERS = {
     "deepseek": {"url": "https://api.deepseek.com/chat/completions", "key": "deepseek.key", "model": "deepseek-reasoner"},
     "groq": {"url": "https://api.groq.com/openai/v1/chat/completions", "key": "groq.key", "model": "openai/gpt-oss-120b"},
-    "xai": {"url": "https://api.x.ai/v1/chat/completions", "key": "xai.key", "model": "grok-4"},
+    "xai": {"url": "https://api.x.ai/v1/chat/completions", "key": "xai.key", "model": "grok-4.7"},
+    "gemini": {"url": "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions", "key": "gemini.key", "model": "gemini-3.8-flash"},
 }
 ALLOW = re.compile(r"^(python3?|pytest|cat|head|tail|sed|grep|rg|ls|wc|shasum|sha256sum|jq|git|find|diff|sort|uniq|cut|tr|awk|echo|printf|stat|file)\b")
 DENY = re.compile(r"(\brm\b|\bmv\b|\bcp\b|\bsudo\b|\bcurl\b|\bwget\b|\bssh\b|\baz\b|\bpip\b|\bnpm\b|>\s*[^&]|\btee\b|\bchmod\b|\bchown\b|\bkill\b|git\s+(commit|push|reset|checkout|switch|restore|rebase|merge|tag\s+-d|branch\s+-[dD]|clean|stash|rm|mv)|\bopen\b|\bosascript\b|\bexec\b|\beval\b|\bsource\b|\bexport\b|\$\(|`)")
@@ -70,7 +71,9 @@ def _segments(line):
     return segs
 
 
-PY_WRITE = re.compile(r"(open\([^)]*['\"][wax]|write_text|write_bytes|os\.(remove|unlink|rename|system|makedirs|mkdir)|shutil\.|subprocess|\bsocket\b|urllib|requests|pathlib[^\n]*\.(unlink|rmdir|touch))")
+PY_WRITE = re.compile(r"(open\([^)]*['\"][wax]|write_text|write_bytes|os\.(remove|unlink|rename|system|makedirs|mkdir|symlink|link|chmod|chdir|popen|exec\w*|spawn\w*)|"
+                      r"shutil\.|subprocess|\bsocket\b|urllib|requests|\bimportlib\b|__import__|\bctypes\b|\bsignal\b|"
+                      r"pathlib[^\n]*\.(unlink|rmdir|touch|symlink_to|hardlink_to|write_\w+|mkdir))")
 
 
 def run_cmd(cmd):

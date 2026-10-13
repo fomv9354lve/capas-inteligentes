@@ -145,3 +145,13 @@ buenos por 2 malos** porque nadie declaró `scope_declared/scope_tested` (no exi
 dispara por prosa. Es lo mismo que pasó con A–E: la regla sirve cuando el codificador declara; sin
 declaración, degrada a REWRITE (nunca REJECT) y el coste es ese. Se deja como está: lo que pide es un campo,
 y el campo ahora existe.
+
+### Corrección (§6 run 3, xAI, 2026-10-13): la cifra ciega con respaldo de hash es 53/82 y 52/63
+
+El auditor cruzó el sellado `DE_CAPAS_veredictos_v2.jsonl` con los desenlaces: limpios 145, **malos no-ACCEPT
+53/82 = 0,65, buenos no-REJECT 52/63 = 0,83** (v1: 51/63). El "52/81 y 57/63" que este README y CURRENT_TRUTH
+citaban como "cifra exacta" proviene de la recodificación de los 22 `steps_all_valid:false` (adenda 2 de
+Ginibre), que vive en `final_recodif_out.txt` y no en un archivo sellado. Verificado por CAPAS, cifra por cifra.
+Hasta que la recodificación se corra con el protocolo de X4/X5 (claims sellados → tag → veredictos sellados →
+doble conteo), la cifra ciega de X1–3 es 0,65 / 0,83. El acumulado fuera de muestra X4+X5 (17/21, 16/17) no
+cambia: esos lotes sí están sellados de punta a punta.
