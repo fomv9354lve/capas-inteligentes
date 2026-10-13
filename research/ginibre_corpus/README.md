@@ -85,3 +85,18 @@ codificación (¿con qué tolerancia se decidió "resiste"?) enviada a Ginibre, 
 Deudas de motor que X4 deja escritas: (1) `exact_model_solution` no juzga alcance declarado vs
 probado; (2) `proof_admissibility` acepta sobreafirmaciones de alcance que no son cuantificador
 universal. Ambas piden un campo de evidencia nuevo, no un umbral.
+
+### Post-mortem X4 → esquema X5 (acordado con Ginibre, 2026-10-13)
+
+Los tres falsos-REJECT se explicaron con evidencia posterior: X4-026 se juzgó por replicación
+(los pulls −2,5/−2,8 desaparecen a R=300; decidía χ²/dof 4,23 vs 1027 de los rivales); X4-029
+decía «~2σ» y el codificador lo convirtió en 2,0 estricto; X4-031 era error de objeto (celda
+declarada ABIERTA, fuera del claim). Reglas para X5: **(a)** si hay χ²/dof con rivales, va en
+`test_statistic`, no abs_error = pull máximo; **(b)** si sólo hay pulls, abs_error = máximo sobre
+`n_cells` con tolerancia corregida por multiplicidad (Šidák); **(c)** abs_error sólo sobre celdas
+que el claim cubre; **(d)** «~kσ» en el texto → tolerancia k, SUPUESTA. (a)(c)(d) son codificación
+(ESQUEMA de Ginibre); (b) es motor: tag `ginibre-ciego-v5` (38b1615), campos `error_statistic`
+y `n_cells`, Šidák con 2 SE → 2,525 / 2,664 / 2,888 SE para k = 4 / 6 / 12
+(`benchmarks/test_multiplicity_tolerance.py`). Sin la declaración el motor juzga celda única:
+los 37 payloads de X4 dan **0 cambios de veredicto** entre v4 y v5. X4-026 (2,84 SE, k=6) sigue
+REJECT bajo (b) sola; lo habría decidido (a).
