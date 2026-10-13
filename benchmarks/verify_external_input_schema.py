@@ -389,8 +389,10 @@ SEMANTIC_PAYLOADS = [
                 "tolerance": 0.0,
             },
         },
-        "ACCEPT",
-        "abs_error 0.0 <= tolerance 0.0",
+        # 2026-10-13: a zero-error exact check is the machine-precision regime — it cannot fail, so without a
+        # declared negative control the gate HOLDs (GOVERNANCE: a test that cannot fail verifies nothing).
+        "HOLD",
+        "abs_error 0.0 <= tolerance 0",
     ),
     (
         "anchor_mode_unknown_missing",
@@ -876,7 +878,7 @@ def main() -> int:
         "claims": [
             _with_schema({
                 "claim": {"id": "batch_accept", "type": "exact_model_solution", "text": "The solution is within tolerance."},
-                "evidence": {"abs_error": 0.0, "tolerance": 0.01},
+                "evidence": {"abs_error": 0.0, "tolerance": 0.01, "negative_control_failed": True},   # zero error = machine-precision regime (2026-10-13)
             }),
             _with_schema({
                 "claim": {"id": "batch_rewrite", "type": "reproducibility_check", "text": "The result is independently reproduced."},

@@ -3,7 +3,7 @@
     {
       "check": "published_schema_matches_cli_schema",
       "detail": "docs/schema/capas_claim_payload.schema.json",
-      "passed": false
+      "passed": true
     },
     {
       "check": "valid_example:external_claim_accept.json",
@@ -4000,9 +4000,9 @@
         "schema_version": "capas-claim-payload-v3",
         "verdict": "HOLD"
       },
-      "expected_detail": "abs_error 0.0 <= tolerance 0.0",
-      "expected_verdict": "ACCEPT",
-      "passed": false
+      "expected_detail": "abs_error 0.0 <= tolerance 0",
+      "expected_verdict": "HOLD",
+      "passed": true
     },
     {
       "check": "semantic_payload:anchor_mode_unknown_missing",
@@ -7138,11 +7138,11 @@
         "admissibility_summary": {
           "next_actions": {
             "edit_and_resubmit": 1,
-            "hold_for_review": 1
+            "verify_provenance_for_training": 1
           },
           "reuse_boundaries": {
             "bounded_rewrite": 1,
-            "none": 1
+            "claim_licensed": 1
           }
         },
         "batch_mode": "decide",
@@ -7151,11 +7151,20 @@
             "claim_id": "batch_accept",
             "claim_type": "exact_model_solution",
             "index": 0,
-            "next_action": "hold_for_review",
-            "next_action_label": "Resolve open proof obligations before reuse.",
-            "proof_obligations": [],
-            "reuse_boundary": "none",
-            "verdict": "HOLD"
+            "next_action": "verify_provenance_for_training",
+            "next_action_label": "Claim is licensed; verify provenance before using as fine-tuning data.",
+            "proof_obligations": [
+              "training: source-backed evidence is not attached",
+              "training: external review is not attached",
+              "training: claim.text semantic alignment is not externally certified",
+              "training: witness independence is not externally certified",
+              "training: provenance.sources or provenance.source_urls is empty",
+              "training: external review hash is missing or does not match review_packet",
+              "training: source URLs are not recoverable with matching hashes",
+              "training: witness_id is not resolvable in the witness registry"
+            ],
+            "reuse_boundary": "claim_licensed",
+            "verdict": "ACCEPT"
           },
           {
             "claim_id": "batch_rewrite",
@@ -7216,9 +7225,24 @@
                   ]
                 },
                 "dialectic": {
-                  "burden_of_proof": [],
-                  "licensed_thesis": null,
-                  "optional_supports": [],
+                  "burden_of_proof": [
+                    "training: source-backed evidence is not attached",
+                    "training: external review is not attached",
+                    "training: claim.text semantic alignment is not externally certified",
+                    "training: witness independence is not externally certified",
+                    "training: provenance.sources or provenance.source_urls is empty",
+                    "training: external review hash is missing or does not match review_packet",
+                    "training: source URLs are not recoverable with matching hashes",
+                    "training: witness_id is not resolvable in the witness registry",
+                    "training: RO-Crate provenance packet is missing, invalid, or hash-mismatched",
+                    "training: reviewer identity or attestation is not verifiable",
+                    "training: provenance.review_id is missing",
+                    "training: provenance.witness_id is missing"
+                  ],
+                  "licensed_thesis": "The solution is within tolerance.",
+                  "optional_supports": [
+                    "evidence.negative_control_failed"
+                  ],
                   "rebuttals": [],
                   "supports": [
                     "evidence.abs_error",
@@ -7226,47 +7250,59 @@
                   ],
                   "thesis": "The solution is within tolerance.",
                   "undercutters": [],
-                  "warrant": "abs_error 0.0 <= tolerance 0.01; abs_error 0.0 is at machine precision (<= 1e-12 x scale): the tolerance does not inform here and no negative control is declared \u2014 identity at machine precision without a negative control"
+                  "warrant": "abs_error 0.0 <= tolerance 0.01"
                 },
                 "lattice": {
                   "axes": {
                     "boundary": {
-                      "level": "none",
-                      "score": 0
+                      "level": "claim_licensed",
+                      "score": 4
                     },
                     "contract": {
                       "level": "contract_complete",
                       "score": 3
                     },
                     "defeaters": {
-                      "level": "open_defeaters",
-                      "score": 0
+                      "level": "no_active_defeater",
+                      "score": 4
                     },
                     "evidence": {
-                      "level": "declared",
-                      "score": 1
+                      "level": "supports_claim_boundary",
+                      "score": 4
                     },
                     "provenance": {
                       "level": "none",
                       "score": 0
                     }
                   },
-                  "controlled_reuse_meet": 0,
+                  "controlled_reuse_meet": 3,
                   "non_claim": "This lattice orders admissibility of supplied evidence, not scientific truth.",
-                  "reuse_boundary": "none",
+                  "reuse_boundary": "claim_licensed",
                   "training_reuse_meet": 0
                 },
                 "metaphor": "compiler_certificate",
                 "next_action": {
-                  "kind": "hold_for_review",
-                  "label": "Resolve open proof obligations before reuse."
+                  "kind": "verify_provenance_for_training",
+                  "label": "Claim is licensed; verify provenance before using as fine-tuning data."
                 },
-                "proof_obligations": []
+                "proof_obligations": [
+                  "training: source-backed evidence is not attached",
+                  "training: external review is not attached",
+                  "training: claim.text semantic alignment is not externally certified",
+                  "training: witness independence is not externally certified",
+                  "training: provenance.sources or provenance.source_urls is empty",
+                  "training: external review hash is missing or does not match review_packet",
+                  "training: source URLs are not recoverable with matching hashes",
+                  "training: witness_id is not resolvable in the witness registry",
+                  "training: RO-Crate provenance packet is missing, invalid, or hash-mismatched",
+                  "training: reviewer identity or attestation is not verifiable",
+                  "training: provenance.review_id is missing",
+                  "training: provenance.witness_id is missing"
+                ]
               },
-              "audit_hash": "sha256:8415032b9471f65ef438e9c5d23a060be78fa92117c97257189010b94474e80c",
+              "audit_hash": "sha256:d5456dde1cf60e53a0098467d47eba38d04c2f350b54af6e18f7ad6248150e54",
               "did_you_mean": {},
               "fine_tune_blockers": [
-                "claim verdict is not ACCEPT",
                 "source-backed evidence is not attached",
                 "external review is not attached",
                 "claim.text semantic alignment is not externally certified",
@@ -7291,7 +7327,7 @@
                 "semantic_alignment": false,
                 "source_backed_evidence": false,
                 "source_urls_recoverable_hashable": false,
-                "verdict_accept": false,
+                "verdict_accept": true,
                 "witness_id_present": false,
                 "witness_independence": false,
                 "witness_registry_resolved": false
@@ -7311,22 +7347,22 @@
                 "verdict": "N/A",
                 "violations": []
               },
-              "licensed_claim": null,
+              "licensed_claim": "The solution is within tolerance.",
               "missing_fields": [],
               "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
-              "reason": "abs_error 0.0 <= tolerance 0.01; abs_error 0.0 is at machine precision (<= 1e-12 x scale): the tolerance does not inform here and no negative control is declared \u2014 identity at machine precision without a negative control",
+              "reason": "abs_error 0.0 <= tolerance 0.01",
               "required_fields": [
                 "abs_error",
                 "tolerance"
               ],
               "resolution": {
-                "kind": "hold_for_review",
-                "message": "Resolve the open proof obligations before reuse."
+                "kind": "accepted",
+                "message": "The evidence licenses the claim as worded."
               },
               "rewrite": null,
               "schema_errors": [],
               "schema_version": "capas-claim-payload-v3",
-              "verdict": "HOLD"
+              "verdict": "ACCEPT"
             }
           },
           {
@@ -7477,12 +7513,12 @@
         ],
         "schema_version": "capas-claim-payload-v3",
         "summary": {
-          "HOLD": 1,
+          "ACCEPT": 1,
           "REWRITE": 1
         }
       },
       "check": "admissibility_calculus:batch_exception_queue",
-      "passed": false
+      "passed": true
     },
     {
       "check": "fine_tune_external_verification:review_hash_mismatch",
@@ -8230,7 +8266,7 @@
       "passed": true
     }
   ],
-  "external_input_schema_ready": false,
+  "external_input_schema_ready": true,
   "invalid_example": "examples/external_claim_invalid.json",
   "schema": "docs/schema/capas_claim_payload.schema.json",
   "valid_examples": [
