@@ -857,9 +857,25 @@ def check_rmt_G(ev: dict[str, Any]) -> dict[str, Any]:
     if None in (a, bb, g, G):
         return {"applies": True, "verdict": "HOLD", "law": law, "why": "rmt_G has a non-numeric a, b, gamma or G — cannot judge"}
     if abs(g - 1) > 1e-12:
-        # §6 run 8: gamma = 1+1e-9 used to skip silently. The engine only knows the gamma == 1 law: say so.
-        return {"applies": True, "verdict": "HOLD", "law": law,
-                "why": f"rmt_G declares G with gamma={g!r}: the engine's law is G(a,b,1) (gamma == 1 exactly); for other gamma no closed form is known here — cannot judge, not a pass"}
+        # gamma > 1: G-CLOSED (Codex/Ginibre, state `reduced`, gaussian design+response only). Judged only when the coder
+        # declares design_response="gaussian"; a non-gaussian response adds kappa4*J_y and the law does not apply.
+        law_r = "RMT G(a,b,gamma) = G-CLOSED [reduced: Codex, reconstructed by Ginibre 2026-10-12; gaussian design+response only; not a proved law]"
+        if g <= 1 or not (0 < a < 1 and 0 < bb < 1):
+            return {"applies": True, "verdict": "FLAG", "law": law_r, "why": f"domain: G-CLOSED needs gamma > 1 and a, b in (0,1) (got a={a}, b={bb}, gamma={g})"}
+        if str(b.get("design_response", "") or "").lower() != "gaussian":
+            return {"applies": True, "verdict": "HOLD", "law": law_r,
+                    "why": (f"rmt_G declares G with gamma={g!r}: the only closed form the engine carries for gamma != 1 is G-CLOSED (state reduced), "
+                            "valid for gaussian design and response only — declare design_response='gaussian' to be judged by it; "
+                            "a non-gaussian response adds kappa4*J_y and cannot be judged here")}
+        try:
+            from capas_rmt import G_closed_gamma
+            Gf = G_closed_gamma(a, bb, g)
+        except ImportError:
+            return {"applies": True, "verdict": "HOLD", "law": law_r, "why": "G-CLOSED needs sympy, which is not installed — cannot judge"}
+        se = _num(b.get("G_se"))
+        v, w = _rmt_compare("G", b["G"], Gf, se, se is None)
+        return {"applies": True, "verdict": v, "law": law_r, "G_formula": Gf,
+                "why": w + " [G-CLOSED, state reduced: a reconstruction that reproduces frozen predictions, not a theorem]"}
     if not (0 < a < 1 and 0 < bb < 1):
         return {"applies": True, "verdict": "FLAG", "law": law, "why": f"domain: a, b in (0,1) (got {a}, {bb})"}
     Gf = (4 / math.pi ** 2) * a / (1 - a * bb)

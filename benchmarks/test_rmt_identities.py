@@ -160,3 +160,33 @@ def test_declared_G_with_gamma_near_one_holds_not_skips():
     assert r["verdict"] == "HOLD" and "gamma" in r["results"]["rmt_G"]["why"]
     r = ci.audit({"rmt_G": {"a": 0.5, "b": 0.5, "gamma": 2.0, "G": 0.3}})
     assert r["verdict"] == "HOLD"   # G(a,b,gamma) for gamma != 1 is not a law the engine knows: say so, do not skip
+
+
+# --- G(a,b,gamma) for gamma > 1: G-CLOSED (Codex, reconstructed by Ginibre; state `reduced`, NOT a proved law; gaussian
+# design and response only). Offered by the Ginibre session 2026-10-13 after the HOLD for gamma != 1. Frozen predictions
+# reproduced to 1e-8 by Ginibre's reimplementation (AUDIT_G/gclosed_check.py). The engine judges gamma != 1 only when the
+# coder declares design_response="gaussian"; otherwise HOLD (non-gaussian response adds kappa4*J_y).
+import pytest as _pt
+_FROZEN = [((0.5, 0.5, 1.5), 0.2302809982525972), ((0.5, 0.5, 2.0), 0.18575294043506063),
+           ((0.5, 0.5, 4.0), 0.10027201392839855), ((0.75, 0.25, 1.5), 0.34370561723223575)]
+
+@_pt.mark.parametrize("abg,pred", _FROZEN)
+def test_gclosed_reproduces_frozen_predictions(abg, pred):
+    import capas_rmt
+    assert abs(capas_rmt.G_closed_gamma(*abg) - pred) < 1e-8
+
+def test_gclosed_tends_to_gamma_one_law():
+    import capas_rmt, math
+    lim = (4 / math.pi ** 2) * 0.5 / (1 - 0.25)
+    assert abs(capas_rmt.G_closed_gamma(0.5, 0.5, 1.0001) - lim) < 2e-3
+
+def test_rmt_G_gamma_gt_one_judged_only_with_gaussian_declaration():
+    r = ci.audit({"rmt_G": {"a": 0.5, "b": 0.5, "gamma": 2.0, "G": 0.18575294, "design_response": "gaussian"}})
+    res = r["results"]["rmt_G"]
+    assert r["verdict"] == "PASS" and "reduced" in res["law"].lower(), res["why"]
+    r = ci.audit({"rmt_G": {"a": 0.5, "b": 0.5, "gamma": 2.0, "G": "0.1900", "design_response": "gaussian"}})   # 4 declared decimals, 0.00425 off -> FLAG (0.19 would be the correct 2-decimal rounding)
+    assert r["verdict"] == "FLAG"
+    r = ci.audit({"rmt_G": {"a": 0.5, "b": 0.5, "gamma": 2.0, "G": 0.18575294}})
+    assert r["verdict"] == "HOLD" and "gaussian" in r["results"]["rmt_G"]["why"].lower()
+    r = ci.audit({"rmt_G": {"a": 0.5, "b": 0.5, "gamma": 2.0, "G": 0.18575294, "design_response": "student_t"}})
+    assert r["verdict"] == "HOLD"

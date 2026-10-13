@@ -87,3 +87,29 @@ def audit_rmt(ev: dict[str, Any]) -> dict[str, Any]:
 
 if __name__ == "__main__":
     print("corpus RMT:", list(REGISTRY))
+
+
+# --- G(a,b,gamma), gamma > 1: G-CLOSED (Codex; reconstructed by Ginibre 2026-10-12, reproduces the frozen predictions to
+# 1e-8). GOVERNANCE state: `reduced` (paso 2 by Claude, blind test v2 passed, reconstructed by Codex) — NOT a proved law.
+# Valid for gaussian design AND gaussian response only; a non-gaussian response adds kappa4*J_y (Y-KURT). Ported verbatim
+# from "Paper - Inverse Ginibre Overlap/DERIVACIONES_2026-10-12_LEY_MAESTRA/AUDIT_G/gclosed_check.py"; sympy is optional.
+def G_closed_gamma(av: float, bv: float, gv: float) -> float:
+    import sympy as sp
+    av, bv, gv = map(sp.nsimplify, (av, bv, gv))
+    Fs = sp.Symbol("F", positive=True)
+    rho = av * (gv - 1) / (gv - av * bv)
+    u = v = 1 + bv / (gv - 1); j = gv / (gv - av * bv); l = q = av * gv * (gv - 1) / (gv - av * bv) ** 2
+    zetaC = av * gv * (gv - 1) ** 2 * (av * gv + bv - 2 * av * bv) / (gv - av * bv) ** 4
+    F = bv / (gv - bv); z = (1 - av) * (gv - bv) / bv; lam = av * gv / bv
+    Jf = Fs ** 2 / (1 - lam * Fs ** 2 / (1 + Fs) ** 2); I3f = Jf / 2 * sp.diff(Jf, Fs); I4f = Jf / 3 * sp.diff(I3f, Fs)
+    J, I3, I4 = [sp.simplify(e.subs(Fs, F)) for e in (Jf, I3f, I4f)]
+    Delta = (gv - bv) / (gv - av * bv); c = (gv - bv) / (gv - 1); dN = bv * (1 - bv) / ((gv - bv) * (gv - 1)); eta = av * gv / bv
+    w = ((J - 2 * z * I3 + z ** 2 * I4) / Delta ** 2 + 2 * dN * F * z * (J - z * I3) / Delta + dN ** 2 * F ** 2 * z ** 2 * J
+         + (eta - 1) * dN ** 2 * F ** 2) / (c ** 2 * F ** 2)
+    Bang = rho * (sp.Rational(3, 4) * (u + v) + w / 2) - l - q
+    Vang = j + zetaC + rho ** 2 / 2 * (u + v + 2 * w) - 2 * rho * (l + q)
+    r1 = -av * bv * (av ** 2 * bv ** 2 - 2 * av * bv - av * gv ** 2 + av * gv - bv * gv + bv + gv ** 2) / (gv - av * bv) ** 3
+    x = sp.Symbol("x"); chi = 2 * sp.asin(x) / sp.pi
+    ch, ch1, ch2 = [sp.N(e.subs(x, rho), 30) for e in (chi, sp.diff(chi, x), sp.diff(chi, x, 2))]
+    G = (2 * ch * ch1 * (Bang + r1) + (ch1 ** 2 + ch * ch2) * Vang - 4 * (1 - rho ** 2) / sp.pi ** 2) / bv
+    return float(sp.N(G, 20))
