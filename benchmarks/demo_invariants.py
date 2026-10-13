@@ -92,7 +92,7 @@ def run() -> int:
     # A claim with NO invariant block is untouched (applicable=False) -> behavior unchanged.
     plain = {"schema_version": SV,
              "claim": {"id": "p1", "type": "exact_model_solution", "text": "x"},
-             "evidence": {"abs_error": 0.0, "tolerance": 1e-3}}
+             "evidence": {"abs_error": 0.0, "tolerance": 1e-3, "negative_control_failed": True}}   # zero error = machine-precision regime
     dp = capas.decide_external_claim(plain)
     checks.append((f"INTEGRATION: no invariant block -> {dp['verdict']} unchanged (applicable=False)",
                    dp["verdict"] == "ACCEPT" and dp["invariant_audit"]["applicable"] is False))

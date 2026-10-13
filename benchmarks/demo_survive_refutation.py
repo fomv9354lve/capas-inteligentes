@@ -24,7 +24,7 @@ import capas_sdk
 
 # a re-derivable claim (GATE: ACCEPT on proof, full weight regardless of who says it) vs a
 # declared/partial one (REWRITE -> ATTEST scope: worth only the attester's EARNED standing)
-GATE_CLAIM = ("exact_model_solution", {"abs_error": 0.0, "tolerance": 1e-3})
+GATE_CLAIM = ("exact_model_solution", {"abs_error": 0.0, "tolerance": 1e-3, "negative_control_failed": True})
 ATTEST_CLAIM = ("systematic_review_claim",
                 {"protocol_registered": True, "inclusion_criteria_declared": True})  # -> REWRITE
 
