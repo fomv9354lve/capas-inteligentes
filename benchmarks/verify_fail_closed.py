@@ -49,7 +49,9 @@ DEFICIENT = [
 
 # A well-formed, self-consistent claim that CAPAS *does* accept — and the honest GIGO note:
 # CAPAS cannot tell whether its inputs are TRUE, only whether they are consistent and re-derivable.
-SUPPORTED = ("exact_model_solution", {"abs_error": 0.0, "tolerance": 1e-3})
+# abs_error 0.0 is the machine-precision regime: since 2026-10-13 the gate asks for a negative control there
+# (a check that cannot fail verifies nothing). A well-supported claim declares it.
+SUPPORTED = ("exact_model_solution", {"abs_error": 0.0, "tolerance": 1e-3, "negative_control_failed": True})
 
 
 def run() -> int:

@@ -1,17 +1,21 @@
 {
-  "conformant": false,
+  "conformant": true,
   "suite": [
     {
       "id": "fail_closed",
-      "pass": false
+      "pass": true
     },
     {
       "id": "robustness",
-      "pass": false
+      "pass": true
     },
     {
       "id": "no_llm_verdict",
-      "pass": false
+      "pass": true
+    },
+    {
+      "id": "cara_decoupling",
+      "pass": true
     },
     {
       "id": "quantum_commitment",
@@ -23,24 +27,24 @@
     },
     {
       "id": "proof_ledger",
-      "pass": false
+      "pass": true
     },
     {
       "id": "hold_has_resolution",
-      "pass": false
+      "pass": true
     },
     {
       "id": "audit_hash_reproduces",
-      "pass": false
+      "pass": true
     },
     {
       "id": "surface_isolation",
       "pass": true
     }
   ],
-  "result_hash": "sha256:46503b2f29f1eb462196d9d9",
+  "result_hash": "sha256:837ac0f977c2758170227cbb",
   "environment": {
     "python": "3.14.5"
   },
-  "statement": "NOT CONFORMANT: one or more invariants failed \u2014 see the suite."
+  "statement": "CAPAS-CONFORMANT: the deterministic core upholds its load-bearing invariants, reproducibly on this machine."
 }

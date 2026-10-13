@@ -104,6 +104,16 @@ ANCHOR_MODE_CONTRACTS = {
 # exacta). Sidak: alpha = 2(1-Phi(t)); alpha' = 1-(1-alpha)^(1/k); t_k = Phi^-1(1-alpha'/2).
 # Solo dispara si el codificador DECLARA error_statistic="max" y n_cells; sin eso, celda unica.
 ERROR_STATISTICS = {"single", "max", "rms"}
+# Alcance afirmado en PROSA (X4-002, X5-003): "funciona en la ventana", "para todo k", "en general", "∀".
+# El gate no lee alcance; exige que se declare (scope_declared ⊆ scope_tested) cuando el texto generaliza.
+SCOPE_RE = re.compile(r"(\bpara tod[oa]s?\b|\ben tod[oa]s?\b|\bventana\b|\bwindow\b|\bregim\w*\b|\bréf?gimen\b|"
+                      r"\ben general\b|\bgeneral\w*\b|\bfor (all|every|any)\b|\bthroughout\b|\bsiempre\b|\balways\b|"
+                      r"\bindependiente de\b|\bindependent of\b|-?(casi-)?independiente\b|-?independent\b|\bfunciona en\b|\bholds (in|for|over)\b|∀)", re.I)
+# Regimen de precision de maquina (X5-010): abs_error <= 1e-12*max(1,|valor|). Ahi la tolerancia no informa — una
+# comprobacion circular da 3e-14 con cualquier tolerancia, igual que una identidad exacta legitima. Lo unico
+# que las separa es si se vio FALLAR a una variante falsa: negative_control_failed. (Regla de Ginibre, 2026-10-13;
+# la razon tolerance/abs_error fue refutada: castiga acertar por suerte y no detecta la circularidad.)
+MACHINE_EPS = 1e-12
 _SE_UNITS = ("se", "sigma", "sd", "std")
 
 
@@ -124,7 +134,8 @@ CLAIM_TYPE_REGISTRY = {
         "required": ["abs_error", "tolerance"],
         "optional": ["bound_scope", "physical_evidence_level", "verification_independence",
                      "tolerance_unit", "n_replicates", "n_points", "alternative_model_rejected",
-                     "error_statistic", "n_cells"],
+                     "error_statistic", "n_cells", "scope_declared", "scope_tested",
+                     "negative_control_failed", "tolerance_rationale", "reference_value"],
         "description": "Exact or bounded-error model solution claims.",
     },
     "physical_accuracy": {
@@ -341,7 +352,7 @@ BOOL_EVIDENCE_FIELDS = [
     "steps_all_valid", "load_bearing_step_identified", "uniform_bound_proven",
     "leading_order_established",
     "object_matches_target", "load_bearing_citation_read", "citation_hypotheses_checked",
-    "alternative_model_rejected", "null_control_passed", "scope_count_verified",
+    "alternative_model_rejected", "null_control_passed", "scope_count_verified", "negative_control_failed",
 ]
 STRING_EVIDENCE_FIELDS = [
     "anchor_mode", "relative_anchor_reference", "benchmark_name", "benchmark_metric",
@@ -349,9 +360,9 @@ STRING_EVIDENCE_FIELDS = [
     "conflict_resolution_method", "modality", "language", "language_version",
     "claim_api", "docs_reference", "current_claim",
     "code_snippet", "expected_output", "observed_output",
-    "claim_scope", "conjectured_remainder", "object_declared", "tolerance_unit", "error_statistic",
+    "claim_scope", "conjectured_remainder", "object_declared", "tolerance_unit", "error_statistic", "tolerance_rationale",
 ]
-LIST_EVIDENCE_FIELDS = ["supporting_sources", "contradicting_sources"]
+LIST_EVIDENCE_FIELDS = ["supporting_sources", "contradicting_sources", "scope_declared", "scope_tested"]
 DICT_EVIDENCE_FIELDS = ["test_statistic"]
 
 # Example values for a fillable requirements template (A3): type defaults + a few overrides
@@ -2038,6 +2049,42 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
         reason = f"{reason}; null_control_passed is False: the estimator produces the effect on a null — the signal is fabricated by the method"
         licensed_claim = None
         rewrite = None
+    # S. Alcance: declarado ⊄ probado nunca es ACCEPT; texto que generaliza sin declaracion → REWRITE.
+    if verdict == "ACCEPT" and claim_type == "exact_model_solution":
+        _sd, _st = evidence.get("scope_declared"), evidence.get("scope_tested")
+        if isinstance(_sd, list) and isinstance(_st, list):
+            _missing = [str(x) for x in _sd if str(x).strip().lower() not in {str(y).strip().lower() for y in _st}]
+            if _missing:
+                verdict = "REWRITE"
+                reason = f"{reason}; scope_declared is not covered by scope_tested (untested: {_missing[:5]}): the number holds where it was tested, not over the declared scope"
+                rewrite = "agreement licensed on the tested cells only; the declared scope is not"
+                licensed_claim = rewrite
+        elif (_sd is None or _st is None) and SCOPE_RE.search(_txt):
+            verdict = "REWRITE"
+            reason = f"{reason}; the text asserts a scope (window/regime/for all) but scope_declared/scope_tested are not declared: the gate cannot license a scope it cannot see"
+            rewrite = "agreement licensed on the tested cells; the scope asserted in the text is not (declare scope_declared and scope_tested)"
+            licensed_claim = rewrite
+    # P. Potencia en regimen de precision de maquina: pregunta por el control negativo.
+    if verdict == "ACCEPT" and claim_type == "exact_model_solution":
+        _ae = float(evidence["abs_error"]); _rv = evidence.get("reference_value")
+        _scale = max(1.0, abs(float(_rv))) if isinstance(_rv, (int, float)) and not isinstance(_rv, bool) else 1.0
+        if _ae <= MACHINE_EPS * _scale:
+            _ncf = evidence.get("negative_control_failed")
+            if _ncf is True:
+                pass
+            elif _ncf is False:
+                verdict = "REWRITE"
+                reason = f"{reason}; abs_error {_ae} is at machine precision and the negative control did NOT fail: the check cannot fail, so it verifies nothing"
+                rewrite = "agreement observed; not a verification (the control that should fail did not)"
+                licensed_claim = rewrite
+            else:
+                verdict = "HOLD"
+                reason = f"{reason}; abs_error {_ae} is at machine precision (<= 1e-12 x scale): the tolerance does not inform here and no negative control is declared — identity at machine precision without a negative control"
+                licensed_claim = None
+        elif isinstance(_rv, (int, float)) and not isinstance(_rv, bool) and abs(float(_rv)) > 0 and float(evidence["tolerance"]) / abs(float(_rv)) > 0.5:
+            verdict = "HOLD"
+            reason = f"{reason}; tolerance {evidence['tolerance']} is of the order of the object ({_rv}): a tolerance that wide tests nothing"
+            licensed_claim = None
     # A. "dentro de k·SE" con una semilla: la SE no esta validada. Exige replicas.
     if verdict == "ACCEPT" and claim_type == "exact_model_solution":
         _unit = str(evidence.get("tolerance_unit", "") or "").lower()
