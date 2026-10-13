@@ -1,7 +1,7 @@
-# Informe de la noche · 2026-10-13 (02:56 → ~04:50) · sesión CAPAS
+# Informe de la noche · 2026-10-13 (02:56 → 06:57) · sesión CAPAS
 
 Estado fuente de verdad: `01. Investigacion/CURRENT_TRUTH.md` (filas del 13-oct) y `DEBTS.md` (adenda CAPAS C-1…C-8).
-Árbol limpio, ~90 commits locales en la rama de trabajo, **sin push y sin deploy** (ambos son tuyos).
+Árbol limpio, 101 commits locales en la rama de trabajo, **sin push y sin deploy** (ambos son tuyos). Bucle autónomo detenido a las 06:59 por instrucción.
 
 ## Lo que quedó validado (cifras con respaldo de archivo sellado)
 
