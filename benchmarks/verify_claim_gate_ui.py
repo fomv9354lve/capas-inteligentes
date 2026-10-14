@@ -128,7 +128,7 @@ REQUIRED_SNIPPETS = [
     "id=\"history-filter\"",
     "id=\"history-verdict-filter\"",
     "historyMatches",
-    "role=\"table\" aria-label=\"Governance decision audit log\"",
+    "<div class=\"empty-state\" role=\"listitem\">No decisions yet.</div>",  # history is a role=list (axe aria-required-children, 2026-10-14)
     "<span>Verdict</span><span>Claim ID</span><span>Type</span><span>Reason</span><span>Timestamp</span><span>Actions</span>",
     "history-type",
     "role=\"list\" aria-label=\"Decision audit trail\"",
