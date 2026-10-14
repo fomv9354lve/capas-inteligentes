@@ -17,7 +17,6 @@ FORBIDDEN = [
     (r"produces or provides", "Gate App mode note (audit item 3)"),
     (r"8/8 load-bearing|The 8 load-bearing|Los 8 invariantes", "the conformance suite has 10 invariants"),
     (r"It is the evidence that the method works", "the 28/28 retrospective is illustrative, not proof"),
-    (r"AI-made errors|errores hechos por IA", "the corpus provenance does not license 'AI-made' in the hero"),
     (r">Methodology</a>", "the brief is called Brief everywhere (nav, footer, buttons)"),
     (r"Read methodology", "button renamed with the page"),
     (r"Free this launch month", "undated offer removed from the landing"),
@@ -42,6 +41,10 @@ def main() -> int:
             t = re.search(r"<title>([^<]*)</title>", html)
             if not t or want not in t.group(1):
                 errs.append(f"{name}: <title> should mention {want!r}, got {t.group(1) if t else None!r}")
+    # 'AI-made' is licensed only by the provenance clause (Osvaldo, 2026-10-14: the corpus claims were written by AI sessions)
+    home = (DOCS / "index.html").read_text(encoding="utf-8")
+    if "AI-made" in home and "written by AI sessions" not in home:
+        errs.append("index.html: 'AI-made' without the provenance clause 'written by AI sessions'")
     print("PASS — no forbidden wording on the served pages" if not errs else "FAIL:\n  " + "\n  ".join(errs))
     return 0 if not errs else 1
 
