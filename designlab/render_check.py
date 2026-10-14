@@ -53,7 +53,7 @@ PAGES = [
 VIEWPORTS = [{"name": "desktop", "width": 1440, "height": 900},
              {"name": "mobile", "width": 390, "height": 844}]
 
-NAV_ITEMS = ["Home", "Intro+", "Gate App", "Decision log", "Brief", "Pilot", "Audit", "Benchmark", "Security", "Atlas"]  # renamed 2026-10-13 (external audit): Brief = customer-brief, Audit = governance.html, Decision log = audit.html
+NAV_ITEMS = ["Product", "Application", "Evidence", "Pilot", "Documentation"]  # grouped by task 2026-10-14 (owner, audit CAP-19); sub-nav per group + Krenn·IQ/Atlas as secondary: scripts/apply_nav.py
 COLUMN_TOL = 8     # px tolerance for "same column width / gutter across pages"
 A11Y_FAIL_IMPACTS = {"critical"}  # hard-fail only on critical; serious/moderate are reported as warnings
 
@@ -128,7 +128,7 @@ def assert_consistency(report: dict) -> bool:
         items = p.get("navLinks") or []
         good = items == NAV_ITEMS
         ok = ok and good
-        print(f"    {'OK ' if good else 'XX '}{p['label']:12} {'7 canonical' if good else items}")
+        print(f"    {'OK ' if good else 'XX '}{p['label']:12} {'canonical' if good else items}")
 
     # 2. same content column width + left gutter across pages (desktop)
     desk = _by_vp(report, "desktop")

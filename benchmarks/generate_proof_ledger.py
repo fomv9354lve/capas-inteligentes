@@ -152,27 +152,26 @@ def build() -> list[dict]:
 
     # --- SCOPED: empirical-pending, stated with corpus + the upgrade artifact ---
     sealed = ROOT / "outputs" / "ginibre_sealed_scores.json"
-    sealed_ok = _run_test("research/ginibre_corpus/score_sealed.py")
-    # The sealed corpus sits with the unpublished Ginibre paper, outside the repo. Where it is absent the scorer
-    # SKIPs (rc 2) and this claim is SCOPED, not BACKED: the tracked outputs/ginibre_sealed_scores.json carries the
-    # figures, but they are only re-derived (sha-verified) on a machine that has the corpus. Never "broken".
+    public_ok = _run_test("research/ginibre_corpus/score_public.py")
+    # Owner decision 2026-10-14: the sealed verdict files and the outcome labels are public (research/ginibre_corpus/
+    # public/), claim text and free-text evidence as sha256 only. Anyone re-derives the figures from those files; with
+    # --replay the engine at each frozen tag reproduces 232/233 sealed verdicts from the redacted payloads (the one
+    # mismatch, X4-014, depends on the claim wording and is a contaminated, unscored claim). Still SCOPED: the sealing
+    # times are self-recorded and the outcomes are the project's own corrections, not an external oracle.
     L.append({"id": "blind_corpus_sealed", "claim": "Blind self-gating corpus (Ginibre, 233 real research claims): "
               "out-of-sample bad-not-ACCEPT 17/21, good-not-REJECT 16/17; X1-3 v1 53/82, 51/63",
-              # Re-audit 3 (2026-10-14): re-derivable by the author only (private corpus; seal flag and tag dates self-recorded).
               "status": "SCOPED",
-              "backing": "python3 research/ginibre_corpus/score_sealed.py" + (
-                  "" if sealed_ok is not None else "  [corpus not on this machine: figures NOT re-derived here; "
-                                                   "set CAPAS_GINIBRE_CORPUS=<dir> to re-derive]"),
-              "ok": None,                     # not verifiable by a third party (re-audit 4); author's machine result below
-              "verified_on_author_machine": sealed_ok,
-              "value": "X1-3 blind (v1 seal, outcomes unopened): 53/82, 51/63 | X4 (v4): 11/13, 6/7 | X5 (v6): 6/8, 10/10 | X4+X5: 17/21 [0.60-0.92], 16/17 [0.73-0.99]",
-              "artifact": "outputs/ginibre_sealed_scores.json", "sha256": _sha256(sealed),
-              "scope": "RE-DERIVABLE BY THE AUTHOR ONLY: the corpus is private (unpublished paper); engine tags ginibre-ciego-v1..v6 are public "
-                       "since 2026-10-14 but their dates and the sealing flag are self-recorded, not externally timestamped. "
+              "backing": "python3 research/ginibre_corpus/score_public.py --replay",
+              "ok": public_ok,
+              "value": "X1-3 blind (v1 seal, outcomes unopened): 53/82, 51/63 | X4 (v4): 11/13, 6/7 | X5 (v6): 6/8, 10/10 | X4+X5: 17/21 [0.60-0.92], 16/17 [0.73-0.99] | replay at the frozen tags: 232/233 sealed verdicts reproduced",
+              "artifact": "research/ginibre_corpus/public/MANIFEST.json", "sha256": _sha256(ROOT / "research" / "ginibre_corpus" / "public" / "MANIFEST.json"),
+              "scope": "RE-DERIVABLE BY A THIRD PARTY FROM THE PUBLIC REDACTED FILES: verdicts, outcome labels and evidence fields are public; "
+                       "claim texts, free-text evidence and outcome notes are published as sha256 only (unpublished paper), checkable when the "
+                       "paper is public. NOT checkable by a third party: that the verdicts were sealed before the outcomes were opened (the "
+                       "flag, the timestamps and the tag dates are self-recorded, not externally timestamped). "
                        "Claims coded by a separate session that could not see verdicts; engine frozen at a git tag BEFORE "
-                       "coding (X4/X5); verdicts sealed by sha256 BEFORE outcomes were opened; double-counted by both sessions. "
-                       "Outcomes = the project's own later corrections ('bueno' = never corrected), not an external oracle. "
-                       "n is small; intervals are Wilson 95%. The scorer re-verifies every claims_sha256 against its header.",
+                       "coding (X4/X5). Outcomes = the project's own later corrections ('bueno' = never corrected), not an external oracle. "
+                       "n is small; intervals are Wilson 95%.",
               "owner": "eval"})
     L.append({"id": "false_accept_rate", "claim": "Empirical false-accept / false-reject RATE on real claims",
               "status": "SCOPED", "value": "out-of-sample on 38 clean real claims: 4/21 bad ACCEPTed, 1/17 good REJECTed (see blind_corpus_sealed)",

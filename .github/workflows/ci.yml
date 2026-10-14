@@ -66,6 +66,16 @@ jobs:
       - name: Conformance suite
         run: python benchmarks/conformance.py
 
+      # Blind-corpus figures re-derived from the public redacted files, and every sealed verdict replayed with the
+      # engine at its frozen tag (owner decision 2026-10-14: verdicts and outcome labels public, claim text as hash).
+      - name: Site navigation matches its single source
+        run: python scripts/apply_nav.py --check
+
+      - name: Blind corpus re-derived from the public files
+        run: |
+          git fetch --no-tags --depth=1 origin 'refs/tags/ginibre-ciego-*:refs/tags/ginibre-ciego-*'
+          python research/ginibre_corpus/score_public.py --replay --json
+
       # Locks the gate's correctness on the two failure modes the pedagogy sprint flagged
       # (non-GIGO false-admit + over-block): a real regression fails CI. GIGO ceiling is out of scope.
       - name: Gate correctness (no false-admit / no over-block)
