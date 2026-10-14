@@ -251,8 +251,8 @@ footer{border-top:1px solid rgba(255,255,255,0.06);padding:32px 48px;display:fle
 <section class="section alt" id="measured">
   <div class="section-inner">
     <div class="section-label" data-es="Lo que es, medido">What it is, measured</div>
-    <h2 class="section-h2" data-es="Un filtro determinista para errores hechos por IA: detiene seis de cada diez claims malos y deja pasar ocho de cada diez buenos. Medido a ciegas.">A deterministic filter for AI-made errors: it stops six in ten bad claims and lets eight in ten good ones through. Measured blind.</h2>
-    <p class="section-sub" data-es="233 claims de investigación reales de un proyecto hermano, codificados a ciegas por una sesión aparte; motor congelado en un tag de git <em>antes</em> de codificar; veredictos sellados por hash <em>antes</em> de abrir los desenlaces. No language model in the verdict. Los desenlaces son las correcciones posteriores del propio proyecto, no un oráculo externo; n es pequeña y los intervalos lo dicen.">233 real research claims from a sister project, coded blind by a separate session; engine frozen at a git tag <em>before</em> coding; verdicts sealed by hash <em>before</em> outcomes were opened. No language model in the verdict. Outcomes are the project&rsquo;s own later corrections, not an external oracle; n is small and the intervals say so.</p>
+    <h2 class="section-h2" data-es="Un filtro determinista para errores en claims de investigación: detuvo seis de cada diez claims malos y dejó pasar ocho de cada diez buenos. Medido a ciegas, con el motor congelado en el tag sellado.">A deterministic filter for errors in research claims: it stopped six in ten bad claims and let eight in ten good ones through. Measured blind, on the engine frozen at the sealed tag.</h2>
+    <p class="section-sub" data-es="233 claims de investigación reales afirmados en el repositorio de un proyecto hermano (un proyecto de investigación asistido por IA; cada claim lleva el archivo y el commit donde se afirmó), codificados a ciegas por una sesión aparte; motor congelado en un tag de git <em>antes</em> de codificar; veredictos sellados por hash <em>antes</em> de abrir los desenlaces. No language model in the verdict. Los desenlaces son las correcciones posteriores del propio proyecto, no un oráculo externo; n es pequeña y los intervalos lo dicen.">233 real research claims asserted in a sister project&rsquo;s own repository (an AI-assisted research project; each claim carries the file and commit where it was asserted), coded blind by a separate session; engine frozen at a git tag <em>before</em> coding; verdicts sealed by hash <em>before</em> outcomes were opened. No language model in the verdict. Outcomes are the project&rsquo;s own later corrections, not an external oracle; n is small and the intervals say so.</p>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-top:24px">
       <div style="border:1px solid rgba(232,24,93,.3);border-radius:12px;background:rgba(232,24,93,.05);padding:20px">
         <div style="font-size:34px;font-weight:900;color:#e8185d;letter-spacing:-.03em">53 / 82</div>
@@ -270,7 +270,7 @@ footer{border-top:1px solid rgba(255,255,255,0.06);padding:32px 48px;display:fle
     <ul style="margin:22px 0 0;padding-left:18px;font-size:13px;color:rgba(255,255,255,.62);line-height:1.8">
       <li data-es="<strong>No es un detector de fraude, y lo medimos:</strong> en 888 papers limpios frente a 6.348 retractados, las inconsistencias numéricas recomputables no separaron los grupos. CAPAS gatea la <em>estructura</em> de la evidencia; una fabricación consistente pasa (el techo GIGO)."><strong>Not a fraud detector, and we measured it:</strong> on 888 clean papers vs 6,348 retracted ones, recomputable numeric inconsistencies did not separate the groups. CAPAS gates the <em>structure</em> of evidence; a consistent fabrication passes (the GIGO ceiling).</li>
       <li data-es="<strong>No lee prosa.</strong> Decide sobre campos declarados. Lo que no está declarado no se acepta: termina en HOLD o REWRITE, nunca en ACCEPT."><strong>It does not read prose.</strong> It decides on declared fields. What is not declared is never accepted: it ends in HOLD or REWRITE, not ACCEPT.</li>
-      <li data-es="<strong>Mejora regla por regla.</strong> Cada falso-accept encontrado se convierte en un campo exigido y en un test que no puede retroceder; el costo de cada regla nueva se mide sobre los mismos claims sellados."><strong>It improves rule by rule.</strong> Every false-accept found becomes a required field and a test that cannot regress; the cost of each new rule is measured on the same sealed claims.</li>
+      <li data-es="<strong>Mejora regla por regla, y eso convierte los claims sellados en datos de entrenamiento.</strong> Cada falso-accept encontrado se convierte en un campo exigido y en un test que no puede retroceder. Las cifras de arriba son del motor congelado en el tag sellado; re-puntuar esos claims con un motor posterior es dentro de muestra y nunca se publica como tasa ciega. Una regla nueva solo gana crédito en el siguiente lote sellado. El desempeño ciego del motor actual se desconoce hasta entonces."><strong>It improves rule by rule, and that makes the sealed claims training data.</strong> Every false-accept found becomes a required field and a test that cannot regress. The figures above belong to the engine frozen at the sealed tag; a re-score of those claims with a later engine is in-sample and is never published as the blind rate. A new rule earns credit only on the next sealed batch. The blind performance of the current engine is unknown until then.</li>
     </ul>
     <p class="section-sub" style="margin-top:18px;font-size:13px;color:rgba(255,255,255,.5)" data-es="Cada cifra se regenera con un comando: <code style=&quot;color:rgba(255,255,255,.7)&quot;>python3 research/ginibre_corpus/score_sealed.py</code>. El ledger completo, los límites y lo que <em>no</em> está validado: <a href=&quot;in-depth.html#ledger&quot; style=&quot;color:#e8185d;font-weight:600&quot;>CAPAS a fondo &rarr;</a>">Every figure regenerates from a command: <code style="color:rgba(255,255,255,.7)">python3 research/ginibre_corpus/score_sealed.py</code>. The full ledger, the limits and what is <em>not</em> validated: <a href="in-depth.html#ledger" style="color:#e8185d;font-weight:600">CAPAS in depth &rarr;</a></p>
   </div>
@@ -397,7 +397,7 @@ footer{border-top:1px solid rgba(255,255,255,0.06);padding:32px 48px;display:fle
       </a>
       <a class="btn-secondary" href="customer-brief.html">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-        Read methodology
+        Read the brief
       </a>
     </div>
   </div>
@@ -415,7 +415,7 @@ footer{border-top:1px solid rgba(255,255,255,0.06);padding:32px 48px;display:fle
   </a>
   <div class="footer-links"><a href="CLAIMS_REGISTRY.md">Claim Registry</a>
     <a href="app.html">Gate App</a>
-    <a href="customer-brief.html">Methodology</a>
+    <a href="customer-brief.html">Brief</a>
     <a href="in-depth.html">In depth</a>
     <a href="pilot-packet.html">Pilot</a>
     <a href="governance.html">Audit</a>

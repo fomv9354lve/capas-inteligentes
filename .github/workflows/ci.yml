@@ -46,6 +46,14 @@ jobs:
       - name: Benchmark page matches its data file
         run: python benchmarks/verify_benchmark_page_matches_mix.py
 
+      # Every CLOSED/BACKED/SCOPED line on in-depth.html sits under the status the proof ledger gives it.
+      - name: In-depth page matches the proof ledger
+        run: python benchmarks/verify_page_matches_ledger.py
+
+      # Wording the external audit flagged can never return (a fix without a test escapes).
+      - name: Site wording guard
+        run: python benchmarks/verify_site_wording.py
+
       # Load-bearing invariants on neutral CI (deterministic, no browser / gh / release deps).
       - name: Conformance suite
         run: python benchmarks/conformance.py

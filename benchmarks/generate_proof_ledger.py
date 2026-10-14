@@ -135,6 +135,15 @@ def build() -> list[dict]:
               "status": "SCOPED", "backing": "python3 benchmarks/attest_conformance.py (keyless Sigstore signing runs in CI: .github/workflows/conformance.yml)",
               "ok": None, "scope": "Needs cosign + an OIDC identity; verified in CI, not re-run here.", "owner": "core"})
 
+    try:
+        import hypothesis  # noqa: F401
+        fuzz_ok = _run_test("benchmarks/test_dynamic_fuzz.py")
+    except ImportError:
+        fuzz_ok = None
+    L.append({"id": "dynamic_fuzz", "claim": "Never crashes on hostile or garbage input: fails closed to one of the four verdicts (property-based)",
+              "status": "CLOSED", "backing": "python3 benchmarks/test_dynamic_fuzz.py (needs hypothesis; CI installs it)", "ok": fuzz_ok,
+              "scope": "Property-based (Hypothesis) generalization of verify_robustness.py; skipped where hypothesis is absent.", "owner": "core"})
+
     # --- SCOPED: empirical-pending, stated with corpus + the upgrade artifact ---
     sealed = ROOT / "outputs" / "ginibre_sealed_scores.json"
     sealed_ok = _run_test("research/ginibre_corpus/score_sealed.py")
@@ -174,7 +183,7 @@ def build() -> list[dict]:
                        "(caught by the transcript); the runner now gates the report against executed commands.",
               "owner": "eval"})
     L.append({"id": "retrospective_28", "claim": "Separated 28 retracted-vs-replicated claims by structure",
-              "status": "SCOPED", "value": "28/28 on an agent-coded, publicly-known retrospective",
+              "status": "SCOPED", "backing": "python3 benchmarks/pilot_real.py (agent-coded retrospective; illustrative)", "value": "28/28 on an agent-coded, publicly-known retrospective",
               "scope": "Illustrative; the papers were already publicly retracted (no blind adjudication). Demonstrates "
                        "the contract logic, not blind fraud detection.", "upgrade_artifact": "DONE 2026-10-13: see blind_corpus_sealed (blind-coded, frozen, sealed, double-counted)",
               "owner": "eval"})

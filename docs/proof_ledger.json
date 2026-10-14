@@ -143,6 +143,15 @@
     "owner": "core"
   },
   {
+    "id": "dynamic_fuzz",
+    "claim": "Never crashes on hostile or garbage input: fails closed to one of the four verdicts (property-based)",
+    "status": "CLOSED",
+    "backing": "python3 benchmarks/test_dynamic_fuzz.py (needs hypothesis; CI installs it)",
+    "ok": true,
+    "scope": "Property-based (Hypothesis) generalization of verify_robustness.py; skipped where hypothesis is absent.",
+    "owner": "core"
+  },
+  {
     "id": "blind_corpus_sealed",
     "claim": "Blind self-gating corpus (Ginibre, 233 real research claims): out-of-sample bad-not-ACCEPT 17/21, good-not-REJECT 16/17",
     "status": "BACKED",
@@ -179,6 +188,7 @@
     "id": "retrospective_28",
     "claim": "Separated 28 retracted-vs-replicated claims by structure",
     "status": "SCOPED",
+    "backing": "python3 benchmarks/pilot_real.py (agent-coded retrospective; illustrative)",
     "value": "28/28 on an agent-coded, publicly-known retrospective",
     "scope": "Illustrative; the papers were already publicly retracted (no blind adjudication). Demonstrates the contract logic, not blind fraud detection.",
     "upgrade_artifact": "DONE 2026-10-13: see blind_corpus_sealed (blind-coded, frozen, sealed, double-counted)",
