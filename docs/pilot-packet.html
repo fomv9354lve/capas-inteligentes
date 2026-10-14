@@ -71,11 +71,11 @@ footer a{color:rgba(255,255,255,.35);text-decoration:none;font-size:12px}
 </div>
 </section>
 
-<!-- PROOF BEFORE THE PILOT -->
+<!-- RETROSPECTIVE (illustrative, not proof) -->
 <section class="section">
 <div class="si">
-  <div class="label">Proof before the pilot</div>
-  <h2 class="h2" style="font-size:clamp(28px,3vw,42px);font-weight:900;letter-spacing:-0.03em;line-height:1.1;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" data-es="Ya separó ciencia retractada de ciencia replicada.">It already separated retracted science from replicated science.</h2>
+  <div class="label" data-es="Una retrospectiva ilustrativa, no una prueba">An illustrative retrospective, not proof</div>
+  <h2 class="h2" style="font-size:clamp(28px,3vw,42px);font-weight:900;letter-spacing:-0.03em;line-height:1.1;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" data-es="Separó ciencia retractada de ciencia replicada &mdash; en una retrospectiva codificada por agente que conocía el desenlace.">It separated retracted from replicated science &mdash; in a retrospective coded by an agent that knew the outcome.</h2>
   <p class="sub" style="max-width:720px" data-es="Una retrospectiva sobre 28 claims famosos &mdash; todos publicados en <em>Nature</em>, <em>Science</em> o <em>The Lancet</em>. 14 fueron retractados después (Wakefield, Surgisphere, Sch&ouml;n, STAP, Stapel&hellip;); 14 fueron replicados independientemente (LIGO, Higgs, dexametasona RECOVERY, el ensayo de la vacuna de Pfizer&hellip;). La revisión por pares y la plausibilidad pasaron a los 28 por igual. CAPAS gateó por estructura.">A retrospective over 28 famous claims &mdash; all published in <em>Nature</em>, <em>Science</em>, or <em>The Lancet</em>. 14 were later retracted (Wakefield, Surgisphere, Sch&ouml;n, STAP, Stapel&hellip;); 14 were independently replicated (LIGO, Higgs, RECOVERY dexamethasone, the Pfizer vaccine trial&hellip;). Peer review and plausibility passed all 28 alike. CAPAS gated by structure.</p>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:28px;max-width:680px">
     <div style="border:1px solid rgba(72,187,120,.3);border-radius:12px;background:rgba(72,187,120,.06);padding:22px">
@@ -84,7 +84,7 @@ footer a{color:rgba(255,255,255,.35);text-decoration:none;font-size:12px}
     </div>
     <div style="border:1px solid rgba(255,255,255,.08);border-radius:12px;background:rgba(255,255,255,.02);padding:22px">
       <div style="font-size:38px;font-weight:900;color:rgba(255,255,255,.4);letter-spacing:-.03em">0/28</div>
-      <div style="font-size:13px;color:rgba(255,255,255,.45);margin-top:6px" data-es="lo que separó la plausibilidad / revisión por pares &mdash; los 28 parecían publicables">what plausibility / peer-review separated &mdash; every one of the 28 looked publishable</div>
+      <div style="font-size:13px;color:rgba(255,255,255,.45);margin-top:6px" data-es="lo que separó la plausibilidad / revisión por pares &mdash; no es una línea base: los 28 pasaron revisión por construcción del corpus">what plausibility / peer-review separated &mdash; not a baseline: all 28 passed peer review by construction of the corpus</div>
     </div>
   </div>
   <div style="padding:14px 20px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:8px;font-size:13px;color:rgba(255,255,255,.45);line-height:1.6;max-width:720px;margin-top:24px" data-es="<strong>Alcance honesto.</strong> Cada fraude fue gateado por su deficiencia estructural real &mdash; sin controles, sin reproducción independiente, datos no auditables &mdash; el mismo hueco por el que se retractó. El corpus se codifica desde registros públicos de retractación (Retraction Watch, avisos de revistas), así que esto valida la lógica estructural del gate, no la detección de fraude desde el texto crudo del paper. Es la evidencia de que el método funciona <em>antes</em> de comprometer dos semanas al piloto de abajo.">
@@ -161,6 +161,17 @@ footer a{color:rgba(255,255,255,.35);text-decoration:none;font-size:12px}
     </div>
   </div>
 </div>
+
+  <div style="margin-top:28px;border:1px solid rgba(232,24,93,.35);border-radius:12px;background:rgba(232,24,93,.05);padding:22px 24px;max-width:860px">
+    <div style="font-size:11px;font-weight:700;color:#e8185d;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px" data-es="Go / no-go pre-registrado (propuesto; se fija antes del día 1)">Pre-registered go / no-go (proposed; fixed before day 1)</div>
+    <p style="font-size:13px;color:rgba(255,255,255,.7);line-height:1.7;margin:0 0 10px" data-es="Los criterios de arriba son blandos a propósito: describen un piloto útil. El gate del piloto es este, y se escribe antes de ver un solo registro:">The criteria above are soft on purpose: they describe a useful pilot. The pilot&rsquo;s gate is this, and it is written before a single record is seen:</p>
+    <ul style="margin:0;padding-left:18px;font-size:13px;color:rgba(255,255,255,.7);line-height:1.85">
+      <li data-es="Sobre los 100 registros adjudicados: <strong>falso-accept &le; 10 %</strong> y <strong>falso-rechazo &le; 25 %</strong>, con intervalos Wilson 95 % publicados. Si no, no-go."><strong>False-accept &le; 10%</strong> and <strong>false-reject &le; 25%</strong> on the 100 adjudicated records, Wilson 95% intervals published. Otherwise no-go.</li>
+      <li data-es="<strong>Brazo ciego obligatorio:</strong> dos codificadores sin acceso al desenlace convierten los registros en payloads; <strong>&kappa; &ge; 0,70 por campo</strong>. Si la concordancia cae por debajo, el piloto mide a los codificadores, no al gate, y se detiene."><strong>Blind coding arm, mandatory:</strong> two coders with no access to the outcome convert the records into payloads; <strong>&kappa; &ge; 0.70 per field</strong>. Below that, the pilot is measuring the coders, not the gate, and it stops.</li>
+      <li data-es="El motor se congela en un tag de git antes de codificar; los veredictos se sellan por hash antes de abrir las adjudicaciones. El mismo protocolo del corpus ciego publicado."><strong>Engine frozen</strong> at a git tag before coding; verdicts sealed by hash before adjudications are opened. The same protocol as the published blind corpus.</li>
+    </ul>
+    <p style="font-size:12px;color:rgba(255,255,255,.45);line-height:1.6;margin:12px 0 0" data-es="Los umbrales son una propuesta del equipo CAPAS y se negocian con el patrocinador; una vez fijados no se tocan. Los únicos datos ciegos que existen hoy son los del corpus de investigación real: <a href=&quot;index.html#measured&quot; style=&quot;color:#e8185d;font-weight:600&quot;>53/82 y 52/63</a>.">The thresholds are the CAPAS team&rsquo;s proposal and are negotiated with the sponsor; once fixed they are not touched. The only blind data that exist today are the real-research corpus figures: <a href="index.html#measured" style="color:#e8185d;font-weight:600">53/82 and 52/63</a>.</p>
+  </div>
 </section>
 
 <!-- GOVERNANCE MODEL -->

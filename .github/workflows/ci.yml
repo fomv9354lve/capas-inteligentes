@@ -42,6 +42,10 @@ jobs:
       - name: External user validation packet
         run: python benchmarks/verify_external_user_validation.py
 
+      # The hand-authored benchmark page must carry exactly the counts of outputs/family_decision_mix.json (stale on 2026-10-13).
+      - name: Benchmark page matches its data file
+        run: python benchmarks/verify_benchmark_page_matches_mix.py
+
       # Load-bearing invariants on neutral CI (deterministic, no browser / gh / release deps).
       - name: Conformance suite
         run: python benchmarks/conformance.py

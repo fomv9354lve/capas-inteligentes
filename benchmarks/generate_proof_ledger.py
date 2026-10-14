@@ -109,6 +109,32 @@ def build() -> list[dict]:
                        "structured-circuit 3-10x band is Proctor (Nat. Phys. 2022), a cited literature range.",
               "owner": "quantum"})
 
+    # --- 2026-10-13 audit: the home listed these as PROVEN/BACKED with no ledger entry. Every public number must be here.
+    L.append({"id": "hold_has_resolution", "claim": "No HOLD is a dead end: each of the 7 HOLD paths ships a constructive, machine-readable resolution",
+              "status": "CLOSED", "backing": "python3 benchmarks/verify_hold_has_resolution.py",
+              "ok": _run_test("benchmarks/verify_hold_has_resolution.py"), "owner": "core"})
+    L.append({"id": "audit_hash_reproduces", "claim": "Every verdict's audit_hash re-derives from the published recipe and is tamper-evident",
+              "status": "CLOSED", "backing": "python3 benchmarks/verify_audit_hash_reproduces.py",
+              "ok": _run_test("benchmarks/verify_audit_hash_reproduces.py"), "owner": "core"})
+    L.append({"id": "gate_contracts_match", "claim": "The Gate App's served contract regenerates from capas.py (single source of truth; the JS replica is not the engine)",
+              "status": "BACKED", "backing": "python3 benchmarks/verify_gate_contracts_match.py",
+              "ok": _run_test("benchmarks/verify_gate_contracts_match.py"), "owner": "product"})
+    L.append({"id": "sequential_typeI", "claim": "Anytime-valid Type-I guarantee holds in simulation: empirical false-reject <= alpha=0.05 under the null",
+              "status": "BACKED", "backing": "python3 benchmarks/demo_sequential_typeI.py",
+              "ok": _run_test("benchmarks/demo_sequential_typeI.py"),
+              "scope": "A Monte Carlo run, not a test-locked invariant: BACKED, never CLOSED.", "owner": "stats"})
+    L.append({"id": "conformance_suite", "claim": "The load-bearing invariants hold together, with a reproducible result hash",
+              "status": "BACKED", "backing": "python3 benchmarks/conformance.py", "ok": None,
+              "artifact": "outputs/conformance_result.json", "sha256": _sha256(ROOT / "outputs" / "conformance_result.json"),
+              "scope": "Not re-run inside this ledger: the conformance suite is what runs this ledger. CI runs it on every push.", "owner": "core"})
+    L.append({"id": "benchmark_page_matches_mix", "claim": "docs/benchmark.html carries exactly the counts of outputs/family_decision_mix.json",
+              "status": "BACKED", "backing": "python3 benchmarks/verify_benchmark_page_matches_mix.py",
+              "ok": _run_test("benchmarks/verify_benchmark_page_matches_mix.py"),
+              "scope": "Found stale on 2026-10-13 (3 payloads ACCEPT->HOLD after that day's rules); now a CI check.", "owner": "product"})
+    L.append({"id": "attest_conformance", "claim": "A signed conformance attestation binds commit, result hash and a live verdict into one bundle hash",
+              "status": "SCOPED", "backing": "python3 benchmarks/attest_conformance.py (keyless Sigstore signing runs in CI: .github/workflows/conformance.yml)",
+              "ok": None, "scope": "Needs cosign + an OIDC identity; verified in CI, not re-run here.", "owner": "core"})
+
     # --- SCOPED: empirical-pending, stated with corpus + the upgrade artifact ---
     sealed = ROOT / "outputs" / "ginibre_sealed_scores.json"
     sealed_ok = _run_test("research/ginibre_corpus/score_sealed.py")
