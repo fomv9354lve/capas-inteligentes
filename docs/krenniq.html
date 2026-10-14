@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Krenn·IQ — Inteligencia Cuántica</title>
+<title>Krenn·IQ — Decidir con número, no con humo</title>
 <link rel="stylesheet" href="kreniq-shell.css">
 <style>.kq-grad{font-style:normal;background:linear-gradient(135deg,#e8185d,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .tier-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
@@ -35,7 +35,7 @@
 <!-- HERO -->
 <section class="hero"><div class="hero-inner" style="grid-template-columns:1fr;max-width:900px;text-align:center">
   <div>
-    <div class="hero-eyebrow" data-en="Krenn&middot;IQ — Quantum Intelligence">Krenn&middot;IQ — Inteligencia Cuántica</div>
+    <div class="hero-eyebrow" data-en="Krenn&middot;IQ — Two tools, one discipline">Krenn&middot;IQ — Dos herramientas, una disciplina</div>
     <h1 class="hero-h1" data-en="Two tools.<br><em>One discipline:</em> decide on numbers, not noise.">Dos herramientas.<br><em>Una disciplina:</em> decidir con número, no con humo.</h1>
     <p class="hero-sub" style="margin-left:auto;margin-right:auto" data-en="Krenn&middot;IQ builds systems that <strong>know the limits of what they know &mdash; and say so</strong>. Deterministic verdicts, traceable evidence, zero overclaim. Pick a tool:">Krenn&middot;IQ construye sistemas que <strong>cuantifican su propia ignorancia y la declaran</strong>. Veredictos deterministas, evidencia trazable, cero overclaim. Elige la herramienta:</p>
   </div>
@@ -59,40 +59,34 @@
   </div>
 </div></section>
 
-<!-- ACCESO — launch: todo abierto y gratis; los tiers se retiraron hasta curaduría comercial -->
-<section class="section" style="padding-top:8px"><div class="section-inner">
-  <div class="section-label" data-en="Access">Acceso</div>
-  <h2 class="section-h2" style="margin-bottom:14px" data-en="Free this launch month. Open engine.">Gratis este mes de lanzamiento. Motor abierto.</h2>
-  <p class="section-sub" style="margin-bottom:22px" data-en="Everything is open right now: the engine, corpus and scripts are Apache-2.0 on GitHub, and the hosted web needs no account and has no paywall. If Atlas is useful to you, an issue, a star or a real-circuit report is the contribution that matters most today.">Todo est&aacute; abierto ahora mismo: el motor, el corpus y los scripts son Apache-2.0 en GitHub, y la web hosted no pide cuenta ni tiene paywall. Si Atlas te sirve, un issue, una estrella o un reporte con tu circuito real es la contribuci&oacute;n que m&aacute;s importa hoy.</p>
-  <div style="display:flex;gap:12px;flex-wrap:wrap">
-    <a class="tier-cta" href="https://atlas.krenniq.com/" style="background:linear-gradient(135deg,#6d5ef7,#a855f7);color:#fff" data-en="Open Atlas">Abrir Atlas</a>
-    <a class="tier-cta" href="https://github.com/fomv9354lve/atlas-engine" style="border:1px solid rgba(255,255,255,0.18);color:#fff" data-en="Code + corpus on GitHub">C&oacute;digo + corpus en GitHub</a>
-  </div>
-</div></section>
-
-<!-- SECURITY & RELIABILITY — los 3 bullets del audit adversarial (construye confianza con CTOs) -->
+<!-- SECURITY & RELIABILITY — las dos herramientas, cada una con su evidencia (reescrito 2026-10-13: antes era solo Atlas) -->
 <section class="section" style="padding-top:8px"><div class="section-inner">
   <div class="section-label" data-en="Security &amp; Reliability">Seguridad y fiabilidad</div>
-  <h2 class="section-h2" style="margin-bottom:14px" data-en="Built to be trusted.">Hecho para confiar.</h2>
-  <p class="section-sub" style="margin-bottom:40px" data-en="The classifier was audited adversarially and the server was hardened against pathological inputs. Honest by design.">El clasificador fue auditado adversarialmente y el servidor endurecido contra entradas patol&oacute;gicas. Honesto por dise&ntilde;o.</p>
-  <div class="tier-grid">
+  <h2 class="section-h2" style="margin-bottom:14px" data-en="Built to be trusted. Each tool carries its own evidence.">Hecho para confiar. Cada herramienta lleva su propia evidencia.</h2>
+  <p class="section-sub" style="margin-bottom:40px" data-en="Nothing here is a promise: every line below links to a test, a sealed file or a signed run that you can re-execute.">Nada de esto es una promesa: cada línea de abajo enlaza a un test, a un archivo sellado o a una corrida firmada que puedes re-ejecutar.</p>
+  <div class="tier-grid" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr))">
     <div class="tier">
-      <span class="tier-badge" style="background:rgba(72,187,120,0.16);color:#48bb78" data-en="Adversarial audit">Auditor&iacute;a adversarial</span>
-      <h3 data-en="0 false-security">0 falsas-seguridades</h3>
-      <ul><li data-en="Across multiple attack vectors &mdash; irrational rotations, T-identity camouflage, maximal entanglement, mid-circuit measurements, permutation camouflage &mdash; the classifier never routed an expensive circuit as cheap.">A trav&eacute;s de m&uacute;ltiples vectores &mdash; rotaciones irracionales, camuflaje de identidades T, entrelazamiento m&aacute;ximo, mediciones intermedias, perm-camouflage &mdash; el clasificador nunca rute&oacute; barato algo caro.</li></ul>
+      <span class="tier-badge" style="background:rgba(232,24,93,0.16);color:#e8185d">CAPAS</span>
+      <h3 data-en="Fail-closed, no model in the verdict">Fail-closed, sin modelo en el veredicto</h3>
+      <ul>
+        <li data-en="18/18 structurally deficient claims are never ACCEPTed; the same payload yields the same verdict and hash on any machine (locked tests).">18/18 claims estructuralmente deficientes nunca son ACCEPT; el mismo payload da el mismo veredicto y hash en cualquier máquina (tests bloqueados).</li>
+        <li data-en="Measured blind on 233 real research claims: 53/82 bad claims stopped, 52/63 good ones kept, with intervals published.">Medido a ciegas sobre 233 claims de investigación reales: 53/82 malos detenidos, 52/63 buenos respetados, con intervalos publicados.</li>
+        <li data-en="Attacked by a model of another company (7 of 10 public claims; 3 refuted and corrected the same day). Conformance suite signed keyless in CI (Sigstore).">Atacado por un modelo de otra empresa (7 de 10 claims públicos; 3 refutados y corregidos el mismo día). Suite de conformidad firmada sin llaves en CI (Sigstore).</li>
+      </ul>
+      <p style="margin-top:14px"><a href="https://capas.krenniq.com/governance.html" style="color:#e8185d;font-size:14px;font-weight:600;text-decoration:none" data-en="CAPAS audit page &rarr;">Página de auditoría de CAPAS &rarr;</a></p>
     </div>
     <div class="tier">
-      <span class="tier-badge" style="background:rgba(0,229,255,0.14);color:#00e5ff" data-en="DoS-protected">Protegido contra DoS</span>
-      <h3 data-en="No server hang">Sin cuelgues</h3>
-      <ul><li data-en="A topology-aware guard (2q-reach, sharper than gate-count) keeps a pathological circuit from blocking the server &mdash; it degrades to an honest &lsquo;compute-bound &rarr; HPC&rsquo; verdict in seconds.">Un guard consciente de la topolog&iacute;a (alcance-2q, m&aacute;s fino que el conteo de gates) impide que un circuito patol&oacute;gico bloquee el servidor &mdash; degrada a un veredicto honesto &lsquo;compute-bound &rarr; HPC&rsquo; en segundos.</li></ul>
-    </div>
-    <div class="tier">
-      <span class="tier-badge" style="background:rgba(232,24,93,0.16);color:#e8185d" data-en="Calibrated confidence">Confianza calibrada</span>
-      <h3 data-en="It admits its limits">Admite sus l&iacute;mites</h3>
-      <ul><li data-en="The engine flags when a verdict sits in its borderline calibration zone instead of feigning certainty &mdash; and a permanent adversarial regression test guards every future change.">El motor avisa cu&aacute;ndo un veredicto cae en su zona l&iacute;mite en vez de fingir certeza &mdash; y un test de regresi&oacute;n adversarial permanente protege cada cambio futuro.</li></ul>
+      <span class="tier-badge" style="background:rgba(0,229,255,0.14);color:#00e5ff">Atlas</span>
+      <h3 data-en="Adversarially audited, DoS-protected, calibrated">Auditado adversarialmente, protegido contra DoS, calibrado</h3>
+      <ul>
+        <li data-en="Across multiple attack vectors &mdash; irrational rotations, T-identity camouflage, maximal entanglement, mid-circuit measurements, permutation camouflage &mdash; the classifier never routed an expensive circuit as cheap.">A través de múltiples vectores &mdash; rotaciones irracionales, camuflaje de identidad T, entrelazamiento máximo, mediciones a mitad de circuito, camuflaje por permutación &mdash; el clasificador nunca enrutó un circuito caro como barato.</li>
+        <li data-en="A topology-aware guard keeps a pathological circuit from blocking the server: it degrades to an honest &lsquo;compute-bound &rarr; HPC&rsquo; verdict in seconds.">Un guard consciente de la topología impide que un circuito patológico bloquee el servidor: degrada a un veredicto honesto &laquo;compute-bound &rarr; HPC&raquo; en segundos.</li>
+        <li data-en="The engine flags when a verdict sits in its borderline calibration zone instead of feigning certainty; a permanent adversarial regression test guards every change.">El motor avisa cuando un veredicto cae en su zona límite de calibración en vez de fingir certeza; un test adversarial permanente vigila cada cambio.</li>
+      </ul>
+      <p style="margin-top:14px"><a href="https://atlas.krenniq.com/evidence.html" style="color:#00e5ff;font-size:14px;font-weight:600;text-decoration:none" data-en="Atlas evidence &amp; audit trail &rarr;">Evidencia y audit trail de Atlas &rarr;</a></p>
     </div>
   </div>
-  <p style="margin-top:26px;text-align:center"><a href="https://atlas.krenniq.com/evidence.html" style="color:#00e5ff;font-size:14px;font-weight:600;text-decoration:none" data-en="See the full evidence &amp; audit trail &rarr;">Ver la evidencia y el audit trail completos &rarr;</a></p>
+  <p style="margin-top:26px;text-align:center;font-size:13px;color:rgba(255,255,255,.5)" data-en="Both engines are open (Apache-2.0): <a href=&quot;https://github.com/fomv9354lve/capas-inteligentes&quot; style=&quot;color:rgba(255,255,255,.75)&quot;>capas-inteligentes</a> &middot; <a href=&quot;https://github.com/fomv9354lve/atlas-engine&quot; style=&quot;color:rgba(255,255,255,.75)&quot;>atlas-engine</a>. The hosted web needs no account.">Los dos motores son abiertos (Apache-2.0): <a href="https://github.com/fomv9354lve/capas-inteligentes" style="color:rgba(255,255,255,.75)">capas-inteligentes</a> &middot; <a href="https://github.com/fomv9354lve/atlas-engine" style="color:rgba(255,255,255,.75)">atlas-engine</a>. La web alojada no pide cuenta.</p>
 </div></section>
 
 <!-- EL NOMBRE / ABOUT — contexto solo en código, NO expuesto en el landing:

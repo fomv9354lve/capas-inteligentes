@@ -58,8 +58,8 @@ az containerapp update -n capas -g capas-rg --image "caf7ef600384acr.azurecr.io/
 ## 4. Shell de marca = fuente única, no forkear
 - `docs/kreniq-shell.css` es la **fuente única** del shell (nav, bg-logo flotante canónico, cards, tokens de layout: --col 1200px, --gutter 48px, --nav-h 60px, --radius 14px, --pink #e8185d). `../corporate-platform/design-system/` lo espeja para apps nuevas. **No dupliques/forkees estilos por página.**
 - **Nav canónico** (idéntico en las 7 páginas `docs/*.html`):
-  `Home`(→ `https://krenniq.com/`) · `Intro+`(→ `index.html`, el intro de CAPAS, activo) · Gate App · Methodology · Pilot · Audit · Benchmark · Security · `Atlas`(→ app de Atlas) · CTA `Test a Claim`.
-  **No** renombres "Intro+" de vuelta a "Home", **no** quites el link `Atlas`, **no** apuntes "Home" a `index.html`.
+  `Home`(→ `https://krenniq.com/`) · `Intro+`(→ `index.html`, el intro de CAPAS, activo) · Gate App · `Decision log`(→ `audit.html`, el registro local de la Gate App) · `Brief`(→ `customer-brief.html`) · Pilot · `Audit`(→ `governance.html`: gobierno §2/§6, contra-firma §6, conformidad firmada) · Benchmark · Security · `Atlas`(→ app de Atlas) · CTA `Test a Claim`.
+  Etiquetas renombradas el 2026-10-13 por auditoría externa (Osvaldo: «1 arregla»): «Methodology» era un brief, «Audit» era un log local. **No** renombres "Intro+" de vuelta a "Home", **no** quites el link `Atlas`, **no** apuntes "Home" a `index.html`, **no** devuelvas «Audit» al log local.
 
 ## 5. Mapa de superficies (qué es qué)
 | URL | Sirve | Repo/archivo |
