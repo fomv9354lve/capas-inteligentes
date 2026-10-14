@@ -34,8 +34,8 @@ RG = "capas-rg"
 
 # The pages that carry the shared shell + nav. (index served at "/" too.)
 PAGES = ["index.html", "app.html", "customer-brief.html", "benchmark.html",
-         "security.html", "pilot-packet.html", "audit.html"]
-NAV_ITEMS = ["Home", "Intro+", "Gate App", "Methodology", "Pilot", "Audit", "Benchmark", "Security", "Atlas"]
+         "security.html", "pilot-packet.html", "audit.html", "governance.html"]
+NAV_ITEMS = ["Home", "Intro+", "Gate App", "Decision log", "Brief", "Pilot", "Audit", "Benchmark", "Security", "Atlas"]  # 2026-10-13 rename (external audit)
 
 _CTX = ssl.create_default_context()
 _CTX.check_hostname = False
@@ -76,7 +76,7 @@ def validate() -> bool:
         v = _V()
         v.feed(h)
         nav = re.search(r"<nav>.*?</nav>", h, re.S)
-        items = re.findall(r">(Home|Intro\+|Gate App|Methodology|Pilot|Audit|Benchmark|Security|Atlas)<",
+        items = re.findall(r">(Home|Intro\+|Gate App|Decision log|Brief|Pilot|Audit|Benchmark|Security|Atlas)<",
                            nav.group(0) if nav else "")
         items_uniq = list(dict.fromkeys(items))
         navs = h.count("<nav>"), h.count("</nav>")
@@ -84,7 +84,7 @@ def validate() -> bool:
         ok = ok and good
         flag = "OK " if good else "XX "
         print(f"  {flag}{p:20} unclosed={len(v.stack)} stray={v.stray} nav={navs[0]}/{navs[1]} "
-              f"items={'·'.join(items_uniq) if items_uniq != NAV_ITEMS else '7 canonical'}")
+              f"items={'·'.join(items_uniq) if items_uniq != NAV_ITEMS else 'canonical'}")
     print("VALIDATE:", "PASS" if ok else "FAIL")
     return ok
 
