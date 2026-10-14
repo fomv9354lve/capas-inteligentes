@@ -1,7 +1,7 @@
 # capas-claim-gate 0.4.0 — release notes (draft, 2026-10-13)
 
-Engine, package and surfaces as of this tree. Nothing here is deployed or published yet; this file is the
-changelog the release will carry. Every figure below is re-derivable (command given) or marked as declared.
+Engine, package and surfaces as of tag v0.4.0 (2026-10-13, commit 6a8471b). Site deployed 2026-10-13; this file is the
+changelog the release carries. Every figure below is re-derivable (command given) or marked as declared.
 
 ## Validation (new)
 
