@@ -35,7 +35,7 @@ RG = "capas-rg"
 # The pages that carry the shared shell + nav. (index served at "/" too.)
 PAGES = ["index.html", "app.html", "customer-brief.html", "benchmark.html",
          "security.html", "pilot-packet.html", "audit.html", "governance.html"]
-NAV_ITEMS = ["Home", "Intro+", "Gate App", "Decision log", "Brief", "Pilot", "Audit", "Benchmark", "Security", "Atlas"]  # 2026-10-13 rename (external audit)
+NAV_ITEMS = ["Product", "Application", "Evidence", "Pilot", "Documentation"]  # grouped by task 2026-10-14 (owner; audit CAP-19); source: scripts/apply_nav.py
 
 _CTX = ssl.create_default_context()
 _CTX.check_hostname = False
@@ -76,7 +76,7 @@ def validate() -> bool:
         v = _V()
         v.feed(h)
         nav = re.search(r"<nav>.*?</nav>", h, re.S)
-        items = re.findall(r">(Home|Intro\+|Gate App|Decision log|Brief|Pilot|Audit|Benchmark|Security|Atlas)<",
+        items = re.findall(r">(Product|Application|Evidence|Pilot|Documentation)<",
                            nav.group(0) if nav else "")
         items_uniq = list(dict.fromkeys(items))
         navs = h.count("<nav>"), h.count("</nav>")
