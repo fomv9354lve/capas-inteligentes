@@ -107,7 +107,7 @@ with the same `max_age_days` policy and a stale one is a **HOLD** `stale_field` 
 (same shape, earlier `measured`) and the law **infers** staleness by identity: element by element for continuous fields
 (t1_us, t2_us, edges), whole field for quantized ones (readout, sx — two real measurements can coincide exactly); the
 inferred age is a **lower bound** ("measured at the latest at measured_prev"). With neither, the result carries
-`field_freshness.status = "not evaluable"` — a notice, never silence, never HOLD. `field_dates` take precedence. Defaults: edge > 1e-2 or > 5× median → FLAG; T1 < 60 µs or < median/3 → FLAG; freshness ≤ 1
+`field_freshness.status = "not evaluable"` — a notice, never silence, never HOLD. `field_dates` take precedence. Timestamps without a zone are read in **UTC** unless the snapshot declares `timezone` ("UTC", "±HH:MM" or an IANA name); calendar days are counted in that zone, never in the machine's. Defaults: edge > 1e-2 or > 5× median → FLAG; T1 < 60 µs or < median/3 → FLAG; freshness ≤ 1
 calendar day; T2 floor off (`t2_min_frac_median` / `t2_min_us` to enable). Override anything in `thresholds`.
 
 ## The rule behind all of this

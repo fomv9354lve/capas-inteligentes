@@ -918,8 +918,29 @@ _SNAP_DEFAULTS = {
 }
 
 
-def _parse_ts(x: Any) -> float | None:
-    """ISO-ish timestamp -> epoch seconds; None if unparseable (no se juzga)."""
+def _tz(spec: Any):
+    """Zone for NAIVE timestamps and for calendar-day arithmetic. Accepts "UTC"/"Z", "+HH:MM"/"-HH:MM", or an IANA
+    name; default UTC. Never the machine's local zone: a verdict must not depend on where the engine runs (found
+    2026-10-13: the same E4b payload was HOLD on a -06:00 laptop and ACCEPT in the UTC container)."""
+    from datetime import timezone, timedelta, tzinfo as _tzinfo
+    if isinstance(spec, _tzinfo):
+        return spec
+    if spec is None or str(spec).strip().upper() in ("UTC", "Z", ""):
+        return timezone.utc
+    t = str(spec).strip()
+    if len(t) == 6 and t[0] in "+-" and t[3] == ":":
+        sign = 1 if t[0] == "+" else -1
+        return timezone(sign * timedelta(hours=int(t[1:3]), minutes=int(t[4:6])))
+    try:
+        from zoneinfo import ZoneInfo
+        return ZoneInfo(t)
+    except Exception:
+        return timezone.utc
+
+
+def _parse_ts(x: Any, tz: Any = None) -> float | None:
+    """ISO-ish timestamp -> epoch seconds; None if unparseable (no se juzga). Aware timestamps keep their offset;
+    naive ones are read in `tz` (default UTC) — never in the machine's local zone."""
     from datetime import datetime
     if x is None:
         return None
@@ -934,7 +955,7 @@ def _parse_ts(x: Any) -> float | None:
     s = str(x).strip().replace("T", " ").replace("Z", "")
     for fmt in ("%Y-%m-%d %H:%M:%S.%f", "%Y-%m-%d %H:%M:%S", "%Y-%m-%d %H:%M", "%Y-%m-%d"):
         try:
-            return datetime.strptime(s[:26], fmt).timestamp()
+            return datetime.strptime(s[:26], fmt).replace(tzinfo=_tz(tz)).timestamp()
         except ValueError:
             continue
     return None
@@ -1078,11 +1099,12 @@ def check_calibration_snapshot(ev: dict[str, Any]) -> dict[str, Any]:
 
     # 4) frescura: snapshot medido vs fecha del job
     stale = None
-    t_meas, t_job = _parse_ts(snap.get("measured")), _parse_ts(snap.get("job_date"))
+    _zone = _tz(snap.get("timezone"))
+    t_meas, t_job = _parse_ts(snap.get("measured"), _zone), _parse_ts(snap.get("job_date"), _zone)
     if t_meas is not None and t_job is not None:
         from datetime import datetime as _dt
         age_days = (t_job - t_meas) / 86400.0
-        cal_days = (_dt.fromtimestamp(t_job).date() - _dt.fromtimestamp(t_meas).date()).days
+        cal_days = (_dt.fromtimestamp(t_job, _zone).date() - _dt.fromtimestamp(t_meas, _zone).date()).days
         if float(th["max_age_days"]).is_integer():
             # politica en dias calendario (IBM recalibra ~a diario): 0 = mismo dia, 1 = hasta el dia anterior...
             if cal_days > int(th["max_age_days"]):
@@ -1104,7 +1126,7 @@ def check_calibration_snapshot(ev: dict[str, Any]) -> dict[str, Any]:
             return None
         from datetime import datetime as _dt
         age = (t_job - t_field) / 86400.0
-        cal = (_dt.fromtimestamp(t_job).date() - _dt.fromtimestamp(t_field).date()).days
+        cal = (_dt.fromtimestamp(t_job, _zone).date() - _dt.fromtimestamp(t_field, _zone).date()).days
         if float(th["max_age_days"]).is_integer():
             return round(age, 2) if cal > int(th["max_age_days"]) else None
         return round(age, 2) if age > th["max_age_days"] else None
@@ -1126,7 +1148,7 @@ def check_calibration_snapshot(ev: dict[str, Any]) -> dict[str, Any]:
                 el = str(el)
                 if not _in_layout(field, el):
                     continue
-                t_f = _parse_ts(iso)
+                t_f = _parse_ts(iso, _zone)
                 if t_f is None:
                     n_unparseable += 1
                     continue
@@ -1137,7 +1159,7 @@ def check_calibration_snapshot(ev: dict[str, Any]) -> dict[str, Any]:
             holds.append(f"field_dates: {n_unparseable} unparseable date(s) in the layout: cannot judge per-field freshness")
     elif isinstance(prev, dict) and t_job is not None:
         prev_n, _ = _normalize_snapshot(prev)
-        t_prev = _parse_ts((prev_n or {}).get("measured"))
+        t_prev = _parse_ts((prev_n or {}).get("measured"), _zone)
         if prev_n is None or t_prev is None:
             holds.append("previous_snapshot declared but unreadable (shape or measured): cannot infer per-field freshness")
         elif t_meas is not None and t_prev >= t_meas:
@@ -1201,7 +1223,7 @@ def check_calibration_snapshot(ev: dict[str, Any]) -> dict[str, Any]:
     scope = f"layout ({n_j} elements judged, medians over whole device)" if layout else f"whole snapshot ({n_j} elements)"
     extra = {"outliers": outliers, "medians": {"edge_error": med_e if errs else None, "t1_us": med_t1, "t2_us": med_t2, "readout": med_ro},
              "thresholds": th, "stale_days": stale, "normalized_from_raw_device_file": normalized,
-             "field_freshness": field_fresh}
+             "field_freshness": field_fresh, "timezone": str(snap.get("timezone") or "UTC")}
     if outliers or stale is not None:
         parts = [_fmt(o) for o in outliers]
         if stale is not None:

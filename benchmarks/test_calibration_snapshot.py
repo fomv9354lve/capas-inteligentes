@@ -313,8 +313,25 @@ def test_field_dates_take_precedence_over_identity():
 def test_stale_field_holds_an_accept_but_never_rejects():
     """Decision 2026-10-13 (Atlas): a stale layout field is HOLD, not FLAG -> an ACCEPT becomes HOLD, a REJECT stays."""
     import capas
-    snap = _e4b()  # T1 of layout qubit 65 dated 2026-10-11: stale under the 1-day policy
+    snap = _e4b(thresholds={"max_age_days": 0})  # same-day policy: T1 of the layout (2026-10-12 UTC) is stale
     ev = {"p_value": 7.6e-06, "alpha": 0.05, "effect_direction_confirmed": True, "invariants": {"calibration_snapshot": snap}}
     r = capas.decide_external_claim({"schema_version": "capas-claim-payload-v3",
                                      "claim": {"id": "p1", "type": "statistical_confidence", "text": "F drifted"}, "evidence": ev})
     assert r["verdict"] == "HOLD" and "stale_field" in r["reason"] and "qubit" not in r["reason"].split("stale_field")[0][-5:]
+
+
+def test_calendar_days_do_not_depend_on_the_machine_zone():
+    """E4b: T1 of layout qubit 65 is dated 2026-10-11T21:33-06:00 = 2026-10-12 03:33 UTC; the job date is 2026-10-13.
+    In UTC (the default) that is 1 calendar day -> fresh under max_age_days=1; on a -06:00 laptop the machine's
+    local zone made it 2 days -> HOLD, while the UTC container said ACCEPT (found 2026-10-13). The zone is now
+    explicit: UTC unless the snapshot declares `timezone`."""
+    import os, time
+    results = {}
+    for zone in ("UTC", "America/Mexico_City", "Asia/Tokyo"):
+        os.environ["TZ"] = zone; time.tzset()
+        results[zone] = ci.audit({"calibration_snapshot": _e4b()})["results"]["calibration_snapshot"]["verdict"]
+    os.environ.pop("TZ", None); time.tzset()
+    assert len(set(results.values())) == 1 and results["UTC"] == "PASS", results
+    # the declared zone changes the calendar arithmetic deterministically: in -06:00 it IS two calendar days
+    r = ci.audit({"calibration_snapshot": _e4b(timezone="-06:00")})["results"]["calibration_snapshot"]
+    assert r["verdict"] == "HOLD" and r["timezone"] == "-06:00" and any(x["element"] == "65" for x in r["field_freshness"]["stale"])

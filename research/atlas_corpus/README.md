@@ -141,3 +141,13 @@ siguiente.
 Atlas, adoptada por CAPAS conociendo E4b y antes del siguiente claim limpio (se declara: no es ciega): un T1 viejo no
 contradice el claim, deja sin verificar el contexto de calibración; REJECT queda para evidencia que contradice. Efecto
 post-hoc: E4b P1 pasa de REJECT (v7) a HOLD (v8) — vacuo, no error. Se aplica a partir del siguiente claim.
+
+**Corrección (2026-10-13 ~20:30, tag `atlas-ciego-v9`): el "coste post-hoc" de v7 era en parte un artefacto de zona
+horaria.** Al verificar v8 en vivo, el servidor (UTC) daba ACCEPT a P1 y mi máquina (-06:00) HOLD: la política de días
+calendario usaba la zona de la máquina. El T1 del qubit 65 está fechado 2026-10-11T21:33-06:00 = 2026-10-12 03:33 UTC;
+frente a un `job_date` 2026-10-13 son 2 días calendario en -06:00 y 1 en UTC. Un veredicto no puede depender de dónde
+corre el motor: ahora los timestamps sin zona se leen en UTC (la zona de los `running` de vuestros jobs) salvo que el
+snapshot declare `timezone` ("UTC", "±HH:MM" o nombre IANA), y los días calendario se cuentan en esa zona. Test:
+mismo veredicto con TZ=UTC, America/Mexico_City y Asia/Tokyo. Con la regla determinista, **E4b P1 sigue ACCEPT** en
+todos los motores (v6, v8, v9); con `timezone: "-06:00"` declarado sería HOLD (T1 del qubit 65 rancio), nunca REJECT.
+Lección: toda aritmética de calendario del motor lleva zona explícita; `verify_determinism.py` no cubría la zona.
