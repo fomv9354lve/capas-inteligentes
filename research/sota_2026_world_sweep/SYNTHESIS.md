@@ -12,6 +12,11 @@ informes por país en `wave_1_A-B.md` … `wave_7_T-Z.md` (4,113 líneas, 197 en
   prohíbe y los agentes lo respetaron). Consecuencia honesta: en las potencias científicas la cobertura es profunda;
   en unos 60 países pequeños es bibliográfica (lo que está en catálogos), no de prensa local. Cuatro países quedaron
   **inalcanzables** (Nauru, Nepal, Níger, Corea del Norte): ni búsqueda ni fetch; no se cuentan como "nada".
+- **Tercera pasada (búsqueda real, presupuesto repuesto):** México con sus 8 búsquedas (sigue sin trabajo doméstico de
+  verificación; único nodo de reproducibilidad: INSP con BITSS/CEGA; 47 % de las revistas de las principales instituciones
+  sin política de IA generativa; Rosaura Ruiz, ago-2026: «la responsabilidad no puede delegarse en un modelo»); Corea,
+  España, Suecia, Singapur profundizados; los cuatro inalcanzables resueltos (Nauru, Níger, Corea del Norte: nada;
+  Nepal: adyacente). Ningún ranking cambió.
 - **Qué significa "nada".** NOTHING FOUND = se consultó y no apareció nada relevante, ni directo ni adyacente. Son
   del orden de 95 países. Otros ~75 tienen solo trabajo adyacente (integridad, ciencia abierta, regulación). Unos 25
   tienen trabajo **directo**: sistemas o papers que verifican o gatean claims.
