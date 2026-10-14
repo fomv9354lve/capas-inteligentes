@@ -204,7 +204,7 @@ def build() -> list[dict]:
     L.append({"id": "pip_install", "claim": "pip install capas-claim-gate",
               "status": "BACKED", "backing": "pip install capas-claim-gate (PyPI; published from GitHub via OIDC Trusted Publishing, no token)",
               "value": "capas-claim-gate 0.3.0 LIVE on PyPI", "artifact": "https://pypi.org/project/capas-claim-gate/",
-              "scope": "Published via the publish.yml Trusted Publisher on release v0.1.2; the wheel install is now live.",
+              "scope": "Published via the publish.yml Trusted Publisher; current release v0.4.0 (tag v0.4.0 = 6a8471b), first published as v0.1.2; the wheel install is now live.",
               "owner": "release"})
     return L
 

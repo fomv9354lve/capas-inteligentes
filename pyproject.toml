@@ -23,6 +23,12 @@ dependencies = [
   "scipy",   # load-bearing since 2026-10-13: p-value recomputation and joint chi2 criteria (the engine HOLDs without it, never fails open)
 ]
 
+[project.urls]
+Homepage = "https://capas.krenniq.com/"
+Repository = "https://github.com/fomv9354lve/capas-inteligentes"
+"Proof ledger" = "https://capas.krenniq.com/proof_ledger.json"
+"Release notes" = "https://github.com/fomv9354lve/capas-inteligentes/blob/main/RELEASE_NOTES_0.4.0.md"
+
 [project.optional-dependencies]
 # G-CLOSED (rmt_G for gamma > 1, state reduced) evaluates a symbolic closed form; without sympy the gate HOLDs, never errors
 rmt = ["sympy"]

@@ -21,6 +21,12 @@ FORBIDDEN = [
     (r"Read methodology", "button renamed with the page"),
     (r"Free this launch month", "undated offer removed from the landing"),
     (r"Inteligencia Cu[aá]ntica</title>", "the umbrella is not a quantum brand"),
+    (r"90\+ deterministic rule functions|Más de 90 funciones", "bare count; the registered counts regenerate from the engine (brief audit item 5)"),
+    (r"full verdict-space coverage|cobertura completa del espacio de veredictos", "9/12 families reach all four verdicts, three cannot by design (brief audit item 4)"),
+    (r"Recent [Gg]ate [Dd]ecisions|Decisiones recientes del gate", "the four decisions are fixed, re-derivable fixtures (brief audit item 8)"),
+    (r"wraps any packet in a signed", "/api/decide and /api/gate return unsigned packets (brief audit item 3)"),
+    (r"literal output of the engine", "the packet is generated, published and CI-checked, never typed (brief audit item 1)"),
+    (r"examples shown here are illustrative|ejemplos de decisión son ilustrativos", "nothing on the brief is illustrative (brief audit item 8)"),
 ]
 TITLES = {"customer-brief.html": "Brief", "audit.html": "Decision log", "governance.html": "Audit"}
 

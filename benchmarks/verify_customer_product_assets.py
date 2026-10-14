@@ -44,7 +44,7 @@ REQUIRED = {
     "local three.js dependency": (THREE_JS, ["Three.js Authors", "THREE={}"]),
     "local orbit controls dependency": (ORBIT_CONTROLS, ["THREE.OrbitControls", "OrbitControls"]),
     "gate app header without discarded logo": (UI, ["aria-label=\"CAPAS Claim Gate\"", "krenniq-logo.png", "class=\"nav-logo\"", "Gate App", "class=\"nav-cta\"", "Audit"]),
-    "landing page screenshots": (PRODUCT, ["Recent Gate Decisions", "SCHEMA V3", "statistical_confidence"]),
+    "landing page screenshots": (PRODUCT, ["Reference Gate Decisions", "SCHEMA V3", "statistical_confidence"]),
     "product business case": (PRODUCT, ["Verdict Reference", "Where it Lives", "audit_hash", "claim_id", "evidence_contract"]),   # reviewer_action is not an engine field (2026-10-13: stale expectation)
     "designed brief page": (BRIEF_HTML, ["Brief", "Deterministic claim ", "Reproducible engine benchmark", "Disclaimers"]),
     "designed pilot packet": (PACKET_HTML, ["Pilot Packet", "Two-week", "Roles", "Success criteria", "Governance", "disclaimer"]),

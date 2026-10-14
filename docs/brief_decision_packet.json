@@ -1,0 +1,179 @@
+{
+  "payload": {
+    "schema_version": "capas-claim-payload-v3",
+    "claim": {
+      "id": "brief_fin_001",
+      "type": "financial_metric_claim",
+      "text": "Reported net assets of 1000 match the audited reference for the period."
+    },
+    "evidence": {
+      "reported_value": 1000,
+      "reference_value": 1000,
+      "tolerance": 0.5,
+      "metric_period_match": true,
+      "invariants": {
+        "accounting": {
+          "assets": 1000,
+          "liabilities": 600,
+          "equity": 300
+        }
+      }
+    }
+  },
+  "result": {
+    "schema_version": "capas-claim-payload-v3",
+    "input_claim": {
+      "id": "brief_fin_001",
+      "type": "financial_metric_claim",
+      "text": "Reported net assets of 1000 match the audited reference for the period."
+    },
+    "verdict": "REJECT",
+    "reason": "reported_value differs from reference_value by 0.0, within tolerance 0.5, and period matches; OVERRIDDEN by a domain invariant violation: balance identity VIOLATED: assets 1000.0 != liabilities 600.0 + equity 300.0 (residual 100) — the books do not close",
+    "licensed_claim": null,
+    "rewrite": null,
+    "missing_fields": [],
+    "required_fields": [
+      "reported_value",
+      "reference_value",
+      "tolerance",
+      "metric_period_match"
+    ],
+    "schema_errors": [],
+    "did_you_mean": {},
+    "resolution": {
+      "kind": "exclude_or_replace_evidence",
+      "message": "The evidence contradicts the claim. Exclude it, or supply new evidence that changes the contract outcome."
+    },
+    "invariant_audit": {
+      "applicable": true,
+      "verdict": "FLAG",
+      "laws_checked": [
+        "accounting"
+      ],
+      "violations": [
+        "accounting"
+      ],
+      "holds": [],
+      "results": {
+        "accounting": {
+          "applies": true,
+          "verdict": "FLAG",
+          "law": "assets = liabilities + equity",
+          "why": "balance identity VIOLATED: assets 1000.0 != liabilities 600.0 + equity 300.0 (residual 100) — the books do not close"
+        }
+      },
+      "summary": "balance identity VIOLATED: assets 1000.0 != liabilities 600.0 + equity 300.0 (residual 100) — the books do not close"
+    },
+    "fine_tune_ready": false,
+    "fine_tune_blockers": [
+      "claim verdict is not ACCEPT",
+      "source-backed evidence is not attached",
+      "external review is not attached",
+      "claim.text semantic alignment is not externally certified",
+      "witness independence is not externally certified",
+      "provenance.sources or provenance.source_urls is empty",
+      "external review hash is missing or does not match review_packet",
+      "source URLs are not recoverable with matching hashes",
+      "witness_id is not resolvable in the witness registry",
+      "RO-Crate provenance packet is missing, invalid, or hash-mismatched",
+      "reviewer identity or attestation is not verifiable",
+      "provenance.review_id is missing",
+      "provenance.witness_id is missing"
+    ],
+    "fine_tune_criteria": {
+      "verdict_accept": false,
+      "schema_clean": true,
+      "source_backed_evidence": false,
+      "external_review": false,
+      "semantic_alignment": false,
+      "witness_independence": false,
+      "provenance_sources": false,
+      "review_hash_verified": false,
+      "source_urls_recoverable_hashable": false,
+      "witness_registry_resolved": false,
+      "ro_crate_validated": false,
+      "reviewer_attestation_verified": false,
+      "review_id_present": false,
+      "witness_id_present": false
+    },
+    "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+    "audit_hash": "sha256:7be69d89a72878a951efadfa101be6b5cf145fa61a6e290d7c1e7fb49a32d92c",
+    "admissibility_certificate": {
+      "calculus_version": "capas-admissibility-calculus-v1",
+      "metaphor": "compiler_certificate",
+      "claim_contract": {
+        "registered": true,
+        "claim_type": "financial_metric_claim",
+        "description": "Financial metric claims against a reference value and period.",
+        "required_fields": [
+          "reported_value",
+          "reference_value",
+          "tolerance",
+          "metric_period_match"
+        ],
+        "optional_fields": [
+          "metric_name",
+          "audit_trail",
+          "object_declared",
+          "object_matches_target",
+          "load_bearing_citation_read",
+          "citation_hypotheses_checked",
+          "null_control_passed"
+        ],
+        "anchor_mode": null,
+        "anchor_license": null,
+        "absolute_accept_only": false
+      },
+      "lattice": {
+        "axes": {
+          "contract": {
+            "score": 3,
+            "level": "contract_complete"
+          },
+          "evidence": {
+            "score": 2,
+            "level": "complete"
+          },
+          "boundary": {
+            "score": 2,
+            "level": "claim_excluded"
+          },
+          "provenance": {
+            "score": 0,
+            "level": "none"
+          },
+          "defeaters": {
+            "score": 4,
+            "level": "no_active_defeater"
+          }
+        },
+        "controlled_reuse_meet": 2,
+        "training_reuse_meet": 0,
+        "reuse_boundary": "claim_excluded",
+        "non_claim": "This lattice orders admissibility of supplied evidence, not scientific truth."
+      },
+      "dialectic": {
+        "thesis": "Reported net assets of 1000 match the audited reference for the period.",
+        "licensed_thesis": null,
+        "warrant": "reported_value differs from reference_value by 0.0, within tolerance 0.5, and period matches; OVERRIDDEN by a domain invariant violation: balance identity VIOLATED: assets 1000.0 != liabilities 600.0 + equity 300.0 (residual 100) — the books do not close",
+        "supports": [
+          "evidence.reported_value",
+          "evidence.reference_value",
+          "evidence.tolerance",
+          "evidence.metric_period_match"
+        ],
+        "optional_supports": [],
+        "undercutters": [],
+        "rebuttals": [
+          "reported_value differs from reference_value by 0.0, within tolerance 0.5, and period matches; OVERRIDDEN by a domain invariant violation: balance identity VIOLATED: assets 1000.0 != liabilities 600.0 + equity 300.0 (residual 100) — the books do not close"
+        ],
+        "burden_of_proof": []
+      },
+      "proof_obligations": [],
+      "next_action": {
+        "kind": "exclude_or_replace_evidence",
+        "label": "Exclude this claim or provide new evidence that changes the contract outcome."
+      }
+    }
+  }
+}

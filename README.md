@@ -124,7 +124,7 @@ For reviewers and potential users:
 - Input hardening notes: `docs/INPUT_HARDENING.md`
 - Product scope and debt status: `docs/PRODUCT_SCOPE_AND_DEBTS.md`
 - Public demo: `https://fomv9354lve.github.io/capas-inteligentes/`
-- Current release: `https://github.com/fomv9354lve/capas-inteligentes/releases/tag/v0.1.1`
+- Current release: `https://github.com/fomv9354lve/capas-inteligentes/releases/tag/v0.4.0`
 - Public feedback issue: `https://github.com/fomv9354lve/capas-inteligentes/issues/1`
 - License: **Apache-2.0** (open-core); the CAPAS mark + official certification are reserved — see `LICENSE` and `NOTICE`.
 
@@ -156,7 +156,7 @@ Expected behavior:
 Release assets:
 
 ```text
-https://github.com/fomv9354lve/capas-inteligentes/releases/tag/v0.1.1
+https://github.com/fomv9354lve/capas-inteligentes/releases/tag/v0.4.0
 ```
 
 ## Product Demo
@@ -320,10 +320,10 @@ python3 scripts/publish_github_release.py
 Publishing a new release still requires a GitHub remote, valid `gh auth`, a
 pushed tag, a passing external CI run, and a GitHub release URL.
 
-The public v0.1.1 release is available at:
+The public v0.4.0 release is available at:
 
 ```text
-https://github.com/fomv9354lve/capas-inteligentes/releases/tag/v0.1.1
+https://github.com/fomv9354lve/capas-inteligentes/releases/tag/v0.4.0
 ```
 
 Prepare/check external reviewer feedback:
