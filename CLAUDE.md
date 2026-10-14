@@ -66,6 +66,7 @@ az containerapp update -n capas -g capas-rg --image "caf7ef600384acr.azurecr.io/
 |-----|-------|--------------|
 | `krenniq.com/` | Landing KRENIQ (front door) | esta app · `docs/krenniq.html` |
 | `capas.lemonground…azure/` | CAPAS (la herramienta) | esta app · `docs/index.html` |
+| `https://capas.krenniq.com/in-depth.html` | CAPAS a fondo: las 18 secciones largas que salieron del home el 2026-10-13 (ledger de pruebas en `#ledger`, paralelo IBM, casos de uso…). El home quedó en ~1,100 palabras por instrucción de Osvaldo; **no vuelvas a engordarlo**: lo largo va aquí | esta app · `docs/in-depth.html` |
 | `atlas.lemonground…azure/` | Atlas (la otra herramienta) | **otro repo**: `../ATLAS/` (hermano de este, bajo `01. Investigacion/`) |
 
 Atlas es app/repo aparte — no se despliega desde aquí. Su nav ya apunta Home→landing y CAPAS→capas.
