@@ -128,6 +128,9 @@ footer a{color:rgba(255,255,255,.35);text-decoration:none;font-size:12px}
   .audit-stat .as-label{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-top:8px}
   .audit-stat.accept .as-num{color:#22c55e}.audit-stat.rewrite .as-num{color:#00c8c8}.audit-stat.reject .as-num{color:#e8185a}.audit-stat.hold .as-num{color:#d4a820}
   @media(max-width:720px){.audit-stats{grid-template-columns:repeat(2,1fr)}}
+
+/* mobile nav, same rule as kreniq-shell.css (external audit 2026-10-14: at 390 px the links and the language toggle were out of reach) */
+@media(max-width:760px){nav{padding:0 16px;flex-wrap:wrap;height:auto;gap:8px;padding-top:10px;padding-bottom:10px}.nav-links{order:3;width:100%;overflow-x:auto;justify-content:flex-start;-webkit-overflow-scrolling:touch}.nav-sep{display:none}.nav-cta{margin-left:auto}}
 </style>
 </head>
 <body>

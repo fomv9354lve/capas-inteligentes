@@ -70,6 +70,22 @@
   <p>Atlas is calibrated against measurements on publicly accessible quantum hardware. Those calibration datasets are part of the product; submitted circuits are never added to them.</p>
 
   <hr>
+  <h2><span class="tag">4</span>CAPAS data handling, by endpoint</h2>
+  <p>This section describes the current CAPAS deployment. It is not legal advice.</p>
+  <ul>
+    <li><strong>Gate App in the browser.</strong> The decision log is stored only in the browser&rsquo;s localStorage. Nothing is sent to the server unless Run is pressed.</li>
+    <li><strong><code>POST /api/decide</code> and <code>POST /api/gate</code>.</strong> The payload is processed in memory to compute the verdict. It is not written to disk and not used for training. Host: Azure Container Apps, East US.</li>
+    <li><strong><code>POST /api/certificate</code>.</strong> Requires the API key. The certificate, with claim, evidence and verdict, is written to the server&rsquo;s disk so it can be retrieved by id. It is retained until deletion is requested through the contact on this page.</li>
+    <li><strong>Library, MCP server and CLI.</strong> They run on the user&rsquo;s machine. They make no network call unless <code>CAPAS_VERIFY_REMOTE_SOURCES=1</code> is set and <code>source_urls</code> are declared.</li>
+  </ul>
+  <h3>Third parties</h3>
+  <ul>
+    <li>Azure: hosting.</li>
+    <li>Google Fonts: font files.</li>
+    <li>jsDelivr and cdnjs: the scripts of the 3D logo.</li>
+  </ul>
+
+  <hr>
   <p style="font-size:12.5px;color:rgba(255,255,255,.4)">This document states the project’s current policies. Version 1.0 may be updated; material changes are reflected in the version and date above. A tailored MSA and DPA is provided on request for Enterprise agreements.</p>
 </div>
 

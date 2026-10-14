@@ -157,6 +157,9 @@ footer{border-top:1px solid rgba(255,255,255,0.06);padding:32px 48px;display:fle
 .home-disclaimers li{margin:6px 0;padding-left:14px;position:relative}
 .home-disclaimers li::before{content:'\00b7';position:absolute;left:2px;color:rgba(232,24,93,0.6)}
 @media(max-width:900px){.cascade{grid-template-columns:1fr}.casc-arrow{transform:rotate(90deg);padding:4px 0}}
+
+/* mobile nav, same rule as kreniq-shell.css (external audit 2026-10-14: at 390 px the links and the language toggle were out of reach) */
+@media(max-width:760px){nav{padding:0 16px;flex-wrap:wrap;height:auto;gap:8px;padding-top:10px;padding-bottom:10px}.nav-links{order:3;width:100%;overflow-x:auto;justify-content:flex-start;-webkit-overflow-scrolling:touch}.nav-sep{display:none}.nav-cta{margin-left:auto}}
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"></head>
 <body>
@@ -171,9 +174,9 @@ footer{border-top:1px solid rgba(255,255,255,0.06);padding:32px 48px;display:fle
 
 <section class="section" id="audit">
   <div class="section-inner">
-    <div class="section-label" data-es="Auditoría">Audit</div>
-    <h2 class="section-h2" data-es="Auditoría aquí significa tres capas re-corribles.">Audit here means three re-runnable layers.</h2>
-    <p class="section-sub" data-es="Dos de las tres capas las corre Krenn·IQ; solo la contra-firma &sect;6 es externa. Las capas: una constitución que fija qué puede llamarse probado, un modelo de otra empresa que cuestiona los claims públicos con comandos ejecutados y una suite de invariantes firmada en infraestructura neutral. El registro de decisiones de la Gate App vive en <a href=&quot;audit.html&quot; style=&quot;color:#e8185d;font-weight:600&quot;>Decision log</a>.">Two of the three layers are run by Krenn·IQ; only the &sect;6 counter-signature is external. The layers: a constitution that fixes what may be called proven, a model from another company that challenges the public claims with executed commands, and an invariant suite signed on neutral infrastructure. The Gate App&rsquo;s decision record lives under <a href="audit.html" style="color:#e8185d;font-weight:600">Decision log</a>.</p>
+    <div class="section-label" data-es="Capas de revisión">Review layers</div>
+    <h2 class="section-h2" data-es="La revisión consta de tres capas re-corribles.">The review consists of three re-runnable layers.</h2>
+    <p class="section-sub" data-es="Dos de las tres capas las corre Krenn·IQ; solo la revisión adversarial entre modelos (&sect;6) es externa. Las capas: una constitución que fija qué puede llamarse probado; una revisión adversarial entre modelos, en la que un modelo de otra empresa cuestiona los claims públicos con comandos ejecutados; y una conformidad reproducible, una suite de invariantes cuyo resultado de CI lleva procedencia firmada. El registro de decisiones de la Gate App vive en <a href=&quot;audit.html&quot; style=&quot;color:#e8185d;font-weight:600&quot;>Decision log</a>.">Two of the three layers are run by Krenn·IQ; only the &sect;6 cross-model adversarial review is external. The layers: a constitution that fixes what may be called proven; a cross-model adversarial review, in which a model from another company challenges the public claims with executed commands; and reproducible conformance, an invariant suite whose CI result carries signed provenance. The Gate App&rsquo;s decision record lives under <a href="audit.html" style="color:#e8185d;font-weight:600">Decision log</a>.</p>
   </div>
 </section>
 
@@ -188,7 +191,7 @@ footer{border-top:1px solid rgba(255,255,255,0.06);padding:32px 48px;display:fle
 
 <section class="section">
   <div class="section-inner">
-    <div class="section-label" data-es="Capa 2 · Contra-firma §6">Layer 2 &middot; &sect;6 counter-signature</div>
+    <div class="section-label" data-es="Capa 2 · Revisión adversarial entre modelos (§6)">Layer 2 &middot; &sect;6 cross-model adversarial review</div>
     <h2 class="section-h2" data-es="Un modelo de otra empresa atacó 7 de 10 claims públicos con comandos ejecutados y refutó 3.">A model from another company attacked 7 of 10 public claims with executed commands and refuted 3.</h2>
     <p class="section-sub" data-es="El paquete &sect;6 contiene 10 claims públicos, cada uno con su evidencia y su procedimiento de refutación. Un modelo de otra familia, xAI grok-4.7, dirige; un script ejecuta sus comandos con lista blanca de solo lectura, sin red ni escritura, y devuelve la salida cruda sin editar. Ocho corridas el 2026-10-13, unos 4,5 millones de tokens; una novena se abortó al agotarse el crédito.">The &sect;6 package holds 10 public claims, each with its evidence and a refutation procedure. A model of another family, xAI grok-4.7, directs; a script runs its commands under a read-only allow-list, no network, no writes, and returns the raw output unedited. Eight runs on 2026-10-13, about 4.5 million tokens; a ninth aborted when the credit ran out.</p>
     <div style="margin-top:22px;border:1px solid rgba(232,24,93,.3);border-radius:12px;background:rgba(232,24,93,.04);padding:20px 22px">
@@ -197,18 +200,18 @@ footer{border-top:1px solid rgba(255,255,255,0.06);padding:32px 48px;display:fle
         <li data-es="<strong>C6-02</strong> (falso-accept por alcance): refutado tres veces. Dos arreglos por regex fallaron; el cierre estructural se sostiene: un ACCEPT acotado exige el alcance declarado en un campo."><strong>C6-02</strong> (scope false-accept): refuted three times. Two regex fixes failed; the structural closure holds: a bounded ACCEPT requires the scope declared in a field.</li>
         <li data-es="<strong>C6-04</strong> (cifra sin sellar): el 52/81 era una recodificación sin sellar, re-sellada como 53/82 y 51/63 con hash."><strong>C6-04</strong> (unsealed figure): 52/81 was an unsealed recodification, re-sealed as 53/82 and 51/63 with hash.</li>
         <li data-es="<strong>C6-05</strong> (regla de graduación sin versionar): ahora es un script que reproduce los conteos exactos."><strong>C6-05</strong> (unversioned grading rule): now a script that reproduces the exact counts.</li>
-        <li data-es="<strong>Pendiente:</strong> C6-08, 09 y 10 (resultados del 2026-10-13) nunca fueron atacados; el crédito del auditor se agotó. Una corrida, inválida por un fallo del sandbox, se registra como tal."><strong>Pending:</strong> C6-08, 09 and 10 (the 2026-10-13 results) were never attacked; the auditor credit ran out. One run, invalid by a sandbox fault, is recorded as such.</li>
+        <li data-es="<strong>Pendiente:</strong> C6-08, 09 y 10 (resultados del 2026-10-13) nunca fueron atacados; el crédito del revisor se agotó. Una corrida, inválida por un fallo del sandbox, se registra como tal."><strong>Pending:</strong> C6-08, 09 and 10 (the 2026-10-13 results) were never attacked; the reviewer credit ran out. One run, invalid by a sandbox fault, is recorded as such.</li>
       </ul>
-      <p style="margin:12px 0 0;font-size:12px;color:rgba(255,255,255,.45)" data-es="Transcripciones y runner: <a href=&quot;https://github.com/fomv9354lve/capas-inteligentes/tree/main/research/section6_package&quot; style=&quot;color:rgba(255,255,255,.7)&quot;>research/section6_package/</a> · refutaciones congeladas como tests: <code>benchmarks/test_section6_refutations.py</code>. Nada se marca <em>probado</em>; un claim no refutado por una familia de auditor queda en <code>empirical</code>.">Transcripts and runner: <a href="https://github.com/fomv9354lve/capas-inteligentes/tree/main/research/section6_package" style="color:rgba(255,255,255,.7)">research/section6_package/</a> &middot; refutations frozen as tests: <code>benchmarks/test_section6_refutations.py</code>. Nothing is marked <em>proved</em>; a claim not refuted by one auditor family stays <code>empirical</code>.</p>
+      <p style="margin:12px 0 0;font-size:12px;color:rgba(255,255,255,.45)" data-es="Transcripciones y runner: <a href=&quot;https://github.com/fomv9354lve/capas-inteligentes/tree/main/research/section6_package&quot; style=&quot;color:rgba(255,255,255,.7)&quot;>research/section6_package/</a> · refutaciones congeladas como tests: <code>benchmarks/test_section6_refutations.py</code>. Nada se marca <em>probado</em>; un claim no refutado por una familia de revisor queda en <code>empirical</code>.">Transcripts and runner: <a href="https://github.com/fomv9354lve/capas-inteligentes/tree/main/research/section6_package" style="color:rgba(255,255,255,.7)">research/section6_package/</a> &middot; refutations frozen as tests: <code>benchmarks/test_section6_refutations.py</code>. Nothing is marked <em>proved</em>; a claim not refuted by one reviewer family stays <code>empirical</code>.</p>
     </div>
   </div>
 </section>
 
 <section class="section alt">
   <div class="section-inner">
-    <div class="section-label" data-es="Capa 3 · Conformidad firmada">Layer 3 &middot; Signed conformance</div>
-    <h2 class="section-h2" data-es="Diez invariantes, un hash de resultado, una firma en infraestructura neutral.">Ten invariants, one result hash, one signature on neutral infrastructure.</h2>
-    <p class="section-sub" data-es="La suite de conformidad corre diez invariantes: fail-closed, robustez, sin modelo en el veredicto, desacople de la capa de investigación, compromiso cuántico, admisibilidad farmacéutica, ledger de pruebas, resolución de HOLD, hash de auditoría, aislamiento de superficie. Produce un hash de resultado reproducible. En CI, en infraestructura de GitHub, el resultado se firma sin llaves (Sigstore, Rekor) y se publica como artefacto.">The conformance suite runs ten invariants: fail-closed, robustness, no model in the verdict, research-layer decoupling, quantum commitment, pharma admissibility, proof ledger, HOLD resolution, audit hash, surface isolation. It produces a reproducible result hash. In CI, on GitHub infrastructure, the result is signed keyless (Sigstore, Rekor) and published as an artifact.</p>
+    <div class="section-label" data-es="Capa 3 · Conformidad reproducible">Layer 3 &middot; Reproducible conformance</div>
+    <h2 class="section-h2" data-es="Diez invariantes, un hash de resultado reproducible y procedencia firmada en infraestructura neutral.">Ten invariants, one reproducible result hash, signed provenance on neutral infrastructure.</h2>
+    <p class="section-sub" data-es="La suite de conformidad corre diez invariantes: fail-closed, robustez, sin modelo en el veredicto, desacople de la capa de investigación, compromiso cuántico, admisibilidad farmacéutica, ledger de pruebas, resolución de HOLD, hash de auditoría, aislamiento de superficie. Produce un hash de resultado reproducible. En CI, en infraestructura de GitHub, el resultado se firma sin llaves (Sigstore, Rekor) y se publica como artefacto. Esa firma es procedencia firmada: muestra qué corrida de CI produjo el resultado. Una firma sobre un resultado de CI no es una validación científica.">The conformance suite runs ten invariants: fail-closed, robustness, no model in the verdict, research-layer decoupling, quantum commitment, pharma admissibility, proof ledger, HOLD resolution, audit hash, surface isolation. It produces a reproducible result hash. In CI, on GitHub infrastructure, the result is signed keyless (Sigstore, Rekor) and published as an artifact. That signature is signed provenance: it shows which CI run produced the result. A signature over a CI result is not a scientific validation.</p>
     <pre style="margin-top:18px;background:rgba(10,10,16,.9);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:18px;font-family:'SF Mono','Fira Code',monospace;font-size:12px;line-height:1.8;color:rgba(255,255,255,.75);overflow-x:auto"># run it yourself
 python3 benchmarks/conformance.py
 
@@ -223,13 +226,14 @@ cosign verify-blob conformance_result.json \
 
 <section class="section">
   <div class="section-inner">
-    <div class="section-label" data-es="Fuera de la auditoría">Outside the audit</div>
-    <h2 class="section-h2" data-es="Límites de la auditoría.">Limits of the audit.</h2>
+    <div class="section-label" data-es="Límites">Limits</div>
+    <h2 class="section-h2" data-es="Límites de las capas de revisión.">Limits of the review layers.</h2>
     <ul style="margin:18px 0 0;padding-left:18px;font-size:14px;color:rgba(255,255,255,.7);line-height:1.9">
       <li data-es="Sin certificación SOC 2 / ISO 27001; punto de la hoja de ruta.">No SOC 2 / ISO 27001 certification; roadmap item.</li>
       <li data-es="El estudio ciego de adjudicación transversal (Gap-1) no ha corrido; su registro y su gating pasan.">The blind cross-domain adjudication study (Gap-1) has not run; its registration and gating pass.</li>
       <li data-es="La carta de gobierno no está ejecutada legalmente; el fideicomisario es un punto abierto.">The governance charter is not legally executed; the trustee is an open item.</li>
-      <li data-es="Una sola familia de auditor (xAI) hasta hoy; la segunda espera crédito.">One auditor family (xAI) so far; the second waits on credit.</li>
+      <li data-es="No se ha hecho una auditoría externa independiente.">No independent external audit has been done.</li>
+      <li data-es="La revisión adversarial entre modelos usa una sola familia de modelos (xAI) hasta hoy; la segunda espera crédito.">The cross-model adversarial review uses one model family (xAI) so far; the second waits on credit.</li>
       <li data-es="Los números ciegos sobre claims reales son los del corpus hermano: <a href=&quot;index.html#measured&quot; style=&quot;color:#e8185d;font-weight:600&quot;>53/82 y 51/63</a> en X1&ndash;3, y 17/21 y 16/17 fuera de muestra en X4+X5, con intervalos.">The blind numbers on real claims are the sister-corpus figures: <a href="index.html#measured" style="color:#e8185d;font-weight:600">53/82 and 51/63</a> on X1&ndash;3, and 17/21 and 16/17 out of sample on X4+X5, with intervals.</li>
     </ul>
   </div>

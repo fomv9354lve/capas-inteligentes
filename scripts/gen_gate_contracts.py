@@ -33,6 +33,9 @@ def build_contracts() -> dict:
         "required": {t: list(s["required"]) for t, s in reg.items()},
         "optional": {t: list(s.get("optional", [])) for t, s in reg.items()},
         "descriptions": {t: s.get("description", "") for t, s in reg.items()},
+        # Re-audit 5 (2026-10-14): the Gate App builds its form controls from these types, never from example values.
+        "field_types": {f: capas.evidence_field_type(f) for t, s in reg.items()
+                        for f in list(s["required"]) + list(s.get("optional", []))},
         "anchor_mode_contracts": {
             m: {
                 "required": list(c["required"]),

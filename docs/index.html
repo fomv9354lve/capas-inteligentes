@@ -157,6 +157,9 @@ footer{border-top:1px solid rgba(255,255,255,0.06);padding:32px 48px;display:fle
 .home-disclaimers li{margin:6px 0;padding-left:14px;position:relative}
 .home-disclaimers li::before{content:'\00b7';position:absolute;left:2px;color:rgba(232,24,93,0.6)}
 @media(max-width:900px){.cascade{grid-template-columns:1fr}.casc-arrow{transform:rotate(90deg);padding:4px 0}}
+
+/* mobile nav, same rule as kreniq-shell.css (external audit 2026-10-14: at 390 px the links and the language toggle were out of reach) */
+@media(max-width:760px){nav{padding:0 16px;flex-wrap:wrap;height:auto;gap:8px;padding-top:10px;padding-bottom:10px}.nav-links{order:3;width:100%;overflow-x:auto;justify-content:flex-start;-webkit-overflow-scrolling:touch}.nav-sep{display:none}.nav-cta{margin-left:auto}}
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"></head>
 <body>

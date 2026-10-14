@@ -35,7 +35,7 @@
     head.appendChild(el("span", "capas-ledger-type", type));
     var passed = Math.max(0, required.length - missing.length);
     head.appendChild(el("span", "capas-ledger-meta",
-      required.length ? (passed + "/" + required.length + " obligations met")
+      required.length ? (passed + "/" + required.length + " required fields present (presence, not compliance)")
                       : (schemaErrors.length + " schema checks")));
     box.appendChild(head);
 
@@ -88,7 +88,7 @@
     var details = el("details", "ledger-details");
     var passedCount = Math.max(0, required.length - missing.length);
     var summaryText = required.length
-      ? ("Rule ledger · " + passedCount + "/" + required.length + " obligations met")
+      ? ("Rule ledger · " + passedCount + "/" + required.length + " required fields present · rules decide the verdict")
       : "Rule ledger · show the deterministic engine";
     details.appendChild(el("summary", "ledger-summary", summaryText));
     details.appendChild(box);

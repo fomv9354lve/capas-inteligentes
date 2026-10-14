@@ -29,6 +29,11 @@ jobs:
         with:
           enablement: true
 
+      # The pages link GOVERNANCE.md, SECURITY.md, CERTIFICATION.md, LICENSE and THIRD_PARTY_NOTICES.md (repo root);
+      # copy them into the artifact so the Pages build resolves its own links (external audit 2026-10-14).
+      - name: Include root documents linked from the pages
+        run: cp GOVERNANCE.md SECURITY.md CERTIFICATION.md LICENSE THIRD_PARTY_NOTICES.md docs/
+
       - name: Upload static demo
         uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b  # v4
         with:
