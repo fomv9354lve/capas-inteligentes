@@ -14,7 +14,16 @@
         "object_matches_target",
         "load_bearing_citation_read",
         "citation_hypotheses_checked",
-        "null_control_passed"
+        "null_control_passed",
+        "ai_use_declared",
+        "coverage_factor",
+        "abs_error_u",
+        "tolerance_u",
+        "method_standard",
+        "cited_dois",
+        "retraction_snapshot",
+        "cited_doi_retracted",
+        "prereg"
       ],
       "registered": true,
       "required_fields": [
@@ -75,8 +84,11 @@
       "evidence: provide within_chemical_accuracy"
     ]
   },
-  "audit_hash": "sha256:585964ad78a24d4f060adedb6b9081c0bbab0213523e1eded2e61bb308b97126",
+  "audit_hash": "sha256:9a7d6c2b01c47fec979f06fb10d1d76a603be7257219a01876d56dc517b9f3c6",
+  "audit_hash_recipe": "v2",
   "did_you_mean": {},
+  "engine_version": "0.4.1",
+  "evidence_sha256": "sha256:6c9c70fe53203852736806913016d760b94c6c20bc8abc7204e25fa8a78bf5cb",
   "fine_tune_blockers": [
     "claim verdict is not ACCEPT",
     "schema or required-field blockers remain",
@@ -110,6 +122,7 @@
     "witness_registry_resolved": false
   },
   "fine_tune_ready": false,
+  "hold_class": "field_absent",
   "input_claim": {
     "id": "external_experiment_hold",
     "text": "The simulation matches experiment.",
@@ -129,6 +142,17 @@
     "within_chemical_accuracy"
   ],
   "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+  "notices": [
+    "ai_use_declared: not declared (tool, purpose, phase); required from the X6 freeze"
+  ],
+  "plan3_checks": {
+    "ai_use_declared": "not declared",
+    "provenance": {
+      "declared": 0,
+      "verified": 0
+    },
+    "uncertainty": "not declared"
+  },
   "reason": "missing required evidence fields: ['within_chemical_accuracy']",
   "required_fields": [
     "within_chemical_accuracy"
@@ -149,7 +173,12 @@
     "message": "Supply these evidence fields (types and examples given), then resubmit."
   },
   "rewrite": null,
+  "rule_table_sha256": "sha256:b6788f744671f389ac43161690d836420221209d7162bc04fd21676b6a3e2e0b",
+  "rules_fired": [
+    "Rb9cea85722"
+  ],
   "schema_errors": [],
   "schema_version": "capas-claim-payload-v3",
+  "text_licensed_as_written": false,
   "verdict": "HOLD"
 }

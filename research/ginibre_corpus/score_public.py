@@ -28,6 +28,41 @@ def wilson(k, n, z=1.96):
     return round(c - h, 2), round(c + h, 2)
 
 
+import math, re
+from collections import Counter
+SCORING_RULE = ("bad caught = verdict is not ACCEPT; good not rejected = verdict is not REJECT. HOLD therefore counts "
+                "as caught for a bad claim and as not rejected for a good one, so it is reported on its own: hold_share and "
+                "informative_rate (an always-HOLD engine scores 100/100 on the first two and 0 on informative_rate). "
+                "Contaminated claims (the coder could see the outcome) are excluded before scoring.")
+_ENGINE_GAP = re.compile(r"unsupported|scipy|not installed|no rule was applied|anchor contract|CAPAS_SOURCE_ROOT", re.I)
+
+
+def hold_label(reason: str) -> str:
+    """HOLD-correctness label (council, AI-eval member): field_absent = the evidence lacks something declarable (a
+    correct abstention); engine_gap = the engine cannot judge (a missing rule or dependency, never a correct
+    abstention). Pre-v2 seals carry no rules_fired, so the label is read from the reason text."""
+    return "engine_gap" if _ENGINE_GAP.search(reason or "") else "field_absent"
+
+
+def verification_budget(clean, V, C, by, sealed_by="Krenn-IQ", run_by="Krenn-IQ"):
+    """PLAN_v3 A2 (Banka & Chudziak, 'Predictive Value of Pass', arXiv 2610.05547): how many ACCEPTs a reviewer must
+    check by hand for the batch's pass to carry a target predictive value, with the evidence provenance of the batch."""
+    acc = [i for i in clean if V[i]["verdict"] == "ACCEPT"]
+    good_acc = by["good"]["ACCEPT"]
+    ev = [C[i]["evidence"] for i in clean]
+    n_fields = sum(len(e) for e in ev)
+    budget = {f"pvp_{int(t * 100)}": math.ceil(math.log(0.05) / math.log(t)) for t in (0.90, 0.95)}
+    return {"sealed_by": sealed_by, "run_by": run_by, "label": "self-run" if sealed_by == run_by == "Krenn-IQ" else "independent",
+            "accepts": len(acc), "pvp_observed": f"{good_acc}/{len(acc)}" if acc else None,
+            "pvp_ci95": wilson(good_acc, len(acc)) if acc else None,
+            "audit_n_for_target": budget,
+            "audit_rule": "check n ACCEPTs drawn at random; zero bad among them bounds PVP >= target at 95% (one-sided, exact)",
+            "provenance": {"fields_total": n_fields, "read_from_hashed_file": sum(1 for i in clean if (C[i].get("meta") or {}).get("sources")),
+                           "declared_by_coder": n_fields, "derived_by_rule": 0,
+                           "note": "every field of this batch was declared by a blind coder; none was read by an adapter from a hashed file"},
+            "tier_histogram_accepts": dict(Counter(V[i].get("ceiling_s2") or "unknown" for i in acc))}
+
+
 def replay(tag, claims):
     with tempfile.TemporaryDirectory() as td:
         wt = Path(td) / "wt"
@@ -59,7 +94,13 @@ def main() -> int:
         ids = {"bad": [i for i in clean if O[i] == "malo"], "good": [i for i in clean if O[i] == "bueno"]}
         by = {k: {v: sum(V[i]["verdict"] == v for i in ids[k]) for v in ("ACCEPT", "REWRITE", "REJECT", "HOLD")} for k in ids}
         nb, ng = len(ids["bad"]), len(ids["good"]); det = nb - by["bad"]["ACCEPT"]; nr = ng - by["good"]["REJECT"]
+        holds = [i for i in clean if V[i]["verdict"] == "HOLD"]
         r = {"engine_tag": hdr["engine_tag"], "n": len(V), "n_clean": len(clean), "by_verdict": by,
+             "n_excluded_contaminated": len(V) - len(clean), "scoring_rule": SCORING_RULE,
+             "hold_share": f"{len(holds)}/{len(clean)}", "informative_rate": f"{len(clean) - len(holds)}/{len(clean)}",
+             "holds": [{"claim_id": i, "class": hold_label(V[i]["reason"])} for i in holds],
+             "grade": "pilot-grade (fewer than 40 bad records)" if len(ids["bad"]) < 40 else "pre-registered minimum met",
+             "verification_budget": verification_budget(clean, V, {c["claim_id"]: c for c in C}, by),
              "bad_not_accepted": f"{det}/{nb}", "bad_ci95": wilson(det, nb), "good_not_rejected": f"{nr}/{ng}", "good_ci95": wilson(nr, ng),
              "good_accept": f"{by['good']['ACCEPT']}/{ng}", "outcomes_file_opened_self_recorded": hdr.get("outcomes_file_opened")}
         if name != "X1-3_v2":
@@ -77,12 +118,14 @@ def main() -> int:
             print(f"FAIL {name}: replay mismatches {r['replay']['mismatches']}"); return 1
         out[name] = r
         print(f"{name}: tag {hdr['engine_tag']} | clean {len(clean)} | bad not-ACCEPT {det}/{nb} {wilson(det, nb)} | "
-              f"good not-REJECT {nr}/{ng} {wilson(nr, ng)} | good ACCEPT {by['good']['ACCEPT']}/{ng}"
+              f"good not-REJECT {nr}/{ng} {wilson(nr, ng)} | good ACCEPT {by['good']['ACCEPT']}/{ng} | HOLD {r['hold_share']} "
+              f"({', '.join(sorted(set(h['class'] for h in r['holds']))) or '-'}) | PVP {r['verification_budget']['pvp_observed']} | {r['grade'].split(' (')[0]}"
               + (f" | replay {r['replay']['reproduced']}" if "replay" in r else ""))
     b, g = pooled["bad"], pooled["good"]
     out["pooled (X1-3 v1 + X4 + X5)"] = {"n_clean": pooled["clean"], "n_excluded_contaminated": pooled["excluded"],
         "bad_not_accepted": f"{sum(b.values()) - b['ACCEPT']}/{sum(b.values())}", "good_accept": f"{g['ACCEPT']}/{sum(g.values())}",
-        "hold_total": f"{b['HOLD'] + g['HOLD']}/{pooled['clean']}"}
+        "hold_total": f"{b['HOLD'] + g['HOLD']}/{pooled['clean']}",
+        "informative_rate": f"{pooled['clean'] - b['HOLD'] - g['HOLD']}/{pooled['clean']}", "scoring_rule": SCORING_RULE}
     print("pooled:", json.dumps(out["pooled (X1-3 v1 + X4 + X5)"]))
     if "--json" in sys.argv:
         (ROOT / "outputs").mkdir(exist_ok=True); json.dump(out, open(ROOT / "outputs" / "ginibre_public_scores.json", "w"), indent=1)

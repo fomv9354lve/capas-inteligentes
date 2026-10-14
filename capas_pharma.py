@@ -221,3 +221,33 @@ def gate_pharma_stat_claim(evidence: dict[str, Any]) -> dict[str, Any]:
 # convenience: a CAPAS-style external decision shape (verdict mapped to ACCEPT/REWRITE/REJECT/HOLD already)
 def decide(evidence: dict[str, Any]) -> dict[str, Any]:
     return gate_pharma_stat_claim(evidence or {})
+
+
+def decide_with_validator(evidence: dict[str, Any], report: dict[str, Any] | None) -> dict[str, Any]:
+    """PLAN_v3 A3c: the dataset's validator report is judged BEFORE the statistical claim (FDA technical rejection
+    criteria: a submission that fails them is not reviewed). `report` is capas_ingest.validator_report() output.
+      any 'reject' issue          -> REJECT  (technical rejection; the statistic is not evaluated)
+      any 'error' or 'unknown'    -> HOLD    (the dataset is not conformant enough to license a claim on it)
+      no report                   -> HOLD    (the gate does not assume conformance)
+      warnings / notices only     -> the statistical gate decides; the warnings are carried as notices
+    Downgrade-only: the report can never raise the statistical verdict."""
+    if not isinstance(report, dict) or not isinstance(report.get("issues"), list):
+        return {"verdict": "HOLD", "why": "no validator report supplied: dataset conformance is not assumed",
+                "findings": [], "stage": "conformance", "domain": "pharma_statistics"}
+    iss = report["issues"]
+    rej = [i for i in iss if i.get("severity") == "reject"]
+    err = [i for i in iss if i.get("severity") in ("error", "unknown")]
+    src = (report.get("source") or {}).get("input_sha256")
+    if rej:
+        return {"verdict": "REJECT", "stage": "conformance", "domain": "pharma_statistics", "validator_sha256": src,
+                "why": "technical rejection precedes review: " + "; ".join(f"{i['rule_id'] or i['publisher_id']} {i['message']}"[:120] for i in rej[:3]),
+                "findings": rej, "licensed_reuse": "none"}
+    if err:
+        return {"verdict": "HOLD", "stage": "conformance", "domain": "pharma_statistics", "validator_sha256": src,
+                "why": f"{len(err)} validator error(s) or unclassified severities: the dataset does not license a claim yet",
+                "findings": err, "licensed_reuse": "none"}
+    out = dict(gate_pharma_stat_claim(evidence or {}))
+    out["stage"] = "statistics (conformance passed: validator warnings/notices only)"
+    out["validator_sha256"] = src
+    out["notices"] = [f"validator {i['severity']}: {i['rule_id']} {i['message']}"[:160] for i in iss]
+    return out

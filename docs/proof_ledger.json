@@ -113,6 +113,61 @@
     "owner": "core"
   },
   {
+    "id": "rule_table_matches_engine",
+    "claim": "The engine's rules are published as data (docs/rule_table.json, 98 rules) and every certificate names the rules that fired",
+    "status": "CLOSED",
+    "backing": "python3 scripts/gen_rule_table.py --check; python3 scripts/check_rule_table.py (CI)",
+    "ok": true,
+    "scope": "check_rule_table.py replays every decision recorded across the test suite, the 1,238-input grid and the repository payloads (3,018 decisions, 931 distinct reasons, 95 of 98 rules exercised on 2026-10-14) from the table alone and matches the engine's verdict on every one. It proves the trace, not each rule's predicate.",
+    "owner": "core"
+  },
+  {
+    "id": "checker_rejects_mutations",
+    "claim": "An engine-independent checker (capas_check.py, written from CERTIFICATE_SPEC.md by a separate session that never read the engine) accepts all 238 sealed fixtures and rejects every mutated trace",
+    "status": "CLOSED",
+    "backing": "python3 -m pytest benchmarks/test_capas_check_mutations.py",
+    "ok": true,
+    "value": "checker false-accept 0/1,190 mutations (5 per fixture) + 0/238 under a bumped rule version",
+    "scope": "Same model family wrote engine and checker (different session, spec-only access): \u00a76 separation by session, not by company. Acceptance shows the verdict follows from the table and the record is unaltered; it does not re-evaluate predicates or certify the evidence.",
+    "owner": "core"
+  },
+  {
+    "id": "plan3_engine_rules",
+    "claim": "Provenance re-hash, guard band, retraction snapshot, field-level pre-registration adherence and AI-use declaration act inside decide(), downgrade-only",
+    "status": "BACKED",
+    "backing": "python3 -m pytest benchmarks/test_plan3_rules.py",
+    "ok": true,
+    "scope": "No sealed-corpus verdict changes (the fields are absent there). ai_use_declared is a notice until the X6 freeze; the guard band applies only when *_u is declared.",
+    "owner": "core"
+  },
+  {
+    "id": "pharma_validator_adapter",
+    "claim": "Pharma: a validator report's technical rejection precedes any statistic (REJECT), errors HOLD, warnings hand over to the statistical gate",
+    "status": "BACKED",
+    "backing": "python3 -m pytest benchmarks/test_pharma_validator.py",
+    "ok": true,
+    "scope": "Tested on synthetic Pinnacle 21-style reports; no real submission's report has been run. Library only.",
+    "owner": "pharma"
+  },
+  {
+    "id": "coder_agreement",
+    "claim": "Coder agreement is measured: steps_all_valid, coded twice blind on 22 X1-3 proof claims, agrees 13/22",
+    "status": "SCOPED",
+    "backing": "python3 research/ginibre_corpus/coder_agreement_retro.py --public",
+    "ok": true,
+    "scope": "Retroactive, in-sample, self-run (both coders Krenn-IQ AI sessions); the 22 were selected on coder A's value, so kappa is not informative. The protocol (capas_coders.py: required-field disagreement -> excluded as HOLD) applies from X6 with the network's coders.",
+    "owner": "eval"
+  },
+  {
+    "id": "x6_prereg_cosigned",
+    "claim": "Pre-registration of CAPAS against LLM judges on sealed batch X6, with six pass/fail criteria fixed before data, co-signed by another company's model",
+    "status": "SCOPED",
+    "backing": "python3 research/x6_prereg/check_cosign.py",
+    "ok": true,
+    "scope": "Co-signed by gemini-3.8-flash (Google) after 8 review rounds (21 blocking objections answered). NOT sealed: the extraction, labelling and judge scripts and two independent coders are still to come; no data exist.",
+    "owner": "eval"
+  },
+  {
     "id": "gate_contracts_match",
     "claim": "The Gate App's served contract regenerates from capas.py (single source of truth; the JS replica is not the engine)",
     "status": "BACKED",
@@ -173,7 +228,7 @@
     "status": "SCOPED",
     "backing": "python3 research/ginibre_corpus/score_public.py --replay",
     "ok": true,
-    "value": "X1-3 blind (v1 seal, outcomes unopened): 53/82, 51/63 | X4 (v4): 11/13, 6/7 | X5 (v6): 6/8, 10/10 | X4+X5: 17/21 [0.60-0.92], 16/17 [0.73-0.99] | replay at the frozen tags: 232/233 sealed verdicts reproduced",
+    "value": "X1-3 blind (v1 seal, outcomes unopened): 53/82, 51/63 | X4 (v4): 11/13, 6/7 | X5 (v6): 6/8, 10/10 | X4+X5: 17/21 [0.60-0.92], 16/17 [0.73-0.99] | replay at the frozen tags: 232/233 sealed verdicts reproduced | HOLD 6/183 (all field_absent), informative 177/183 | predictive value of pass: X1-3 42/71, X4 5/7, X5 6/8 | X4, X5 pilot-grade (< 40 bad), self-run",
     "artifact": "research/ginibre_corpus/public/MANIFEST.json",
     "sha256": "sha256:121d9b91ec000c3cc6a38b6070593f13\u2026",
     "scope": "RE-DERIVABLE BY A THIRD PARTY FROM THE PUBLIC REDACTED FILES: verdicts, outcome labels and evidence fields are public; claim texts, free-text evidence and outcome notes are published as sha256 only (unpublished paper), checkable when the paper is public. NOT checkable by a third party: that the verdicts were sealed before the outcomes were opened (the flag, the timestamps and the tag dates are self-recorded, not externally timestamped). Claims coded by a separate session that could not see verdicts; engine frozen at a git tag BEFORE coding (X4/X5). Outcomes = the project's own later corrections ('bueno' = never corrected), not an external oracle. n is small; intervals are Wilson 95%.",

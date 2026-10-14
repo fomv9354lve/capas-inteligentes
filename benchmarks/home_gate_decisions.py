@@ -58,6 +58,22 @@ def decisions():
 
 def main() -> int:
     rows = decisions()
+    if "--check" in sys.argv or "--fix" in sys.argv:
+        # The home's "Reference Gate Decisions" panel shows the first 8 hex of the first four audit hashes. They are
+        # engine output: a recipe or rule change must update them, never leave them stale.
+        import re
+        page = Path(__file__).resolve().parents[1] / "docs" / "index.html"
+        html = page.read_text(encoding="utf-8")
+        tag = r'(title="real, re-derivable audit_hash">)([0-9a-f]{8})'
+        shown = re.findall(tag, html)
+        want = [d["audit_hash"].removeprefix("sha256:")[:8] for d in rows[:4]]
+        if [h for _, h in shown] == want:
+            print("PASS — the home's reference decisions show the engine's audit hashes"); return 0
+        if "--fix" in sys.argv:
+            it = iter(want)
+            page.write_text(re.sub(tag, lambda m: m.group(1) + next(it), html, count=4), encoding="utf-8")
+            print(f"fixed docs/index.html: {want}"); return 0
+        print(f"FAIL — home shows {[h for _, h in shown]}, engine gives {want}; run with --fix"); return 1
     if "--json" in sys.argv:
         path = "outputs/home_gate_decisions.json"
         json.dump(rows, open(path, "w"), indent=2)

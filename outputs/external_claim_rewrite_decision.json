@@ -8,20 +8,29 @@
       "claim_type": "universal_anchor_claim",
       "description": "Claims that require an explicit anchor-mode evidence contract.",
       "optional_fields": [
+        "abs_error_u",
+        "ai_use_declared",
         "benchmark_metric",
         "benchmark_name",
         "benchmark_pass",
         "citation_hypotheses_checked",
+        "cited_doi_retracted",
+        "cited_dois",
+        "coverage_factor",
         "empirical_anchor_pass",
         "empirical_reference_present",
         "empirical_tolerance",
         "load_bearing_citation_read",
+        "method_standard",
         "null_control_passed",
         "object_declared",
         "object_matches_target",
         "physical_evidence_level",
+        "prereg",
         "relative_anchor_comparison_pass",
         "relative_anchor_reference",
+        "retraction_snapshot",
+        "tolerance_u",
         "verification_independence"
       ],
       "registered": true,
@@ -89,8 +98,11 @@
       "boundary: edit claim.text to the licensed_claim and resubmit before ACCEPT"
     ]
   },
-  "audit_hash": "sha256:a67d0e913561024087a5459f5b301545c8b4c28f517fd4b9de1faef61bc5a398",
+  "audit_hash": "sha256:d576e9b6cfad8ac1f565721995aa4916db33f2009065714134558b477c72b95a",
+  "audit_hash_recipe": "v2",
   "did_you_mean": {},
+  "engine_version": "0.4.1",
+  "evidence_sha256": "sha256:f16f7859eafaf23cc503e38186bd2632f664b06d5df48f0151657e7c1885cce5",
   "fine_tune_blockers": [
     "claim verdict is not ACCEPT",
     "source-backed evidence is not attached",
@@ -140,6 +152,17 @@
   "licensed_claim": "local plausibility only; universal physical correctness is not licensed",
   "missing_fields": [],
   "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+  "notices": [
+    "ai_use_declared: not declared (tool, purpose, phase); required from the X6 freeze"
+  ],
+  "plan3_checks": {
+    "ai_use_declared": "not declared",
+    "provenance": {
+      "declared": 0,
+      "verified": 0
+    },
+    "uncertainty": "not declared"
+  },
   "reason": "local checks pass, but the universal anchor fails",
   "required_fields": [
     "anchor_mode",
@@ -151,7 +174,12 @@
     "message": "Replace claim.text with the licensed (weaker) wording in `rewrite`, then resubmit."
   },
   "rewrite": "local plausibility only; universal physical correctness is not licensed",
+  "rule_table_sha256": "sha256:b6788f744671f389ac43161690d836420221209d7162bc04fd21676b6a3e2e0b",
+  "rules_fired": [
+    "Re468a7cee3"
+  ],
   "schema_errors": [],
   "schema_version": "capas-claim-payload-v3",
+  "text_licensed_as_written": false,
   "verdict": "REWRITE"
 }

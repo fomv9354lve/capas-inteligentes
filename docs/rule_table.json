@@ -1,0 +1,1045 @@
+{
+ "table_version": "capas-rule-table-v1",
+ "generated_from": "capas.decide_external_claim + capas_plan3.RULES",
+ "semantics": "reason = base segment, then '; '-joined downgrade/annotate segments in order; the verdict is the base rule's verdict, then each downgrade rule maps it (it must be in `from`) to `to`",
+ "rules": [
+  {
+   "id": "Ra801b268ed",
+   "version": 1,
+   "stage": "base",
+   "claim_type": null,
+   "verdict": "HOLD",
+   "hold_class": "engine_gap",
+   "pattern": "unsupported\\ claim\\ type\\ or\\ missing\\ evidence",
+   "label": "unsupported claim type or missing evidence"
+  },
+  {
+   "id": "Rc5b205a5fb",
+   "version": 1,
+   "stage": "base",
+   "claim_type": null,
+   "verdict": "HOLD",
+   "hold_class": "engine_gap",
+   "pattern": "unsupported\\ claim\\ type\\ (.*?);\\ no\\ rule\\ was\\ applied",
+   "label": "unsupported claim type (.*?); no rule was applied"
+  },
+  {
+   "id": "Rb9cea85722",
+   "version": 1,
+   "stage": "base",
+   "claim_type": null,
+   "verdict": "HOLD",
+   "hold_class": "field_absent",
+   "pattern": "missing\\ required\\ evidence\\ fields:\\ (.*?)",
+   "label": "missing required evidence fields: (.*?)"
+  },
+  {
+   "id": "Rc3d203ba01",
+   "version": 1,
+   "stage": "base",
+   "claim_type": "exact_model_solution",
+   "verdict": "ACCEPT",
+   "pattern": "no\\ per\\-cell\\ abs_error\\ declared;\\ judged\\ by\\ the\\ joint\\ test_statistic",
+   "label": "no per-cell abs_error declared; judged by the joint test_statistic"
+  },
+  {
+   "id": "R16e3a9c6c6",
+   "version": 1,
+   "stage": "base",
+   "claim_type": "exact_model_solution",
+   "verdict": "HOLD",
+   "hold_class": "field_absent",
+   "pattern": "abs_error\\ is\\ declared\\ a\\ maximum\\ over\\ cells\\ in\\ SE\\ units\\ but\\ n_cells\\ is\\ missing:\\ the\\ multiplicity\\-corrected\\ tolerance\\ cannot\\ be\\ computed",
+   "label": "abs_error is declared a maximum over cells in SE units but n_cells is missing: the multiplicity-corrected tolerance cannot be computed"
+  },
+  {
+   "id": "Raf3330c7b8",
+   "version": 1,
+   "stage": "base",
+   "claim_type": "exact_model_solution",
+   "verdict": "ACCEPT",
+   "pattern": "abs_error\\ (.*?)\\ <=\\ tolerance\\ (.*?)(.*?)",
+   "label": "abs_error (.*?) <= tolerance (.*?)(.*?)"
+  },
+  {
+   "id": "Ra9a8c18648",
+   "version": 1,
+   "stage": "base",
+   "claim_type": "exact_model_solution",
+   "verdict": "REJECT",
+   "pattern": "abs_error\\ (.*?)\\ >\\ tolerance\\ (.*?)(.*?)",
+   "label": "abs_error (.*?) > tolerance (.*?)(.*?)"
+  },
+  {
+   "id": "R7f96001bf7",
+   "version": 1,
+   "stage": "base",
+   "claim_type": "physical_accuracy",
+   "verdict": "ACCEPT",
+   "pattern": "within_chemical_accuracy\\ is\\ true",
+   "label": "within_chemical_accuracy is true"
+  },
+  {
+   "id": "Rfc965d28f9",
+   "version": 1,
+   "stage": "base",
+   "claim_type": "physical_accuracy",
+   "verdict": "REJECT",
+   "pattern": "within_chemical_accuracy\\ is\\ false",
+   "label": "within_chemical_accuracy is false"
+  },
+  {
+   "id": "R3acf0f4a7f",
+   "version": 1,
+   "stage": "base",
+   "claim_type": "universal_anchor_claim",
+   "verdict": "HOLD",
+   "hold_class": "engine_gap",
+   "pattern": "unsupported\\ anchor_mode\\ (.*?);\\ register\\ an\\ anchor\\ contract\\ before\\ CAPAS\\ can\\ decide\\ it",
+   "label": "unsupported anchor_mode (.*?); register an anchor contract before CAPAS can decide it"
+  },
+  {
+   "id": "R415ac3e9f8",
+   "version": 1,
+   "stage": "base",
+   "claim_type": "universal_anchor_claim",
+   "verdict": "ACCEPT",
+   "pattern": "local\\ checks\\ and\\ universal\\ anchor\\ both\\ pass",
+   "label": "local checks and universal anchor both pass"
+  },
+  {
+   "id": "Re468a7cee3",
+   "version": 1,
+   "stage": "base",
+   "claim_type": "universal_anchor_claim",
+   "verdict": "REWRITE",
+   "pattern": "local\\ checks\\ pass,\\ but\\ the\\ universal\\ anchor\\ fails",
+   "label": "local checks pass, but the universal anchor fails"
+  },
+  {
+   "id": "Rd92a06daa7",
+   "version": 1,
+   "stage": "base",
+   "claim_type": "universal_anchor_claim",
+   "verdict": "REWRITE",
+   "pattern": "relative_anchor\\ supports\\ comparison\\ against\\ (.*?),\\ not\\ universal\\ physical\\ correctness",
+   "label": "relative_anchor supports comparison against (.*?), not universal physical correctness"
+  },
+  {
+   "id": "R2c7ca09462",
+   "version": 1,
+   "stage": "base",
+   "claim_type": "universal_anchor_claim",
+   "verdict": "REWRITE",
+   "pattern": "empirical_anchor\\ supports\\ bounded\\ empirical\\ agreement\\ within\\ tolerance\\ (.*?),\\ not\\ universal\\ correctness",
+   "label": "empirical_anchor supports bounded empirical agreement within tolerance (.*?), not universal correctness"
+  },
+  {
+   "id": "R07e2cb65d4",
+   "version": 1,
+   "stage": "base",
+   "claim_type": "universal_anchor_claim",
+   "verdict": "REWRITE",
+   "pattern": "benchmark_anchor\\ supports\\ (.*?)\\ /\\ (.*?),\\ not\\ universal\\ physical\\ correctness",
+   "label": "benchmark_anchor supports (.*?) / (.*?), not universal physical correctness"
+  },
+  {
+   "id": "R69e10f4588",
+   "version": 1,
+   "stage": "base",
+   "claim_type": "universal_anchor_claim",
+   "verdict": "REJECT",
+   "pattern": "(.*?)\\ evidence\\ fails\\ before\\ the\\ universal\\-anchor\\ claim\\ is\\ licensed",
+   "label": "(.*?) evidence fails before the universal-anchor claim is licensed"
+  },
+  {
+   "id": "R1fde88fe4b",
+   "version": 1,
+   "stage": "base",
+   "claim_type": "claim_transition",
+   "verdict": "ACCEPT",
+   "pattern": "upgrade\\ evidence\\ is\\ explicitly\\ present",
+   "label": "upgrade evidence is explicitly present"
+  },
+  {
+   "id": "R33db21d0d7",
+   "version": 1,
+   "stage": "base",
+   "claim_type": "claim_transition",
+   "verdict": "REWRITE",
+   "pattern": "upgrade\\ evidence\\ is\\ absent;\\ stronger\\ claim\\ is\\ not\\ licensed",
+   "label": "upgrade evidence is absent; stronger claim is not licensed"
+  },
+  {
+   "id": "R1a308eaa98",
+   "version": 1,
+   "stage": "base",
+   "claim_type": "statistical_confidence",
+   "verdict": "HOLD",
+   "hold_class": "field_absent",
+   "pattern": "alpha\\ (.*?)\\ is\\ not\\ a\\ significance\\ threshold\\ in\\ \\(0,\\ 0\\.10\\]:\\ declare\\ the\\ pre\\-registered\\ alpha",
+   "label": "alpha (.*?) is not a significance threshold in (0, 0.10]: declare the pre-registered alpha"
+  },
+  {
+   "id": "Ra1b4fe5412",
+   "version": 1,
+   "stage": "base",
+   "claim_type": "statistical_confidence",
+   "verdict": "REJECT",
+   "pattern": "declared\\ p_value\\ (.*?)\\ is\\ inconsistent\\ with\\ its\\ own\\ test\\ statistic\\ \\(recomputed\\):\\ (.*?)",
+   "label": "declared p_value (.*?) is inconsistent with its own test statistic (recomputed): (.*?)"
+  },
+  {
+   "id": "Rabe0b631d1",
+   "version": 1,
+   "stage": "base",
+   "claim_type": "statistical_confidence",
+   "verdict": "ACCEPT",
+   "pattern": "p_value\\ (.*?)\\ <=\\ alpha\\ (.*?)\\ and\\ effect\\ direction\\ is\\ confirmed",
+   "label": "p_value (.*?) <= alpha (.*?) and effect direction is confirmed"
+  },
+  {
+   "id": "Rbc4b202470",
+   "version": 1,
+   "stage": "base",
+   "claim_type": "statistical_confidence",
+   "verdict": "REWRITE",
+   "pattern": "statistical\\ threshold\\ passes,\\ but\\ effect\\ direction\\ is\\ not\\ licensed",
+   "label": "statistical threshold passes, but effect direction is not licensed"
+  },
+  {
+   "id": "R0abbc0348e",
+   "version": 1,
+   "stage": "base",
+   "claim_type": "statistical_confidence",
+   "verdict": "REJECT",
+   "pattern": "p_value\\ (.*?)\\ >\\ alpha\\ (.*?)",
+   "label": "p_value (.*?) > alpha (.*?)"
+  },
+  {
+   "id": "Rdd922e5430",
+   "version": 1,
+   "stage": "base",
+   "claim_type": "interval_band_claim",
+   "verdict": "HOLD",
+   "hold_class": "field_absent",
+   "pattern": "interval\\ inconsistent:\\ need\\ ci_low\\ <=\\ estimate\\ <=\\ ci_high\\ and\\ 0\\ <\\ ci_level\\ <\\ 1\\ \\(got\\ estimate\\ (.*?),\\ \\[(.*?),\\ (.*?)\\],\\ level\\ (.*?)\\)",
+   "label": "interval inconsistent: need ci_low <= estimate <= ci_high and 0 < ci_level < 1 (got estimate (.*?), [(.*?), (.*?)], level (.*?))"
+  },
+  {
+   "id": "R01494ce99a",
+   "version": 1,
+   "stage": "base",
+   "claim_type": "interval_band_claim",
+   "verdict": "HOLD",
+   "hold_class": "field_absent",
+   "pattern": "band\\ declared\\ without\\ a\\ numeric\\ low\\ or\\ high\\ bound:\\ nothing\\ to\\ judge\\ the\\ interval\\ against",
+   "label": "band declared without a numeric low or high bound: nothing to judge the interval against"
+  },
+  {
+   "id": "R2f0d2fd876",
+   "version": 1,
+   "stage": "base",
+   "claim_type": "interval_band_claim",
+   "verdict": "HOLD",
+   "hold_class": "field_absent",
+   "pattern": "band\\ is\\ empty\\ \\(low\\ (.*?)\\ >\\ high\\ (.*?)\\)",
+   "label": "band is empty (low (.*?) > high (.*?))"
+  },
+  {
+   "id": "Rd7eae0f696",
+   "version": 1,
+   "stage": "base",
+   "claim_type": "interval_band_claim",
+   "verdict": "REWRITE",
+   "pattern": "the\\ band\\ was\\ not\\ declared\\ pre\\-registered:\\ a\\ band\\ chosen\\ after\\ seeing\\ the\\ estimate\\ licenses\\ nothing;\\ the\\ interval\\ itself\\ is\\ licensed",
+   "label": "the band was not declared pre-registered: a band chosen after seeing the estimate licenses nothing; the interval itself is licensed"
+  },
+  {
+   "id": "R85ba6ae86b",
+   "version": 1,
+   "stage": "base",
+   "claim_type": "interval_band_claim",
+   "verdict": "ACCEPT",
+   "pattern": "the\\ whole\\ (.*?)\\ interval\\ \\[(.*?),\\ (.*?)\\]\\ lies\\ inside\\ the\\ pre\\-registered\\ band\\ (.*?)",
+   "label": "the whole (.*?) interval [(.*?), (.*?)] lies inside the pre-registered band (.*?)"
+  },
+  {
+   "id": "R467757a6c2",
+   "version": 1,
+   "stage": "base",
+   "claim_type": "interval_band_claim",
+   "verdict": "REJECT",
+   "pattern": "the\\ whole\\ (.*?)\\ interval\\ \\[(.*?),\\ (.*?)\\]\\ lies\\ outside\\ the\\ pre\\-registered\\ band\\ (.*?)",
+   "label": "the whole (.*?) interval [(.*?), (.*?)] lies outside the pre-registered band (.*?)"
+  },
+  {
+   "id": "Rd828a789f3",
+   "version": 1,
+   "stage": "base",
+   "claim_type": "interval_band_claim",
+   "verdict": "REWRITE",
+   "pattern": "the\\ (.*?)\\ interval\\ \\[(.*?),\\ (.*?)\\]\\ straddles\\ the\\ edge\\ of\\ the\\ band\\ (.*?):\\ the\\ band\\ is\\ not\\ licensed;\\ the\\ interval\\ is",
+   "label": "the (.*?) interval [(.*?), (.*?)] straddles the edge of the band (.*?): the band is not licensed; the interval is"
+  },
+  {
+   "id": "R35e39ec6a6",
+   "version": 1,
+   "stage": "base",
+   "claim_type": "reproducibility_check",
+   "verdict": "ACCEPT",
+   "pattern": "artifact\\ is\\ available\\ and\\ independent\\ reproduction\\ passed",
+   "label": "artifact is available and independent reproduction passed"
+  },
+  {
+   "id": "R113eab222c",
+   "version": 1,
+   "stage": "base",
+   "claim_type": "reproducibility_check",
+   "verdict": "REWRITE",
+   "pattern": "artifact\\ exists,\\ but\\ independent\\ reproduction\\ has\\ not\\ passed",
+   "label": "artifact exists, but independent reproduction has not passed"
+  },
+  {
+   "id": "Rac1307c652",
+   "version": 1,
+   "stage": "base",
+   "claim_type": "reproducibility_check",
+   "verdict": "REJECT",
+   "pattern": "required\\ artifact\\ is\\ not\\ available\\ for\\ reproducibility",
+   "label": "required artifact is not available for reproducibility"
+  },
+  {
+   "id": "R404ebcc1d2",
+   "version": 1,
+   "stage": "base",
+   "claim_type": "financial_metric_claim",
+   "verdict": "ACCEPT",
+   "pattern": "reported_value\\ differs\\ from\\ reference_value\\ by\\ (.*?),\\ within\\ tolerance\\ (.*?),\\ and\\ period\\ matches",
+   "label": "reported_value differs from reference_value by (.*?), within tolerance (.*?), and period matches"
+  },
+  {
+   "id": "R12122f26ab",
+   "version": 1,
+   "stage": "base",
+   "claim_type": "financial_metric_claim",
+   "verdict": "REWRITE",
+   "pattern": "numeric\\ metric\\ matches\\ tolerance,\\ but\\ period\\ alignment\\ is\\ not\\ licensed",
+   "label": "numeric metric matches tolerance, but period alignment is not licensed"
+  },
+  {
+   "id": "Rc220eae2fc",
+   "version": 1,
+   "stage": "base",
+   "claim_type": "financial_metric_claim",
+   "verdict": "REJECT",
+   "pattern": "reported_value\\ differs\\ from\\ reference_value\\ by\\ (.*?),\\ above\\ tolerance\\ (.*?)",
+   "label": "reported_value differs from reference_value by (.*?), above tolerance (.*?)"
+  },
+  {
+   "id": "Rc3701a38b4",
+   "version": 1,
+   "stage": "base",
+   "claim_type": "causal_mechanism_claim",
+   "verdict": "ACCEPT",
+   "pattern": "intervention/natural\\ experiment,\\ temporal\\ order,\\ confounder\\ controls,\\ and\\ mechanism\\ evidence\\ all\\ pass",
+   "label": "intervention/natural experiment, temporal order, confounder controls, and mechanism evidence all pass"
+  },
+  {
+   "id": "R746a21bfb3",
+   "version": 1,
+   "stage": "base",
+   "claim_type": "causal_mechanism_claim",
+   "verdict": "REWRITE",
+   "pattern": "causal\\ design\\ and\\ temporal\\ order\\ are\\ present,\\ but\\ full\\ causal\\ mechanism\\ licensing\\ is\\ incomplete",
+   "label": "causal design and temporal order are present, but full causal mechanism licensing is incomplete"
+  },
+  {
+   "id": "Rdf0f63e8d0",
+   "version": 1,
+   "stage": "base",
+   "claim_type": "causal_mechanism_claim",
+   "verdict": "REJECT",
+   "pattern": "causal\\ claim\\ lacks\\ intervention/natural\\ experiment\\ evidence\\ or\\ temporal\\ order",
+   "label": "causal claim lacks intervention/natural experiment evidence or temporal order"
+  },
+  {
+   "id": "Rbdb47289d3",
+   "version": 1,
+   "stage": "base",
+   "claim_type": "systematic_review_claim",
+   "verdict": "ACCEPT",
+   "pattern": "protocol,\\ inclusion\\ criteria,\\ risk\\-of\\-bias\\ assessment,\\ and\\ effect\\ consistency\\ all\\ pass",
+   "label": "protocol, inclusion criteria, risk-of-bias assessment, and effect consistency all pass"
+  },
+  {
+   "id": "R5caa1237ed",
+   "version": 1,
+   "stage": "base",
+   "claim_type": "systematic_review_claim",
+   "verdict": "REWRITE",
+   "pattern": "review\\ protocol\\ and\\ inclusion\\ criteria\\ are\\ present,\\ but\\ bias/consistency\\ evidence\\ is\\ incomplete",
+   "label": "review protocol and inclusion criteria are present, but bias/consistency evidence is incomplete"
+  },
+  {
+   "id": "Rbd837192fc",
+   "version": 1,
+   "stage": "base",
+   "claim_type": "systematic_review_claim",
+   "verdict": "REJECT",
+   "pattern": "systematic\\ review\\ claim\\ lacks\\ registered\\ protocol\\ or\\ declared\\ inclusion\\ criteria",
+   "label": "systematic review claim lacks registered protocol or declared inclusion criteria"
+  },
+  {
+   "id": "Rcdfd1bc40e",
+   "version": 1,
+   "stage": "base",
+   "claim_type": "evidence_conflict_claim",
+   "verdict": "ACCEPT",
+   "pattern": "supporting\\ and\\ contradicting\\ sources\\ are\\ disclosed\\ with\\ a\\ pre\\-registered\\ conflict\\-resolution\\ method",
+   "label": "supporting and contradicting sources are disclosed with a pre-registered conflict-resolution method"
+  },
+  {
+   "id": "R3b933070b7",
+   "version": 1,
+   "stage": "base",
+   "claim_type": "evidence_conflict_claim",
+   "verdict": "REWRITE",
+   "pattern": "conflicting\\ evidence\\ is\\ disclosed,\\ but\\ conflict\\ resolution\\ was\\ not\\ pre\\-registered",
+   "label": "conflicting evidence is disclosed, but conflict resolution was not pre-registered"
+  },
+  {
+   "id": "R54b257f0af",
+   "version": 1,
+   "stage": "base",
+   "claim_type": "evidence_conflict_claim",
+   "verdict": "REJECT",
+   "pattern": "evidence\\ conflict\\ claim\\ lacks\\ supporting/contradicting\\ source\\ sets\\ or\\ a\\ resolution\\ method",
+   "label": "evidence conflict claim lacks supporting/contradicting source sets or a resolution method"
+  },
+  {
+   "id": "Rbeb381e784",
+   "version": 1,
+   "stage": "base",
+   "claim_type": "multimodal_evidence_claim",
+   "verdict": "ACCEPT",
+   "pattern": "modality,\\ source\\ hashes,\\ cross\\-modal\\ alignment,\\ and\\ extraction\\ method\\ are\\ declared",
+   "label": "modality, source hashes, cross-modal alignment, and extraction method are declared"
+  },
+  {
+   "id": "Rd41030bf81",
+   "version": 1,
+   "stage": "base",
+   "claim_type": "multimodal_evidence_claim",
+   "verdict": "REWRITE",
+   "pattern": "multimodal\\ source\\ identity\\ is\\ verified,\\ but\\ alignment\\ or\\ extraction\\ method\\ is\\ not\\ fully\\ licensed",
+   "label": "multimodal source identity is verified, but alignment or extraction method is not fully licensed"
+  },
+  {
+   "id": "Rc0eac789cf",
+   "version": 1,
+   "stage": "base",
+   "claim_type": "multimodal_evidence_claim",
+   "verdict": "REJECT",
+   "pattern": "multimodal\\ claim\\ lacks\\ verified\\ source\\ hashes\\ or\\ declared\\ modality",
+   "label": "multimodal claim lacks verified source hashes or declared modality"
+  },
+  {
+   "id": "R60056365af",
+   "version": 1,
+   "stage": "base",
+   "claim_type": "programming_language_behavior_claim",
+   "verdict": "REJECT",
+   "pattern": "observed_output\\ does\\ not\\ match\\ expected_output\\ for\\ (.*?)\\ (.*?)",
+   "label": "observed_output does not match expected_output for (.*?) (.*?)"
+  },
+  {
+   "id": "R09e8aa6323",
+   "version": 1,
+   "stage": "base",
+   "claim_type": "programming_language_behavior_claim",
+   "verdict": "ACCEPT",
+   "pattern": "observed\\ execution\\ matches\\ expected\\ output\\ for\\ (.*?)\\ (.*?)\\ (.*?)",
+   "label": "observed execution matches expected output for (.*?) (.*?) (.*?)"
+  },
+  {
+   "id": "Rf031374428",
+   "version": 1,
+   "stage": "base",
+   "claim_type": "programming_language_behavior_claim",
+   "verdict": "REWRITE",
+   "pattern": "documentation\\ reference\\ and\\ runtime\\ boundary\\ are\\ supplied,\\ but\\ execution\\ was\\ not\\ observed",
+   "label": "documentation reference and runtime boundary are supplied, but execution was not observed"
+  },
+  {
+   "id": "Ra15b848d68",
+   "version": 1,
+   "stage": "base",
+   "claim_type": "programming_language_behavior_claim",
+   "verdict": "REWRITE",
+   "pattern": "programming\\ behavior\\ evidence\\ is\\ structurally\\ complete\\ but\\ lacks\\ observed\\ execution\\ or\\ runtime\\ boundary",
+   "label": "programming behavior evidence is structurally complete but lacks observed execution or runtime boundary"
+  },
+  {
+   "id": "Raf59b9a5e0",
+   "version": 1,
+   "stage": "base",
+   "claim_type": "proof_admissibility",
+   "verdict": "REJECT",
+   "pattern": "a\\ claimed\\ proof\\ whose\\ load\\-bearing\\ step\\ is\\ not\\ identified\\ is\\ inadmissible\\ as\\ a\\ proof",
+   "label": "a claimed proof whose load-bearing step is not identified is inadmissible as a proof"
+  },
+  {
+   "id": "Rbf6a68ac36",
+   "version": 1,
+   "stage": "base",
+   "claim_type": "proof_admissibility",
+   "verdict": "REJECT",
+   "pattern": "a\\ step\\ in\\ the\\ claimed\\ proof\\ does\\ not\\ re\\-derive/validate\\ —\\ there\\ is\\ a\\ gap,\\ not\\ a\\ proof",
+   "label": "a step in the claimed proof does not re-derive/validate — there is a gap, not a proof"
+  },
+  {
+   "id": "R4721810f04",
+   "version": 1,
+   "stage": "base",
+   "claim_type": "proof_admissibility",
+   "verdict": "REWRITE",
+   "pattern": "evidence\\ declares\\ claim_scope\\ (.*?)\\ \\(bounded\\)\\ and\\ text_quantifier='bounded',\\ but\\ the\\ claim\\ text\\ visibly\\ quantifies\\ universally\\ —\\ the\\ declarations\\ contradict\\ the\\ text;\\ no\\ uniform\\ bound\\ is\\ proven",
+   "label": "evidence declares claim_scope (.*?) (bounded) and text_quantifier='bounded', but the claim text visibly quantifies universally — the declara"
+  },
+  {
+   "id": "Rd95746a894",
+   "version": 1,
+   "stage": "base",
+   "claim_type": "proof_admissibility",
+   "verdict": "REWRITE",
+   "pattern": "evidence\\ declares\\ claim_scope\\ (.*?)\\ \\(bounded\\)\\ but\\ the\\ claim\\ text\\ quantifies\\ universally\\ and\\ no\\ uniform\\ bound\\ is\\ proven\\ —\\ the\\ declared\\ scope\\ does\\ not\\ license\\ the\\ text's\\ scope",
+   "label": "evidence declares claim_scope (.*?) (bounded) but the claim text quantifies universally and no uniform bound is proven — the declared scope "
+  },
+  {
+   "id": "Ra613520c54",
+   "version": 1,
+   "stage": "base",
+   "claim_type": "proof_admissibility",
+   "verdict": "REWRITE",
+   "pattern": "evidence\\ declares\\ claim_scope\\ (.*?)\\ \\(bounded\\)\\ and\\ no\\ uniform\\ bound;\\ text_quantifier\\ is\\ (.*?)\\ —\\ the\\ gate\\ cannot\\ read\\ the\\ text's\\ quantifier,\\ so\\ a\\ bounded\\ scope\\ licenses\\ the\\ text\\ only\\ when\\ text_quantifier='bounded'\\ is\\ declared",
+   "label": "evidence declares claim_scope (.*?) (bounded) and no uniform bound; text_quantifier is (.*?) — the gate cannot read the text's quantifier, s"
+  },
+  {
+   "id": "Re1c8f73f3e",
+   "version": 1,
+   "stage": "base",
+   "claim_type": "proof_admissibility",
+   "verdict": "REWRITE",
+   "pattern": "the\\ claim\\ is\\ universally\\ quantified\\ but\\ the\\ evidence\\ proves\\ no\\ bound\\ uniform\\ over\\ the\\ quantified\\ index\\ \\(only\\ finite\\ /\\ leading\\-order\\ checks\\)\\ —\\ 'theorem'\\ is\\ not\\ licensed",
+   "label": "the claim is universally quantified but the evidence proves no bound uniform over the quantified index (only finite / leading-order checks) "
+  },
+  {
+   "id": "R41a9c4e421",
+   "version": 1,
+   "stage": "base",
+   "claim_type": "proof_admissibility",
+   "verdict": "REWRITE",
+   "pattern": "proof\\ structure\\ is\\ licensed,\\ but\\ no\\ independent\\ re\\-derivation\\ is\\ declared\\ \\(independent_reproduction_pass\\)\\ —\\ constructor\\-only;\\ §6\\ requires\\ a\\ separate\\ verifier",
+   "label": "proof structure is licensed, but no independent re-derivation is declared (independent_reproduction_pass) — constructor-only; §6 requires a "
+  },
+  {
+   "id": "R6aa3dba1f9",
+   "version": 1,
+   "stage": "base",
+   "claim_type": "proof_admissibility",
+   "verdict": "ACCEPT",
+   "pattern": "each\\ step\\ validates,\\ the\\ load\\-bearing\\ step\\ is\\ identified,\\ the\\ claim's\\ scope\\ is\\ licensed,\\ and\\ an\\ independent\\ re\\-derivation\\ passed",
+   "label": "each step validates, the load-bearing step is identified, the claim's scope is licensed, and an independent re-derivation passed"
+  },
+  {
+   "id": "R89d1acb02b",
+   "version": 1,
+   "stage": "base",
+   "claim_type": null,
+   "verdict": "HOLD",
+   "hold_class": "field_absent",
+   "pattern": "input\\ payload\\ failed\\ CAPAS\\ schema\\ validation",
+   "label": "input payload failed CAPAS schema validation"
+  },
+  {
+   "id": "R8e3b4e072c",
+   "version": 1,
+   "stage": "annotate",
+   "claim_type": "proof_admissibility",
+   "from": null,
+   "to": null,
+   "pattern": "licensed\\ on\\ the\\ declared\\ bounded\\ scope\\ \\((.*?)\\)\\ only\\ —\\ the\\ text\\ is\\ annotated,\\ not\\ licensed\\ raw",
+   "label": "licensed on the declared bounded scope ((.*?)) only — the text is annotated, not licensed raw"
+  },
+  {
+   "id": "Rc801e8f872",
+   "version": 1,
+   "stage": "downgrade",
+   "claim_type": null,
+   "from": [
+    "ACCEPT",
+    "HOLD",
+    "REWRITE"
+   ],
+   "to": "REJECT",
+   "pattern": "null_control_passed\\ is\\ False:\\ the\\ estimator\\ produces\\ the\\ effect\\ on\\ a\\ null\\ —\\ the\\ signal\\ is\\ fabricated\\ by\\ the\\ method",
+   "label": "null_control_passed is False: the estimator produces the effect on a null — the signal is fabricated by the method"
+  },
+  {
+   "id": "Rbf28f0b146",
+   "version": 1,
+   "stage": "downgrade",
+   "claim_type": "exact_model_solution",
+   "from": [
+    "ACCEPT"
+   ],
+   "to": "REWRITE",
+   "pattern": "scope_declared\\ is\\ not\\ covered\\ by\\ scope_tested\\ \\(untested:\\ (.*?)\\):\\ the\\ number\\ holds\\ where\\ it\\ was\\ tested,\\ not\\ over\\ the\\ declared\\ scope",
+   "label": "scope_declared is not covered by scope_tested (untested: (.*?)): the number holds where it was tested, not over the declared scope"
+  },
+  {
+   "id": "R23d45aae3d",
+   "version": 1,
+   "stage": "downgrade",
+   "claim_type": "exact_model_solution",
+   "from": [
+    "ACCEPT"
+   ],
+   "to": "REWRITE",
+   "pattern": "the\\ text\\ asserts\\ a\\ scope\\ \\(window/regime/for\\ all\\)\\ but\\ scope_declared/scope_tested\\ are\\ not\\ declared:\\ the\\ gate\\ cannot\\ license\\ a\\ scope\\ it\\ cannot\\ see",
+   "label": "the text asserts a scope (window/regime/for all) but scope_declared/scope_tested are not declared: the gate cannot license a scope it cannot"
+  },
+  {
+   "id": "Rf10bab85a4",
+   "version": 1,
+   "stage": "downgrade",
+   "claim_type": "exact_model_solution",
+   "from": [
+    "ACCEPT"
+   ],
+   "to": "HOLD",
+   "hold_class": "field_absent",
+   "pattern": "test_statistic\\ (.*?)\\ needs\\ numeric\\ value\\ and\\ dof\\ >\\ 0\\ to\\ be\\ judged\\ —\\ declare\\ them",
+   "label": "test_statistic (.*?) needs numeric value and dof > 0 to be judged — declare them"
+  },
+  {
+   "id": "Rd6e7110d03",
+   "version": 1,
+   "stage": "downgrade",
+   "claim_type": "exact_model_solution",
+   "from": [
+    "ACCEPT"
+   ],
+   "to": "HOLD",
+   "hold_class": "field_absent",
+   "pattern": "a\\ rival\\ in\\ test_statistic\\ lacks\\ chi2_dof\\ —\\ declare\\ chi2/dof\\ with\\ the\\ claim's\\ constraint\\ imposed\\ \\(and\\ z_constraint\\ if\\ fitted\\ free\\)",
+   "label": "a rival in test_statistic lacks chi2_dof — declare chi2/dof with the claim's constraint imposed (and z_constraint if fitted free)"
+  },
+  {
+   "id": "R68091eb528",
+   "version": 1,
+   "stage": "downgrade",
+   "claim_type": "exact_model_solution",
+   "from": [
+    "ACCEPT"
+   ],
+   "to": "REJECT",
+   "pattern": "the\\ claim's\\ own\\ fitted\\ constraint\\ sits\\ at\\ z\\ =\\ (.*?)\\ \\(\\|z\\|\\ >\\ (.*?)\\):\\ the\\ constraint\\ is\\ rejected\\ by\\ the\\ fit",
+   "label": "the claim's own fitted constraint sits at z = (.*?) (|z| > (.*?)): the constraint is rejected by the fit"
+  },
+  {
+   "id": "Rf68b62a05b",
+   "version": 1,
+   "stage": "downgrade",
+   "claim_type": "exact_model_solution",
+   "from": [
+    "ACCEPT"
+   ],
+   "to": "HOLD",
+   "hold_class": "engine_gap",
+   "pattern": "the\\ joint\\ chi2\\ p\\-value\\ needs\\ scipy,\\ which\\ is\\ not\\ installed\\ on\\ this\\ engine\\ —\\ cannot\\ judge\\ \\(fail\\-closed\\)",
+   "label": "the joint chi2 p-value needs scipy, which is not installed on this engine — cannot judge (fail-closed)"
+  },
+  {
+   "id": "Rbb6e854387",
+   "version": 1,
+   "stage": "downgrade",
+   "claim_type": "exact_model_solution",
+   "from": [
+    "ACCEPT"
+   ],
+   "to": "REJECT",
+   "pattern": "chi2/dof\\ (.*?)\\ does\\ not\\ beat\\ a\\ declared\\ rival\\ \\((.*?)\\)\\ —\\ the\\ claimed\\ closed\\ form\\ is\\ not\\ the\\ best\\ fit",
+   "label": "chi2/dof (.*?) does not beat a declared rival ((.*?)) — the claimed closed form is not the best fit"
+  },
+  {
+   "id": "R7ce90a81a3",
+   "version": 1,
+   "stage": "downgrade",
+   "claim_type": "exact_model_solution",
+   "from": [
+    "ACCEPT"
+   ],
+   "to": "REWRITE",
+   "pattern": "chi2/dof\\ (.*?)\\ beats\\ every\\ declared\\ rival\\ \\(best\\ rival\\ (.*?)\\)\\ but\\ is\\ not\\ consistent\\ in\\ absolute\\ terms\\ \\(p\\ =\\ (.*?)\\ <\\ (.*?)\\)\\ —\\ best\\ of\\ the\\ rivals,\\ not\\ an\\ exact\\ fit\\ \\(SE\\ possibly\\ underestimated\\)",
+   "label": "chi2/dof (.*?) beats every declared rival (best rival (.*?)) but is not consistent in absolute terms (p = (.*?) < (.*?)) — best of the rival"
+  },
+  {
+   "id": "Raabd7d60f1",
+   "version": 1,
+   "stage": "downgrade",
+   "claim_type": "exact_model_solution",
+   "from": [
+    "ACCEPT"
+   ],
+   "to": "REJECT",
+   "pattern": "chi2/dof\\ (.*?)\\ on\\ (.*?)\\ dof:\\ p\\ =\\ (.*?)\\ <\\ (.*?)\\ —\\ the\\ model\\ is\\ rejected\\ by\\ its\\ own\\ fit\\ test",
+   "label": "chi2/dof (.*?) on (.*?) dof: p = (.*?) < (.*?) — the model is rejected by its own fit test"
+  },
+  {
+   "id": "R705283083c",
+   "version": 1,
+   "stage": "annotate",
+   "claim_type": "exact_model_solution",
+   "from": null,
+   "to": null,
+   "pattern": "chi2/dof\\ (.*?)\\ on\\ (.*?)\\ dof\\ consistent\\ \\(p\\ =\\ (.*?)\\)(.*?)(.*?)",
+   "label": "chi2/dof (.*?) on (.*?) dof consistent (p = (.*?))(.*?)(.*?)"
+  },
+  {
+   "id": "Rde6368d2be",
+   "version": 1,
+   "stage": "downgrade",
+   "claim_type": "exact_model_solution",
+   "from": [
+    "ACCEPT"
+   ],
+   "to": "REWRITE",
+   "pattern": "abs_error\\ (.*?)\\ is\\ at\\ machine\\ precision\\ and\\ the\\ negative\\ control\\ did\\ NOT\\ fail:\\ the\\ check\\ cannot\\ fail,\\ so\\ it\\ verifies\\ nothing",
+   "label": "abs_error (.*?) is at machine precision and the negative control did NOT fail: the check cannot fail, so it verifies nothing"
+  },
+  {
+   "id": "R1e5e1c1bdb",
+   "version": 1,
+   "stage": "downgrade",
+   "claim_type": "exact_model_solution",
+   "from": [
+    "ACCEPT"
+   ],
+   "to": "HOLD",
+   "hold_class": "field_absent",
+   "pattern": "abs_error\\ (.*?)\\ is\\ at\\ machine\\ precision\\ \\(<=\\ 1e\\-12\\ x\\ scale\\):\\ the\\ tolerance\\ does\\ not\\ inform\\ here\\ and\\ no\\ negative\\ control\\ is\\ declared\\ —\\ identity\\ at\\ machine\\ precision\\ without\\ a\\ negative\\ control",
+   "label": "abs_error (.*?) is at machine precision (<= 1e-12 x scale): the tolerance does not inform here and no negative control is declared — identit"
+  },
+  {
+   "id": "R7a8584a564",
+   "version": 1,
+   "stage": "downgrade",
+   "claim_type": "exact_model_solution",
+   "from": [
+    "ACCEPT"
+   ],
+   "to": "HOLD",
+   "hold_class": "field_absent",
+   "pattern": "tolerance\\ (.*?)\\ is\\ of\\ the\\ order\\ of\\ the\\ object\\ \\((.*?)\\):\\ a\\ tolerance\\ that\\ wide\\ tests\\ nothing",
+   "label": "tolerance (.*?) is of the order of the object ((.*?)): a tolerance that wide tests nothing"
+  },
+  {
+   "id": "R7994029311",
+   "version": 1,
+   "stage": "downgrade",
+   "claim_type": "exact_model_solution",
+   "from": [
+    "ACCEPT"
+   ],
+   "to": "REWRITE",
+   "pattern": "tolerance\\ is\\ in\\ SE\\ units\\ but\\ n_replicates=(.*?)\\ \\(<\\ 8\\):\\ a\\ single\\-seed\\ /\\ low\\-replicate\\ estimate\\ does\\ not\\ license\\ 'within\\ k\\ SE'",
+   "label": "tolerance is in SE units but n_replicates=(.*?) (< 8): a single-seed / low-replicate estimate does not license 'within k SE'"
+  },
+  {
+   "id": "Re36718a3ba",
+   "version": 1,
+   "stage": "downgrade",
+   "claim_type": null,
+   "from": [
+    "ACCEPT"
+   ],
+   "to": "REWRITE",
+   "pattern": "convergence\\ claimed\\ from\\ n_points=(.*?):\\ a\\ two\\-point\\ test\\ cannot\\ distinguish\\ convergence\\ from\\ a\\ slow\\ drift",
+   "label": "convergence claimed from n_points=(.*?): a two-point test cannot distinguish convergence from a slow drift"
+  },
+  {
+   "id": "Rcdbc6cbedd",
+   "version": 1,
+   "stage": "downgrade",
+   "claim_type": null,
+   "from": [
+    "ACCEPT"
+   ],
+   "to": "REWRITE",
+   "pattern": "convergence\\ claimed\\ but\\ no\\ alternative\\ model\\ \\(e\\.g\\.\\ log\\(k\\),\\ no\\ asymptote\\)\\ was\\ declared\\ rejected",
+   "label": "convergence claimed but no alternative model (e.g. log(k), no asymptote) was declared rejected"
+  },
+  {
+   "id": "R70a6bcaa05",
+   "version": 1,
+   "stage": "downgrade",
+   "claim_type": "statistical_confidence",
+   "from": [
+    "ACCEPT"
+   ],
+   "to": "REWRITE",
+   "pattern": "the\\ text\\ attributes\\ a\\ MECHANISM\\ but\\ no\\ null\\ control\\ is\\ declared\\ —\\ a\\ significant\\ p\\ licenses\\ the\\ association,\\ not\\ its\\ cause",
+   "label": "the text attributes a MECHANISM but no null control is declared — a significant p licenses the association, not its cause"
+  },
+  {
+   "id": "R96d3eb1097",
+   "version": 1,
+   "stage": "downgrade",
+   "claim_type": null,
+   "from": [
+    "ACCEPT"
+   ],
+   "to": "REWRITE",
+   "pattern": "the\\ text\\ asserts\\ a\\ universal\\ scope\\ \\(all\\ /\\ every\\ /\\ in\\ general\\)\\ that\\ no\\ declared\\ field\\ covers",
+   "label": "the text asserts a universal scope (all / every / in general) that no declared field covers"
+  },
+  {
+   "id": "R4aab667c14",
+   "version": 1,
+   "stage": "downgrade",
+   "claim_type": "statistical_confidence",
+   "from": [
+    "ACCEPT"
+   ],
+   "to": "REWRITE",
+   "pattern": "the\\ text\\ asserts\\ a\\ universal\\ scope\\ that\\ no\\ declared\\ field\\ covers",
+   "label": "the text asserts a universal scope that no declared field covers"
+  },
+  {
+   "id": "Re731b227e6",
+   "version": 1,
+   "stage": "downgrade",
+   "claim_type": "statistical_confidence",
+   "from": [
+    "ACCEPT"
+   ],
+   "to": "REWRITE",
+   "pattern": "the\\ text\\ attributes\\ a\\ cause\\ but\\ no\\ null\\ control\\ is\\ declared\\ —\\ a\\ significant\\ p\\ licenses\\ the\\ association,\\ not\\ its\\ cause",
+   "label": "the text attributes a cause but no null control is declared — a significant p licenses the association, not its cause"
+  },
+  {
+   "id": "R1c496f71e7",
+   "version": 1,
+   "stage": "downgrade",
+   "claim_type": "financial_metric_claim",
+   "from": [
+    "ACCEPT"
+   ],
+   "to": "REWRITE",
+   "pattern": "the\\ text\\ extends\\ the\\ metric\\ beyond\\ the\\ reported\\ period:\\ the\\ period\\ is\\ licensed,\\ the\\ extension\\ is\\ not",
+   "label": "the text extends the metric beyond the reported period: the period is licensed, the extension is not"
+  },
+  {
+   "id": "Rfc3c4967ef",
+   "version": 1,
+   "stage": "downgrade",
+   "claim_type": "financial_metric_claim",
+   "from": [
+    "ACCEPT"
+   ],
+   "to": "REWRITE",
+   "pattern": "the\\ text\\ attributes\\ a\\ cause\\ or\\ a\\ success\\ to\\ the\\ number:\\ the\\ metric\\ is\\ licensed,\\ the\\ attribution\\ is\\ not",
+   "label": "the text attributes a cause or a success to the number: the metric is licensed, the attribution is not"
+  },
+  {
+   "id": "Ra510a2db67",
+   "version": 1,
+   "stage": "downgrade",
+   "claim_type": "reproducibility_check",
+   "from": [
+    "ACCEPT"
+   ],
+   "to": "REWRITE",
+   "pattern": "the\\ text\\ states\\ a\\ count/scope\\ but\\ scope_count_verified\\ is\\ not\\ declared\\ —\\ counts\\ inflate\\ easily",
+   "label": "the text states a count/scope but scope_count_verified is not declared — counts inflate easily"
+  },
+  {
+   "id": "Rfee8ea19c6",
+   "version": 1,
+   "stage": "downgrade",
+   "claim_type": null,
+   "from": [
+    "ACCEPT",
+    "HOLD",
+    "REWRITE"
+   ],
+   "to": "HOLD",
+   "hold_class": "field_absent",
+   "pattern": "the\\ claim\\ text\\ invokes\\ a\\ citation\\ but\\ citation_hypotheses_checked\\ is\\ not\\ declared\\ —\\ cannot\\ judge\\ the\\ support",
+   "label": "the claim text invokes a citation but citation_hypotheses_checked is not declared — cannot judge the support"
+  },
+  {
+   "id": "R2fc37952bb",
+   "version": 1,
+   "stage": "downgrade",
+   "claim_type": null,
+   "from": [
+    "ACCEPT",
+    "HOLD",
+    "REWRITE"
+   ],
+   "to": "HOLD",
+   "hold_class": "field_absent",
+   "pattern": "object_matches_target\\ is\\ False:\\ the\\ evidence\\ is\\ about\\ a\\ different\\ object/convention\\ than\\ the\\ claim\\ targets",
+   "label": "object_matches_target is False: the evidence is about a different object/convention than the claim targets"
+  },
+  {
+   "id": "R780331f45a",
+   "version": 1,
+   "stage": "downgrade",
+   "claim_type": null,
+   "from": [
+    "ACCEPT",
+    "REWRITE"
+   ],
+   "to": "REWRITE",
+   "pattern": "load\\-bearing\\ citation\\ support\\ is\\ NOT\\ verified\\ \\(citation\\ unread\\ or\\ its\\ hypotheses\\ unchecked\\)",
+   "label": "load-bearing citation support is NOT verified (citation unread or its hypotheses unchecked)"
+  },
+  {
+   "id": "R498daec9f1",
+   "version": 1,
+   "stage": "downgrade",
+   "claim_type": null,
+   "from": [
+    "ACCEPT",
+    "HOLD",
+    "REWRITE"
+   ],
+   "to": "REJECT",
+   "pattern": "OVERRIDDEN\\ by\\ a\\ domain\\ invariant\\ violation:\\ (.*?)",
+   "label": "OVERRIDDEN by a domain invariant violation: (.*?)"
+  },
+  {
+   "id": "R4dac805c54",
+   "version": 1,
+   "stage": "downgrade",
+   "claim_type": null,
+   "from": [
+    "ACCEPT"
+   ],
+   "to": "HOLD",
+   "hold_class": "field_absent",
+   "pattern": "HELD\\ by\\ a\\ domain\\ invariant\\ that\\ could\\ not\\ judge:\\ (.*?)",
+   "label": "HELD by a domain invariant that could not judge: (.*?)"
+  },
+  {
+   "id": "R72a5312840",
+   "version": 1,
+   "stage": "downgrade",
+   "claim_type": null,
+   "from": [
+    "ACCEPT",
+    "REWRITE"
+   ],
+   "to": "HOLD",
+   "hold_class": "engine_gap",
+   "pattern": "payload\\.meta\\.sources declares \\d+ source file\\(s\\) but this engine has no CAPAS_SOURCE_ROOT: the files cannot be re-hashed",
+   "label": "declared source files cannot be checked on this engine",
+   "giant": "REWIRE RO-Crate / PLAN_v3 A3a",
+   "source": "capas_plan3.RULES"
+  },
+  {
+   "id": "R060e9f6763",
+   "version": 1,
+   "stage": "downgrade",
+   "claim_type": null,
+   "from": [
+    "ACCEPT",
+    "REWRITE"
+   ],
+   "to": "HOLD",
+   "hold_class": "field_absent",
+   "pattern": "source file\\(s\\) do not match their declared sha256 or are absent: .+",
+   "label": "a declared source file is absent or its hash differs",
+   "giant": "PLAN_v3 A3a",
+   "source": "capas_plan3.RULES"
+  },
+  {
+   "id": "Rda99cd05ca",
+   "version": 1,
+   "stage": "annotate",
+   "claim_type": null,
+   "from": null,
+   "to": null,
+   "pattern": "\\d+ source file\\(s\\) re-hashed under CAPAS_SOURCE_ROOT and match",
+   "label": "declared source files match their hashes",
+   "giant": "PLAN_v3 A3a",
+   "source": "capas_plan3.RULES"
+  },
+  {
+   "id": "R0dc3bcbc82",
+   "version": 1,
+   "stage": "downgrade",
+   "claim_type": null,
+   "from": [
+    "ACCEPT",
+    "REWRITE"
+   ],
+   "to": "HOLD",
+   "hold_class": "field_absent",
+   "pattern": "\\w+ = \\S+ lies within the guard band of \\w+ = \\S+ \\(k = \\S+, U = \\S+\\): not decidable at the declared uncertainty",
+   "label": "a compared value lies inside its declared guard band",
+   "giant": "D-SI (IMEKO TC6 2025), JCGM 106",
+   "source": "capas_plan3.RULES"
+  },
+  {
+   "id": "R48155a0c5a",
+   "version": 1,
+   "stage": "downgrade",
+   "claim_type": null,
+   "from": [
+    "ACCEPT",
+    "REWRITE"
+   ],
+   "to": "HOLD",
+   "hold_class": "field_absent",
+   "pattern": "cited_dois declared without a readable retraction_snapshot \\{source, date, sha256\\} and cited_doi_retracted: retraction status cannot be judged",
+   "label": "retraction status of the cited works is not declared",
+   "giant": "metacheck (Retraction Watch cross-check)",
+   "source": "capas_plan3.RULES"
+  },
+  {
+   "id": "R403a91c2b5",
+   "version": 1,
+   "stage": "downgrade",
+   "claim_type": null,
+   "from": [
+    "ACCEPT",
+    "REWRITE"
+   ],
+   "to": "HOLD",
+   "hold_class": "field_absent",
+   "pattern": "a cited work is retracted in the declared snapshot \\(.+\\): its support is withdrawn",
+   "label": "a cited work is retracted",
+   "giant": "metacheck (Retraction Watch cross-check)",
+   "source": "capas_plan3.RULES"
+  },
+  {
+   "id": "R17fec8a6c1",
+   "version": 1,
+   "stage": "downgrade",
+   "claim_type": null,
+   "from": [
+    "ACCEPT"
+   ],
+   "to": "REWRITE",
+   "pattern": "deviates from the pre-registration on fields? \\[.+\\]: the claim is licensed only as a deviation",
+   "label": "a reported field differs from, or omits, its pre-registered value",
+   "giant": "COMPare / field-level adherence",
+   "source": "capas_plan3.RULES"
+  }
+ ]
+}

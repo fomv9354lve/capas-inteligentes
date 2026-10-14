@@ -134,8 +134,11 @@
             "contract: register evidence contract for claim.type 'unsupported_claim_type'"
           ]
         },
-        "audit_hash": "sha256:ef0e656b32471850f58f839d61b101578da18627186604b0b2ac9b3bc422fd71",
+        "audit_hash": "sha256:ab41adbfb9be52451435ff9df75d91f1af375164abfe65d8a1fac2fcef329288",
+        "audit_hash_recipe": "v2",
         "did_you_mean": {},
+        "engine_version": "0.4.1",
+        "evidence_sha256": "sha256:2612030558f28fe83ee13a948848c389aaf45ad2bcddc05115c7a77d5dbfe661",
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "schema or required-field blockers remain",
@@ -169,6 +172,7 @@
           "witness_registry_resolved": false
         },
         "fine_tune_ready": false,
+        "hold_class": "field_absent",
         "input_claim": {
           "id": "",
           "text": "This payload is structurally invalid because the claim id is empty.",
@@ -177,6 +181,7 @@
         "licensed_claim": "This payload is structurally invalid because the claim id is empty.",
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "notices": [],
         "reason": "input payload failed CAPAS schema validation",
         "required_fields": [],
         "resolution": {
@@ -190,6 +195,10 @@
           "message": "Correct the listed schema errors (each names its own fix), then resubmit."
         },
         "rewrite": null,
+        "rule_table_sha256": "sha256:b6788f744671f389ac43161690d836420221209d7162bc04fd21676b6a3e2e0b",
+        "rules_fired": [
+          "R89d1acb02b"
+        ],
         "schema_errors": [
           "evidence must be an object",
           "claim.id must be a non-empty string",
@@ -236,7 +245,16 @@
               "object_matches_target",
               "load_bearing_citation_read",
               "citation_hypotheses_checked",
-              "null_control_passed"
+              "null_control_passed",
+              "ai_use_declared",
+              "coverage_factor",
+              "abs_error_u",
+              "tolerance_u",
+              "method_standard",
+              "cited_dois",
+              "retraction_snapshot",
+              "cited_doi_retracted",
+              "prereg"
             ],
             "registered": true,
             "required_fields": [
@@ -298,8 +316,11 @@
             "schema: schema_version must be capas-claim-payload-v3"
           ]
         },
-        "audit_hash": "sha256:ea86c8665eab5b6c0fc52e158697a5a04546cd0547519b902dd5402ead88b507",
+        "audit_hash": "sha256:23dd6f32c21d91f130e1911519b612de05f5245ad115b4ab8fdd3bbe0853ee30",
+        "audit_hash_recipe": "v2",
         "did_you_mean": {},
+        "engine_version": "0.4.1",
+        "evidence_sha256": "sha256:cb36f6850422beea9fee29581ca91df35af250775f95cd64cc5de6f73e161b84",
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "schema or required-field blockers remain",
@@ -333,6 +354,7 @@
           "witness_registry_resolved": false
         },
         "fine_tune_ready": false,
+        "hold_class": "field_absent",
         "input_claim": {
           "id": "schema_version_control",
           "text": "The model solution is within tolerance.",
@@ -341,6 +363,7 @@
         "licensed_claim": "The model solution is within tolerance.",
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "notices": [],
         "reason": "input payload failed CAPAS schema validation",
         "required_fields": [],
         "resolution": {
@@ -352,6 +375,10 @@
           "message": "Correct the listed schema errors (each names its own fix), then resubmit."
         },
         "rewrite": null,
+        "rule_table_sha256": "sha256:b6788f744671f389ac43161690d836420221209d7162bc04fd21676b6a3e2e0b",
+        "rules_fired": [
+          "R89d1acb02b"
+        ],
         "schema_errors": [
           "schema_version must be capas-claim-payload-v3"
         ],
@@ -395,7 +422,16 @@
               "object_matches_target",
               "load_bearing_citation_read",
               "citation_hypotheses_checked",
-              "null_control_passed"
+              "null_control_passed",
+              "ai_use_declared",
+              "coverage_factor",
+              "abs_error_u",
+              "tolerance_u",
+              "method_standard",
+              "cited_dois",
+              "retraction_snapshot",
+              "cited_doi_retracted",
+              "prereg"
             ],
             "registered": true,
             "required_fields": [
@@ -457,8 +493,11 @@
             "schema: schema_version must be capas-claim-payload-v3"
           ]
         },
-        "audit_hash": "sha256:ea86c8665eab5b6c0fc52e158697a5a04546cd0547519b902dd5402ead88b507",
+        "audit_hash": "sha256:23dd6f32c21d91f130e1911519b612de05f5245ad115b4ab8fdd3bbe0853ee30",
+        "audit_hash_recipe": "v2",
         "did_you_mean": {},
+        "engine_version": "0.4.1",
+        "evidence_sha256": "sha256:cb36f6850422beea9fee29581ca91df35af250775f95cd64cc5de6f73e161b84",
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "schema or required-field blockers remain",
@@ -492,6 +531,7 @@
           "witness_registry_resolved": false
         },
         "fine_tune_ready": false,
+        "hold_class": "field_absent",
         "input_claim": {
           "id": "schema_version_control",
           "text": "The model solution is within tolerance.",
@@ -500,6 +540,7 @@
         "licensed_claim": "The model solution is within tolerance.",
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "notices": [],
         "reason": "input payload failed CAPAS schema validation",
         "required_fields": [],
         "resolution": {
@@ -511,6 +552,10 @@
           "message": "Correct the listed schema errors (each names its own fix), then resubmit."
         },
         "rewrite": null,
+        "rule_table_sha256": "sha256:b6788f744671f389ac43161690d836420221209d7162bc04fd21676b6a3e2e0b",
+        "rules_fired": [
+          "R89d1acb02b"
+        ],
         "schema_errors": [
           "schema_version must be capas-claim-payload-v3"
         ],
@@ -554,7 +599,16 @@
               "object_matches_target",
               "load_bearing_citation_read",
               "citation_hypotheses_checked",
-              "null_control_passed"
+              "null_control_passed",
+              "ai_use_declared",
+              "coverage_factor",
+              "abs_error_u",
+              "tolerance_u",
+              "method_standard",
+              "cited_dois",
+              "retraction_snapshot",
+              "cited_doi_retracted",
+              "prereg"
             ],
             "registered": true,
             "required_fields": [
@@ -616,8 +670,11 @@
             "schema: evidence.abs_error must be >= 0"
           ]
         },
-        "audit_hash": "sha256:5d24cbbac8ba4120e02c1ce9ae7347872ed38a7cca6547a7c728b33fdfc8731c",
+        "audit_hash": "sha256:6605dc0676c9af32c320fb7e682645b30d56bbd8512a2d04328b9cef678ad4bd",
+        "audit_hash_recipe": "v2",
         "did_you_mean": {},
+        "engine_version": "0.4.1",
+        "evidence_sha256": "sha256:ff0d1a24be216c5b681f8585f023d89406c3c934d37b62b8a0873baa18e540f2",
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "schema or required-field blockers remain",
@@ -651,6 +708,7 @@
           "witness_registry_resolved": false
         },
         "fine_tune_ready": false,
+        "hold_class": "field_absent",
         "input_claim": {
           "id": "negative_abs_error",
           "text": "A negative absolute error should not license an exact model claim.",
@@ -659,6 +717,7 @@
         "licensed_claim": "A negative absolute error should not license an exact model claim.",
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "notices": [],
         "reason": "input payload failed CAPAS schema validation",
         "required_fields": [],
         "resolution": {
@@ -670,6 +729,10 @@
           "message": "Correct the listed schema errors (each names its own fix), then resubmit."
         },
         "rewrite": null,
+        "rule_table_sha256": "sha256:b6788f744671f389ac43161690d836420221209d7162bc04fd21676b6a3e2e0b",
+        "rules_fired": [
+          "R89d1acb02b"
+        ],
         "schema_errors": [
           "evidence.abs_error must be >= 0"
         ],
@@ -713,7 +776,16 @@
               "object_matches_target",
               "load_bearing_citation_read",
               "citation_hypotheses_checked",
-              "null_control_passed"
+              "null_control_passed",
+              "ai_use_declared",
+              "coverage_factor",
+              "abs_error_u",
+              "tolerance_u",
+              "method_standard",
+              "cited_dois",
+              "retraction_snapshot",
+              "cited_doi_retracted",
+              "prereg"
             ],
             "registered": true,
             "required_fields": [
@@ -775,8 +847,11 @@
             "schema: evidence.tolerance must be >= 0"
           ]
         },
-        "audit_hash": "sha256:a0b7f4049f3ff9efdc7c4068576abbd8c8200b16d298e42c4ceb7c4efb31b15d",
+        "audit_hash": "sha256:09ac465b3ee2d0aa0c9f02c67a38b831c8ceff0eec4d7949d9e5896e5cb022c7",
+        "audit_hash_recipe": "v2",
         "did_you_mean": {},
+        "engine_version": "0.4.1",
+        "evidence_sha256": "sha256:48b0228cec0115f8f59f4c54c2bcc2072225d82f5cf0c422f93a091b16adfe1a",
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "schema or required-field blockers remain",
@@ -810,6 +885,7 @@
           "witness_registry_resolved": false
         },
         "fine_tune_ready": false,
+        "hold_class": "field_absent",
         "input_claim": {
           "id": "negative_tolerance",
           "text": "A negative tolerance should not be accepted.",
@@ -818,6 +894,7 @@
         "licensed_claim": "A negative tolerance should not be accepted.",
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "notices": [],
         "reason": "input payload failed CAPAS schema validation",
         "required_fields": [],
         "resolution": {
@@ -829,6 +906,10 @@
           "message": "Correct the listed schema errors (each names its own fix), then resubmit."
         },
         "rewrite": null,
+        "rule_table_sha256": "sha256:b6788f744671f389ac43161690d836420221209d7162bc04fd21676b6a3e2e0b",
+        "rules_fired": [
+          "R89d1acb02b"
+        ],
         "schema_errors": [
           "evidence.tolerance must be >= 0"
         ],
@@ -872,7 +953,16 @@
               "object_matches_target",
               "load_bearing_citation_read",
               "citation_hypotheses_checked",
-              "null_control_passed"
+              "null_control_passed",
+              "ai_use_declared",
+              "coverage_factor",
+              "abs_error_u",
+              "tolerance_u",
+              "method_standard",
+              "cited_dois",
+              "retraction_snapshot",
+              "cited_doi_retracted",
+              "prereg"
             ],
             "registered": true,
             "required_fields": [
@@ -937,8 +1027,11 @@
             "schema: evidence.tolerance must be >= 0"
           ]
         },
-        "audit_hash": "sha256:a71d9695c5515a6daeee675837a7d79484554836666a0cbba404f9d454c8170b",
+        "audit_hash": "sha256:5ec21e2289da0546c043c50a64ba68878102da2b504a91cd8a56a0309fb7067c",
+        "audit_hash_recipe": "v2",
         "did_you_mean": {},
+        "engine_version": "0.4.1",
+        "evidence_sha256": "sha256:0037bba6d9439a34170454912c341a4d26c47d1c23c62c3e1c529fc75acb4df8",
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "schema or required-field blockers remain",
@@ -972,6 +1065,7 @@
           "witness_registry_resolved": false
         },
         "fine_tune_ready": false,
+        "hold_class": "field_absent",
         "input_claim": {
           "id": "double_negative_exact_solution",
           "text": "Two negative values must not create a false ACCEPT.",
@@ -980,6 +1074,7 @@
         "licensed_claim": "Two negative values must not create a false ACCEPT.",
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "notices": [],
         "reason": "input payload failed CAPAS schema validation",
         "required_fields": [],
         "resolution": {
@@ -992,6 +1087,10 @@
           "message": "Correct the listed schema errors (each names its own fix), then resubmit."
         },
         "rewrite": null,
+        "rule_table_sha256": "sha256:b6788f744671f389ac43161690d836420221209d7162bc04fd21676b6a3e2e0b",
+        "rules_fired": [
+          "R89d1acb02b"
+        ],
         "schema_errors": [
           "evidence.abs_error must be >= 0",
           "evidence.tolerance must be >= 0"
@@ -1037,7 +1136,16 @@
               "object_matches_target",
               "load_bearing_citation_read",
               "citation_hypotheses_checked",
-              "null_control_passed"
+              "null_control_passed",
+              "ai_use_declared",
+              "coverage_factor",
+              "abs_error_u",
+              "tolerance_u",
+              "method_standard",
+              "cited_dois",
+              "retraction_snapshot",
+              "cited_doi_retracted",
+              "prereg"
             ],
             "registered": true,
             "required_fields": [
@@ -1099,8 +1207,11 @@
             "schema: evidence.abs_error must be a number \u2014 you sent the boolean True; use a number"
           ]
         },
-        "audit_hash": "sha256:66c240e36b89333a579704934ec5855e8450de57c6127a4824e2b3f9b001fd67",
+        "audit_hash": "sha256:ee022531cc8a3d49b217296a742e588a73aea010826f772dcfbb63f69d00969c",
+        "audit_hash_recipe": "v2",
         "did_you_mean": {},
+        "engine_version": "0.4.1",
+        "evidence_sha256": "sha256:41458bfb4c16be1027e89ed2e933bada9e794d85e11885354b98096b333f7808",
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "schema or required-field blockers remain",
@@ -1134,6 +1245,7 @@
           "witness_registry_resolved": false
         },
         "fine_tune_ready": false,
+        "hold_class": "field_absent",
         "input_claim": {
           "id": "boolean_numeric_field",
           "text": "Boolean values must not be accepted as numeric error fields.",
@@ -1142,6 +1254,7 @@
         "licensed_claim": "Boolean values must not be accepted as numeric error fields.",
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "notices": [],
         "reason": "input payload failed CAPAS schema validation",
         "required_fields": [],
         "resolution": {
@@ -1153,6 +1266,10 @@
           "message": "Correct the listed schema errors (each names its own fix), then resubmit."
         },
         "rewrite": null,
+        "rule_table_sha256": "sha256:b6788f744671f389ac43161690d836420221209d7162bc04fd21676b6a3e2e0b",
+        "rules_fired": [
+          "R89d1acb02b"
+        ],
         "schema_errors": [
           "evidence.abs_error must be a number \u2014 you sent the boolean True; use a number"
         ],
@@ -1196,7 +1313,16 @@
               "object_matches_target",
               "load_bearing_citation_read",
               "citation_hypotheses_checked",
-              "null_control_passed"
+              "null_control_passed",
+              "ai_use_declared",
+              "coverage_factor",
+              "abs_error_u",
+              "tolerance_u",
+              "method_standard",
+              "cited_dois",
+              "retraction_snapshot",
+              "cited_doi_retracted",
+              "prereg"
             ],
             "registered": true,
             "required_fields": [
@@ -1258,8 +1384,11 @@
             "schema: training_evidence.source_backed_evidence must be a boolean"
           ]
         },
-        "audit_hash": "sha256:e70db9cd284639ea48d0bffd7752b553912d2839f6994ae8cdade80b66158fe5",
+        "audit_hash": "sha256:7b96fcd17c2a98687744f40db24f76b2bfc43c7fab382b6def38e02aac4a43ca",
+        "audit_hash_recipe": "v2",
         "did_you_mean": {},
+        "engine_version": "0.4.1",
+        "evidence_sha256": "sha256:7c1f670a062cb24a0f5590dd12362e6a0f059281a3e22afcbb772d672bdcefde",
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "schema or required-field blockers remain",
@@ -1290,6 +1419,7 @@
           "witness_registry_resolved": false
         },
         "fine_tune_ready": false,
+        "hold_class": "field_absent",
         "input_claim": {
           "id": "training_evidence_boolean_string",
           "text": "Training evidence flags must be typed booleans.",
@@ -1298,6 +1428,7 @@
         "licensed_claim": "Training evidence flags must be typed booleans.",
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "notices": [],
         "reason": "input payload failed CAPAS schema validation",
         "required_fields": [],
         "resolution": {
@@ -1309,6 +1440,10 @@
           "message": "Correct the listed schema errors (each names its own fix), then resubmit."
         },
         "rewrite": null,
+        "rule_table_sha256": "sha256:b6788f744671f389ac43161690d836420221209d7162bc04fd21676b6a3e2e0b",
+        "rules_fired": [
+          "R89d1acb02b"
+        ],
         "schema_errors": [
           "training_evidence.source_backed_evidence must be a boolean"
         ],
@@ -1333,20 +1468,29 @@
             "claim_type": "universal_anchor_claim",
             "description": "Claims that require an explicit anchor-mode evidence contract.",
             "optional_fields": [
+              "abs_error_u",
+              "ai_use_declared",
               "benchmark_metric",
               "benchmark_name",
               "benchmark_pass",
               "citation_hypotheses_checked",
+              "cited_doi_retracted",
+              "cited_dois",
+              "coverage_factor",
               "empirical_anchor_pass",
               "empirical_reference_present",
               "empirical_tolerance",
               "load_bearing_citation_read",
+              "method_standard",
               "null_control_passed",
               "object_declared",
               "object_matches_target",
               "physical_evidence_level",
+              "prereg",
               "relative_anchor_comparison_pass",
               "relative_anchor_reference",
+              "retraction_snapshot",
+              "tolerance_u",
               "verification_independence"
             ],
             "registered": true,
@@ -1411,8 +1555,11 @@
             "schema: evidence.training_evidence is not allowed; move training_evidence to the payload root"
           ]
         },
-        "audit_hash": "sha256:7ae8ebda7ce4e68cc7df1856f6038c398950d3330644f3e5ebfd28a84a788a77",
+        "audit_hash": "sha256:3e4919ea623bec2ea28a7bf31251088fd693f223569b4d944a0bbb993cb1e01c",
+        "audit_hash_recipe": "v2",
         "did_you_mean": {},
+        "engine_version": "0.4.1",
+        "evidence_sha256": "sha256:6f883df31c7890c489d95be4cc023b536f8ceda86b27007430b574cb8f1dbf2b",
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "schema or required-field blockers remain",
@@ -1446,6 +1593,7 @@
           "witness_registry_resolved": false
         },
         "fine_tune_ready": false,
+        "hold_class": "field_absent",
         "input_claim": {
           "id": "training_evidence_nested_in_evidence",
           "text": "Readiness evidence must live at the payload root, not inside evidence.",
@@ -1454,6 +1602,7 @@
         "licensed_claim": "Readiness evidence must live at the payload root, not inside evidence.",
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "notices": [],
         "reason": "input payload failed CAPAS schema validation",
         "required_fields": [],
         "resolution": {
@@ -1465,6 +1614,10 @@
           "message": "Correct the listed schema errors (each names its own fix), then resubmit."
         },
         "rewrite": null,
+        "rule_table_sha256": "sha256:b6788f744671f389ac43161690d836420221209d7162bc04fd21676b6a3e2e0b",
+        "rules_fired": [
+          "R89d1acb02b"
+        ],
         "schema_errors": [
           "evidence.training_evidence is not allowed; move training_evidence to the payload root"
         ],
@@ -1508,7 +1661,16 @@
               "object_matches_target",
               "load_bearing_citation_read",
               "citation_hypotheses_checked",
-              "null_control_passed"
+              "null_control_passed",
+              "ai_use_declared",
+              "coverage_factor",
+              "abs_error_u",
+              "tolerance_u",
+              "method_standard",
+              "cited_dois",
+              "retraction_snapshot",
+              "cited_doi_retracted",
+              "prereg"
             ],
             "registered": true,
             "required_fields": [
@@ -1570,8 +1732,11 @@
             "schema: payload.silent_bypass is not allowed by capas-claim-payload-v3"
           ]
         },
-        "audit_hash": "sha256:a09540684bf352caa59d925f3ffc326e720650d0aca5c3c17ec6723ca3b5eb9a",
+        "audit_hash": "sha256:775bbaf8592c556d96a8fb3c5394c18e6b05d92f5c10ef57536b770025f1ce93",
+        "audit_hash_recipe": "v2",
         "did_you_mean": {},
+        "engine_version": "0.4.1",
+        "evidence_sha256": "sha256:7c1f670a062cb24a0f5590dd12362e6a0f059281a3e22afcbb772d672bdcefde",
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "schema or required-field blockers remain",
@@ -1605,6 +1770,7 @@
           "witness_registry_resolved": false
         },
         "fine_tune_ready": false,
+        "hold_class": "field_absent",
         "input_claim": {
           "id": "unknown_root_field",
           "text": "Root-level unregistered metadata must not be silently accepted.",
@@ -1613,6 +1779,7 @@
         "licensed_claim": "Root-level unregistered metadata must not be silently accepted.",
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "notices": [],
         "reason": "input payload failed CAPAS schema validation",
         "required_fields": [],
         "resolution": {
@@ -1624,6 +1791,10 @@
           "message": "Correct the listed schema errors (each names its own fix), then resubmit."
         },
         "rewrite": null,
+        "rule_table_sha256": "sha256:b6788f744671f389ac43161690d836420221209d7162bc04fd21676b6a3e2e0b",
+        "rules_fired": [
+          "R89d1acb02b"
+        ],
         "schema_errors": [
           "payload.silent_bypass is not allowed by capas-claim-payload-v3"
         ],
@@ -1667,7 +1838,16 @@
               "object_matches_target",
               "load_bearing_citation_read",
               "citation_hypotheses_checked",
-              "null_control_passed"
+              "null_control_passed",
+              "ai_use_declared",
+              "coverage_factor",
+              "abs_error_u",
+              "tolerance_u",
+              "method_standard",
+              "cited_dois",
+              "retraction_snapshot",
+              "cited_doi_retracted",
+              "prereg"
             ],
             "registered": true,
             "required_fields": [
@@ -1729,8 +1909,11 @@
             "schema: claim.verdict is not allowed by capas-claim-payload-v3"
           ]
         },
-        "audit_hash": "sha256:398412b22d80941426d80773fa1f7fb8c423dae361ca57570f0db34aa7e6de0d",
+        "audit_hash": "sha256:a8e090d0380dd4e22079bbf8cbdb5891eb64e8fbce5ba5aeaaff154200b2cc53",
+        "audit_hash_recipe": "v2",
         "did_you_mean": {},
+        "engine_version": "0.4.1",
+        "evidence_sha256": "sha256:7c1f670a062cb24a0f5590dd12362e6a0f059281a3e22afcbb772d672bdcefde",
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "schema or required-field blockers remain",
@@ -1764,6 +1947,7 @@
           "witness_registry_resolved": false
         },
         "fine_tune_ready": false,
+        "hold_class": "field_absent",
         "input_claim": {
           "id": "unknown_claim_field",
           "text": "Claim objects must not carry unregistered control fields.",
@@ -1773,6 +1957,7 @@
         "licensed_claim": "Claim objects must not carry unregistered control fields.",
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "notices": [],
         "reason": "input payload failed CAPAS schema validation",
         "required_fields": [],
         "resolution": {
@@ -1784,6 +1969,10 @@
           "message": "Correct the listed schema errors (each names its own fix), then resubmit."
         },
         "rewrite": null,
+        "rule_table_sha256": "sha256:b6788f744671f389ac43161690d836420221209d7162bc04fd21676b6a3e2e0b",
+        "rules_fired": [
+          "R89d1acb02b"
+        ],
         "schema_errors": [
           "claim.verdict is not allowed by capas-claim-payload-v3"
         ],
@@ -1814,7 +2003,16 @@
               "object_declared",
               "object_matches_target",
               "load_bearing_citation_read",
-              "citation_hypotheses_checked"
+              "citation_hypotheses_checked",
+              "ai_use_declared",
+              "coverage_factor",
+              "abs_error_u",
+              "tolerance_u",
+              "method_standard",
+              "cited_dois",
+              "retraction_snapshot",
+              "cited_doi_retracted",
+              "prereg"
             ],
             "registered": true,
             "required_fields": [
@@ -1878,8 +2076,11 @@
             "schema: evidence.universal_anchor_pass is not allowed for claim.type statistical_confidence"
           ]
         },
-        "audit_hash": "sha256:4b23bbd523308ee6f90b31ff95cdac5fb371484c15660160a3f472784f388af4",
+        "audit_hash": "sha256:14f7932fc83539d81fae8cc8ca73278405f54521a35f41de4b974c2ea9b853f6",
+        "audit_hash_recipe": "v2",
         "did_you_mean": {},
+        "engine_version": "0.4.1",
+        "evidence_sha256": "sha256:cb0ff329269d4a499c145c021b67b50876d03d093f429e7c6823f9e2eb0e57ff",
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "schema or required-field blockers remain",
@@ -1913,6 +2114,7 @@
           "witness_registry_resolved": false
         },
         "fine_tune_ready": false,
+        "hold_class": "field_absent",
         "input_claim": {
           "id": "unknown_evidence_field_for_type",
           "text": "Statistical confidence claims must not borrow unrelated evidence fields.",
@@ -1921,6 +2123,7 @@
         "licensed_claim": "Statistical confidence claims must not borrow unrelated evidence fields.",
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "notices": [],
         "reason": "input payload failed CAPAS schema validation",
         "required_fields": [],
         "resolution": {
@@ -1932,6 +2135,10 @@
           "message": "Correct the listed schema errors (each names its own fix), then resubmit."
         },
         "rewrite": null,
+        "rule_table_sha256": "sha256:b6788f744671f389ac43161690d836420221209d7162bc04fd21676b6a3e2e0b",
+        "rules_fired": [
+          "R89d1acb02b"
+        ],
         "schema_errors": [
           "evidence.universal_anchor_pass is not allowed for claim.type statistical_confidence"
         ],
@@ -2012,8 +2219,11 @@
             "contract: register evidence contract for claim.type 'quantum_oracle_claim'"
           ]
         },
-        "audit_hash": "sha256:f2cc94cdc6c31cc6267753ebc70d152cd373c0b0844731e1eed433fcbf1636bb",
+        "audit_hash": "sha256:060c063a59dee2bee31201117e4b40e83bf54d48ae354282d233d7b35990eeb9",
+        "audit_hash_recipe": "v2",
         "did_you_mean": {},
+        "engine_version": "0.4.1",
+        "evidence_sha256": "sha256:33e31240d24bc701c1db7e2eb418b3890708ae0cab0c9d94e4afbfd2800dd20f",
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "schema or required-field blockers remain",
@@ -2047,6 +2257,7 @@
           "witness_registry_resolved": false
         },
         "fine_tune_ready": false,
+        "hold_class": "field_absent",
         "input_claim": {
           "id": "unsupported_claim_type_registry_gap",
           "text": "Unknown claim types require a registered evidence contract.",
@@ -2055,6 +2266,7 @@
         "licensed_claim": "Unknown claim types require a registered evidence contract.",
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "notices": [],
         "reason": "input payload failed CAPAS schema validation",
         "required_fields": [],
         "resolution": {
@@ -2066,6 +2278,10 @@
           "message": "Correct the listed schema errors (each names its own fix), then resubmit."
         },
         "rewrite": null,
+        "rule_table_sha256": "sha256:b6788f744671f389ac43161690d836420221209d7162bc04fd21676b6a3e2e0b",
+        "rules_fired": [
+          "R89d1acb02b"
+        ],
         "schema_errors": [
           "claim.type must be one of: causal_mechanism_claim, claim_transition, evidence_conflict_claim, exact_model_solution, financial_metric_claim, interval_band_claim, multimodal_evidence_claim, physical_accuracy, programming_language_behavior_claim, proof_admissibility, reproducibility_check, statistical_confidence, systematic_review_claim, universal_anchor_claim; unsupported claim type 'quantum_oracle_claim' requires a registered evidence contract before CAPAS can decide it"
         ],
@@ -2090,20 +2306,29 @@
             "claim_type": "universal_anchor_claim",
             "description": "Claims that require an explicit anchor-mode evidence contract.",
             "optional_fields": [
+              "abs_error_u",
+              "ai_use_declared",
               "benchmark_metric",
               "benchmark_name",
               "benchmark_pass",
               "citation_hypotheses_checked",
+              "cited_doi_retracted",
+              "cited_dois",
+              "coverage_factor",
               "empirical_anchor_pass",
               "empirical_reference_present",
               "empirical_tolerance",
               "load_bearing_citation_read",
+              "method_standard",
               "null_control_passed",
               "object_declared",
               "object_matches_target",
               "physical_evidence_level",
+              "prereg",
               "relative_anchor_comparison_pass",
               "relative_anchor_reference",
+              "retraction_snapshot",
+              "tolerance_u",
               "verification_independence"
             ],
             "registered": true,
@@ -2168,8 +2393,11 @@
             "schema: claim.id must be at most 256 characters"
           ]
         },
-        "audit_hash": "sha256:28ab618b593b5ba561f091f8fa165927fbcbe07f1ab8b7cc32b47f3346f48ba3",
+        "audit_hash": "sha256:8d9ea5fe6f1aaa3937f5294b194a6de58328f2bee5de8d4688551c4f308c23da",
+        "audit_hash_recipe": "v2",
         "did_you_mean": {},
+        "engine_version": "0.4.1",
+        "evidence_sha256": "sha256:6a54513461a41cddb8d55c9e32f71e35320fcdcbb19af68b30f5c724c9d551d8",
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "schema or required-field blockers remain",
@@ -2203,6 +2431,7 @@
           "witness_registry_resolved": false
         },
         "fine_tune_ready": false,
+        "hold_class": "field_absent",
         "input_claim": {
           "id": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
           "text": "Oversized claim ids should be rejected before decision logic.",
@@ -2211,6 +2440,7 @@
         "licensed_claim": "Oversized claim ids should be rejected before decision logic.",
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "notices": [],
         "reason": "input payload failed CAPAS schema validation",
         "required_fields": [],
         "resolution": {
@@ -2222,6 +2452,10 @@
           "message": "Correct the listed schema errors (each names its own fix), then resubmit."
         },
         "rewrite": null,
+        "rule_table_sha256": "sha256:b6788f744671f389ac43161690d836420221209d7162bc04fd21676b6a3e2e0b",
+        "rules_fired": [
+          "R89d1acb02b"
+        ],
         "schema_errors": [
           "claim.id must be at most 256 characters"
         ],
@@ -2246,20 +2480,29 @@
             "claim_type": "universal_anchor_claim",
             "description": "Claims that require an explicit anchor-mode evidence contract.",
             "optional_fields": [
+              "abs_error_u",
+              "ai_use_declared",
               "benchmark_metric",
               "benchmark_name",
               "benchmark_pass",
               "citation_hypotheses_checked",
+              "cited_doi_retracted",
+              "cited_dois",
+              "coverage_factor",
               "empirical_anchor_pass",
               "empirical_reference_present",
               "empirical_tolerance",
               "load_bearing_citation_read",
+              "method_standard",
               "null_control_passed",
               "object_declared",
               "object_matches_target",
               "physical_evidence_level",
+              "prereg",
               "relative_anchor_comparison_pass",
               "relative_anchor_reference",
+              "retraction_snapshot",
+              "tolerance_u",
               "verification_independence"
             ],
             "registered": true,
@@ -2324,8 +2567,11 @@
             "schema: claim.text must be at most 2000 characters"
           ]
         },
-        "audit_hash": "sha256:863e4a0042e57249ae2d4de803c673e30b8f7599cd5b2e8723d054683c5e5d9c",
+        "audit_hash": "sha256:c83203cedca6de69ff7084450a89cbf58e39be0b14cc7b5c7f8c6db929988734",
+        "audit_hash_recipe": "v2",
         "did_you_mean": {},
+        "engine_version": "0.4.1",
+        "evidence_sha256": "sha256:6a54513461a41cddb8d55c9e32f71e35320fcdcbb19af68b30f5c724c9d551d8",
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "schema or required-field blockers remain",
@@ -2359,6 +2605,7 @@
           "witness_registry_resolved": false
         },
         "fine_tune_ready": false,
+        "hold_class": "field_absent",
         "input_claim": {
           "id": "oversized_claim_text",
           "text": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
@@ -2367,6 +2614,7 @@
         "licensed_claim": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "notices": [],
         "reason": "input payload failed CAPAS schema validation",
         "required_fields": [],
         "resolution": {
@@ -2378,6 +2626,10 @@
           "message": "Correct the listed schema errors (each names its own fix), then resubmit."
         },
         "rewrite": null,
+        "rule_table_sha256": "sha256:b6788f744671f389ac43161690d836420221209d7162bc04fd21676b6a3e2e0b",
+        "rules_fired": [
+          "R89d1acb02b"
+        ],
         "schema_errors": [
           "claim.text must be at most 2000 characters"
         ],
@@ -2407,7 +2659,16 @@
               "object_matches_target",
               "load_bearing_citation_read",
               "citation_hypotheses_checked",
-              "null_control_passed"
+              "null_control_passed",
+              "ai_use_declared",
+              "coverage_factor",
+              "abs_error_u",
+              "tolerance_u",
+              "method_standard",
+              "cited_dois",
+              "retraction_snapshot",
+              "cited_doi_retracted",
+              "prereg"
             ],
             "registered": true,
             "required_fields": [
@@ -2469,8 +2730,11 @@
             "schema: evidence.current_claim must not contain angle brackets or Unicode angle-bracket homoglyphs"
           ]
         },
-        "audit_hash": "sha256:8ddc811222befff20abeda800e667e8da7f59f25f768da3d1325437751a1655a",
+        "audit_hash": "sha256:36d7e86ebad1af4099fa8736ed0a1e071b86d45e8c2e13e08d425046662bf63e",
+        "audit_hash_recipe": "v2",
         "did_you_mean": {},
+        "engine_version": "0.4.1",
+        "evidence_sha256": "sha256:f1237105e671a9dac1ed760fb93da188f7e907dd3f3351119982620a49f9f5a7",
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "schema or required-field blockers remain",
@@ -2504,6 +2768,7 @@
           "witness_registry_resolved": false
         },
         "fine_tune_ready": false,
+        "hold_class": "field_absent",
         "input_claim": {
           "id": "current_claim_raw_html",
           "text": "A malicious current_claim should not flow into rewrite output.",
@@ -2512,6 +2777,7 @@
         "licensed_claim": "A malicious current_claim should not flow into rewrite output.",
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "notices": [],
         "reason": "input payload failed CAPAS schema validation",
         "required_fields": [],
         "resolution": {
@@ -2523,6 +2789,10 @@
           "message": "Correct the listed schema errors (each names its own fix), then resubmit."
         },
         "rewrite": null,
+        "rule_table_sha256": "sha256:b6788f744671f389ac43161690d836420221209d7162bc04fd21676b6a3e2e0b",
+        "rules_fired": [
+          "R89d1acb02b"
+        ],
         "schema_errors": [
           "evidence.current_claim must not contain angle brackets or Unicode angle-bracket homoglyphs"
         ],
@@ -2552,7 +2822,16 @@
               "object_matches_target",
               "load_bearing_citation_read",
               "citation_hypotheses_checked",
-              "null_control_passed"
+              "null_control_passed",
+              "ai_use_declared",
+              "coverage_factor",
+              "abs_error_u",
+              "tolerance_u",
+              "method_standard",
+              "cited_dois",
+              "retraction_snapshot",
+              "cited_doi_retracted",
+              "prereg"
             ],
             "registered": true,
             "required_fields": [
@@ -2614,8 +2893,11 @@
             "schema: evidence.current_claim must not contain angle brackets or Unicode angle-bracket homoglyphs"
           ]
         },
-        "audit_hash": "sha256:80d0f2d3d3e71cd6a87d6af7e94cac0418952ca28ad742a10e8f2deb58d181b7",
+        "audit_hash": "sha256:9b0924bc4aec77ce966eaa1175eee36820b43c6f828ff6f4c24f9205c77f0649",
+        "audit_hash_recipe": "v2",
         "did_you_mean": {},
+        "engine_version": "0.4.1",
+        "evidence_sha256": "sha256:d1b5735abfe3af769b85c9c7dd54f2ed60dffc2598cfe6839769b27e0691f4d0",
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "schema or required-field blockers remain",
@@ -2649,6 +2931,7 @@
           "witness_registry_resolved": false
         },
         "fine_tune_ready": false,
+        "hold_class": "field_absent",
         "input_claim": {
           "id": "current_claim_unicode_angle_homoglyph",
           "text": "Unicode angle-bracket homoglyphs should not flow into rewrite output.",
@@ -2657,6 +2940,7 @@
         "licensed_claim": "Unicode angle-bracket homoglyphs should not flow into rewrite output.",
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "notices": [],
         "reason": "input payload failed CAPAS schema validation",
         "required_fields": [],
         "resolution": {
@@ -2668,6 +2952,10 @@
           "message": "Correct the listed schema errors (each names its own fix), then resubmit."
         },
         "rewrite": null,
+        "rule_table_sha256": "sha256:b6788f744671f389ac43161690d836420221209d7162bc04fd21676b6a3e2e0b",
+        "rules_fired": [
+          "R89d1acb02b"
+        ],
         "schema_errors": [
           "evidence.current_claim must not contain angle brackets or Unicode angle-bracket homoglyphs"
         ],
@@ -2698,7 +2986,16 @@
               "object_matches_target",
               "load_bearing_citation_read",
               "citation_hypotheses_checked",
-              "null_control_passed"
+              "null_control_passed",
+              "ai_use_declared",
+              "coverage_factor",
+              "abs_error_u",
+              "tolerance_u",
+              "method_standard",
+              "cited_dois",
+              "retraction_snapshot",
+              "cited_doi_retracted",
+              "prereg"
             ],
             "registered": true,
             "required_fields": [
@@ -2758,8 +3055,11 @@
             "schema: claim.id must not contain angle brackets or Unicode angle-bracket homoglyphs"
           ]
         },
-        "audit_hash": "sha256:aedb57fcc585fcaed2122480ca092ed493605d61269e32c7c2c0c0a2463e5a9d",
+        "audit_hash": "sha256:a858fb24a725038cb7daaa1e7acc485c0b729db80ed3ee7ebc532e69725c3385",
+        "audit_hash_recipe": "v2",
         "did_you_mean": {},
+        "engine_version": "0.4.1",
+        "evidence_sha256": "sha256:578f33e7061fed573cb633e633ebf3d6178d2df771cab5e97a64b026f7d96f57",
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "schema or required-field blockers remain",
@@ -2793,6 +3093,7 @@
           "witness_registry_resolved": false
         },
         "fine_tune_ready": false,
+        "hold_class": "field_absent",
         "input_claim": {
           "id": "<script>",
           "text": "Claim ids should not carry raw HTML.",
@@ -2801,6 +3102,7 @@
         "licensed_claim": "Claim ids should not carry raw HTML.",
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "notices": [],
         "reason": "input payload failed CAPAS schema validation",
         "required_fields": [],
         "resolution": {
@@ -2812,6 +3114,10 @@
           "message": "Correct the listed schema errors (each names its own fix), then resubmit."
         },
         "rewrite": null,
+        "rule_table_sha256": "sha256:b6788f744671f389ac43161690d836420221209d7162bc04fd21676b6a3e2e0b",
+        "rules_fired": [
+          "R89d1acb02b"
+        ],
         "schema_errors": [
           "claim.id must not contain angle brackets or Unicode angle-bracket homoglyphs"
         ],
@@ -2842,7 +3148,16 @@
               "object_matches_target",
               "load_bearing_citation_read",
               "citation_hypotheses_checked",
-              "null_control_passed"
+              "null_control_passed",
+              "ai_use_declared",
+              "coverage_factor",
+              "abs_error_u",
+              "tolerance_u",
+              "method_standard",
+              "cited_dois",
+              "retraction_snapshot",
+              "cited_doi_retracted",
+              "prereg"
             ],
             "registered": true,
             "required_fields": [
@@ -2902,8 +3217,11 @@
             "schema: claim.text must not contain angle brackets or Unicode angle-bracket homoglyphs"
           ]
         },
-        "audit_hash": "sha256:a7dbeb47159bf4bb923ee34c4da4eedbd7ae19e98a56c80026a7694a364043c8",
+        "audit_hash": "sha256:3cb5f75e980331093516bc3ccb8b59175ea3b97127547325b25fcb2889dfda09",
+        "audit_hash_recipe": "v2",
         "did_you_mean": {},
+        "engine_version": "0.4.1",
+        "evidence_sha256": "sha256:578f33e7061fed573cb633e633ebf3d6178d2df771cab5e97a64b026f7d96f57",
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "schema or required-field blockers remain",
@@ -2937,6 +3255,7 @@
           "witness_registry_resolved": false
         },
         "fine_tune_ready": false,
+        "hold_class": "field_absent",
         "input_claim": {
           "id": "claim_text_raw_html",
           "text": "<img src=x onerror=alert('xss')>",
@@ -2945,6 +3264,7 @@
         "licensed_claim": "<img src=x onerror=alert('xss')>",
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "notices": [],
         "reason": "input payload failed CAPAS schema validation",
         "required_fields": [],
         "resolution": {
@@ -2956,6 +3276,10 @@
           "message": "Correct the listed schema errors (each names its own fix), then resubmit."
         },
         "rewrite": null,
+        "rule_table_sha256": "sha256:b6788f744671f389ac43161690d836420221209d7162bc04fd21676b6a3e2e0b",
+        "rules_fired": [
+          "R89d1acb02b"
+        ],
         "schema_errors": [
           "claim.text must not contain angle brackets or Unicode angle-bracket homoglyphs"
         ],
@@ -2986,7 +3310,16 @@
               "object_matches_target",
               "load_bearing_citation_read",
               "citation_hypotheses_checked",
-              "null_control_passed"
+              "null_control_passed",
+              "ai_use_declared",
+              "coverage_factor",
+              "abs_error_u",
+              "tolerance_u",
+              "method_standard",
+              "cited_dois",
+              "retraction_snapshot",
+              "cited_doi_retracted",
+              "prereg"
             ],
             "registered": true,
             "required_fields": [
@@ -3046,8 +3379,11 @@
             "schema: claim.text must not contain angle brackets or Unicode angle-bracket homoglyphs"
           ]
         },
-        "audit_hash": "sha256:078fd9f9a0ce8e53e3e2885545134ccf816e97b0c6deb61d1ff2834a53482eab",
+        "audit_hash": "sha256:87bfdc1fc44dd551337011eab9d3705a1ccddc41e1b826000bfec053db6998a5",
+        "audit_hash_recipe": "v2",
         "did_you_mean": {},
+        "engine_version": "0.4.1",
+        "evidence_sha256": "sha256:578f33e7061fed573cb633e633ebf3d6178d2df771cab5e97a64b026f7d96f57",
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "schema or required-field blockers remain",
@@ -3081,6 +3417,7 @@
           "witness_registry_resolved": false
         },
         "fine_tune_ready": false,
+        "hold_class": "field_absent",
         "input_claim": {
           "id": "claim_text_unicode_angle_homoglyph",
           "text": "\u27e8img src=x onerror=alert(1)\u27e9",
@@ -3089,6 +3426,7 @@
         "licensed_claim": "\u27e8img src=x onerror=alert(1)\u27e9",
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "notices": [],
         "reason": "input payload failed CAPAS schema validation",
         "required_fields": [],
         "resolution": {
@@ -3100,6 +3438,10 @@
           "message": "Correct the listed schema errors (each names its own fix), then resubmit."
         },
         "rewrite": null,
+        "rule_table_sha256": "sha256:b6788f744671f389ac43161690d836420221209d7162bc04fd21676b6a3e2e0b",
+        "rules_fired": [
+          "R89d1acb02b"
+        ],
         "schema_errors": [
           "claim.text must not contain angle brackets or Unicode angle-bracket homoglyphs"
         ],
@@ -3130,7 +3472,16 @@
               "object_matches_target",
               "load_bearing_citation_read",
               "citation_hypotheses_checked",
-              "null_control_passed"
+              "null_control_passed",
+              "ai_use_declared",
+              "coverage_factor",
+              "abs_error_u",
+              "tolerance_u",
+              "method_standard",
+              "cited_dois",
+              "retraction_snapshot",
+              "cited_doi_retracted",
+              "prereg"
             ],
             "registered": true,
             "required_fields": [
@@ -3190,8 +3541,11 @@
             "schema: claim.text must not contain angle brackets or Unicode angle-bracket homoglyphs"
           ]
         },
-        "audit_hash": "sha256:e146328c79d13f502795a50de5be0cdffc36275a7e3a154acb885fc8e4d937ee",
+        "audit_hash": "sha256:aa601284dd484c8104c950cc7ef42f5f157c8915a596903e013c895969c75250",
+        "audit_hash_recipe": "v2",
         "did_you_mean": {},
+        "engine_version": "0.4.1",
+        "evidence_sha256": "sha256:578f33e7061fed573cb633e633ebf3d6178d2df771cab5e97a64b026f7d96f57",
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "schema or required-field blockers remain",
@@ -3225,6 +3579,7 @@
           "witness_registry_resolved": false
         },
         "fine_tune_ready": false,
+        "hold_class": "field_absent",
         "input_claim": {
           "id": "claim_text_second_generation_angle_homoglyphs",
           "text": "\ufe64bad\ufe65 \u276cbad\u276d \u29fcbad\u29fd \u2329bad\u232a \u3008bad\u3009",
@@ -3233,6 +3588,7 @@
         "licensed_claim": "\ufe64bad\ufe65 \u276cbad\u276d \u29fcbad\u29fd \u2329bad\u232a \u3008bad\u3009",
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "notices": [],
         "reason": "input payload failed CAPAS schema validation",
         "required_fields": [],
         "resolution": {
@@ -3244,6 +3600,10 @@
           "message": "Correct the listed schema errors (each names its own fix), then resubmit."
         },
         "rewrite": null,
+        "rule_table_sha256": "sha256:b6788f744671f389ac43161690d836420221209d7162bc04fd21676b6a3e2e0b",
+        "rules_fired": [
+          "R89d1acb02b"
+        ],
         "schema_errors": [
           "claim.text must not contain angle brackets or Unicode angle-bracket homoglyphs"
         ],
@@ -3282,7 +3642,16 @@
               "object_matches_target",
               "load_bearing_citation_read",
               "citation_hypotheses_checked",
-              "null_control_passed"
+              "null_control_passed",
+              "ai_use_declared",
+              "coverage_factor",
+              "abs_error_u",
+              "tolerance_u",
+              "method_standard",
+              "cited_dois",
+              "retraction_snapshot",
+              "cited_doi_retracted",
+              "prereg"
             ],
             "registered": true,
             "required_fields": [
@@ -3349,8 +3718,11 @@
             "schema: evidence.anchor_mode must be one of: absolute_anchor, benchmark_anchor, empirical_anchor, relative_anchor"
           ]
         },
-        "audit_hash": "sha256:953c615410a36204196ae12c54d778c346d04ff6f1d6adffd37b9ac0f9e96c30",
+        "audit_hash": "sha256:5340b633d10f2915835b960c27a0ece4a713e9c1c1183581cc2db5eba2f4d2c4",
+        "audit_hash_recipe": "v2",
         "did_you_mean": {},
+        "engine_version": "0.4.1",
+        "evidence_sha256": "sha256:13ec0b720b0559773e6843231d33c8d7cf1c0b2d302d791d5c2f08368bd23ded",
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "schema or required-field blockers remain",
@@ -3384,6 +3756,7 @@
           "witness_registry_resolved": false
         },
         "fine_tune_ready": false,
+        "hold_class": "field_absent",
         "input_claim": {
           "id": "anchor_mode_unicode_angle_homoglyph",
           "text": "Angle-like payloads should not pass through anchor_mode.",
@@ -3392,6 +3765,7 @@
         "licensed_claim": "Angle-like payloads should not pass through anchor_mode.",
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "notices": [],
         "reason": "input payload failed CAPAS schema validation",
         "required_fields": [],
         "resolution": {
@@ -3404,6 +3778,10 @@
           "message": "Correct the listed schema errors (each names its own fix), then resubmit."
         },
         "rewrite": null,
+        "rule_table_sha256": "sha256:b6788f744671f389ac43161690d836420221209d7162bc04fd21676b6a3e2e0b",
+        "rules_fired": [
+          "R89d1acb02b"
+        ],
         "schema_errors": [
           "evidence.anchor_mode must not contain angle brackets or Unicode angle-bracket homoglyphs",
           "evidence.anchor_mode must be one of: absolute_anchor, benchmark_anchor, empirical_anchor, relative_anchor"
@@ -3436,7 +3814,16 @@
               "object_matches_target",
               "load_bearing_citation_read",
               "citation_hypotheses_checked",
-              "null_control_passed"
+              "null_control_passed",
+              "ai_use_declared",
+              "coverage_factor",
+              "abs_error_u",
+              "tolerance_u",
+              "method_standard",
+              "cited_dois",
+              "retraction_snapshot",
+              "cited_doi_retracted",
+              "prereg"
             ],
             "registered": true,
             "required_fields": [
@@ -3498,8 +3885,11 @@
             "schema: evidence.physical_evidence_level must not contain angle brackets or Unicode angle-bracket homoglyphs"
           ]
         },
-        "audit_hash": "sha256:179204dd675681748eedf91b2b431c30322d73c8b9637cefc56737d6a64bcec4",
+        "audit_hash": "sha256:01d210519b4548faae3b02d547668ddbce8463dd6b86ef8a16093d4b0f60b9ed",
+        "audit_hash_recipe": "v2",
         "did_you_mean": {},
+        "engine_version": "0.4.1",
+        "evidence_sha256": "sha256:b41b3bd26f4a4ea4052398de619591e4a396c65f077c66cda6924da8f4c78d35",
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "schema or required-field blockers remain",
@@ -3533,6 +3923,7 @@
           "witness_registry_resolved": false
         },
         "fine_tune_ready": false,
+        "hold_class": "field_absent",
         "input_claim": {
           "id": "physical_evidence_level_angle_homoglyph",
           "text": "Angle-like payloads should not pass through evidence strings.",
@@ -3541,6 +3932,7 @@
         "licensed_claim": "Angle-like payloads should not pass through evidence strings.",
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "notices": [],
         "reason": "input payload failed CAPAS schema validation",
         "required_fields": [],
         "resolution": {
@@ -3552,6 +3944,10 @@
           "message": "Correct the listed schema errors (each names its own fix), then resubmit."
         },
         "rewrite": null,
+        "rule_table_sha256": "sha256:b6788f744671f389ac43161690d836420221209d7162bc04fd21676b6a3e2e0b",
+        "rules_fired": [
+          "R89d1acb02b"
+        ],
         "schema_errors": [
           "evidence.physical_evidence_level must not contain angle brackets or Unicode angle-bracket homoglyphs"
         ],
@@ -3582,7 +3978,16 @@
               "object_declared",
               "object_matches_target",
               "load_bearing_citation_read",
-              "citation_hypotheses_checked"
+              "citation_hypotheses_checked",
+              "ai_use_declared",
+              "coverage_factor",
+              "abs_error_u",
+              "tolerance_u",
+              "method_standard",
+              "cited_dois",
+              "retraction_snapshot",
+              "cited_doi_retracted",
+              "prereg"
             ],
             "registered": true,
             "required_fields": [
@@ -3646,8 +4051,11 @@
             "schema: evidence.p_value must be between 0 and 1"
           ]
         },
-        "audit_hash": "sha256:52405de8cd03771610b43698828dfa0e367f0df9755b152ddcaf9cb67e5e485f",
+        "audit_hash": "sha256:4525d4310408bbc9cdb1fa5a4d5304c75f199560e679638446580f4a2ba7a0a7",
+        "audit_hash_recipe": "v2",
         "did_you_mean": {},
+        "engine_version": "0.4.1",
+        "evidence_sha256": "sha256:ad6ba6a87b967ce908aab30152578727565721b7a9a5e1a1d4f8ab3b1f5f4e86",
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "schema or required-field blockers remain",
@@ -3681,6 +4089,7 @@
           "witness_registry_resolved": false
         },
         "fine_tune_ready": false,
+        "hold_class": "field_absent",
         "input_claim": {
           "id": "p_value_out_of_range",
           "text": "A p-value outside probability bounds must not license a statistical claim.",
@@ -3689,6 +4098,7 @@
         "licensed_claim": "A p-value outside probability bounds must not license a statistical claim.",
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "notices": [],
         "reason": "input payload failed CAPAS schema validation",
         "required_fields": [],
         "resolution": {
@@ -3700,6 +4110,10 @@
           "message": "Correct the listed schema errors (each names its own fix), then resubmit."
         },
         "rewrite": null,
+        "rule_table_sha256": "sha256:b6788f744671f389ac43161690d836420221209d7162bc04fd21676b6a3e2e0b",
+        "rules_fired": [
+          "R89d1acb02b"
+        ],
         "schema_errors": [
           "evidence.p_value must be between 0 and 1"
         ],
@@ -3728,7 +4142,16 @@
               "object_matches_target",
               "load_bearing_citation_read",
               "citation_hypotheses_checked",
-              "null_control_passed"
+              "null_control_passed",
+              "ai_use_declared",
+              "coverage_factor",
+              "abs_error_u",
+              "tolerance_u",
+              "method_standard",
+              "cited_dois",
+              "retraction_snapshot",
+              "cited_doi_retracted",
+              "prereg"
             ],
             "registered": true,
             "required_fields": [
@@ -3794,8 +4217,11 @@
             "schema: evidence.supporting_sources must be an array of strings"
           ]
         },
-        "audit_hash": "sha256:1343ebbb3c3f07db38fcb16074039d13c6944a8f1e340ed4884eb09567327114",
+        "audit_hash": "sha256:d1f442724057fffbbc56d3f41042203ef93b1b646b68e29e4e09ae8dcfce38c0",
+        "audit_hash_recipe": "v2",
         "did_you_mean": {},
+        "engine_version": "0.4.1",
+        "evidence_sha256": "sha256:2d2c53e4b337d87927971d995213bfc547747e2858ebbe183b5865e0e6d325f3",
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "schema or required-field blockers remain",
@@ -3829,6 +4255,7 @@
           "witness_registry_resolved": false
         },
         "fine_tune_ready": false,
+        "hold_class": "field_absent",
         "input_claim": {
           "id": "supporting_sources_must_be_strings",
           "text": "Source arrays must not contain untyped objects.",
@@ -3837,6 +4264,7 @@
         "licensed_claim": "Source arrays must not contain untyped objects.",
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "notices": [],
         "reason": "input payload failed CAPAS schema validation",
         "required_fields": [],
         "resolution": {
@@ -3848,6 +4276,10 @@
           "message": "Correct the listed schema errors (each names its own fix), then resubmit."
         },
         "rewrite": null,
+        "rule_table_sha256": "sha256:b6788f744671f389ac43161690d836420221209d7162bc04fd21676b6a3e2e0b",
+        "rules_fired": [
+          "R89d1acb02b"
+        ],
         "schema_errors": [
           "evidence.supporting_sources must be an array of strings"
         ],
@@ -3891,7 +4323,16 @@
               "object_matches_target",
               "load_bearing_citation_read",
               "citation_hypotheses_checked",
-              "null_control_passed"
+              "null_control_passed",
+              "ai_use_declared",
+              "coverage_factor",
+              "abs_error_u",
+              "tolerance_u",
+              "method_standard",
+              "cited_dois",
+              "retraction_snapshot",
+              "cited_doi_retracted",
+              "prereg"
             ],
             "registered": true,
             "required_fields": [
@@ -3947,8 +4388,11 @@
           },
           "proof_obligations": []
         },
-        "audit_hash": "sha256:41b508d0bf51282e6197ec9eb5cdc56f57391632ed8ff219b9da8eff5ba2f50d",
+        "audit_hash": "sha256:f820b814e9b973b02f28c1b48cf79e7c73fead801f72de9b285eaac93fab9992",
+        "audit_hash_recipe": "v2",
         "did_you_mean": {},
+        "engine_version": "0.4.1",
+        "evidence_sha256": "sha256:03056fe5a8098db246310bfadaab11f569bc21a729417c780519dfe4ad5951c2",
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "source-backed evidence is not attached",
@@ -3981,6 +4425,7 @@
           "witness_registry_resolved": false
         },
         "fine_tune_ready": false,
+        "hold_class": "field_absent",
         "input_claim": {
           "id": "zero_tolerance_exact_accept",
           "text": "A zero tolerance is allowed only as an exact equality check.",
@@ -3998,6 +4443,18 @@
         "licensed_claim": null,
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "notices": [
+          "ai_use_declared: not declared (tool, purpose, phase); required from the X6 freeze",
+          "uncertainty: not declared (no *_u field); the comparison is made at face value"
+        ],
+        "plan3_checks": {
+          "ai_use_declared": "not declared",
+          "provenance": {
+            "declared": 0,
+            "verified": 0
+          },
+          "uncertainty": "not declared"
+        },
         "reason": "abs_error 0.0 <= tolerance 0; abs_error 0.0 is at machine precision (<= 1e-12 x scale): the tolerance does not inform here and no negative control is declared \u2014 identity at machine precision without a negative control",
         "required_fields": [
           "abs_error",
@@ -4008,8 +4465,14 @@
           "message": "Resolve the open proof obligations before reuse."
         },
         "rewrite": null,
+        "rule_table_sha256": "sha256:b6788f744671f389ac43161690d836420221209d7162bc04fd21676b6a3e2e0b",
+        "rules_fired": [
+          "Raf3330c7b8",
+          "R1e5e1c1bdb"
+        ],
         "schema_errors": [],
         "schema_version": "capas-claim-payload-v3",
+        "text_licensed_as_written": false,
         "verdict": "HOLD"
       },
       "expected_detail": "abs_error 0.0 <= tolerance 0",
@@ -4042,7 +4505,16 @@
               "object_matches_target",
               "load_bearing_citation_read",
               "citation_hypotheses_checked",
-              "null_control_passed"
+              "null_control_passed",
+              "ai_use_declared",
+              "coverage_factor",
+              "abs_error_u",
+              "tolerance_u",
+              "method_standard",
+              "cited_dois",
+              "retraction_snapshot",
+              "cited_doi_retracted",
+              "prereg"
             ],
             "registered": true,
             "required_fields": [
@@ -4105,8 +4577,11 @@
             "schema: evidence.anchor_mode must be one of: absolute_anchor, benchmark_anchor, empirical_anchor, relative_anchor"
           ]
         },
-        "audit_hash": "sha256:a138ab9a82ee3e2aca6e6459b32cbbc00c0da376b34bd831adb16e3f09c6270f",
+        "audit_hash": "sha256:39bafc5834632bfe5199d285c1cca1095ebff3ddf0c3016ba0dfffb6987de2bf",
+        "audit_hash_recipe": "v2",
         "did_you_mean": {},
+        "engine_version": "0.4.1",
+        "evidence_sha256": "sha256:cbe388a4ce81787f3411f7065fdd80572b9781f14cc51a679a08410183703509",
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "schema or required-field blockers remain",
@@ -4140,6 +4615,7 @@
           "witness_registry_resolved": false
         },
         "fine_tune_ready": false,
+        "hold_class": "field_absent",
         "input_claim": {
           "id": "anchor_mode_unknown_missing",
           "text": "An unknown anchor mode should be treated as undeclared evidence.",
@@ -4148,6 +4624,7 @@
         "licensed_claim": "An unknown anchor mode should be treated as undeclared evidence.",
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "notices": [],
         "reason": "input payload failed CAPAS schema validation",
         "required_fields": [],
         "resolution": {
@@ -4159,6 +4636,10 @@
           "message": "Correct the listed schema errors (each names its own fix), then resubmit."
         },
         "rewrite": null,
+        "rule_table_sha256": "sha256:b6788f744671f389ac43161690d836420221209d7162bc04fd21676b6a3e2e0b",
+        "rules_fired": [
+          "R89d1acb02b"
+        ],
         "schema_errors": [
           "evidence.anchor_mode must be one of: absolute_anchor, benchmark_anchor, empirical_anchor, relative_anchor"
         ],
@@ -4181,20 +4662,29 @@
             "claim_type": "universal_anchor_claim",
             "description": "Claims that require an explicit anchor-mode evidence contract.",
             "optional_fields": [
+              "abs_error_u",
+              "ai_use_declared",
               "benchmark_metric",
               "benchmark_name",
               "benchmark_pass",
               "citation_hypotheses_checked",
+              "cited_doi_retracted",
+              "cited_dois",
+              "coverage_factor",
               "empirical_anchor_pass",
               "empirical_reference_present",
               "empirical_tolerance",
               "load_bearing_citation_read",
+              "method_standard",
               "null_control_passed",
               "object_declared",
               "object_matches_target",
               "physical_evidence_level",
+              "prereg",
               "relative_anchor_comparison_pass",
               "relative_anchor_reference",
+              "retraction_snapshot",
+              "tolerance_u",
               "verification_independence"
             ],
             "registered": true,
@@ -4266,8 +4756,11 @@
             "boundary: non-absolute anchors cannot license universal correctness as ACCEPT"
           ]
         },
-        "audit_hash": "sha256:e7996d95e73b54e66ea890d71592e95a3c8b0322a290ee42b1c314f4108faf5a",
+        "audit_hash": "sha256:6702225cfe8fd4a4d2526d78438da300544ae6cdcd3efaf8efa5613b7b3a5014",
+        "audit_hash_recipe": "v2",
         "did_you_mean": {},
+        "engine_version": "0.4.1",
+        "evidence_sha256": "sha256:62ee179159dbe56d1403d9d349e23de796fe7537eb407ac6907b14a4a875242d",
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "source-backed evidence is not attached",
@@ -4317,6 +4810,17 @@
         "licensed_claim": "relative comparison against benchmark_model_v1 only; universal physical correctness is not licensed",
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "notices": [
+          "ai_use_declared: not declared (tool, purpose, phase); required from the X6 freeze"
+        ],
+        "plan3_checks": {
+          "ai_use_declared": "not declared",
+          "provenance": {
+            "declared": 0,
+            "verified": 0
+          },
+          "uncertainty": "not declared"
+        },
         "reason": "relative_anchor supports comparison against benchmark_model_v1, not universal physical correctness",
         "required_fields": [
           "anchor_mode",
@@ -4329,8 +4833,13 @@
           "message": "Replace claim.text with the licensed (weaker) wording in `rewrite`, then resubmit."
         },
         "rewrite": "relative comparison against benchmark_model_v1 only; universal physical correctness is not licensed",
+        "rule_table_sha256": "sha256:b6788f744671f389ac43161690d836420221209d7162bc04fd21676b6a3e2e0b",
+        "rules_fired": [
+          "Rd92a06daa7"
+        ],
         "schema_errors": [],
         "schema_version": "capas-claim-payload-v3",
+        "text_licensed_as_written": false,
         "verdict": "REWRITE"
       },
       "expected_detail": "not universal physical correctness",
@@ -4349,20 +4858,29 @@
             "claim_type": "universal_anchor_claim",
             "description": "Claims that require an explicit anchor-mode evidence contract.",
             "optional_fields": [
+              "abs_error_u",
+              "ai_use_declared",
               "benchmark_metric",
               "benchmark_name",
               "benchmark_pass",
               "citation_hypotheses_checked",
+              "cited_doi_retracted",
+              "cited_dois",
+              "coverage_factor",
               "empirical_anchor_pass",
               "empirical_reference_present",
               "empirical_tolerance",
               "load_bearing_citation_read",
+              "method_standard",
               "null_control_passed",
               "object_declared",
               "object_matches_target",
               "physical_evidence_level",
+              "prereg",
               "relative_anchor_comparison_pass",
               "relative_anchor_reference",
+              "retraction_snapshot",
+              "tolerance_u",
               "verification_independence"
             ],
             "registered": true,
@@ -4437,8 +4955,11 @@
             "boundary: non-absolute anchors cannot license universal correctness as ACCEPT"
           ]
         },
-        "audit_hash": "sha256:c0b73dfca078372907314981a6e4cc23be4abb2f27dd4c0cf71ffc0534dfd77d",
+        "audit_hash": "sha256:c3dbecc9e3d7cb80e58c52d3b3bb913187bba6a32053e6cae5c7326328541dc1",
+        "audit_hash_recipe": "v2",
         "did_you_mean": {},
+        "engine_version": "0.4.1",
+        "evidence_sha256": "sha256:b506640d6bf6b2a4da0768bd00daab313504700347f1d08c8f28febdbec4a60b",
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "source-backed evidence is not attached",
@@ -4488,6 +5009,17 @@
         "licensed_claim": "bounded empirical agreement only; universal physical correctness is not licensed",
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "notices": [
+          "ai_use_declared: not declared (tool, purpose, phase); required from the X6 freeze"
+        ],
+        "plan3_checks": {
+          "ai_use_declared": "not declared",
+          "provenance": {
+            "declared": 0,
+            "verified": 0
+          },
+          "uncertainty": "not declared"
+        },
         "reason": "empirical_anchor supports bounded empirical agreement within tolerance 0.02, not universal correctness",
         "required_fields": [
           "anchor_mode",
@@ -4501,8 +5033,13 @@
           "message": "Replace claim.text with the licensed (weaker) wording in `rewrite`, then resubmit."
         },
         "rewrite": "bounded empirical agreement only; universal physical correctness is not licensed",
+        "rule_table_sha256": "sha256:b6788f744671f389ac43161690d836420221209d7162bc04fd21676b6a3e2e0b",
+        "rules_fired": [
+          "R2c7ca09462"
+        ],
         "schema_errors": [],
         "schema_version": "capas-claim-payload-v3",
+        "text_licensed_as_written": false,
         "verdict": "REWRITE"
       },
       "expected_detail": "bounded empirical agreement",
@@ -4521,20 +5058,29 @@
             "claim_type": "universal_anchor_claim",
             "description": "Claims that require an explicit anchor-mode evidence contract.",
             "optional_fields": [
+              "abs_error_u",
+              "ai_use_declared",
               "benchmark_metric",
               "benchmark_name",
               "benchmark_pass",
               "citation_hypotheses_checked",
+              "cited_doi_retracted",
+              "cited_dois",
+              "coverage_factor",
               "empirical_anchor_pass",
               "empirical_reference_present",
               "empirical_tolerance",
               "load_bearing_citation_read",
+              "method_standard",
               "null_control_passed",
               "object_declared",
               "object_matches_target",
               "physical_evidence_level",
+              "prereg",
               "relative_anchor_comparison_pass",
               "relative_anchor_reference",
+              "retraction_snapshot",
+              "tolerance_u",
               "verification_independence"
             ],
             "registered": true,
@@ -4609,8 +5155,11 @@
             "boundary: non-absolute anchors cannot license universal correctness as ACCEPT"
           ]
         },
-        "audit_hash": "sha256:8241b361f15ff553c906c0f004e8b3018c2973eeda132a473734100b7ba7c30c",
+        "audit_hash": "sha256:eac264823aed8e6c9afe70bd2b523ae5df159127dadc9b87e99e06e73c2fd104",
+        "audit_hash_recipe": "v2",
         "did_you_mean": {},
+        "engine_version": "0.4.1",
+        "evidence_sha256": "sha256:ae4a6ed0c2fa37d1658fcb64848adfb71e67b9f23f586802b0e32987ed6f8faf",
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "source-backed evidence is not attached",
@@ -4660,6 +5209,17 @@
         "licensed_claim": "benchmark-limited claim for capas_benchmark_suite / pass_rate; universal physical correctness is not licensed",
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "notices": [
+          "ai_use_declared: not declared (tool, purpose, phase); required from the X6 freeze"
+        ],
+        "plan3_checks": {
+          "ai_use_declared": "not declared",
+          "provenance": {
+            "declared": 0,
+            "verified": 0
+          },
+          "uncertainty": "not declared"
+        },
         "reason": "benchmark_anchor supports capas_benchmark_suite / pass_rate, not universal physical correctness",
         "required_fields": [
           "anchor_mode",
@@ -4673,8 +5233,13 @@
           "message": "Replace claim.text with the licensed (weaker) wording in `rewrite`, then resubmit."
         },
         "rewrite": "benchmark-limited claim for capas_benchmark_suite / pass_rate; universal physical correctness is not licensed",
+        "rule_table_sha256": "sha256:b6788f744671f389ac43161690d836420221209d7162bc04fd21676b6a3e2e0b",
+        "rules_fired": [
+          "R07e2cb65d4"
+        ],
         "schema_errors": [],
         "schema_version": "capas-claim-payload-v3",
+        "text_licensed_as_written": false,
         "verdict": "REWRITE"
       },
       "expected_detail": "benchmark-limited",
@@ -4699,7 +5264,16 @@
               "object_declared",
               "object_matches_target",
               "load_bearing_citation_read",
-              "citation_hypotheses_checked"
+              "citation_hypotheses_checked",
+              "ai_use_declared",
+              "coverage_factor",
+              "abs_error_u",
+              "tolerance_u",
+              "method_standard",
+              "cited_dois",
+              "retraction_snapshot",
+              "cited_doi_retracted",
+              "prereg"
             ],
             "registered": true,
             "required_fields": [
@@ -4723,7 +5297,7 @@
               "training: provenance.review_id is missing",
               "training: provenance.witness_id is missing"
             ],
-            "licensed_thesis": "The observed effect is statistically significant at alpha 0.05.",
+            "licensed_thesis": "Licensed on the declared statistical_confidence evidence: p_value 0.01 <= alpha 0.05 and effect direction is confirmed.",
             "optional_supports": [],
             "rebuttals": [],
             "supports": [
@@ -4783,8 +5357,11 @@
             "training: provenance.witness_id is missing"
           ]
         },
-        "audit_hash": "sha256:2d30e74583a2e64d2ae1981ffcb70d92c3a1ac84b07d1df191d97db8de692660",
+        "audit_hash": "sha256:5ff7f8236e255c61f7e64d975c9065a4f78af37cf04e3a55a1dca9c074a28ffb",
+        "audit_hash_recipe": "v2",
         "did_you_mean": {},
+        "engine_version": "0.4.1",
+        "evidence_sha256": "sha256:b6debd9ee86cd9401b7ddd93b9bc47927f1478d847745a90eca69ccdaf614a77",
         "fine_tune_blockers": [
           "source-backed evidence is not attached",
           "external review is not attached",
@@ -4830,9 +5407,20 @@
           "verdict": "N/A",
           "violations": []
         },
-        "licensed_claim": "The observed effect is statistically significant at alpha 0.05.",
+        "licensed_claim": "Licensed on the declared statistical_confidence evidence: p_value 0.01 <= alpha 0.05 and effect direction is confirmed.",
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "notices": [
+          "ai_use_declared: not declared (tool, purpose, phase); required from the X6 freeze"
+        ],
+        "plan3_checks": {
+          "ai_use_declared": "not declared",
+          "provenance": {
+            "declared": 0,
+            "verified": 0
+          },
+          "uncertainty": "not declared"
+        },
         "reason": "p_value 0.01 <= alpha 0.05 and effect direction is confirmed",
         "required_fields": [
           "p_value",
@@ -4844,9 +5432,20 @@
           "message": "The evidence licenses the claim as worded."
         },
         "rewrite": null,
+        "rule_table_sha256": "sha256:b6788f744671f389ac43161690d836420221209d7162bc04fd21676b6a3e2e0b",
+        "rules_fired": [
+          "Rabe0b631d1"
+        ],
         "schema_errors": [],
         "schema_version": "capas-claim-payload-v3",
-        "verdict": "ACCEPT"
+        "text_licensed_as_written": false,
+        "verdict": "ACCEPT",
+        "would_have_failed_if": [
+          "declared p_value (.*?) is inconsistent with its own test statistic (recomputed): (.*?)",
+          "statistical threshold passes, but effect direction is not licensed",
+          "p_value (.*?) > alpha (.*?)",
+          "or any of 18 downgrade rules that act on an ACCEPT (see docs/rule_table.json)"
+        ]
       },
       "expected_detail": "effect direction is confirmed",
       "expected_verdict": "ACCEPT",
@@ -4869,7 +5468,16 @@
               "object_matches_target",
               "load_bearing_citation_read",
               "citation_hypotheses_checked",
-              "null_control_passed"
+              "null_control_passed",
+              "ai_use_declared",
+              "coverage_factor",
+              "abs_error_u",
+              "tolerance_u",
+              "method_standard",
+              "cited_dois",
+              "retraction_snapshot",
+              "cited_doi_retracted",
+              "prereg"
             ],
             "registered": true,
             "required_fields": [
@@ -4931,8 +5539,11 @@
             "boundary: edit claim.text to the licensed_claim and resubmit before ACCEPT"
           ]
         },
-        "audit_hash": "sha256:1b4755d115bc0d1d084d6352f950559b33e7e1792e01db9dd2a3f05530f3b69b",
+        "audit_hash": "sha256:aeaf3a0cf05b292b81c31a3cbac810ff495cce72b5b1262125c7ed0b53e66b4f",
+        "audit_hash_recipe": "v2",
         "did_you_mean": {},
+        "engine_version": "0.4.1",
+        "evidence_sha256": "sha256:898c37909a696c73ff7ce397f63a95d3b1897e5ee9923143cd5d16304dffd992",
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "source-backed evidence is not attached",
@@ -4982,6 +5593,17 @@
         "licensed_claim": "artifact available; independent reproduction is not yet licensed",
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "notices": [
+          "ai_use_declared: not declared (tool, purpose, phase); required from the X6 freeze"
+        ],
+        "plan3_checks": {
+          "ai_use_declared": "not declared",
+          "provenance": {
+            "declared": 0,
+            "verified": 0
+          },
+          "uncertainty": "not declared"
+        },
         "reason": "artifact exists, but independent reproduction has not passed",
         "required_fields": [
           "artifact_available",
@@ -4992,8 +5614,13 @@
           "message": "Replace claim.text with the licensed (weaker) wording in `rewrite`, then resubmit."
         },
         "rewrite": "artifact available; independent reproduction is not yet licensed",
+        "rule_table_sha256": "sha256:b6788f744671f389ac43161690d836420221209d7162bc04fd21676b6a3e2e0b",
+        "rules_fired": [
+          "R113eab222c"
+        ],
         "schema_errors": [],
         "schema_version": "capas-claim-payload-v3",
+        "text_licensed_as_written": false,
         "verdict": "REWRITE"
       },
       "expected_detail": "independent reproduction has not passed",
@@ -5018,7 +5645,16 @@
               "object_matches_target",
               "load_bearing_citation_read",
               "citation_hypotheses_checked",
-              "null_control_passed"
+              "null_control_passed",
+              "ai_use_declared",
+              "coverage_factor",
+              "abs_error_u",
+              "tolerance_u",
+              "method_standard",
+              "cited_dois",
+              "retraction_snapshot",
+              "cited_doi_retracted",
+              "prereg"
             ],
             "registered": true,
             "required_fields": [
@@ -5043,7 +5679,7 @@
               "training: provenance.review_id is missing",
               "training: provenance.witness_id is missing"
             ],
-            "licensed_thesis": "The reported financial metric matches the reference for the same period.",
+            "licensed_thesis": "Licensed on the declared financial_metric_claim evidence: reported_value differs from reference_value by 0.20000000000000284, within tolerance 0.5, and period matches.",
             "optional_supports": [],
             "rebuttals": [],
             "supports": [
@@ -5104,8 +5740,11 @@
             "training: provenance.witness_id is missing"
           ]
         },
-        "audit_hash": "sha256:e757a5ae766d7eecbe7d303e7ff4237af0994452688290f457514cd3ee203c73",
+        "audit_hash": "sha256:07548b13d373ea129cf3ad3007b9cc000bf6dcda86c0ed03a0d6265497bd2f3a",
+        "audit_hash_recipe": "v2",
         "did_you_mean": {},
+        "engine_version": "0.4.1",
+        "evidence_sha256": "sha256:769eb03d012af6ac6d04f4b76f615a7c7418d56b642fcf00ae0d90b18a37fdb3",
         "fine_tune_blockers": [
           "source-backed evidence is not attached",
           "external review is not attached",
@@ -5151,9 +5790,20 @@
           "verdict": "N/A",
           "violations": []
         },
-        "licensed_claim": "The reported financial metric matches the reference for the same period.",
+        "licensed_claim": "Licensed on the declared financial_metric_claim evidence: reported_value differs from reference_value by 0.20000000000000284, within tolerance 0.5, and period matches.",
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "notices": [
+          "ai_use_declared: not declared (tool, purpose, phase); required from the X6 freeze"
+        ],
+        "plan3_checks": {
+          "ai_use_declared": "not declared",
+          "provenance": {
+            "declared": 0,
+            "verified": 0
+          },
+          "uncertainty": "not declared"
+        },
         "reason": "reported_value differs from reference_value by 0.20000000000000284, within tolerance 0.5, and period matches",
         "required_fields": [
           "reported_value",
@@ -5166,9 +5816,19 @@
           "message": "The evidence licenses the claim as worded."
         },
         "rewrite": null,
+        "rule_table_sha256": "sha256:b6788f744671f389ac43161690d836420221209d7162bc04fd21676b6a3e2e0b",
+        "rules_fired": [
+          "R404ebcc1d2"
+        ],
         "schema_errors": [],
         "schema_version": "capas-claim-payload-v3",
-        "verdict": "ACCEPT"
+        "text_licensed_as_written": false,
+        "verdict": "ACCEPT",
+        "would_have_failed_if": [
+          "numeric metric matches tolerance, but period alignment is not licensed",
+          "reported_value differs from reference_value by (.*?), above tolerance (.*?)",
+          "or any of 17 downgrade rules that act on an ACCEPT (see docs/rule_table.json)"
+        ]
       },
       "expected_detail": "period matches",
       "expected_verdict": "ACCEPT",
@@ -5191,7 +5851,16 @@
               "object_matches_target",
               "load_bearing_citation_read",
               "citation_hypotheses_checked",
-              "null_control_passed"
+              "null_control_passed",
+              "ai_use_declared",
+              "coverage_factor",
+              "abs_error_u",
+              "tolerance_u",
+              "method_standard",
+              "cited_dois",
+              "retraction_snapshot",
+              "cited_doi_retracted",
+              "prereg"
             ],
             "registered": true,
             "required_fields": [
@@ -5216,7 +5885,7 @@
               "training: provenance.review_id is missing",
               "training: provenance.witness_id is missing"
             ],
-            "licensed_thesis": "The intervention causally changes the outcome through the declared mechanism.",
+            "licensed_thesis": "Licensed on the declared causal_mechanism_claim evidence: intervention/natural experiment, temporal order, confounder controls, and mechanism evidence all pass.",
             "optional_supports": [],
             "rebuttals": [],
             "supports": [
@@ -5277,8 +5946,11 @@
             "training: provenance.witness_id is missing"
           ]
         },
-        "audit_hash": "sha256:ef3a3ca4fc94b99915608b002219deeeb0a298bd795e25349f682f106dc481a1",
+        "audit_hash": "sha256:06580eb50a45af3a6611d61cdc871cf48b65b7b313f1be700907a6e2e3a00976",
+        "audit_hash_recipe": "v2",
         "did_you_mean": {},
+        "engine_version": "0.4.1",
+        "evidence_sha256": "sha256:db58a6697c0a804a9ae32cc14e1cd5977789a2c50d0d6794ef5fa04dd44e4f54",
         "fine_tune_blockers": [
           "source-backed evidence is not attached",
           "external review is not attached",
@@ -5324,9 +5996,20 @@
           "verdict": "N/A",
           "violations": []
         },
-        "licensed_claim": "The intervention causally changes the outcome through the declared mechanism.",
+        "licensed_claim": "Licensed on the declared causal_mechanism_claim evidence: intervention/natural experiment, temporal order, confounder controls, and mechanism evidence all pass.",
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "notices": [
+          "ai_use_declared: not declared (tool, purpose, phase); required from the X6 freeze"
+        ],
+        "plan3_checks": {
+          "ai_use_declared": "not declared",
+          "provenance": {
+            "declared": 0,
+            "verified": 0
+          },
+          "uncertainty": "not declared"
+        },
         "reason": "intervention/natural experiment, temporal order, confounder controls, and mechanism evidence all pass",
         "required_fields": [
           "intervention_or_natural_experiment",
@@ -5339,9 +6022,19 @@
           "message": "The evidence licenses the claim as worded."
         },
         "rewrite": null,
+        "rule_table_sha256": "sha256:b6788f744671f389ac43161690d836420221209d7162bc04fd21676b6a3e2e0b",
+        "rules_fired": [
+          "Rc3701a38b4"
+        ],
         "schema_errors": [],
         "schema_version": "capas-claim-payload-v3",
-        "verdict": "ACCEPT"
+        "text_licensed_as_written": false,
+        "verdict": "ACCEPT",
+        "would_have_failed_if": [
+          "causal design and temporal order are present, but full causal mechanism licensing is incomplete",
+          "causal claim lacks intervention/natural experiment evidence or temporal order",
+          "or any of 15 downgrade rules that act on an ACCEPT (see docs/rule_table.json)"
+        ]
       },
       "expected_detail": "mechanism evidence all pass",
       "expected_verdict": "ACCEPT",
@@ -5363,7 +6056,16 @@
               "object_matches_target",
               "load_bearing_citation_read",
               "citation_hypotheses_checked",
-              "null_control_passed"
+              "null_control_passed",
+              "ai_use_declared",
+              "coverage_factor",
+              "abs_error_u",
+              "tolerance_u",
+              "method_standard",
+              "cited_dois",
+              "retraction_snapshot",
+              "cited_doi_retracted",
+              "prereg"
             ],
             "registered": true,
             "required_fields": [
@@ -5429,8 +6131,11 @@
             "boundary: edit claim.text to the licensed_claim and resubmit before ACCEPT"
           ]
         },
-        "audit_hash": "sha256:2f92d44997db4e9b43c75b6443d525423d28d26d95d375c56a1d586a5fc0365b",
+        "audit_hash": "sha256:25ff4ec18ab1a4238808303eaadcf67818a8c7fef1bf3af7b66418e3f1dba24e",
+        "audit_hash_recipe": "v2",
         "did_you_mean": {},
+        "engine_version": "0.4.1",
+        "evidence_sha256": "sha256:7ca47c052715d42a8a9e6815fe0d04b2405f1d5b545d98fcff5b03ccd3eeac69",
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "source-backed evidence is not attached",
@@ -5480,6 +6185,17 @@
         "licensed_claim": "systematic review process is documented; strength or consistency of effect is not fully licensed",
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "notices": [
+          "ai_use_declared: not declared (tool, purpose, phase); required from the X6 freeze"
+        ],
+        "plan3_checks": {
+          "ai_use_declared": "not declared",
+          "provenance": {
+            "declared": 0,
+            "verified": 0
+          },
+          "uncertainty": "not declared"
+        },
         "reason": "review protocol and inclusion criteria are present, but bias/consistency evidence is incomplete",
         "required_fields": [
           "protocol_registered",
@@ -5492,8 +6208,13 @@
           "message": "Replace claim.text with the licensed (weaker) wording in `rewrite`, then resubmit."
         },
         "rewrite": "systematic review process is documented; strength or consistency of effect is not fully licensed",
+        "rule_table_sha256": "sha256:b6788f744671f389ac43161690d836420221209d7162bc04fd21676b6a3e2e0b",
+        "rules_fired": [
+          "R5caa1237ed"
+        ],
         "schema_errors": [],
         "schema_version": "capas-claim-payload-v3",
+        "text_licensed_as_written": false,
         "verdict": "REWRITE"
       },
       "expected_detail": "bias/consistency evidence is incomplete",
@@ -5516,7 +6237,16 @@
               "object_matches_target",
               "load_bearing_citation_read",
               "citation_hypotheses_checked",
-              "null_control_passed"
+              "null_control_passed",
+              "ai_use_declared",
+              "coverage_factor",
+              "abs_error_u",
+              "tolerance_u",
+              "method_standard",
+              "cited_dois",
+              "retraction_snapshot",
+              "cited_doi_retracted",
+              "prereg"
             ],
             "registered": true,
             "required_fields": [
@@ -5541,7 +6271,7 @@
               "training: provenance.review_id is missing",
               "training: provenance.witness_id is missing"
             ],
-            "licensed_thesis": "The conflicting evidence is resolved by the declared pre-registered method.",
+            "licensed_thesis": "Licensed on the declared evidence_conflict_claim evidence: supporting and contradicting sources are disclosed with a pre-registered conflict-resolution method.",
             "optional_supports": [],
             "rebuttals": [],
             "supports": [
@@ -5602,8 +6332,11 @@
             "training: provenance.witness_id is missing"
           ]
         },
-        "audit_hash": "sha256:43880025869557548afc54e46c220522e6b30d74f41ccc312eb5e66044df51de",
+        "audit_hash": "sha256:c09b45ac2d260874d1dbf9dd535b1e6b1ecdf90358ae4c9bb41c59ab141d2203",
+        "audit_hash_recipe": "v2",
         "did_you_mean": {},
+        "engine_version": "0.4.1",
+        "evidence_sha256": "sha256:146817d60205478db9e63bba7da339aec75179c87b678465ef88bafe05898c38",
         "fine_tune_blockers": [
           "source-backed evidence is not attached",
           "external review is not attached",
@@ -5649,9 +6382,20 @@
           "verdict": "N/A",
           "violations": []
         },
-        "licensed_claim": "The conflicting evidence is resolved by the declared pre-registered method.",
+        "licensed_claim": "Licensed on the declared evidence_conflict_claim evidence: supporting and contradicting sources are disclosed with a pre-registered conflict-resolution method.",
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "notices": [
+          "ai_use_declared: not declared (tool, purpose, phase); required from the X6 freeze"
+        ],
+        "plan3_checks": {
+          "ai_use_declared": "not declared",
+          "provenance": {
+            "declared": 0,
+            "verified": 0
+          },
+          "uncertainty": "not declared"
+        },
         "reason": "supporting and contradicting sources are disclosed with a pre-registered conflict-resolution method",
         "required_fields": [
           "supporting_sources",
@@ -5664,9 +6408,19 @@
           "message": "The evidence licenses the claim as worded."
         },
         "rewrite": null,
+        "rule_table_sha256": "sha256:b6788f744671f389ac43161690d836420221209d7162bc04fd21676b6a3e2e0b",
+        "rules_fired": [
+          "Rcdfd1bc40e"
+        ],
         "schema_errors": [],
         "schema_version": "capas-claim-payload-v3",
-        "verdict": "ACCEPT"
+        "text_licensed_as_written": false,
+        "verdict": "ACCEPT",
+        "would_have_failed_if": [
+          "conflicting evidence is disclosed, but conflict resolution was not pre-registered",
+          "evidence conflict claim lacks supporting/contradicting source sets or a resolution method",
+          "or any of 15 downgrade rules that act on an ACCEPT (see docs/rule_table.json)"
+        ]
       },
       "expected_detail": "pre-registered conflict-resolution method",
       "expected_verdict": "ACCEPT",
@@ -5688,7 +6442,16 @@
               "object_matches_target",
               "load_bearing_citation_read",
               "citation_hypotheses_checked",
-              "null_control_passed"
+              "null_control_passed",
+              "ai_use_declared",
+              "coverage_factor",
+              "abs_error_u",
+              "tolerance_u",
+              "method_standard",
+              "cited_dois",
+              "retraction_snapshot",
+              "cited_doi_retracted",
+              "prereg"
             ],
             "registered": true,
             "required_fields": [
@@ -5713,7 +6476,7 @@
               "training: provenance.review_id is missing",
               "training: provenance.witness_id is missing"
             ],
-            "licensed_thesis": "The multimodal evidence supports the extracted claim.",
+            "licensed_thesis": "Licensed on the declared multimodal_evidence_claim evidence: modality, source hashes, cross-modal alignment, and extraction method are declared.",
             "optional_supports": [],
             "rebuttals": [],
             "supports": [
@@ -5774,8 +6537,11 @@
             "training: provenance.witness_id is missing"
           ]
         },
-        "audit_hash": "sha256:6291eb6dc304fcefddff2fa14172ac949fb4e0e18ae54f5895851de7f5416ace",
+        "audit_hash": "sha256:6508446259a8603a71e5efac3d1ee3614a455bd730f34a26c3720e6f9f633dd0",
+        "audit_hash_recipe": "v2",
         "did_you_mean": {},
+        "engine_version": "0.4.1",
+        "evidence_sha256": "sha256:e2583fac358299f568f58191d654bf90585e42d0895ea82cf133322c09b595ba",
         "fine_tune_blockers": [
           "source-backed evidence is not attached",
           "external review is not attached",
@@ -5821,9 +6587,20 @@
           "verdict": "N/A",
           "violations": []
         },
-        "licensed_claim": "The multimodal evidence supports the extracted claim.",
+        "licensed_claim": "Licensed on the declared multimodal_evidence_claim evidence: modality, source hashes, cross-modal alignment, and extraction method are declared.",
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "notices": [
+          "ai_use_declared: not declared (tool, purpose, phase); required from the X6 freeze"
+        ],
+        "plan3_checks": {
+          "ai_use_declared": "not declared",
+          "provenance": {
+            "declared": 0,
+            "verified": 0
+          },
+          "uncertainty": "not declared"
+        },
         "reason": "modality, source hashes, cross-modal alignment, and extraction method are declared",
         "required_fields": [
           "modality",
@@ -5836,9 +6613,19 @@
           "message": "The evidence licenses the claim as worded."
         },
         "rewrite": null,
+        "rule_table_sha256": "sha256:b6788f744671f389ac43161690d836420221209d7162bc04fd21676b6a3e2e0b",
+        "rules_fired": [
+          "Rbeb381e784"
+        ],
         "schema_errors": [],
         "schema_version": "capas-claim-payload-v3",
-        "verdict": "ACCEPT"
+        "text_licensed_as_written": false,
+        "verdict": "ACCEPT",
+        "would_have_failed_if": [
+          "multimodal source identity is verified, but alignment or extraction method is not fully licensed",
+          "multimodal claim lacks verified source hashes or declared modality",
+          "or any of 15 downgrade rules that act on an ACCEPT (see docs/rule_table.json)"
+        ]
       },
       "expected_detail": "cross-modal alignment",
       "expected_verdict": "ACCEPT",
@@ -5861,7 +6648,16 @@
               "object_matches_target",
               "load_bearing_citation_read",
               "citation_hypotheses_checked",
-              "null_control_passed"
+              "null_control_passed",
+              "ai_use_declared",
+              "coverage_factor",
+              "abs_error_u",
+              "tolerance_u",
+              "method_standard",
+              "cited_dois",
+              "retraction_snapshot",
+              "cited_doi_retracted",
+              "prereg"
             ],
             "registered": true,
             "required_fields": [
@@ -5890,7 +6686,7 @@
               "training: provenance.review_id is missing",
               "training: provenance.witness_id is missing"
             ],
-            "licensed_thesis": "Python list.append adds the new element to the end of the list.",
+            "licensed_thesis": "Licensed on the declared programming_language_behavior_claim evidence: observed execution matches expected output for Python 3.12 list.append.",
             "optional_supports": [
               "evidence.docs_reference"
             ],
@@ -5957,8 +6753,11 @@
             "training: provenance.witness_id is missing"
           ]
         },
-        "audit_hash": "sha256:abbfd1031d8ed3724b91b7b0532034460fe9dfa0327ad18e34ce5d5393a12412",
+        "audit_hash": "sha256:9d88199af99b385f2a52a04a089d048a8e65d4774dc8a071db5e42a5e73d5626",
+        "audit_hash_recipe": "v2",
         "did_you_mean": {},
+        "engine_version": "0.4.1",
+        "evidence_sha256": "sha256:116d533f4a526d822789096e2ef67b0501bf7b2b0a146551510b8039ea04d3b0",
         "fine_tune_blockers": [
           "source-backed evidence is not attached",
           "external review is not attached",
@@ -6004,9 +6803,20 @@
           "verdict": "N/A",
           "violations": []
         },
-        "licensed_claim": "Python list.append adds the new element to the end of the list.",
+        "licensed_claim": "Licensed on the declared programming_language_behavior_claim evidence: observed execution matches expected output for Python 3.12 list.append.",
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "notices": [
+          "ai_use_declared: not declared (tool, purpose, phase); required from the X6 freeze"
+        ],
+        "plan3_checks": {
+          "ai_use_declared": "not declared",
+          "provenance": {
+            "declared": 0,
+            "verified": 0
+          },
+          "uncertainty": "not declared"
+        },
         "reason": "observed execution matches expected output for Python 3.12 list.append",
         "required_fields": [
           "language",
@@ -6023,9 +6833,20 @@
           "message": "The evidence licenses the claim as worded."
         },
         "rewrite": null,
+        "rule_table_sha256": "sha256:b6788f744671f389ac43161690d836420221209d7162bc04fd21676b6a3e2e0b",
+        "rules_fired": [
+          "R09e8aa6323"
+        ],
         "schema_errors": [],
         "schema_version": "capas-claim-payload-v3",
-        "verdict": "ACCEPT"
+        "text_licensed_as_written": false,
+        "verdict": "ACCEPT",
+        "would_have_failed_if": [
+          "observed_output does not match expected_output for (.*?) (.*?)",
+          "documentation reference and runtime boundary are supplied, but execution was not observed",
+          "programming behavior evidence is structurally complete but lacks observed execution or runtime boundary",
+          "or any of 15 downgrade rules that act on an ACCEPT (see docs/rule_table.json)"
+        ]
       },
       "expected_detail": "observed execution matches expected output",
       "expected_verdict": "ACCEPT",
@@ -6048,7 +6869,16 @@
               "object_matches_target",
               "load_bearing_citation_read",
               "citation_hypotheses_checked",
-              "null_control_passed"
+              "null_control_passed",
+              "ai_use_declared",
+              "coverage_factor",
+              "abs_error_u",
+              "tolerance_u",
+              "method_standard",
+              "cited_dois",
+              "retraction_snapshot",
+              "cited_doi_retracted",
+              "prereg"
             ],
             "registered": true,
             "required_fields": [
@@ -6124,8 +6954,11 @@
             "boundary: edit claim.text to the licensed_claim and resubmit before ACCEPT"
           ]
         },
-        "audit_hash": "sha256:e43533d26f765c3457399e9bdfda94c8ea19516cf3dcc2ba73ab7b72f9f0cadb",
+        "audit_hash": "sha256:47e8b004b38a617812837db754ce59ba957308358ba48931d081e74b67e3a429",
+        "audit_hash_recipe": "v2",
         "did_you_mean": {},
+        "engine_version": "0.4.1",
+        "evidence_sha256": "sha256:f96b9c4316d4f5b0ea7d9bc4a4d2f675e53fca28ae49df1b042022f3939e6526",
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "source-backed evidence is not attached",
@@ -6175,6 +7008,17 @@
         "licensed_claim": "documented programming-language behavior; execution trace is not independently observed",
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "notices": [
+          "ai_use_declared: not declared (tool, purpose, phase); required from the X6 freeze"
+        ],
+        "plan3_checks": {
+          "ai_use_declared": "not declared",
+          "provenance": {
+            "declared": 0,
+            "verified": 0
+          },
+          "uncertainty": "not declared"
+        },
         "reason": "documentation reference and runtime boundary are supplied, but execution was not observed",
         "required_fields": [
           "language",
@@ -6191,8 +7035,13 @@
           "message": "Replace claim.text with the licensed (weaker) wording in `rewrite`, then resubmit."
         },
         "rewrite": "documented programming-language behavior; execution trace is not independently observed",
+        "rule_table_sha256": "sha256:b6788f744671f389ac43161690d836420221209d7162bc04fd21676b6a3e2e0b",
+        "rules_fired": [
+          "Rf031374428"
+        ],
         "schema_errors": [],
         "schema_version": "capas-claim-payload-v3",
+        "text_licensed_as_written": false,
         "verdict": "REWRITE"
       },
       "expected_detail": "execution was not observed",
@@ -6216,7 +7065,16 @@
               "object_matches_target",
               "load_bearing_citation_read",
               "citation_hypotheses_checked",
-              "null_control_passed"
+              "null_control_passed",
+              "ai_use_declared",
+              "coverage_factor",
+              "abs_error_u",
+              "tolerance_u",
+              "method_standard",
+              "cited_dois",
+              "retraction_snapshot",
+              "cited_doi_retracted",
+              "prereg"
             ],
             "registered": true,
             "required_fields": [
@@ -6286,8 +7144,11 @@
           },
           "proof_obligations": []
         },
-        "audit_hash": "sha256:a3bffb0f95b4cacdc55d1a80f7c3f1b618a2b1d6f69d3164aa0eaf073a398418",
+        "audit_hash": "sha256:831f7ed6141d2a5b0098fae00bab31459ef6fd1a3438e3e9592b5afd50dd33f0",
+        "audit_hash_recipe": "v2",
         "did_you_mean": {},
+        "engine_version": "0.4.1",
+        "evidence_sha256": "sha256:a1b9b3a280fa70f75cd61635d996f1ce81d4eb275934426e00c3f4fa66ae576e",
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "source-backed evidence is not attached",
@@ -6337,6 +7198,17 @@
         "licensed_claim": "Python list.append inserts the new element at the beginning of the list.",
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "notices": [
+          "ai_use_declared: not declared (tool, purpose, phase); required from the X6 freeze"
+        ],
+        "plan3_checks": {
+          "ai_use_declared": "not declared",
+          "provenance": {
+            "declared": 0,
+            "verified": 0
+          },
+          "uncertainty": "not declared"
+        },
         "reason": "observed_output does not match expected_output for Python list.append",
         "required_fields": [
           "language",
@@ -6353,8 +7225,13 @@
           "message": "The evidence contradicts the claim. Exclude it, or supply new evidence that changes the contract outcome."
         },
         "rewrite": null,
+        "rule_table_sha256": "sha256:b6788f744671f389ac43161690d836420221209d7162bc04fd21676b6a3e2e0b",
+        "rules_fired": [
+          "R60056365af"
+        ],
         "schema_errors": [],
         "schema_version": "capas-claim-payload-v3",
+        "text_licensed_as_written": false,
         "verdict": "REJECT"
       },
       "expected_detail": "does not match expected_output",
@@ -6378,7 +7255,16 @@
               "object_matches_target",
               "load_bearing_citation_read",
               "citation_hypotheses_checked",
-              "null_control_passed"
+              "null_control_passed",
+              "ai_use_declared",
+              "coverage_factor",
+              "abs_error_u",
+              "tolerance_u",
+              "method_standard",
+              "cited_dois",
+              "retraction_snapshot",
+              "cited_doi_retracted",
+              "prereg"
             ],
             "registered": true,
             "required_fields": [
@@ -6453,8 +7339,11 @@
             "evidence: provide observed_output"
           ]
         },
-        "audit_hash": "sha256:597c0c33e9a71bfb8438ea4438fbf661f72844ee6cdb33805c226917a0ba6feb",
+        "audit_hash": "sha256:6fc1e1c7b162bea0313a3db2f4faa6419c3d7d83cb2984c259afd8e6877813fd",
+        "audit_hash_recipe": "v2",
         "did_you_mean": {},
+        "engine_version": "0.4.1",
+        "evidence_sha256": "sha256:f6a74f65fdf03ac116647f746a49312d60cae5e97ab68058ecf2605fab1a94d1",
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "schema or required-field blockers remain",
@@ -6488,6 +7377,7 @@
           "witness_registry_resolved": false
         },
         "fine_tune_ready": false,
+        "hold_class": "field_absent",
         "input_claim": {
           "id": "programming_language_behavior_claim_hold_missing_output",
           "text": "Python list.pop returns the removed item.",
@@ -6508,6 +7398,17 @@
           "observed_output"
         ],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "notices": [
+          "ai_use_declared: not declared (tool, purpose, phase); required from the X6 freeze"
+        ],
+        "plan3_checks": {
+          "ai_use_declared": "not declared",
+          "provenance": {
+            "declared": 0,
+            "verified": 0
+          },
+          "uncertainty": "not declared"
+        },
         "reason": "missing required evidence fields: ['expected_output', 'observed_output']",
         "required_fields": [
           "language",
@@ -6541,8 +7442,13 @@
           "message": "Supply these evidence fields (types and examples given), then resubmit."
         },
         "rewrite": null,
+        "rule_table_sha256": "sha256:b6788f744671f389ac43161690d836420221209d7162bc04fd21676b6a3e2e0b",
+        "rules_fired": [
+          "Rb9cea85722"
+        ],
         "schema_errors": [],
         "schema_version": "capas-claim-payload-v3",
+        "text_licensed_as_written": false,
         "verdict": "HOLD"
       },
       "expected_detail": "expected_output",
@@ -6561,20 +7467,29 @@
             "claim_type": "universal_anchor_claim",
             "description": "Claims that require an explicit anchor-mode evidence contract.",
             "optional_fields": [
+              "abs_error_u",
+              "ai_use_declared",
               "benchmark_metric",
               "benchmark_name",
               "benchmark_pass",
               "citation_hypotheses_checked",
+              "cited_doi_retracted",
+              "cited_dois",
+              "coverage_factor",
               "empirical_anchor_pass",
               "empirical_reference_present",
               "empirical_tolerance",
               "load_bearing_citation_read",
+              "method_standard",
               "null_control_passed",
               "object_declared",
               "object_matches_target",
               "physical_evidence_level",
+              "prereg",
               "relative_anchor_comparison_pass",
               "relative_anchor_reference",
+              "retraction_snapshot",
+              "tolerance_u",
               "verification_independence"
             ],
             "registered": true,
@@ -6586,7 +7501,7 @@
           },
           "dialectic": {
             "burden_of_proof": [],
-            "licensed_thesis": "The generated scaling result is physically consistent with the universal z=1 anchor.",
+            "licensed_thesis": "Licensed on the declared universal_anchor_claim evidence: local checks and universal anchor both pass.",
             "optional_supports": [
               "evidence.physical_evidence_level",
               "evidence.verification_independence"
@@ -6636,8 +7551,11 @@
           },
           "proof_obligations": []
         },
-        "audit_hash": "sha256:f110852578a06c8dc32c3a6fbf1e1859ce94a9b229fa9f69aabab724cbde468d",
+        "audit_hash": "sha256:ebfc16045c8b02652375a0d86783242b9c1b217c7325639e4252a5e4a5519ebd",
+        "audit_hash_recipe": "v2",
         "did_you_mean": {},
+        "engine_version": "0.4.1",
+        "evidence_sha256": "sha256:208d6ecd2c0d0ddbc366fb35776b2a6f05e97efa680e016dfaaa569a180e81e9",
         "fine_tune_blockers": [],
         "fine_tune_criteria": {
           "external_review": true,
@@ -6670,9 +7588,20 @@
           "verdict": "N/A",
           "violations": []
         },
-        "licensed_claim": "The generated scaling result is physically consistent with the universal z=1 anchor.",
+        "licensed_claim": "Licensed on the declared universal_anchor_claim evidence: local checks and universal anchor both pass.",
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "notices": [
+          "ai_use_declared: not declared (tool, purpose, phase); required from the X6 freeze"
+        ],
+        "plan3_checks": {
+          "ai_use_declared": "not declared",
+          "provenance": {
+            "declared": 0,
+            "verified": 0
+          },
+          "uncertainty": "not declared"
+        },
         "reason": "local checks and universal anchor both pass",
         "required_fields": [
           "anchor_mode",
@@ -6684,9 +7613,22 @@
           "message": "The evidence licenses the claim as worded."
         },
         "rewrite": null,
+        "rule_table_sha256": "sha256:b6788f744671f389ac43161690d836420221209d7162bc04fd21676b6a3e2e0b",
+        "rules_fired": [
+          "R415ac3e9f8"
+        ],
         "schema_errors": [],
         "schema_version": "capas-claim-payload-v3",
-        "verdict": "ACCEPT"
+        "text_licensed_as_written": false,
+        "verdict": "ACCEPT",
+        "would_have_failed_if": [
+          "local checks pass, but the universal anchor fails",
+          "relative_anchor supports comparison against (.*?), not universal physical correctness",
+          "empirical_anchor supports bounded empirical agreement within tolerance (.*?), not universal correctness",
+          "benchmark_anchor supports (.*?) / (.*?), not universal physical correctness",
+          "(.*?) evidence fails before the universal-anchor claim is licensed",
+          "or any of 15 downgrade rules that act on an ACCEPT (see docs/rule_table.json)"
+        ]
       },
       "expected_detail": "\"fine_tune_ready\": true",
       "expected_verdict": "ACCEPT",
@@ -6704,20 +7646,29 @@
             "claim_type": "universal_anchor_claim",
             "description": "Claims that require an explicit anchor-mode evidence contract.",
             "optional_fields": [
+              "abs_error_u",
+              "ai_use_declared",
               "benchmark_metric",
               "benchmark_name",
               "benchmark_pass",
               "citation_hypotheses_checked",
+              "cited_doi_retracted",
+              "cited_dois",
+              "coverage_factor",
               "empirical_anchor_pass",
               "empirical_reference_present",
               "empirical_tolerance",
               "load_bearing_citation_read",
+              "method_standard",
               "null_control_passed",
               "object_declared",
               "object_matches_target",
               "physical_evidence_level",
+              "prereg",
               "relative_anchor_comparison_pass",
               "relative_anchor_reference",
+              "retraction_snapshot",
+              "tolerance_u",
               "verification_independence"
             ],
             "registered": true,
@@ -6735,7 +7686,7 @@
               "training: RO-Crate provenance packet is missing, invalid, or hash-mismatched",
               "training: reviewer identity or attestation is not verifiable"
             ],
-            "licensed_thesis": "The generated scaling result is physically consistent with the universal z=1 anchor.",
+            "licensed_thesis": "Licensed on the declared universal_anchor_claim evidence: local checks and universal anchor both pass.",
             "optional_supports": [],
             "rebuttals": [],
             "supports": [
@@ -6788,8 +7739,11 @@
             "training: reviewer identity or attestation is not verifiable"
           ]
         },
-        "audit_hash": "sha256:64202f5feddbfe29d84bbe78ac28e19f1e2bd5fa4200ae778efe827622ca68b5",
+        "audit_hash": "sha256:86b449d896d3230904545200972b718da9c83ccf2f8766ff9bf533de60470b1e",
+        "audit_hash_recipe": "v2",
         "did_you_mean": {},
+        "engine_version": "0.4.1",
+        "evidence_sha256": "sha256:6a54513461a41cddb8d55c9e32f71e35320fcdcbb19af68b30f5c724c9d551d8",
         "fine_tune_blockers": [
           "external review is not attached",
           "external review hash is missing or does not match review_packet",
@@ -6828,9 +7782,20 @@
           "verdict": "N/A",
           "violations": []
         },
-        "licensed_claim": "The generated scaling result is physically consistent with the universal z=1 anchor.",
+        "licensed_claim": "Licensed on the declared universal_anchor_claim evidence: local checks and universal anchor both pass.",
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "notices": [
+          "ai_use_declared: not declared (tool, purpose, phase); required from the X6 freeze"
+        ],
+        "plan3_checks": {
+          "ai_use_declared": "not declared",
+          "provenance": {
+            "declared": 0,
+            "verified": 0
+          },
+          "uncertainty": "not declared"
+        },
         "reason": "local checks and universal anchor both pass",
         "required_fields": [
           "anchor_mode",
@@ -6842,9 +7807,22 @@
           "message": "The evidence licenses the claim as worded."
         },
         "rewrite": null,
+        "rule_table_sha256": "sha256:b6788f744671f389ac43161690d836420221209d7162bc04fd21676b6a3e2e0b",
+        "rules_fired": [
+          "R415ac3e9f8"
+        ],
         "schema_errors": [],
         "schema_version": "capas-claim-payload-v3",
-        "verdict": "ACCEPT"
+        "text_licensed_as_written": false,
+        "verdict": "ACCEPT",
+        "would_have_failed_if": [
+          "local checks pass, but the universal anchor fails",
+          "relative_anchor supports comparison against (.*?), not universal physical correctness",
+          "empirical_anchor supports bounded empirical agreement within tolerance (.*?), not universal correctness",
+          "benchmark_anchor supports (.*?) / (.*?), not universal physical correctness",
+          "(.*?) evidence fails before the universal-anchor claim is licensed",
+          "or any of 15 downgrade rules that act on an ACCEPT (see docs/rule_table.json)"
+        ]
       },
       "expected_detail": "external review is not attached",
       "expected_verdict": "ACCEPT",
@@ -6870,7 +7848,16 @@
               "object_matches_target",
               "load_bearing_citation_read",
               "citation_hypotheses_checked",
-              "null_control_passed"
+              "null_control_passed",
+              "ai_use_declared",
+              "coverage_factor",
+              "abs_error_u",
+              "tolerance_u",
+              "method_standard",
+              "cited_dois",
+              "retraction_snapshot",
+              "cited_doi_retracted",
+              "prereg"
             ],
             "registered": true,
             "required_fields": [
@@ -6897,7 +7884,7 @@
               "training: provenance.review_id is missing",
               "training: provenance.witness_id is missing"
             ],
-            "licensed_thesis": "theta lies in the pre-registered RECOVERED band (lower bound 0.5).",
+            "licensed_thesis": "Licensed on the declared interval_band_claim evidence: the whole 95% interval [1.259, 1.55] lies inside the pre-registered band [0.5, +inf].",
             "optional_supports": [
               "evidence.method",
               "evidence.resamples"
@@ -6963,8 +7950,11 @@
             "training: provenance.witness_id is missing"
           ]
         },
-        "audit_hash": "sha256:1d125f5067f1afc9717d2afc81374a505f2b76343d96ffbfad1f217ac57f9778",
+        "audit_hash": "sha256:4c4642666dbfa3363bd910c7186d4a31addc1a31880b8c76f58aef2be2ed669d",
+        "audit_hash_recipe": "v2",
         "did_you_mean": {},
+        "engine_version": "0.4.1",
+        "evidence_sha256": "sha256:c29907b019665ccd636e0bb4969485358d05c9799e95fe6a7f816d5df11183d8",
         "fine_tune_blockers": [
           "source-backed evidence is not attached",
           "external review is not attached",
@@ -7010,9 +8000,20 @@
           "verdict": "N/A",
           "violations": []
         },
-        "licensed_claim": "theta lies in the pre-registered RECOVERED band (lower bound 0.5).",
+        "licensed_claim": "Licensed on the declared interval_band_claim evidence: the whole 95% interval [1.259, 1.55] lies inside the pre-registered band [0.5, +inf].",
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "notices": [
+          "ai_use_declared: not declared (tool, purpose, phase); required from the X6 freeze"
+        ],
+        "plan3_checks": {
+          "ai_use_declared": "not declared",
+          "provenance": {
+            "declared": 0,
+            "verified": 0
+          },
+          "uncertainty": "not declared"
+        },
         "reason": "the whole 95% interval [1.259, 1.55] lies inside the pre-registered band [0.5, +inf]",
         "required_fields": [
           "estimate",
@@ -7027,9 +8028,20 @@
           "message": "The evidence licenses the claim as worded."
         },
         "rewrite": null,
+        "rule_table_sha256": "sha256:b6788f744671f389ac43161690d836420221209d7162bc04fd21676b6a3e2e0b",
+        "rules_fired": [
+          "R85ba6ae86b"
+        ],
         "schema_errors": [],
         "schema_version": "capas-claim-payload-v3",
-        "verdict": "ACCEPT"
+        "text_licensed_as_written": false,
+        "verdict": "ACCEPT",
+        "would_have_failed_if": [
+          "the band was not declared pre-registered: a band chosen after seeing the estimate licenses nothing; the interval itself is licensed",
+          "the whole (.*?) interval [(.*?), (.*?)] lies outside the pre-registered band (.*?)",
+          "the (.*?) interval [(.*?), (.*?)] straddles the edge of the band (.*?): the band is not licensed; the interval is",
+          "or any of 15 downgrade rules that act on an ACCEPT (see docs/rule_table.json)"
+        ]
       },
       "expected_detail": "inside the pre-registered band",
       "expected_verdict": "ACCEPT",
@@ -7055,7 +8067,16 @@
               "object_matches_target",
               "load_bearing_citation_read",
               "citation_hypotheses_checked",
-              "null_control_passed"
+              "null_control_passed",
+              "ai_use_declared",
+              "coverage_factor",
+              "abs_error_u",
+              "tolerance_u",
+              "method_standard",
+              "cited_dois",
+              "retraction_snapshot",
+              "cited_doi_retracted",
+              "prereg"
             ],
             "registered": true,
             "required_fields": [
@@ -7121,8 +8142,11 @@
           },
           "proof_obligations": []
         },
-        "audit_hash": "sha256:a415c2dfbc310438416bd2a4f53f57d4a9739c96a02689497ad74ebff34249ca",
+        "audit_hash": "sha256:a8f09da379a641905a6a69cb1cda4aa6ed3dbf8623bbc1c19eff79cab3775104",
+        "audit_hash_recipe": "v2",
         "did_you_mean": {},
+        "engine_version": "0.4.1",
+        "evidence_sha256": "sha256:f5da00d197795b7efc525fcb99c18257b80ce3c729b5f8d7f0434104dcd15fa4",
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "source-backed evidence is not attached",
@@ -7172,6 +8196,17 @@
         "licensed_claim": "theta lies in the pre-registered PERSISTS band (-0.25, 0.25).",
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "notices": [
+          "ai_use_declared: not declared (tool, purpose, phase); required from the X6 freeze"
+        ],
+        "plan3_checks": {
+          "ai_use_declared": "not declared",
+          "provenance": {
+            "declared": 0,
+            "verified": 0
+          },
+          "uncertainty": "not declared"
+        },
         "reason": "the whole 95% interval [1.259, 1.55] lies outside the pre-registered band [-0.25, 0.25]",
         "required_fields": [
           "estimate",
@@ -7186,8 +8221,13 @@
           "message": "The evidence contradicts the claim. Exclude it, or supply new evidence that changes the contract outcome."
         },
         "rewrite": null,
+        "rule_table_sha256": "sha256:b6788f744671f389ac43161690d836420221209d7162bc04fd21676b6a3e2e0b",
+        "rules_fired": [
+          "R467757a6c2"
+        ],
         "schema_errors": [],
         "schema_version": "capas-claim-payload-v3",
+        "text_licensed_as_written": false,
         "verdict": "REJECT"
       },
       "expected_detail": "outside the pre-registered band",
@@ -7214,7 +8254,16 @@
               "object_matches_target",
               "load_bearing_citation_read",
               "citation_hypotheses_checked",
-              "null_control_passed"
+              "null_control_passed",
+              "ai_use_declared",
+              "coverage_factor",
+              "abs_error_u",
+              "tolerance_u",
+              "method_standard",
+              "cited_dois",
+              "retraction_snapshot",
+              "cited_doi_retracted",
+              "prereg"
             ],
             "registered": true,
             "required_fields": [
@@ -7284,8 +8333,11 @@
             "boundary: edit claim.text to the licensed_claim and resubmit before ACCEPT"
           ]
         },
-        "audit_hash": "sha256:489446d1004232b993d4882fc93ed33d2cb57d1660e57265b1ca3889599d6a08",
+        "audit_hash": "sha256:52e5fc8cc7bc882e8503c34727e8f421cf633bd2ad258eb0c01195fffc629815",
+        "audit_hash_recipe": "v2",
         "did_you_mean": {},
+        "engine_version": "0.4.1",
+        "evidence_sha256": "sha256:7e2a8d90d5b652108b6535a9d3827aa94424901477e612e0330a067c7e4b6bf2",
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "source-backed evidence is not attached",
@@ -7335,6 +8387,17 @@
         "licensed_claim": "1.393 with 95% interval [1.259, 1.55]",
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "notices": [
+          "ai_use_declared: not declared (tool, purpose, phase); required from the X6 freeze"
+        ],
+        "plan3_checks": {
+          "ai_use_declared": "not declared",
+          "provenance": {
+            "declared": 0,
+            "verified": 0
+          },
+          "uncertainty": "not declared"
+        },
         "reason": "the band was not declared pre-registered: a band chosen after seeing the estimate licenses nothing; the interval itself is licensed",
         "required_fields": [
           "estimate",
@@ -7349,8 +8412,13 @@
           "message": "Replace claim.text with the licensed (weaker) wording in `rewrite`, then resubmit."
         },
         "rewrite": "1.393 with 95% interval [1.259, 1.55]",
+        "rule_table_sha256": "sha256:b6788f744671f389ac43161690d836420221209d7162bc04fd21676b6a3e2e0b",
+        "rules_fired": [
+          "Rd7eae0f696"
+        ],
         "schema_errors": [],
         "schema_version": "capas-claim-payload-v3",
+        "text_licensed_as_written": false,
         "verdict": "REWRITE"
       },
       "expected_detail": "not declared pre-registered",
@@ -7369,20 +8437,29 @@
             "claim_type": "universal_anchor_claim",
             "description": "Claims that require an explicit anchor-mode evidence contract.",
             "optional_fields": [
+              "abs_error_u",
+              "ai_use_declared",
               "benchmark_metric",
               "benchmark_name",
               "benchmark_pass",
               "citation_hypotheses_checked",
+              "cited_doi_retracted",
+              "cited_dois",
+              "coverage_factor",
               "empirical_anchor_pass",
               "empirical_reference_present",
               "empirical_tolerance",
               "load_bearing_citation_read",
+              "method_standard",
               "null_control_passed",
               "object_declared",
               "object_matches_target",
               "physical_evidence_level",
+              "prereg",
               "relative_anchor_comparison_pass",
               "relative_anchor_reference",
+              "retraction_snapshot",
+              "tolerance_u",
               "verification_independence"
             ],
             "registered": true,
@@ -7454,8 +8531,11 @@
             "boundary: non-absolute anchors cannot license universal correctness as ACCEPT"
           ]
         },
-        "audit_hash": "sha256:ea42b413c0c4ee97a4fb5de36549a7dc66a3882d2d82dcee3341b67d3f1749ee",
+        "audit_hash": "sha256:4d2700b321120c87f241f73aff3b96d7254f7dc2e3de1e08a0085fadc063af70",
+        "audit_hash_recipe": "v2",
         "did_you_mean": {},
+        "engine_version": "0.4.1",
+        "evidence_sha256": "sha256:62ee179159dbe56d1403d9d349e23de796fe7537eb407ac6907b14a4a875242d",
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "source-backed evidence is not attached",
@@ -7505,6 +8585,17 @@
         "licensed_claim": "relative comparison against benchmark_model_v1 only; universal physical correctness is not licensed",
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "notices": [
+          "ai_use_declared: not declared (tool, purpose, phase); required from the X6 freeze"
+        ],
+        "plan3_checks": {
+          "ai_use_declared": "not declared",
+          "provenance": {
+            "declared": 0,
+            "verified": 0
+          },
+          "uncertainty": "not declared"
+        },
         "reason": "relative_anchor supports comparison against benchmark_model_v1, not universal physical correctness",
         "required_fields": [
           "anchor_mode",
@@ -7517,8 +8608,13 @@
           "message": "Replace claim.text with the licensed (weaker) wording in `rewrite`, then resubmit."
         },
         "rewrite": "relative comparison against benchmark_model_v1 only; universal physical correctness is not licensed",
+        "rule_table_sha256": "sha256:b6788f744671f389ac43161690d836420221209d7162bc04fd21676b6a3e2e0b",
+        "rules_fired": [
+          "Rd92a06daa7"
+        ],
         "schema_errors": [],
         "schema_version": "capas-claim-payload-v3",
+        "text_licensed_as_written": false,
         "verdict": "REWRITE"
       },
       "passed": true
@@ -7591,8 +8687,11 @@
             "contract: register evidence contract for claim.type 'quantum_oracle_claim'"
           ]
         },
-        "audit_hash": "sha256:e90c70f8fefbac9fcd30ba8e592fce4e3de3259289821a1e841f2d96ecca2e0e",
+        "audit_hash": "sha256:8883779abd7f225bd136f86df46c6538828ab485ca302df0824acf09bae23be6",
+        "audit_hash_recipe": "v2",
         "did_you_mean": {},
+        "engine_version": "0.4.1",
+        "evidence_sha256": "sha256:33e31240d24bc701c1db7e2eb418b3890708ae0cab0c9d94e4afbfd2800dd20f",
         "fine_tune_blockers": [
           "claim verdict is not ACCEPT",
           "schema or required-field blockers remain",
@@ -7626,6 +8725,7 @@
           "witness_registry_resolved": false
         },
         "fine_tune_ready": false,
+        "hold_class": "field_absent",
         "input_claim": {
           "id": "unsupported_certificate",
           "text": "Unknown claims require a contract before CAPAS can decide them.",
@@ -7634,6 +8734,7 @@
         "licensed_claim": "Unknown claims require a contract before CAPAS can decide them.",
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "notices": [],
         "reason": "input payload failed CAPAS schema validation",
         "required_fields": [],
         "resolution": {
@@ -7645,6 +8746,10 @@
           "message": "Correct the listed schema errors (each names its own fix), then resubmit."
         },
         "rewrite": null,
+        "rule_table_sha256": "sha256:b6788f744671f389ac43161690d836420221209d7162bc04fd21676b6a3e2e0b",
+        "rules_fired": [
+          "R89d1acb02b"
+        ],
         "schema_errors": [
           "claim.type must be one of: causal_mechanism_claim, claim_transition, evidence_conflict_claim, exact_model_solution, financial_metric_claim, interval_band_claim, multimodal_evidence_claim, physical_accuracy, programming_language_behavior_claim, proof_admissibility, reproducibility_check, statistical_confidence, systematic_review_claim, universal_anchor_claim; unsupported claim type 'quantum_oracle_claim' requires a registered evidence contract before CAPAS can decide it"
         ],
@@ -7737,7 +8842,16 @@
                     "object_matches_target",
                     "load_bearing_citation_read",
                     "citation_hypotheses_checked",
-                    "null_control_passed"
+                    "null_control_passed",
+                    "ai_use_declared",
+                    "coverage_factor",
+                    "abs_error_u",
+                    "tolerance_u",
+                    "method_standard",
+                    "cited_dois",
+                    "retraction_snapshot",
+                    "cited_doi_retracted",
+                    "prereg"
                   ],
                   "registered": true,
                   "required_fields": [
@@ -7760,7 +8874,7 @@
                     "training: provenance.review_id is missing",
                     "training: provenance.witness_id is missing"
                   ],
-                  "licensed_thesis": "The solution is within tolerance.",
+                  "licensed_thesis": "Licensed on the declared exact_model_solution evidence: abs_error 0.0 <= tolerance 0.01.",
                   "optional_supports": [
                     "evidence.negative_control_failed"
                   ],
@@ -7821,8 +8935,11 @@
                   "training: provenance.witness_id is missing"
                 ]
               },
-              "audit_hash": "sha256:d5456dde1cf60e53a0098467d47eba38d04c2f350b54af6e18f7ad6248150e54",
+              "audit_hash": "sha256:4a996a2eb038e3fc03bba5666a95a1be3613aae984c3efdf8ac62816c77b88b1",
+              "audit_hash_recipe": "v2",
               "did_you_mean": {},
+              "engine_version": "0.4.1",
+              "evidence_sha256": "sha256:8a56c1b940c5c9fc1994199a514034e4b3bcabcff6f40fd47269b6e495359c56",
               "fine_tune_blockers": [
                 "source-backed evidence is not attached",
                 "external review is not attached",
@@ -7868,9 +8985,21 @@
                 "verdict": "N/A",
                 "violations": []
               },
-              "licensed_claim": "The solution is within tolerance.",
+              "licensed_claim": "Licensed on the declared exact_model_solution evidence: abs_error 0.0 <= tolerance 0.01.",
               "missing_fields": [],
               "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+              "notices": [
+                "ai_use_declared: not declared (tool, purpose, phase); required from the X6 freeze",
+                "uncertainty: not declared (no *_u field); the comparison is made at face value"
+              ],
+              "plan3_checks": {
+                "ai_use_declared": "not declared",
+                "provenance": {
+                  "declared": 0,
+                  "verified": 0
+                },
+                "uncertainty": "not declared"
+              },
               "reason": "abs_error 0.0 <= tolerance 0.01",
               "required_fields": [
                 "abs_error",
@@ -7881,9 +9010,18 @@
                 "message": "The evidence licenses the claim as worded."
               },
               "rewrite": null,
+              "rule_table_sha256": "sha256:b6788f744671f389ac43161690d836420221209d7162bc04fd21676b6a3e2e0b",
+              "rules_fired": [
+                "Raf3330c7b8"
+              ],
               "schema_errors": [],
               "schema_version": "capas-claim-payload-v3",
-              "verdict": "ACCEPT"
+              "text_licensed_as_written": false,
+              "verdict": "ACCEPT",
+              "would_have_failed_if": [
+                "abs_error (.*?) > tolerance (.*?)(.*?)",
+                "or any of 28 downgrade rules that act on an ACCEPT (see docs/rule_table.json)"
+              ]
             }
           },
           {
@@ -7903,7 +9041,16 @@
                     "object_matches_target",
                     "load_bearing_citation_read",
                     "citation_hypotheses_checked",
-                    "null_control_passed"
+                    "null_control_passed",
+                    "ai_use_declared",
+                    "coverage_factor",
+                    "abs_error_u",
+                    "tolerance_u",
+                    "method_standard",
+                    "cited_dois",
+                    "retraction_snapshot",
+                    "cited_doi_retracted",
+                    "prereg"
                   ],
                   "registered": true,
                   "required_fields": [
@@ -7965,8 +9112,11 @@
                   "boundary: edit claim.text to the licensed_claim and resubmit before ACCEPT"
                 ]
               },
-              "audit_hash": "sha256:72d712660596e0e1bd42a99c0357f68237e2862186c2ddc0ef4a6ba7fa5de1f5",
+              "audit_hash": "sha256:1b6f59e0c41811745fcddfad7c8013cb81ee9623c8465a3150aceba5901b7fb9",
+              "audit_hash_recipe": "v2",
               "did_you_mean": {},
+              "engine_version": "0.4.1",
+              "evidence_sha256": "sha256:898c37909a696c73ff7ce397f63a95d3b1897e5ee9923143cd5d16304dffd992",
               "fine_tune_blockers": [
                 "claim verdict is not ACCEPT",
                 "source-backed evidence is not attached",
@@ -8016,6 +9166,17 @@
               "licensed_claim": "artifact available; independent reproduction is not yet licensed",
               "missing_fields": [],
               "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+              "notices": [
+                "ai_use_declared: not declared (tool, purpose, phase); required from the X6 freeze"
+              ],
+              "plan3_checks": {
+                "ai_use_declared": "not declared",
+                "provenance": {
+                  "declared": 0,
+                  "verified": 0
+                },
+                "uncertainty": "not declared"
+              },
               "reason": "artifact exists, but independent reproduction has not passed",
               "required_fields": [
                 "artifact_available",
@@ -8026,8 +9187,13 @@
                 "message": "Replace claim.text with the licensed (weaker) wording in `rewrite`, then resubmit."
               },
               "rewrite": "artifact available; independent reproduction is not yet licensed",
+              "rule_table_sha256": "sha256:b6788f744671f389ac43161690d836420221209d7162bc04fd21676b6a3e2e0b",
+              "rules_fired": [
+                "R113eab222c"
+              ],
               "schema_errors": [],
               "schema_version": "capas-claim-payload-v3",
+              "text_licensed_as_written": false,
               "verdict": "REWRITE"
             }
           }
@@ -8053,20 +9219,29 @@
             "claim_type": "universal_anchor_claim",
             "description": "Claims that require an explicit anchor-mode evidence contract.",
             "optional_fields": [
+              "abs_error_u",
+              "ai_use_declared",
               "benchmark_metric",
               "benchmark_name",
               "benchmark_pass",
               "citation_hypotheses_checked",
+              "cited_doi_retracted",
+              "cited_dois",
+              "coverage_factor",
               "empirical_anchor_pass",
               "empirical_reference_present",
               "empirical_tolerance",
               "load_bearing_citation_read",
+              "method_standard",
               "null_control_passed",
               "object_declared",
               "object_matches_target",
               "physical_evidence_level",
+              "prereg",
               "relative_anchor_comparison_pass",
               "relative_anchor_reference",
+              "retraction_snapshot",
+              "tolerance_u",
               "verification_independence"
             ],
             "registered": true,
@@ -8080,7 +9255,7 @@
             "burden_of_proof": [
               "training: external review hash is missing or does not match review_packet"
             ],
-            "licensed_thesis": "The generated scaling result is physically consistent with the universal z=1 anchor.",
+            "licensed_thesis": "Licensed on the declared universal_anchor_claim evidence: local checks and universal anchor both pass.",
             "optional_supports": [
               "evidence.physical_evidence_level",
               "evidence.verification_independence"
@@ -8132,8 +9307,11 @@
             "training: external review hash is missing or does not match review_packet"
           ]
         },
-        "audit_hash": "sha256:f110852578a06c8dc32c3a6fbf1e1859ce94a9b229fa9f69aabab724cbde468d",
+        "audit_hash": "sha256:ebfc16045c8b02652375a0d86783242b9c1b217c7325639e4252a5e4a5519ebd",
+        "audit_hash_recipe": "v2",
         "did_you_mean": {},
+        "engine_version": "0.4.1",
+        "evidence_sha256": "sha256:208d6ecd2c0d0ddbc366fb35776b2a6f05e97efa680e016dfaaa569a180e81e9",
         "fine_tune_blockers": [
           "external review hash is missing or does not match review_packet"
         ],
@@ -8168,9 +9346,20 @@
           "verdict": "N/A",
           "violations": []
         },
-        "licensed_claim": "The generated scaling result is physically consistent with the universal z=1 anchor.",
+        "licensed_claim": "Licensed on the declared universal_anchor_claim evidence: local checks and universal anchor both pass.",
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "notices": [
+          "ai_use_declared: not declared (tool, purpose, phase); required from the X6 freeze"
+        ],
+        "plan3_checks": {
+          "ai_use_declared": "not declared",
+          "provenance": {
+            "declared": 0,
+            "verified": 0
+          },
+          "uncertainty": "not declared"
+        },
         "reason": "local checks and universal anchor both pass",
         "required_fields": [
           "anchor_mode",
@@ -8182,9 +9371,22 @@
           "message": "The evidence licenses the claim as worded."
         },
         "rewrite": null,
+        "rule_table_sha256": "sha256:b6788f744671f389ac43161690d836420221209d7162bc04fd21676b6a3e2e0b",
+        "rules_fired": [
+          "R415ac3e9f8"
+        ],
         "schema_errors": [],
         "schema_version": "capas-claim-payload-v3",
-        "verdict": "ACCEPT"
+        "text_licensed_as_written": false,
+        "verdict": "ACCEPT",
+        "would_have_failed_if": [
+          "local checks pass, but the universal anchor fails",
+          "relative_anchor supports comparison against (.*?), not universal physical correctness",
+          "empirical_anchor supports bounded empirical agreement within tolerance (.*?), not universal correctness",
+          "benchmark_anchor supports (.*?) / (.*?), not universal physical correctness",
+          "(.*?) evidence fails before the universal-anchor claim is licensed",
+          "or any of 15 downgrade rules that act on an ACCEPT (see docs/rule_table.json)"
+        ]
       },
       "expected_blocker": "external review hash is missing or does not match review_packet",
       "expected_criterion": "review_hash_verified",
@@ -8202,20 +9404,29 @@
             "claim_type": "universal_anchor_claim",
             "description": "Claims that require an explicit anchor-mode evidence contract.",
             "optional_fields": [
+              "abs_error_u",
+              "ai_use_declared",
               "benchmark_metric",
               "benchmark_name",
               "benchmark_pass",
               "citation_hypotheses_checked",
+              "cited_doi_retracted",
+              "cited_dois",
+              "coverage_factor",
               "empirical_anchor_pass",
               "empirical_reference_present",
               "empirical_tolerance",
               "load_bearing_citation_read",
+              "method_standard",
               "null_control_passed",
               "object_declared",
               "object_matches_target",
               "physical_evidence_level",
+              "prereg",
               "relative_anchor_comparison_pass",
               "relative_anchor_reference",
+              "retraction_snapshot",
+              "tolerance_u",
               "verification_independence"
             ],
             "registered": true,
@@ -8229,7 +9440,7 @@
             "burden_of_proof": [
               "training: source URLs are not recoverable with matching hashes"
             ],
-            "licensed_thesis": "The generated scaling result is physically consistent with the universal z=1 anchor.",
+            "licensed_thesis": "Licensed on the declared universal_anchor_claim evidence: local checks and universal anchor both pass.",
             "optional_supports": [
               "evidence.physical_evidence_level",
               "evidence.verification_independence"
@@ -8281,8 +9492,11 @@
             "training: source URLs are not recoverable with matching hashes"
           ]
         },
-        "audit_hash": "sha256:f110852578a06c8dc32c3a6fbf1e1859ce94a9b229fa9f69aabab724cbde468d",
+        "audit_hash": "sha256:ebfc16045c8b02652375a0d86783242b9c1b217c7325639e4252a5e4a5519ebd",
+        "audit_hash_recipe": "v2",
         "did_you_mean": {},
+        "engine_version": "0.4.1",
+        "evidence_sha256": "sha256:208d6ecd2c0d0ddbc366fb35776b2a6f05e97efa680e016dfaaa569a180e81e9",
         "fine_tune_blockers": [
           "source URLs are not recoverable with matching hashes"
         ],
@@ -8317,9 +9531,20 @@
           "verdict": "N/A",
           "violations": []
         },
-        "licensed_claim": "The generated scaling result is physically consistent with the universal z=1 anchor.",
+        "licensed_claim": "Licensed on the declared universal_anchor_claim evidence: local checks and universal anchor both pass.",
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "notices": [
+          "ai_use_declared: not declared (tool, purpose, phase); required from the X6 freeze"
+        ],
+        "plan3_checks": {
+          "ai_use_declared": "not declared",
+          "provenance": {
+            "declared": 0,
+            "verified": 0
+          },
+          "uncertainty": "not declared"
+        },
         "reason": "local checks and universal anchor both pass",
         "required_fields": [
           "anchor_mode",
@@ -8331,9 +9556,22 @@
           "message": "The evidence licenses the claim as worded."
         },
         "rewrite": null,
+        "rule_table_sha256": "sha256:b6788f744671f389ac43161690d836420221209d7162bc04fd21676b6a3e2e0b",
+        "rules_fired": [
+          "R415ac3e9f8"
+        ],
         "schema_errors": [],
         "schema_version": "capas-claim-payload-v3",
-        "verdict": "ACCEPT"
+        "text_licensed_as_written": false,
+        "verdict": "ACCEPT",
+        "would_have_failed_if": [
+          "local checks pass, but the universal anchor fails",
+          "relative_anchor supports comparison against (.*?), not universal physical correctness",
+          "empirical_anchor supports bounded empirical agreement within tolerance (.*?), not universal correctness",
+          "benchmark_anchor supports (.*?) / (.*?), not universal physical correctness",
+          "(.*?) evidence fails before the universal-anchor claim is licensed",
+          "or any of 15 downgrade rules that act on an ACCEPT (see docs/rule_table.json)"
+        ]
       },
       "expected_blocker": "source URLs are not recoverable with matching hashes",
       "expected_criterion": "source_urls_recoverable_hashable",
@@ -8351,20 +9589,29 @@
             "claim_type": "universal_anchor_claim",
             "description": "Claims that require an explicit anchor-mode evidence contract.",
             "optional_fields": [
+              "abs_error_u",
+              "ai_use_declared",
               "benchmark_metric",
               "benchmark_name",
               "benchmark_pass",
               "citation_hypotheses_checked",
+              "cited_doi_retracted",
+              "cited_dois",
+              "coverage_factor",
               "empirical_anchor_pass",
               "empirical_reference_present",
               "empirical_tolerance",
               "load_bearing_citation_read",
+              "method_standard",
               "null_control_passed",
               "object_declared",
               "object_matches_target",
               "physical_evidence_level",
+              "prereg",
               "relative_anchor_comparison_pass",
               "relative_anchor_reference",
+              "retraction_snapshot",
+              "tolerance_u",
               "verification_independence"
             ],
             "registered": true,
@@ -8378,7 +9625,7 @@
             "burden_of_proof": [
               "training: witness_id is not resolvable in the witness registry"
             ],
-            "licensed_thesis": "The generated scaling result is physically consistent with the universal z=1 anchor.",
+            "licensed_thesis": "Licensed on the declared universal_anchor_claim evidence: local checks and universal anchor both pass.",
             "optional_supports": [
               "evidence.physical_evidence_level",
               "evidence.verification_independence"
@@ -8430,8 +9677,11 @@
             "training: witness_id is not resolvable in the witness registry"
           ]
         },
-        "audit_hash": "sha256:f110852578a06c8dc32c3a6fbf1e1859ce94a9b229fa9f69aabab724cbde468d",
+        "audit_hash": "sha256:ebfc16045c8b02652375a0d86783242b9c1b217c7325639e4252a5e4a5519ebd",
+        "audit_hash_recipe": "v2",
         "did_you_mean": {},
+        "engine_version": "0.4.1",
+        "evidence_sha256": "sha256:208d6ecd2c0d0ddbc366fb35776b2a6f05e97efa680e016dfaaa569a180e81e9",
         "fine_tune_blockers": [
           "witness_id is not resolvable in the witness registry"
         ],
@@ -8466,9 +9716,20 @@
           "verdict": "N/A",
           "violations": []
         },
-        "licensed_claim": "The generated scaling result is physically consistent with the universal z=1 anchor.",
+        "licensed_claim": "Licensed on the declared universal_anchor_claim evidence: local checks and universal anchor both pass.",
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "notices": [
+          "ai_use_declared: not declared (tool, purpose, phase); required from the X6 freeze"
+        ],
+        "plan3_checks": {
+          "ai_use_declared": "not declared",
+          "provenance": {
+            "declared": 0,
+            "verified": 0
+          },
+          "uncertainty": "not declared"
+        },
         "reason": "local checks and universal anchor both pass",
         "required_fields": [
           "anchor_mode",
@@ -8480,9 +9741,22 @@
           "message": "The evidence licenses the claim as worded."
         },
         "rewrite": null,
+        "rule_table_sha256": "sha256:b6788f744671f389ac43161690d836420221209d7162bc04fd21676b6a3e2e0b",
+        "rules_fired": [
+          "R415ac3e9f8"
+        ],
         "schema_errors": [],
         "schema_version": "capas-claim-payload-v3",
-        "verdict": "ACCEPT"
+        "text_licensed_as_written": false,
+        "verdict": "ACCEPT",
+        "would_have_failed_if": [
+          "local checks pass, but the universal anchor fails",
+          "relative_anchor supports comparison against (.*?), not universal physical correctness",
+          "empirical_anchor supports bounded empirical agreement within tolerance (.*?), not universal correctness",
+          "benchmark_anchor supports (.*?) / (.*?), not universal physical correctness",
+          "(.*?) evidence fails before the universal-anchor claim is licensed",
+          "or any of 15 downgrade rules that act on an ACCEPT (see docs/rule_table.json)"
+        ]
       },
       "expected_blocker": "witness_id is not resolvable in the witness registry",
       "expected_criterion": "witness_registry_resolved",
@@ -8500,20 +9774,29 @@
             "claim_type": "universal_anchor_claim",
             "description": "Claims that require an explicit anchor-mode evidence contract.",
             "optional_fields": [
+              "abs_error_u",
+              "ai_use_declared",
               "benchmark_metric",
               "benchmark_name",
               "benchmark_pass",
               "citation_hypotheses_checked",
+              "cited_doi_retracted",
+              "cited_dois",
+              "coverage_factor",
               "empirical_anchor_pass",
               "empirical_reference_present",
               "empirical_tolerance",
               "load_bearing_citation_read",
+              "method_standard",
               "null_control_passed",
               "object_declared",
               "object_matches_target",
               "physical_evidence_level",
+              "prereg",
               "relative_anchor_comparison_pass",
               "relative_anchor_reference",
+              "retraction_snapshot",
+              "tolerance_u",
               "verification_independence"
             ],
             "registered": true,
@@ -8527,7 +9810,7 @@
             "burden_of_proof": [
               "training: RO-Crate provenance packet is missing, invalid, or hash-mismatched"
             ],
-            "licensed_thesis": "The generated scaling result is physically consistent with the universal z=1 anchor.",
+            "licensed_thesis": "Licensed on the declared universal_anchor_claim evidence: local checks and universal anchor both pass.",
             "optional_supports": [
               "evidence.physical_evidence_level",
               "evidence.verification_independence"
@@ -8579,8 +9862,11 @@
             "training: RO-Crate provenance packet is missing, invalid, or hash-mismatched"
           ]
         },
-        "audit_hash": "sha256:f110852578a06c8dc32c3a6fbf1e1859ce94a9b229fa9f69aabab724cbde468d",
+        "audit_hash": "sha256:ebfc16045c8b02652375a0d86783242b9c1b217c7325639e4252a5e4a5519ebd",
+        "audit_hash_recipe": "v2",
         "did_you_mean": {},
+        "engine_version": "0.4.1",
+        "evidence_sha256": "sha256:208d6ecd2c0d0ddbc366fb35776b2a6f05e97efa680e016dfaaa569a180e81e9",
         "fine_tune_blockers": [
           "RO-Crate provenance packet is missing, invalid, or hash-mismatched"
         ],
@@ -8615,9 +9901,20 @@
           "verdict": "N/A",
           "violations": []
         },
-        "licensed_claim": "The generated scaling result is physically consistent with the universal z=1 anchor.",
+        "licensed_claim": "Licensed on the declared universal_anchor_claim evidence: local checks and universal anchor both pass.",
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "notices": [
+          "ai_use_declared: not declared (tool, purpose, phase); required from the X6 freeze"
+        ],
+        "plan3_checks": {
+          "ai_use_declared": "not declared",
+          "provenance": {
+            "declared": 0,
+            "verified": 0
+          },
+          "uncertainty": "not declared"
+        },
         "reason": "local checks and universal anchor both pass",
         "required_fields": [
           "anchor_mode",
@@ -8629,9 +9926,22 @@
           "message": "The evidence licenses the claim as worded."
         },
         "rewrite": null,
+        "rule_table_sha256": "sha256:b6788f744671f389ac43161690d836420221209d7162bc04fd21676b6a3e2e0b",
+        "rules_fired": [
+          "R415ac3e9f8"
+        ],
         "schema_errors": [],
         "schema_version": "capas-claim-payload-v3",
-        "verdict": "ACCEPT"
+        "text_licensed_as_written": false,
+        "verdict": "ACCEPT",
+        "would_have_failed_if": [
+          "local checks pass, but the universal anchor fails",
+          "relative_anchor supports comparison against (.*?), not universal physical correctness",
+          "empirical_anchor supports bounded empirical agreement within tolerance (.*?), not universal correctness",
+          "benchmark_anchor supports (.*?) / (.*?), not universal physical correctness",
+          "(.*?) evidence fails before the universal-anchor claim is licensed",
+          "or any of 15 downgrade rules that act on an ACCEPT (see docs/rule_table.json)"
+        ]
       },
       "expected_blocker": "RO-Crate provenance packet is missing, invalid, or hash-mismatched",
       "expected_criterion": "ro_crate_validated",
@@ -8649,20 +9959,29 @@
             "claim_type": "universal_anchor_claim",
             "description": "Claims that require an explicit anchor-mode evidence contract.",
             "optional_fields": [
+              "abs_error_u",
+              "ai_use_declared",
               "benchmark_metric",
               "benchmark_name",
               "benchmark_pass",
               "citation_hypotheses_checked",
+              "cited_doi_retracted",
+              "cited_dois",
+              "coverage_factor",
               "empirical_anchor_pass",
               "empirical_reference_present",
               "empirical_tolerance",
               "load_bearing_citation_read",
+              "method_standard",
               "null_control_passed",
               "object_declared",
               "object_matches_target",
               "physical_evidence_level",
+              "prereg",
               "relative_anchor_comparison_pass",
               "relative_anchor_reference",
+              "retraction_snapshot",
+              "tolerance_u",
               "verification_independence"
             ],
             "registered": true,
@@ -8676,7 +9995,7 @@
             "burden_of_proof": [
               "training: reviewer identity or attestation is not verifiable"
             ],
-            "licensed_thesis": "The generated scaling result is physically consistent with the universal z=1 anchor.",
+            "licensed_thesis": "Licensed on the declared universal_anchor_claim evidence: local checks and universal anchor both pass.",
             "optional_supports": [
               "evidence.physical_evidence_level",
               "evidence.verification_independence"
@@ -8728,8 +10047,11 @@
             "training: reviewer identity or attestation is not verifiable"
           ]
         },
-        "audit_hash": "sha256:f110852578a06c8dc32c3a6fbf1e1859ce94a9b229fa9f69aabab724cbde468d",
+        "audit_hash": "sha256:ebfc16045c8b02652375a0d86783242b9c1b217c7325639e4252a5e4a5519ebd",
+        "audit_hash_recipe": "v2",
         "did_you_mean": {},
+        "engine_version": "0.4.1",
+        "evidence_sha256": "sha256:208d6ecd2c0d0ddbc366fb35776b2a6f05e97efa680e016dfaaa569a180e81e9",
         "fine_tune_blockers": [
           "reviewer identity or attestation is not verifiable"
         ],
@@ -8764,9 +10086,20 @@
           "verdict": "N/A",
           "violations": []
         },
-        "licensed_claim": "The generated scaling result is physically consistent with the universal z=1 anchor.",
+        "licensed_claim": "Licensed on the declared universal_anchor_claim evidence: local checks and universal anchor both pass.",
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+        "notices": [
+          "ai_use_declared: not declared (tool, purpose, phase); required from the X6 freeze"
+        ],
+        "plan3_checks": {
+          "ai_use_declared": "not declared",
+          "provenance": {
+            "declared": 0,
+            "verified": 0
+          },
+          "uncertainty": "not declared"
+        },
         "reason": "local checks and universal anchor both pass",
         "required_fields": [
           "anchor_mode",
@@ -8778,9 +10111,22 @@
           "message": "The evidence licenses the claim as worded."
         },
         "rewrite": null,
+        "rule_table_sha256": "sha256:b6788f744671f389ac43161690d836420221209d7162bc04fd21676b6a3e2e0b",
+        "rules_fired": [
+          "R415ac3e9f8"
+        ],
         "schema_errors": [],
         "schema_version": "capas-claim-payload-v3",
-        "verdict": "ACCEPT"
+        "text_licensed_as_written": false,
+        "verdict": "ACCEPT",
+        "would_have_failed_if": [
+          "local checks pass, but the universal anchor fails",
+          "relative_anchor supports comparison against (.*?), not universal physical correctness",
+          "empirical_anchor supports bounded empirical agreement within tolerance (.*?), not universal correctness",
+          "benchmark_anchor supports (.*?) / (.*?), not universal physical correctness",
+          "(.*?) evidence fails before the universal-anchor claim is licensed",
+          "or any of 15 downgrade rules that act on an ACCEPT (see docs/rule_table.json)"
+        ]
       },
       "expected_blocker": "reviewer identity or attestation is not verifiable",
       "expected_criterion": "reviewer_attestation_verified",

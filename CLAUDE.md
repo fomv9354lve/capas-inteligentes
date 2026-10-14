@@ -55,6 +55,19 @@ az containerapp update -n capas -g capas-rg --image "caf7ef600384acr.azurecr.io/
   (paridad 130/233) y sin backend la página da HOLD. `python3 benchmarks/replica_parity.py` mide la deriva.
 - `python3 -m pytest` verde no implica la puerta de producto verde: corre `capas validate` tras cambiar reglas del motor.
 
+### 3c. PLAN_v3 (las 9, implementadas 2026-10-14) — qué regenerar cuando tocas el motor
+- **Reglas como datos.** `docs/rule_table.json` se genera desde `decide_external_claim` + `capas_plan3.RULES`
+  (`python3 scripts/gen_rule_table.py`). Cambiar el texto de un `reason` = regla nueva → regenera la tabla, luego
+  `scripts/make_certificate_fixtures.py`, y corre `scripts/check_rule_table.py` (re-ejecuta todas las decisiones).
+- **Certificado v2.** Cada decisión lleva `rules_fired`, `rule_table_sha256`, `engine_version`, `evidence_sha256`,
+  receta `audit_hash` v2 (`CERTIFICATE_SPEC.md`). `capas_check.py` es el verificador independiente: lo escribió otra
+  sesión SOLO desde la especificación. **No lo edites tú (constructor ≠ verificador)**: si cambia la especificación,
+  pide a otra sesión que lo actualice.
+- Los hashes del home (`benchmarks/home_gate_decisions.py --fix`) y el paquete del brief
+  (`verify_brief_packet_matches_engine.py --fix`) cambian con cualquier cambio de receta o razón.
+- **Pre-registro X6** (`research/x6_prereg/`) co-firmado por Gemini; editarlo invalida la firma
+  (`check_cosign.py` falla en CI) → pide nueva co-firma con `cosign.py gemini`. xAI y DeepSeek sin crédito (2026-10-14).
+
 ## 4. Shell de marca = fuente única, no forkear
 - `docs/kreniq-shell.css` es la **fuente única** del shell (nav, bg-logo flotante canónico, cards, tokens de layout: --col 1200px, --gutter 48px, --nav-h 60px, --radius 14px, --pink #e8185d). `../corporate-platform/design-system/` lo espeja para apps nuevas. **No dupliques/forkees estilos por página.**
 - **Nav canónico por tarea** (decisión de Osvaldo 2026-10-14, «3 si», auditoría CAP-19). Fuente única: `scripts/apply_nav.py`

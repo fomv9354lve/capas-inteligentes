@@ -21,11 +21,15 @@ Adapters (each deterministic, invents nothing, records the source sha256):
                              spec says so), with provenance that separates what was read (field -> path) from what was
                              declared (field -> value). The adapter never computes a statistic: that is the analysis
                              script's job, pinned by the pre-registration.
+  validator_report(src)      a pharma validator's issue summary (Pinnacle 21-style CSV or JSON) -> issues with the
+                             validator's own severity; capas_pharma.decide_with_validator() applies it before any
+                             statistic (technical rejection precedes review).
   verify_sources(payload)    every entry in meta.sources {path, sha256} is re-hashed; a mismatch is reported, never
                              silently accepted. The sealed runner refuses to seal a payload whose sources do not match.
 
 CLI:
-  python3 capas_ingest.py backend-properties <props.json | fake:FakeKingston> [--layout 1,2,3] [--job-date YYYY-MM-DD] -o snap.json
+  python3 capas_ingest.py backend-properties <props.json | fake:FakeKingston> [--layout 1,2,3] [--job-date YYYY-MM-DD]
+                                [--calibrator human|automated|ai_model:<tool>] -o snap.json
   python3 capas_ingest.py prereg <prereg.json> -o skeletons.jsonl
   python3 capas_ingest.py verify-sources <claims.jsonl> [--root DIR]
 """
@@ -95,9 +99,18 @@ def _props_to_dict(props: Any) -> dict[str, Any]:
     raise TypeError("backend_properties: expected a BackendProperties, its to_dict() or a JSON path")
 
 
+CALIBRATOR_KINDS = ("human", "automated", "ai_model")
+
+
 def backend_properties(props: Any, *, layout: list[int] | None = None, job_date: str | None = None,
-                       source_label: str | None = None) -> dict[str, Any]:
-    """Qiskit BackendProperties -> calibration_snapshot. Field by field, same names, same numbers, dated per parameter."""
+                       source_label: str | None = None, calibrator: dict[str, str] | None = None) -> dict[str, Any]:
+    """Qiskit BackendProperties -> calibration_snapshot. Field by field, same names, same numbers, dated per parameter.
+    `calibrator` {kind: human|automated|ai_model, tool} records who produced the calibration (PLAN_v3 A3, quantum
+    member); absent -> an explicit "not declared" notice in the snapshot, never silence. It enters the audit hash with
+    the payload."""
+    if calibrator is not None and (not isinstance(calibrator, dict) or calibrator.get("kind") not in CALIBRATOR_KINDS
+                                   or not str(calibrator.get("tool") or "").strip()):
+        raise ValueError("calibrator must be {kind: human|automated|ai_model, tool: <name>}")
     d = _props_to_dict(props)
     raw_sha = sha256_bytes(canonical_json(d).encode("utf-8"))
     qubits = d.get("qubits") or []
@@ -158,6 +171,7 @@ def backend_properties(props: Any, *, layout: list[int] | None = None, job_date:
         snap["layout"] = [int(q) for q in layout]
     if job_date:
         snap["job_date"] = job_date
+    snap["calibrator"] = dict(calibrator) if calibrator else "not declared (human | automated | ai_model, tool)"
     return snap
 
 
@@ -276,6 +290,62 @@ def derived(provenance: dict[str, Any], field: str, rule: str, value: Any) -> An
     return value
 
 
+# ------------------------------------------------------------------------------------ pharma validator report
+# PLAN_v3 A3c (FDA technical rejection criteria / Pinnacle 21 validator rules: "rejection precedes review; form before
+# statistics"). The adapter reads a validator's issue summary as the validator wrote it and classifies each row by
+# the severity the VALIDATOR assigned. It never re-runs a CDISC rule and never re-grades a severity.
+_SEVERITY = {"reject": "reject", "rejection": "reject", "error": "error", "warning": "warning", "notice": "notice",
+             "info": "notice", "information": "notice"}
+_COLS = {"rule_id": ("rule id", "pinnacle 21 id", "p21 id", "rule", "id", "check id", "validation rule id"),
+         "publisher_id": ("publisher id", "fda id", "trc id"),
+         "severity": ("severity", "issue severity", "impact"),
+         "message": ("message", "description", "issue"),
+         "count": ("found", "count", "records", "n")}
+
+
+def validator_report(source: Any, *, source_label: str | None = None) -> dict[str, Any]:
+    """CSV (header row) or JSON list of issue rows -> {issues, counts, source{sha256}}. Unknown severity -> 'unknown'
+    (the pharma gate HOLDs on it). A file without a severity column is not a validator report: ValueError."""
+    import csv, io
+    if isinstance(source, (str, Path)) and Path(source).is_file():
+        raw = Path(source).read_bytes(); label = source_label or str(source)
+    elif isinstance(source, (bytes, str)):
+        raw = source.encode("utf-8") if isinstance(source, str) else source; label = source_label or "inline"
+    else:
+        raw = canonical_json(source).encode("utf-8"); label = source_label or "object"
+    text = raw.decode("utf-8-sig")
+    try:
+        rows = json.loads(text)
+        rows = rows.get("issues", rows) if isinstance(rows, dict) else rows
+    except json.JSONDecodeError:
+        rows = list(csv.DictReader(io.StringIO(text)))
+    if not isinstance(rows, list) or (rows and not isinstance(rows[0], dict)):
+        raise ValueError("validator report must be a CSV with a header row or a JSON list of issue objects")
+    def col(row, key):
+        for k, v in row.items():
+            if str(k).strip().lower() in _COLS[key]:
+                return v
+        return None
+    if rows and col(rows[0], "severity") is None:
+        raise ValueError("validator report has no severity column; it cannot be classified")
+    issues = []
+    for row in rows:
+        sev = _SEVERITY.get(str(col(row, "severity") or "").strip().lower(), "unknown")
+        n = col(row, "count")
+        try:
+            n = int(str(n).strip()) if n not in (None, "") else None
+        except ValueError:
+            n = None
+        issues.append({"rule_id": str(col(row, "rule_id") or "").strip(), "publisher_id": str(col(row, "publisher_id") or "").strip(),
+                       "severity": sev, "message": str(col(row, "message") or "").strip(), "count": n})
+    counts: dict[str, int] = {}
+    for i in issues:
+        counts[i["severity"]] = counts.get(i["severity"], 0) + 1
+    return {"issues": issues, "counts": counts,
+            "source": {"adapter": "capas_ingest.validator_report", "adapter_version": ADAPTER_VERSION,
+                       "input_sha256": sha256_bytes(raw), "input": label}}
+
+
 # --------------------------------------------------------------------------------------------------- provenance
 def attach_source(payload: dict[str, Any], path: str | Path, *, adapter: str, root: Path | None = None) -> dict[str, Any]:
     p = Path(path)
@@ -318,7 +388,11 @@ def main(argv: list[str]) -> int:
         props, label = _load_props(args[0])
         layout = [int(x) for x in args[args.index("--layout") + 1].split(",")] if "--layout" in args else None
         job_date = args[args.index("--job-date") + 1] if "--job-date" in args else None
-        snap = backend_properties(props, layout=layout, job_date=job_date, source_label=label)
+        cal = None
+        if "--calibrator" in args:   # kind:tool, e.g. automated:qiskit-experiments
+            kind, _, tool = args[args.index("--calibrator") + 1].partition(":")
+            cal = {"kind": kind, "tool": tool}
+        snap = backend_properties(props, layout=layout, job_date=job_date, source_label=label, calibrator=cal)
         text = json.dumps(snap, indent=1, ensure_ascii=False)
         (Path(out).write_text(text, encoding="utf-8") if out else print(text))
         print(f"snapshot: backend={snap.get('backend')} n={snap.get('n')} t1={len(snap['t1_us'])} edges={len(snap.get('edges') or [])} "
@@ -337,7 +411,7 @@ def main(argv: list[str]) -> int:
             if not line.strip():
                 continue
             row = json.loads(line)
-            # sources live in the ROW's meta (schema v3 allows no `meta` inside the payload); fall back to the payload
+            # sources live in the ROW's meta or, since PLAN_v3 A3a, in the payload's meta (decide() re-hashes them)
             holder = row if (row.get("meta") or {}).get("sources") else row.get("payload", row)
             for pr in verify_sources(holder, root):
                 bad += 1

@@ -1016,6 +1016,7 @@ def check_calibration_snapshot(ev: dict[str, Any]) -> dict[str, Any]:
     sel_e = set(map(str, layout.get("edges", []))) if layout else None
     outliers: list[dict[str, Any]] = []
     holds: list[str] = []
+    _unc_rows: list[str] = []
 
     def _edge_err(v: Any) -> float | None:
         if isinstance(v, dict):
@@ -1054,6 +1055,22 @@ def check_calibration_snapshot(ev: dict[str, Any]) -> dict[str, Any]:
         if not isinstance(v, dict):
             continue
         t1 = t1s.get(k)
+        # PLAN_v3 guard band (D-SI / JCGM 106), declared-only: t1_us_u / t2_us_u per qubit, k = coverage_factor (default 2).
+        # A comparison whose margin lies within k*u is HOLD "not decidable", never PASS or FLAG at face value.
+        _k = _num(snap.get("coverage_factor")) or 2.0
+        _u1, _u2 = _num(v.get("t1_us_u")), _num(v.get("t2_us_u"))
+        if _u1 is not None or _u2 is not None:
+            _unc_rows.append(k)
+        _t2v = _num(v.get("t2_us"))
+        _band_t2 = False
+        if t1 is not None and _t2v is not None and (_u1 or _u2):
+            _U = _k * ((_u2 or 0.0) ** 2 + 4 * (_u1 or 0.0) ** 2) ** 0.5
+            if abs(2 * t1 - _t2v) <= _U:
+                _band_t2 = True
+                holds.append(f"qubit {k}: T2 {_t2v:g} us vs 2*T1 {2 * t1:g} us lies within the guard band (k = {_k:g}, U = {_U:.3g} us): not decidable")
+        if t1 is not None and _u1 and th["t1_min_us"] > 0 and abs(t1 - th["t1_min_us"]) <= _k * _u1:
+            holds.append(f"qubit {k}: T1 {t1:g} us vs floor {th['t1_min_us']:g} us lies within the guard band (k = {_k:g}, U = {_k * _u1:.3g} us): not decidable")
+            t1 = None   # judged by the band, not at face value
         if t1 is not None:
             if med_t1 and th["t1_min_frac_median"] > 0 and t1 / med_t1 < th["t1_min_frac_median"]:
                 outliers.append({"element": k, "kind": "t1_low", "value": t1,
@@ -1079,7 +1096,8 @@ def check_calibration_snapshot(ev: dict[str, Any]) -> dict[str, Any]:
         if len(row_keys & set(v)) >= 2:
             try:
                 from capas_quantum_physics import audit_calibration_row
-                r = audit_calibration_row(v)
+                _row = {kk: vv for kk, vv in v.items() if not (kk.endswith("_u") or (_band_t2 and kk == "t2_us"))}
+                r = audit_calibration_row(_row) if len(row_keys & set(_row)) >= 2 else {"verdict": None}
                 if r.get("verdict") not in ("ADMISSIBLE", None):
                     outliers.append({"element": k, "kind": "textbook_violation",
                                      "why": r.get("summary") or r.get("why") or str(r.get("flags"))})
@@ -1223,7 +1241,10 @@ def check_calibration_snapshot(ev: dict[str, Any]) -> dict[str, Any]:
     scope = f"layout ({n_j} elements judged, medians over whole device)" if layout else f"whole snapshot ({n_j} elements)"
     extra = {"outliers": outliers, "medians": {"edge_error": med_e if errs else None, "t1_us": med_t1, "t2_us": med_t2, "readout": med_ro},
              "thresholds": th, "stale_days": stale, "normalized_from_raw_device_file": normalized,
-             "field_freshness": field_fresh, "timezone": str(snap.get("timezone") or "UTC")}
+             "field_freshness": field_fresh, "timezone": str(snap.get("timezone") or "UTC"),
+             "uncertainty": (f"declared on {len(_unc_rows)} qubit(s), guard band k = {_num(snap.get('coverage_factor')) or 2.0:g}"
+                             if _unc_rows else "uncertainty: not declared"),
+             "calibrator": snap.get("calibrator") or "calibrator: not declared (human | automated | ai_model, tool)"}
     if outliers or stale is not None:
         parts = [_fmt(o) for o in outliers]
         if stale is not None:

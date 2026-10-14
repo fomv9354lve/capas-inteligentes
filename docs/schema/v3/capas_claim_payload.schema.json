@@ -55,10 +55,19 @@
           "minimum": 0,
           "type": "number"
         },
+        "abs_error_u": {
+          "type": "number"
+        },
+        "ai_use_declared": {
+          "description": "\"none\", or {tool, purpose, phase}, or a list of them (PLAN_v3 A6)"
+        },
         "alpha": {
           "maximum": 1,
           "minimum": 0,
           "type": "number"
+        },
+        "alternative_model_rejected": {
+          "type": "boolean"
         },
         "anchor_mode": {
           "enum": [
@@ -74,6 +83,12 @@
           "type": "boolean"
         },
         "audit_trail": {},
+        "band": {
+          "type": "object"
+        },
+        "band_pre_registered": {
+          "type": "boolean"
+        },
         "benchmark_metric": {
           "minLength": 1,
           "pattern": "^(?:(?![<\u27e8][A-Za-z/!?])[^\u02c2\u02c3\u2039\u203a\u2329-\u232a\u276c-\u276d\u29fc-\u29fd\u3008-\u3009\ufe64-\ufe65\uff1c-\uff1e])*$",
@@ -91,8 +106,33 @@
           "pattern": "^(?:(?![<\u27e8][A-Za-z/!?])[^\u02c2\u02c3\u2039\u203a\u2329-\u232a\u276c-\u276d\u29fc-\u29fd\u3008-\u3009\ufe64-\ufe65\uff1c-\uff1e])*$",
           "type": "string"
         },
+        "ci_high": {
+          "type": "number"
+        },
+        "ci_level": {
+          "type": "number"
+        },
+        "ci_low": {
+          "type": "number"
+        },
+        "citation_hypotheses_checked": {
+          "type": "boolean"
+        },
+        "cited_doi_retracted": {
+          "type": "boolean"
+        },
+        "cited_dois": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
         "claim_api": {
           "minLength": 1,
+          "pattern": "^(?:(?![<\u27e8][A-Za-z/!?])[^\u02c2\u02c3\u2039\u203a\u2329-\u232a\u276c-\u276d\u29fc-\u29fd\u3008-\u3009\ufe64-\ufe65\uff1c-\uff1e])*$",
+          "type": "string"
+        },
+        "claim_scope": {
           "pattern": "^(?:(?![<\u27e8][A-Za-z/!?])[^\u02c2\u02c3\u2039\u203a\u2329-\u232a\u276c-\u276d\u29fc-\u29fd\u3008-\u3009\ufe64-\ufe65\uff1c-\uff1e])*$",
           "type": "string"
         },
@@ -109,11 +149,18 @@
         "confounders_controlled": {
           "type": "boolean"
         },
+        "conjectured_remainder": {
+          "pattern": "^(?:(?![<\u27e8][A-Za-z/!?])[^\u02c2\u02c3\u2039\u203a\u2329-\u232a\u276c-\u276d\u29fc-\u29fd\u3008-\u3009\ufe64-\ufe65\uff1c-\uff1e])*$",
+          "type": "string"
+        },
         "contradicting_sources": {
           "items": {
             "type": "string"
           },
           "type": "array"
+        },
+        "coverage_factor": {
+          "type": "number"
         },
         "cross_modal_alignment": {
           "type": "boolean"
@@ -144,6 +191,13 @@
           "minimum": 0,
           "type": "number"
         },
+        "error_statistic": {
+          "pattern": "^(?:(?![<\u27e8][A-Za-z/!?])[^\u02c2\u02c3\u2039\u203a\u2329-\u232a\u276c-\u276d\u29fc-\u29fd\u3008-\u3009\ufe64-\ufe65\uff1c-\uff1e])*$",
+          "type": "string"
+        },
+        "estimate": {
+          "type": "number"
+        },
         "execution_observed": {
           "type": "boolean"
         },
@@ -163,6 +217,10 @@
         "intervention_or_natural_experiment": {
           "type": "boolean"
         },
+        "invariants": {
+          "description": "reserved namespace: domain-law block (capas_invariants)",
+          "type": "object"
+        },
         "language": {
           "minLength": 1,
           "pattern": "^(?:(?![<\u27e8][A-Za-z/!?])[^\u02c2\u02c3\u2039\u203a\u2329-\u232a\u276c-\u276d\u29fc-\u29fd\u3008-\u3009\ufe64-\ufe65\uff1c-\uff1e])*$",
@@ -173,11 +231,28 @@
           "pattern": "^(?:(?![<\u27e8][A-Za-z/!?])[^\u02c2\u02c3\u2039\u203a\u2329-\u232a\u276c-\u276d\u29fc-\u29fd\u3008-\u3009\ufe64-\ufe65\uff1c-\uff1e])*$",
           "type": "string"
         },
+        "leading_order_established": {
+          "type": "boolean"
+        },
+        "load_bearing_citation_read": {
+          "type": "boolean"
+        },
+        "load_bearing_step_identified": {
+          "type": "boolean"
+        },
         "local_property_tests_pass": {
           "type": "boolean"
         },
         "mechanism_evidence_present": {
           "type": "boolean"
+        },
+        "method": {
+          "pattern": "^(?:(?![<\u27e8][A-Za-z/!?])[^\u02c2\u02c3\u2039\u203a\u2329-\u232a\u276c-\u276d\u29fc-\u29fd\u3008-\u3009\ufe64-\ufe65\uff1c-\uff1e])*$",
+          "type": "string"
+        },
+        "method_standard": {
+          "pattern": "^(?:(?![<\u27e8][A-Za-z/!?])[^\u02c2\u02c3\u2039\u203a\u2329-\u232a\u276c-\u276d\u29fc-\u29fd\u3008-\u3009\ufe64-\ufe65\uff1c-\uff1e])*$",
+          "type": "string"
         },
         "metric_name": {
           "pattern": "^(?:(?![<\u27e8][A-Za-z/!?])[^\u02c2\u02c3\u2039\u203a\u2329-\u232a\u276c-\u276d\u29fc-\u29fd\u3008-\u3009\ufe64-\ufe65\uff1c-\uff1e])*$",
@@ -189,6 +264,28 @@
         "modality": {
           "pattern": "^(?:(?![<\u27e8][A-Za-z/!?])[^\u02c2\u02c3\u2039\u203a\u2329-\u232a\u276c-\u276d\u29fc-\u29fd\u3008-\u3009\ufe64-\ufe65\uff1c-\uff1e])*$",
           "type": "string"
+        },
+        "n_cells": {
+          "type": "number"
+        },
+        "n_points": {
+          "type": "number"
+        },
+        "n_replicates": {
+          "type": "number"
+        },
+        "negative_control_failed": {
+          "type": "boolean"
+        },
+        "null_control_passed": {
+          "type": "boolean"
+        },
+        "object_declared": {
+          "pattern": "^(?:(?![<\u27e8][A-Za-z/!?])[^\u02c2\u02c3\u2039\u203a\u2329-\u232a\u276c-\u276d\u29fc-\u29fd\u3008-\u3009\ufe64-\ufe65\uff1c-\uff1e])*$",
+          "type": "string"
+        },
+        "object_matches_target": {
+          "type": "boolean"
         },
         "observed_output": {
           "maxLength": 4000,
@@ -202,6 +299,9 @@
         "physical_evidence_level": {
           "pattern": "^(?:(?![<\u27e8][A-Za-z/!?])[^\u02c2\u02c3\u2039\u203a\u2329-\u232a\u276c-\u276d\u29fc-\u29fd\u3008-\u3009\ufe64-\ufe65\uff1c-\uff1e])*$",
           "type": "string"
+        },
+        "prereg": {
+          "type": "object"
         },
         "protocol_registered": {
           "type": "boolean"
@@ -221,8 +321,14 @@
         "reported_value": {
           "type": "number"
         },
+        "resamples": {
+          "type": "number"
+        },
         "resolution_pre_registered": {
           "type": "boolean"
+        },
+        "retraction_snapshot": {
+          "type": "object"
         },
         "risk_of_bias_assessed": {
           "type": "boolean"
@@ -230,7 +336,28 @@
         "runtime_environment_declared": {
           "type": "boolean"
         },
+        "scope_count_verified": {
+          "type": "boolean"
+        },
+        "scope_declared": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "scope_tested": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "seed": {
+          "type": "number"
+        },
         "source_hashes_verified": {
+          "type": "boolean"
+        },
+        "steps_all_valid": {
           "type": "boolean"
         },
         "supporting_sources": {
@@ -242,9 +369,30 @@
         "temporal_order_established": {
           "type": "boolean"
         },
+        "test_statistic": {
+          "type": "object"
+        },
+        "text_quantifier": {
+          "pattern": "^(?:(?![<\u27e8][A-Za-z/!?])[^\u02c2\u02c3\u2039\u203a\u2329-\u232a\u276c-\u276d\u29fc-\u29fd\u3008-\u3009\ufe64-\ufe65\uff1c-\uff1e])*$",
+          "type": "string"
+        },
         "tolerance": {
           "minimum": 0,
           "type": "number"
+        },
+        "tolerance_rationale": {
+          "pattern": "^(?:(?![<\u27e8][A-Za-z/!?])[^\u02c2\u02c3\u2039\u203a\u2329-\u232a\u276c-\u276d\u29fc-\u29fd\u3008-\u3009\ufe64-\ufe65\uff1c-\uff1e])*$",
+          "type": "string"
+        },
+        "tolerance_u": {
+          "type": "number"
+        },
+        "tolerance_unit": {
+          "pattern": "^(?:(?![<\u27e8][A-Za-z/!?])[^\u02c2\u02c3\u2039\u203a\u2329-\u232a\u276c-\u276d\u29fc-\u29fd\u3008-\u3009\ufe64-\ufe65\uff1c-\uff1e])*$",
+          "type": "string"
+        },
+        "uniform_bound_proven": {
+          "type": "boolean"
         },
         "universal_anchor_pass": {
           "type": "boolean"
@@ -258,6 +406,30 @@
         },
         "within_chemical_accuracy": {
           "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "meta": {
+      "additionalProperties": false,
+      "properties": {
+        "sources": {
+          "items": {
+            "properties": {
+              "path": {
+                "type": "string"
+              },
+              "sha256": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "path",
+              "sha256"
+            ],
+            "type": "object"
+          },
+          "type": "array"
         }
       },
       "type": "object"

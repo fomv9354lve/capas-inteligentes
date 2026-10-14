@@ -273,7 +273,10 @@ COUNT_RE = re.compile(r"\b(\d+|one|two|three|four|five|six|seven|eight|nine|ten|
 
 CROSS_CUTTING_OPTIONAL = ["object_declared", "object_matches_target",
                          "load_bearing_citation_read", "citation_hypotheses_checked",
-                         "null_control_passed"]
+                         "null_control_passed",
+                         # PLAN_v3 (2026-10-14), downgrade-only, see capas_plan3.py
+                         "ai_use_declared", "coverage_factor", "abs_error_u", "tolerance_u", "method_standard",
+                         "cited_dois", "retraction_snapshot", "cited_doi_retracted", "prereg"]
 for _t, _spec in CLAIM_TYPE_REGISTRY.items():
     _opt = _spec.setdefault("optional", [])
     for _f in CROSS_CUTTING_OPTIONAL:
@@ -292,6 +295,7 @@ ALLOWED_ROOT_FIELDS = {
     "training_evidence",
     "provenance",
     "source",
+    "meta",          # PLAN_v3 A3a: meta.sources [{path, sha256}] (capas_ingest format), re-hashed inside decide()
 }
 ALLOWED_CLAIM_FIELDS = {"id", "type", "text"}
 ALLOWED_TRAINING_EVIDENCE_FIELDS = {
@@ -363,6 +367,7 @@ NUMERIC_EVIDENCE_FIELDS = [
     "reported_value", "reference_value", "empirical_tolerance",
     "n_replicates", "n_points", "n_cells",
     "estimate", "ci_low", "ci_high", "ci_level", "resamples", "seed",
+    "coverage_factor", "abs_error_u", "tolerance_u",
 ]
 BOOL_EVIDENCE_FIELDS = [
     "within_chemical_accuracy", "local_property_tests_pass", "universal_anchor_pass",
@@ -378,7 +383,7 @@ BOOL_EVIDENCE_FIELDS = [
     "leading_order_established",
     "object_matches_target", "load_bearing_citation_read", "citation_hypotheses_checked",
     "alternative_model_rejected", "null_control_passed", "scope_count_verified", "negative_control_failed",
-    "band_pre_registered",
+    "band_pre_registered", "cited_doi_retracted",
 ]
 STRING_EVIDENCE_FIELDS = [
     "anchor_mode", "relative_anchor_reference", "benchmark_name", "benchmark_metric",
@@ -387,10 +392,10 @@ STRING_EVIDENCE_FIELDS = [
     "claim_api", "docs_reference", "current_claim",
     "code_snippet", "expected_output", "observed_output",
     "claim_scope", "conjectured_remainder", "object_declared", "tolerance_unit", "error_statistic", "tolerance_rationale",
-    "text_quantifier", "method",
+    "text_quantifier", "method", "method_standard",
 ]
-LIST_EVIDENCE_FIELDS = ["supporting_sources", "contradicting_sources", "scope_declared", "scope_tested"]
-DICT_EVIDENCE_FIELDS = ["test_statistic", "band"]
+LIST_EVIDENCE_FIELDS = ["supporting_sources", "contradicting_sources", "scope_declared", "scope_tested", "cited_dois"]
+DICT_EVIDENCE_FIELDS = ["test_statistic", "band", "retraction_snapshot", "prereg", "ai_use_declared"]
 
 # Example values for a fillable requirements template (A3): type defaults + a few overrides
 # that make the expected shape obvious to a first-time caller.
@@ -583,9 +588,64 @@ def _hash_audit_body(body: dict[str, Any]) -> str:
         json.dumps(body, sort_keys=True, separators=(",", ":"), default=str).encode()).hexdigest()
 
 
+AUDIT_HASH_RECIPE_V2 = (
+    "v2 (PLAN_v3 A1, 2026-10-14): the v1 body plus {audit_hash_recipe: 'v2', engine_version, rule_table_sha256, "
+    "rules_fired, evidence_sha256, notices}; evidence_sha256 = sha256 of the canonical JSON of {evidence, meta} "
+    "(sorted keys, compact separators). Same serialization and prefix as v1. See CERTIFICATE_SPEC.md."
+)
+
+
+def _engine_version() -> str:
+    try:
+        m = re.search(r'^version\s*=\s*"([^"]+)"', (ROOT / "pyproject.toml").read_text(encoding="utf-8"), re.M)
+        return m.group(1) if m else "unknown"
+    except OSError:
+        return "unknown"
+
+
+CAPAS_ENGINE_VERSION = _engine_version()
+
+
+def evidence_sha256(payload: Any) -> str:
+    p = payload if isinstance(payload, dict) else {}
+    body = {"evidence": p.get("evidence") if isinstance(p.get("evidence"), dict) else {}, "meta": p.get("meta")}
+    return "sha256:" + hashlib.sha256(json.dumps(body, sort_keys=True, separators=(",", ":"), default=str).encode()).hexdigest()
+
+
+def _audit_hash_body_v2(result: dict[str, Any]) -> dict[str, Any]:
+    body = _audit_hash_body(result.get("input_claim"), result.get("verdict"), result.get("reason"),
+                            result.get("required_fields"), result.get("invariant_audit"))
+    body.update({"audit_hash_recipe": "v2", "engine_version": result.get("engine_version"),
+                 "rule_table_sha256": result.get("rule_table_sha256"), "rules_fired": result.get("rules_fired"),
+                 "evidence_sha256": result.get("evidence_sha256"), "notices": result.get("notices") or []})
+    return body
+
+
+def _attach_trace(result: dict[str, Any], payload: Any) -> None:
+    """Certificate trace (PLAN_v3 A1): which rules of docs/rule_table.json fired, the table's sha256, the engine
+    version and the input hash; then the v2 audit hash over all of it. An ACCEPT also names what would have failed it."""
+    import capas_rules
+    fired = capas_rules.parse_reason(result.get("reason"))
+    result["rules_fired"] = fired if fired is not None else ["UNMATCHED"]
+    result["rule_table_sha256"] = capas_rules.table_sha256()
+    result["engine_version"] = CAPAS_ENGINE_VERSION
+    result["evidence_sha256"] = evidence_sha256(payload)
+    result.setdefault("notices", [])
+    if result.get("verdict") == "HOLD":
+        result["hold_class"] = capas_rules.hold_class(fired)
+    if result.get("verdict") == "ACCEPT":
+        ct = (result.get("input_claim") or {}).get("type") if isinstance(result.get("input_claim"), dict) else None
+        result["would_have_failed_if"] = capas_rules.would_have_failed_if(str(ct), fired)
+    result["audit_hash_recipe"] = "v2"
+    result["audit_hash"] = _hash_audit_body(_audit_hash_body_v2(result))
+
+
 def reproduce_audit_hash(result: dict[str, Any]) -> str:
     """Recompute the audit_hash from a returned decision result — the same recipe the engine used,
-    so anyone holding a result can independently reproduce the hash. See AUDIT_HASH_RECIPE."""
+    so anyone holding a result can independently reproduce the hash. See AUDIT_HASH_RECIPE (v1) and
+    AUDIT_HASH_RECIPE_V2 (results that carry audit_hash_recipe = 'v2')."""
+    if isinstance(result, dict) and result.get("audit_hash_recipe") == "v2":
+        return _hash_audit_body(_audit_hash_body_v2(result))
     return _hash_audit_body(_audit_hash_body(
         result.get("input_claim"), result.get("verdict"), result.get("reason"),
         result.get("required_fields"), result.get("invariant_audit")))
@@ -821,7 +881,7 @@ def external_claim_payload_schema() -> dict[str, Any]:
             "reviewer_registry_sha256": {"type": "string", "minLength": 64, "maxLength": 64},
         },
     }
-    return {
+    schema = {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "$id": CANONICAL_SCHEMA_ID,
         "title": "CAPAS external claim/evidence payload",
@@ -953,8 +1013,26 @@ def external_claim_payload_schema() -> dict[str, Any]:
             },
             "provenance": provenance_schema,
             "source": {"type": "object", "additionalProperties": True},
+            # PLAN_v3 A3a: re-hashed inside decide() under CAPAS_SOURCE_ROOT
+            "meta": {"type": "object", "additionalProperties": False, "properties": {"sources": {
+                "type": "array", "items": {"type": "object", "required": ["path", "sha256"],
+                                           "properties": {"path": {"type": "string"}, "sha256": {"type": "string"}}}}}},
         },
     }
+    # Every evidence field the engine reads is typed in the published schema (2026-10-14: the schema had fallen behind
+    # the engine — steps_all_valid, test_statistic, the cross-cutting and PLAN_v3 fields were missing). Explicit entries
+    # above keep their tighter constraints; the rest come from the engine's typed field tables.
+    _ev = schema["properties"]["evidence"]["properties"]
+    _typed = {"number": {"type": "number"}, "boolean": {"type": "boolean"},
+              "string": {"type": "string", "pattern": NO_ANGLE_PATTERN},
+              "string[]": {"type": "array", "items": {"type": "string"}}, "object": {"type": "object"}}
+    for _f in sorted(set(GLOBAL_EVIDENCE_FIELDS) | set(NUMERIC_EVIDENCE_FIELDS) | set(BOOL_EVIDENCE_FIELDS)
+                     | set(STRING_EVIDENCE_FIELDS) | set(LIST_EVIDENCE_FIELDS) | set(DICT_EVIDENCE_FIELDS)):
+        if _f not in _ev:
+            _ev[_f] = dict(_typed.get(evidence_field_type(_f), {}))
+    _ev["ai_use_declared"] = {"description": "\"none\", or {tool, purpose, phase}, or a list of them (PLAN_v3 A6)"}
+    _ev.setdefault("invariants", {"type": "object", "description": "reserved namespace: domain-law block (capas_invariants)"})
+    return schema
 
 
 def validate_external_payload(payload: dict[str, Any]) -> list[str]:
@@ -1195,6 +1273,8 @@ def validate_external_payload(payload: dict[str, Any]) -> list[str]:
             validate_provenance_object(training_evidence.get("provenance"), "training_evidence.provenance")
     if isinstance(payload, dict) and "provenance" in payload:
         validate_provenance_object(payload.get("provenance"), "provenance")
+    import capas_plan3
+    errors.extend(capas_plan3.validate(payload, evidence))
     return errors
 
 
@@ -1777,6 +1857,7 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
         # Uniform contract: every verdict — schema-error HOLDs included — carries a re-derivable audit_hash.
         result["audit_hash"] = _hash_audit_body(_audit_hash_body(
             result["input_claim"], "HOLD", result["reason"], [], None))
+        _attach_trace(result, payload)
         result["admissibility_certificate"] = build_admissibility_certificate(
             payload if isinstance(payload, dict) else {},
             result,
@@ -2398,6 +2479,21 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
         verdict = "HOLD"
         licensed_claim = None
 
+    # PLAN_v3 stages (council 8/8, owner 2026-10-14): provenance re-hash, guard band, retraction snapshot, field-level
+    # pre-registration adherence. Downgrade-only; declared as data in capas_plan3.RULES and docs/rule_table.json.
+    import capas_plan3
+    _p3 = capas_plan3.apply(payload, evidence, verdict)
+    for _key, _text in _p3["segments"]:
+        reason = f"{reason}; {_text}"
+    if _p3["verdict"] != verdict:
+        verdict = _p3["verdict"]
+        if verdict == "HOLD":
+            licensed_claim = None
+            rewrite = None
+        elif verdict == "REWRITE":
+            rewrite = "claim stands only as a declared deviation from its pre-registration, with the deviating fields named"
+            licensed_claim = rewrite
+
     # Structural rule (external audit 2026-10-14): the gate decides on declared fields and does not read the claim text,
     # so an ACCEPT licenses the EVIDENCE STATEMENT, never the raw sentence as written. The reusable sentence carries the
     # contract it was licensed under; a coder who wants the sentence itself licensed must declare its scope in fields.
@@ -2435,12 +2531,15 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
         "resolution": _resolution_for_result(verdict, claim_type, missing, required, evidence, []),
         "invariant_audit": invariant_audit,
         "text_licensed_as_written": text_licensed_as_written,
+        "notices": _p3["notices"],
+        "plan3_checks": _p3["checks"],
         **fine_tune,
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
     }
     # Real, re-derivable audit hash over the canonical decision body (not a mockup): anyone can
     # recompute it with reproduce_audit_hash() / POST /api/gate/verify -> tamper-evident, deterministic.
     result["audit_hash"] = _hash_audit_body(_audit_hash_body(claim, verdict, reason, required, invariant_audit))
+    _attach_trace(result, payload)
     result["admissibility_certificate"] = build_admissibility_certificate(payload, result)
     return result
 

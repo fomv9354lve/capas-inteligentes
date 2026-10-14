@@ -8,20 +8,29 @@
       "claim_type": "universal_anchor_claim",
       "description": "Claims that require an explicit anchor-mode evidence contract.",
       "optional_fields": [
+        "abs_error_u",
+        "ai_use_declared",
         "benchmark_metric",
         "benchmark_name",
         "benchmark_pass",
         "citation_hypotheses_checked",
+        "cited_doi_retracted",
+        "cited_dois",
+        "coverage_factor",
         "empirical_anchor_pass",
         "empirical_reference_present",
         "empirical_tolerance",
         "load_bearing_citation_read",
+        "method_standard",
         "null_control_passed",
         "object_declared",
         "object_matches_target",
         "physical_evidence_level",
+        "prereg",
         "relative_anchor_comparison_pass",
         "relative_anchor_reference",
+        "retraction_snapshot",
+        "tolerance_u",
         "verification_independence"
       ],
       "registered": true,
@@ -46,7 +55,7 @@
         "training: provenance.review_id is missing",
         "training: provenance.witness_id is missing"
       ],
-      "licensed_thesis": "The generated scaling result is physically consistent with the universal z=1 anchor.",
+      "licensed_thesis": "Licensed on the declared universal_anchor_claim evidence: local checks and universal anchor both pass.",
       "optional_supports": [
         "evidence.physical_evidence_level",
         "evidence.verification_independence"
@@ -109,8 +118,11 @@
       "training: provenance.witness_id is missing"
     ]
   },
-  "audit_hash": "sha256:71a260c710aaa258956b8f2f90a5fb9943547559ce1c8d7162ebcb9c12ca2972",
+  "audit_hash": "sha256:0a0045d7be46c7cc385c033188f88327ab5b08b10b0e5e2185b3d5631161bf85",
+  "audit_hash_recipe": "v2",
   "did_you_mean": {},
+  "engine_version": "0.4.1",
+  "evidence_sha256": "sha256:208d6ecd2c0d0ddbc366fb35776b2a6f05e97efa680e016dfaaa569a180e81e9",
   "fine_tune_blockers": [
     "source-backed evidence is not attached",
     "external review is not attached",
@@ -156,9 +168,20 @@
     "verdict": "N/A",
     "violations": []
   },
-  "licensed_claim": "The generated scaling result is physically consistent with the universal z=1 anchor.",
+  "licensed_claim": "Licensed on the declared universal_anchor_claim evidence: local checks and universal anchor both pass.",
   "missing_fields": [],
   "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
+  "notices": [
+    "ai_use_declared: not declared (tool, purpose, phase); required from the X6 freeze"
+  ],
+  "plan3_checks": {
+    "ai_use_declared": "not declared",
+    "provenance": {
+      "declared": 0,
+      "verified": 0
+    },
+    "uncertainty": "not declared"
+  },
   "reason": "local checks and universal anchor both pass",
   "required_fields": [
     "anchor_mode",
@@ -170,7 +193,20 @@
     "message": "The evidence licenses the claim as worded."
   },
   "rewrite": null,
+  "rule_table_sha256": "sha256:b6788f744671f389ac43161690d836420221209d7162bc04fd21676b6a3e2e0b",
+  "rules_fired": [
+    "R415ac3e9f8"
+  ],
   "schema_errors": [],
   "schema_version": "capas-claim-payload-v3",
-  "verdict": "ACCEPT"
+  "text_licensed_as_written": false,
+  "verdict": "ACCEPT",
+  "would_have_failed_if": [
+    "local checks pass, but the universal anchor fails",
+    "relative_anchor supports comparison against (.*?), not universal physical correctness",
+    "empirical_anchor supports bounded empirical agreement within tolerance (.*?), not universal correctness",
+    "benchmark_anchor supports (.*?) / (.*?), not universal physical correctness",
+    "(.*?) evidence fails before the universal-anchor claim is licensed",
+    "or any of 15 downgrade rules that act on an ACCEPT (see docs/rule_table.json)"
+  ]
 }

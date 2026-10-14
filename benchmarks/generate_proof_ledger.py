@@ -40,6 +40,22 @@ def _run_test(path: str) -> bool | None:
     return r.returncode == 0
 
 
+def _run_cmd(args: list[str], label: str) -> bool | None:
+    """Like _run_test, for a backing that needs arguments or pytest (rc 2 = SKIP; no pytest installed = SKIP)."""
+    if args[:2] == ["-m", "pytest"]:
+        import importlib.util
+        if importlib.util.find_spec("pytest") is None:
+            _SKIPPED[label] = "pytest not installed"
+            return None
+    r = subprocess.run([sys.executable, *args], cwd=str(ROOT), capture_output=True, text=True, timeout=600)
+    if r.returncode == 2:
+        _SKIPPED[label] = "SKIP"
+        return None
+    if r.returncode != 0:
+        _TAILS[label] = "\n".join(((r.stderr or "") + "\n" + (r.stdout or "")).strip().splitlines()[-8:])
+    return r.returncode == 0
+
+
 def _sha256(path: Path) -> str:
     return "sha256:" + hashlib.sha256(path.read_bytes()).hexdigest()[:32] + "…" if path.is_file() else "n/a"
 
@@ -122,6 +138,44 @@ def build() -> list[dict]:
     L.append({"id": "audit_hash_reproduces", "claim": "Every verdict's audit_hash re-derives from the published recipe and is tamper-evident",
               "status": "CLOSED", "backing": "python3 benchmarks/verify_audit_hash_reproduces.py",
               "ok": _run_test("benchmarks/verify_audit_hash_reproduces.py"), "owner": "core"})
+    # --- PLAN_v3 (council 8/8; owner 2026-10-14 "implementa las 9") ---
+    L.append({"id": "rule_table_matches_engine", "claim": "The engine's rules are published as data (docs/rule_table.json, "
+              "98 rules) and every certificate names the rules that fired",
+              "status": "CLOSED", "backing": "python3 scripts/gen_rule_table.py --check; python3 scripts/check_rule_table.py (CI)",
+              "ok": _run_cmd(["scripts/gen_rule_table.py", "--check"], "rule_table"),
+              "scope": "check_rule_table.py replays every decision recorded across the test suite, the 1,238-input grid and the repository payloads (3,018 decisions, 931 distinct reasons, 95 of 98 rules exercised on 2026-10-14) from the table alone and "
+                       "matches the engine's verdict on every one. It proves the trace, not each rule's predicate.", "owner": "core"})
+    L.append({"id": "checker_rejects_mutations", "claim": "An engine-independent checker (capas_check.py, written from CERTIFICATE_SPEC.md "
+              "by a separate session that never read the engine) accepts all 238 sealed fixtures and rejects every mutated trace",
+              "status": "CLOSED", "backing": "python3 -m pytest benchmarks/test_capas_check_mutations.py",
+              "ok": _run_cmd(["-m", "pytest", "-q", "benchmarks/test_capas_check_mutations.py"], "mutations"),
+              "value": "checker false-accept 0/1,190 mutations (5 per fixture) + 0/238 under a bumped rule version",
+              "scope": "Same model family wrote engine and checker (different session, spec-only access): §6 separation by "
+                       "session, not by company. Acceptance shows the verdict follows from the table and the record is unaltered; "
+                       "it does not re-evaluate predicates or certify the evidence.", "owner": "core"})
+    L.append({"id": "plan3_engine_rules", "claim": "Provenance re-hash, guard band, retraction snapshot, field-level pre-registration "
+              "adherence and AI-use declaration act inside decide(), downgrade-only",
+              "status": "BACKED", "backing": "python3 -m pytest benchmarks/test_plan3_rules.py",
+              "ok": _run_cmd(["-m", "pytest", "-q", "benchmarks/test_plan3_rules.py"], "plan3"),
+              "scope": "No sealed-corpus verdict changes (the fields are absent there). ai_use_declared is a notice until the X6 "
+                       "freeze; the guard band applies only when *_u is declared.", "owner": "core"})
+    L.append({"id": "pharma_validator_adapter", "claim": "Pharma: a validator report's technical rejection precedes any statistic "
+              "(REJECT), errors HOLD, warnings hand over to the statistical gate",
+              "status": "BACKED", "backing": "python3 -m pytest benchmarks/test_pharma_validator.py",
+              "ok": _run_cmd(["-m", "pytest", "-q", "benchmarks/test_pharma_validator.py"], "pharma_validator"),
+              "scope": "Tested on synthetic Pinnacle 21-style reports; no real submission's report has been run. Library only.", "owner": "pharma"})
+    L.append({"id": "coder_agreement", "claim": "Coder agreement is measured: steps_all_valid, coded twice blind on 22 X1-3 proof claims, agrees 13/22",
+              "status": "SCOPED", "backing": "python3 research/ginibre_corpus/coder_agreement_retro.py --public",
+              "ok": _run_cmd(["research/ginibre_corpus/coder_agreement_retro.py", "--public"], "coder_agreement"),
+              "scope": "Retroactive, in-sample, self-run (both coders Krenn-IQ AI sessions); the 22 were selected on coder A's value, "
+                       "so kappa is not informative. The protocol (capas_coders.py: required-field disagreement -> excluded as HOLD) "
+                       "applies from X6 with the network's coders.", "owner": "eval"})
+    L.append({"id": "x6_prereg_cosigned", "claim": "Pre-registration of CAPAS against LLM judges on sealed batch X6, with six "
+              "pass/fail criteria fixed before data, co-signed by another company's model",
+              "status": "SCOPED", "backing": "python3 research/x6_prereg/check_cosign.py",
+              "ok": _run_cmd(["research/x6_prereg/check_cosign.py"], "x6_prereg"),
+              "scope": "Co-signed by gemini-3.8-flash (Google) after 8 review rounds (21 blocking objections answered). NOT sealed: the "
+                       "extraction, labelling and judge scripts and two independent coders are still to come; no data exist.", "owner": "eval"})
     L.append({"id": "gate_contracts_match", "claim": "The Gate App's served contract regenerates from capas.py (single source of truth; the JS replica is not the engine)",
               "status": "BACKED", "backing": "python3 benchmarks/verify_gate_contracts_match.py",
               "ok": _run_test("benchmarks/verify_gate_contracts_match.py"), "owner": "product"})
@@ -163,7 +217,7 @@ def build() -> list[dict]:
               "status": "SCOPED",
               "backing": "python3 research/ginibre_corpus/score_public.py --replay",
               "ok": public_ok,
-              "value": "X1-3 blind (v1 seal, outcomes unopened): 53/82, 51/63 | X4 (v4): 11/13, 6/7 | X5 (v6): 6/8, 10/10 | X4+X5: 17/21 [0.60-0.92], 16/17 [0.73-0.99] | replay at the frozen tags: 232/233 sealed verdicts reproduced",
+              "value": "X1-3 blind (v1 seal, outcomes unopened): 53/82, 51/63 | X4 (v4): 11/13, 6/7 | X5 (v6): 6/8, 10/10 | X4+X5: 17/21 [0.60-0.92], 16/17 [0.73-0.99] | replay at the frozen tags: 232/233 sealed verdicts reproduced | HOLD 6/183 (all field_absent), informative 177/183 | predictive value of pass: X1-3 42/71, X4 5/7, X5 6/8 | X4, X5 pilot-grade (< 40 bad), self-run",
               "artifact": "research/ginibre_corpus/public/MANIFEST.json", "sha256": _sha256(ROOT / "research" / "ginibre_corpus" / "public" / "MANIFEST.json"),
               "scope": "RE-DERIVABLE BY A THIRD PARTY FROM THE PUBLIC REDACTED FILES: verdicts, outcome labels and evidence fields are public; "
                        "claim texts, free-text evidence and outcome notes are published as sha256 only (unpublished paper), checkable when the "

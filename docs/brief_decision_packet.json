@@ -65,6 +65,17 @@
       "summary": "balance identity VIOLATED: assets 1000.0 != liabilities 600.0 + equity 300.0 (residual 100) — the books do not close"
     },
     "text_licensed_as_written": false,
+    "notices": [
+      "ai_use_declared: not declared (tool, purpose, phase); required from the X6 freeze"
+    ],
+    "plan3_checks": {
+      "provenance": {
+        "declared": 0,
+        "verified": 0
+      },
+      "ai_use_declared": "not declared",
+      "uncertainty": "not declared"
+    },
     "fine_tune_ready": false,
     "fine_tune_blockers": [
       "claim verdict is not ACCEPT",
@@ -98,7 +109,15 @@
       "witness_id_present": false
     },
     "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
-    "audit_hash": "sha256:7be69d89a72878a951efadfa101be6b5cf145fa61a6e290d7c1e7fb49a32d92c",
+    "audit_hash": "sha256:092374a4ef2b955749b398a9758fef514c094d164dbe8463a0d326e78dbdcb4e",
+    "rules_fired": [
+      "R404ebcc1d2",
+      "R498daec9f1"
+    ],
+    "rule_table_sha256": "sha256:b6788f744671f389ac43161690d836420221209d7162bc04fd21676b6a3e2e0b",
+    "engine_version": "0.4.1",
+    "evidence_sha256": "sha256:5c52b7088b555b950f9bf3b373bb062ee681c80475b33d75b835ee99d390664a",
+    "audit_hash_recipe": "v2",
     "admissibility_certificate": {
       "calculus_version": "capas-admissibility-calculus-v1",
       "metaphor": "compiler_certificate",
@@ -119,7 +138,16 @@
           "object_matches_target",
           "load_bearing_citation_read",
           "citation_hypotheses_checked",
-          "null_control_passed"
+          "null_control_passed",
+          "ai_use_declared",
+          "coverage_factor",
+          "abs_error_u",
+          "tolerance_u",
+          "method_standard",
+          "cited_dois",
+          "retraction_snapshot",
+          "cited_doi_retracted",
+          "prereg"
         ],
         "anchor_mode": null,
         "anchor_license": null,

@@ -25,7 +25,9 @@ jobs:
         run: python -m pip install --upgrade pip setuptools wheel build
 
       - name: Install package
-        run: python -m pip install -e .
+        run: |
+          python -m pip install -e .
+          python -m pip install pytest   # PLAN_v3 ledger backings and the mutated-trace suite run under pytest
 
       - name: Product demo acceptance
         run: python benchmarks/verify_capas_product_demo.py
@@ -68,6 +70,29 @@ jobs:
 
       # Blind-corpus figures re-derived from the public redacted files, and every sealed verdict replayed with the
       # engine at its frozen tag (owner decision 2026-10-14: verdicts and outcome labels public, claim text as hash).
+      # PLAN_v3 (owner 2026-10-14, "implementa las 9"): rules as data, independent checker, mutated traces, co-signed prereg
+      - name: Rule table regenerates from the engine
+        run: python scripts/gen_rule_table.py --check
+
+      - name: Rule table replays every recorded decision
+        run: python scripts/check_rule_table.py
+
+      - name: Certificate fixtures in sync and accepted by the independent checker
+        run: |
+          python scripts/make_certificate_fixtures.py --check
+          python capas_check.py --table docs/rule_table.json research/certificates/fixtures.jsonl | tail -1
+
+      - name: Checker rejects every mutated trace; PLAN_v3 engine rules; pharma validator adapter
+        run: python -m pytest -q benchmarks/test_capas_check_mutations.py benchmarks/test_plan3_rules.py benchmarks/test_pharma_validator.py
+
+      - name: Coder agreement re-derives; X6 pre-registration is the co-signed version
+        run: |
+          python research/ginibre_corpus/coder_agreement_retro.py --public
+          python research/x6_prereg/check_cosign.py
+
+      - name: Home reference decisions show the engine's audit hashes
+        run: python benchmarks/home_gate_decisions.py --check
+
       - name: Site navigation matches its single source
         run: python scripts/apply_nav.py --check
 
