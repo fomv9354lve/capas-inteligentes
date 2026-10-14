@@ -22,7 +22,10 @@ def main() -> int:
     assert san["prereg_id"] == "mirror_e4_drift_v5"
     jobs = san["jobs"]
     job_day = jobs["mirror_rb_e4_20261013_1528"]["timestamps"]["running"][:10]
-    snap = {**cal, "layout": REP12_LAYOUT, "job_date": job_day}
+    # Atlas (2026-10-13 ~20:45): `measured` and the naive job timestamps are LOCAL -06:00 (datetime.now()/date.today());
+    # field_dates carry their offset; IBM `running` is UTC (Z). The engine reads naive timestamps in UTC unless the
+    # snapshot declares `timezone`, so the coder must declare it. Not re-run on the sealed file (sha 58b74c2b…).
+    snap = {**cal, "layout": REP12_LAYOUT, "job_date": job_day, "timezone": "-06:00"}
     P1, P2, P3 = san["P1"], san["P2"], san["P3"]
     gap_ok = P3["gap_s"] <= 1800
     rows = []

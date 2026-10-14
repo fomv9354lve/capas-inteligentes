@@ -151,3 +151,12 @@ snapshot declare `timezone` ("UTC", "±HH:MM" o nombre IANA), y los días calend
 mismo veredicto con TZ=UTC, America/Mexico_City y Asia/Tokyo. Con la regla determinista, **E4b P1 sigue ACCEPT** en
 todos los motores (v6, v8, v9); con `timezone: "-06:00"` declarado sería HOLD (T1 del qubit 65 rancio), nunca REJECT.
 Lección: toda aritmética de calendario del motor lleva zona explícita; `verify_determinism.py` no cubría la zona.
+
+**Zona real de los datos de Atlas (2026-10-13 ~20:45, aviso de Atlas):** `measured` y `job_date` de sus snapshots son hora
+LOCAL -06:00 sin zona; `field_dates` traen zona; los `running` de IBM son UTC. Mi supuesto de UTC para los campos sin zona
+era incorrecto para esos dos campos. El motor no cambia (sin zona → UTC salvo `timezone` declarado); lo que cambia es la
+codificación: a partir del siguiente snapshot Atlas declara `timezone`, y el generador `build_claims_e4b.py` ya lo pone
+para reuso futuro (el archivo sellado de E4b no se regenera). **Lectura correcta de E4b con `timezone: "-06:00"`: P1 →
+HOLD** (T1 del qubit 65 rancio a 2 días calendario; contexto sin verificar), no ACCEPT. El sellado original (v6, ACCEPT)
+no cambia; la cuenta limpia de Atlas queda: malo-no-ACCEPT 1/1 (E4), bueno-no-REJECT 2/2 (E4b P1 y P3; P1 vacuo bajo
+la lectura correcta), HOLD vacuos 2 (P2, y P1 bajo v9 con zona).
