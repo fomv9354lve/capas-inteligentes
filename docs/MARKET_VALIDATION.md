@@ -82,7 +82,7 @@ weaker (CONJECTURE).
 
 **Failure modes (FACT — the strongest cautionary corpus):** MongoDB (AGPL→SSPL, OSI ruled non-open),
 Elastic (→SSPL→AWS OpenSearch fork→reverted to AGPL 2024), HashiCorp (→BSL→OpenTofu/OpenBao), Redis
-(→SSPL→Valkey, ~83% of large users testing within a year→reverted 2025, "bridges burned"). Lessons:
+(→SSPL→Valkey, reverted 2025, "bridges burned"). Lessons:
 relicensing the core to grab value is the #1 trust-killer; it reliably triggers a neutral-foundation fork;
 reversals don't restore trust; **separate value capture from standard ownership** so the company can be
 acquired (Styra→Apple) without taking the standard down. **Highest-leverage de-risking move: pre-commit

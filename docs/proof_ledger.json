@@ -60,24 +60,39 @@
   },
   {
     "id": "pharma_admissibility",
-    "claim": "Pharma statistical-claim admissibility: 3,024-case corpus, 0 false-accepts",
+    "claim": "Pharma statistical-claim contract: the 3,024-case synthetic grid exhausts its verdict space and no grid case the contract defines as deficient is ACCEPTed",
     "status": "BACKED",
     "backing": "python3 benchmarks/generate_pharma_corpus.py",
     "ok": true,
     "value": "N=3024; hard-gated 95.5%; 0 deficient claims ACCEPTed",
     "artifact": "outputs/pharma_corpus.json",
     "sha256": "sha256:349286ca67a17dfc0a47767cc17be030\u2026",
-    "scope": "SYNTHETIC contract coverage of the statistical-admissibility space Pinnacle 21 skips (significance-vs-alpha, multiplicity, CI-excludes-null, direction, endpoint). NOT a production false-accept rate on real submissions. The beachhead gate; see docs/MARKET_VALIDATION.md.",
+    "scope": "SYNTHETIC contract coverage of the statistical-admissibility space Pinnacle 21 skips (significance-vs-alpha, multiplicity, CI-excludes-null, direction, endpoint). NOT a production false-accept rate on real submissions. The oracle restates the gate's own rules, so this is contract coverage, not validation. Since 2026-10-14 every field is required (missing -> HOLD; external audit found {} -> ACCEPT). The pharma gate is a library function (capas_pharma), not exposed on the hosted API.",
     "owner": "pharma"
   },
   {
     "id": "beat_benchmark",
-    "claim": "Vendor headline under-states real per-layer error by 2-11x",
+    "claim": "On one ibm_fez qubit pair (q9-q10), the vendor's headline CZ error under-states the re-derived per-layer floor 11.4x; about 2x on typical pairs",
     "status": "BACKED",
-    "backing": "capas_quantum_physics.complete_error_budget(published fields)",
+    "backing": "python3 benchmarks/generate_proof_ledger.py (capas_quantum_physics.complete_error_budget on the row below; also benchmarks/verify_xeb_purity.py)",
+    "inputs": {
+      "published": {
+        "cz_error": 0.001629,
+        "sx_error": 0.0002743,
+        "t1_us": 299.57,
+        "t2_us": 33.9,
+        "readout": 0.005371
+      },
+      "assumed": {
+        "idle_ns": 300,
+        "zz_residual_hz": 50000.0,
+        "cz_time_ns": 68,
+        "leakage": 0.0001
+      }
+    },
     "ok": true,
     "value": "~2x typical, 11.45x worst (dephasing-limited)",
-    "scope": "Re-derived from the vendor's OWN published calibration. Worst case is a real anomalous qubit; structured-circuit 3-10x band is Proctor (Nat. Phys. 2022), a cited literature range.",
+    "scope": "cz, sx, T1 and T2 are the vendor's published fields; idle time (300 ns), residual ZZ (50 kHz), CZ duration and leakage are DECLARED ASSUMPTIONS, not published fields. The 11.4x is dominated by dephasing from q9's T2 = 33.9 us and scales with the assumed idle. The structured-circuit 3-10x band is Proctor (Nat. Phys. 2022), a cited range.",
     "owner": "quantum"
   },
   {
@@ -174,11 +189,11 @@
   },
   {
     "id": "section6_counter_signature",
-    "claim": "Every public CAPAS claim has been attacked by a model of another family (GOVERNANCE \u00a76: constructor != verifier)",
+    "claim": "7 of the 10 claims in the \u00a76 package were attacked by a model of another company (GOVERNANCE \u00a76: constructor != verifier); 3 were refuted and corrected",
     "status": "BACKED",
     "backing": "research/section6_package/run_counter_signature.py (model directs, CAPAS executes allowlisted; verbatim transcripts)",
     "ok": true,
-    "value": "5 runs, xAI grok-4.7: 3/7 claims REFUTED (C6-02 false-accept by scope, C6-04 unsealed figure, C6-05 unversioned grading) -> each corrected and frozen as a test or sealed file; 4/7 not refuted",
+    "value": "8 runs (a 9th aborted on credit), xAI grok-4.7: 3/7 attacked claims REFUTED (C6-02 false-accept by scope, C6-04 unsealed figure, C6-05 unversioned grading) -> each corrected and frozen as a test or sealed file; 4/7 not refuted",
     "artifact": "research/section6_package/README.md",
     "sha256": "sha256:9bfde217fb71c7cfafc9910b907feb9e\u2026",
     "scope": "One auditor family so far; NOT REFUTED is not PROVED. Run 4's report quoted commands it never executed (caught by the transcript); the runner now gates the report against executed commands.",
@@ -192,16 +207,6 @@
     "value": "28/28 on an agent-coded, publicly-known retrospective",
     "scope": "Illustrative; the papers were already publicly retracted (no blind adjudication). Demonstrates the contract logic, not blind fraud detection.",
     "upgrade_artifact": "DONE 2026-10-13: see blind_corpus_sealed (blind-coded, frozen, sealed, double-counted)",
-    "owner": "eval"
-  },
-  {
-    "id": "head_to_head",
-    "claim": "At par with a frontier LLM-judge on accuracy; ahead on determinism",
-    "status": "SCOPED",
-    "backing": "benchmarks/head_to_head_sota.py",
-    "value": "0/5 false-accept (both); CAPAS deterministic, LLM stochastic",
-    "scope": "10-claim corpus; modeled mechanism arms labeled as modeled.",
-    "upgrade_artifact": "larger adjudicated corpus + real competitor runs",
     "owner": "eval"
   },
   {
@@ -221,7 +226,7 @@
     "claim": "pip install capas-claim-gate",
     "status": "BACKED",
     "backing": "pip install capas-claim-gate (PyPI; published from GitHub via OIDC Trusted Publishing, no token)",
-    "value": "capas-claim-gate 0.3.0 LIVE on PyPI",
+    "value": "capas-claim-gate 0.4.0 LIVE on PyPI",
     "artifact": "https://pypi.org/project/capas-claim-gate/",
     "scope": "Published via the publish.yml Trusted Publisher; current release v0.4.0 (tag v0.4.0 = 6a8471b), first published as v0.1.2; the wheel install is now live.",
     "owner": "release"

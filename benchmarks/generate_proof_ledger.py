@@ -91,22 +91,27 @@ def build() -> list[dict]:
               "scope": "SYNTHETIC adversarial decision-space grid (contract coverage), NOT a production drift rate.",
               "owner": "eval"})
     pharma = ROOT / "outputs" / "pharma_corpus.json"
-    L.append({"id": "pharma_admissibility", "claim": "Pharma statistical-claim admissibility: 3,024-case corpus, 0 false-accepts",
+    L.append({"id": "pharma_admissibility", "claim": "Pharma statistical-claim contract: the 3,024-case synthetic grid exhausts its verdict space and no grid case the contract defines as deficient is ACCEPTed",
               "status": "BACKED", "backing": "python3 benchmarks/generate_pharma_corpus.py",
               "ok": _run_test("benchmarks/generate_pharma_corpus.py"),
               "value": "N=3024; hard-gated 95.5%; 0 deficient claims ACCEPTed", "artifact": "outputs/pharma_corpus.json",
               "sha256": _sha256(pharma),
               "scope": "SYNTHETIC contract coverage of the statistical-admissibility space Pinnacle 21 skips "
                        "(significance-vs-alpha, multiplicity, CI-excludes-null, direction, endpoint). NOT a production "
-                       "false-accept rate on real submissions. The beachhead gate; see docs/MARKET_VALIDATION.md.",
+                       "false-accept rate on real submissions. The oracle restates the gate's own rules, so this is contract coverage, "
+                       "not validation. Since 2026-10-14 every field is required (missing -> HOLD; external audit found {} -> ACCEPT). "
+                       "The pharma gate is a library function (capas_pharma), not exposed on the hosted API.",
               "owner": "pharma"})
     b = Q.complete_error_budget({"cz_error": 1.629e-3, "sx_error": 2.743e-4, "t1_us": 299.57,
                                  "t2_us": 33.9, "readout": 5.371e-3, "zz_residual_hz": 50e3, "idle_ns": 300})
-    L.append({"id": "beat_benchmark", "claim": "Vendor headline under-states real per-layer error by 2-11x",
-              "status": "BACKED", "backing": "capas_quantum_physics.complete_error_budget(published fields)",
+    L.append({"id": "beat_benchmark", "claim": "On one ibm_fez qubit pair (q9-q10), the vendor's headline CZ error under-states the re-derived per-layer floor 11.4x; about 2x on typical pairs",
+              "status": "BACKED", "backing": "python3 benchmarks/generate_proof_ledger.py (capas_quantum_physics.complete_error_budget on the row below; also benchmarks/verify_xeb_purity.py)",
+              "inputs": {"published": {"cz_error": 1.629e-3, "sx_error": 2.743e-4, "t1_us": 299.57, "t2_us": 33.9, "readout": 5.371e-3},
+                         "assumed": {"idle_ns": 300, "zz_residual_hz": 50e3, "cz_time_ns": 68, "leakage": 1e-4}},
               "ok": b.get("exact_gap_x", 0) > 1, "value": f"~2x typical, {b['exact_gap_x']}x worst (dephasing-limited)",
-              "scope": "Re-derived from the vendor's OWN published calibration. Worst case is a real anomalous qubit; "
-                       "structured-circuit 3-10x band is Proctor (Nat. Phys. 2022), a cited literature range.",
+              "scope": "cz, sx, T1 and T2 are the vendor's published fields; idle time (300 ns), residual ZZ (50 kHz), CZ duration and "
+                       "leakage are DECLARED ASSUMPTIONS, not published fields. The 11.4x is dominated by dephasing from q9's T2 = 33.9 us "
+                       "and scales with the assumed idle. The structured-circuit 3-10x band is Proctor (Nat. Phys. 2022), a cited range.",
               "owner": "quantum"})
 
     # --- 2026-10-13 audit: the home listed these as PROVEN/BACKED with no ledger entry. Every public number must be here.
@@ -171,13 +176,13 @@ def build() -> list[dict]:
                        "recomputable inconsistencies do NOT separate retracted from clean papers (2.13% vs 1.58%).",
               "upgrade_artifact": "a second project's blind corpus + an external adjudicator", "owner": "eval"})
     s6 = ROOT / "research" / "section6_package" / "README.md"
-    L.append({"id": "section6_counter_signature", "claim": "Every public CAPAS claim has been attacked by a model of another family "
-              "(GOVERNANCE §6: constructor != verifier)",
+    L.append({"id": "section6_counter_signature", "claim": "7 of the 10 claims in the §6 package were attacked by a model of another company "
+              "(GOVERNANCE §6: constructor != verifier); 3 were refuted and corrected",
               "status": "BACKED", "backing": "research/section6_package/run_counter_signature.py (model directs, CAPAS executes allowlisted; verbatim transcripts)",
               "ok": all((ROOT / "research" / "section6_package" / f).exists() for f in
                         ("section6_xai_2026-10-13_run1.md", "section6_xai_2026-10-13.md", "section6_xai_2026-10-13_run3.md",
                          "section6_xai_2026-10-13_run4.md", "section6_xai_2026-10-13_run5.md")),
-              "value": "5 runs, xAI grok-4.7: 3/7 claims REFUTED (C6-02 false-accept by scope, C6-04 unsealed figure, C6-05 unversioned grading) -> each corrected and frozen as a test or sealed file; 4/7 not refuted",
+              "value": "8 runs (a 9th aborted on credit), xAI grok-4.7: 3/7 attacked claims REFUTED (C6-02 false-accept by scope, C6-04 unsealed figure, C6-05 unversioned grading) -> each corrected and frozen as a test or sealed file; 4/7 not refuted",
               "artifact": "research/section6_package/README.md", "sha256": _sha256(s6),
               "scope": "One auditor family so far; NOT REFUTED is not PROVED. Run 4's report quoted commands it never executed "
                        "(caught by the transcript); the runner now gates the report against executed commands.",
@@ -187,11 +192,7 @@ def build() -> list[dict]:
               "scope": "Illustrative; the papers were already publicly retracted (no blind adjudication). Demonstrates "
                        "the contract logic, not blind fraud detection.", "upgrade_artifact": "DONE 2026-10-13: see blind_corpus_sealed (blind-coded, frozen, sealed, double-counted)",
               "owner": "eval"})
-    L.append({"id": "head_to_head", "claim": "At par with a frontier LLM-judge on accuracy; ahead on determinism",
-              "status": "SCOPED", "backing": "benchmarks/head_to_head_sota.py",
-              "value": "0/5 false-accept (both); CAPAS deterministic, LLM stochastic",
-              "scope": "10-claim corpus; modeled mechanism arms labeled as modeled.",
-              "upgrade_artifact": "larger adjudicated corpus + real competitor runs", "owner": "eval"})
+    # head_to_head retired 2026-10-14 (council + external audit): n=10, modeled arms; against the real LLM judge the two tied.
     rp = ROOT / "outputs" / "replica_parity.json"
     L.append({"id": "replica_parity", "claim": "The in-browser JS replica is NOT the engine: it agrees with the Python gate on 130/233 sealed payloads",
               "status": "SCOPED", "backing": "python3 benchmarks/replica_parity.py (node + playwright)",
@@ -203,7 +204,7 @@ def build() -> list[dict]:
               "upgrade_artifact": "either regenerate rule() from capas.py or delete the replica", "owner": "eval"})
     L.append({"id": "pip_install", "claim": "pip install capas-claim-gate",
               "status": "BACKED", "backing": "pip install capas-claim-gate (PyPI; published from GitHub via OIDC Trusted Publishing, no token)",
-              "value": "capas-claim-gate 0.3.0 LIVE on PyPI", "artifact": "https://pypi.org/project/capas-claim-gate/",
+              "value": "capas-claim-gate 0.4.0 LIVE on PyPI", "artifact": "https://pypi.org/project/capas-claim-gate/",
               "scope": "Published via the publish.yml Trusted Publisher; current release v0.4.0 (tag v0.4.0 = 6a8471b), first published as v0.1.2; the wheel install is now live.",
               "owner": "release"})
     return L

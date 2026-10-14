@@ -25,6 +25,12 @@ FORBIDDEN = [
     (r"full verdict-space coverage|cobertura completa del espacio de veredictos", "9/12 families reach all four verdicts, three cannot by design (brief audit item 4)"),
     (r"Recent [Gg]ate [Dd]ecisions|Decisiones recientes del gate", "the four decisions are fixed, re-derivable fixtures (brief audit item 8)"),
     (r"wraps any packet in a signed", "/api/decide and /api/gate return unsigned packets (brief audit item 3)"),
+    (r"<strong>10k</strong>|structured payload validations|<strong>34%</strong>", "hand-typed traction figures with no source (audit 2026-10-14 item 5)"),
+    (r"Every public CAPAS claim has been attacked", "7 of the 10 §6 claims were attacked (audit 2026-10-14)"),
+    (r"0\.3\.0 \(0\.4\.0 pending\)|0\.3\.0 LIVE", "PyPI has 0.4.0"),
+    (r"licensed as written", "an ACCEPT never licenses the raw text (audit 2026-10-14 item 2)"),
+    (r"8/8", "the conformance suite has 10 invariants"),
+    (r"None of the three is a self-assessment", "two of the three audit layers are run by Krenn·IQ"),
     (r"literal output of the engine", "the packet is generated, published and CI-checked, never typed (brief audit item 1)"),
     (r"examples shown here are illustrative|ejemplos de decisión son ilustrativos", "nothing on the brief is illustrative (brief audit item 8)"),
 ]

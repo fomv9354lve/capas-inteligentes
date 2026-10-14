@@ -121,7 +121,7 @@ code{font-family:'SF Mono',ui-monospace,Menlo,monospace;font-size:12px;color:rgb
 <h2 data-es="Cifras de portada">Headline figures</h2>
 <div class="grid">
   <div class="stat" data-es="<strong>1.238</strong><span>decisiones en total</span>"><strong>1,238</strong><span>total decisions</span></div>
-  <div class="stat" data-es="<strong>12</strong><span>familias de claims</span>"><strong>12</strong><span>claim families</span></div>
+  <div class="stat" data-es="<strong>12</strong><span>familias de la malla (de 14 tipos)</span>"><strong>12</strong><span>grid claim families (of 14 types)</span></div>
   <div class="stat" data-es="<strong style=&quot;color:var(--amber)&quot;>78,4 %</strong><span>gateado (REWRITE + REJECT)</span>"><strong style="color:var(--amber)">78.4%</strong><span>gated (REWRITE + REJECT)</span></div>
   <div class="stat" data-es="<strong style=&quot;color:var(--green)&quot;>12 / 12</strong><span>familias alcanzan ≥2 veredictos</span>"><strong style="color:var(--green)">12 / 12</strong><span>families reach ≥2 verdicts</span></div>
 </div>
@@ -146,7 +146,7 @@ code{font-family:'SF Mono',ui-monospace,Menlo,monospace;font-size:12px;color:rgb
 </tbody></table>
 <p style="font-size:12px;color:var(--muted)" data-es="La malla sigue al motor actual: el 2026-10-13 tres payloads pasaron de ACCEPT a HOLD con las reglas de ese día. Las tasas ciegas de la portada pertenecen al motor congelado en el tag sellado. El motor actual no tiene tasa ciega hasta el siguiente lote sellado.">The grid tracks the current engine: on 2026-10-13 three payloads moved from ACCEPT to HOLD under that day&rsquo;s rules. The blind rates on the front page belong to the engine frozen at the sealed tag. The current engine has no blind rate until the next sealed batch.</p>
 <p style="font-size:12px;color:var(--muted)" data-es="La cobertura es nominal, no balanceada: 907 de los 1.238 payloads están en dos familias y siete familias tienen n &le; 20 con mezclas fijadas a mano. La malla prueba la lógica de cada contrato. No estima tasas por familia.">Coverage is nominal, not balanced: 907 of the 1,238 payloads sit in two families, and seven families have n &le; 20 with hand-set mixes. The grid exercises each contract&rsquo;s logic. It does not estimate per-family rates.</p>
-<p style="font-size:12px;color:var(--muted)" data-es="Tres familias (exact_model_solution, claim_transition, physical_accuracy) no pueden alcanzar los cuatro veredictos por diseño: una comprobación binaria de exactitud no tiene estado REWRITE.">Three families (exact_model_solution, claim_transition, physical_accuracy) cannot reach all four verdicts by design: a binary exactness check has no REWRITE state.</p>
+<p style="font-size:12px;color:var(--muted)" data-es="Por diseño del contrato, physical_accuracy no puede alcanzar REWRITE y claim_transition no puede alcanzar REJECT. exact_model_solution tiene rutas REWRITE en el motor que la malla no ejercita: es un hueco de la malla, no un límite de diseño.">By contract design, physical_accuracy cannot reach REWRITE and claim_transition cannot reach REJECT. exact_model_solution has REWRITE paths in the engine that the grid does not exercise: a grid gap, not a design limit.</p>
 
 <h2 data-es="Reproducción">Reproduction</h2>
 <p data-es="Cada cifra de esta página sale de un solo script. Las mismas entradas dan los mismos conteos en cualquier máquina:">Every figure on this page comes from one script. The same inputs give the same counts on any machine:</p>

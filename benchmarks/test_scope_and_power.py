@@ -84,9 +84,11 @@ def test_accept_with_declared_scope_annotates_licensed_claim():
     assert d["verdict"] == "ACCEPT"
     assert d["licensed_claim"] != GENERAL and "d=1.1" in d["licensed_claim"] and "scope" in d["licensed_claim"].lower()
 
-def test_accept_without_scope_fields_and_local_text_keeps_raw_text():
+def test_accept_without_scope_fields_and_local_text_licenses_evidence_not_raw_text():
+    # External audit 2026-10-14: ACCEPT never licenses the raw sentence; it licenses the declared evidence, annotated.
     d = capas.decide_external_claim(_p(LOCAL))
-    assert d["verdict"] == "ACCEPT" and d["licensed_claim"] == LOCAL
+    assert d["verdict"] == "ACCEPT" and d["licensed_claim"].endswith(LOCAL) and d["licensed_claim"].startswith("[licensed on the declared")
+    assert d["text_licensed_as_written"] is False
 
 
 # --- Ginibre convention (a), 2026-10-13: a closed form sustained by chi2/dof + rivals is coded in test_statistic on the

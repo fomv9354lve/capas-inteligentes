@@ -45,13 +45,33 @@ def gate_pharma_stat_claim(evidence: dict[str, Any]) -> dict[str, Any]:
     def add(v, rule, why):
         findings.append({"verdict": v, "rule": rule, "why": why})
 
+    # External audit 2026-10-14: an EMPTY evidence dict returned ACCEPT "confirmatory efficacy"; a missing alpha
+    # defaulted silently to 0.05; multiplicity_adjustment "no" counted as adjusted (bool("no") is True); a missing
+    # prespecified passed. Rule since: every field a confirmatory claim depends on must be DECLARED; missing -> HOLD.
+    _REQUIRED = ("claim_kind", "asserts_significant", "p_value", "alpha", "n_comparisons", "multiplicity_adjustment",
+                 "endpoint_type", "prespecified", "ci_low", "ci_high", "observed_direction", "claimed_direction")
+    _missing = [k for k in _REQUIRED if evidence.get(k) is None]
+    if evidence.get("claim_kind") == "descriptive":
+        _missing = [k for k in ("claim_kind", "asserts_significant") if evidence.get(k) is None]
+        if evidence.get("asserts_significant") is True:
+            return {"verdict": "REWRITE", "why": "a descriptive claim cannot assert significance; declare claim_kind "
+                    "'confirmatory' with its evidence, or drop the significance wording", "findings": [],
+                    "licensed_reuse": "descriptive only", "domain": "pharma_statistics", "alpha": _num(evidence.get("alpha"))}
+    if _missing:
+        return {"verdict": "HOLD", "why": f"missing declared fields: {_missing}; a confirmatory statistical claim is "
+                "judged only on declared evidence (nothing is defaulted)", "findings": [],
+                "licensed_reuse": "none until the missing fields are declared", "domain": "pharma_statistics", "alpha": None}
     alpha = _num(evidence.get("alpha"))
-    if alpha is None:
-        alpha = 0.05
+    if alpha is None or not (0.0 < alpha <= 0.10):
+        return {"verdict": "HOLD", "why": f"alpha {evidence.get('alpha')!r} is not a significance threshold in (0, 0.10]",
+                "findings": [], "licensed_reuse": "none", "domain": "pharma_statistics", "alpha": alpha}
+    if not isinstance(evidence.get("prespecified"), bool) or not isinstance(evidence.get("asserts_significant"), bool):
+        return {"verdict": "HOLD", "why": "prespecified and asserts_significant must be declared as true/false",
+                "findings": [], "licensed_reuse": "none", "domain": "pharma_statistics", "alpha": alpha}
     p = _num(evidence.get("p_value"))
-    asserts_sig = bool(evidence.get("asserts_significant"))
+    asserts_sig = evidence.get("asserts_significant") is True
     asserts_eff = bool(evidence.get("asserts_effect", asserts_sig))
-    confirmatory = (evidence.get("claim_kind", "confirmatory") == "confirmatory")
+    confirmatory = (evidence.get("claim_kind") == "confirmatory")
 
     # 0. recompute vs declared (the P21-skipped re-derivation): hard contradiction
     if evidence.get("rederived_p_match") is False:
@@ -70,7 +90,19 @@ def gate_pharma_stat_claim(evidence: dict[str, Any]) -> dict[str, Any]:
     # 2. multiplicity: many comparisons, unadjusted, confirmatory significance claim
     nc = evidence.get("n_comparisons")
     nc = int(nc) if isinstance(nc, (int, float)) else 1
-    adjusted = bool(evidence.get("multiplicity_adjustment"))
+    _ma = evidence.get("multiplicity_adjustment")
+    _ADJ = {"bonferroni", "holm", "hochberg", "hommel", "fdr", "bh", "benjamini-hochberg", "hierarchical", "gatekeeping",
+            "fixed-sequence", "fallback", "dunnett", "graphical", "sidak", "šidák"}
+    _NOT = {"no", "none", "false", "unadjusted", "n/a", "na", ""}
+    if isinstance(_ma, bool):
+        adjusted = _ma
+    elif isinstance(_ma, str) and _ma.strip().lower() in _ADJ:
+        adjusted = True
+    elif isinstance(_ma, str) and _ma.strip().lower() in _NOT:
+        adjusted = False
+    else:
+        return {"verdict": "HOLD", "why": f"multiplicity_adjustment {_ma!r} is not a recognised method or true/false",
+                "findings": [], "licensed_reuse": "none", "domain": "pharma_statistics", "alpha": alpha}
     if asserts_sig and confirmatory and nc > 1 and not adjusted:
         add("REWRITE", "multiplicity_unadjusted",
             f"{nc} comparisons/endpoints tested with no multiplicity adjustment; an unadjusted p-value does "
@@ -97,7 +129,7 @@ def gate_pharma_stat_claim(evidence: dict[str, Any]) -> dict[str, Any]:
     # 5. endpoint pre-specification for a confirmatory claim
     etype = evidence.get("endpoint_type")
     prespec = evidence.get("prespecified")
-    if confirmatory and asserts_eff and etype in ("secondary", "exploratory") and prespec is False:
+    if confirmatory and asserts_eff and etype in ("secondary", "exploratory") and prespec is not True:
         add("REWRITE", "endpoint_not_prespecified",
             f"a non-prespecified {etype} endpoint cannot license a confirmatory efficacy claim; label it "
             f"hypothesis-generating")

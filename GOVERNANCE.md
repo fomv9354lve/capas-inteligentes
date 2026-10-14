@@ -4,7 +4,7 @@
 open standard is to **separate the standard/mark from the commercial entity before adoption**, not after.
 This document is the **binding statement of direction, drafted to be made legally irrevocable** (§3). It is written for legal review
 (`draft for counsel` — the structure is the commitment; the final wording is to be executed by counsel),
-but it takes effect as a binding statement of direction on publication.*
+and it is binding in direction only: it is not yet legally executed, so nothing in it is enforceable until counsel executes it (§3).*
 
 ## 1. Open core (Apache-2.0) — renounced relicensing
 
@@ -38,7 +38,7 @@ legally enforceable one-way ratchet**. The intent: this charter may not be amend
 away from an OSI-approved license, to return the mark to the unconstrained control of the commercial
 entity, to remove the self-run conformance right (§6), or to weaken the trigger/transfer terms (§4). The
 capture move this charter forbids is the configuration that, in the surveyed set in §7, preceded a
-neutral-foundation fork in every listed case — once executed, the ratchet is what makes it *impossible by
+fork or a loss of standing in each listed case — once executed, the ratchet is what makes it *impossible by
 the instrument* rather than merely *discouraged*.
 
 ## 4. Trigger events and transfer
@@ -80,19 +80,19 @@ still pass (the GIGO ceiling). See the disclaimer on every page and `LICENSE` §
 
 ## 7. Why — the open-core fork record (the failure mode this instrument forbids)
 
-Every project that relicensed its open core to capture value triggered a neutral-foundation fork that
-stranded the original; reversals did not restore trust. §3 makes this structurally impossible for CAPAS:
+Elastic, HashiCorp and Redis relicensed their open core and were forked; MongoDB was not forked but lost its
+OSI standing and distribution. Reversals did not restore trust. §3 makes this structurally impossible for CAPAS:
 
 | Project | What happened | Result |
 |---|---|---|
 | **MongoDB** | Apache → SSPL (2018) | OSI ruled it non-open; distros dropped it; reputational hit |
 | **Elastic** | Apache → SSPL (2021) | AWS forked **OpenSearch**; Elastic **reverted to AGPL (2024)** |
 | **HashiCorp** | MPL → BSL (2023) | Community forked **OpenTofu** / **OpenBao** under the Linux Foundation |
-| **Redis** | BSD → SSPL (2024) | Forked as **Valkey** (LF; ~83% of large users testing within a year); Redis reverted 2025 — "bridges burned" |
+| **Redis** | BSD → SSPL (2024) | Forked as **Valkey** (LF); Redis reverted 2025 — "bridges burned" |
 | **Styra / OPA** | Company acqui-hired by Apple (2025) | **The standard survived — because CNCF, not Styra, held the mark.** The model this charter copies. |
 
 The lesson the evidence forces: **entity-owns-engine + entity-owns-mark + entity-sells-product** is the
-exact configuration that forks every project. This charter pre-commits against it, before
+configuration that preceded each case above. This charter pre-commits against it, before
 adoption, while it is still free to do so.
 
 ## 8. Precedents this charter follows
@@ -104,7 +104,7 @@ adoption, while it is still free to do so.
 
 ---
 
-*Status: **binding statement of direction, effective on publication.** Vehicle: trustee-escrow (§2),
+*Status: **binding statement of direction, not yet legally executed.** Vehicle: trustee-escrow (§2),
 operative once `[TRUSTEE — to be named]` is named and the escrow is executed; foundation assignment is the
 destination. The irrevocability (§3) and trigger/transfer terms (§4) are the load-bearing commitments and
 are to be finalized in an executed legal instrument by counsel. This document is that instrument's

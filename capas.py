@@ -1891,6 +1891,11 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
             reason = "upgrade evidence is absent; stronger claim is not licensed"
             rewrite = evidence.get("current_claim", "weaker current claim only")
             licensed_claim = rewrite
+    elif claim_type == "statistical_confidence" and not (0.0 < float(evidence["alpha"]) <= 0.10):
+        # External audit 2026-10-14: alpha=1.0 licensed any p. An alpha outside (0, 0.10] is not a significance threshold.
+        verdict = "HOLD"
+        reason = f"alpha {evidence['alpha']} is not a significance threshold in (0, 0.10]: declare the pre-registered alpha"
+        licensed_claim = None
     elif claim_type == "statistical_confidence":
         p_value = float(evidence["p_value"])
         alpha = float(evidence["alpha"])
@@ -2297,6 +2302,24 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
         reason = f"{reason}; the text attributes a MECHANISM but no null control is declared — a significant p licenses the association, not its cause"
         rewrite = "statistical association licensed; the attributed mechanism is not (declare null_control_passed)"
         licensed_claim = rewrite
+    # C2. External audit 2026-10-14: "Treatment benefits all patients." and "Net assets grew 40% and prove the turnaround
+    #     strategy worked." were ACCEPTed and licensed as written. The gate does not read prose (§6 lesson): this is a
+    #     contradiction guard only, the structural fix is below (the raw text is never licensed on ACCEPT).
+    if verdict == "ACCEPT" and claim_type in ("statistical_confidence", "financial_metric_claim") and (
+            UNIVERSAL_TEXT_RE.search(_txt) or SCOPE_RE.search(_txt) or re.search(
+                r"\b(all|every|each|any|todos|todas|cualquier)\s+(the\s+|los\s+|las\s+)?(patients?|subjects?|participants?|"
+                r"users?|people|cases?|populations?|groups?|customers?|pacientes|sujetos|personas|casos|grupos|clientes)\b",
+                _txt, re.I)) and evidence.get("scope_declared") is None:
+        verdict = "REWRITE"
+        reason = f"{reason}; the text asserts a universal scope (all / every / in general) that no declared field covers"
+        rewrite = "the measured result is licensed on the sample it was measured on; the universal scope in the text is not"
+        licensed_claim = rewrite
+    if verdict == "ACCEPT" and claim_type == "financial_metric_claim" and (MECH_RE.search(_txt) or re.search(
+            r"\b(prove[sd]?|demonstrat\w+|shows? that|worked|success\w*|turnaround|thanks to|result of)\b", _txt, re.I)):
+        verdict = "REWRITE"
+        reason = f"{reason}; the text attributes a cause or a success to the number: the metric is licensed, the attribution is not"
+        rewrite = "the reported metric matches its reference; any causal or success attribution in the text is not licensed"
+        licensed_claim = rewrite
     # E. Cuantificador en el texto ("12 of 13", "all", "formalized"): exige alcance verificado.
     if verdict == "ACCEPT" and claim_type == "reproducibility_check" and COUNT_RE.search(_txt) and evidence.get("scope_count_verified") is not True:
         verdict = "REWRITE"
@@ -2354,6 +2377,17 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
         verdict = "HOLD"
         licensed_claim = None
 
+    # Structural rule (external audit 2026-10-14): the gate decides on declared fields and does not read the claim text,
+    # so an ACCEPT licenses the EVIDENCE STATEMENT, never the raw sentence as written. The reusable sentence carries the
+    # contract it was licensed under; a coder who wants the sentence itself licensed must declare its scope in fields.
+    _raw = (claim.get("text") if isinstance(claim, dict) else None)
+    text_licensed_as_written = False
+    if (verdict == "ACCEPT" and claim_type == "proof_admissibility" and evidence.get("uniform_bound_proven") is True
+            and isinstance(licensed_claim, str) and _raw and licensed_claim.strip() == str(_raw).strip()):
+        text_licensed_as_written = True     # the declared fields cover the text's scope: universal claim, uniform bound proven
+    elif verdict == "ACCEPT" and isinstance(licensed_claim, str) and _raw and licensed_claim.strip() == str(_raw).strip():
+        licensed_claim = f"[licensed on the declared {claim_type} evidence only; the text's wording and scope are not read by the gate] {_raw}".strip()
+
     fine_tune = evaluate_fine_tune_readiness(
         payload,
         verdict=verdict,
@@ -2374,6 +2408,7 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
         "did_you_mean": did_you_mean_map(evidence, str(claim_type)),
         "resolution": _resolution_for_result(verdict, claim_type, missing, required, evidence, []),
         "invariant_audit": invariant_audit,
+        "text_licensed_as_written": text_licensed_as_written,
         **fine_tune,
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
     }
