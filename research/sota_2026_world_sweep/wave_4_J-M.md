@@ -24,6 +24,14 @@ Consequence for the labels below: an entry marked **NOTHING FOUND (fetch-only)**
 primary pages reached, URLs listed"; it is weaker than a searched NOTHING FOUND and should be re-run with real
 search when budget exists. No country is NOT SEARCHED any more; every one of the 36 wave-4 countries has an entry.
 
+**Run 3 (2026-10-14, WebSearch budget restored).** Live WebSearch ran for the five countries the run-2 summary flagged:
+**Mexico — all 8 planned queries ran** (SECIHTI ciencia abierta/integridad; UNAM/CINVESTAV/IPN metaciencia; "verificación
+de afirmaciones científicas" IA México; COFEPRIS IA/evidencia estadística/SaMD; Red Mexicana de Ciencia Abierta /
+reproducibilidad; GRIM/statcheck México; regulación IA México 2026 Senado [extended]; Coatlicue "AI for science") plus 9
+primary fetches; **Lithuania 2, Malta 2, Morocco 2, Lebanon 2** queries. Every new claim below is marked "run 3" with
+its URL and whether the source was read (fetched) or only seen as a search snippet. Not re-run in run 3: the other 31
+wave-4 countries (their fetch-only labels stand).
+
 Confidence labels: high = primary source read; medium = secondary source or snippet only; low = title/listing only.
 
 ---
@@ -254,11 +262,20 @@ Confidence labels: high = primary source read; medium = secondary source or snip
   **AUB Research Integrity**: misconduct policy, authorship-dispute arbitration, safe-reporting policy, COI; no AI
   policy, no RCR training listed (https://www.aub.edu.lb/urb/Pages/Researchintegrity.aspx); AUB "AI Hub" exists
   (https://www.aub.edu.lb/hub/Pages/default.aspx, no policy content).
+- Run 3 (2 searches): the only Lebanese AI-and-research items are an event series by **USJ's Mission pédagogique
+  universitaire with the Lebanese National Commission (UNESCO)**: roundtable "Positioning of Universities in Lebanon
+  Regarding the Use of AI" (16 Dec 2025), "Rethinking the Design of Students' Research Work in Lebanese Universities in
+  the Era of AI" (Apr 2026), and a Jun 2026 session on assessment "that reconcile[s] the advantages of AI tools with
+  academic integrity" with AUB speakers — https://www.usj.edu.lb/intranet/actu/pdf/18123_4161.pdf (404 on fetch;
+  snippet only, low-medium). Antonine University strategic plan 2025–28 "Research Advancement" (snippet). No
+  reproducibility, open-science, registered-reports or AI-verification item for any Lebanese institution.
 - Epistemics / gap framing: integrity = 2017 conduct charter + institutional misconduct procedure; no AI-era update
   found; research capacity is absorbed by crisis monitoring.
 - Institutions & people: CNRS-L; AUB (University Research Board, Provost as misconduct officer).
 - Take / Ahead: take: nothing technical | ahead: all mechanical.
-- Confidence: medium-low | Queries: none (budget) | Fetches: cnrs.edu.lb ×3, aub.edu.lb ×3 (one 404).
+- Confidence: medium-low | Queries: run 2 none (budget); run 3: "Lebanon research integrity AI policy AUB / CNRS-L /
+  LAU 2025 2026"; "Lebanon reproducibility / open science / registered reports 2025 2026" | Fetches: cnrs.edu.lb ×3,
+  aub.edu.lb ×3 (one 404); run 3: usj.edu.lb PDF (404).
 
 ### Lesotho
 - NOTHING FOUND (fetch-only). NUL homepage shows student AI/monitoring projects only, no research-integrity, AI or
@@ -306,6 +323,16 @@ Confidence labels: high = primary source read; medium = secondary source or snip
   (https://etikostarnyba.lt/en/open-and-secure-science-can-we-achieve-both/). 1 Sep 2026: "In the AI era, what
   matters most is not prohibitions, but responsibility" (no disclosure/verification rule)
   (https://etikostarnyba.lt/en/in-the-ai-era-what-matters-most-is-not-prohibitions-but-responsibility/).
+- Run 3 (2 searches): **Lithuanian Energy Institute "Academic ethics" brochure, May 2026** (project eMoDB.LT3; built on
+  the Ombudsperson Guidelines + LEI Code; PDF read): "**IMPORTANT. When using AI tools, it is necessary to check all
+  created content!**"; "the choice of AI tools must be transparent, justified, and declared"; authors citing GenAI results
+  "should specify the generative AI tool used and the date of its use"; researchers "when making data public, should
+  assess the research security risks posed by the development of generative AI" —
+  https://www.lei.lt/wp-content/uploads/2026/05/Brochure_academic-ethics_LEI-2026_EN-1.pdf. LMT: the 2016 Guidelines on
+  Open Access expire 2028; a KTU slide deck (Nov 2024, snippet) lists a 2026 OA action plan + monitoring procedure
+  (https://data.ktu.edu/wp-content/uploads/2024/11/2024.11_Gribauskiene.pdf, not read). No Lithuanian reproducibility
+  network, statcheck-type tool or 2025–26 LMT AI-integrity document surfaced; Lithuania ranks 3rd in the CEE AI Index 2026
+  (Forbes.ro snippet, via the Romania query).
 - Epistemics / gap framing: validation is placed on the **tool, before use, by the institution** (preliminary
   verification + audits + methodological soundness), with the human fully responsible for outputs; nothing at claim
   level, nothing deterministic; research security now framed alongside integrity.
@@ -315,8 +342,9 @@ Confidence labels: high = primary source read; medium = secondary source or snip
   "methodological soundness" — CAPAS is a mechanical way to meet it and the Barometer gives a measured base rate to
   cite; the ENRIO network is a venue | ahead: Lithuania validates tools and people; CAPAS validates claims, blind and
   sealed; no fail-closed default, no ledger there.
-- Confidence: medium-high (PDF + 3 pages read) | Queries: none (budget) | Fetches: etikostarnyba.lt ×4 (+PDF),
-  lmt.lrv.lt (403), vu.lt (404).
+- Confidence: medium-high (PDF + 3 pages read) | Queries: run 2 none (budget); run 3: "Lithuania Research Council LMT
+  AI research integrity guidelines 2026 open science"; "Lithuania reproducibility network / research assessment reform
+  Vilnius 2025 2026" | Fetches: etikostarnyba.lt ×4 (+PDF), lmt.lrv.lt (403), vu.lt (404); run 3: lei.lt PDF.
 
 ### Luxembourg
 - Direct (2026 SOTA): none found (fetch-only).
@@ -387,8 +415,15 @@ Confidence labels: high = primary source read; medium = secondary source or snip
   2026); "Textes règlementaires" section unread (https://www.usttb.edu.ml/). Confidence: low | Queries: none (budget).
 
 ### Malta
-- Direct (2026 SOTA): none found (fetch-only; MDIA — the AI technology-assurance/sandbox authority — returned 403 on
-  both hostnames, so nothing can be claimed about it).
+- Direct (2026 SOTA): none found. Run 3 (2 searches) reached MDIA only through snippets (mdia.gov.mt/sandbox and the
+  sustainability.gov.mt PDF both 403 on fetch): **MDIA Technology Assurance Sandbox (MDIA-TAS)** — residency up to four
+  years, each phase closed by an independent assessment by an MDIA-authorised Systems Auditor, full certification at the
+  end, voluntary ("recommends that the sector's lead regulator mandate certification"), aligned to the EU AI framework —
+  https://mdia.gov.mt/sandbox/ , https://oecd.ai/en/dashboards/policy-initiatives/malta-digital-innovation-authoritys-technology-assurance-sandbox-8999 ;
+  a **Mark of Credit** under the Technology Assurance Regulatory Framework (TARF), Assessment Level 1, to "IDPS: Smart
+  Utilities AI Pilot Project" (Ministry for the Environment, Energy and Public Cleanliness), effective 1 Jan–31 Dec 2026,
+  document dated 16 Apr 2026 — https://sustainability.gov.mt/wp-content/uploads/2026/05/Mark-of-Credit-MEEC-redacted_.pdf
+  (snippet; medium-low). Auditor-certified assurance of *systems*, not of claims; nothing on research.
 - Adjacent: **University of Malta Research Ethics Code of Practice and Procedures (May 2026)** replaces the earlier
   Research Code of Practice; **FAQ "Researcher Responsibility for Secure Data Storage and Use of AI" (Feb 2026)** —
   external AI tools (incl. transcription/analysis) mean uploading data to third parties, which "must be explicitly
@@ -400,7 +435,10 @@ Confidence labels: high = primary source read; medium = secondary source or snip
 - Epistemics / gap framing: AI is framed as a **data-protection** risk (consent, storage), not an epistemic one.
 - Institutions & people: University of Malta UREC; Xjenza Malta; MDIA (unverified).
 - Take / Ahead: take: nothing technical; MDIA assurance scheme worth a real search later | ahead: all mechanical.
-- Confidence: medium | Queries: none (budget) | Fetches: um.edu.mt ×3, xjenzamalta.mt, mdia.gov.mt ×2 (403).
+- Confidence: medium | Queries: run 2 none (budget); run 3: "Malta MDIA AI technology assurance sandbox 2026
+  certification"; "Malta research integrity University of Malta reproducibility AI research policy 2026" (UM: student
+  "AI Journal" for assignments, teaching-side only; no research-AI rule) | Fetches: um.edu.mt ×3, xjenzamalta.mt,
+  mdia.gov.mt ×2 (403); run 3: mdia.gov.mt/sandbox (403), sustainability.gov.mt PDF (403).
 
 ### Marshall Islands
 - NOTHING FOUND (fetch-only, not reachable). College of the Marshall Islands returned HTTP 403 (https://www.cmi.edu/).
@@ -416,7 +454,7 @@ Confidence labels: high = primary source read; medium = secondary source or snip
   Turnitin, data-protection policy, GenAI/agentic-AI short course 2026 — no research-AI guidance
   (https://www.uom.ac.mu/). Confidence: low | Queries: none (budget).
 
-### Mexico (home country — 3 searches + 20 primary fetches; rich entry)
+### Mexico (home country — run 2: 3 searches + 20 fetches; run 3: 8 searches + 9 fetches; rich entry)
 - Direct (2026 SOTA): **none**. No Mexican deterministic claim-gating, statcheck/GRIM-style tooling, registered-reports
   program, LLM-vs-deterministic-verifier work, or "verification of AI-generated scientific claims" project surfaced in
   3 searches or on any primary page. The query on *verificación de afirmaciones científicas + IA + México 2026*
@@ -470,6 +508,47 @@ Confidence labels: high = primary source read; medium = secondary source or snip
     the Ley General en materia de HCTI (DOF 8 May 2023, unreformed) (https://www.diputados.gob.mx/LeyesBiblio/index.htm).
     Senate CHTI commission: meetings 25 Feb and 1 Jul 2026 (with Rosaura Ruiz), initiatives page loads dynamically —
     AI bills in Congress remain **unverified; do not cite**.
+- **Run 3 additions (8 live searches, 9 fetches; Direct finding unchanged: none).**
+  - **INSP ↔ BITSS/CEGA Catalyst project** "Improving Reproducibility and Transparency Practices in Public Health Research
+    in Mexico: A Working Group and Short Course" (Instituto Nacional de Salud Pública; SOPs published, an institutional
+    transparency/reproducibility hub, modular MSc coursework on open-science tools in design/collection/analysis/
+    dissemination; contributors Sergio Bautista, Nerissa Nance, Gina La Hera Fuentes, Lily Alexander; undated on the page)
+    — https://www.bitss.org/?p=6211 (read). **The only Mexican reproducibility-infrastructure node found in the sweep.**
+  - **Velazquez-Ramos, de la O-Camacho, Camacho, Domínguez-Aguirre, Marcelino-Aranda (IPN / UT Bahía de Banderas),
+    "Inteligencia artificial, su regulación en la investigación científica, caso México"**, *Tecnología en Marcha*
+    39(5):41–50, 6 Mar 2026, https://doi.org/10.18845/tm.v39i5.8512 (abstract read): no Mexican legal framework for
+    GenAI; among journals of the top-ranked Mexican institutions **47% have no GenAI policy, 9% prohibit, 44% allow with
+    restrictions**; the paper asks for transparency of use, not verification.
+  - **Rosaura Ruiz (SECIHTI), speech at El Colegio de México, 14 Aug 2026** ("¿El Leviatán artificial?", read by
+    Gabriela García Acosta): "Una predicción acertada no equivale necesariamente a una explicación"; "La responsabilidad
+    no puede delegarse en un modelo"; four principles for public AI policy in science — shared public computing,
+    responsible data governance, **"validación científica de los resultados"**, and training to assess the tools
+    critically — https://www.cronica.com.mx/academia/2026/08/14/la-ia-no-solo-acelera-la-ciencia-tambien-transforma-la-forma-de-producir-conocimiento-rosaura-ruiz/
+    (read). Second quotable domestic hook after Chapultepec P3; again no mechanism.
+  - **Consultorsalud, 12 Mar 2026** (Tatiana Asprilla): "México no cuenta con estándares específicos para la validación,
+    certificación" of AI models; fragmentation INAI / CONBIOÉTICA / SECIHTI; asks for "criterios de validación
+    algorítmica" — https://consultorsalud.com.mx/?p=313765 (read; secondary). **COFEPRIS**: the AI/SaMD/statistical
+    query returned no COFEPRIS document; only a third-party summary of a June 2026 device-registration guide via
+    equivalence agreements (PureGlobal, not fetched, low) — reliance stance stands.
+  - **AI law (status as of 14 Oct 2026, secondary press, no gazette text read):** still no general law. Senate
+    *Comisión de Análisis, Seguimiento y Evaluación sobre la Aplicación y Desarrollo de la IA* (Rolando Zapata Bello,
+    PRI) announced on 30 Apr / 7 May 2026 that it would present a law + a national plan ("dos instrumentos diferentes")
+    — https://www.infobae.com/mexico/2026/04/30/desde-comision-del-senado-impulsan-iniciativa-de-ley-para-regular-el-uso-de-inteligencia-artificial-en-mexico/ ,
+    https://www.informador.mx/mexico/senado-busca-establecer-regulacion-para-el-uso-de-inteligencia-artificial-en-mexico-20260507-0109.html
+    (both read); Sen. Karina Isabel Ruiz Ruiz (Morena) filed a "Ley Nacional para Regular el Uso de la IA" on
+    11 Feb 2026; 85 AI initiatives since Apr 2023, 67 pending (Universidad Anáhuac count); the only enacted items are the
+    DOF 14 May 2026 reforms to the LFT and LFDA on voice/image vs generative AI
+    — https://ecosistemastartup.com/regulacion-ia-mexico-2026-85-iniciativas-pendientes/ (28 Jul 2026, read; secondary).
+    A Diputados bill of 24 Jul 2026 ("Ley Federal para el Desarrollo Ético, Soberano e Inclusivo de la IA") appears only
+    in a trade-press snippet (not fetched). **No bill as reported carries a science/verification clause.**
+  - **Coatlicue**: press confirms the Nov 2025–Jan 2026 announcements (MXN 6,000 M; 314 PF; ~15k GPUs; 24-month build from
+    Jan 2026; interim BSC MareNostrum 5 access) — no "AI for science" verification programme and no entity named
+    "Laboratorio Nacional de Supercómputo Coatlicue" surfaced (snippets only; progress as of Oct 2026 unverified).
+  - **NOTHING in Mexico for:** GRIM/statcheck-type forensic statistics (query returned only international items: Springer
+    Nature, CASRAI guide, a UZH ROR-2026 talk); UNAM/Cinvestav/IPN metascience (the UKRN list of national reproducibility
+    networks at Metascience 2025 names Brazil, not Mexico — https://www.ukrn.org/2025/07/09/in-person-meeting-of-national-reproducibility-network-representatives ,
+    snippet); a body named "Red Mexicana de Ciencia Abierta" (REMERI/CUDI "hacia la construcción de un Ecosistema de
+    Ciencia Abierta en México", Sep 2024 meeting, remains the closest match; "Red ECOS" still unverified).
 - Epistemics / gap framing: Mexico's 2026 frame is **capacity + ethics + open access** (Coatlicue, Chapultepec,
   SNPCyH). Chapultepec P3 states the CAPAS obligations in policy language (verify results, reproduce processes,
   declare AI use) but as orientation, with no mechanism; SNPCyH operationalises "integridad" at journal level
@@ -482,11 +561,16 @@ Confidence labels: high = primary source read; medium = secondary source or snip
   implementation of "verificar resultados, reproducir procesos y declarar explícitamente el uso de IA"; (b) P2's
   "procedimientos de revisión y mecanismos de corrección" maps to REWRITE/HOLD; (c) the SNPCyH padrón (513 journals,
   evaluation guide, no AI/data criteria yet) is a concrete channel for a journal-side CAPAS adapter and a gap the
-  2027 convocatoria could fill | ahead: no Mexican tool, program or policy has a verification mechanism; nothing
-  deterministic, no sealed-blind evaluation, no proof ledger; CAPAS is alone at home on this evidence.
-- Confidence: high on documents read; medium on absence | Queries: 3 WebSearch (above) + 8 refused + 20 fetches
+  2027 convocatoria could fill; (d) run 3: **INSP/BITSS is the one domestic reproducibility node to approach for a
+  pilot**, Ruiz's "validación científica de los resultados" principle (14 Aug 2026) is a second verbatim hook, and
+  Velazquez-Ramos's 47%-no-policy figure is the journal-side gap number | ahead: no Mexican tool, program or policy has a
+  verification mechanism; nothing deterministic, no sealed-blind evaluation, no proof ledger; CAPAS is alone at home on
+  this evidence (now with 11 searches behind the absence claim, confidence on absence raised to medium-high).
+- Confidence: high on documents read; medium-high on absence | Queries: run 2: 3 WebSearch + 8 refused + 20 fetches
   (secihti.mx ×5, Senate CHTI ×3, gaceta/unamglobal ×3, COFEPRIS, ATDT, diputados ×2, CIMAT, IPN, Cinvestav, REMERI,
-  LANCAD/LNS failed).
+  LANCAD/LNS failed); **run 3: 8 WebSearch (the 8 planned queries, all ran) + 9 fetches** (bitss.org, kimuk.conare.ac.cr
+  → revistas.tec.ac.cr, consultorsalud, cronica.com.mx, infobae, informador, ecosistemastartup; secihti/diputados not
+  re-fetched).
 
 ### Micronesia
 - NOTHING FOUND (fetch-only). COM-FSM: IRB and Policies links only (https://www.comfsm.edu.fm/). Confidence: low |
@@ -524,13 +608,25 @@ Confidence labels: high = primary source read; medium = secondary source or snip
   Confidence: low | Queries: none (budget).
 
 ### Morocco
-- NOTHING FOUND (fetch-only). CNRST reached with curl (HTTP 200, homepage has no hits for IA / intégrité /
-  science ouverte; WebFetch TLS failure persists) (https://www.cnrst.ma/); **Académie Hassan II** 2026 items are
-  obituaries, the CGST laureates meeting (28 Jul 2026) and an academic school on "Modélisation et prospective
-  économique" (26 Jun 2026) — nothing on AI, integrity or evaluation (https://www.academiesciences.ma/); UM6P pages
-  returned navigation shells (https://www.um6p.ma/en, https://cc.um6p.ma/ refused); MESRSI refused connection;
-  digital-ministry hostnames did not resolve. Morocco's AI/digital strategy could not be verified from primary pages —
-  do not cite from memory. Confidence: low | Queries: none (budget) | Fetches: 7.
+- Direct (2026 SOTA): none found (run 2 fetch-only; run 3: 2 searches).
+- Adjacent (run 3): **"Maroc IA 2030" roadmap**, presented in Rabat on 19 Jan 2026 as the AI pillar of Maroc Digital
+  2030 — **Jazari Institutes** (national network of AI centres of excellence; "Jazari Root" launched as the hub);
+  **Mistral AI & MTNRA joint R&D lab** hosted in Jazari Root; CNDP president Omar Seghrouchni presented a "Framework de
+  l'IA responsable" centred on (personal-)data protection; eight applied-research partnership agreements
+  — https://fnh.ma/article/actualite-high-tech/ia-maroc-phase-operationnelle-2030 (read). Press adds targets (MAD 100 bn
+  GDP, 50,000 jobs, 200,000 trained, 550 AI doctoral scholarships to 2027; Hespress snippets, not read). UM6P: Rabat
+  Consensus on AI (Jun 2024), UNESCO reference centre for AI in Africa (snippets). **Nothing on research integrity,
+  reproducibility, statistics checks or verification of AI outputs** on any Moroccan page or snippet.
+- Epistemics / gap framing: AI as sovereignty + industrial policy; the "responsible AI" framework is data-protection law,
+  not epistemic.
+- Institutions & people: MTNRA (Amal El Fallah Seghrouchni, minister); CNDP (Omar Seghrouchni); Jazari Institutes; UM6P
+  (Hicham El Habti); CNRST (homepage only, run 2).
+- Take / Ahead: take: nothing technical; Jazari Root is the venue if a Maghreb pilot is ever wanted | ahead: all
+  mechanical.
+- Confidence: medium (one primary read; rest snippets) | Queries: run 3: "Maroc intégrité scientifique IA recherche 2026
+  CNRST stratégie IA"; "Morocco UM6P AI research reproducibility / verification / research integrity 2025 2026" |
+  Fetches: run 2: 7 (cnrst.ma via curl, academiesciences.ma, um6p.ma ×2, MESRSI refused, ministry DNS fail); run 3: fnh.ma.
+  Reclassified from NOTHING FOUND (fetch-only) to **adjacent-only (policy)**.
 
 ### Mozambique
 - Direct (2026 SOTA): none found (fetch-only).
@@ -583,10 +679,13 @@ Confidence labels: high = primary source read; medium = secondary source or snip
 (policy hook only — Chapultepec P3, CCOIA at UNAM, SNPCyH — no mechanism). Malaysia and Luxembourg follow as
 institutional/policy hooks without direct work.
 
-**NOTHING FOUND (16):** Kiribati (searched); fetch-only — Laos, Lesotho, Liberia, Libya (unreachable), Maldives, Mali,
-Marshall Islands (unreachable), Mauritania (unreachable), Mauritius, Micronesia, Monaco, Mongolia, Montenegro,
-Morocco, Myanmar.
-**Adjacent-only, fetch-only (8):** Lebanon, Liechtenstein, Lithuania, Madagascar, Malawi, Malta, Moldova, Mozambique.
-**NOT SEARCHED: none remaining.** All 36 wave-4 countries have an entry. Caveat: 26 of 36 entries are fetch-only
-(no search engine used in run 2 by rule); Mexico got 3 searches of the 8+ requested. Re-run Mexico, Lithuania,
-Malta (MDIA), Morocco and Lebanon with real search when the budget refills.
+**NOTHING FOUND (15):** Kiribati (searched); fetch-only — Laos, Lesotho, Liberia, Libya (unreachable), Maldives, Mali,
+Marshall Islands (unreachable), Mauritania (unreachable), Mauritius, Micronesia, Monaco, Mongolia, Montenegro, Myanmar.
+**Adjacent-only (9):** searched in run 3 — Lebanon, Lithuania, Malta, Morocco (policy only; moved out of NOTHING FOUND);
+fetch-only — Liechtenstein, Madagascar, Malawi, Moldova, Mozambique.
+**NOT SEARCHED: none remaining.** All 36 wave-4 countries have an entry. **Run 3 closed the stated debt: Mexico got all
+8 planned searches (11 in total), Lithuania, Malta, Morocco and Lebanon 2 each. Ranking unchanged** — Japan first; Mexico
+and Lithuania still policy-hook only (Mexico adds the INSP/BITSS reproducibility node and Ruiz's "validación científica
+de los resultados" principle; Lithuania adds the LEI 2026 "check all created content" rule). Caveat that remains: 26 of
+36 entries are still fetch-only from run 2 (no search engine); MDIA (Malta) pages are still 403 so its sandbox is
+snippet-level.
