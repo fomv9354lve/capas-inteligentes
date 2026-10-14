@@ -160,3 +160,27 @@ para reuso futuro (el archivo sellado de E4b no se regenera). **Lectura correcta
 HOLD** (T1 del qubit 65 rancio a 2 días calendario; contexto sin verificar), no ACCEPT. El sellado original (v6, ACCEPT)
 no cambia; la cuenta limpia de Atlas queda: malo-no-ACCEPT 1/1 (E4), bueno-no-REJECT 2/2 (E4b P1 y P3; P1 vacuo bajo
 la lectura correcta), HOLD vacuos 2 (P2, y P1 bajo v9 con zona).
+
+## Ingesta de contexto de máquina (2026-10-14)
+
+Decisión de Osvaldo («lo mejor que puede hacer el motor es ingerir contexto», «dale»): los campos deben salir de los
+artefactos que produce la máquina, con hash, no de mis manos. `capas_ingest.py` (adaptadores `backend_properties`,
+`prereg`, `verify_sources`; tests en `benchmarks/test_capas_ingest.py` sobre FakeKingston, 156 qubits, y sobre el
+prereg real `mirror_e4_drift_v5`).
+
+E4b re-codificado por adaptadores (`phase2c/build_claims_e4b_ingest.py`, salida `phase2c/claims_e4b_ingest_2026-10-14.jsonl`,
+sha db9d0ed3…; fuentes verificadas por hash). Lo único declarado a mano es el MAPPING métrica → tipo de claim → campos.
+Comparación con la codificación a mano bajo el mismo motor (HEAD, zona declarada):
+
+| métrica | a mano | adaptadores | desenlace Atlas (sellado) |
+|---|---|---|---|
+| P1_deriva_layout | HOLD (T1 del qubit 65 vencido) | HOLD (idéntico) | deriva confirmada → vacuo |
+| P2_persistencia | HOLD (sin tipo de claim al codificar) | **ACCEPT**: IC95 [1,259, 1,550] dentro de la banda pre-registrada [0,5, +∞) | RECUPERA → acierto |
+| P3_decision | ACCEPT | ACCEPT (idéntico) | layout viejo sigue mejor → acierto |
+
+Post hoc (el desenlace ya se conocía): no cuenta en la tabla ciega. Lo que sí mide: en E4b, cero números tecleados por
+el codificador cambiaron un veredicto; el único cambio viene de un tipo de claim que no existía. El próximo claim
+limpio se codifica por adaptadores primero, se sella y luego se abre. Límite conocido: el archivo de calibración de
+Atlas ya es la salida de su `qpu_cal_fetch` (de `BackendProperties`); el adaptador de CAPAS lee el `BackendProperties`
+crudo y se probó sobre FakeKingston, no sobre la descarga real de ese momento (no se guardó).
+

@@ -114,3 +114,29 @@ calendar day; T2 floor off (`t2_min_frac_median` / `t2_min_us` to enable). Overr
 
 If a judgement would require reading the text, the engine asks for a field instead. Declare it and the
 sentence that gets licensed carries its own limit; leave it out and the sentence is not licensed as written.
+
+## Machine ingestion (2026-10-14): fields come from artifacts, not from hands
+
+`capas_ingest.py` turns machine-produced artifacts into evidence, deterministically, with the source sha256 recorded:
+
+| adapter | input | output |
+|---|---|---|
+| `backend_properties` | Qiskit `BackendProperties` (object, `.to_dict()`, or its JSON) | `calibration_snapshot` in the shape the law reads: `t1_us/t2_us/readout/sx/cz` tables, `edges`, `field_dates` per parameter, declared `timezone` (from the dates' offset), `source.input_sha256`. A qubit without T1 stays absent. |
+| `prereg` | `atlas_prereg/v1` file | one claim skeleton per `metric_definitions` entry: `claim.id = atlas:<prereg id>:<metric>`, verbatim definition as text, `type: null`, empty evidence, prereg id/time/sha/supersedes. Refuses a prereg that carries results. |
+| `verify_sources` | a claims `.jsonl` | re-hashes every `meta.sources[{path, sha256}]`; a mismatch or a missing file is reported. |
+
+What a coder still declares, and nothing else: the **mapping** (which prereg metric feeds which claim type, and which
+fields of the results file fill it). See `research/atlas_corpus/phase2c/build_claims_e4b_ingest.py`. Provenance travels
+in the **row** (`meta.sources`), not inside the payload: schema v3 allows no `meta` in the payload.
+
+Measured on Atlas E4b (post hoc, outcome known, engine HEAD): adapter-coded == hand-coded on P1 (HOLD) and P3
+(ACCEPT); P2 goes from HOLD (hand-coded before `interval_band_claim` existed) to ACCEPT (the whole CI95 [1.259, 1.550]
+inside the pre-registered one-sided band [0.5, +inf)), which matches Atlas's sealed outcome RECUPERA. The next clean
+claim will be coded through the adapters first, sealed, then opened.
+
+```bash
+python3 capas_ingest.py backend-properties props.json --layout 67,57,65 --job-date 2026-10-13 -o snap.json
+python3 capas_ingest.py prereg mirror_e4_drift_v5.json -o skeletons.jsonl
+python3 capas_ingest.py verify-sources claims.jsonl --root <dir of the sources>
+```
+
