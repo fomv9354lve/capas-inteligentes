@@ -54,7 +54,8 @@ def main() -> int:
     # a re-derivable conformance hash over the (id, pass) pairs — same suite, same machine -> same hash
     digest = hashlib.sha256(
         json.dumps([(r["id"], r["pass"]) for r in results], sort_keys=True).encode()).hexdigest()[:24]
-    record = {"conformant": passed, "suite": [{"id": r["id"], "pass": r["pass"]} for r in results],
+    record = {"conformant": passed,
+              "suite": [{"id": r["id"], "pass": r["pass"]} | ({} if r["pass"] else {"last_line": r["last_line"]}) for r in results],
               "result_hash": "sha256:" + digest,
               "environment": {"python": platform.python_version()},  # recorded for transparency; hash is over (id,pass) only
               "statement": ("CAPAS-CONFORMANT: the deterministic core upholds its load-bearing invariants, "
@@ -70,6 +71,8 @@ def main() -> int:
     print("=== CAPAS CONFORMANCE SUITE (run-it-yourself; same suite the certifier runs) ===")
     for r in results:
         print(f"  {'OK ' if r['pass'] else 'XX '}{r['id']:22} {r['desc']}")
+        if not r["pass"] and r["last_line"]:
+            print(f"      last line: {r['last_line']}")
     print(f"\nresult hash: sha256:{digest}  (deterministic on re-run — same suite-pass profile yields the same hash)")
     print(record["statement"])
     print("Anyone can reproduce this: `python3 benchmarks/conformance.py`. The mark attests a verified "

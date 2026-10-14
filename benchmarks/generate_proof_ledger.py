@@ -23,8 +23,13 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 
+_TAILS: dict[str, str] = {}  # path -> last lines of a FAILING subtest (printed with BACKING BROKEN; CI showed nothing before)
+
+
 def _run_test(path: str) -> bool:
     r = subprocess.run([sys.executable, path], cwd=str(ROOT), capture_output=True, text=True, timeout=300)
+    if r.returncode != 0:
+        _TAILS[path] = "\n".join(((r.stderr or "") + "\n" + (r.stdout or "")).strip().splitlines()[-8:])
     return r.returncode == 0
 
 
@@ -170,6 +175,8 @@ def main() -> int:
     for e in ledger:
         flag = "" if e.get("ok") is not False else "  <-- BACKING BROKEN"
         print(f"  [{e['status']:6}] {e['claim'][:62]}{flag}")
+    for path, tail in _TAILS.items():
+        print(f"\n  --- {path} (rc != 0) ---\n" + "\n".join("  | " + ln for ln in tail.splitlines()))
     print(f"\n{by} | bare: {len(bare)} | broken backing: {len(broken)}")
 
     # RELEASE GATE: every claim CLOSED/BACKED/SCOPED, and no CLOSED/BACKED backing is broken.
