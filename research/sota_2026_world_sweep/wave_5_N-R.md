@@ -18,6 +18,10 @@ Entries carry one of four status words: **searched**, **fetch-only** (primary si
 **NOTHING FOUND** (something was actually read and nothing relevant to CAPAS was in it). Nothing below is from
 memory alone; every tool/paper claim has a URL that was returned by a tool.
 
+**Pass 3 (2026-10-14, WebSearch budget restored):** live searches for the four UNREACHABLE countries (Nauru 1, Nepal 1,
+Niger 1, North Korea 1) and for Peru 2, Philippines 2, Romania 2, plus 12 primary fetches (one PDF via pdftotext).
+Additions are marked "pass 3". Not re-run: the rest of the wave.
+
 ---
 
 ### Namibia
@@ -31,22 +35,34 @@ memory alone; every tool/paper claim has a URL that was returned by a tool.
 - Take / Ahead: take: nothing | ahead: everything (no verification layer exists at agency level).
 - Confidence: low | Queries: fetch-only (ncrst.na). **NOTHING FOUND** on the primary site; no web search possible.
 
-### Nauru (fetch-only)
+### Nauru (pass 3: searched, 1 query)
 - Direct (2026 SOTA): none. Nauru has no national research council; the government portal was the only candidate.
-- Adjacent: https://naurugov.nr/ → TLS altname error; https://nauru.gov.nr/ → page returned empty. Nothing readable.
+- Adjacent: run 2 fetches failed (https://naurugov.nr/ TLS altname error; https://nauru.gov.nr/ empty). Pass 3 query
+  ("Nauru research OR science policy OR university 2026 department of education research ethics") returned **no
+  Nauru-specific item**; the only regional hook is WHO/SPC/Pacific Academy of Sciences "Strengthening Research Ethics
+  Governance in the Pacific Island Countries" (Nadi, 1–3 May 2025; 24 representatives from 13 PICs; participant list not on
+  the landing page, so Nauru's attendance is unverified) — https://www.who.int/publications/i/item/RS-2025-GE-10-FIJI (read).
 - Epistemics / gap framing: not visible.
 - Institutions & people: none identified.
 - Take / Ahead: take: nothing | ahead: n/a.
-- Confidence: n/a | Queries: fetch-only (2 fetches, both failed). **UNREACHABLE** — not counted as NOTHING FOUND.
+- Confidence: low | Queries: 1 (pass 3) + 2 failed fetches (run 2) + who.int. **NOTHING FOUND (searched)** — was UNREACHABLE.
 
-### Nepal (fetch-only)
+### Nepal (pass 3: searched, 1 query)
 - Direct (2026 SOTA): none found.
-- Adjacent: Nepal Health Research Council https://nhrc.gov.np/ (https and http) → "Invalid header token" both passes;
-  NAST https://nast.gov.np/ and http://nast.gov.np/ → TLS certificate errors. Nothing read in either pass.
-- Epistemics / gap framing: not visible.
-- Institutions & people: NHRC, NAST (sites only).
-- Take / Ahead: take: nothing | ahead: n/a.
-- Confidence: n/a | Queries: fetch-only (4 fetches, all failed). **UNREACHABLE** — not counted as NOTHING FOUND.
+- Adjacent: NHRC https://nhrc.gov.np/ and NAST https://nast.gov.np/ were unreachable in run 2 (header/TLS errors). Pass 3
+  query surfaced the **NHRC eLibrary**: National Ethical Guidelines for Health Research (2022 edition; ERB Guideline 2019
+  PDF https://elibrary.nhrc.gov.np/bitstream/20.500.14356/2484/1/ERB_Guideline_2019.pdf); an NHRC RCR presentation
+  "Responsible Conduct of Research in Nepal: Identifying and Addressing the Gaps" (Namita Ghimire, 18 Jul 2023,
+  https://elibrary.nhrc.gov.np/bitstream/20.500.14356/2272/1/Ms.%20Namita%20Ghimire_RCR_18%20July%202023.pdf) and a
+  title-only item "Emerging Avenue of Artificial Intelligence and Ethical Considerations" (Bishesh Khanal, Jul 2023);
+  a 2025 commentary "Challenges in Healthcare Research in Nepal: What is the way forward?" (Sah et al., *Nepal J.
+  Epidemiology*) that asks NHRC to lead on research integrity — https://www.nepjol.info/index.php/NJE/article/view/75978
+  (PMC copy behind a bot wall; snippets only). No AI-in-research guideline, reproducibility or statistics-check item.
+- Epistemics / gap framing: human-subjects ethics (ERB) is the integrity frame; nothing at claim level.
+- Institutions & people: NHRC (ERB); NAST (site only).
+- Take / Ahead: take: nothing | ahead: all mechanical.
+- Confidence: low-medium (snippets) | Queries: 1 (pass 3) + 4 failed fetches (run 2). **Adjacent-only (searched)** — was
+  UNREACHABLE.
 
 ### Netherlands (rich — searched, 13 queries + 8 primary fetches)
 - Direct (2026 SOTA):
@@ -138,14 +154,17 @@ memory alone; every tool/paper claim has a URL that was returned by a tool.
 - Take / Ahead: take: nothing | ahead: everything.
 - Confidence: low | Queries: fetch-only (conicyt.gob.ni failed; unan.edu.ni read ×2). **NOTHING FOUND.**
 
-### Niger (fetch-only)
+### Niger (pass 3: searched, 1 query)
 - Direct (2026 SOTA): none found.
-- Adjacent: Université Abdou Moumouni https://www.uam.ne/ → DNS not found. No national research-council domain known
-  to attempt. Nothing read.
+- Adjacent: Université Abdou Moumouni https://www.uam.ne/ → DNS not found (run 2). Pass 3 query ("Niger recherche
+  scientifique éthique intelligence artificielle université Abdou Moumouni 2025 2026") returned only infrastructure news
+  (UAM modernisation works, ~50,000 students, Feb 2025 — https://www.afrique-sur7.fr/niger-modernisation-de-luniversite-abdou-moumouni ,
+  snippet), a 2006 IRD/CODESRIA history of research at UAM, and off-target Nigeria/Algeria items. No ethics, AI or
+  integrity policy.
 - Epistemics / gap framing: not visible.
-- Institutions & people: none identified.
+- Institutions & people: UAM (site unreachable).
 - Take / Ahead: take: nothing | ahead: n/a.
-- Confidence: n/a | Queries: fetch-only (1 fetch, DNS failure). **UNREACHABLE** — not counted as NOTHING FOUND.
+- Confidence: low | Queries: 1 (pass 3) + 1 DNS failure (run 2). **NOTHING FOUND (searched)** — was UNREACHABLE.
 
 ### Nigeria (searched, 3 queries)
 - Direct (2026 SOTA): none found.
@@ -166,14 +185,24 @@ memory alone; every tool/paper claim has a URL that was returned by a tool.
 - Confidence: medium | Queries: "Nigeria research integrity paper mills predatory journals 2026"; "TETFund NUC
   national journal policy 2026 AI detection"; "African Reproducibility Network Nigeria 2025 2026".
 
-### North Korea
+### North Korea (pass 3: searched, 1 query)
 - Direct (2026 SOTA): none found.
-- Adjacent: no accessible research-agency web presence exists to fetch (the State Academy of Sciences has no reachable
-  site; state news portals are not research-integrity sources), and no web search was possible. Nothing attempted.
+- Adjacent (outside analysis only; 38north.org fetches returned 403, so snippets): 38 North, "North Korea's Artificial
+  Intelligence Research: Trends and Potential Civilian and Military Applications" (Jan 2024,
+  https://www.38north.org/2024/01/north-koreas-artificial-intelligence-research-trends-and-potential-civilian-and-military-applications/)
+  and "North Korea's International Network for AI Research" (Aug 2024,
+  https://www.38north.org/2024/08/north-koreas-international-network-for-artificial-intelligence-research/): an AI
+  Research Institute, legal/institutional reform and AI education, co-authorship with researchers in China, the US and
+  South Korea, ML applied to wargaming/surveillance; Korea JoongAng Daily: AI output "among the lowest in the world",
+  domestic journals (e.g. *Journal of Kim Il Sung University*) not indexed —
+  https://www.koreajoongangdaily.com/korea/despite-ban-north-koreas-global-ai-collaborations-grow/11730519 ; Jul 2026 state
+  media: Kim Jong Un declares AI a "top priority" for weapons/drones (secondary). No research-integrity, verification or
+  reproducibility item exists or is observable.
 - Epistemics / gap framing: not observable from outside.
-- Institutions & people: State Academy of Sciences (not reachable).
+- Institutions & people: State Academy of Sciences; Kim Il Sung University; AI Research Institute (per 38 North).
 - Take / Ahead: take: nothing | ahead: n/a.
-- Confidence: n/a | Queries: none possible. **UNREACHABLE** (no query ran) — not counted as NOTHING FOUND.
+- Confidence: low (snippets of secondary analyses) | Queries: 1 (pass 3); 38north ×2 (403). **NOTHING FOUND for CAPAS
+  (searched)** — was UNREACHABLE.
 
 ### North Macedonia (fetch-only)
 - Direct (2026 SOTA): none found.
@@ -309,6 +338,22 @@ memory alone; every tool/paper claim has a URL that was returned by a tool.
   sistema RENACYT plantea una tensión insalvable" (https://doi.org/10.59722/riic.v3i1.1112, PDF read). Concytec Nota
   Técnica 003-2026-DIE, bibliometrics 2018–2024 (https://repositorio.concytec.gob.pe/, 2026). gob.pe/concytec → 418
   bot block; portal.concytec.gob.pe → empty.
+- Pass 3 (2 searches, 2 fetches): **Código Nacional de Integridad Científica**, Resolución N° 028-2024-CONCYTEC-P (cited
+  by a URP journal article; resolution text not fetched —
+  https://revistas.urp.edu.pe/index.php/RFMH/article/download/6501/11684?inline=1 , snippet). **CONCYTEC Dirección de
+  Evaluación y Gestión del Conocimiento, "Integridad Científica para el SINACTI" — Módulo III** slide deck (created 4 Dec
+  2025; 17 pp; PDF read): §7 "Estrategias para prevenir y detectar el uso de la IA en la investigación" restates ICMJE
+  (Apr 2025), COPE (2023) and WAME (2023): disclose tool and version, "la secuencia de comandos completa utilizada para
+  generar los resultados de la investigación, la hora y la fecha de la consulta"; "Los editores requieren herramientas
+  adecuadas para evaluar los contenidos, detectar contenidos generados o alterados por IA" — **no tool named, no
+  reproducibility or statistics content** — https://lms.concytec.gob.pe/mod/resource/view.php?id=37 . **Reglamento of
+  Ley 31814 (DS 115-2025-PCM, El Peruano 9 Sep 2025)**: high-risk systems in health, education, justice, finance and
+  access to basic services need human supervision; algorithmic-transparency mechanisms, security audits, privacy by
+  design; PCM/Secretaría de Gobierno y Transformación Digital as authority; CNIDIA experimentation environment open to
+  research centres; **no provision on verification of research or AI-generated claims** —
+  https://andina.pe/agencia/noticia-gobierno-aprobo-reglamento-ley-promueve-uso-inteligencia-artificial-1044279.aspx
+  (read). A CELE report (Jun 2026) flags "ambigüedades conceptuales y vacíos regulatorios" (snippet). The promised
+  "AI to detect scientific fraud" still has no public trace.
 - Epistemics / gap framing: integrity = authorship fraud and incentive gaming in a researcher registry; remedy = law,
   sanctions register and a promised AI fraud detector (fail-open text/behaviour heuristic, unevaluated). No
   preregistration, replication or statistics-check policy visible.
@@ -321,6 +366,8 @@ memory alone; every tool/paper claim has a URL that was returned by a tool.
 - Confidence: medium (press + primary law coverage + journal PDF) | Queries: "Peru CONCYTEC integridad científica
   reproducibilidad 2026" (ran); "Concytec unidad de integridad científica inteligencia artificial detección fraude
   RENACYT 2026" and "Peru Red Peruana de Reproducibilidad preregistro ciencia abierta metaciencia" (blocked); fetches above.
+  Pass 3: "Perú CONCYTEC integridad científica IA reproducibilidad 2026 lineamientos"; "Perú ley IA reglamento 2025 2026
+  Ley 31814 investigación científica"; fetches lms.concytec.gob.pe PDF (pdftotext), andina.pe.
 
 ### Philippines (fetch-only, 10 fetches; 2 queries blocked by budget)
 - Direct (2026 SOTA): none found.
@@ -335,13 +382,32 @@ memory alone; every tool/paper claim has a URL that was returned by a tool.
   date on page) (https://up.edu.ph/up-principles-for-responsible-artificial-intelligence/). NRCP homepage: no
   integrity/ethics items (https://nrcp.dost.gov.ph/). Unreachable: PCHRD (TLS), PHREB ethics.healthresearch.ph
   (TLS, https and http), PHRR registry (TLS), CHED (403), Philippine Journal of Science (403), healthresearch.ph (TLS).
-- Epistemics / gap framing: governance/readiness and "meaningful human control" framing; nothing at claim level.
-- Institutions & people: DOST (Solidum), DOST-PCHRD, NRCP, PHREB, CHED, UP AI Advisory Committee.
+- Pass 3 (2 searches, 3 fetches): **House "Artificial Intelligence Development and Regulation Act"** substitute bill —
+  26 House bills + 3 resolutions + 1 privilege speech consolidated by the TWG under Rep. Javier Miguel Benitez;
+  registration and safety checks only for high-risk systems (loans, jobs, health); "funds computing access for Filipino
+  researchers"; amendments open to 20 Jul 2026, not yet committee-approved —
+  https://www.philstar.com/opinion/2026/07/14/2542095/proposed-ai-bill-gains-momentum-congress (read); Senate **AIRA /
+  SBN-25** (introduced 2 Jul 2025; National AI Commission to certify and monitor risks; under deliberation —
+  https://digitalpolicyalert.org/event/32489-artificial-intelligence-regulation-act-s-25-including-authorisation-of-goods-or-services-was-introduced-in-senate ,
+  snippet). **DOST-PCHRD × PAMJE forum on the EQUATOR Network's AI reporting extensions** (Solidum: updated guidelines so
+  methods and findings are reported clearly) — https://www.pchrd.dost.gov.ph/news_and_updates/dost-pchrd-pamje-updates-health-researchers-editors-on-equator-network-ai-reporting-guidance/
+  (TLS error on fetch; snippet, date garbled on the index). **Central Philippine University webinar for DOST scholars,
+  2 May 2026** (Ananias Sabijon Jr.; read): "verification-first mindset", AI-Assisted Research Disclosure Templates
+  "aligned with UNESCO's 2026 guidance", DOI checks and a "can't find rule", a manuscript that passed peer review with
+  ~80% non-existent references — https://cpu.edu.ph/the-centralian-link/prof-dr-sabijon-speaks-to-dost-scholars-on-ethical-use-of-ai-in-research/ .
+  UP Manila ORI (Jean Anne Toral) reproducibility/QRP session, S&T Week 2024 (snippet). No DOST/PCHRD AI-integrity
+  circular, no statistics-check or reproducibility infrastructure.
+- Epistemics / gap framing: governance/readiness and "meaningful human control" framing; nothing at claim level; the
+  pedagogy ("verify every citation") is the closest Philippine articulation of fail-closed.
+- Institutions & people: DOST (Solidum), DOST-PCHRD (Jaime Montoya), NRCP, PHREB, CHED, UP AI Advisory Committee, UP
+  Manila ORI (Toral), House ICT Committee TWG (Benitez), CPU (Sabijon).
 - Take / Ahead: take: nothing technical; the ASEAN AI-for-health action plan is a venue where a regulated-submission
   gate could be proposed | ahead: all of it.
 - Confidence: low-medium (two primary pages read; health-research sites unreachable) | Queries: "Philippines DOST
   PCHRD research integrity reproducibility preregistration 2026" and "Philippines CHED AI-generated research misconduct
-  policy 2026 universities" (both blocked); fetches above.
+  policy 2026 universities" (both blocked); fetches above. Pass 3: "Philippines DOST research integrity AI guidelines 2026
+  PCHRD reproducibility"; "Philippines AI regulation bill 2026 Senate … CHED research universities"; fetches philstar,
+  cpu.edu.ph, pchrd.dost.gov.ph (TLS).
 
 ### Poland (searched, 2 queries + 2 fetches)
 - Direct (2026 SOTA): none found. IDEAS NCBR (the national AI research institute) **merged into Akces NCBR on
@@ -459,8 +525,17 @@ memory alone; every tool/paper claim has a URL that was returned by a tool.
   copyright (https://uefiscdi.gov.ro/noutati-open-science). CNATDCU (doctoral-thesis plagiarism body): since Law
   199/2023 UEFISCDI no longer handles plagiarism complaints; no 2025–26 decisions visible, no anti-plagiarism or AI
   software named (https://www.cnatdcu.ro/). research.gov.ro → TLS failure.
+- Pass 3 (2 searches, 2 fetches): **CNECSDTI** (national consultative body under the Research Authority / Ministry of
+  Education and Research) will co-organise the **ENRIO Congress 2027** with the University of Bucharest (CARFIA), Bucharest
+  7–9 Sep 2027; track record ">300 cases, >50 decisions" in 20 years; CARFIA lists a "Raportul de similitudine" service —
+  https://carfia.unibuc.ro/enrio-congress-2027/ (read). **CEE AI Index 2026** (AI Chamber / The Recursive / European Cloud;
+  Forbes.ro 8 Jun 2026, read): Romania 7th of 11 (Estonia, Slovenia, Lithuania lead); 5.21% of firms use advanced AI;
+  national AI strategy 2024–2027; EuroHPC AI Factory status; HRIA hub €64 M 2025–29; **recommends a regulatory sandbox
+  (none exists)** — https://www.forbes.ro/?p=505314 . Romanian AI Committee + Scientific and Ethics Council for AI under
+  the Ministry of Research (2023; agerpres snippet); UMFST Târgu Mureș law-faculty student AI guide (7 Jul 2026, snippet).
+  **No 2026 rule on AI disclosure or verification in research publications, no CNATDCU AI-check rule.**
 - Epistemics / gap framing: reproducibility is arriving as a *planning artefact* (RMP) via EU project policy, not as
-  verification; integrity remains legal/plagiarism-level.
+  verification; integrity remains legal/plagiarism-level (ENRIO-style case handling).
 - Institutions & people: UEFISCDI (Alina Irimia, Ioana Trif); CNATDCU; ICI Bucharest; IFIN-HH.
 - Take / Ahead: take: the RMP template + RO-Crate package + Guix environment hash as a declared-artefact schema that
   CAPAS's reproducibility fields can ingest (machine-context ingestion, not typed numbers) | ahead: REWIRE's
@@ -468,7 +543,9 @@ memory alone; every tool/paper claim has a URL that was returned by a tool.
 - Confidence: medium (primary UEFISCDI/REWIRE pages) | Queries: "Romania UEFISCDI CNECSDTI integritate cercetare
   reproducibilitate 2026 AI" and "Romania Babeș-Bolyai Bucharest metascience reproducibility network registered
   reports 2025 2026" (both blocked); fetches cnatdcu.ro ×2, uefiscdi.gov.ro ×5, open-science.ro, rewire-hub.eu,
-  research.gov.ro (TLS).
+  research.gov.ro (TLS). Pass 3: "Romania CNECSDTI OR UEFISCDI research integrity AI 2026 reproducibility"; "România lege
+  inteligență artificială 2026 cercetare științifică verificare integritate academică"; fetches carfia.unibuc.ro,
+  forbes.ro.
 
 ### Russia (searched, 1 query + 3 fetches)
 - Direct (2026 SOTA): none found (second query on HSE/MIPT/Sber/Yandex verification blocked by budget).
@@ -560,11 +637,13 @@ text-level). Runner-up on adjacent infrastructure: Romania/Poland via REWIRE.
 
 **Coverage after the resume pass:** every country N–R now has an entry in the template. Status counts:
 - **NOTHING FOUND (something was read, nothing relevant to CAPAS):** Namibia, Oman, Panama, Paraguay, Rwanda,
-  Nicaragua, Palau, Palestine, North Macedonia — **9**.
-- **UNREACHABLE (every primary fetch failed; no web search possible; not counted as NOTHING FOUND):** Nauru, Nepal,
-  Niger, North Korea — **4**. These are the only entries that still need a real search when the budget refills.
-- **Adjacent-only, nothing direct:** Nigeria, Norway, Pakistan, Papua New Guinea, Peru, Philippines, Poland, Portugal,
-  Qatar, Romania.
+  Nicaragua, Palau, Palestine, North Macedonia, **+ pass 3 (searched): Nauru, Niger, North Korea** — **12**.
+- **UNREACHABLE: 0** (pass 3 ran one live search each for Nauru, Nepal, Niger and North Korea; Nepal moved to
+  adjacent-only, the other three to NOTHING FOUND).
+- **Adjacent-only, nothing direct:** Nepal, Nigeria, Norway, Pakistan, Papua New Guinea, Peru, Philippines, Poland,
+  Portugal, Qatar, Romania. Pass 3 added for Peru the CONCYTEC "Integridad Científica" module (ICMJE/COPE/WAME restated,
+  no tool) and DS 115-2025-PCM; for the Philippines the House AI bill TWG (Jul 2026) and the CPU "verification-first"
+  pedagogy; for Romania CNECSDTI/ENRIO 2027 and the CEE AI Index 2026. **Ranking unchanged.**
 - **Direct work found:** Netherlands, New Zealand; Russia (text-level).
-- Web searches that ran in this wave: 37 (36 in pass 1, 1 in the resume pass); 8 more were blocked. No search-engine
-  workaround was used.
+- Web searches that ran in this wave: 47 (36 in pass 1, 1 in the resume pass, 10 in pass 3); 8 were blocked in pass 2.
+  No search-engine workaround was used.

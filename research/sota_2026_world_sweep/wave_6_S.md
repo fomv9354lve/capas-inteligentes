@@ -24,6 +24,11 @@ reproducibility networks, and arXiv's own listing search by topic with affiliati
 HTML. Entries updated in pass 2 say so in their Queries line. "NOT SEARCHED" no longer appears; the residual debt is
 stated in the Wave summary.
 
+**Pass 3 (2026-10-14, WebSearch budget restored).** Live WebSearch ran for the four countries the pass-2 summary named
+as residual debt: **South Korea 3, Spain 3, Sweden 3, Singapore 2** queries, plus 14 primary fetches (PDFs extracted
+locally with pdftotext). Additions are marked "pass 3" inside each entry with the URL and whether the source was read or
+only seen as a snippet. Not re-run in pass 3: the other S-countries (pass-2 labels stand).
+
 ---
 
 ### Saint Kitts and Nevis
@@ -187,6 +192,20 @@ stated in the Wave summary.
   2026; **no benchmarking/verification programme named** (https://www.nqch.sg/). NRF: RIE2030 Plan (31 Aug 2026), no
   integrity/reproducibility items (https://www.nrf.gov.sg/). Historic anchor: Singapore Statement on Research Integrity
   (22 Sep 2010, WCRI-2; https://www.wcrif.org/guidance/singapore-statement).
+- Pass 3 (2 searches, 4 fetches): **Global AI Assurance Sandbox** (IMDA + AIVF, launched 7 Jul 2025; overview deck read,
+  https://file.go.gov.sg/aivf-sandbox-overview.pdf): application layer only, not foundation models; "Execution of tests
+  will always be by the testing partner, not IMDA/AIVF"; results stay confidential; participants publish a fixed-format
+  summary incl. "Metrics and/or evaluators within those tools" and **"Interpretation/thresholds — calibration used to
+  determine 'good/bad' results"**; risk dimensions from IMDA's Starter Kit (hallucination, undesirable content, data
+  disclosure, adversarial prompts); pilot paired 17 deployers with 16 testers by May 2025. **Case-study ledger: 29 (13
+  dated 2026, 16 dated 2025)** — e.g. Changi General Hospital × Guardrails AI clinical-guidance chatbot, NTU × Knovel MBBS
+  clinical voicebot, ST Engineering × AIDX misinformation-detection platform, Singapore Academy of Law × Resaro —
+  https://aiverifyfoundation.sg/ai-assurance/case-studies/ (read; methods not on the index page). No 2026 sandbox
+  *report* found. **NTU Policy on the Use of Generative AI in Research** (issued 4 Jul 2023, reviewed 7 Nov 2025; read):
+  disclose tool name/version/purpose/use; non-disclosure may be treated as plagiarism/misconduct; AI-generated figures must
+  "document the methods, tools, and parameters … in sufficient detail to ensure reproducibility"; authors must "be ready
+  to verify the accuracy and validity of their work"; fabricated experiment-like images = serious misconduct —
+  https://www.ntu.edu.sg/research/resources/use-of-gai-in-research . NUS research-AI policy: not found.
 - Epistemics / gap framing: assurance-by-testing plus process documentation; "Reproducibility" is a governance
   principle answered with Yes/No evidence boxes, not a numeric gate; LLM judges are admitted as evaluators.
 - Institutions & people: AI Verify Foundation / IMDA; HSA; A*STAR CFAR (Ivor Tsang); NQCH; NUS/NTU integrity pages
@@ -195,7 +214,10 @@ stated in the Wave summary.
   deterministic column only); the MFDS–HSA joint ML-device trial guidance is the bilateral regulatory document to cite
   for the device/pharma beachhead in Asia | ahead: nothing Singaporean returns a fail-closed verdict over structured
   evidence; no sealed-blind rate; no proof ledger.
-- Confidence: medium-high (pages read). | Queries: WebSearch refused (A*STAR AI-for-science verification; NUS/NTU
+- Confidence: medium-high (pages read). Pass 3 queries: "AI Verify Foundation Global AI Assurance sandbox report 2026
+  Singapore IMDA testing"; "NUS OR NTU research integrity office generative AI research policy 2026 Singapore
+  reproducibility"; fetches file.go.gov.sg deck (pdftotext), aiverifyfoundation.sg case-studies, ntu.edu.sg policy,
+  aiverifyfoundation.sg/?p=13514 (404). | Queries: WebSearch refused (A*STAR AI-for-science verification; NUS/NTU
   claim-verification benchmark; IMDA sandbox findings; HSA AI guidance; quantum benchmarking); Bing-via-WebFetch
   unusable (see caveat); fetches: aiverifyfoundation.sg (3; sandbox + pilot 404), moonshot docs + README, a-star.edu.sg
   (cfar; research-integrity 404), nrf.gov.sg, nqch.sg, cqt.sg (empty ×2), nus.edu.sg (empty), ntu.edu.sg (404),
@@ -294,6 +316,25 @@ stated in the Wave summary.
   sovereignty" National Assembly forum (11 Sep 2026) — https://www.kriss.re.kr/eng/; no qubit-benchmark admissibility
   item. NRF Korea English site 404 (×2); KISTI connection refused; CRE DNS failure (cre.or.kr is an unrelated blog);
   ETRI news: only a cybersecurity-share item (16 Jul 2025); KAIST news feed hung up (×2).
+- Pass 3 (3 searches, 3 fetches): **NRF 「대학 연구자를 위한 생성형 AI 연구윤리 가이드」** (Generative-AI Research
+  Ethics Guide for University Researchers), produced by NRF's Ethics Policy & Legal Affairs Team, posted 30 Jun 2026; six
+  chapters (AI in research; design / conduct / reporting stages; citation after AI use; **researcher checklist**) —
+  https://cre.nrf.re.kr/bbs/BoardDetail.do?nttId=15355&bbsId=BBSMSTR_000000000169&pageIndex=1 (page read; PDF not read).
+  **「국가연구개발 AI 연구윤리 가이드」 + 해설서** (National R&D AI Research Ethics Guide, Sep 2026), posted on KISTEP's
+  notice board 18 Sep 2026: principles and recommendations "연구자 및 연구개발기관이 참고할 수 있는" (for reference),
+  non-binding; sections on ethical risks, responsibilities of researchers and institutions, recommendations, **form
+  examples** — https://www.kistep.re.kr/board.es?mid=a10402000000&bid=0003&act=view&list_no=94861 (read). A secondary
+  analysis (Pebblous, read) adds: issuers 교육부 + NRF + 대학연구윤리협의회 (university guide, 65 pp, 10 principles, no AI
+  authorship, keep prompts/responses) and MSIT + KISTEP (national guide, 54 pp, AI-use disclosure form + 10-item
+  self-check, "본 가이드는 AI 활용을 규제하기 위한 것이 아니며"; unchecked AI-generated references flagged as a cautionary
+  case); verification responsibility sits with the researcher's home institution (교육부 훈령 §16); national-R&D sanctions
+  up to 10-year participation bans and 5× surcharges, stronger revision from Mar 2027 —
+  https://blog.pebblous.ai/report/ai-research-ethics-guide-society-led-training/ko/ (medium). **KISTI "AI Scientist"
+  shown at KDD 2026 (14 Aug 2026)**: scans literature to propose hypotheses; Web Agent; KONI-Forge LLM platform;
+  **no validation step described** (Lee Gyeong-ha, Large-Scale AI Research Center) —
+  https://mbiz.heraldcorp.com/article/10841503 (read). **KRISS quantum benchmarking**: no 2026 standard found; only the
+  NIST–KRISS MoU amendment (Jan 2024) on precision metrology for superconducting QC and a Dec 2024 LG/KRISS/SDT/Korea
+  Univ. neutral-atom MoU (snippets). KAIST NEO (Ahn Sung-jin, world-model theorising) is not verification (snippet).
 - Epistemics / gap framing: law-first "trust" framing (AI Basic Act) with a light-touch enforcement stance; the
   engineering statement in YouRA — a claim must trace to executed evidence or be labelled refuted/inconclusive — is the
   closest Korean articulation of a fail-closed default, applied inside the agent and scored by LLM judges.
@@ -304,7 +345,10 @@ stated in the Wave summary.
   paper lacks; the MFDS–HSA joint guidance is the Asian regulatory hook | ahead: YouRA's verdicts and evaluation are
   LLM-judged and in-loop; no sealed-blind false-accept rate; no re-derivable hash; no public ledger; no cross-company
   counter-signature.
-- Confidence: high (YouRA, Act, MFDS), medium (AISI, KRISS). | Queries: WebSearch (ran): "KAIST 2026 verification of
+- Confidence: high (YouRA, Act, MFDS), medium (AISI, KRISS). Pass 3 queries: "KAIST OR SNU OR KISTI 'AI for science'
+  verification reproducibility scientific claims 2026"; "한국연구재단 연구윤리 생성형 인공지능 가이드라인 2026 연구부정 검증";
+  "KRISS quantum benchmarking calibration standards 2026"; fetches cre.nrf.re.kr, kistep.re.kr, hansung.ac.kr notice,
+  pebblous blog, heraldcorp. | Queries: WebSearch (ran): "KAIST 2026 verification of
   AI-generated scientific claims reproducibility deterministic verifier"; "KAIST OR SNU 2026 AI scientist / AI for
   science verification hallucination scientific claims" — 5 further queries refused (AISI/AI Basic Act; NRF research
   integrity generative AI; MFDS AI device guidance; KRISS/ETRI quantum benchmarking; KISTI reproducibility). arXiv
@@ -341,6 +385,24 @@ stated in the Wave summary.
   integrity/good-practice page and complaints channel listed; no reproducibility content. AEMPS: "Remedios siempre con
   evidencia científica" campaign; no AI or statistics guidance on the home page (https://www.aemps.gob.es/). No
   statcheck-like Spanish tool surfaced (could not search).
+- Pass 3 (3 searches, 3 fetches + 1 PDF): **AESIA sandbox closed — "Informe de resultados. Primer piloto del Sandbox de
+  Inteligencia Artificial español"** (Dirección General de IA / SEDIA, Sep 2026, 112 pp, NIPO 230260497, CC BY 4.0; PDF
+  read): 12 high-risk systems selected (medical devices, biometrics, employment, access to services, machinery, critical
+  infrastructure), **11 completed**; five phases incl. Phase IV *Autoevaluación* and Phase V post-market surveillance;
+  per-requirement **"checklists de verificación"** with documentary evidence and individual conclusion reports; the
+  FAQ section states that high-risk providers must show accuracy metrics are "adecuadas… fiables… técnicamente
+  justificadas" and that **"los tests de significancia estadística son la herramienta estándar"** to prove that a
+  metric difference (e.g. 87% vs 89%) is real ("si el test confirma que la diferencia es significativa (por ejemplo,
+  p < 0.05)…"); "las métricas y funciones objetivo estén justificadas y su rendimiento sea trazable" —
+  https://digital.gob.es/content/dam/portal-mtdfp/avance-digital/telecomunicacion-e-infraestructuras-digitales/estadisticas-e-informes/sandbox-ia-informes/Informe-de-resultados-ESP.pdf ;
+  closing event 12 Jun 2026 (press, Galician page truncated) —
+  https://digital.gob.es/gl/comunicacion/notas-prensa/secretaria-digitalizacion-e-inteligencia-artificial/2026/06/el-gobierno-concluye-con-exito-el-primer-sandbox-de-inteligencia .
+  This is the Spanish regulator's own statement that a reported accuracy claim needs a significance test behind it —
+  self-assessed, documentary, no engine. **Statcheck-type baseline for Spain**: Caperos & Pardo, *Psicothema* 25(3):408–414
+  (2013), https://doi.org/10.7334/psicothema2012.207 (abstract read): 186 articles from four Spanish psychology journals,
+  1,212 complete tests, **12.2% inconsistent p-values, 2.3% conclusion-changing, 48% of articles with ≥1 error**; no
+  Spanish 2025–26 statcheck-like tool surfaced. **BSC**: an "LLM evaluation" software entry (Mar 2025) and IberoBench
+  (COLING 2025) — capability benchmarks, not claim verification (snippets).
 - Epistemics / gap framing: reproducibility-network + open-research-information framing (SPRN, Barcelona Declaration);
   AI governance is rights/compliance-centric (AESIA). Jimenez–Verde state the gap: institutions must be redesigned so
   AI claims are verifiable — and stop at "automated checks" without a fail-closed rule.
@@ -350,7 +412,10 @@ stated in the Wave summary.
   the policy ask CAPAS answers — offer the sealed-blind benchmark as its first entry; SPRN workshops as the
   Spanish-language venue | ahead: nothing Spanish returns a deterministic verdict with a hash; SPRN is training and
   surveys, not enforcement; AESIA shows no technical test bench.
-- Confidence: high (Jimenez–Verde, SPRN), medium (AESIA/BSC). | Queries: WebSearch refused (Red Española de
+- Confidence: high (Jimenez–Verde, SPRN, AESIA report), medium (BSC). Pass 3 queries: "España herramienta statcheck
+  errores estadísticos detección automática 2025 2026"; "AESIA sandbox IA 2026 informe resultados evaluación"; "Barcelona
+  Supercomputing Center LLM evaluation group benchmark verification 2026"; fetches: digital.gob.es PDF (pdftotext) + press
+  note, psicothema.com. | Queries: WebSearch refused (Red Española de
   Reproducibilidad; BSC trustworthiness & evaluation; AESIA sandbox); fetches sprn.es (2), aei.gob.es, aesia (4), bsc.es
   (3), csic.es (4; 3 ×404), aemps.gob.es, mineco sandbox (404), reproducibilidad.es (empty index), arXiv listing + HTML.
 
@@ -393,6 +458,18 @@ stated in the Wave summary.
   (https://www.ukrn.org/international-networks/). AI Sweden / VR open-science items as in pass 1. RISE trustworthy-AI
   page behind a bot wall; Läkemedelsverket AI page 404; Karolinska integrity page 404; Chalmers news feed returned 0
   hits on fetch.
+- Pass 3 (3 searches, 4 fetches): **SweRN** — still only the UKRN listing (swern.org); the live query returned no 2026
+  Swedish item (SwissRN results instead). **Chalmers 2026 list read**: *Agentic AI integrated with scientific knowledge:
+  laboratory validation in systems biology* = *J. R. Soc. Interface* 23(240), 2026; *Investigating uncharacterised genes in
+  S. cerevisiae using robot scientists* = *Sci. Rep.* 16(1); *The Use of AI-Robotic Systems for Scientific Discovery*
+  (Gower, Korovin, Brunnsåker, …, Wikswo, King) v2 revised 5 Feb 2026 — Genesis with 1,000 computer-controlled
+  micro-bioreactors; abstract has **no verification, hallucination or error-rate language** —
+  https://research.chalmers.se/en/person/rossk , https://arxiv.org/abs/2406.17835 . **Npof**: no AI-related decision found;
+  the Lund professor case (Dept of Psychology; extensive plagiarism of text, analyses and results from an unpublished
+  manuscript's appendix; Npof Nov 2024 → Förvaltningsrätten Oct 2025 → Kammarrätten denied leave 2 Jun 2026 → final Jul
+  2026) — https://www.lu.se/artikel/beslut-om-oredlighet-star-fast (read); a second Lund case on suspected falsified
+  references in a doctoral thesis was found guilty by Npof (snippet only, not read); a KI slide gives Npof outcomes as
+  52% cleared / 30% dismissed / 18% found guilty (snippet).
 - Epistemics / gap framing: autonomous discovery with the wet lab as oracle (King's Robot Scientist lineage) — an
   external-oracle design, but reliability is not quantified publicly; the policy layer is good-research-practice
   guidance plus a statutory misconduct board.
@@ -401,7 +478,10 @@ stated in the Wave summary.
   it against the Ding et al. survey claim and propose CAPAS as the admissibility layer between hypothesis and lab run |
   ahead: no fail-closed gate on statistical evidence, no sealed-blind rate, no ledger; verification is by experiment,
   not by declared-evidence rules.
-- Confidence: medium. | Queries: WebSearch refused (Chalmers AI scientist verification; SweRN; KTH/Uppsala tools;
+- Confidence: medium. Pass 3 queries: "Swedish Reproducibility Network SweRN 2026"; "Chalmers Ross King robot scientist
+  2026 automated science verification paper"; "Npof … 2026 beslut AI" + "Npof fällde forskare Lunds universitet
+  förfalskade referenser 2026"; fetches research.chalmers.se, arxiv 2406.17835, lu.se ×2, hist.lu.se (empty). | Queries:
+  WebSearch refused (Chalmers AI scientist verification; SweRN; KTH/Uppsala tools;
   Läkemedelsverket AI; WASP-DDLS); fetches wasp-sweden.org (3), vr.se (3; 2 ×404), npof.se (cert), swern.org / swern.se
   (DNS), ri.se (bot wall), lakemedelsverket.se (404), ki.se (404), chalmers.se, ukrn.org list.
 
@@ -586,8 +666,12 @@ Saint Vincent and the Grenadines, Samoa, San Marino, São Tomé and Príncipe, S
 WebSearch); Solomon Islands, Somalia, South Sudan, Sri Lanka, Sudan, Suriname, Syria (pass 2, primary fetches only;
 Syria's two URLs were unreachable).
 
-**NOT SEARCHED: 0.** Every S-country now has an entry. Residual debt: for the 12 pass-2 countries no general web
-search ran (WebSearch budget; Bing-via-WebFetch unusable), so coverage is primary-source fetches plus arXiv listing
-searches. A later WebSearch pass on South Korea (KAIST/SNU labs, KISTI, NRF integrity guidance), Spain (statcheck-like
-tools, AESIA sandbox, BSC T&E group), Sweden (SweRN, Npof, Chalmers paper text) and Singapore (sandbox report, NUS/NTU
-integrity) could still add items; it is unlikely to change the ranking.
+**NOT SEARCHED: 0.** Every S-country now has an entry. **Pass 3 closed the named debt** with 11 live searches: South
+Korea (NRF university guide 30 Jun 2026 + MSIT/KISTEP national R&D AI-ethics guide Sep 2026, both non-binding; KISTI
+AI Scientist at KDD 2026 with no validation step; no KRISS quantum-benchmark standard), Spain (AESIA sandbox results
+report Sep 2026 — 11/12 systems, verification checklists, and the regulator's line that significance tests are "la
+herramienta estándar" to justify accuracy metrics; Caperos–Pardo 2013 12.2% p-value inconsistency base rate), Sweden
+(Chalmers venues confirmed; Npof Lund decision final Jul 2026; SweRN still unreachable), Singapore (sandbox deck: tests
+run by partners, thresholds published; 29 case studies, 13 in 2026; NTU research-GAI policy with a reproducibility
+clause). **Ranking unchanged.** Residual: for the other 8 pass-2 countries no general web search has run; the Korean
+guide PDFs and the AIVF case-study reports were not read.

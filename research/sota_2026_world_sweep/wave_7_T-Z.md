@@ -15,6 +15,9 @@ Consequence: small states are covered bibliographically, not by local-language w
 PDF-only (mbzuai.ac.ae, klk.univd.edu.ua, journals.sagepub.com, osf.io, tandfonline, DoH policy PDF) are flagged per
 entry. No fact below was written without a URL returned by a search or a fetch; nothing was guessed.
 
+**Pass 3 (2026-10-14, WebSearch budget restored):** live searches for Ukraine 2, Vietnam 1 (statute), Uruguay 2,
+Thailand 2, plus 6 primary fetches. Additions are marked "pass 3". Not re-run: the rest of the wave.
+
 ---
 
 ### Taiwan
@@ -99,8 +102,21 @@ entry. No fact below was written without a URL returned by a search or a fetch; 
   OpenAlex TH 2025+ "superconducting qubit … calibration" → 1 hit (QKD theory
   https://doi.org/10.1140/epjqt/s40507-026-00510-1 ); no national hardware-benchmarking item; qtft.org now shows an
   enterprise-optimisation vendor. NSTDA English site: AI items are workforce/Industry-4.0 only https://www.nstda.or.th/en/ .
+- Pass 3 (2 searches, 2 fetches): (6) **NRCT / Thailand Research Integrity Network (TH-RIN) "Guidelines for the Ethical
+  Application of Generative AI for Researchers"** — draft put to public comment 5 Feb 2026 (https://ri.nrct.go.th/?p=3561 ,
+  Thai, snippet); NRCT article 16 Jul 2026 presents TH-RIN (now run by NRCT) and the guide as a practical reference for
+  "academic integrity and honesty" (https://en.nrct.go.th/hilghlight/detail/433 — 403 on fetch; snippet); KMUTT
+  workshop "Responsible Use of Generative AI in Research" 25 May 2026 (https://ethics.kmutt.ac.th/?p=5769 , snippet). Final
+  text not read; no verification/reproducibility clause visible. (7) **ETDA draft AI Act, released 2 Jul 2026** for a
+  ~30-day hearing (Tilleke & Gibbins, read): tiers = prohibited / high-risk (by royal decree) / "designated" systems
+  (notification, registration or licensing); **exempts "AI for educational research conducted by higher education
+  institutions with ethics committee approval" and pre-distribution R&D**; high-risk providers must build systems that are
+  "efficient, fit for purpose, transparent, subject to meaningful human control"; deployers keep logs ≥6 months; machine-
+  readable marks on generated media; strict joint liability; no testing / conformity-assessment detail —
+  https://www.tilleke.com/insights/thailand-releases-new-draft-artificial-intelligence-act/ . TSRI: nothing.
 - Epistemics / gap framing: governance-by-guideline and ethical impact assessment before deployment; "functional
-  equivalence" to the EU AI Act argued academically; no evidence-grading, fail-closed or reproducibility language found.
+  equivalence" to the EU AI Act argued academically; no evidence-grading, fail-closed or reproducibility language found;
+  the draft Act's research exemption is ethics-committee-gated, not evidence-gated.
 - Institutions & people: ETDA AIGPC; MHESI (Supachai Pathumnakul); NSTDA; Chiang Mai ICDI (Phillip Freiberg, Parot
   Ratnapinda); Mahidol (Sataporn Roengtam).
 - Take / Ahead: take: AIGPC's Ethical Impact Assessment Playbook is an assess-before-deploy artifact — a Thai pilot could
@@ -110,7 +126,9 @@ entry. No fact below was written without a URL returned by a search or a fetch; 
   Chulalongkorn 2026 AI research integrity reproducibility verification" (budget-blocked); OpenAlex TH 2025+
   "reproducibility research integrity"; "AI law draft governance regulation"; "superconducting qubit quantum computer
   Thailand calibration"; "quantum technology roadmap" (20, none); "Thai FDA medical device AI … clinical evidence" (10,
-  none regulatory); fetched etda.or.th (EN + TH AIGC), unesco.org, nstda.or.th, qtft.org.
+  none regulatory); fetched etda.or.th (EN + TH AIGC), unesco.org, nstda.or.th, qtft.org. Pass 3: "Thailand NRCT research
+  integrity generative AI guideline 2026 reproducibility TSRI"; "Thailand AI law draft 2026 ETDA royal decree AI research
+  universities verification"; fetched tilleke.com, en.nrct.go.th (403).
 
 ### Timor-Leste
 - Direct (2026 SOTA): none.
@@ -251,6 +269,16 @@ entry. No fact below was written without a URL returned by a search or a fetch; 
   building was hit by a drone 2026-09-28 https://nrfu.org.ua/en/ . Literature is dense on AI-and-integrity (OpenAlex UA
   2025+: 1,983 hits; e.g. https://doi.org/10.22329/jtl.v19i3.9538 ); a Dissernet-like dissertation audit returned 0 hits
   in OpenAlex (the Ukrainian-language web query "Дисергейт" could not run).
+- Pass 3 (2 searches, 2 fetches): **Ukraine's AI statute is still in drafting** — a Ministry of Digital Transformation
+  working group is preparing a law aligned to the EU AI Act for adoption "during 2026"; groundwork = AI roadmap, White
+  Paper, an **AI regulatory sandbox (90 applications, 15 products passed an expert audit in year 1)**, Bletchley
+  Declaration and the Council of Europe AI Convention signed — https://dou.ua/lenta/news/new-ai-law-in-ukraine/ (read;
+  no science provisions). A university page reads Law 4742-IX as making "AI detection and verification … a legal
+  obligation" from 31 Jul 2026 (https://www.tdmu.edu.ua/en/?p=187738 , secondary reading, not the statute). Institutional
+  AI rules citing the law: **NASU Institute of Mathematical Machines and Systems "Положення про використання ШІ"** (May
+  2026; https://www.immsp.kiev.ua/postgraduate/Dokum_OrganOsvitProtsesu/20_PologennyaVykorShtIntel_2026.pdf , 404 on
+  fetch — snippet) and Ukrainian State University of Science and Technologies principles (Apr 2026, snippet). NRFU: still
+  nothing.
 - Epistemics / gap framing: integrity-as-law under war: obligation + register; verification means text provenance
   (similarity, stylometry, declarations), not evidence admissibility. The UCU centre is the only "mathematical rigor"
   framing found.
@@ -265,7 +293,9 @@ entry. No fact below was written without a URL returned by a search or a fetch; 
   law 2026 'Office for Research Integrity' AI verification"; "Ukraine formal verification AI research 2026 Glushkov
   Institute Kyiv neuro-symbolic theorem proving"; OpenAlex UA 2025+ ×3; nationalacademies.org, dou.ua, tdmu.edu.ua,
   naqa ×3, nrfu.org.ua, nauka.gov.ua. Not reached: klk.univd.edu.ua (403) — the search-snippet mention of a "Ukrainian
-  Office for Research Integrity" head is UNVERIFIED and not recorded as a finding.
+  Office for Research Integrity" head is UNVERIFIED and not recorded as a finding. Pass 3: "Ukraine National Research
+  Foundation OR NAQA academic integrity AI 2026 verification science"; "Україна штучний інтелект наука 2026 закон
+  доброчесність верифікація досліджень НАЗЯВО"; fetched dou.ua, immsp.kiev.ua PDF (404).
 
 ### United Arab Emirates
 - Direct (2026 SOTA): none UAE-led on claim gating. Nearest, MBZUAI co-authored, 2026: (1) **"Beyond Perplexity: A
@@ -479,6 +509,16 @@ entry. No fact below was written without a URL returned by a search or a fetch; 
   and Redata platform; no integrity/reproducibility policy item
   https://anii.org.uy/apoyos/innovacion/675/entornos-controlados-de-prueba-sandboxes-regulatorios . FAIR-in-biomolecular-
   simulation co-authorship (Nat Methods 2025) https://doi.org/10.1038/s41592-025-02635-0 .
+- Pass 3 (2 searches, 1 fetch): (5) **Udelar Consejo Directivo Central unanimously approved 11 guiding principles for AI**
+  across all university functions (dplnews 8 Jun 2026, read): human-centred; equity; **transparency and explainability
+  with "explicit disclosure when AI is used"** and preference for open source; human control over academic decisions;
+  privacy/copyright; ethics; security; sovereignty; sustainability; training; participation. Roadmap: five sector
+  subgroups (incl. **Research**, led by the vice-rectorates) to write usage guidelines; possible permanent advisory
+  group — https://dplnews.com/udelar-aprobo-principios-rectores-y-definio-hoja-de-ruta-para-regular-el-uso-de-la-inteligencia-artificial/ .
+  No research-integrity or verification rule yet. A commercial site claims FIng approved a "Guía para el Uso Ético y
+  Crítico de IA" on 10 Feb 2026 (tesify.es — unverified, not used). (6) AGESIC: Ley 20.212 art. 74 (Nov 2023) ordered the
+  AI-strategy revision and a National Data Strategy; Centro Nacional de IA incubated at ANII (~USD 10 M to 2030, columnist
+  snippet). ANII: still no integrity/reproducibility item.
 - Epistemics / gap framing: data/AI strategy with impact assessment and an observatory; statistical-reform discourse
   (beyond p-values) via a Udelar co-author; no fail-closed or evidence-grading register in the policy pages fetched.
 - Institutions & people: Agesic; ANII; Udelar (image group: Pablo Musé, Matías Tailanian; Mauricio Castillo); PEDECIBA
@@ -487,7 +527,8 @@ entry. No fact below was written without a URL returned by a search or a fetch; 
   field | ahead: no Uruguayan artifact gates claims; policy is impact-assessment, not admissibility.
 - Confidence: medium | Queries (2 WebSearch budget-blocked; 8 fetches): OpenAlex UY 2025+ "reproducibility open science"
   (230); OpenAlex UY 2025+ "research integrity preregistration replication" (1); anii.org.uy; gub.uy ×3; arXiv
-  2412.14969 (+ arXiv search); OpenAlex records ×2.
+  2412.14969 (+ arXiv search); OpenAlex records ×2. Pass 3: "Uruguay ANII OR Udelar integridad científica IA
+  reproducibilidad 2026"; "Uruguay estrategia nacional IA 2026 AGESIC ley regulación ciencia"; fetched dplnews.
 
 ### Uzbekistan
 - Direct (2026 SOTA): none.
@@ -557,9 +598,17 @@ entry. No fact below was written without a URL returned by a search or a fetch; 
   the contribution of library and information services" (Bui — VNU USSH; Nguyen — Khon Kaen; *IFLA Journal* 2025)
   https://doi.org/10.1177/03400352241310536 (sagepub 403; record only). (3) Regulation discourse: "A Risk-Based Approach
   to AI Regulation: Lessons from the EU for Vietnam" (Dao, Nguyen — UEL, VNU-HCM; *VNU J. Legal Studies* 2025)
-  https://doi.org/10.25073/2588-1167/vnuls.4799 . **The Vietnamese AI statute itself was not retrieved** (vietnamlawmagazine
-  and vietnamplus tag pages empty; Wikipedia's regulation page has no Vietnam section) — no passage/effective date is
-  asserted here. (4) VinAI: corporate site shows only automotive products (DrunkSense award 2025-03-27; CES 2025); the
+  https://doi.org/10.25073/2588-1167/vnuls.4799 . **Pass 3 (1 search, 1 fetch) — the statute, now dated:** **Law No.
+  134/2025/QH15 on Artificial Intelligence**, passed 10 Dec 2025 (429 of 434 deputies), in force **1 Mar 2026**; 8 chapters,
+  35 articles (Asia News Network snippet); scope "research, development, provision, deployment, and use" of AI systems;
+  three risk tiers; high-risk = pre-market **conformity assessment** for systems on a Prime-Minister list, ongoing risk
+  management, human oversight, registration on the national AI portal; medium = reports + sample audits; MOST runs the
+  National Single-Window AI Portal (incident reports); **machine-readable labelling** of AI audio/image/video; sandboxes +
+  National AI Development Fund; the proposed independent National AI Committee was dropped; transition to 1 Sep 2027
+  (finance/health/education) or 1 Mar 2027 — https://blogs.duanemorris.com/vietnam/2026/03/03/vietnam-the-first-law-on-artificial-intelligence-what-you-must-know/
+  (law-firm summary, read), https://en.vneconomy.vn/national-assembly-approves-vietnams-first-ai-law.htm (snippet).
+  **No provision on verification of scientific or AI-generated research claims**; the official text itself is still not
+  read (gazette not fetched). (4) VinAI: corporate site shows only automotive products (DrunkSense award 2025-03-27; CES 2025); the
   research publication page redirects to the home page; no 2025–26 verification/science output visible
   https://www.vinai.io/news/ . (5) OpenAlex VN 2025+ "preregistration / registered report / replication" → 1 (ethics
   essay): no metascience community surfaced.
@@ -573,7 +622,8 @@ entry. No fact below was written without a URL returned by a search or a fetch; 
 - Confidence: medium | Queries (3 WebSearch budget-blocked; 11 fetches): OpenAlex VN 2025+ ×5 ("scientific claim
   verification"; "research integrity retraction Vietnam"; "preregistration registered report replication"; "Law on AI
   … risk regulation" ×2); vinai.io ×3; vietnamlawmagazine.vn; en.vietnamplus.vn; revista.domhelder.edu.br;
-  journals.sagepub.com (403); OpenAlex records ×2.
+  journals.sagepub.com (403); OpenAlex records ×2. Pass 3: "Vietnam Law on Artificial Intelligence 2025 2026 text National
+  Assembly passed provisions research science verification"; fetched blogs.duanemorris.com.
 
 ### Yemen
 - Direct (2026 SOTA): none.
@@ -646,6 +696,15 @@ the response to AI-generated science https://www.pas.va/en/events/2026/plenary_s
 backing https://arxiv.org/abs/2412.14969 ; Vietnamese journal-policy study naming "unverifiable claims" and requiring
 provenance documentation https://doi.org/10.18623/rvd.v23.n1.4029 ; Thailand's ETDA AIGPC Ethical Impact Assessment
 Playbook https://www.etda.or.th/th/Our-Service/AIGC/index.aspx .
+
+**Pass 3 additions (live search, no ranking change):** Vietnam's **Law 134/2025/QH15** (in force 1 Mar 2026; pre-market
+conformity assessment for listed high-risk systems; machine-readable labelling; no research-claim clause)
+https://blogs.duanemorris.com/vietnam/2026/03/03/vietnam-the-first-law-on-artificial-intelligence-what-you-must-know/ ;
+Thailand's **ETDA draft AI Act (2 Jul 2026)** with an ethics-committee-gated exemption for university research and the
+NRCT/TH-RIN generative-AI guideline for researchers (draft Feb 2026, announced Jul 2026)
+https://www.tilleke.com/insights/thailand-releases-new-draft-artificial-intelligence-act/ ; Ukraine's AI law still in
+drafting with a sandbox that audited 15 of 90 products https://dou.ua/lenta/news/new-ai-law-in-ukraine/ ; Udelar's 11 AI
+principles with an explicit-disclosure rule and a Research subgroup still to write rules (Jun 2026).
 
 **3 countries with the strongest direct work:** United States, United Kingdom, United Arab Emirates (MBZUAI's two 2026
 evaluation papers). Runners-up: Ukraine (formal-verification centre + integrity law, no artifact yet), Taiwan

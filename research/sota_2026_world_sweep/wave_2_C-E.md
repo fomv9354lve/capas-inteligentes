@@ -14,6 +14,9 @@ verified by direct fetch in run 2 include the DeepSeek-R1 HTML, DeepSeek-Prover-
 the GB/T catalogue (twice), ufsn.dk Code 2026, danish-repro, crorin.hr, etag.ee, Zenodo BEYOND/Uusberg/AIMLS/ARI², and
 Europe PMC abstracts (Brodeur, Pottegård, Ropovik, Pejdo, Hailu).
 
+**Run 3 (2026-10-14, WebSearch budget restored):** live searches for Chile 2, Colombia 2, Ecuador 2, Egypt 2, plus 8
+primary fetches (one PDF via pdftotext). Additions are marked "run 3". Not re-run: the rest of the wave.
+
 ---
 
 ### Cabo Verde
@@ -143,15 +146,36 @@ Europe PMC abstracts (Brodeur, Pottegård, Ropovik, Pejdo, Hailu).
   https://www.latercera.com/nacional/noticia/las-razones-que-ponen-a-chile-como-lider-de-la-region-en-estudios-clinicos-147-aprobados-en-2024-y-26-en-lo-que-va-de-ano/ ,
   https://www.meganoticias.cl/nacional/533578-cae-inversion-laboratorios-internacionales-chile-rezago-09-10-2026.html .
   A CASRAI page dated 30 Jul 2026 on ANID OA expansion looked unreliable (mixed vendor content) — not used.
+- Run 3 (2 searches, 3 fetches): **Universidad de Chile, Instructivo N° 17/2026 "Lineamientos para el uso transparente
+  de inteligencia artificial en tesis"** (Vicerrectorías de Asuntos Académicos y de Tecnologías de la Información, 16 Jun
+  2026; PDF read): every undergraduate/graduate thesis must open with a "Declaración de uso de inteligencia artificial"
+  "independientemente del nivel o magnitud de dicho uso", naming tools, stages (incl. "análisis de datos, generación de
+  código, diseño experimental") and purpose; for substantive uses it must add **"los prompts utilizados" and "cómo se
+  verificaron sus resultados y qué criterios críticos se aplicaron"**; "todo contenido generado o asistido por IA debe
+  haber sido revisado, evaluado y validado críticamente por el autor"; AI is never co-author —
+  https://uchile.cl/dam/jcr:f314d869-bbe4-42fa-841a-dcbd5dffbbba/Instructivo%20No%2017-2026%20-%20Lineamientos%20Uso%20de%20IA%20en%20Tesis%20junio%202026%20XH-firmado.pdf .
+  **AI bill**: passed the Chamber and reached the Senate in Oct 2025 (risk tiers unacceptable/high/limited/none; fines to
+  20,000 UTM; Consejo Asesor Técnico), now in the Comisión de Desafíos del Futuro; on **26 May 2026 Minister Ximena Lincolao
+  presented the Executive's "ley marco de IA para la innovación, la productividad y la competitividad"** (six pillars incl.
+  "Ciencia, Tecnología, Conocimiento e Innovación" and "Ciencia abierta y tecnología para todos los chilenos"; models:
+  Japan, Singapore); Sen. Rojo Edwards expects an *indicación sustitutiva* moving from ex-ante to **ex-post review** —
+  https://www.senado.cl/comunicaciones/noticias/senadores-conocen-propuesta-del-ejecutivo-para-ley-marco-de-ia (read);
+  Feb 2026 status note https://www.diarioconstitucional.cl/2026/02/23/proyecto-de-ley-que-regula-integralmente-la-inteligencia-artificial-en-chile-prosigue-su-tramitacion-en-el-senado
+  (403 on fetch; snippet). ANID: no integrity/AI rule; an opinion column notes ANID's IDeA I+D 2026 call acknowledging
+  AI-inflated proposal numbers (snippet). No verification/science clause in either bill text as reported.
 - Epistemics / gap framing: open-access/assessment-reform framing (CoARA), not evidence grading; no reproducibility or
-  statistics-checking infrastructure surfaced.
-- Institutions & people: ANID; CENIA (Mónica Soto, dir.); ISP; UACh, U. de Chile.
+  statistics-checking infrastructure surfaced; the U. de Chile instructivo is the strictest Latin American thesis-level
+  disclosure rule found (prompts + how outputs were verified), still self-declared.
+- Institutions & people: ANID; CENIA (Mónica Soto, dir.); ISP; UACh, U. de Chile (Leonor Armanet, José Correa);
+  Ministerio CTCI (Ximena Lincolao); Senate Comisión Desafíos del Futuro (Rojo Edwards).
 - Take / Ahead: take: ANID's metadata/interoperability directives as a model for machine-readable evidence declarations |
   ahead: Chile has no claim-level gate, no preregistration infrastructure, no blind-evaluation practice surfaced.
 - Confidence: medium (3 queries, no metascience hit). | Queries: "Chile ciencia abierta reproducibilidad integridad
   científica ANID 2025 2026"; "Chile CENIA inteligencia artificial ciencia verificación ley de IA 2025 2026"; "Chile ISP
   registro ensayos clínicos estadística evidencia regulatoria 2025 preregistro metaciencia". Not run (budget): replication/
-  preregistration in Chilean psychology.
+  preregistration in Chilean psychology. Run 3: "Chile ANID integridad científica IA reproducibilidad 2026 lineamientos";
+  "Chile ley IA 2026 Senado proyecto ciencia investigación verificación"; fetched uchile.cl PDF (pdftotext), senado.cl,
+  diarioconstitucional.cl (403).
 
 ### China (run 1: 5 searches; run 2: 4 pending items completed below)
 - Direct (2026 SOTA): no deterministic/fail-closed claim-gating system surfaced. Model-based verification is the dominant
@@ -249,6 +273,14 @@ Europe PMC abstracts (Brodeur, Pottegård, Ropovik, Pejdo, Hailu).
   reports, *Human Ethology* Jul 2025 https://doi.org/10.22330/001c.141550 . Apptainer reproducibility training (Universidad
   Antonio Nariño, arXiv 2604.06244) https://doi.org/10.48550/arxiv.2604.06244 . Minciencias open-science page returned 404;
   no policy document verified.
+- Run 3 (2 searches, 1 fetch): Minciencias — no integrity/AI/reproducibility guideline surfaced (query returned only
+  Spanish/Brazilian items). **AI bill**: PL 043/2025 Senado – 324/2025 Cámara filed 28 Jul 2025 by Minister Yesenia Olaya
+  (MinCiencias + MinSalud; unifies 13+ initiatives; risk-level classification; **MinCiencias as "Autoridad Nacional en IA"**;
+  National Advisory Council; incentives for projects with "impacto científico") —
+  https://www.asuntoslegales.com.co/actualidad/minciencias-presento-un-proyecto-de-ley-para-regular-el-uso-de-inteligencia-artificial-4190719
+  (read; dated 28 Jul 2025); re-filed as **PL 025 de 2026 Cámara** (Gaceta del Congreso 878, 29 Jul 2026 —
+  https://www.redjurista.com/Compilaciones2018/gacetasCongreso/2026/gc_0878_2026.pdf , not fetched). Not enacted.
+  **ColombIA Inteligente 2026** call (17 Mar 2026, ~USD 6.47 M, applied AI + quantum; snippet). No verification clause.
 - Epistemics / gap framing: meta-research framed as institutional quality management (conflict of interest, reliability),
   not claim admissibility; no national preregistration or statistics-checking infrastructure surfaced.
 - Institutions & people: Minciencias (unverified); Universidad de la Costa (Lozada-Martínez); El Bosque (Leongómez);
@@ -257,6 +289,8 @@ Europe PMC abstracts (Brodeur, Pottegård, Ropovik, Pejdo, Hailu).
   gate, no blind evaluation, no proof ledger.
 - Confidence: medium. | Queries: WebSearch ×2 (refused, budget); Bing ×1 (no results); OpenAlex CO ×3
   (integrity/reproducibility/metascience; claim verification/LLM-judge; ciencia abierta/Minciencias); Minciencias page fetch.
+  Run 3: "Colombia Minciencias integridad científica IA 2026 reproducibilidad lineamientos"; "Colombia ley IA 2026 Congreso
+  aprobada investigación científica"; fetched asuntoslegales.com.co.
 
 ### Comoros
 - Direct (2026 SOTA): none. Adjacent: OpenAlex (2024–26, Comoros affiliation) returns 13 works, all Midocean University
@@ -444,11 +478,20 @@ Europe PMC abstracts (Brodeur, Pottegård, Ropovik, Pejdo, Hailu).
   chapter, Nov 2025) https://doi.org/10.5281/zenodo.17527843 ; "Avances, tensiones y desafíos de la Ciencia Abierta en
   América Latina" (2026) https://doi.org/10.24215/26183188e154 ; RERCIE collaborative editorial governance (UPS 2026)
   https://doi.org/10.38202/journal22.2 ; open-science outreach model (Univ. of Guayaquil 2026) https://doi.org/10.36390/telos281.18 .
-  SENESCYT / ARCSA not reached.
-- Epistemics / gap framing: open-access and editorial-governance framing; no evidence grading.
+  SENESCYT / ARCSA not reached. Run 3 (2 searches, 1 fetch): SENESCYT query → nothing Ecuadorian. **AI law: archived.** The
+  Pleno of the Asamblea Nacional voted (88 votes, first debate, 15 Sep 2026) to archive the *Proyecto de Ley Orgánica de
+  Regulación y Promoción de Inteligencia Artificial*; the commission report (Cecilia Baltazar) cites weak rights
+  protection, unfunded mandates, and the absence of "adaptive governance tools, such as national guidelines, technical
+  standards, and impact assessments for high-risk systems" —
+  https://www.asambleanacional.gob.ec/es/noticia/119354-pleno-archiva-proyecto-de-ley-de-inteligencia (read). A new
+  Baltazar bill ("Desarrollo, Uso Ético y Gobernanza de la IA", 1 Sep 2026) is in a snippet only.
+- Epistemics / gap framing: open-access and editorial-governance framing; no evidence grading; the legislature itself
+  named "technical standards and impact assessments for high-risk systems" as the missing layer.
 - Institutions & people: Universidad UTE; Fundación Openlab Ecuador; Universidad Politécnica Salesiana.
 - Take / Ahead: take: nothing | ahead: everything mechanical.
-- Confidence: medium. | Queries: OpenAlex EC ×2; Zenodo ×1.
+- Confidence: medium. | Queries: OpenAlex EC ×2; Zenodo ×1. Run 3: "Ecuador SENESCYT integridad científica IA 2026
+  investigación reproducibilidad"; "Ecuador ley inteligencia artificial 2026 Asamblea Nacional aprobada"; fetched
+  asambleanacional.gob.ec.
 
 ### Egypt
 - Direct (2026 SOTA): none. No AI-verification or LLM-judge work with Egyptian affiliation surfaced (query returned only
@@ -461,12 +504,29 @@ Europe PMC abstracts (Brodeur, Pottegård, Ropovik, Pejdo, Hailu).
   systematic review (2025) https://doi.org/10.21124/tsp.2025.81.87 ; pediatric-literature retractions bibliometrics
   (Zagazig/Kafrelsheikh 2025) https://doi.org/10.1007/s00431-025-06578-8 ; "Stop Reducing Us into Simplistic Numbers"
   (Cairo Univ. 2026) https://doi.org/10.25259/stn_13_2026 . ASRT / EKB / Egyptian Drug Authority not reached.
+- Run 3 (2 searches, 1 fetch): **Supreme Council of Universities AI guide, new edition approved 30 Sep 2025** (strategic/
+  regulatory framework, ethics, AI in scientific research, risk management; "the researcher or faculty member bears full
+  responsibility for the results or outputs produced through artificial intelligence"; first manual Oct 2023) —
+  https://al-fanarmedia.org/2025/10/egypt-issues-guidelines-on-use-of-ai-in-higher-education-research/ (403 on fetch;
+  snippet); SCU "Academic Integrity and Research Ethics Guide" (national framework; undated BU page, snippet).
+  **Alexandria University Council for Postgraduate Studies and Research, 21 Oct 2025** (read): recommends activating a
+  **Scientific Integrity Office** to monitor publications and "identify the causes of article retractions and hold
+  researchers accountable", limits ChatGPT-type tools in scientific writing, adherence to the SCU guidelines —
+  https://alexu.edu.eg/index.php/en/important-news/10361-the-council-for-postgraduate-studies-and-research-recommends-activating-the-scientific-integrity-office-at-alexandria-university-to-monitor-research-publications-and-investigate-article-retractions .
+  ISC country paper "Egypt AI" (Feb 2026; https://council.science/wp-content/uploads/2026/02/Egypt-AI.pdf , 403; snippet:
+  "lack of clear and specific ethical guidelines on using AI in science and research"); national trustworthy/responsible AI
+  guidelines (14 Mar 2026, CADE snippet, content not read); National AI Strategy 2025–2030 (OECD.AI snippet). ASRT and
+  EKB: nothing found.
 - Epistemics / gap framing: fraud detection by bibliometric signature and author scoring — the stance CAPAS measured it
-  cannot deliver (888 clean vs 6,348 retracted: no separation at claim level).
+  cannot deliver (888 clean vs 6,348 retracted: no separation at claim level); policy layer = researcher responsibility
+  + retraction investigation offices, no mechanism.
 - Institutions & people: Minia Univ. (Mina Kelleni); AASTMT (Khalid Saqr); National Research Centre; Zagazig; Cairo Univ.
 - Take / Ahead: take: ARI² as a comparator — does author-level signal separate where claim-level fields do not? | ahead:
   CAPAS gates claims, not people, and states its GIGO ceiling.
-- Confidence: medium. | Queries: OpenAlex EG ×3; Zenodo ×1; Preprints.org ×1 (403).
+- Confidence: medium. | Queries: OpenAlex EG ×3; Zenodo ×1; Preprints.org ×1 (403). Run 3: "Egypt research integrity AI
+  ASRT OR Supreme Council of Universities 2026 guidelines reproducibility"; "Egypt AI strategy 2026 law research
+  universities verification Egyptian Knowledge Bank"; fetched alexu.edu.eg; al-fanarmedia, council.science, cadeproject
+  (403/empty).
 
 ### El Salvador
 - Direct (2026 SOTA): none. Adjacent (thin): Universidad Salvadoreña Alberto Masferrer "IA responsable en el ciclo de la
@@ -574,4 +634,10 @@ meta-research). Next tier: Denmark, Croatia, Cyprus/Estonia (BEYOND).
 DR Congo (adjacent-only), Côte d'Ivoire (adjacent-only), Djibouti, Dominica, Dominican Republic (adjacent-only),
 El Salvador (adjacent-only), Equatorial Guinea, Eritrea, Eswatini.
 **Adjacent-only, not counted as NOTHING FOUND:** Chile, Costa Rica, Cuba, Ecuador, Egypt, Ethiopia.
+**Run 3 (live search, 8 queries; ranking unchanged):** Chile — U. de Chile Instructivo 17/2026 (thesis AI declaration
+with prompts + "cómo se verificaron sus resultados") and the Executive's ex-post "ley marco" pivot (26 May 2026);
+Colombia — AI bill re-filed as PL 025/2026 Cámara, MinCiencias as national AI authority, not enacted; Ecuador — AI bill
+archived 15 Sep 2026 for lack of "technical standards and impact assessments"; Egypt — SCU AI guide (30 Sep 2025) and
+Alexandria University's Scientific Integrity Office for retraction investigation. Nothing direct; all four stay
+adjacent-only.
 **NOT SEARCHED:** none.
