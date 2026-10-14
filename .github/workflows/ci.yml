@@ -54,6 +54,10 @@ jobs:
       - name: Site wording guard
         run: python benchmarks/verify_site_wording.py
 
+      # Professional register (owner 2026-10-14): no em-dashes, question headlines, exclamations or self-praise.
+      - name: Site register guard
+        run: python benchmarks/verify_site_register.py
+
       # The brief's decision packet is engine output, embedded verbatim (external audit 2026-10-14).
       - name: Brief decision packet matches the engine
         run: python benchmarks/verify_brief_packet_matches_engine.py

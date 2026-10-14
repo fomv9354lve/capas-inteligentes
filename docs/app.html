@@ -1995,7 +1995,7 @@
   <div class="hero-copy">
     <div class="hero-eyebrow">Deterministic scientific claim gate</div>
     <h2 id="product-hero-title" data-es="CAPAS compila la evidencia entregada en una decisión de <em>admisibilidad</em> del claim.">CAPAS compiles supplied evidence into a claim <em>admissibility</em> decision.</h2>
-    <p data-es="Entra claim más evidencia; sale ACCEPT, REWRITE, REJECT o HOLD. CAPAS no certifica verdad científica. Decide si la evidencia entregada licencia un claim para reutilización controlada en informes, datasets o fine-tuning.">Claim plus evidence goes in; ACCEPT, REWRITE, REJECT, or HOLD comes out. CAPAS does not certify scientific truth. It decides whether supplied evidence licenses a claim for controlled reuse in reports, datasets, or fine-tuning.</p>
+    <p data-es="Entra un claim con sus campos de evidencia. Sale ACCEPT, REWRITE, REJECT o HOLD. CAPAS no certifica verdad científica; decide si la evidencia declarada licencia la reutilización controlada.">A claim and its evidence fields go in. ACCEPT, REWRITE, REJECT, or HOLD comes out. CAPAS does not certify scientific truth; it decides whether declared evidence licenses controlled reuse.</p>
     <div class="hero-actions">
       <button class="sample-btn accept hero-primary" type="button" onclick="loadSample('CAUSAL')">Run sample claim →</button>
       <a class="sample-btn accept hero-link" href="https://github.com/fomv9354lve/capas-inteligentes/issues/new?title=CAPAS%20pilot%20conversation" target="_blank" rel="noopener noreferrer">Talk to pilot owner</a>
@@ -2008,7 +2008,7 @@
     </div>
   </div>
   <div class="hero-shot" aria-label="CAPAS real gate decisions, re-derivable">
-    <div class="shot-top"><span class="shot-dot"></span><span class="shot-dot"></span><span class="shot-dot"></span><span class="shot-title" data-es="Decisiones recientes de la puerta">Reference Gate Decisions</span><span class="shot-schema">SCHEMA V3</span></div>
+    <div class="shot-top"><span class="shot-dot"></span><span class="shot-dot"></span><span class="shot-dot"></span><span class="shot-title" data-es="Decisiones de referencia de la puerta">Reference Gate Decisions</span><span class="shot-schema">SCHEMA V3</span></div>
     <div class="shot-body">
       <div class="shot-row accept"><span class="verdict-badge ACCEPT">ACCEPT</span><span>statistical_confidence: p=0.03 &lt;= alpha=0.05, direction confirmed</span><strong>ff23bfcc</strong></div>
       <div class="shot-row rewrite"><span class="verdict-badge REWRITE">REWRITE</span><span>threshold passes; effect direction not licensed</span><strong>2a2c5234</strong></div>
@@ -2019,10 +2019,10 @@
 </section>
 
 <section class="workflow-strip" aria-label="Claim admissibility workflow">
-  <button class="workflow-step" type="button" onclick="loadSample('CAUSAL')" aria-label="Run a causal claim drift sample"><strong>Claim drift</strong><span data-es="Un paper dice asociación. Una fila de dataset la convierte en causalidad. CAPAS atrapa la frontera.">A paper says association. A dataset row turns it into causation. CAPAS catches the boundary.</span></button>
-  <button class="workflow-step" data-flow-jump="choose" type="button" onclick="goToPhase('choose')" aria-label="Choose a CAPAS input mode"><strong>Select mode</strong><span data-es="Usa el constructor guiado, JSON crudo, evaluación por lote o ingesta de texto.">Use the guided builder, raw JSON, batch evaluation, or paper/text ingestion.</span></button>
-  <button class="workflow-step" data-flow-jump="gate" type="button" onclick="goToPhase('gate')" aria-label="Run the deterministic claim gate"><strong>Run gate</strong><span data-es="Compila claim más evidencia entregada en ACCEPT, REWRITE, REJECT o HOLD.">Compile claim plus supplied evidence into ACCEPT, REWRITE, REJECT, or HOLD.</span></button>
-  <button class="workflow-step" data-flow-jump="gate" type="button" onclick="goToPhase('gate')" aria-label="Inspect the CAPAS decision"><strong>Inspect decision</strong><span data-es="Lee el veredicto, los bloqueos, la preparación para fine-tuning y la siguiente acción operativa.">Read the verdict, blockers, fine-tune readiness, and next operational action.</span></button>
+  <button class="workflow-step" type="button" onclick="loadSample('CAUSAL')" aria-label="Run a causal claim drift sample"><strong>Claim drift</strong><span data-es="Un paper reporta asociación. Una fila de dataset registra causalidad. La puerta marca la frontera.">A paper reports association. A dataset row records causation. The gate flags the boundary.</span></button>
+  <button class="workflow-step" data-flow-jump="choose" type="button" onclick="goToPhase('choose')" aria-label="Choose a CAPAS input mode"><strong>Select mode</strong><span data-es="Constructor guiado, JSON crudo, evaluación por lote o ingesta de texto.">Guided builder, raw JSON, batch evaluation, or text ingestion.</span></button>
+  <button class="workflow-step" data-flow-jump="gate" type="button" onclick="goToPhase('gate')" aria-label="Run the deterministic claim gate"><strong>Run gate</strong><span data-es="El claim y sus campos de evidencia se resuelven en ACCEPT, REWRITE, REJECT o HOLD.">The claim and its evidence fields resolve to ACCEPT, REWRITE, REJECT, or HOLD.</span></button>
+  <button class="workflow-step" data-flow-jump="gate" type="button" onclick="goToPhase('gate')" aria-label="Inspect the CAPAS decision"><strong>Inspect decision</strong><span data-es="Veredicto, bloqueos, preparación para fine-tuning y siguiente acción operativa.">Verdict, blockers, fine-tune readiness, and the next operational action.</span></button>
 </section>
 
 <div class="app-layout" aria-label="Claim admissibility workflow">
@@ -2054,30 +2054,30 @@
         <div class="phase-pane" data-phase="choose">
           <div class="flow-section" id="phase-choose" aria-labelledby="flow-choose-title">
             <h3 class="flow-title" id="flow-choose-title"><button class="flow-title-button" type="button" onclick="goToPhase('choose')" data-es="<span class=&quot;flow-step-badge&quot;>1</span> Elige el modo de trabajo"><span class="flow-step-badge">1</span> Select workflow mode</button></h3>
-            <p class="flow-copy" data-es="Solo un modo está activo a la vez. Elige cómo quieres crear o aportar la evidencia del claim.">Only one mode is active at a time. Pick how you want to create or provide the claim evidence.</p>
+            <p class="flow-copy" data-es="Un solo modo está activo a la vez. Elige cómo entra la evidencia del claim.">One mode is active at a time. Select how the claim evidence enters.</p>
             <div class="workflow-mode-grid" role="radiogroup" aria-label="Select CAPAS workflow mode">
               <button class="workflow-mode-card" id="workflow-mode-guided" type="button" role="radio" aria-checked="true" onclick="setWorkflowMode('guided')">
                 <span class="mode-card-icon mode-icon-guided"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></span>
                 <strong>Guided Claim Builder</strong>
-                <span data-es="Creación de claims sin código con campos de evidencia dinámicos.">No-code claim creation with dynamic evidence fields.</span>
+                <span data-es="Captura del claim por formulario; los campos de evidencia siguen al tipo de claim.">Claim entry by form; evidence fields follow the claim type.</span>
               </button>
               <button class="workflow-mode-card mode-advanced" id="workflow-mode-raw" type="button" role="radio" aria-checked="false" onclick="setWorkflowMode('raw')">
                 <span class="mode-card-icon mode-icon-raw"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg></span>
                 <strong>Raw JSON Payload</strong>
-                <span data-es="Modo avanzado para payloads existentes del esquema v3 de CAPAS.">Advanced mode for existing CAPAS schema v3 payloads.</span>
+                <span data-es="Para payloads existentes del esquema v3.">For existing schema v3 payloads.</span>
               </button>
               <button class="workflow-mode-card mode-advanced" id="workflow-mode-batch" type="button" role="radio" aria-checked="false" onclick="setWorkflowMode('batch')">
                 <span class="mode-card-icon mode-icon-batch"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg></span>
                 <strong>Batch Evaluation</strong>
-                <span data-es="Modo corpus/piloto para muchos registros claim/evidencia.">Corpus/pilot mode for many claim/evidence records.</span>
+                <span data-es="Muchos registros de claim y evidencia en una sola corrida.">Many claim and evidence records in one run.</span>
               </button>
               <button class="workflow-mode-card mode-advanced" id="workflow-mode-ingestion" type="button" role="radio" aria-checked="false" onclick="setWorkflowMode('ingestion')">
                 <span class="mode-card-icon mode-icon-ingestion"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line></svg></span>
                 <strong>Claim Candidate Extraction</strong>
-                <span data-es="Ayuda de extracción. Requiere confirmación humana antes de gatear.">Extraction aid. Human confirmation is required before gating.</span>
+                <span data-es="Ayuda de extracción. Un revisor confirma cada candidato antes de que corra la puerta.">Extraction aid. A reviewer confirms each candidate before the gate runs.</span>
               </button>
               <input type="checkbox" id="adv-modes-toggle" class="adv-toggle" hidden aria-label="Show advanced input modes">
-              <label for="adv-modes-toggle" class="adv-toggle-label" data-es="Entradas avanzadas &mdash; JSON crudo · Lote · Extracción">Advanced inputs &mdash; Raw JSON · Batch · Extraction</label>
+              <label for="adv-modes-toggle" class="adv-toggle-label" data-es="Entradas avanzadas: JSON crudo · Lote · Extracción">Advanced inputs: Raw JSON · Batch · Extraction</label>
             </div>
           </div>
         </div>
@@ -2087,13 +2087,13 @@
               <div class="builder-main">
                 <section class="flow-section" aria-labelledby="flow-guided-title">
                   <h3 class="flow-title" id="flow-guided-title"><button class="flow-title-button" type="button" onclick="goToPhase('complete')" data-es="<span class=&quot;flow-step-badge&quot;>2</span> Constructor guiado de claims"><span class="flow-step-badge">2</span> Guided Claim Builder</button></h3>
-                  <p class="flow-copy" data-es="Elige un tipo de claim, escribe el claim y completa solo los campos de evidencia que exige ese tipo.">Choose a claim type, write the claim, then complete only the evidence fields required by that type.</p>
+                  <p class="flow-copy" data-es="Elige un tipo de claim, redacta el claim y completa los campos de evidencia que ese tipo exige.">Select a claim type, write the claim, and complete the evidence fields that type requires.</p>
                   <div class="guided-grid">
                     <div class="guided-field">
-                      <label for="guided-type" data-es="¿Qué estás evaluando?">What are you evaluating?</label>
+                      <label for="guided-type" data-es="Tipo de claim">Claim type</label>
                       <select id="guided-type" onchange="renderGuidedFields()" aria-label="Choose what kind of scientific claim you are evaluating"></select>
                     </div>
-                    <div class="type-help" id="guided-type-help" role="status" aria-live="polite">Choose a claim type to see what CAPAS checks.</div>
+                    <div class="type-help" id="guided-type-help" role="status" aria-live="polite">Select a claim type to list its checks.</div>
                     <div class="guided-field">
                       <label for="guided-claim-id" data-es="ID del registro">Record ID</label>
                       <input id="guided-claim-id" value="pilot_record_001" aria-label="Guided record ID">
@@ -2106,7 +2106,7 @@
                 </section>
               <section class="flow-section" id="phase-complete" aria-labelledby="flow-complete-title">
           <h3 class="flow-title" id="flow-complete-title"><button class="flow-title-button" type="button" onclick="goToPhase('complete')" data-es="<span class=&quot;flow-step-badge&quot;>2</span> Completar evidencia"><span class="flow-step-badge">2</span> Complete evidence</button></h3>
-          <p class="flow-copy" data-es="El contrato de evidencia de la derecha se actualiza mientras trabajas. El payload se construye internamente antes de ejecutar la puerta.">The evidence contract on the right updates as you work. The payload is built internally before the gate runs.</p>
+          <p class="flow-copy" data-es="El contrato de evidencia de la derecha se actualiza mientras escribes; el payload se arma antes de que corra la puerta.">The evidence contract on the right updates as you type; the payload is assembled before the gate runs.</p>
           <div class="guided-grid" id="guided-fields" aria-label="Evidence fields for selected claim type"></div>
           <div class="hero-actions">
             <button class="sample-btn accept" type="button" onclick="loadVerticalDemo('AI_GOVERNANCE')">AI governance demo</button>
@@ -2121,13 +2121,13 @@
           <div class="contract-pill"><strong>Type</strong><span data-es="Elige un tipo de claim">Choose a claim type</span></div>
           <div class="contract-pill"><strong>Fields</strong><span data-es="La evidencia requerida aparece aquí">Required evidence appears here</span></div>
           <div class="contract-pill"><strong>Gate</strong><span>ACCEPT / REWRITE / REJECT / HOLD</span></div>
-          <div class="contract-pill"><strong>Training</strong><span data-es="Verificaciones de procedencia por CLI/API requeridas antes de la preparación para entrenamiento">CLI/API provenance checks required before training readiness</span></div>
+          <div class="contract-pill"><strong>Training</strong><span data-es="Procedencia verificada por CLI/API antes de entrenar">CLI/API provenance checks before training</span></div>
         </div>
-        <div class="builder-preview" id="builder-preview" role="status" aria-live="polite">Select a type to preview the evidence contract before writing JSON.</div>
+        <div class="builder-preview" id="builder-preview" role="status" aria-live="polite">Select a type to preview the evidence contract.</div>
         <ul>
           <li data-es="CAPAS no inferirá evidencia que falte.">CAPAS will not infer missing evidence.</li>
           <li data-es="Los tipos incorrectos se vuelven errores de esquema.">Wrong types become schema errors.</li>
-          <li data-es="La preparación para entrenamiento exige verificación externa de procedencia.">Training readiness requires external provenance verification.</li>
+          <li data-es="La preparación para entrenamiento exige procedencia verificada externamente.">Training readiness requires externally verified provenance.</li>
         </ul>
               </aside>
             </div>
@@ -2136,13 +2136,13 @@
             <div id="raw-workspace-mount" class="workflow-workspace-mount" aria-label="Raw JSON Payload workspace"></div>
           </div>
           <div class="workflow-panel" data-workflow-panel="batch">
-            <div class="assist-block"><div class="alert-title">Batch Evaluation input</div>Evaluate many claim/evidence records using the same deterministic rules. Paste a JSON array, an object with <code>items</code> or <code>claims</code>, or a single payload to auto-wrap as one item.</div>
+            <div class="assist-block"><div class="alert-title">Batch Evaluation input</div>Paste a JSON array, an object with <code>items</code> or <code>claims</code>, or one payload. The same rules apply to every record.</div>
             <div id="batch-workspace-mount" class="workflow-workspace-mount" aria-label="Batch Evaluation workspace"></div>
           </div>
           <div class="workflow-panel" data-workflow-panel="ingestion">
             <div class="assist-block" role="note" aria-label="Human confirmation requirement for ingestion">
               <div class="alert-title">Extraction is not a decision</div>
-              Candidate rows are proposals only. A reviewer must inspect evidence spans and click <strong>Confirm & build payload</strong> before Step 3 can run CAPAS.
+              Candidate rows are proposals. A reviewer checks the evidence spans and clicks <strong>Confirm & build payload</strong> before Step 3 runs.
             </div>
             <div id="ingestion-workspace-mount" class="workflow-workspace-mount" aria-label="Claim Candidate Extraction workspace"></div>
           </div>
@@ -2150,7 +2150,7 @@
         <div class="phase-pane" data-phase="gate">
           <div class="flow-section" aria-labelledby="flow-run-title">
             <h3 class="flow-title" id="flow-run-title"><button class="flow-title-button" type="button" onclick="goToPhase('gate')" data-es="<span class=&quot;flow-step-badge&quot;>3</span> Ejecutar puerta CAPAS"><span class="flow-step-badge">3</span> Run CAPAS Gate</button></h3>
-            <p class="flow-copy" id="run-mode-note" data-es="Pasa el flujo elegido por la puerta determinista de CAPAS. El paso 3 nunca cambia de modo.">Run the selected workflow through the deterministic CAPAS gate. Step 3 never changes mode.</p>
+            <p class="flow-copy" id="run-mode-note" data-es="El paso 3 pasa el flujo elegido por la puerta sin cambiar de modo.">Step 3 runs the selected workflow through the gate without changing mode.</p>
             <div class="payload-status-card" id="payload-status-card" role="status" aria-live="polite" aria-atomic="true">
               <div class="payload-status-head">
                 <strong>Payload status</strong>
@@ -2162,10 +2162,10 @@
                 <span class="payload-status-pill" id="payload-status-schema-pill">Schema pending</span>
                 <span class="payload-status-pill" id="payload-status-gate-pill">Gate not run</span>
               </div>
-              <p class="payload-status-detail" id="payload-status-detail" data-es="Construye o aporta evidencia en el paso 2 y ejecuta aquí la puerta determinista.">Build or provide evidence in Step 2, then run the deterministic gate here.</p>
+              <p class="payload-status-detail" id="payload-status-detail" data-es="Construye o pega la evidencia en el paso 2 y corre la puerta aquí.">Build or paste evidence in Step 2, then run the gate here.</p>
             </div>
             <details class="samples-drawer">
-              <summary data-es="Prueba un payload de ejemplo">Try an example payload</summary>
+              <summary data-es="Payloads de ejemplo">Example payloads</summary>
               <div class="samples-bar">
                 <span data-es="Ejemplos:">Examples:</span>
                 <button class="sample-btn accept" title="ACCEPT sample" aria-label="Load ACCEPT sample" onclick="loadSample('ACCEPT')">&#10003; ACCEPT</button>
@@ -2193,7 +2193,7 @@
 <div class="grid">
   <div>
     <div class="panel workspace-panel" id="raw-workspace">
-      <div class="gate-flow-title" id="phase-gate"><button class="flow-title-button" type="button" onclick="goToPhase('gate')" data-es="<span class=&quot;flow-step-badge&quot;>3</span> Gatear el payload"><span class="flow-step-badge">3</span> Gate the payload</button></div>
+      <div class="gate-flow-title" id="phase-gate"><button class="flow-title-button" type="button" onclick="goToPhase('gate')" data-es="<span class=&quot;flow-step-badge&quot;>3</span> Ejecutar la puerta sobre el payload"><span class="flow-step-badge">3</span> Run the gate on the payload</button></div>
       <div class="panel-header">
         <span class="panel-title" data-es="JSON crudo (avanzado)">Raw JSON (Advanced)</span>
         <span class="panel-tag" id="type-label" role="status" aria-live="polite" aria-atomic="true"></span>
@@ -2217,7 +2217,7 @@
       <div class="action-row">
         <button class="decide-btn" id="decide-btn" aria-label="Run deterministic CAPAS gate" onclick="decide()" data-es="Ejecutar puerta <span class=&quot;decide-hint&quot;>⌘↵</span>">Run Gate <span class="decide-hint">⌘↵</span></button>
       </div>
-      <div class="action-helper">Raw JSON Payload is the advanced path. Paste or inspect schema v3 JSON here, then run the gate from Step 3.</div>
+      <div class="action-helper" data-es="Raw JSON Payload es la vía avanzada. Pega JSON del esquema v3 y ejecuta la puerta desde el paso 3.">Raw JSON Payload is the advanced path. Paste schema v3 JSON, then run the gate from Step 3.</div>
       <button class="draft-btn" id="batch-btn" title="Batch input: JSON array, object with items/claims, or one claim payload auto-wrapped as a one-item batch" aria-label="Evaluate a batch of claim payloads" onclick="decideBatch()" data-es="Ejecutar lote">Run Batch</button>
       <div class="json-status"><span class="payload-loaded-badge" id="payload-loaded-badge" role="status" aria-live="polite" data-es="Payload cargado">Payload loaded</span></div>
     </div>
@@ -2251,7 +2251,7 @@
           <button class="sample-btn accept" type="button" onclick="extractCandidateClaims()">Extract candidate claims</button>
           <button class="sample-btn hold" type="button" onclick="buildIngestionReport()">Build ingestion report</button>
         </div>
-        <div class="ingest-report" id="ingest-report-summary" role="status" aria-live="polite"><strong>Human confirmation gate:</strong> candidate extraction does not decide claims. A reviewer must confirm evidence spans before CAPAS gates the payload. PDF files are declared for provenance; browser PDF text parsing remains a CLI/standalone path.</div>
+        <div class="ingest-report" id="ingest-report-summary" role="status" aria-live="polite"><strong>Human confirmation gate:</strong> extraction proposes candidates; it does not decide claims. A reviewer confirms the evidence spans before the gate runs. PDF files are declared for provenance; PDF text parsing runs in the CLI.</div>
         <div class="candidate-table" id="candidate-claims-list" role="list" aria-label="candidate claims extracted from paper or text"></div>
       </div>
     </section>
@@ -2263,11 +2263,11 @@
         <span class="panel-title" data-es="Decisión">Decision</span>
         <button class="copy-btn" id="copy-btn" aria-label="Copy decision JSON" onclick="copyOutput()" disabled data-es="Copiar JSON">Copy JSON</button>
       </div>
-      <div class="demo-banner" role="note"><strong>EXAMPLE</strong> &mdash; a sample REWRITE decision over the reference <code>universal_anchor_claim</code> payload (local checks pass, the universal anchor fails; the engine returns the narrowest licensed wording). Clear it, or run your own claim, to replace this.</div>
-      <div id="verdict-area" aria-live="polite" aria-atomic="true"><div class="no-decision"><strong>Awaiting decision.</strong> Run a claim and this becomes a deterministic <strong>admissibility certificate</strong> &mdash; not a black box. It will show:<ul class="ghost-list"><li data-es="el <strong>veredicto</strong> (ACCEPT / REWRITE / REJECT / HOLD) y la regla que se disparó">the <strong>verdict</strong> (ACCEPT / REWRITE / REJECT / HOLD) and the rule that fired</li><li data-es="el <strong>límite de reutilización licenciado</strong> &mdash; exactamente lo que la evidencia permite">the <strong>licensed reuse boundary</strong> &mdash; exactly what the evidence permits</li><li data-es="bloqueos y <strong>obligaciones de prueba abiertas</strong>">blockers and <strong>open proof obligations</strong></li><li data-es="la siguiente acción operativa y la preparación para fine-tuning">the next operational action and fine-tune readiness</li><li data-es="el JSON crudo re-derivable + hash de auditoría">the raw, re-derivable JSON + audit hash</li></ul>Press <em>Run CAPAS Gate</em> in Step 3 &mdash; missing evidence will HOLD, by design.</div></div>
+      <div class="demo-banner" role="note" data-es="<strong>EJEMPLO</strong>: decisión REWRITE de referencia sobre el payload <code>universal_anchor_claim</code>. Las verificaciones locales pasan, el ancla universal falla y el motor devuelve la redacción licenciada más estrecha. Ejecuta un claim para sustituirla."><strong>EXAMPLE</strong>: a reference REWRITE decision on the <code>universal_anchor_claim</code> payload. Local checks pass, the universal anchor fails, and the engine returns the narrowest licensed wording. Run a claim to replace it.</div>
+      <div id="verdict-area" aria-live="polite" aria-atomic="true"><div class="no-decision"><strong>Awaiting decision.</strong> The <strong>admissibility certificate</strong> appears here:<ul class="ghost-list"><li data-es="el <strong>veredicto</strong> y la regla que se disparó">the <strong>verdict</strong> and the rule that fired</li><li data-es="el <strong>límite de reutilización licenciado</strong>: lo que la evidencia permite">the <strong>licensed reuse boundary</strong>: what the evidence permits</li><li data-es="bloqueos y <strong>obligaciones de prueba abiertas</strong>">blockers and <strong>open proof obligations</strong></li><li data-es="la siguiente acción operativa y la preparación para fine-tuning">the next operational action and fine-tune readiness</li><li data-es="el JSON re-derivable y el hash de auditoría">the re-derivable JSON and audit hash</li></ul>Missing evidence returns HOLD by design.</div></div>
       <div class="output-section">
         <div class="output-inspector" id="output-inspector" aria-label="Decision inspector">
-          <div class="empty-state">Decision inspector will summarize the verdict, fine-tune readiness, schema errors, provenance, and raw JSON.</div>
+          <div class="empty-state">Decision inspector: verdict, fine-tune readiness, schema errors, provenance, raw JSON.</div>
         </div>
         <details class="output-details" id="output-details">
           <summary data-es="JSON de salida completo">Full output JSON</summary>
@@ -2325,7 +2325,7 @@
     </div>
     <div class="roi-result" role="status" aria-live="polite">
       <div class="roi-result-head"><span class="roi-result-label" data-es="Valor de capacidad · mensual">Capacity value · monthly</span><strong class="roi-result-num" id="roi-value">~$75,060</strong></div>
-      <div class="roi-result-sub"><strong id="roi-hours">417h</strong> review capacity planning estimate · planning model, not booked savings</div>
+      <div class="roi-result-sub"><strong id="roi-hours">417h</strong> review capacity planning estimate, not booked savings.</div>
     </div>
   </div>
   <div class="side-card">
@@ -2364,27 +2364,27 @@
     </div>
     <h3 data-es="Atajos">Shortcuts</h3>
     <ul>
-      <li data-es="<code>Cmd/Ctrl + Enter</code>: ejecuta Decidir sobre un claim."><code>Cmd/Ctrl + Enter</code>: run Decide on one claim.</li>
-      <li data-es="<code>?</code>: abre o cierra esta ayuda."><code>?</code>: open or close this help modal.</li>
-      <li data-es="<code>Enter</code> o <code>Espacio</code> sobre un elemento del historial: lo restaura."><code>Enter</code> or <code>Space</code> on a history item: restore it.</li>
+      <li data-es="<code>Cmd/Ctrl + Enter</code>: ejecuta la puerta sobre un claim."><code>Cmd/Ctrl + Enter</code>: runs the gate on one claim.</li>
+      <li data-es="<code>?</code>: abre o cierra esta ayuda."><code>?</code>: opens or closes this help.</li>
+      <li data-es="<code>Enter</code> o <code>Espacio</code> sobre un elemento del historial: lo restaura."><code>Enter</code> or <code>Space</code> on a history item: restores it.</li>
     </ul>
     <h3 data-es="Modo lote">Batch mode</h3>
-    <p data-es="Pega un array JSON, un objeto con <code>items</code> o <code>claims</code>, o un payload claim/evidencia. El lote aplica la misma regla determinista a cada elemento y devuelve un resumen. No infiere evidencia que falte.">Paste a JSON array, an object with <code>items</code> or <code>claims</code>, or one claim/evidence payload. Batch applies the same deterministic rule to every item and returns a summary. It does not infer missing evidence.</p>
+    <p data-es="Pega un array JSON, un objeto con <code>items</code> o <code>claims</code>, o un payload. Cada elemento pasa por las mismas reglas; la salida es un resumen. La evidencia faltante no se infiere.">Paste a JSON array, an object with <code>items</code> or <code>claims</code>, or one payload. Every item meets the same rules; the output is a summary. Missing evidence is not inferred.</p>
     <h3 data-es="Superficies del pipeline">Pipeline surfaces</h3>
-    <p data-es="La CLI/API admiten <code>decide</code>, <code>batch</code> y el flujo autónomo <code>retrieve → extract → align → reason → pipeline</code>. La recuperación y el parseo preparan evidencia candidata; el veredicto final de CAPAS sigue saliendo de la puerta determinista.">The CLI/API support <code>decide</code>, <code>batch</code>, and standalone <code>retrieve → extract → align → reason → pipeline</code>. Retrieval and parsing prepare candidate evidence; the final CAPAS verdict still comes from the deterministic gate.</p>
+    <p data-es="La CLI y la API admiten <code>decide</code>, <code>batch</code> y <code>retrieve → extract → align → reason → pipeline</code>. La recuperación y el parseo preparan evidencia candidata; la puerta devuelve el veredicto.">The CLI and API support <code>decide</code>, <code>batch</code>, and <code>retrieve → extract → align → reason → pipeline</code>. Retrieval and parsing prepare candidate evidence; the gate returns the verdict.</p>
     <h3 data-es="Ingesta de paper/texto">Paper/text ingestion</h3>
-    <p data-es="El panel de ingesta del navegador acepta texto de papers pegado, resúmenes, notas de teoremas, archivos locales de texto/Markdown/JSON y metadatos de procedencia de PDF. Propone claims candidatos con fragmentos fuente, pero un humano debe pulsar <code>Confirm & build payload</code> antes de que el candidato pueda decidirse. Es una ayuda de extracción explícita, no comprensión amplia de papers ni demostración de teoremas.">The browser ingestion panel accepts pasted paper text, abstracts, theorem notes, local text/Markdown/JSON files, and PDF provenance metadata. It proposes candidate claims with source spans, but a human must click <code>Confirm & build payload</code> before the candidate can be decided. This is an explicit extraction aid, not broad paper understanding or theorem proving.</p>
-    <p data-es="Para una ingesta más rica usa los comandos de CLI <code>retrieve</code>, <code>extract</code>, <code>align</code> y <code>pipeline</code>. Los adaptadores de corpus local pueden sustituir a Semantic Scholar, PubMed, Elicit o exportaciones internas de metadatos antes de que CAPAS aplique la puerta final determinista.">For richer ingestion, use the CLI <code>retrieve</code>, <code>extract</code>, <code>align</code>, and <code>pipeline</code> commands. Local corpus adapters can stand in for Semantic Scholar, PubMed, Elicit, or internal metadata exports before CAPAS applies the deterministic final gate.</p>
+    <p data-es="El panel de ingesta acepta texto pegado, resúmenes, notas de teoremas, archivos locales de texto, Markdown o JSON y metadatos de procedencia de PDF. Propone claims candidatos con fragmentos fuente; un revisor pulsa <code>Confirm & build payload</code> antes de que se decida cualquier candidato. El panel solo extrae fragmentos explícitos.">The ingestion panel accepts pasted text, abstracts, theorem notes, local text, Markdown or JSON files, and PDF provenance metadata. It proposes candidate claims with source spans; a reviewer clicks <code>Confirm & build payload</code> before any candidate is decided. The panel extracts explicit spans only.</p>
+    <p data-es="Para una ingesta más rica usa los comandos de CLI <code>retrieve</code>, <code>extract</code>, <code>align</code> y <code>pipeline</code>. Los adaptadores de corpus local sustituyen a Semantic Scholar, PubMed, Elicit o exportaciones internas de metadatos.">For richer ingestion, use the CLI commands <code>retrieve</code>, <code>extract</code>, <code>align</code>, and <code>pipeline</code>. Local corpus adapters replace Semantic Scholar, PubMed, Elicit, or internal metadata exports.</p>
     <h3 data-es="Constructor guiado de claims">Guided claim builder</h3>
-    <p data-es="El constructor sin código redibuja los campos de evidencia requeridos cada vez que cambia el tipo de claim. Crea un payload del esquema v3 con los campos mínimos de evidencia para ese tipo más un andamio <code>training_evidence</code>, para promover candidatos de paper o teorema a payloads CAPAS editables sin escribir JSON a mano.">The no-code builder redraws required evidence fields whenever the claim type changes. It creates a schema v3 payload with the minimum evidence fields for that type plus a <code>training_evidence</code> scaffold, so paper or theorem candidates can be promoted into editable CAPAS payloads without hand-writing JSON.</p>
+    <p data-es="El constructor sin código redibuja los campos de evidencia requeridos cada vez que cambia el tipo de claim. Emite un payload del esquema v3 con los campos mínimos para ese tipo más un andamio <code>training_evidence</code>.">The no-code builder redraws required evidence fields whenever the claim type changes. It emits a schema v3 payload with the minimum fields for that type plus a <code>training_evidence</code> scaffold.</p>
     <h3 data-es="Preparación para fine-tuning">Fine-tune readiness</h3>
-    <p data-es="<code>fine_tune_ready</code> es una puerta posterior para datos de entrenamiento, no una promesa del navegador. Solo pasa a <code>true</code> tras un veredicto <code>ACCEPT</code> más evidencia respaldada por fuentes, alineación semántica, independencia de testigos, un paquete de revisión externa verificado por hash, URLs fuente recuperables y hasheables, una entrada resoluble en el registro de testigos, un paquete de procedencia RO-Crate válido y una atestación verificable del revisor. CAPAS gatea claims; no certifica datos de entrenamiento en silencio."><code>fine_tune_ready</code> is a downstream training-data gate, not a browser promise. It becomes <code>true</code> only after an <code>ACCEPT</code> verdict plus source-backed evidence, semantic alignment, witness independence, a hash-verified external review packet, recoverable/hashable source URLs, a resolvable witness registry entry, a valid RO-Crate provenance packet, and a verifiable reviewer attestation. CAPAS gates claims; it does not silently certify training data.</p>
-    <p data-es="La interfaz estática del navegador previsualiza estos criterios pero no puede hacer E/S activa de procedencia. Las cinco puertas de procedencia requieren verificación por CLI/API de <code>capas.py</code> para resolver registros, hashear fuentes y validar paquetes RO-Crate.">The static browser UI previews these criteria but cannot perform active provenance I/O. The five provenance gates require <code>capas.py</code> CLI/API verification to resolve registries, hash sources, and validate RO-Crate packets.</p>
+    <p data-es="<code>fine_tune_ready</code> es una puerta posterior para datos de entrenamiento; el navegador no puede activarla. Solo pasa a <code>true</code> tras un veredicto <code>ACCEPT</code> más evidencia respaldada por fuentes, alineación semántica, independencia de testigos, un paquete de revisión externa verificado por hash, URLs fuente recuperables y hasheables, una entrada resoluble en el registro de testigos, un paquete de procedencia RO-Crate válido y una atestación verificable del revisor. La puerta decide claims; no certifica datos de entrenamiento en silencio."><code>fine_tune_ready</code> is a downstream training-data gate; the browser cannot set it. It becomes <code>true</code> only after an <code>ACCEPT</code> verdict plus source-backed evidence, semantic alignment, witness independence, a hash-verified external review packet, recoverable/hashable source URLs, a resolvable witness registry entry, a valid RO-Crate provenance packet, and a verifiable reviewer attestation. The gate decides claims; it does not silently certify training data.</p>
+    <p data-es="La interfaz estática del navegador previsualiza estos criterios; no hace E/S de procedencia. Las cinco puertas de procedencia requieren verificación por CLI/API de <code>capas.py</code>.">The static browser UI previews these criteria; it performs no provenance I/O. The five provenance gates require <code>capas.py</code> CLI/API verification.</p>
     <h3 data-es="Certificado de admisibilidad">Admissibility certificate</h3>
-    <p data-es="Cada decisión incluye un <code>admissibility_certificate</code>: un certificado determinista, al estilo de un compilador, sobre cinco ejes ordenados (<code>contract</code>, <code>evidence</code>, <code>boundary</code>, <code>provenance</code> y <code>defeaters</code>). El certificado registra el límite de reutilización licenciado, las obligaciones de prueba abiertas, los socavadores y refutaciones dialécticos y la siguiente acción operativa, como <code>repair_schema</code>, <code>edit_and_resubmit</code> o <code>verify_provenance_for_training</code>.">Every decision includes an <code>admissibility_certificate</code>: a deterministic compiler-style certificate over five ordered axes (<code>contract</code>, <code>evidence</code>, <code>boundary</code>, <code>provenance</code>, and <code>defeaters</code>). The certificate records the licensed reuse boundary, open proof obligations, dialectical undercutters/rebuttals, and the next operational action such as <code>repair_schema</code>, <code>edit_and_resubmit</code>, or <code>verify_provenance_for_training</code>.</p>
-    <p data-es="El modo lote agrega estos certificados en un <code>admissibility_summary</code> y una <code>exception_queue</code>, de modo que el trabajo de revisión se enruta por límite formal y no solo por el veredicto crudo.">Batch mode aggregates these certificates into an <code>admissibility_summary</code> and <code>exception_queue</code>, so review work is routed by formal boundary rather than by raw verdict alone.</p>
+    <p data-es="Cada decisión incluye un <code>admissibility_certificate</code> sobre cinco ejes ordenados: <code>contract</code>, <code>evidence</code>, <code>boundary</code>, <code>provenance</code> y <code>defeaters</code>. Registra el límite de reutilización licenciado, las obligaciones de prueba abiertas, los derrotadores y la siguiente acción operativa: <code>repair_schema</code>, <code>edit_and_resubmit</code> o <code>verify_provenance_for_training</code>.">Every decision includes an <code>admissibility_certificate</code> over five ordered axes: <code>contract</code>, <code>evidence</code>, <code>boundary</code>, <code>provenance</code>, and <code>defeaters</code>. It records the licensed reuse boundary, open proof obligations, defeaters, and the next operational action: <code>repair_schema</code>, <code>edit_and_resubmit</code>, or <code>verify_provenance_for_training</code>.</p>
+    <p data-es="El modo lote agrega estos certificados en un <code>admissibility_summary</code> y una <code>exception_queue</code>, la revisión se enruta por límite y no solo por veredicto.">Batch mode aggregates these certificates into an <code>admissibility_summary</code> and an <code>exception_queue</code>; review work routes by boundary, not by verdict alone.</p>
     <h3 data-es="Esquema">Schema</h3>
-    <p data-es="Esquema de payload vigente: <code>capas-claim-payload-v3</code>. Las salidas incluyen <code>schema_version</code> para los rastros de auditoría.">Current payload schema: <code>capas-claim-payload-v3</code>. Outputs include <code>schema_version</code> for audit trails.</p>
+    <p data-es="Esquema vigente: <code>capas-claim-payload-v3</code>. Las salidas incluyen <code>schema_version</code>.">Current schema: <code>capas-claim-payload-v3</code>. Outputs include <code>schema_version</code>.</p>
     <p data-es="Tipos de claim admitidos y campos mínimos de evidencia:">Supported claim types and minimum evidence fields:</p>
     <ul class="claim-type-list">
       <li><code>claim_transition</code>: <code>upgrade_evidence_present</code></li>
@@ -2401,9 +2401,9 @@
       <li><code>multimodal_evidence_claim</code>: <code>modality</code>, <code>source_hashes_verified</code>, <code>cross_modal_alignment</code>, <code>extraction_method_declared</code></li>
       <li><code>programming_language_behavior_claim</code>: <code>language</code>, <code>language_version</code>, <code>claim_api</code>, <code>code_snippet</code>, <code>expected_output</code>, <code>observed_output</code>, <code>execution_observed</code>, <code>runtime_environment_declared</code></li>
     </ul>
-    <p data-es="Rangos de validación numérica: <code>p_value</code> y <code>alpha</code> deben estar entre <code>0</code> y <code>1</code>; <code>abs_error</code>, <code>tolerance</code> y <code>empirical_tolerance</code> deben ser mayores o iguales que <code>0</code>.">Numeric validation ranges: <code>p_value</code> and <code>alpha</code> must be between <code>0</code> and <code>1</code>; <code>abs_error</code>, <code>tolerance</code>, and <code>empirical_tolerance</code> must be greater than or equal to <code>0</code>.</p>
+    <p data-es="Rangos de validación numérica: <code>p_value</code> y <code>alpha</code> en <code>[0, 1]</code>; <code>abs_error</code>, <code>tolerance</code> y <code>empirical_tolerance</code> iguales o mayores que <code>0</code>.">Numeric validation ranges: <code>p_value</code> and <code>alpha</code> in <code>[0, 1]</code>; <code>abs_error</code>, <code>tolerance</code>, and <code>empirical_tolerance</code> at or above <code>0</code>.</p>
     <p data-es="<code>training_evidence.source_backed_evidence</code>, <code>external_review</code>, <code>semantic_alignment</code> y <code>witness_independence</code> deben ser booleanos y vivir en la raíz del payload. Anidar <code>training_evidence</code> dentro de <code>evidence</code> es un error de esquema."><code>training_evidence.source_backed_evidence</code>, <code>external_review</code>, <code>semantic_alignment</code>, and <code>witness_independence</code> must be booleans and must live at the payload root. Nesting <code>training_evidence</code> inside <code>evidence</code> is a schema error.</p>
-    <p data-es="<code>absolute_anchor</code> es el único modo de ancla que puede licenciar un <code>ACCEPT</code> de ancla universal. <code>relative_anchor</code>, <code>empirical_anchor</code> y <code>benchmark_anchor</code> son contratos versionados que pueden producir decisiones <code>REWRITE</code> acotadas, pero no corrección universal."><code>absolute_anchor</code> is the only anchor mode that can license a universal-anchor <code>ACCEPT</code>. <code>relative_anchor</code>, <code>empirical_anchor</code>, and <code>benchmark_anchor</code> are versioned contracts that can produce bounded <code>REWRITE</code> decisions but not universal correctness.</p>
+    <p data-es="Solo <code>absolute_anchor</code> puede licenciar un <code>ACCEPT</code> de ancla universal. <code>relative_anchor</code>, <code>empirical_anchor</code> y <code>benchmark_anchor</code> son contratos versionados; pueden dar un <code>REWRITE</code> acotado, nunca corrección universal.">Only <code>absolute_anchor</code> can license a universal-anchor <code>ACCEPT</code>. <code>relative_anchor</code>, <code>empirical_anchor</code>, and <code>benchmark_anchor</code> are versioned contracts; they can yield a bounded <code>REWRITE</code>, never universal correctness.</p>
   </div>
 </div>
 
