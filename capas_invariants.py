@@ -925,6 +925,12 @@ def _parse_ts(x: Any) -> float | None:
         return None
     if isinstance(x, (int, float)):
         return float(x)
+    try:  # ISO 8601 with zone/offset first (IBM BackendProperties field dates: "2026-10-12T23:28:21-06:00")
+        _dt = datetime.fromisoformat(str(x).strip().replace("Z", "+00:00"))
+        if _dt.tzinfo is not None:
+            return _dt.timestamp()
+    except ValueError:
+        pass
     s = str(x).strip().replace("T", " ").replace("Z", "")
     for fmt in ("%Y-%m-%d %H:%M:%S.%f", "%Y-%m-%d %H:%M:%S", "%Y-%m-%d %H:%M", "%Y-%m-%d"):
         try:
@@ -953,7 +959,7 @@ def _normalize_snapshot(snap: Any) -> tuple[dict[str, Any] | None, bool]:
             qubits.setdefault(str(q), {})[field] = v
     edges = {str(k): v for k, v in (gate or {}).items()}
     out: dict[str, Any] = {k: v for k, v in snap.items() if k not in ("t1_us", "t2_us", "readout", "cz", "ecr", "cx",
-                                                                       "two_qubit_error", "edges", "layout", "sx")}
+                                                                       "two_qubit_error", "edges", "layout")}
     out["qubits"], out["edges"] = qubits, edges
     lay = snap.get("layout")
     if isinstance(lay, dict):
@@ -1087,6 +1093,90 @@ def check_calibration_snapshot(ev: dict[str, Any]) -> dict[str, Any]:
     elif snap.get("job_date") is not None and t_meas is None:
         holds.append("measured timestamp unparseable: cannot judge staleness")
 
+    # 5) frescura POR CAMPO (regla v2, pre-especificada con Atlas 2026-10-13; DEBTS C-9). Un archivo "fresco" puede
+    #    traer campos rancios (E4: T1/readout/sx idénticos entre 02:16 y 11:51, solo CZ re-medida). Fuente primaria:
+    #    `field_dates` (fecha por parámetro de BackendProperties). Sin ella y con `previous_snapshot`: inferencia por
+    #    identidad -- elemento a elemento en campos continuos (t1_us, t2_us, aristas), campo ENTERO en los cuantizados
+    #    (readout, sx: dos medidas reales pueden coincidir exacto); la edad inferida es una cota mínima ("medido a más
+    #    tardar en measured_prev"). Sin ninguna de las dos: aviso `not evaluable`, nunca silencio, nunca HOLD.
+    def _is_stale(t_field: float) -> float | None:
+        if t_job is None:
+            return None
+        from datetime import datetime as _dt
+        age = (t_job - t_field) / 86400.0
+        cal = (_dt.fromtimestamp(t_job).date() - _dt.fromtimestamp(t_field).date()).days
+        if float(th["max_age_days"]).is_integer():
+            return round(age, 2) if cal > int(th["max_age_days"]) else None
+        return round(age, 2) if age > th["max_age_days"] else None
+
+    _QUBIT_FIELDS, _EDGE_FIELDS, _QUANTIZED = ("t1_us", "t2_us", "readout", "sx"), ("cz", "ecr", "cx", "edges"), ("readout", "sx")
+    def _in_layout(field: str, el: str) -> bool:
+        if field in _EDGE_FIELDS:
+            return sel_e is None or el in sel_e
+        return sel_q is None or el in sel_q
+    field_fresh: dict[str, Any] = {"status": "not evaluable (no field_dates, no previous_snapshot)", "stale": []}
+    fd, prev = snap.get("field_dates"), snap.get("previous_snapshot")
+    if isinstance(fd, dict) and t_job is not None:
+        field_fresh["status"] = "evaluated from field_dates (per parameter)"
+        n_unparseable = 0
+        for field, table in fd.items():
+            if not isinstance(table, dict):
+                continue
+            for el, iso in table.items():
+                el = str(el)
+                if not _in_layout(field, el):
+                    continue
+                t_f = _parse_ts(iso)
+                if t_f is None:
+                    n_unparseable += 1
+                    continue
+                age = _is_stale(t_f)
+                if age is not None:
+                    field_fresh["stale"].append({"field": field, "element": el, "age_days": age, "source": "field_dates"})
+        if n_unparseable:
+            holds.append(f"field_dates: {n_unparseable} unparseable date(s) in the layout: cannot judge per-field freshness")
+    elif isinstance(prev, dict) and t_job is not None:
+        prev_n, _ = _normalize_snapshot(prev)
+        t_prev = _parse_ts((prev_n or {}).get("measured"))
+        if prev_n is None or t_prev is None:
+            holds.append("previous_snapshot declared but unreadable (shape or measured): cannot infer per-field freshness")
+        elif t_meas is not None and t_prev >= t_meas:
+            holds.append("previous_snapshot is not earlier than this snapshot (measured): cannot infer per-field freshness")
+        else:
+            field_fresh["status"] = "inferred by identity vs previous_snapshot (ages are LOWER BOUNDS: measured at the latest at measured_prev)"
+            age_prev = _is_stale(t_prev)
+            # continuous: per element
+            for field in ("t1_us", "t2_us"):
+                for q, row in qubits.items():
+                    q = str(q)
+                    if not isinstance(row, dict) or not _in_layout(field, q):
+                        continue
+                    v, pv = row.get(field), ((prev_n.get("qubits") or {}).get(q) or {}).get(field)
+                    if v is not None and pv is not None and v == pv and age_prev is not None:
+                        field_fresh["stale"].append({"field": field, "element": q, "age_days": age_prev, "source": "identity (lower bound)"})
+            for e, v in edges.items():
+                e = str(e)
+                if not _in_layout("edges", e):
+                    continue
+                pv = (prev_n.get("edges") or {}).get(e)
+                if v is not None and pv is not None and _edge_err(v) == _edge_err(pv) and age_prev is not None:
+                    field_fresh["stale"].append({"field": "edges", "element": e, "age_days": age_prev, "source": "identity (lower bound)"})
+            # quantized: whole field (all elements present in both identical)
+            for field in _QUANTIZED:
+                if field == "readout":
+                    cur = {str(q): (row or {}).get("readout") for q, row in qubits.items() if isinstance(row, dict)}
+                    old_ = {str(q): (row or {}).get("readout") for q, row in (prev_n.get("qubits") or {}).items() if isinstance(row, dict)}
+                else:
+                    cur = {str(k): v for k, v in (snap.get("sx") or {}).items()} if isinstance(snap.get("sx"), dict) else {}
+                    old_ = {str(k): v for k, v in (prev_n.get("sx") or {}).items()} if isinstance(prev_n.get("sx"), dict) else {}
+                common = [k for k in cur if k in old_ and cur[k] is not None and old_[k] is not None]
+                if len(common) >= 2 and all(cur[k] == old_[k] for k in common) and age_prev is not None:
+                    field_fresh["stale"].append({"field": field, "element": "*", "age_days": age_prev,
+                                                 "source": f"identity of the whole field ({len(common)} elements; lower bound)"})
+    for st in field_fresh["stale"]:
+        outliers.append({"element": f"{st['field']}:{st['element']}", "kind": "stale_field",
+                         "why": f"{st['field']} of {st['element']} measured >= {st['age_days']} days before the job ({st['source']}; limit {th['max_age_days']} d)"})
+
     def _fmt(o: dict[str, Any]) -> str:
         if o["kind"] == "edge_error":
             return f"edge {o['element']} error {o['value']:.3g} = {o['ratio_to_median']}x median (> {o['limit']}x)"
@@ -1107,7 +1197,8 @@ def check_calibration_snapshot(ev: dict[str, Any]) -> dict[str, Any]:
     n_j = (len(sel_q) if sel_q is not None else len(qubits)) + (len(sel_e) if sel_e is not None else len(edges))
     scope = f"layout ({n_j} elements judged, medians over whole device)" if layout else f"whole snapshot ({n_j} elements)"
     extra = {"outliers": outliers, "medians": {"edge_error": med_e if errs else None, "t1_us": med_t1, "t2_us": med_t2, "readout": med_ro},
-             "thresholds": th, "stale_days": stale, "normalized_from_raw_device_file": normalized}
+             "thresholds": th, "stale_days": stale, "normalized_from_raw_device_file": normalized,
+             "field_freshness": field_fresh}
     if outliers or stale is not None:
         parts = [_fmt(o) for o in outliers]
         if stale is not None:

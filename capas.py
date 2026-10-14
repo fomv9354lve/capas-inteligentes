@@ -178,6 +178,13 @@ CLAIM_TYPE_REGISTRY = {
         "optional": ["test_statistic", "null_control_passed", "n_replicates"],
         "description": "Statistical threshold and effect-direction claims.",
     },
+    "interval_band_claim": {
+        "required": ["estimate", "ci_low", "ci_high", "ci_level", "band", "band_pre_registered"],
+        "optional": ["method", "resamples", "seed", "n_replicates"],
+        "description": "An estimate with a confidence/credible interval judged against a PRE-REGISTERED band: ACCEPT only "
+                       "if the whole interval lies inside the band; whole interval outside -> REJECT; straddling -> REWRITE "
+                       "(the interval is licensed, the band is not). Atlas E4b P2 (2026-10-13), DEBTS C-11.",
+    },
     "reproducibility_check": {
         "required": ["artifact_available", "independent_reproduction_pass"],
         "optional": ["scope_count_verified"],
@@ -355,6 +362,7 @@ NUMERIC_EVIDENCE_FIELDS = [
     "abs_error", "tolerance", "p_value", "alpha",
     "reported_value", "reference_value", "empirical_tolerance",
     "n_replicates", "n_points", "n_cells",
+    "estimate", "ci_low", "ci_high", "ci_level", "resamples", "seed",
 ]
 BOOL_EVIDENCE_FIELDS = [
     "within_chemical_accuracy", "local_property_tests_pass", "universal_anchor_pass",
@@ -370,6 +378,7 @@ BOOL_EVIDENCE_FIELDS = [
     "leading_order_established",
     "object_matches_target", "load_bearing_citation_read", "citation_hypotheses_checked",
     "alternative_model_rejected", "null_control_passed", "scope_count_verified", "negative_control_failed",
+    "band_pre_registered",
 ]
 STRING_EVIDENCE_FIELDS = [
     "anchor_mode", "relative_anchor_reference", "benchmark_name", "benchmark_metric",
@@ -378,10 +387,10 @@ STRING_EVIDENCE_FIELDS = [
     "claim_api", "docs_reference", "current_claim",
     "code_snippet", "expected_output", "observed_output",
     "claim_scope", "conjectured_remainder", "object_declared", "tolerance_unit", "error_statistic", "tolerance_rationale",
-    "text_quantifier",
+    "text_quantifier", "method",
 ]
 LIST_EVIDENCE_FIELDS = ["supporting_sources", "contradicting_sources", "scope_declared", "scope_tested"]
-DICT_EVIDENCE_FIELDS = ["test_statistic"]
+DICT_EVIDENCE_FIELDS = ["test_statistic", "band"]
 
 # Example values for a fillable requirements template (A3): type defaults + a few overrides
 # that make the expected shape obvious to a first-time caller.
@@ -392,6 +401,8 @@ _EXAMPLE_OVERRIDES: dict[str, Any] = {
     "modality": "image+text", "language": "python", "language_version": "3.12",
     "conflict_resolution_method": "pre-registered random-effects meta-analysis",
     "supporting_sources": ["doi:10.1/a"], "contradicting_sources": ["doi:10.1/b"],
+    "estimate": 1.393, "ci_low": 1.259, "ci_high": 1.55, "ci_level": 0.95, "band": {"low": 0.5},
+    "method": "bootstrap", "resamples": 10000, "seed": 20261013,
 }
 
 
@@ -404,13 +415,15 @@ def evidence_field_type(field: str) -> str:
         return "string[]"
     if field in STRING_EVIDENCE_FIELDS:
         return "string"
+    if field in DICT_EVIDENCE_FIELDS:
+        return "object"
     return "unknown"
 
 
 def _example_value(field: str) -> Any:
     if field in _EXAMPLE_OVERRIDES:
         return _EXAMPLE_OVERRIDES[field]
-    return {"number": 0.0, "boolean": True, "string": "…", "string[]": ["…"], "unknown": "…"}[
+    return {"number": 0.0, "boolean": True, "string": "…", "string[]": ["…"], "unknown": "…", "object": {}}[
         evidence_field_type(field)
     ]
 
@@ -1905,6 +1918,50 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
         else:
             verdict = "REJECT"
             reason = f"p_value {p_value} > alpha {alpha}"
+    elif claim_type == "interval_band_claim":
+        # An estimate with an interval against a PRE-REGISTERED band (Atlas E4b P2: theta with a bootstrap IC95 and
+        # bands RECUPERA / PERSISTE / EMPEORA). The band is a declared field, never read from prose; a band chosen
+        # after seeing the estimate licenses nothing (REWRITE). Rule, pre-specified 2026-10-13 (DEBTS C-11):
+        # whole interval inside the band -> ACCEPT; whole interval outside -> REJECT; straddling -> REWRITE.
+        est, lo, hi = float(evidence["estimate"]), float(evidence["ci_low"]), float(evidence["ci_high"])
+        lvl = float(evidence["ci_level"])
+        band = evidence["band"] if isinstance(evidence.get("band"), dict) else {}
+        b_lo, b_hi = band.get("low"), band.get("high")
+        b_lo = float(b_lo) if isinstance(b_lo, (int, float)) and not isinstance(b_lo, bool) else None
+        b_hi = float(b_hi) if isinstance(b_hi, (int, float)) and not isinstance(b_hi, bool) else None
+        _ival = f"{est:g} with {lvl:.0%} interval [{lo:g}, {hi:g}]"
+        _band = f"[{'-inf' if b_lo is None else f'{b_lo:g}'}, {'+inf' if b_hi is None else f'{b_hi:g}'}]"
+        if not (lo <= est <= hi) or not (0.0 < lvl < 1.0):
+            verdict = "HOLD"
+            reason = (f"interval inconsistent: need ci_low <= estimate <= ci_high and 0 < ci_level < 1 "
+                      f"(got estimate {est:g}, [{lo:g}, {hi:g}], level {lvl:g})")
+        elif b_lo is None and b_hi is None:
+            verdict = "HOLD"
+            reason = "band declared without a numeric low or high bound: nothing to judge the interval against"
+        elif b_lo is not None and b_hi is not None and b_lo > b_hi:
+            verdict = "HOLD"
+            reason = f"band is empty (low {b_lo:g} > high {b_hi:g})"
+        elif evidence.get("band_pre_registered") is not True:
+            verdict = "REWRITE"
+            reason = ("the band was not declared pre-registered: a band chosen after seeing the estimate licenses nothing; "
+                      "the interval itself is licensed")
+            rewrite = _ival
+            licensed_claim = rewrite
+        else:
+            inside = (b_lo is None or lo >= b_lo) and (b_hi is None or hi <= b_hi)
+            outside = (b_lo is not None and hi < b_lo) or (b_hi is not None and lo > b_hi)
+            if inside:
+                verdict = "ACCEPT"
+                reason = f"the whole {lvl:.0%} interval [{lo:g}, {hi:g}] lies inside the pre-registered band {_band}"
+            elif outside:
+                verdict = "REJECT"
+                reason = f"the whole {lvl:.0%} interval [{lo:g}, {hi:g}] lies outside the pre-registered band {_band}"
+            else:
+                verdict = "REWRITE"
+                reason = (f"the {lvl:.0%} interval [{lo:g}, {hi:g}] straddles the edge of the band {_band}: the band is not "
+                          f"licensed; the interval is")
+                rewrite = _ival
+                licensed_claim = rewrite
     elif claim_type == "reproducibility_check":
         artifact_available = evidence["artifact_available"] is True
         reproduced = evidence["independent_reproduction_pass"] is True

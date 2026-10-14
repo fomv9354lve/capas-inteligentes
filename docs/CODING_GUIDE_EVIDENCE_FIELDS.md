@@ -61,6 +61,21 @@ pre-registration as a measured type yields HOLD "missing required evidence field
 | the paper reports the test statistic | `test_statistic: {kind, value, df...}` | p is taken as declared (not recomputed) |
 | the text attributes a mechanism | `null_control_passed: true` | REWRITE: a significant p licenses the association, not its cause |
 
+## interval_band_claim (estimate, ci_low, ci_high, ci_level, band, band_pre_registered required)
+
+An estimate with an interval judged against a **pre-registered band** (Atlas E4b P2: θ with a bootstrap IC95 and bands
+RECUPERA / PERSISTE / EMPEORA). `band = {"low": x, "high": y}` with either bound omitted for a one-sided band.
+
+| situation | declare | if you don't |
+|---|---|---|
+| the whole interval lies inside the band | `band_pre_registered: true` | — ACCEPT |
+| the whole interval lies outside the band | — | REJECT |
+| the interval straddles a band edge | — | REWRITE: the interval is licensed, the band is not |
+| the band was chosen after seeing the estimate | `band_pre_registered: false` | REWRITE (only the interval is licensed); missing → HOLD |
+| the band has no numeric bound, or `ci_low ≤ estimate ≤ ci_high` fails, or `ci_level` ∉ (0,1) | fix the declaration | HOLD |
+
+Optional: `method` ("bootstrap"), `resamples`, `seed`, `n_replicates`.
+
 ## reproducibility_check (artifact_available, independent_reproduction_pass required)
 
 | situation | declare | if you don't |
@@ -83,7 +98,16 @@ Pass the **whole-device** snapshot with `layout` inside (medians are device medi
 `job_date`. Two shapes are read: canonical `{qubits{id:{t1_us,t2_us,readout}}, edges{id:error}, layout{qubits,edges}}`
 and the raw IBM device file copied verbatim `{t1_us{}, readout{}, t2_us{}, cz{} (or ecr{}), edges[[a,b]], layout[q…]}`
 (a qubit-list layout selects the edges with both ends in it). A declared snapshot in any other shape is **HOLD**
-(the law never answers "not applicable" to a declared field — Atlas E4, 2026-10-13). Defaults: edge > 1e-2 or > 5× median → FLAG; T1 < 60 µs or < median/3 → FLAG; freshness ≤ 1
+(the law never answers "not applicable" to a declared field — Atlas E4, 2026-10-13).
+
+**Per-field freshness (rule v2, 2026-10-13).** A fresh file can carry stale parameters (E4: T1/readout/sx identical between
+02:16 and 11:51, only CZ re-measured). Declare `field_dates` = `{t1_us: {q: iso}, readout: {...}, sx: {...}, cz: {"a_b": iso}}`
+(IBM `BackendProperties` dates; Atlas's fetcher keeps them) — the primary source: each layout element's date is judged
+with the same `max_age_days` policy and a stale one is a FLAG `stale_field`. Without it, declare `previous_snapshot`
+(same shape, earlier `measured`) and the law **infers** staleness by identity: element by element for continuous fields
+(t1_us, t2_us, edges), whole field for quantized ones (readout, sx — two real measurements can coincide exactly); the
+inferred age is a **lower bound** ("measured at the latest at measured_prev"). With neither, the result carries
+`field_freshness.status = "not evaluable"` — a notice, never silence, never HOLD. `field_dates` take precedence. Defaults: edge > 1e-2 or > 5× median → FLAG; T1 < 60 µs or < median/3 → FLAG; freshness ≤ 1
 calendar day; T2 floor off (`t2_min_frac_median` / `t2_min_us` to enable). Override anything in `thresholds`.
 
 ## The rule behind all of this

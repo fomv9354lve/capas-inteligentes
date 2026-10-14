@@ -712,6 +712,39 @@ SEMANTIC_PAYLOADS = [
         "ACCEPT",
         "external review is not attached",
     ),
+    (
+        "interval_band_claim_accept_inside_band",
+        {
+            "claim": {"id": "interval_band_claim_accept_inside_band", "type": "interval_band_claim",
+                      "text": "theta lies in the pre-registered RECOVERED band (lower bound 0.5)."},
+            "evidence": {"estimate": 1.393, "ci_low": 1.259, "ci_high": 1.55, "ci_level": 0.95,
+                         "band": {"low": 0.5}, "band_pre_registered": True, "method": "bootstrap", "resamples": 10000},
+        },
+        "ACCEPT",
+        "inside the pre-registered band",
+    ),
+    (
+        "interval_band_claim_reject_outside_band",
+        {
+            "claim": {"id": "interval_band_claim_reject_outside_band", "type": "interval_band_claim",
+                      "text": "theta lies in the pre-registered PERSISTS band (-0.25, 0.25)."},
+            "evidence": {"estimate": 1.393, "ci_low": 1.259, "ci_high": 1.55, "ci_level": 0.95,
+                         "band": {"low": -0.25, "high": 0.25}, "band_pre_registered": True},
+        },
+        "REJECT",
+        "outside the pre-registered band",
+    ),
+    (
+        "interval_band_claim_rewrite_band_not_preregistered",
+        {
+            "claim": {"id": "interval_band_claim_rewrite_band_not_preregistered", "type": "interval_band_claim",
+                      "text": "theta lies above 0.5."},
+            "evidence": {"estimate": 1.393, "ci_low": 1.259, "ci_high": 1.55, "ci_level": 0.95,
+                         "band": {"low": 0.5}, "band_pre_registered": False},
+        },
+        "REWRITE",
+        "not declared pre-registered",
+    ),
 ]
 
 

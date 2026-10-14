@@ -118,3 +118,21 @@ pre-registrada** (P2; misma familia que la deuda S6 del umbral unilateral). Dise
 {estimate, ci, ci_level, band_rule pre-registrada} → ACCEPT solo si el IC entero cae en la banda declarada.
 `field_dates` llegaron por primera vez en el snapshot de las 15:28 (t1 medido 12-oct 23:28, readout 13-oct 12:36, sx 00:23,
 cz 04:08): la ley aún no las lee (regla v2 pre-especificada, sin código); sobre el layout rep12 dio PASS.
+
+### Cierre de C-9 y C-11 (2026-10-13 ~19:30, tag `atlas-ciego-v7`) y su coste post-hoc
+
+Implementado tal como se pre-especificó (v2, cuatro puntos de Atlas): `field_dates` manda; sin ellas, inferencia por
+identidad con `previous_snapshot` (elemento a elemento en continuos, campo entero en cuantizados, edad = cota mínima);
+sin ninguna, aviso `field_freshness.status = "not evaluable"`. Y el tipo `interval_band_claim` (estimate, ci_low, ci_high,
+ci_level, band{low,high}, band_pre_registered): intervalo entero dentro → ACCEPT; fuera → REJECT; a caballo → REWRITE
+(se licencia el intervalo, no la banda); banda no pre-registrada → REWRITE. Tests: `benchmarks/test_interval_band_claim.py`,
+`benchmarks/test_calibration_snapshot.py` (incluye la calibración real de E4b con `field_dates`).
+
+**Coste post-hoc medido (abierto, no ciego):** sobre E4b, **P1 pasa de ACCEPT a REJECT** en v7: `field_dates` revela que
+el T1 del qubit 65 (en el layout rep12) se midió el 2026-10-11 21:33, 2 días calendario antes del job → `stale_field`
+→ FLAG → el invariante anula el ACCEPT. P2 con el tipo nuevo daría ACCEPT (RECUPERA; no se recodifica: el sellado de
+E4b no cambia). P3 sin cambio. E4 sin cambio (REJECT). Es decir: la regla v2, sobre el único lote limpio que la tiene,
+convierte un claim bueno en REJECT. **Pregunta pre-registrada para Atlas, a decidir ANTES del siguiente claim limpio:**
+¿un campo rancio en el layout debe ser FLAG (violación → REJECT, como se pre-especificó) o HOLD (la ley no puede juzgar
+el contexto → no-ACCEPT sin REJECT)? No se cambia a posteriori con estos datos; se decide por escrito y se aplica al
+siguiente.

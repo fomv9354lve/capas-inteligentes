@@ -236,3 +236,75 @@ def test_engine_holds_accept_when_declared_snapshot_is_unreadable():
                             "n_replicates": 8, "invariants": {"calibration_snapshot": {"backend": "x", "foo": 1}}}}
     r = capas.decide_external_claim(payload)
     assert r["verdict"] == "HOLD" and "could not judge" in r["reason"]
+
+
+# --- per-field freshness, rule v2 (pre-specified with Atlas 2026-10-13, DEBTS C-9) ---------------------------------
+E4B_CAL = os.path.join(os.path.dirname(__file__), "..", "research", "atlas_corpus", "phase2c",
+                       "kingston_calibration_live_e4_20261013_1528.json")
+REP12 = [67, 57, 65, 66, 46, 47, 63, 64, 43, 45, 44, 56]
+
+def _e4b(**extra):
+    with open(E4B_CAL, encoding="utf-8") as f:
+        cal = json.load(f)
+    return {**cal, "layout": REP12, "job_date": "2026-10-13", **extra}
+
+def test_field_dates_are_read_and_iso_offsets_parse():
+    assert ci._parse_ts("2026-10-12T23:28:34-06:00") is not None
+    r = ci.audit({"calibration_snapshot": _e4b()})["results"]["calibration_snapshot"]
+    ff = r["field_freshness"]
+    assert ff["status"].startswith("evaluated from field_dates")
+    # 7 qubits of the device carry a T1 dated 2026-10-11 (two calendar days before the job): any in the layout is stale
+    assert all(s["source"] == "field_dates" for s in ff["stale"])
+
+def test_field_dates_same_day_policy_flags_previous_evening_t1():
+    r = ci.audit({"calibration_snapshot": _e4b(thresholds={"max_age_days": 0})})["results"]["calibration_snapshot"]
+    fields = {s["field"] for s in r["field_freshness"]["stale"]}
+    assert r["verdict"] == "FLAG" and "t1_us" in fields and "stale_field" in r["why"]
+    # readout (12:36 the same day) and cz (04:08 the same day) are fresh under the same-day policy
+    assert "readout" not in fields and "cz" not in fields
+
+def test_no_field_dates_no_previous_is_a_notice_not_a_hold():
+    snap = {k: v for k, v in _e4b().items() if k != "field_dates"}
+    a = ci.audit({"calibration_snapshot": snap})
+    assert a["verdict"] == "PASS" and a["results"]["calibration_snapshot"]["field_freshness"]["status"].startswith("not evaluable")
+
+def _pair(prev_measured, cur_measured, job, cur_t1, prev_t1, cur_ro, prev_ro):
+    prev = {"measured": prev_measured, "qubits": {str(i): {"t1_us": prev_t1[i], "readout": prev_ro[i]} for i in range(4)},
+            "edges": {"0_1": 0.002, "1_2": 0.0021, "2_3": 0.0019}}
+    cur = {"measured": cur_measured, "job_date": job, "previous_snapshot": prev,
+           "qubits": {str(i): {"t1_us": cur_t1[i], "readout": cur_ro[i]} for i in range(4)},
+           "edges": {"0_1": 0.0025, "1_2": 0.0021, "2_3": 0.0019}}
+    return cur
+
+def test_identity_inference_continuous_per_element_quantized_whole_field():
+    # previous snapshot 3 days before the job; current file "measured" the day of the job
+    cur = _pair("2026-10-10 02:00:00", "2026-10-13 11:51:00", "2026-10-13",
+                cur_t1=[280.9, 274.7, 300.0, 310.0], prev_t1=[280.9, 274.7, 299.0, 311.0],   # qubits 0,1 identical -> stale
+                cur_ro=[0.0157, 0.0133, 0.0189, 0.0201], prev_ro=[0.0157, 0.0133, 0.0189, 0.0201])  # whole field identical -> stale
+    r = ci.audit({"calibration_snapshot": cur})["results"]["calibration_snapshot"]
+    ff = r["field_freshness"]
+    assert ff["status"].startswith("inferred by identity")
+    stale = {(s["field"], s["element"]) for s in ff["stale"]}
+    assert ("t1_us", "0") in stale and ("t1_us", "1") in stale and ("t1_us", "2") not in stale
+    assert ("readout", "*") in stale
+    assert ("edges", "1_2") in stale and ("edges", "0_1") not in stale
+    assert r["verdict"] == "FLAG" and "lower bound" in r["why"]
+
+def test_identity_inference_quantized_partial_match_does_not_count():
+    cur = _pair("2026-10-10 02:00:00", "2026-10-13 11:51:00", "2026-10-13",
+                cur_t1=[1, 2, 3, 4], prev_t1=[5, 6, 7, 8],
+                cur_ro=[0.0157, 0.0133, 0.0190, 0.0202], prev_ro=[0.0157, 0.0133, 0.0189, 0.0201])  # 2 of 4 identical: chance
+    ff = ci.audit({"calibration_snapshot": cur})["results"]["calibration_snapshot"]["field_freshness"]
+    assert not any(s["field"] == "readout" for s in ff["stale"])
+
+def test_identity_inference_needs_an_earlier_previous_snapshot():
+    cur = _pair("2026-10-13 12:00:00", "2026-10-13 11:51:00", "2026-10-13", [210,220,230,240], [210,220,230,240], [.01,.01,.01,.01], [.01,.01,.01,.01])
+    a = ci.audit({"calibration_snapshot": cur})
+    assert a["verdict"] == "HOLD" and "not earlier" in a["summary"]
+
+def test_field_dates_take_precedence_over_identity():
+    cur = _pair("2026-10-10 02:00:00", "2026-10-13 11:51:00", "2026-10-13", [210,220,230,240], [210,220,230,240], [.01,.01,.01,.01], [.01,.01,.01,.01])
+    cur["field_dates"] = {"t1_us": {str(i): "2026-10-13T08:00:00-06:00" for i in range(4)},
+                          "readout": {str(i): "2026-10-13T08:00:00-06:00" for i in range(4)}}
+    r = ci.audit({"calibration_snapshot": cur})["results"]["calibration_snapshot"]
+    assert r["field_freshness"]["status"].startswith("evaluated from field_dates") and r["field_freshness"]["stale"] == []

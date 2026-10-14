@@ -60,6 +60,7 @@
     "evidence_conflict_claim": "Claims that resolve disclosed supporting and contradicting evidence.",
     "exact_model_solution": "Exact or bounded-error model solution claims.",
     "financial_metric_claim": "Financial metric claims against a reference value and period.",
+    "interval_band_claim": "An estimate with a confidence/credible interval judged against a PRE-REGISTERED band: ACCEPT only if the whole interval lies inside the band; whole interval outside -> REJECT; straddling -> REWRITE (the interval is licensed, the band is not). Atlas E4b P2 (2026-10-13), DEBTS C-11.",
     "multimodal_evidence_claim": "Claims supported by declared multimodal evidence and extraction method.",
     "physical_accuracy": "Direct physical or chemical-accuracy claims.",
     "programming_language_behavior_claim": "Executable programming-language behavior claims requiring snippet, runtime, and observed output evidence.",
@@ -119,6 +120,17 @@
     "financial_metric_claim": [
       "metric_name",
       "audit_trail",
+      "object_declared",
+      "object_matches_target",
+      "load_bearing_citation_read",
+      "citation_hypotheses_checked",
+      "null_control_passed"
+    ],
+    "interval_band_claim": [
+      "method",
+      "resamples",
+      "seed",
+      "n_replicates",
       "object_declared",
       "object_matches_target",
       "load_bearing_citation_read",
@@ -227,6 +239,14 @@
       "reference_value",
       "tolerance",
       "metric_period_match"
+    ],
+    "interval_band_claim": [
+      "estimate",
+      "ci_low",
+      "ci_high",
+      "ci_level",
+      "band",
+      "band_pre_registered"
     ],
     "multimodal_evidence_claim": [
       "modality",
