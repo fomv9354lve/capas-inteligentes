@@ -103,7 +103,7 @@ and the raw IBM device file copied verbatim `{t1_us{}, readout{}, t2_us{}, cz{} 
 **Per-field freshness (rule v2, 2026-10-13).** A fresh file can carry stale parameters (E4: T1/readout/sx identical between
 02:16 and 11:51, only CZ re-measured). Declare `field_dates` = `{t1_us: {q: iso}, readout: {...}, sx: {...}, cz: {"a_b": iso}}`
 (IBM `BackendProperties` dates; Atlas's fetcher keeps them) — the primary source: each layout element's date is judged
-with the same `max_age_days` policy and a stale one is a FLAG `stale_field`. Without it, declare `previous_snapshot`
+with the same `max_age_days` policy and a stale one is a **HOLD** `stale_field` (the context is unverified; it never REJECTs — decision with Atlas, 2026-10-13). Without it, declare `previous_snapshot`
 (same shape, earlier `measured`) and the law **infers** staleness by identity: element by element for continuous fields
 (t1_us, t2_us, edges), whole field for quantized ones (readout, sx — two real measurements can coincide exactly); the
 inferred age is a **lower bound** ("measured at the latest at measured_prev"). With neither, the result carries

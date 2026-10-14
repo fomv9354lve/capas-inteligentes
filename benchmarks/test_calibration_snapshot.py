@@ -259,7 +259,7 @@ def test_field_dates_are_read_and_iso_offsets_parse():
 def test_field_dates_same_day_policy_flags_previous_evening_t1():
     r = ci.audit({"calibration_snapshot": _e4b(thresholds={"max_age_days": 0})})["results"]["calibration_snapshot"]
     fields = {s["field"] for s in r["field_freshness"]["stale"]}
-    assert r["verdict"] == "FLAG" and "t1_us" in fields and "stale_field" in r["why"]
+    assert r["verdict"] == "HOLD" and "t1_us" in fields and "stale_field" in r["why"]
     # readout (12:36 the same day) and cz (04:08 the same day) are fresh under the same-day policy
     assert "readout" not in fields and "cz" not in fields
 
@@ -288,7 +288,7 @@ def test_identity_inference_continuous_per_element_quantized_whole_field():
     assert ("t1_us", "0") in stale and ("t1_us", "1") in stale and ("t1_us", "2") not in stale
     assert ("readout", "*") in stale
     assert ("edges", "1_2") in stale and ("edges", "0_1") not in stale
-    assert r["verdict"] == "FLAG" and "lower bound" in r["why"]
+    assert r["verdict"] == "HOLD" and "lower bound" in r["why"]
 
 def test_identity_inference_quantized_partial_match_does_not_count():
     cur = _pair("2026-10-10 02:00:00", "2026-10-13 11:51:00", "2026-10-13",
@@ -308,3 +308,13 @@ def test_field_dates_take_precedence_over_identity():
                           "readout": {str(i): "2026-10-13T08:00:00-06:00" for i in range(4)}}
     r = ci.audit({"calibration_snapshot": cur})["results"]["calibration_snapshot"]
     assert r["field_freshness"]["status"].startswith("evaluated from field_dates") and r["field_freshness"]["stale"] == []
+
+
+def test_stale_field_holds_an_accept_but_never_rejects():
+    """Decision 2026-10-13 (Atlas): a stale layout field is HOLD, not FLAG -> an ACCEPT becomes HOLD, a REJECT stays."""
+    import capas
+    snap = _e4b()  # T1 of layout qubit 65 dated 2026-10-11: stale under the 1-day policy
+    ev = {"p_value": 7.6e-06, "alpha": 0.05, "effect_direction_confirmed": True, "invariants": {"calibration_snapshot": snap}}
+    r = capas.decide_external_claim({"schema_version": "capas-claim-payload-v3",
+                                     "claim": {"id": "p1", "type": "statistical_confidence", "text": "F drifted"}, "evidence": ev})
+    assert r["verdict"] == "HOLD" and "stale_field" in r["reason"] and "qubit" not in r["reason"].split("stale_field")[0][-5:]

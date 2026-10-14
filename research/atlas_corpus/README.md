@@ -136,3 +136,8 @@ convierte un claim bueno en REJECT. **Pregunta pre-registrada para Atlas, a deci
 ¿un campo rancio en el layout debe ser FLAG (violación → REJECT, como se pre-especificó) o HOLD (la ley no puede juzgar
 el contexto → no-ACCEPT sin REJECT)? No se cambia a posteriori con estos datos; se decide por escrito y se aplica al
 siguiente.
+
+**Decisión (2026-10-13 ~20:00, tag `atlas-ciego-v8`):** campo rancio en el layout = **HOLD**, no FLAG. Recomendación de
+Atlas, adoptada por CAPAS conociendo E4b y antes del siguiente claim limpio (se declara: no es ciega): un T1 viejo no
+contradice el claim, deja sin verificar el contexto de calibración; REJECT queda para evidencia que contradice. Efecto
+post-hoc: E4b P1 pasa de REJECT (v7) a HOLD (v8) — vacuo, no error. Se aplica a partir del siguiente claim.

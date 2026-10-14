@@ -1173,9 +1173,12 @@ def check_calibration_snapshot(ev: dict[str, Any]) -> dict[str, Any]:
                 if len(common) >= 2 and all(cur[k] == old_[k] for k in common) and age_prev is not None:
                     field_fresh["stale"].append({"field": field, "element": "*", "age_days": age_prev,
                                                  "source": f"identity of the whole field ({len(common)} elements; lower bound)"})
+    # Decision 2026-10-13 ~20:00 (Atlas's recommendation, adopted before the next clean claim, knowing E4b): a stale
+    # field in the layout is HOLD, not FLAG. A stale T1 does not contradict the claim; it leaves the calibration
+    # context unverified. REJECT is reserved for evidence that contradicts the claim. (HOLD only downgrades ACCEPT.)
     for st in field_fresh["stale"]:
-        outliers.append({"element": f"{st['field']}:{st['element']}", "kind": "stale_field",
-                         "why": f"{st['field']} of {st['element']} measured >= {st['age_days']} days before the job ({st['source']}; limit {th['max_age_days']} d)"})
+        holds.append(f"stale_field: {st['field']} of {st['element']} measured >= {st['age_days']} days before the job "
+                     f"({st['source']}; limit {th['max_age_days']} d) — calibration context unverified")
 
     def _fmt(o: dict[str, Any]) -> str:
         if o["kind"] == "edge_error":
