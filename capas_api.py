@@ -25,6 +25,10 @@ import capas_certstore  # noqa: E402
 # Hosted-product auth: if CAPAS_API_KEY is set, write/issue endpoints require it (Bearer or
 # X-API-Key). Unset -> open (local dev). Read/verify of a certificate stays public by design.
 _API_KEY = os.environ.get("CAPAS_API_KEY")
+# Hosted mode (CAPAS_HOSTED=1, set in the Dockerfile) never runs open: no API key or no private signing secret -> the
+# process exits at startup (incident 2026-10-14: production issued unauthenticated certificates signed with the public
+# development key).
+_HOSTED = os.environ.get("CAPAS_HOSTED") == "1"
 
 DOCS = ROOT / "docs"
 _CTYPE = {"html": "text/html", "js": "application/javascript", "css": "text/css",
@@ -143,8 +147,8 @@ class H(BaseHTTPRequestHandler):
                             f"computation inputs / a registry entry. By design — see GET /api/status.",
                     "certificate": capas_certstore.issue(cert),
                 }
-                if not _API_KEY:
-                    # Open-demo: no CAPAS_API_KEY set, so this charging/issuing surface accepted an
+                if not _API_KEY and not _HOSTED:
+                    # Open-demo (local only; hosted mode cannot reach here: it requires CAPAS_API_KEY at startup): no CAPAS_API_KEY set, so this charging/issuing surface accepted an
                     # UNAUTHENTICATED request. Mark it loudly in the response AND the log so a demo
                     # certificate is never mistaken for an authenticated, production-issued one.
                     out["auth"] = "unauthenticated-demo"
@@ -191,7 +195,9 @@ class H(BaseHTTPRequestHandler):
             rec["verification"] = capas_certstore.verify(rec)
             return self._json(rec)
         if p == "/api/health":
-            return self._json({"status": "ok", "auth_required": bool(_API_KEY)})
+            _ss = capas_certstore.signing_status()
+            return self._json({"status": "ok", "auth_required": bool(_API_KEY), "hosted": _HOSTED,
+                               "signing_key_id": _ss["key_id"], "signing_private": _ss["private_secret"]})
         if p == "/api/status":
             # Discoverability cornerstone: a cold evaluator hitting this GET learns which surface returns
             # the verdict, why the certificate is stricter, and gets copy-paste payloads that reproduce
@@ -311,6 +317,14 @@ class H(BaseHTTPRequestHandler):
 
 
 if __name__ == "__main__":
+    if _HOSTED:
+        _ss = capas_certstore.signing_status()
+        _problems = [m for m, bad in (("CAPAS_API_KEY unset", not _API_KEY),
+                                      ("CAPAS_SIGNING_SECRET missing, public, or shorter than 32 chars", not _ss["private_secret"]),
+                                      ("CAPAS_KEY_ID is the public development key id", _ss["key_id"] == capas_certstore.DEV_KEY_ID)) if bad]
+        if _problems:
+            sys.stderr.write("[CAPAS] REFUSING to start in hosted mode: " + "; ".join(_problems) + "\n")
+            raise SystemExit(78)
     import os
     # PORT from env (Render/Railway/Fly/HF Spaces inject it); arg or 8799 for local.
     port = int(os.environ.get("PORT") or (sys.argv[1] if len(sys.argv) > 1 else 8799))

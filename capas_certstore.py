@@ -21,12 +21,36 @@ from pathlib import Path
 from typing import Any
 
 ALGO = "HMAC-SHA256"
-KEY_ID = os.environ.get("CAPAS_KEY_ID", "capas-dev-key")
+# The development key and secret are PUBLIC (they are in this file). They exist so local runs are reproducible.
+# Incident 2026-10-14 (external audit): production signed with them, so anyone could forge a certificate. Rule since:
+# with CAPAS_HOSTED=1 the store refuses to sign without a private secret and refuses to validate anything signed with
+# the development key; capas_api.py refuses to start hosted without both. Rotating the secret invalidates every
+# certificate issued before the rotation (verification recomputes with the current secret).
+DEV_KEY_ID = "capas-dev-key"
+DEV_SECRET = "capas-dev-secret"
+KEY_ID = os.environ.get("CAPAS_KEY_ID", DEV_KEY_ID)
+
+
+class SigningNotConfigured(RuntimeError):
+    pass
+
+
+def hosted() -> bool:
+    return os.environ.get("CAPAS_HOSTED") == "1"
+
+
+def signing_status() -> dict[str, Any]:
+    sec = os.environ.get("CAPAS_SIGNING_SECRET")
+    private = bool(sec) and sec != DEV_SECRET and len(sec) >= 32
+    return {"key_id": KEY_ID, "private_secret": private, "dev_key": KEY_ID == DEV_KEY_ID or not private}
 
 
 def _secret() -> bytes:
-    # Production sets CAPAS_SIGNING_SECRET; a fixed dev secret keeps local runs reproducible.
-    return os.environ.get("CAPAS_SIGNING_SECRET", "capas-dev-secret").encode()
+    sec = os.environ.get("CAPAS_SIGNING_SECRET")
+    if hosted() and (not sec or sec == DEV_SECRET or len(sec) < 32 or KEY_ID == DEV_KEY_ID):
+        raise SigningNotConfigured("hosted mode requires a private CAPAS_SIGNING_SECRET (>= 32 chars) and a CAPAS_KEY_ID "
+                                   "other than the public development key")
+    return (sec or DEV_SECRET).encode()
 
 
 def _store_dir() -> Path:
@@ -77,6 +101,12 @@ def verify(record: dict[str, Any]) -> dict[str, Any]:
     """Recompute the signature over the record's content and compare — tamper-evident."""
     if not isinstance(record, dict) or "signature" not in record:
         return {"valid": False, "reason": "no signature on record"}
+    if hosted() and record.get("key_id") in (DEV_KEY_ID, None):
+        return {"valid": False, "key_id": record.get("key_id"), "algo": record.get("algo"),
+                "reason": "signed with the public development key: not valid in production (revoked 2026-10-14)"}
+    if hosted() and record.get("key_id") != KEY_ID:
+        return {"valid": False, "key_id": record.get("key_id"), "algo": record.get("algo"),
+                "reason": f"signed with key {record.get('key_id')!r}, not the current production key: revoked or foreign"}
     expected = sign({k: record.get(k) for k in ("certificate_id", "capas_version", "key_id",
                                                 "algo", "certificate", "nonce")})
     valid = hmac.compare_digest(expected, str(record.get("signature", "")))
