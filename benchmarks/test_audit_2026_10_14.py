@@ -35,7 +35,7 @@ def test_alpha_one_is_not_a_threshold():
 
 FULL = dict(claim_kind="confirmatory", asserts_significant=True, p_value=0.01, alpha=0.05, n_comparisons=3, multiplicity_adjustment="holm",
             endpoint_type="primary", prespecified=True, ci_low=0.1, ci_high=0.5, observed_direction="benefit", claimed_direction="benefit",
-            effect_measure="mean_difference")
+            effect_measure="mean_difference", ci_level=0.95, ci_sides=2, p_sides=2)
 
 
 def test_pharma_empty_evidence_holds():
@@ -104,7 +104,7 @@ def test_pharma_descriptive_accept_is_not_confirmatory():
 def test_pharma_effect_without_significance_and_incoherent_p_ci():
     r = ph.gate_pharma_stat_claim({**FULL, "asserts_significant": False, "asserts_effect": True, "p_value": 0.9, "effect_measure": "hr", "ci_low": 0.6, "ci_high": 0.9})
     assert r["verdict"] != "ACCEPT"
-    r = ph.gate_pharma_stat_claim({**FULL, "p_value": 0.2})                      # CI excludes 0 but p > alpha
+    r = ph.gate_pharma_stat_claim({**FULL, "p_value": 0.2})                      # 95% CI excludes 0 but p = 0.2 > 0.05
     assert r["verdict"] == "REJECT"
 
 
@@ -118,3 +118,20 @@ def test_home_script_runs_from_a_fresh_clone():
     env = {k: v for k, v in os.environ.items() if k != "PYTHONPATH"}
     r = subprocess.run([sys.executable, "-I", str(ROOT / "benchmarks" / "home_gate_decisions.py")], capture_output=True, text=True, cwd="/", env=env, timeout=120)
     assert r.returncode == 0, r.stderr[-300:]
+
+
+# ---- re-audit 4: p and CI compared at the declared level; boundary -> HOLD, never REJECT
+def test_pharma_alpha_differs_from_ci_level_is_not_reject():
+    r = ph.gate_pharma_stat_claim({**FULL, "alpha": 0.01, "p_value": 0.03, "effect_measure": "hr", "ci_low": 0.60, "ci_high": 0.95,
+                                   "asserts_significant": False, "asserts_effect": True})
+    assert r["verdict"] == "REWRITE"
+
+
+def test_pharma_boundary_is_hold_not_reject():
+    r = ph.gate_pharma_stat_claim({**FULL, "p_value": 0.049, "effect_measure": "hr", "ci_low": 1.00, "ci_high": 1.45})
+    assert r["verdict"] == "HOLD"
+
+
+def test_pharma_undeclared_level_or_sides_is_hold():
+    assert ph.gate_pharma_stat_claim({k: v for k, v in FULL.items() if k != "ci_level"})["verdict"] == "HOLD"
+    assert ph.gate_pharma_stat_claim({**FULL, "ci_sides": 1})["verdict"] == "HOLD"

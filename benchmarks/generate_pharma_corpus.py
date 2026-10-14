@@ -58,7 +58,7 @@ def build() -> list[dict]:
         if alpha == 0.01 and nc == 3:
             continue
         ev = {"p_value": p, "alpha": alpha, "asserts_significant": True, "asserts_effect": True,
-              "n_comparisons": nc, "multiplicity_adjustment": adj, "ci_low": lo, "ci_high": hi, "ci_null": 0, "effect_measure": "mean_difference",
+              "n_comparisons": nc, "multiplicity_adjustment": adj, "ci_low": lo, "ci_high": hi, "ci_null": 0, "effect_measure": "mean_difference", "ci_level": 1 - alpha, "ci_sides": 2, "p_sides": 2,
               "observed_direction": obs, "claimed_direction": claimed, "endpoint_type": etype,
               "prespecified": pre, "claim_kind": "confirmatory"}
         cases.append(ev)
@@ -78,7 +78,9 @@ def main() -> int:
         deficient = _deficient(ev, ev["alpha"])
         if deficient and v == "ACCEPT":
             false_accepts.append(ev)
-        if (not deficient) and v != "ACCEPT":
+        # re-audit 4: p within rounding of 1 - ci_level is a boundary case; HOLD is the correct verdict, not a downgrade
+        boundary = abs(ev["p_value"] - (1 - ev["ci_level"])) <= 0.05 * (1 - ev["ci_level"])
+        if (not deficient) and v != "ACCEPT" and not (boundary and v == "HOLD"):
             clean_not_accepted.append((ev, v, out["why"]))
         records.append({"evidence": ev, "verdict": v, "rule": (out["findings"][0]["rule"] if out["findings"] else "clean")})
 

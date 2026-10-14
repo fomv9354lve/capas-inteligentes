@@ -163,7 +163,8 @@ def build() -> list[dict]:
               "backing": "python3 research/ginibre_corpus/score_sealed.py" + (
                   "" if sealed_ok is not None else "  [corpus not on this machine: figures NOT re-derived here; "
                                                    "set CAPAS_GINIBRE_CORPUS=<dir> to re-derive]"),
-              "ok": sealed_ok,
+              "ok": None,                     # not verifiable by a third party (re-audit 4); author's machine result below
+              "verified_on_author_machine": sealed_ok,
               "value": "X1-3 blind (v1 seal, outcomes unopened): 53/82, 51/63 | X4 (v4): 11/13, 6/7 | X5 (v6): 6/8, 10/10 | X4+X5: 17/21 [0.60-0.92], 16/17 [0.73-0.99]",
               "artifact": "outputs/ginibre_sealed_scores.json", "sha256": _sha256(sealed),
               "scope": "RE-DERIVABLE BY THE AUTHOR ONLY: the corpus is private (unpublished paper); engine tags ginibre-ciego-v1..v6 are public "

@@ -31,12 +31,14 @@ def _num(x):
 
 
 def gate_pharma_stat_claim(evidence: dict[str, Any]) -> dict[str, Any]:
-    """Gate a reported pharma statistical claim. `evidence` fields (all optional; missing required ->
-    HOLD): p_value, alpha (default 0.05), asserts_significant (bool), n_comparisons (int>=1),
-    multiplicity_adjustment (bool/str), endpoint_type ('primary'|'secondary'|'exploratory'),
-    prespecified (bool), claim_kind ('confirmatory'|'descriptive'), ci_low, ci_high, ci_null (default 0),
-    asserts_effect (bool), observed_direction ('benefit'|'harm'|'none'), claimed_direction,
-    rederived_p_match (bool|None — from the engine's raw-data recompute)."""
+    """Gate a reported pharma statistical claim. Every field is DECLARED; nothing is defaulted (missing -> HOLD).
+    Required for a confirmatory claim: claim_kind ('confirmatory'|'descriptive', exact), asserts_significant (bool),
+    asserts_effect (bool, optional, defaults to asserts_significant), p_value in [0, 1], alpha in (0, 0.10],
+    n_comparisons (int >= 1), multiplicity_adjustment (bool or a named method), endpoint_type
+    ('primary'|'secondary'|'exploratory'), prespecified (bool), effect_measure (a difference or a ratio; it fixes the
+    null: 0 or 1; ci_null, if given, must agree), ci_low, ci_high, ci_level (0-1), ci_sides and p_sides (1 or 2),
+    observed_direction and claimed_direction ('benefit'|'harm'|'none'), rederived_p_match (bool|None).
+    A descriptive claim needs claim_kind and asserts_significant only, and licenses descriptive reuse only."""
     if not isinstance(evidence, dict):
         return {"verdict": "HOLD", "why": "no structured evidence supplied", "findings": []}
 
@@ -49,7 +51,8 @@ def gate_pharma_stat_claim(evidence: dict[str, Any]) -> dict[str, Any]:
     # defaulted silently to 0.05; multiplicity_adjustment "no" counted as adjusted (bool("no") is True); a missing
     # prespecified passed. Rule since: every field a confirmatory claim depends on must be DECLARED; missing -> HOLD.
     _REQUIRED = ("claim_kind", "asserts_significant", "p_value", "alpha", "n_comparisons", "multiplicity_adjustment",
-                 "endpoint_type", "prespecified", "ci_low", "ci_high", "observed_direction", "claimed_direction")
+                 "endpoint_type", "prespecified", "ci_low", "ci_high", "ci_level", "ci_sides", "p_sides",
+                 "observed_direction", "claimed_direction")
     _missing = [k for k in _REQUIRED if evidence.get(k) is None]
     if evidence.get("claim_kind") == "descriptive":
         _missing = [k for k in ("claim_kind", "asserts_significant") if evidence.get(k) is None]
@@ -143,7 +146,9 @@ def gate_pharma_stat_claim(evidence: dict[str, Any]) -> dict[str, Any]:
     if null is None:
         null = 0.0
     if asserts_eff and lo is not None and hi is not None:
-        if min(lo, hi) <= null <= max(lo, hi):
+        if min(abs(lo - null), abs(hi - null)) <= 1e-3 * (abs(hi - lo) or 1.0):
+            add("HOLD", "ci_endpoint_at_null", f"an interval endpoint sits at the null ({null:g}) within rounding: [{lo:g}, {hi:g}]")
+        elif min(lo, hi) <= null <= max(lo, hi):
             add("REJECT", "ci_includes_null",
                 f"the {100 * (1 - alpha):.0f}% CI [{lo:g}, {hi:g}] includes the null ({null:g}); the interval "
                 f"does not license an effect claim")
@@ -170,15 +175,30 @@ def gate_pharma_stat_claim(evidence: dict[str, Any]) -> dict[str, Any]:
     if asserts_sig and p is None and not findings:
         add("HOLD", "missing_pvalue", "no p-value supplied for a significance claim")
 
-    # Re-audit 3 (2026-10-14): p and CI must agree, and only a significance claim licenses confirmatory efficacy.
+    # Re-audit 4 (2026-10-14): p and CI are compared AT THE DECLARED LEVEL and SIDES (a 95% two-sided CI excluding the
+    # null <=> two-sided p < 0.05), never against alpha. A contradiction is REJECT only when it is clear of the boundary;
+    # anything within rounding distance of the null or of 1 - ci_level, or with different sides, is HOLD.
     if confirmatory and p is not None and lo is not None and hi is not None:
-        _excl = not (min(lo, hi) <= null <= max(lo, hi))
-        if _excl and p > alpha:
-            add("REJECT", "p_ci_incoherent", f"the CI [{lo:g}, {hi:g}] excludes the null ({null:g}) but p={p:g} > alpha={alpha:g}: "
-                "the reported p and interval disagree")
-        elif not _excl and p <= alpha:
-            add("REJECT", "p_ci_incoherent", f"p={p:g} <= alpha={alpha:g} but the CI [{lo:g}, {hi:g}] includes the null ({null:g}): "
-                "the reported p and interval disagree")
+        lvl = _num(evidence.get("ci_level")); cs, ps = evidence.get("ci_sides"), evidence.get("p_sides")
+        if lvl is None or not (0.0 < lvl < 1.0) or cs not in (1, 2) or ps not in (1, 2):
+            return _hold("ci_level must be in (0, 1) and ci_sides, p_sides must be 1 or 2 to compare p with the interval")
+        if cs != ps:
+            add("HOLD", "p_ci_sides_differ", f"the interval is {cs}-sided and the p-value {ps}-sided: they cannot be compared")
+        else:
+            thr = 1.0 - lvl
+            span = abs(hi - lo) or 1.0
+            near_null = min(abs(lo - null), abs(hi - null)) <= 1e-3 * span
+            near_thr = abs(p - thr) <= 0.05 * thr
+            excl = not (min(lo, hi) <= null <= max(lo, hi))
+            if near_null or near_thr:
+                add("HOLD", "p_ci_at_boundary", f"p={p:g} or the interval [{lo:g}, {hi:g}] sits at the boundary "
+                    f"(null {null:g}, 1 - ci_level = {thr:g}): rounding cannot be told from disagreement")
+            elif excl and p > thr:
+                add("REJECT", "p_ci_incoherent", f"the {lvl:.0%} CI [{lo:g}, {hi:g}] excludes the null ({null:g}) but p={p:g} > {thr:g}: "
+                    "the reported p and interval disagree")
+            elif not excl and p < thr:
+                add("REJECT", "p_ci_incoherent", f"p={p:g} < {thr:g} but the {lvl:.0%} CI [{lo:g}, {hi:g}] includes the null ({null:g}): "
+                    "the reported p and interval disagree")
     if confirmatory and not asserts_sig and asserts_eff:
         add("REWRITE", "effect_without_significance", "a confirmatory effect claim that does not assert significance licenses the "
             "effect estimate as descriptive, not confirmatory efficacy")
