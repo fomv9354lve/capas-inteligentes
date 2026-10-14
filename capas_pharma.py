@@ -96,6 +96,8 @@ def gate_pharma_stat_claim(evidence: dict[str, Any]) -> dict[str, Any]:
         return {"verdict": "HOLD", "why": "prespecified and asserts_significant must be declared as true/false",
                 "findings": [], "licensed_reuse": "none", "domain": "pharma_statistics", "alpha": alpha}
     p = _num(evidence.get("p_value"))
+    if p is not None and not (0.0 <= p <= 1.0):
+        return _hold(f"p_value {evidence.get('p_value')!r} is not a probability in [0, 1]")
     asserts_sig = evidence.get("asserts_significant") is True
     asserts_eff = bool(evidence.get("asserts_effect", asserts_sig))
     confirmatory = (evidence.get("claim_kind") == "confirmatory")
@@ -168,6 +170,18 @@ def gate_pharma_stat_claim(evidence: dict[str, Any]) -> dict[str, Any]:
     if asserts_sig and p is None and not findings:
         add("HOLD", "missing_pvalue", "no p-value supplied for a significance claim")
 
+    # Re-audit 3 (2026-10-14): p and CI must agree, and only a significance claim licenses confirmatory efficacy.
+    if confirmatory and p is not None and lo is not None and hi is not None:
+        _excl = not (min(lo, hi) <= null <= max(lo, hi))
+        if _excl and p > alpha:
+            add("REJECT", "p_ci_incoherent", f"the CI [{lo:g}, {hi:g}] excludes the null ({null:g}) but p={p:g} > alpha={alpha:g}: "
+                "the reported p and interval disagree")
+        elif not _excl and p <= alpha:
+            add("REJECT", "p_ci_incoherent", f"p={p:g} <= alpha={alpha:g} but the CI [{lo:g}, {hi:g}] includes the null ({null:g}): "
+                "the reported p and interval disagree")
+    if confirmatory and not asserts_sig and asserts_eff:
+        add("REWRITE", "effect_without_significance", "a confirmatory effect claim that does not assert significance licenses the "
+            "effect estimate as descriptive, not confirmatory efficacy")
     if not findings:
         verdict = "ACCEPT"
         why = "the supplied evidence licenses the claim: p<alpha, CI excludes the null, direction matches, " \
@@ -178,8 +192,9 @@ def gate_pharma_stat_claim(evidence: dict[str, Any]) -> dict[str, Any]:
         why = worst["why"]
 
     return {"verdict": verdict, "why": why, "findings": findings,
-            "licensed_reuse": ("confirmatory efficacy" if verdict == "ACCEPT"
-                               else "downgraded — see findings"),
+            "licensed_reuse": ("confirmatory efficacy" if (verdict == "ACCEPT" and confirmatory and asserts_sig)
+                               else "descriptive only" if verdict == "ACCEPT"
+                               else "downgraded: see findings"),
             "domain": "pharma_statistics", "alpha": alpha}
 
 

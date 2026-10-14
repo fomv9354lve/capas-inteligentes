@@ -93,3 +93,28 @@ def test_financial_text_variants_are_not_accepted(t):
 def test_no_type_carries_the_raw_sentence_on_accept():
     r = _d("Artifact reproduced by an independent lab.", "reproducibility_check", {"artifact_available": True, "independent_reproduction_pass": True})
     assert r["verdict"] == "ACCEPT" and "independent lab" not in r["licensed_claim"]
+
+
+# ---- re-audit 3 (pharma)
+def test_pharma_descriptive_accept_is_not_confirmatory():
+    r = ph.gate_pharma_stat_claim({"claim_kind": "descriptive", "asserts_significant": False, "alpha": 0.05, "prespecified": False, "multiplicity_adjustment": "none"})
+    assert r["licensed_reuse"] != "confirmatory efficacy"
+
+
+def test_pharma_effect_without_significance_and_incoherent_p_ci():
+    r = ph.gate_pharma_stat_claim({**FULL, "asserts_significant": False, "asserts_effect": True, "p_value": 0.9, "effect_measure": "hr", "ci_low": 0.6, "ci_high": 0.9})
+    assert r["verdict"] != "ACCEPT"
+    r = ph.gate_pharma_stat_claim({**FULL, "p_value": 0.2})                      # CI excludes 0 but p > alpha
+    assert r["verdict"] == "REJECT"
+
+
+def test_pharma_p_range():
+    assert ph.gate_pharma_stat_claim({**FULL, "p_value": -0.1})["verdict"] == "HOLD"
+    assert ph.gate_pharma_stat_claim({**FULL, "p_value": 1.5})["verdict"] == "HOLD"
+
+
+def test_home_script_runs_from_a_fresh_clone():
+    import subprocess, os
+    env = {k: v for k, v in os.environ.items() if k != "PYTHONPATH"}
+    r = subprocess.run([sys.executable, "-I", str(ROOT / "benchmarks" / "home_gate_decisions.py")], capture_output=True, text=True, cwd="/", env=env, timeout=120)
+    assert r.returncode == 0, r.stderr[-300:]

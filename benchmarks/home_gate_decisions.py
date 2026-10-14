@@ -12,6 +12,10 @@ Run:  python3 benchmarks/home_gate_decisions.py          # prints the table
 """
 import json
 import sys
+from pathlib import Path
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))   # runs from a fresh clone without pip install (re-audit 3)
+import sys
 import capas_sdk
 
 # (label, claim_type, evidence, claim_text, claim_id) — the four canonical dispositions.

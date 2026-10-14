@@ -31,6 +31,10 @@ _API_KEY = os.environ.get("CAPAS_API_KEY")
 _HOSTED = os.environ.get("CAPAS_HOSTED") == "1"
 
 DOCS = ROOT / "docs"
+_PAGE_CSP = ("default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; "
+             "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; "
+             "img-src 'self' data: https://www.bestpractices.dev https://bestpractices.dev; connect-src 'self'; frame-src 'self'; "
+             "frame-ancestors 'self'; base-uri 'self'; form-action 'self'; object-src 'none'")
 _CTYPE = {"html": "text/html", "js": "application/javascript", "css": "text/css",
           "png": "image/png", "jpeg": "image/jpeg", "jpg": "image/jpeg", "json": "application/json",
           "svg": "image/svg+xml", "ico": "image/x-icon", "md": "text/plain; charset=utf-8",
@@ -318,6 +322,10 @@ class H(BaseHTTPRequestHandler):
         self.send_header("Content-Type", _CTYPE.get(f.suffix.lstrip(".").lower(), "application/octet-stream"))
         self.send_header("Cache-Control", "no-cache")
         self.send_header("ETag", etag)
+        if f.suffix.lower() == ".html":
+            # Re-audit 3 (2026-10-14): origin-restricting CSP on every page. 'unsafe-inline' stays for scripts and styles
+            # because the pages use inline handlers and styles; the Gate App adds its own stricter hash-based meta CSP.
+            self.send_header("Content-Security-Policy", _PAGE_CSP)
         self.send_header("Content-Length", str(len(data))); self._cors(); self.end_headers()
         self.wfile.write(data)
 

@@ -158,14 +158,17 @@ def build() -> list[dict]:
     # figures, but they are only re-derived (sha-verified) on a machine that has the corpus. Never "broken".
     L.append({"id": "blind_corpus_sealed", "claim": "Blind self-gating corpus (Ginibre, 233 real research claims): "
               "out-of-sample bad-not-ACCEPT 17/21, good-not-REJECT 16/17; X1-3 v1 53/82, 51/63",
-              "status": "BACKED" if sealed_ok is not None else "SCOPED",
+              # Re-audit 3 (2026-10-14): re-derivable by the author only (private corpus; seal flag and tag dates self-recorded).
+              "status": "SCOPED",
               "backing": "python3 research/ginibre_corpus/score_sealed.py" + (
                   "" if sealed_ok is not None else "  [corpus not on this machine: figures NOT re-derived here; "
                                                    "set CAPAS_GINIBRE_CORPUS=<dir> to re-derive]"),
               "ok": sealed_ok,
               "value": "X1-3 blind (v1 seal, outcomes unopened): 53/82, 51/63 | X4 (v4): 11/13, 6/7 | X5 (v6): 6/8, 10/10 | X4+X5: 17/21 [0.60-0.92], 16/17 [0.73-0.99]",
               "artifact": "outputs/ginibre_sealed_scores.json", "sha256": _sha256(sealed),
-              "scope": "Claims coded by a separate session that could not see verdicts; engine frozen at a git tag BEFORE "
+              "scope": "RE-DERIVABLE BY THE AUTHOR ONLY: the corpus is private (unpublished paper); engine tags ginibre-ciego-v1..v6 are public "
+                       "since 2026-10-14 but their dates and the sealing flag are self-recorded, not externally timestamped. "
+                       "Claims coded by a separate session that could not see verdicts; engine frozen at a git tag BEFORE "
                        "coding (X4/X5); verdicts sealed by sha256 BEFORE outcomes were opened; double-counted by both sessions. "
                        "Outcomes = the project's own later corrections ('bueno' = never corrected), not an external oracle. "
                        "n is small; intervals are Wilson 95%. The scorer re-verifies every claims_sha256 against its header.",
