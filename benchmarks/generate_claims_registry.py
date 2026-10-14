@@ -29,7 +29,7 @@ WHERE = {
     "gates_domains": "Home stat bar (26 gates / 10 domains), Methodology",
     "decisions_1238": "Benchmark (1,238 decisions, 78.4% gated)",
     "pharma_admissibility": "Pharma beachhead (capas_pharma.gate_pharma_stat_claim)",
-    "beat_benchmark": "Home (“Proof on real hardware”, 2–11×)",
+    "beat_benchmark": "Home (“Re-derived from published fields and two declared assumptions (In depth)”, 2–11×)",
     "false_accept_rate": "Pilot, Home (n=28 retrospective)",
     "retrospective_28": "Home + Pilot (28 retracted-vs-replicated)",
     "head_to_head": "Benchmark (vs LLM-judge)",

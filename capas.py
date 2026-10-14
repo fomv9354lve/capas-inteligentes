@@ -2314,8 +2314,29 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
         reason = f"{reason}; the text asserts a universal scope (all / every / in general) that no declared field covers"
         rewrite = "the measured result is licensed on the sample it was measured on; the universal scope in the text is not"
         licensed_claim = rewrite
+    # Fixed pattern list (closed by construction; it can only LOWER a verdict, never raise one). Re-audit 2026-10-14 variants.
+    if verdict == "ACCEPT" and claim_type == "statistical_confidence" and evidence.get("scope_declared") is None and re.search(
+            r"(\b(everyone|everybody|regardless of|irrespective of|in all|across all|without exception)\b|\bin 100\s?%|"
+            r"\b(todos|cualquiera|sin excepci\w+)\b)", _txt, re.I):
+        verdict = "REWRITE"
+        reason = f"{reason}; the text asserts a universal scope that no declared field covers"
+        rewrite = "the measured result is licensed on the sample it was measured on; the universal scope in the text is not"
+        licensed_claim = rewrite
+    if verdict == "ACCEPT" and claim_type == "statistical_confidence" and evidence.get("null_control_passed") is not True and re.search(
+            r"\b(causes?|caused|leads? to|drives?|driven|eliminates?|prevents?|cures?|results? in|produces?|"
+            r"provoca\w*|elimina\w*|previene\w*|produce\w*)\b", _txt, re.I):
+        verdict = "REWRITE"
+        reason = f"{reason}; the text attributes a cause but no null control is declared — a significant p licenses the association, not its cause"
+        rewrite = "statistical association licensed; the attributed cause is not (declare null_control_passed or a causal claim type)"
+        licensed_claim = rewrite
+    if verdict == "ACCEPT" and claim_type == "financial_metric_claim" and re.search(
+            r"\b(all (future )?periods|every (future )?period|will|going forward|future|forecast\w*|todos los periodos|futur\w+)\b", _txt, re.I):
+        verdict = "REWRITE"
+        reason = f"{reason}; the text extends the metric beyond the reported period: the period is licensed, the extension is not"
+        rewrite = "the reported metric matches its reference for the reported period only"
+        licensed_claim = rewrite
     if verdict == "ACCEPT" and claim_type == "financial_metric_claim" and (MECH_RE.search(_txt) or re.search(
-            r"\b(prove[sd]?|demonstrat\w+|shows? that|worked|success\w*|turnaround|thanks to|result of)\b", _txt, re.I)):
+            r"\b(prove[sd]?|demonstrat\w+|shows?|showed|worked|succe\w*|turnaround|thanks to|result of)\b", _txt, re.I)):
         verdict = "REWRITE"
         reason = f"{reason}; the text attributes a cause or a success to the number: the metric is licensed, the attribution is not"
         rewrite = "the reported metric matches its reference; any causal or success attribution in the text is not licensed"
@@ -2385,8 +2406,13 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
     if (verdict == "ACCEPT" and claim_type == "proof_admissibility" and evidence.get("uniform_bound_proven") is True
             and isinstance(licensed_claim, str) and _raw and licensed_claim.strip() == str(_raw).strip()):
         text_licensed_as_written = True     # the declared fields cover the text's scope: universal claim, uniform bound proven
-    elif verdict == "ACCEPT" and isinstance(licensed_claim, str) and _raw and licensed_claim.strip() == str(_raw).strip():
-        licensed_claim = f"[licensed on the declared {claim_type} evidence only; the text's wording and scope are not read by the gate] {_raw}".strip()
+    elif verdict == "ACCEPT":
+        # Re-audit 2026-10-14: a bracketed prefix is removable, so the raw sentence is never carried. The licensed
+        # statement is generated from the declared fields (the reason the rule fired), nothing else.
+        _sd = evidence.get("scope_declared") if isinstance(evidence.get("scope_declared"), list) else None
+        _scope = f" (declared scope: {', '.join(str(x) for x in _sd)})" if _sd else (
+            f" (declared bounded scope: {str(evidence.get('claim_scope')).strip()})" if claim_type == "proof_admissibility" and evidence.get("claim_scope") else "")
+        licensed_claim = f"Licensed on the declared {claim_type} evidence{_scope}: {reason}."
 
     fine_tune = evaluate_fine_tune_readiness(
         payload,

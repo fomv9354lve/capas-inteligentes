@@ -61,6 +61,33 @@ def gate_pharma_stat_claim(evidence: dict[str, Any]) -> dict[str, Any]:
         return {"verdict": "HOLD", "why": f"missing declared fields: {_missing}; a confirmatory statistical claim is "
                 "judged only on declared evidence (nothing is defaulted)", "findings": [],
                 "licensed_reuse": "none until the missing fields are declared", "domain": "pharma_statistics", "alpha": None}
+    # Re-audit 2026-10-14: claim_kind, endpoint_type and n_comparisons are validated, the effect measure fixes the null
+    # (0 for differences, 1 for ratios: an HR CI [0.85, 1.20] includes 1), and a confirmatory claim must assert something.
+    _hold = lambda why: {"verdict": "HOLD", "why": why, "findings": [], "licensed_reuse": "none", "domain": "pharma_statistics",
+                         "alpha": _num(evidence.get("alpha"))}
+    if evidence.get("claim_kind") not in ("confirmatory", "descriptive"):
+        return _hold(f"claim_kind {evidence.get('claim_kind')!r} must be 'confirmatory' or 'descriptive' (exact)")
+    if evidence.get("claim_kind") == "confirmatory":
+        if evidence.get("endpoint_type") not in ("primary", "secondary", "exploratory"):
+            return _hold(f"endpoint_type {evidence.get('endpoint_type')!r} must be 'primary', 'secondary' or 'exploratory'")
+        _nc = evidence.get("n_comparisons")
+        if not isinstance(_nc, int) or isinstance(_nc, bool) or _nc < 1:
+            return _hold(f"n_comparisons {_nc!r} must be an integer >= 1 (text is not read as a number)")
+        _RATIO = {"hr", "or", "rr", "ratio", "hazard_ratio", "odds_ratio", "risk_ratio", "rate_ratio"}
+        _DIFF = {"difference", "mean_difference", "risk_difference", "md", "rd", "smd", "absolute_difference"}
+        _em = str(evidence.get("effect_measure", "") or "").strip().lower()
+        if _em not in _RATIO | _DIFF:
+            return _hold(f"effect_measure {evidence.get('effect_measure')!r} must be declared (a difference or a ratio): it fixes the null")
+        _null_expected = 1.0 if _em in _RATIO else 0.0
+        if evidence.get("ci_null") is not None and _num(evidence.get("ci_null")) != _null_expected:
+            return _hold(f"ci_null {evidence.get('ci_null')!r} contradicts effect_measure {_em!r} (null {_null_expected:g})")
+        evidence = {**evidence, "ci_null": _null_expected}
+        if evidence.get("asserts_significant") is not True and evidence.get("asserts_effect") is not True:
+            return {"verdict": "REWRITE", "why": "a confirmatory claim that asserts neither significance nor an effect licenses no "
+                    "confirmatory reuse; declare what it asserts, or label it descriptive", "findings": [],
+                    "licensed_reuse": "descriptive only", "domain": "pharma_statistics", "alpha": _num(evidence.get("alpha"))}
+        if evidence.get("observed_direction") not in ("benefit", "harm", "none") or evidence.get("claimed_direction") not in ("benefit", "harm", "none"):
+            return _hold("observed_direction and claimed_direction must be 'benefit', 'harm' or 'none'")
     alpha = _num(evidence.get("alpha"))
     if alpha is None or not (0.0 < alpha <= 0.10):
         return {"verdict": "HOLD", "why": f"alpha {evidence.get('alpha')!r} is not a significance threshold in (0, 0.10]",
@@ -122,6 +149,9 @@ def gate_pharma_stat_claim(evidence: dict[str, Any]) -> dict[str, Any]:
     # 4. effect direction matches the data
     obs = evidence.get("observed_direction")
     claimed = evidence.get("claimed_direction")
+    if obs == "none" and claimed in ("benefit", "harm"):
+        add("REWRITE", "effect_direction",
+            f"claim states a '{claimed}' effect but no effect direction was observed; rewrite to 'no observed effect'")
     if obs and claimed and obs != "none" and claimed != obs:
         add("REWRITE", "effect_direction",
             f"claim states a '{claimed}' effect but the observed direction is '{obs}'; rewrite to match the data")

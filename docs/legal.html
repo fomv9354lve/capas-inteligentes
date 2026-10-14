@@ -61,6 +61,7 @@
   <h2><span class="tag">3</span>Data Policy</h2>
   <h3>3.1 Ownership of circuits</h3>
   <p>Every submitted circuit is treated as confidential intellectual property. The hosted service processes it <strong>ephemerally</strong>, in memory for the duration of the request, and does not persist it to disk or any database.</p>
+  <p>Certificates issued through the authenticated <code>/api/certificate</code> endpoint are stored on the server&rsquo;s disk with the submitted claim, evidence and verdict, so they can be retrieved and verified by id. They are not used to train any model. Ask for deletion through the contact on this page.</p>
   <h3>3.2 On-premise and air-gapped deployment</h3>
   <p>For defense, pharmaceutical, financial or any work where circuits cannot leave the network, use the <strong>downloadable engine</strong>: it runs on your hardware, makes no analysis calls to Krenn·IQ servers, and circuits never transit the public internet. This is the recommended mode for data-residency and classified workloads.</p>
   <h3>3.3 Hosting &amp; jurisdiction</h3>

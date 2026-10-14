@@ -1,9 +1,26 @@
 {
- "X1-3 (blind, v2)": {
-  "engine_tag": "ginibre-ciego-v2",
-  "engine_commit": "317ce90",
+ "X1-3 (blind, v1)": {
+  "by_verdict": {
+   "bad": {
+    "ACCEPT": 29,
+    "REWRITE": 26,
+    "REJECT": 22,
+    "HOLD": 5
+   },
+   "good": {
+    "ACCEPT": 42,
+    "REWRITE": 9,
+    "REJECT": 12,
+    "HOLD": 0
+   }
+  },
+  "n_excluded_contaminated": 31,
+  "hold_share": 0.034,
+  "good_accept": "42/63",
+  "engine_tag": "ginibre-ciego-v1",
+  "engine_commit": "a78cadf",
   "claims_sha256": "9ad3044a3674",
-  "outcomes_opened_before_sealing": null,
+  "outcomes_opened_before_sealing": false,
   "n_clean": 145,
   "bad_not_accepted": "53/82",
   "bad_rate": 0.65,
@@ -11,14 +28,31 @@
    0.54,
    0.74
   ],
-  "good_not_rejected": "52/63",
-  "good_rate": 0.83,
+  "good_not_rejected": "51/63",
+  "good_rate": 0.81,
   "good_ci95": [
-   0.71,
-   0.9
+   0.7,
+   0.89
   ]
  },
  "X4 (out-of-sample, v4)": {
+  "by_verdict": {
+   "bad": {
+    "ACCEPT": 2,
+    "REWRITE": 8,
+    "REJECT": 3,
+    "HOLD": 0
+   },
+   "good": {
+    "ACCEPT": 5,
+    "REWRITE": 1,
+    "REJECT": 1,
+    "HOLD": 0
+   }
+  },
+  "n_excluded_contaminated": 17,
+  "hold_share": 0.0,
+  "good_accept": "5/7",
   "engine_tag": "ginibre-ciego-v4",
   "engine_commit": "bf09faa",
   "claims_sha256": "500cf60535c4",
@@ -38,6 +72,23 @@
   ]
  },
  "X5 (out-of-sample, v6)": {
+  "by_verdict": {
+   "bad": {
+    "ACCEPT": 2,
+    "REWRITE": 2,
+    "REJECT": 3,
+    "HOLD": 1
+   },
+   "good": {
+    "ACCEPT": 6,
+    "REWRITE": 4,
+    "REJECT": 0,
+    "HOLD": 0
+   }
+  },
+  "n_excluded_contaminated": 2,
+  "hold_share": 0.056,
+  "good_accept": "6/10",
   "engine_tag": "ginibre-ciego-v6",
   "engine_commit": "481d5cf",
   "claims_sha256": "32821bf213d4",
@@ -67,5 +118,32 @@
    0.73,
    0.99
   ]
+ },
+ "pooled X1-5 (blind, v1 + X4 + X5)": {
+  "by_verdict": {
+   "bad": {
+    "ACCEPT": 33,
+    "REWRITE": 36,
+    "REJECT": 28,
+    "HOLD": 6
+   },
+   "good": {
+    "ACCEPT": 53,
+    "REWRITE": 14,
+    "REJECT": 13,
+    "HOLD": 0
+   }
+  },
+  "n_clean": 183,
+  "n_excluded_contaminated": 50,
+  "bad_not_accepted": "70/103",
+  "good_not_rejected": "67/80",
+  "good_accept": "53/80",
+  "good_accept_or_rewrite": "67/80",
+  "hold_total": "6/183"
+ },
+ "X1-3 v2 (one rule change after v1; outcomes-opened flag NOT recorded)": {
+  "bad_not_accepted": "53/82",
+  "good_not_rejected": "52/63"
  }
 }

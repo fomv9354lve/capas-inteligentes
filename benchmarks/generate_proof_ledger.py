@@ -105,7 +105,8 @@ def build() -> list[dict]:
     b = Q.complete_error_budget({"cz_error": 1.629e-3, "sx_error": 2.743e-4, "t1_us": 299.57,
                                  "t2_us": 33.9, "readout": 5.371e-3, "zz_residual_hz": 50e3, "idle_ns": 300})
     L.append({"id": "beat_benchmark", "claim": "On one ibm_fez qubit pair (q9-q10), the vendor's headline CZ error under-states the re-derived per-layer floor 11.4x; about 2x on typical pairs",
-              "status": "BACKED", "backing": "python3 benchmarks/generate_proof_ledger.py (capas_quantum_physics.complete_error_budget on the row below; also benchmarks/verify_xeb_purity.py)",
+              "status": "SCOPED", "backing": "python3 benchmarks/generate_proof_ledger.py (capas_quantum_physics.complete_error_budget on the row below; also benchmarks/verify_xeb_purity.py)",
+              "sha256": "sha256:" + hashlib.sha256(json.dumps(b, sort_keys=True).encode()).hexdigest()[:32] + "…",
               "inputs": {"published": {"cz_error": 1.629e-3, "sx_error": 2.743e-4, "t1_us": 299.57, "t2_us": 33.9, "readout": 5.371e-3},
                          "assumed": {"idle_ns": 300, "zz_residual_hz": 50e3, "cz_time_ns": 68, "leakage": 1e-4}},
               "ok": b.get("exact_gap_x", 0) > 1, "value": f"~2x typical, {b['exact_gap_x']}x worst (dephasing-limited)",
@@ -156,13 +157,13 @@ def build() -> list[dict]:
     # SKIPs (rc 2) and this claim is SCOPED, not BACKED: the tracked outputs/ginibre_sealed_scores.json carries the
     # figures, but they are only re-derived (sha-verified) on a machine that has the corpus. Never "broken".
     L.append({"id": "blind_corpus_sealed", "claim": "Blind self-gating corpus (Ginibre, 233 real research claims): "
-              "out-of-sample bad-not-ACCEPT 17/21, good-not-REJECT 16/17",
+              "out-of-sample bad-not-ACCEPT 17/21, good-not-REJECT 16/17; X1-3 v1 53/82, 51/63",
               "status": "BACKED" if sealed_ok is not None else "SCOPED",
               "backing": "python3 research/ginibre_corpus/score_sealed.py" + (
                   "" if sealed_ok is not None else "  [corpus not on this machine: figures NOT re-derived here; "
                                                    "set CAPAS_GINIBRE_CORPUS=<dir> to re-derive]"),
               "ok": sealed_ok,
-              "value": "X1-3 blind (v2): 53/82, 52/63 | X4 (v4): 11/13, 6/7 | X5 (v6): 6/8, 10/10 | X4+X5: 17/21 [0.60-0.92], 16/17 [0.73-0.99]",
+              "value": "X1-3 blind (v1 seal, outcomes unopened): 53/82, 51/63 | X4 (v4): 11/13, 6/7 | X5 (v6): 6/8, 10/10 | X4+X5: 17/21 [0.60-0.92], 16/17 [0.73-0.99]",
               "artifact": "outputs/ginibre_sealed_scores.json", "sha256": _sha256(sealed),
               "scope": "Claims coded by a separate session that could not see verdicts; engine frozen at a git tag BEFORE "
                        "coding (X4/X5); verdicts sealed by sha256 BEFORE outcomes were opened; double-counted by both sessions. "

@@ -87,7 +87,7 @@ def test_accept_with_declared_scope_annotates_licensed_claim():
 def test_accept_without_scope_fields_and_local_text_licenses_evidence_not_raw_text():
     # External audit 2026-10-14: ACCEPT never licenses the raw sentence; it licenses the declared evidence, annotated.
     d = capas.decide_external_claim(_p(LOCAL))
-    assert d["verdict"] == "ACCEPT" and d["licensed_claim"].endswith(LOCAL) and d["licensed_claim"].startswith("[licensed on the declared")
+    assert d["verdict"] == "ACCEPT" and LOCAL not in d["licensed_claim"] and d["licensed_claim"].startswith("Licensed on the declared")
     assert d["text_licensed_as_written"] is False
 
 

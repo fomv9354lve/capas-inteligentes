@@ -66,15 +66,16 @@
     "ok": true,
     "value": "N=3024; hard-gated 95.5%; 0 deficient claims ACCEPTed",
     "artifact": "outputs/pharma_corpus.json",
-    "sha256": "sha256:349286ca67a17dfc0a47767cc17be030\u2026",
+    "sha256": "sha256:ca98c8af424e31e0e9c308b10fc351e5\u2026",
     "scope": "SYNTHETIC contract coverage of the statistical-admissibility space Pinnacle 21 skips (significance-vs-alpha, multiplicity, CI-excludes-null, direction, endpoint). NOT a production false-accept rate on real submissions. The oracle restates the gate's own rules, so this is contract coverage, not validation. Since 2026-10-14 every field is required (missing -> HOLD; external audit found {} -> ACCEPT). The pharma gate is a library function (capas_pharma), not exposed on the hosted API.",
     "owner": "pharma"
   },
   {
     "id": "beat_benchmark",
     "claim": "On one ibm_fez qubit pair (q9-q10), the vendor's headline CZ error under-states the re-derived per-layer floor 11.4x; about 2x on typical pairs",
-    "status": "BACKED",
+    "status": "SCOPED",
     "backing": "python3 benchmarks/generate_proof_ledger.py (capas_quantum_physics.complete_error_budget on the row below; also benchmarks/verify_xeb_purity.py)",
+    "sha256": "sha256:ce3399ca6d29bbf76eb977f36fb6491f\u2026",
     "inputs": {
       "published": {
         "cz_error": 0.001629,
@@ -168,13 +169,13 @@
   },
   {
     "id": "blind_corpus_sealed",
-    "claim": "Blind self-gating corpus (Ginibre, 233 real research claims): out-of-sample bad-not-ACCEPT 17/21, good-not-REJECT 16/17",
+    "claim": "Blind self-gating corpus (Ginibre, 233 real research claims): out-of-sample bad-not-ACCEPT 17/21, good-not-REJECT 16/17; X1-3 v1 53/82, 51/63",
     "status": "BACKED",
     "backing": "python3 research/ginibre_corpus/score_sealed.py",
     "ok": true,
-    "value": "X1-3 blind (v2): 53/82, 52/63 | X4 (v4): 11/13, 6/7 | X5 (v6): 6/8, 10/10 | X4+X5: 17/21 [0.60-0.92], 16/17 [0.73-0.99]",
+    "value": "X1-3 blind (v1 seal, outcomes unopened): 53/82, 51/63 | X4 (v4): 11/13, 6/7 | X5 (v6): 6/8, 10/10 | X4+X5: 17/21 [0.60-0.92], 16/17 [0.73-0.99]",
     "artifact": "outputs/ginibre_sealed_scores.json",
-    "sha256": "sha256:aff3c1c5741e382d729c2d81ee8274a1\u2026",
+    "sha256": "sha256:38dc0ca575d0875eef678a284acc4491\u2026",
     "scope": "Claims coded by a separate session that could not see verdicts; engine frozen at a git tag BEFORE coding (X4/X5); verdicts sealed by sha256 BEFORE outcomes were opened; double-counted by both sessions. Outcomes = the project's own later corrections ('bueno' = never corrected), not an external oracle. n is small; intervals are Wilson 95%. The scorer re-verifies every claims_sha256 against its header.",
     "owner": "eval"
   },

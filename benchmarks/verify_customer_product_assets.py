@@ -36,7 +36,7 @@ ARGILLA_EXAMPLE = ROOT / "examples" / "argilla_capas_record.json"
 REQUIRED = {
     # 2026-10-13: the home was cut to ~1,100 words on Osvaldo's instruction; the long-form sections moved verbatim to
     # docs/in-depth.html (checked below). The home now leads with the measured blind figures.
-    "landing page with narrative": (PRODUCT, ["Deterministic Scientific Claim Gate", "admissibility", "ACCEPT, REWRITE, REJECT, or HOLD", "No language model in the verdict", "Where it Lives", "Verdict Reference", "What it is, measured", "Krenn-IQ", "53 / 82", "52 / 63", "does not certify scientific truth", "Not a fraud detector, and we measured it", "in-depth.html#ledger"]),
+    "landing page with narrative": (PRODUCT, ["Deterministic Scientific Claim Gate", "admissibility", "ACCEPT, REWRITE, REJECT, or HOLD", "No language model in the verdict", "Where it Lives", "Verdict Reference", "What it is, measured", "Krenn-IQ", "53 / 82", "51 / 63", "does not certify scientific truth", "Not a fraud detector, and we measured it", "in-depth.html#ledger"]),
     "in-depth page (moved long-form sections)": (IN_DEPTH, ["In depth", "The Core", "One mechanism. 10 domains. 26 gates", "contamination cascade", "should this have been said", "Use Cases", "id=\"ledger\"", "Architectural parallel (not a validation)", "WHAT IS <em>NOT</em> VALIDATED"]),
     "scalable transition-network logo": (LOGO, ["viewBox=\"0 0 128 128\"", "CAPAS transition network logo", "cyan licensed paths", "magenta drift paths"]),
     "landing page logo placement": (PRODUCT, ["class=\"bg-logo\"", "src=\"logo_kreniq_volum_trico.html\"", "class=\"bg-veil\""]),

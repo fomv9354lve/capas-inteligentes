@@ -57,10 +57,12 @@ def _reason_code(verdict: str, gate_out: dict, re_derivable_hold: bool = False) 
 
 class H(BaseHTTPRequestHandler):
     def _cors(self):
+        # CORS only on the API (re-audit 2026-10-14): static pages do not need cross-origin access.
+        if not str(getattr(self, "path", "")).startswith("/api"):
+            return
         self.send_header("Access-Control-Allow-Origin", "*")
-        self.send_header("Access-Control-Allow-Headers", "Content-Type")
+        self.send_header("Access-Control-Allow-Headers", "Content-Type, Authorization, X-API-Key")
         self.send_header("Access-Control-Allow-Methods", "GET,POST,OPTIONS")
-        self.send_header("ngrok-skip-browser-warning", "1")
 
     def do_OPTIONS(self):
         self.send_response(204); self._cors(); self.end_headers()
@@ -169,6 +171,13 @@ class H(BaseHTTPRequestHandler):
         def flush(self): self.real.flush()
 
     def end_headers(self):
+        # Re-audit 2026-10-14: baseline security headers on every response. CORS "*" stays on /api/* only: a public read
+        # API by design; certificate issuance requires the API key.
+        self.send_header("Strict-Transport-Security", "max-age=31536000; includeSubDomains")
+        self.send_header("X-Content-Type-Options", "nosniff")
+        self.send_header("Referrer-Policy", "strict-origin-when-cross-origin")
+        self.send_header("X-Frame-Options", "SAMEORIGIN")
+        self.send_header("Permissions-Policy", "camera=(), microphone=(), geolocation=()")
         super().end_headers()
         if isinstance(self.wfile, H._HeadWriter):
             self.wfile.body = True

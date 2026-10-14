@@ -41,6 +41,8 @@ def _deficient(ev: dict, alpha: float) -> bool:
         return True                                            # CI includes the null
     if ev["asserts_effect"] and ev["claimed_direction"] != ev["observed_direction"] and ev["observed_direction"] != "none":
         return True                                            # wrong direction
+    if ev["asserts_effect"] and ev["observed_direction"] == "none" and ev["claimed_direction"] in ("benefit", "harm"):
+        return True                                            # a direction claimed where none was observed (re-audit 2026-10-14)
     if ev["asserts_significant"] and ev["n_comparisons"] > 1 and not ev["multiplicity_adjustment"]:
         return True                                            # unadjusted multiplicity
     if ev["claim_kind"] == "confirmatory" and ev["asserts_effect"] and ev["endpoint_type"] in ("secondary", "exploratory") and not ev["prespecified"]:
@@ -56,7 +58,7 @@ def build() -> list[dict]:
         if alpha == 0.01 and nc == 3:
             continue
         ev = {"p_value": p, "alpha": alpha, "asserts_significant": True, "asserts_effect": True,
-              "n_comparisons": nc, "multiplicity_adjustment": adj, "ci_low": lo, "ci_high": hi, "ci_null": 0,
+              "n_comparisons": nc, "multiplicity_adjustment": adj, "ci_low": lo, "ci_high": hi, "ci_null": 0, "effect_measure": "mean_difference",
               "observed_direction": obs, "claimed_direction": claimed, "endpoint_type": etype,
               "prespecified": pre, "claim_kind": "confirmatory"}
         cases.append(ev)

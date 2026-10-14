@@ -37,7 +37,7 @@ conclusion first, one idea per sentence, evidence instead of adjectives, no thea
 ## Literal strings that verifiers require (keep them exactly)
 index.html: "Deterministic Scientific Claim Gate", "admissibility", "ACCEPT, REWRITE, REJECT, or HOLD",
 "No language model in the verdict", "Where it Lives", "Verdict Reference", "What it is, measured", "Krenn-IQ",
-"53 / 82", "52 / 63", "does not certify scientific truth", "Not a fraud detector, and we measured it",
+"53 / 82", "51 / 63", "does not certify scientific truth", "Not a fraud detector, and we measured it",
 "in-depth.html#ledger", "Reference Gate Decisions", "SCHEMA V3", "statistical_confidence", "audit_hash", "claim_id",
 "evidence_contract", class="bg-logo", src="logo_kreniq_volum_trico.html", class="bg-veil".
 in-depth.html: "In depth", "The Core", "One mechanism. 10 domains. 26 gates", "contamination cascade",
