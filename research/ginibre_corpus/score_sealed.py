@@ -7,7 +7,12 @@ Run: python3 research/ginibre_corpus/score_sealed.py [--json]"""
 import hashlib, json, sys
 from math import sqrt
 from pathlib import Path
-G = Path("/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/Paper - Inverse Ginibre Overlap/CAPAS_CORPUS_2026-10-12")
+# The sealed corpus lives with the (not yet public) Ginibre paper, OUTSIDE this repo: claim texts and outcome notes
+# quote unpublished results. Override with CAPAS_GINIBRE_CORPUS=<dir>. Absent dir -> rc 2 (SKIP, "cannot verify
+# here"), never rc 0 (the figures are not re-derived) and never rc 1 (nothing was found broken).
+import os
+G = Path(os.environ.get("CAPAS_GINIBRE_CORPUS") or
+         "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/Paper - Inverse Ginibre Overlap/CAPAS_CORPUS_2026-10-12")
 SETS = [("X1-3 (blind, v2)", "PARA_CAPAS_claims.jsonl", "PARA_CAPAS_desenlaces.jsonl", "DE_CAPAS_veredictos_v2.jsonl"),
         ("X4 (out-of-sample, v4)", "PARA_CAPAS_claims_X4.jsonl", "PARA_CAPAS_desenlaces_X4.jsonl", "DE_CAPAS_veredictos_X4.jsonl"),
         ("X5 (out-of-sample, v6)", "PARA_CAPAS_claims_X5.jsonl", "PARA_CAPAS_desenlaces_X5.jsonl", "DE_CAPAS_veredictos_X5.jsonl")]

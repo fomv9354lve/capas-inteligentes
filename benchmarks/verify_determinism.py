@@ -74,7 +74,7 @@ def _payloads() -> list[dict]:
     out.append({"schema_version": "capas-claim-payload-v3", "claim": {"id": "nfc", "type": "exact_model_solution", "text": unicodedata.normalize("NFC", "café")}, "evidence": {"abs_error": 0.3, "tolerance": 1.0}})
     out.append({"schema_version": "capas-claim-payload-v3", "claim": {"id": "nfd", "type": "exact_model_solution", "text": unicodedata.normalize("NFD", "café")}, "evidence": {"abs_error": 0.3, "tolerance": 1.0}})
     out.append({"evidence": {"tolerance": 1.0, "abs_error": 0.3}, "claim": {"text": "x", "type": "exact_model_solution", "id": "reordered"}, "schema_version": "capas-claim-payload-v3"})
-    G = Path("/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/Paper - Inverse Ginibre Overlap/CAPAS_CORPUS_2026-10-12")
+    G = Path(os.environ.get("CAPAS_GINIBRE_CORPUS") or "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/Paper - Inverse Ginibre Overlap/CAPAS_CORPUS_2026-10-12")  # private corpus; guarded by exists()
     for f in ("PARA_CAPAS_claims.jsonl", "PARA_CAPAS_claims_X4.jsonl", "PARA_CAPAS_claims_X5.jsonl"):
         if (G / f).exists():
             out += [json.loads(l)["payload"] for l in (G / f).read_text(encoding="utf-8").splitlines() if l.strip()]
@@ -82,7 +82,8 @@ def _payloads() -> list[dict]:
 
 
 RUNNER = r'''
-import json, sys, socket
+import json
+import os, sys, socket
 sys.path.insert(0, %r)
 class _Blocked(socket.socket):
     def connect(self, *a, **k): raise RuntimeError("network blocked")

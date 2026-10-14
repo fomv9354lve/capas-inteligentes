@@ -7,7 +7,7 @@ Uso: python3 research/ginibre_corpus/rescore.py [etiqueta]
 """
 import json, sys, subprocess, tempfile, os, collections
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-G = "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/Paper - Inverse Ginibre Overlap/CAPAS_CORPUS_2026-10-12"
+G = os.environ.get("CAPAS_GINIBRE_CORPUS") or "/Users/kreniq/Desktop/KRENIQ/AI Projects/01. Investigacion/Paper - Inverse Ginibre Overlap/CAPAS_CORPUS_2026-10-12"  # corpus is private (unpublished paper)
 label = sys.argv[1] if len(sys.argv) > 1 else "working-tree"
 oc = {json.loads(l)["claim_id"]: json.loads(l) for l in open(f"{G}/PARA_CAPAS_desenlaces.jsonl", encoding="utf-8") if l.strip()}
 rows = []

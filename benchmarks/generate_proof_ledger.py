@@ -26,8 +26,15 @@ sys.path.insert(0, str(ROOT))
 _TAILS: dict[str, str] = {}  # path -> last lines of a FAILING subtest (printed with BACKING BROKEN; CI showed nothing before)
 
 
-def _run_test(path: str) -> bool:
+_SKIPPED: dict[str, str] = {}  # path -> reason, for backings whose inputs are not on this machine (rc 2 = SKIP)
+
+
+def _run_test(path: str) -> bool | None:
+    """True = re-derived green; False = broken; None = the script reported SKIP (rc 2: its inputs are not here)."""
     r = subprocess.run([sys.executable, path], cwd=str(ROOT), capture_output=True, text=True, timeout=300)
+    if r.returncode == 2:
+        _SKIPPED[path] = ((r.stdout or "") + (r.stderr or "")).strip().splitlines()[-1][:160] if (r.stdout or r.stderr) else "SKIP"
+        return None
     if r.returncode != 0:
         _TAILS[path] = "\n".join(((r.stderr or "") + "\n" + (r.stdout or "")).strip().splitlines()[-8:])
     return r.returncode == 0
@@ -104,10 +111,17 @@ def build() -> list[dict]:
 
     # --- SCOPED: empirical-pending, stated with corpus + the upgrade artifact ---
     sealed = ROOT / "outputs" / "ginibre_sealed_scores.json"
+    sealed_ok = _run_test("research/ginibre_corpus/score_sealed.py")
+    # The sealed corpus sits with the unpublished Ginibre paper, outside the repo. Where it is absent the scorer
+    # SKIPs (rc 2) and this claim is SCOPED, not BACKED: the tracked outputs/ginibre_sealed_scores.json carries the
+    # figures, but they are only re-derived (sha-verified) on a machine that has the corpus. Never "broken".
     L.append({"id": "blind_corpus_sealed", "claim": "Blind self-gating corpus (Ginibre, 233 real research claims): "
               "out-of-sample bad-not-ACCEPT 17/21, good-not-REJECT 16/17",
-              "status": "BACKED", "backing": "python3 research/ginibre_corpus/score_sealed.py",
-              "ok": _run_test("research/ginibre_corpus/score_sealed.py"),
+              "status": "BACKED" if sealed_ok is not None else "SCOPED",
+              "backing": "python3 research/ginibre_corpus/score_sealed.py" + (
+                  "" if sealed_ok is not None else "  [corpus not on this machine: figures NOT re-derived here; "
+                                                   "set CAPAS_GINIBRE_CORPUS=<dir> to re-derive]"),
+              "ok": sealed_ok,
               "value": "X1-3 blind (v2): 53/82, 52/63 | X4 (v4): 11/13, 6/7 | X5 (v6): 6/8, 10/10 | X4+X5: 17/21 [0.60-0.92], 16/17 [0.73-0.99]",
               "artifact": "outputs/ginibre_sealed_scores.json", "sha256": _sha256(sealed),
               "scope": "Claims coded by a separate session that could not see verdicts; engine frozen at a git tag BEFORE "
@@ -175,6 +189,8 @@ def main() -> int:
     for e in ledger:
         flag = "" if e.get("ok") is not False else "  <-- BACKING BROKEN"
         print(f"  [{e['status']:6}] {e['claim'][:62]}{flag}")
+    for path, why in _SKIPPED.items():
+        print(f"\n  --- {path}: SKIPPED on this machine -> claim downgraded to SCOPED ({why})")
     for path, tail in _TAILS.items():
         print(f"\n  --- {path} (rc != 0) ---\n" + "\n".join("  | " + ln for ln in tail.splitlines()))
     print(f"\n{by} | bare: {len(bare)} | broken backing: {len(broken)}")
