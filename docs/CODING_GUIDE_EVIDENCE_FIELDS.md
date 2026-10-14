@@ -123,6 +123,7 @@ sentence that gets licensed carries its own limit; leave it out and the sentence
 |---|---|---|
 | `backend_properties` | Qiskit `BackendProperties` (object, `.to_dict()`, or its JSON) | `calibration_snapshot` in the shape the law reads: `t1_us/t2_us/readout/sx/cz` tables, `edges`, `field_dates` per parameter, declared `timezone` (from the dates' offset), `source.input_sha256`. A qubit without T1 stays absent. |
 | `prereg` | `atlas_prereg/v1` file | one claim skeleton per `metric_definitions` entry: `claim.id = atlas:<prereg id>:<metric>`, verbatim definition as text, `type: null`, empty evidence, prereg id/time/sha/supersedes. Refuses a prereg that carries results. |
+| `results` | a results file (JSON, or CSV loaded as `{rows, n_rows}`) + a spec `{field: "dotted.path" \| {"const": v} \| {"path":…, "as": "str"\|"float"}}` | evidence fields **copied** from the file (numbers, booleans, lists of numbers; strings only when the spec says so; a number stored as text is refused, never coerced) with provenance split into `read` (field → path), `declared` (field → value) and `derived` (field → stated rule, recorded via `derived()`). The adapter never computes a statistic. |
 | `verify_sources` | a claims `.jsonl` | re-hashes every `meta.sources[{path, sha256}]`; a mismatch or a missing file is reported. |
 
 What a coder still declares, and nothing else: the **mapping** (which prereg metric feeds which claim type, and which

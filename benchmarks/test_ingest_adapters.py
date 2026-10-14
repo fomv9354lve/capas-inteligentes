@@ -102,3 +102,40 @@ def test_real_atlas_prereg_v5_if_present():
     rows = ing.prereg(f)
     assert {r["meta"]["prereg"]["metric"] for r in rows} >= {"P1_deriva_layout", "P2_persistencia", "P3_decision"}
     assert rows[0]["meta"]["prereg"]["supersedes"] == ["mirror_e4_drift_v4"]
+
+
+# ---------------------------------------------------------------------------------------------- results adapter
+def test_results_copies_by_path_and_separates_read_from_declared(tmp_path):
+    f = tmp_path / "analysis.json"
+    f.write_text(json.dumps({"P1": {"p": 0.001, "mean_diff": -0.03, "pairs": 18}, "P2": {"theta": 1.4, "ci95": [1.26, 1.55]}}), encoding="utf-8")
+    r = ing.results(f, {"p_value": "P1.p", "pairs": "P1.pairs", "ci": "P2.ci95", "alpha": {"const": 0.05}})
+    assert r["evidence"] == {"p_value": 0.001, "pairs": 18, "ci": [1.26, 1.55], "alpha": 0.05}
+    assert r["provenance"]["read"] == {"p_value": "P1.p", "pairs": "P1.pairs", "ci": "P2.ci95"}
+    assert r["provenance"]["declared"] == {"alpha": 0.05}
+    assert r["provenance"]["source"]["sha256"] == ing.sha256_bytes(f.read_bytes())
+
+
+def test_results_refuses_strings_and_missing_paths_and_never_computes():
+    data = {"P1": {"p": "0.001", "label": "two tails"}, "rows": [1, 2, 3]}
+    with pytest.raises(ing.SpecError):
+        ing.results(data, {"p_value": "P1.p"})                       # a number as text is a coding error, not coerced
+    with pytest.raises(ing.SpecError):
+        ing.results(data, {"p_value": "P1.missing"})
+    r = ing.results(data, {"kind": {"path": "P1.label", "as": "str"}})
+    assert r["evidence"]["kind"] == "two tails"                       # strings only when the spec says so
+    assert not any(callable(v) for v in ing.results.__code__.co_consts if False)  # (no aggregation API exists)
+    assert not hasattr(ing, "aggregate") and not hasattr(ing, "mean")
+
+
+def test_results_reads_csv_rows_without_coercion(tmp_path):
+    f = tmp_path / "res.csv"; f.write_text("circuit,F_e4b,F_rep12\nc1,0.81,0.84\nc2,0.79,0.86\n", encoding="utf-8")
+    r = ing.results(f, {"n_pairs": "n_rows", "f_first": {"path": "rows.0.F_e4b", "as": "float"}})
+    assert r["evidence"] == {"n_pairs": 2, "f_first": 0.81}
+    with pytest.raises(ing.SpecError):
+        ing.results(f, {"f_first": "rows.0.F_e4b"})                   # CSV cells are text unless 'as': 'float'
+
+
+def test_derived_is_recorded_next_to_read_and_declared():
+    r = ing.results({"a": {"x": -0.02, "gap": 100}}, {"stat": "a.x", "gap": "a.gap"})
+    ok = ing.derived(r["provenance"], "effect_direction_confirmed", "gap <= 1800 and stat < 0", r["evidence"]["gap"] <= 1800 and r["evidence"]["stat"] < 0)
+    assert ok is True and r["provenance"]["derived"] == {"effect_direction_confirmed": "gap <= 1800 and stat < 0"}

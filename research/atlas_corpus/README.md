@@ -184,3 +184,12 @@ limpio se codifica por adaptadores primero, se sella y luego se abre. Límite co
 Atlas ya es la salida de su `qpu_cal_fetch` (de `BackendProperties`); el adaptador de CAPAS lee el `BackendProperties`
 crudo y se probó sobre FakeKingston, no sobre la descarga real de ese momento (no se guardó).
 
+### Adaptador de resultados (2026-10-14, tercero de cuatro)
+
+`capas_ingest.results(archivo, spec)` copia campos por ruta declarada (`"P1.p"`, `{"const": 0.05}`), con la procedencia
+partida en `read` / `declared` / `derived`; rechaza números que llegan como texto y no calcula nada. El generador de E4b
+(`build_claims_e4b_ingest.py`) ya no lee tuplas a mano: el MAPPING es un spec por métrica, y el único campo derivado
+(la dirección de P3, regla pre-registrada) queda registrado como tal. Re-codificación idéntica campo a campo a la del
+2026-10-14 (mismos veredictos, mismos hashes de auditoría). Queda el cuarto: procedencia obligatoria en el motor (HOLD
+si una fuente declarada no cuadra con su hash) — hoy la verifica el runner, no el veredicto.
+

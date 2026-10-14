@@ -15,6 +15,12 @@ Adapters (each deterministic, invents nothing, records the source sha256):
   prereg(doc)                atlas_prereg/v1 pre-registration -> one claim SKELETON per metric_definition (id, verbatim
                              definition, prereg id/time/sha, supersedes chain). No claim type, no evidence: those are
                              declared by the coder in a mapping that names the prereg metric it serves.
+  results(source, spec)      a results file (JSON, or CSV loaded as {rows, n_rows}) + a declarative spec
+                             {evidence_field: "dotted.path" | {"const": v} | {"path": ..., "as": "str"}} -> evidence
+                             fields COPIED from the file (numbers, booleans, lists of numbers; strings only when the
+                             spec says so), with provenance that separates what was read (field -> path) from what was
+                             declared (field -> value). The adapter never computes a statistic: that is the analysis
+                             script's job, pinned by the pre-registration.
   verify_sources(payload)    every entry in meta.sources {path, sha256} is re-hashed; a mismatch is reported, never
                              silently accepted. The sealed runner refuses to seal a payload whose sources do not match.
 
@@ -188,6 +194,86 @@ def prereg(doc: Any, *, source_label: str | None = None) -> list[dict[str, Any]]
                      "band_words_in_definition": bool(VERDICT_WORDS.search(str(m.get("definition", ""))))},
         })
     return out
+
+
+# ----------------------------------------------------------------------------------------------------- results
+class SpecError(ValueError):
+    pass
+
+
+def _load_results(source: Any) -> tuple[dict[str, Any], str, str]:
+    """-> (data, sha256, label). CSV becomes {"rows": [ {col: value} ], "n_rows": N}; numeric-looking cells stay strings
+    (no coercion: the spec must say what it expects and CSV has no types)."""
+    if isinstance(source, dict):
+        return source, sha256_bytes(canonical_json(source).encode("utf-8")), "results dict"
+    p = Path(source); raw = p.read_bytes(); sha = sha256_bytes(raw)
+    if p.suffix.lower() == ".csv":
+        import csv, io
+        rows = list(csv.DictReader(io.StringIO(raw.decode("utf-8"))))
+        return {"rows": rows, "n_rows": len(rows)}, sha, str(p)
+    return json.loads(raw.decode("utf-8")), sha, str(p)
+
+
+def _walk(data: Any, path: str) -> Any:
+    cur = data
+    for part in path.split("."):
+        if isinstance(cur, list):
+            try:
+                cur = cur[int(part)]
+            except (ValueError, IndexError):
+                raise SpecError(f"path {path!r}: no list index {part!r}")
+        elif isinstance(cur, dict):
+            if part not in cur:
+                raise SpecError(f"path {path!r}: no key {part!r}")
+            cur = cur[part]
+        else:
+            raise SpecError(f"path {path!r}: cannot descend into {type(cur).__name__} at {part!r}")
+    return cur
+
+
+def _is_copyable(v: Any) -> bool:
+    if isinstance(v, bool) or v is None or (isinstance(v, (int, float)) and not isinstance(v, bool)):
+        return True
+    if isinstance(v, list):
+        return all(isinstance(x, (int, float)) and not isinstance(x, bool) for x in v)
+    return False
+
+
+def results(source: Any, spec: dict[str, Any], *, source_label: str | None = None) -> dict[str, Any]:
+    """Copy evidence fields out of a results file by declared paths. Returns
+    {"evidence": {...}, "provenance": {"source": {...}, "read": {field: path}, "declared": {field: value}}}.
+    A string value is refused unless the spec entry says {"path": ..., "as": "str"}: a number that arrives as text
+    (CSV, or a quoted JSON value) is a coding error, not something to coerce silently."""
+    data, sha, label = _load_results(source)
+    ev, read, declared = {}, {}, {}
+    for field, how in spec.items():
+        if isinstance(how, dict) and "const" in how:
+            ev[field] = how["const"]; declared[field] = how["const"]; continue
+        path, as_ = (how, None) if isinstance(how, str) else (how.get("path"), how.get("as"))
+        if not isinstance(path, str):
+            raise SpecError(f"{field}: spec entry must be a path string, {{'const': v}} or {{'path': ..., 'as': 'str'}}")
+        v = _walk(data, path)
+        if as_ == "str":
+            if not isinstance(v, str):
+                raise SpecError(f"{field}: {path!r} is {type(v).__name__}, spec expects a string")
+        elif as_ == "float":
+            try:
+                v = float(v)
+            except (TypeError, ValueError):
+                raise SpecError(f"{field}: {path!r} = {v!r} is not a number (CSV cells need 'as': 'float' and must parse)")
+        elif not _is_copyable(v):
+            raise SpecError(f"{field}: {path!r} is {type(v).__name__} ({str(v)[:40]!r}); only numbers, booleans and lists of numbers are copied")
+        ev[field] = v; read[field] = path
+    return {"evidence": ev,
+            "provenance": {"source": {"path": source_label or label, "sha256": sha, "adapter": "capas_ingest.results", "adapter_version": ADAPTER_VERSION},
+                           "read": read, "declared": declared}}
+
+
+def derived(provenance: dict[str, Any], field: str, rule: str, value: Any) -> Any:
+    """Record a field the CODER derived from read values by a stated rule (e.g. a pre-registered direction rule). The
+    adapter does not evaluate rules; it only makes the derivation visible next to what was read and what was declared."""
+    provenance.setdefault("derived", {})[field] = rule
+    return value
 
 
 # --------------------------------------------------------------------------------------------------- provenance
