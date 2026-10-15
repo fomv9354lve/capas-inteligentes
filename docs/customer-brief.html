@@ -215,12 +215,12 @@ footer a{color:rgba(255,255,255,.35);text-decoration:none;font-size:12px}
     "witness_id_present": false
   },
   "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
-  "audit_hash": "sha256:092374a4ef2b955749b398a9758fef514c094d164dbe8463a0d326e78dbdcb4e",
+  "audit_hash": "sha256:bcd611bea7dfbf805f6ba2a8815690f143593f7085a78a8ddf256267e7b598e8",
   "rules_fired": [
     "R404ebcc1d2",
     "R498daec9f1"
   ],
-  "rule_table_sha256": "sha256:b6788f744671f389ac43161690d836420221209d7162bc04fd21676b6a3e2e0b",
+  "rule_table_sha256": "sha256:df68a0ba8388b9af1488562ee7f1c0c814a7cbff65e4acc09921b6297008f586",
   "engine_version": "0.4.1",
   "evidence_sha256": "sha256:5c52b7088b555b950f9bf3b373bb062ee681c80475b33d75b835ee99d390664a",
   "audit_hash_recipe": "v2",
@@ -230,7 +230,7 @@ footer a{color:rgba(255,255,255,.35);text-decoration:none;font-size:12px}
     "claim_contract": {
       "registered": true,
       "claim_type": "financial_metric_claim",
-      "description": "Financial metric claims against a reference value and period.",
+      "description": "Financial metric claims against a reference value and period. With evidence.ledger {rows_csv, metric, period} the engine recomputes reference_value from the rows itself.",
       "required_fields": [
         "reported_value",
         "reference_value",
@@ -240,6 +240,7 @@ footer a{color:rgba(255,255,255,.35);text-decoration:none;font-size:12px}
       "optional_fields": [
         "metric_name",
         "audit_trail",
+        "ledger",
         "object_declared",
         "object_matches_target",
         "load_bearing_citation_read",

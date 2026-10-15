@@ -68,6 +68,8 @@ py-modules = [
   "capas_invariants", "capas_quantum_physics", "capas_mcp",
   # imported directly by capas.py since 2026-09 (pip-package verifier caught the gap 2026-10-13)
   "capas_breeding", "capas_independence",
+  # engine-side re-derivation (python re-run opt-in, ledger recompute), imported by capas.py since 2026-10-15
+  "capas_rederive",
   # third pole: the survive-refutation ledger (gate <-> accountability-over-time integration)
   "capas_ledger_store", "capas_ledger", "capas_registry", "capas_trust",
   # PLAN_v3 (2026-10-14): downgrade-only stages inside decide() and the rule table as data (certificate trace)

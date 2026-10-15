@@ -128,6 +128,44 @@ UNIVERSAL_TEXT_RE = re.compile(
     r"\bpara (toda|todo|todas|todos|cualquier\w*|cualesquiera|cada)\b|\bcualquier\w*\b|\bcualesquiera\b|\bsiempre\b|"
     r"\bsin restricci\w+\b|\btodo orden\b|\ba todo orden\b|\ben general\b|\bvale para cada\b|∀)", re.I)
 _SE_UNITS = ("se", "sigma", "sd", "std")
+# Generalisation beyond a single run or period (2026-10-15). Narrower than UNIVERSAL_TEXT_RE on purpose: "every
+# element" or "all three items" describe one run; "every version", "always", "every quarter" do not.
+RUN_SCOPE_RE = re.compile(
+    r"\b(always|never|guarantee[sd]?|guaranteed|consistently|universally|regardless of|in all cases|in general|every time|"
+    r"no matter)\b|"
+    r"\b(all|every|any|each)\b(\s+[\w.]+){0,3}?\s+(versions?|releases?|runtimes?|interpreters?|platforms?|implementations?|"
+    r"inputs?|runs?|executions?|quarters?|months?|years?|periods?|machines?|environments?|systems?)\b|"
+    # generalisation over a class of objects from the instances in one run ("any Python list", "every function"):
+    # at most one word in between, so "each item in the list" (one run's list) does not match
+    r"\b(any|every|all)\b(\s+[\w.]+)?\s+(lists?|tuples?|dicts?|dictionaries|sets?|strings?|iterables?|iterators?|"
+    r"sequences?|functions?|methods?|classes|objects?|types?|patterns?|arguments?|numbers?|integers?|floats?|files?)\b"
+    # ...unless bound to one object: "all strings in the list", "all numbers in data" (a lowercase identifier);
+    # "all strings in Python" stays a generalisation
+    r"(?!\s+(?:in|of|from|inside|within)\s+(?:the|this|that|these|those|its|each|(?!python\b)(?-i:[a-z_][a-z0-9_]*)\b))|"
+    r"\b(any|every|all|each)\s+python\b|\bwhatever the\b|"
+    r"\b(siempre|nunca|garantiza\w*|en general|sin importar|en todos los casos|"
+    r"(todas?|todos|cualquier|cada)\s+(las\s+|los\s+)?(versi\w+|entornos?|ejecuci\w+|trimestres?|meses|mes|periodos?|a\u00f1os?|"
+    r"listas?|funcion\w*|cadenas?|objetos?|tipos?|valores?|clientes?|cuentas?))\b",
+    re.I)
+
+
+def _rederive_notices(rd: dict | None) -> list[str]:
+    """What the engine re-derived, as notices (covered by the v2 audit hash)."""
+    if not rd:
+        return []
+    if rd.get("kind") == "python_run":
+        n = [f"rederived: the engine re-ran the snippet on Python {rd.get('runtime_version')}"]
+        if rd.get("declared_observed_differs"):
+            n.append("rederived: the declared observed_output differs from the engine's own run; the engine's run was used")
+        return n
+    if rd.get("kind") == "ledger":
+        if rd.get("error"):
+            return [f"rederived: ledger spec error: {rd['error']}"]
+        n = [f"rederived: the engine recomputed the metric from the rows: {rd['value']:.6g}"]
+        if rd.get("declared_reference_differs"):
+            n.append("rederived: the declared reference_value differs from the recomputed metric; the recomputed value was used")
+        return n
+    return []
 
 
 def sidak_tolerance(t_se: float, k: int) -> float:
@@ -192,8 +230,9 @@ CLAIM_TYPE_REGISTRY = {
     },
     "financial_metric_claim": {
         "required": ["reported_value", "reference_value", "tolerance", "metric_period_match"],
-        "optional": ["metric_name", "audit_trail"],
-        "description": "Financial metric claims against a reference value and period.",
+        "optional": ["metric_name", "audit_trail", "ledger"],
+        "description": "Financial metric claims against a reference value and period. With evidence.ledger "
+                       "{rows_csv, metric, period} the engine recomputes reference_value from the rows itself.",
     },
     "causal_mechanism_claim": {
         "required": [
@@ -395,7 +434,7 @@ STRING_EVIDENCE_FIELDS = [
     "text_quantifier", "method", "method_standard",
 ]
 LIST_EVIDENCE_FIELDS = ["supporting_sources", "contradicting_sources", "scope_declared", "scope_tested", "cited_dois"]
-DICT_EVIDENCE_FIELDS = ["test_statistic", "band", "retraction_snapshot", "prereg", "ai_use_declared"]
+DICT_EVIDENCE_FIELDS = ["test_statistic", "band", "retraction_snapshot", "prereg", "ai_use_declared", "ledger"]
 
 # Example values for a fillable requirements template (A3): type defaults + a few overrides
 # that make the expected shape obvious to a first-time caller.
@@ -655,6 +694,38 @@ def reproduce_audit_hash(result: dict[str, Any]) -> str:
     return _hash_audit_body(_audit_hash_body(
         result.get("input_claim"), result.get("verdict"), result.get("reason"),
         result.get("required_fields"), result.get("invariant_audit")))
+
+
+# One-way override (2026-10-15, after the AI vs AI+CAPAS experiment): an AI that uses CAPAS may be STRICTER than the
+# verdict, never looser. Final actions for a claim going into a report: state_as_written | narrow | withhold.
+FINAL_ACTIONS = ("state_as_written", "narrow", "withhold")
+_ALLOWED_BY_VERDICT = {"ACCEPT": ["state_as_written", "narrow", "withhold"], "REWRITE": ["narrow", "withhold"],
+                       "REJECT": ["withhold"], "HOLD": ["withhold"]}
+
+
+def allowed_actions(result: dict[str, Any]) -> list[str]:
+    """The final actions a verdict permits. Unknown or malformed result -> withhold only (fail-closed)."""
+    v = result.get("verdict") if isinstance(result, dict) else None
+    return list(_ALLOWED_BY_VERDICT.get(v, ["withhold"]))
+
+
+def enforce(ai_action: str, result: dict[str, Any], narrowed_text: str | None = None) -> dict[str, Any]:
+    """Apply the one-way rule to an AI's proposed action. A looser action is replaced by the strictest permitted one
+    that keeps content: REWRITE -> narrow to the engine's licensed_claim; REJECT/HOLD -> withhold."""
+    allowed = allowed_actions(result)
+    action = ai_action if ai_action in FINAL_ACTIONS else "withhold"
+    if action in allowed:
+        text = narrowed_text if action == "narrow" else None
+        if action == "narrow" and not text:
+            text = result.get("licensed_claim") or result.get("rewrite")
+            if not text:
+                action, text = "withhold", None
+        return {"action": action, "narrowed_text": text, "overridden": action != ai_action, "allowed": allowed}
+    if "narrow" in allowed and (result.get("licensed_claim") or result.get("rewrite")):
+        return {"action": "narrow", "narrowed_text": result.get("licensed_claim") or result.get("rewrite"),
+                "overridden": True, "allowed": allowed, "why": f"{result.get('verdict')} does not permit {ai_action}"}
+    return {"action": "withhold", "narrowed_text": None, "overridden": True, "allowed": allowed,
+            "why": f"{result.get('verdict')} does not permit {ai_action}"}
 
 
 def verify_audit_hash(result: dict[str, Any]) -> dict[str, Any]:
@@ -967,6 +1038,13 @@ def external_claim_payload_schema() -> dict[str, Any]:
                     "metric_period_match": {"type": "boolean"},
                     "metric_name": {"type": "string", "pattern": NO_ANGLE_PATTERN},
                     "audit_trail": {},
+                    "ledger": {"type": "object", "required": ["rows_csv", "metric", "period"],
+                               "properties": {"rows_csv": {"type": "string", "maxLength": 200000},
+                                              "metric": {"type": "string", "maxLength": 500},
+                                              "period": {"type": "string", "maxLength": 16}},
+                               "description": "Raw rows (CSV with date, account, amount), an arithmetic metric over "
+                                              "sum/count/distinct aggregates, and the period YYYY, YYYY-Qn or YYYY-MM. "
+                                              "The engine recomputes the metric; it never executes the metric as code."},
                     "bound_scope": {"type": "string", "pattern": NO_ANGLE_PATTERN},
                     "intervention_or_natural_experiment": {"type": "boolean"},
                     "temporal_order_established": {"type": "boolean"},
@@ -1080,7 +1158,12 @@ def validate_external_payload(payload: dict[str, Any]) -> list[str]:
     _validate_no_control_char(claim.get("id"), "claim.id", errors)
     if isinstance(claim.get("text"), str) and len(claim["text"]) > 2000:
         errors.append("claim.text must be at most 2000 characters")
-    _validate_no_angle_like(claim.get("text"), "claim.text", errors)
+    # Tag-like text stays refused in claim.text (frozen §6 refutation: it is an injection vector for consumers that
+    # render it). "x < 0.01" is allowed. Markup that IS the subject (a regex or HTML example) belongs in the evidence
+    # fields that accept it (code_snippet, expected_output, observed_output); the message says so (experiment C020).
+    if isinstance(claim.get("text"), str) and _contains_angle_like_character(claim["text"]):
+        errors.append("claim.text must not contain angle brackets or Unicode angle-bracket homoglyphs; put markup that is "
+                      "the subject of the claim in code_snippet / expected_output and describe it in words")
     _validate_no_control_char(claim.get("text"), "claim.text", errors)
 
     claim_type = claim.get("type")
@@ -1203,6 +1286,12 @@ def validate_external_payload(payload: dict[str, Any]) -> list[str]:
         errors.append("evidence.text_quantifier must be one of: bounded, universal")
     if "error_statistic" in evidence and str(evidence.get("error_statistic")).lower() not in ERROR_STATISTICS:
         errors.append("evidence.error_statistic must be one of: " + ", ".join(sorted(ERROR_STATISTICS)))
+    if "ledger" in evidence:
+        _lg = evidence["ledger"]
+        if not isinstance(_lg, dict) or not all(isinstance(_lg.get(k), str) for k in ("rows_csv", "metric", "period")):
+            errors.append("evidence.ledger must be an object with string rows_csv, metric and period")
+        elif len(_lg["rows_csv"]) > 200000 or len(_lg["metric"]) > 500:
+            errors.append("evidence.ledger is too large (rows_csv <= 200000 chars, metric <= 500)")
     if "current_claim" in evidence:
         current_claim = evidence["current_claim"]
         if not isinstance(current_claim, str):
@@ -1854,8 +1943,12 @@ def build_demo_report() -> dict[str, Any]:
     }
 
 
-def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
+def decide_external_claim(payload: dict[str, Any], rederive: bool | None = None) -> dict[str, Any]:
     """Decide a user-supplied claim against explicit evidence fields.
+
+    rederive (2026-10-15): True lets the engine RE-RUN a Python snippet itself (arbitrary code execution, local use
+    only; default: the CAPAS_REDERIVE_EXEC=1 environment variable, never set on the hosted API). Ledger metrics with an
+    evidence.ledger block are always recomputed from the rows (arithmetic only). See capas_rederive.py.
 
     This is intentionally small and transparent. It is the external product
     surface, not a hidden judge: unsupported claim types HOLD instead of being
@@ -1899,6 +1992,38 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
         return result
 
     claim_type = claim.get("type")
+    # Engine-side re-derivation (capas_rederive.py): the engine checks the evidence itself and its result replaces the
+    # transcribed fields. Works on a copy; the caller's payload and its evidence_sha256 are unchanged.
+    import capas_rederive
+    evidence = dict(evidence)
+    rederivation: dict[str, Any] | None = None
+    if (claim_type == "programming_language_behavior_claim" and capas_rederive.exec_enabled(rederive)
+            and str(evidence.get("language", "")).strip().lower() == "python" and isinstance(evidence.get("code_snippet"), str)):
+        _run = capas_rederive.python_run(evidence["code_snippet"])
+        rederivation = {"kind": "python_run", "ran": _run.get("ran"), "timed_out": _run.get("timed_out"),
+                        "runtime_version": _run.get("runtime_version"), "declared_version": evidence.get("language_version"),
+                        "observed": _run.get("observed")}
+        if _run.get("ran"):
+            if isinstance(evidence.get("observed_output"), str):
+                rederivation["declared_observed_differs"] = not capas_rederive.outputs_match(evidence["observed_output"], _run["observed"])
+            rederivation["version_match"] = capas_rederive.version_matches(evidence.get("language_version") or _run["runtime_version"])
+            evidence["observed_output"] = _run["observed"]
+            evidence["execution_observed"] = True
+            evidence["runtime_environment_declared"] = True
+            evidence.setdefault("language_version", _run["runtime_version"])
+    if claim_type == "financial_metric_claim" and isinstance(evidence.get("ledger"), dict):
+        _lg = evidence["ledger"]
+        try:
+            _m = capas_rederive.ledger_metric(_lg.get("rows_csv", ""), _lg.get("metric", ""), _lg.get("period", ""))
+        except (ValueError, SyntaxError, TypeError) as _e:
+            rederivation = {"kind": "ledger", "error": str(_e)[:200]}
+        else:
+            rederivation = {"kind": "ledger", "value": _m["value"], "coverage_ok": _m["coverage_ok"],
+                            "missing_months": _m["missing_months"], "periods_used": _m["periods_used"]}
+            if isinstance(evidence.get("reference_value"), (int, float)) and not isinstance(evidence.get("reference_value"), bool):
+                rederivation["declared_reference_differs"] = abs(float(evidence["reference_value"]) - _m["value"]) > 1e-9 * max(1.0, abs(_m["value"]))
+            evidence["reference_value"] = _m["value"]
+            evidence.setdefault("metric_period_match", True)
     required = required_fields_for_claim(str(claim_type), evidence)
     missing = [
         field
@@ -2463,10 +2588,42 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
         rewrite = "reproduction licensed for the items actually verified; the stated count/scope is not licensed until counted"
         licensed_claim = rewrite
 
+    # Engine re-derivation outcomes (capas_rederive.py), downgrade-only.
+    if rederivation and rederivation.get("kind") == "python_run" and verdict == "ACCEPT":
+        if not rederivation.get("ran"):
+            verdict = "HOLD"
+            reason = f"{reason}; the engine could not re-run the snippet (timeout or start failure), so the output is not re-derived"
+        elif rederivation.get("version_match") is False:
+            verdict = "HOLD"
+            reason = (f"{reason}; the engine re-ran the snippet on Python {rederivation['runtime_version']}, not the declared "
+                      "version: the behavior on the declared version is not re-derived")
+    if rederivation and rederivation.get("kind") == "ledger" and (verdict in ("ACCEPT", "REWRITE", "REJECT")):
+        if rederivation.get("error"):
+            verdict = "HOLD"
+            reason = f"{reason}; the ledger metric could not be recomputed from the rows: the spec is malformed"
+        elif not rederivation.get("coverage_ok"):
+            verdict = "HOLD"
+            reason = f"{reason}; the ledger rows do not cover every month of the period, so the metric is not re-derivable"
+    # Version named in the text vs the version the evidence ran on (AI vs AI+CAPAS experiment, incomplete cases).
+    if claim_type == "programming_language_behavior_claim" and verdict == "ACCEPT":
+        _tv = re.search(r"\bpython\s*(\d+\.\d+)", _txt, re.I)
+        _dv = str(evidence.get("language_version", ""))
+        if _tv and _dv and not capas_rederive.version_matches(_tv.group(1), _dv if _dv.count(".") >= 1 else _dv + ".0"):
+            verdict = "HOLD"
+            reason = f"{reason}; the claim text names another Python version than the evidence ran on"
+    # Scope (AI vs AI+CAPAS experiment: 12 of 25 exaggerated claims passed with either model). One run or one period
+    # licenses the run or the period, not "every version", "always" or "every quarter".
+    if verdict == "ACCEPT" and claim_type in ("programming_language_behavior_claim", "financial_metric_claim") and RUN_SCOPE_RE.search(_txt):
+        verdict = "REWRITE"
+        reason = f"{reason}; the text generalises beyond the evidence (one run or one period): the observed case is licensed, the generalisation is not"
+        rewrite = ("the behavior observed in the declared run and runtime only" if claim_type == "programming_language_behavior_claim"
+                   else "the reported metric for the reported period only")
+        licensed_claim = rewrite
+
     # Palanca 2 (corpus Ginibre): si el TEXTO del claim invoca una cita portante, la evidencia
     # debe decir si sus hipotesis se comprobaron. Sin ese campo, HOLD (no se puede juzgar).
     _cite = re.search(r"\b(backed by|according to|by the theorem of|theorem of|following|as shown by|"
-                      r"respaldad[oa] por|seg[uú]n|por el teorema de|et al\.?)\b|\(\w[\w\s&.-]*,? ?(19|20)\d{2}[a-z]?\)|\[\d+\]",
+                      r"respaldad[oa] por|seg[uú]n|por el teorema de|et al\.?)\b|\(\w[\w\s&.-]*,? ?(19|20)\d{2}[a-z]?\)|(?<![\w\])])\[\d+\]",
                       (claim.get("text") if isinstance(claim, dict) else "") or "", re.I)
     if _cite and "citation_hypotheses_checked" not in evidence and verdict != "REJECT":
         verdict = "HOLD"
@@ -2571,7 +2728,8 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
                                              text_licensed=text_licensed_as_written),
         "invariant_audit": invariant_audit,
         "text_licensed_as_written": text_licensed_as_written,
-        "notices": _p3["notices"],
+        "notices": _p3["notices"] + _rederive_notices(rederivation),
+        **({"rederivation": rederivation} if rederivation else {}),
         "plan3_checks": _p3["checks"],
         **fine_tune,
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
