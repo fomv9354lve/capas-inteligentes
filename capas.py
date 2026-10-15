@@ -523,7 +523,7 @@ def requirements_for_claim(claim_type: str, anchor_mode: str | None = None) -> d
 
 def _resolution_for_result(verdict: str, claim_type: Any, missing: list[str],
                            required: list[str] | None, evidence: dict[str, Any],
-                           schema_errors: list[str]) -> dict[str, Any]:
+                           schema_errors: list[str], text_licensed: bool = False) -> dict[str, Any]:
     """The constructive way OUT of any result — and the guarantee that no HOLD is a dead end.
     Every HOLD branch (schema error / unsupported type / missing field) returns an actionable,
     machine-readable path that, applied without changing the underlying facts, leaves HOLD."""
@@ -556,7 +556,13 @@ def _resolution_for_result(verdict: str, claim_type: Any, missing: list[str],
         return {"kind": "exclude_or_replace_evidence",
                 "message": "The evidence contradicts the claim. Exclude it, or supply new evidence that changes the contract outcome."}
     if verdict == "ACCEPT":
-        return {"kind": "accepted", "message": "The evidence licenses the claim as worded."}
+        # Self-evaluation 2026-10-15: "as worded" only when text_licensed_as_written is true; otherwise the ACCEPT
+        # licenses the evidence statement in licensed_claim, not the sentence the caller wrote.
+        if text_licensed:
+            return {"kind": "accepted", "message": "The evidence licenses the claim as worded."}
+        return {"kind": "accepted",
+                "message": "The declared evidence passes the contract. Reuse the statement in licensed_claim; the "
+                           "claim text as written is not licensed (text_licensed_as_written is false)."}
     return {"kind": "hold_for_review", "message": "Resolve the open proof obligations before reuse."}
 
 
@@ -658,8 +664,18 @@ def verify_audit_hash(result: dict[str, Any]) -> dict[str, Any]:
         return {"audit_hash_present": False, "verified": None,
                 "note": "this result carries no audit_hash (e.g. a malformed payload)"}
     recomputed = reproduce_audit_hash(result)
+    v2 = result.get("audit_hash_recipe") == "v2"
+    # Self-evaluation 2026-10-15: name the recipe actually used, and what the hash does and does not cover.
+    covered = sorted((_audit_hash_body_v2(result) if v2 else _audit_hash_body(None, None, None, None, None)).keys())
     return {"audit_hash_present": True, "verified": recomputed == claimed,
-            "claimed": claimed, "recomputed": recomputed, "recipe": AUDIT_HASH_RECIPE}
+            "claimed": claimed, "recomputed": recomputed,
+            "recipe_version": "v2" if v2 else "v1", "recipe": AUDIT_HASH_RECIPE_V2 if v2 else AUDIT_HASH_RECIPE,
+            "covered_fields": covered,
+            "not_covered": "Every other response field (licensed_claim, text_licensed_as_written, fine_tune_*, "
+                           "schema_errors, resolution, admissibility_certificate, the response's own schema_version, "
+                           "invariant_audit beyond its verdict). schema_version is hashed as the engine constant.",
+            "scope": "Integrity of the covered fields only. Anyone can recompute this hash after changing them, so a "
+                     "match does not authenticate who produced the result; that needs a signature or a trusted channel."}
 
 
 def _append_unknown_field_errors(
@@ -2551,7 +2567,8 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
         "required_fields": required or [],
         "schema_errors": [],
         "did_you_mean": did_you_mean_map(evidence, str(claim_type)),
-        "resolution": _resolution_for_result(verdict, claim_type, missing, required, evidence, []),
+        "resolution": _resolution_for_result(verdict, claim_type, missing, required, evidence, [],
+                                             text_licensed=text_licensed_as_written),
         "invariant_audit": invariant_audit,
         "text_licensed_as_written": text_licensed_as_written,
         "notices": _p3["notices"],
