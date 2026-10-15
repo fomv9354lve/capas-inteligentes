@@ -33,3 +33,23 @@ ops/azure_state/
 # Runbook de congelación: documento operativo interno con la postura comercial del
 # proyecto. Vive en disco; no se publica en un repo público.
 FREEZE_RUNBOOK.md
+
+# Local-only artefacts (repo hygiene, 2026-10-14). Kept on disk, never versioned.
+/*.png
+/*.jpeg
+/*.jpg
+.codex/
+.coverage
+.playwright-mcp/
+AGENTS.md
+# local audit reports: the external auditors asked that they not be published
+audits/20*/
+# internal drafts and regenerable outputs
+outputs/_workflow_review/
+outputs/elementary_functions_real_tree.png
+outputs/ginibre_public_scores.json
+outputs/rule_table_coverage.json
+# third-party full texts and superseded local scripts (registration-adherence pilot, 2026-09)
+research/registration_adherence/data/fulltext*.json
+research/registration_adherence/check_oa.py
+research/registration_adherence/measure_fulltext*.py
