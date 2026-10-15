@@ -1,0 +1,552 @@
+{
+  "C001": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "January cohort minus March subscribers gives the claimed rate"
+  },
+  "C002": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "log shows ValueError: day is out of range for month",
+    "supported_statement": "replace(month=2) on 2026-01-31 raises ValueError in this snippet."
+  },
+  "C003": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "log prints None (match anchors at the start)",
+    "supported_statement": "re.match returns None for 'abc123' here."
+  },
+  "C004": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "reported figure divides by distinct customers, not orders",
+    "supported_statement": "The average ticket in February 2026 was $1,430.21."
+  },
+  "C005": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "reported Q1 revenue correctly excludes the April rows present in the export"
+  },
+  "C006": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "no run_log in the bundle"
+  },
+  "C007": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "claim is about 3.14; the only log is from Python 3.9 (3.11+ limits int/str conversion digits)"
+  },
+  "C008": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "recomputed margin 0.4000 > 0.35"
+  },
+  "C009": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "log shows ValueError: invalid literal for int() with base 10: '3.0'",
+    "supported_statement": "int('3.0') raises ValueError in this snippet."
+  },
+  "C010": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "claim is about 3.14.5; the only log is from Python 3.13"
+  },
+  "C011": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "June missing from export and rows"
+  },
+  "C012": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "export ends 2026-05-24; last week of May missing"
+  },
+  "C013": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "reported figure includes April rows outside the period",
+    "supported_statement": "Revenue for 2026-Q1 was $52,575.47."
+  },
+  "C014": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "two inputs do not support 'always'; round(3.5) gives 4",
+    "supported_statement": "In this run round(2.5) is 2 and round(4.5) is 4."
+  },
+  "C015": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "only March rows are in the bundle",
+    "supported_statement": "Gross margin in March 2026 was above 35% (40.0%)."
+  },
+  "C016": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "revenue plus negative refunds equals the claim"
+  },
+  "C017": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "one run on 3.14.5; removeprefix was added in 3.9",
+    "supported_statement": "On Python 3.14.5 'v1.2'.removeprefix('v') returns '1.2'."
+  },
+  "C018": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "reported total omits one opex row",
+    "supported_statement": "Operating expenses for 2026-Q2 totalled $48,537.23."
+  },
+  "C019": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "one group-free pattern; with two groups findall returns tuples",
+    "supported_statement": "For r'\\d+' on 'a1b22c333' findall returns ['1', '22', '333']."
+  },
+  "C020": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "log shows both results as claimed"
+  },
+  "C021": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "recomputed Apr->May change matches the claimed fall"
+  },
+  "C022": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "one quarter supports the Q1 figure, not a forecast",
+    "supported_statement": "Gross margin was 42.5% in 2026-Q1."
+  },
+  "C023": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "log prints ['Cherry', 'apple', 'banana'] (uppercase sorts first)",
+    "supported_statement": "The snippet prints ['Cherry', 'apple', 'banana']."
+  },
+  "C024": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "reported DSO uses 365 days instead of the defined 90",
+    "supported_statement": "DSO for 2026-Q1 was 12.0 days."
+  },
+  "C025": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "true only in leap years; 2027-02-28 + 1 day is 2027-03-01",
+    "supported_statement": "One day after 2028-02-28 is 2028-02-29."
+  },
+  "C026": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "the run_log's cat shows items[5], not items[3]"
+  },
+  "C027": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "recomputed Feb->Mar growth matches"
+  },
+  "C028": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "no run_log in the bundle"
+  },
+  "C029": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "log prints 'None [1, 2, 3]'",
+    "supported_statement": "result is None; nums is sorted in place to [1, 2, 3]."
+  },
+  "C030": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "reported total has two digits transposed",
+    "supported_statement": "Revenue for 2026-Q2 was $143,472.63."
+  },
+  "C031": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "the run_log's cat shows different code than the snippet"
+  },
+  "C032": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "claim is about 3.14; the only log is from Python 3.9, where the import fails"
+  },
+  "C033": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "log prints [1]",
+    "supported_statement": "list(gen()) produces [1]; the return value is not yielded."
+  },
+  "C034": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "log prints 14 then 0"
+  },
+  "C035": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "sum of Q3 opex rows matches"
+  },
+  "C036": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "one month-over-month change only",
+    "supported_statement": "Revenue grew 10.6% from February to March 2026."
+  },
+  "C037": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "no accounts_receivable row; DSO cannot be computed"
+  },
+  "C038": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "log prints 3.5 3 float",
+    "supported_statement": "7 / 2 evaluates to the float 3.5; 7 // 2 evaluates to 3."
+  },
+  "C039": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "log prints bonona (only two replacements)",
+    "supported_statement": "The snippet prints 'bonona'; only the first two 'a' are replaced."
+  },
+  "C040": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "no run_log in the bundle"
+  },
+  "C041": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "log prints hell0 w0rld"
+  },
+  "C042": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "recomputed margin rounds to the claimed percentage"
+  },
+  "C043": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "export stops at 2026-03-15; later March billings absent"
+  },
+  "C044": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "definition needs refund rows; none in the bundle"
+  },
+  "C045": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "reported figure adds deferred_revenue rows the definition excludes",
+    "supported_statement": "Revenue for March 2026 was $21,554.39."
+  },
+  "C046": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "log prints 2.67",
+    "supported_statement": "The snippet prints 2.67 for round(2.675, 2)."
+  },
+  "C047": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "two homogeneous lists; a mixed int/str list raises TypeError",
+    "supported_statement": "sorted() orders these two homogeneous lists."
+  },
+  "C048": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "export starts 2026-07-15; first half of July missing"
+  },
+  "C049": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "log prints False and 0.30000000000000004"
+  },
+  "C050": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "only Q1 rows are in the bundle",
+    "supported_statement": "Revenue exceeded $110,000.00 in 2026-Q1 ($112,010.91)."
+  },
+  "C051": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "log prints [[9, 0], [9, 0]]"
+  },
+  "C052": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "log shows 5 elements with two ''"
+  },
+  "C053": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "claim is about 3.14; the only log is from Python 3.13"
+  },
+  "C054": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "rows support one month-over-month change only",
+    "supported_statement": "Revenue grew 21.8% from February to March 2026."
+  },
+  "C055": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "definition needs cogs rows; none in the bundle"
+  },
+  "C056": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "only a mutable default that is mutated carries state; an int default does not",
+    "supported_statement": "tag()'s mutable default list carries state between calls."
+  },
+  "C057": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "one input; for exact divisions (6 // 2 vs 6 / 2) the result is not strictly lower",
+    "supported_statement": "-7 // 2 is -4, below -7 / 2 = -3.5."
+  },
+  "C058": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "the run_log's cat shows different code (pre-sorted list) than the snippet"
+  },
+  "C059": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "no run_log in the bundle"
+  },
+  "C060": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "no run_log in the bundle"
+  },
+  "C061": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "revenue fell; the claim reports the change as growth",
+    "supported_statement": "Revenue fell 25.9% from May to June 2026."
+  },
+  "C062": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "reported value divides by cogs (markup), not revenue",
+    "supported_statement": "Gross margin for 2026-Q1 was 38.0%."
+  },
+  "C063": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "log prints None then a KeyError: 'b' traceback"
+  },
+  "C064": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "June is outside the export; no June rows"
+  },
+  "C065": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "period is H1 but export and rows cover Q1 only"
+  },
+  "C066": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "log output matches the claimed order exactly"
+  },
+  "C067": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "export ranges skip August; no August rows"
+  },
+  "C068": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "export ends 2026-03-20; March incomplete"
+  },
+  "C069": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "log prints the TypeError and then ([1, 3], 2): the list was mutated",
+    "supported_statement": "The TypeError is raised, but the inner list is still extended: t prints as ([1, 3], 2)."
+  },
+  "C070": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "one month of data cannot support 'always'",
+    "supported_statement": "Refunds were 3.6% of revenue in February 2026."
+  },
+  "C071": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "reported growth is measured against January, not February",
+    "supported_statement": "Revenue changed 60.2% from February to March 2026."
+  },
+  "C072": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "shown for a generator only; a list re-iterates fully",
+    "supported_statement": "This generator yields nothing on the second pass."
+  },
+  "C073": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "the run_log's cat shows a list without duplicates, not the snippet"
+  },
+  "C074": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "log prints 2024-02-29 and 28"
+  },
+  "C075": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "three inputs; int('4 2') raises ValueError",
+    "supported_statement": "int() accepts ' 42 ', '+7' and '0010'."
+  },
+  "C076": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "one quarter of data cannot support 'never'",
+    "supported_statement": "Logo churn for 2026-Q1 was 8.3%."
+  },
+  "C077": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "log shows y=3 for a | b but y=2 for {**b, **a}",
+    "supported_statement": "a | b gives y = 3; {**b, **a} gives y = 2."
+  },
+  "C078": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "recomputed margin is 0.3960, below 40%",
+    "supported_statement": "Gross margin for 2026-Q1 was 39.6%."
+  },
+  "C079": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "only March rows are in the bundle",
+    "supported_statement": "Net revenue after refunds was positive in March 2026 ($20,622.78)."
+  },
+  "C080": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "log is from 3.14.5 and prints ['z', 'a', 'm']"
+  },
+  "C081": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "reported figure is gross revenue; refunds not netted",
+    "supported_statement": "Net revenue for April 2026 was $20,240.83."
+  },
+  "C082": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "the run uses no separator; with ',' empty strings appear",
+    "supported_statement": "split() with no argument drops the empty fields of 'a  b '."
+  },
+  "C083": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "export and rows stop at 2026-02-28; March missing"
+  },
+  "C084": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "one quarter cannot guarantee a full-year total",
+    "supported_statement": "Revenue for 2026-Q2 was $90,362.16."
+  },
+  "C085": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "only January 2026 rows are in the bundle",
+    "supported_statement": "The average ticket in January 2026 was $1,614.45."
+  },
+  "C086": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "one quarter end in the bundle",
+    "supported_statement": "DSO for 2026-Q1 was 38.4 days."
+  },
+  "C087": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "Q3 actuals do not establish Q4 spending",
+    "supported_statement": "Operating expenses for 2026-Q3 totalled $41,783.67."
+  },
+  "C088": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "reported figure counts refund rows as orders",
+    "supported_statement": "The average ticket in May 2026 was $1,810.98."
+  },
+  "C089": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "recomputed Q1 revenue equals the claim; all three months present"
+  },
+  "C090": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "sum/count of January revenue rows matches"
+  },
+  "C091": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "reported rate uses March customers as denominator",
+    "supported_statement": "Logo churn for 2026-Q1 was 25.0%."
+  },
+  "C092": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "log prints '0 2 2' (round half to even)",
+    "supported_statement": "The three values render as 0, 2 and 2."
+  },
+  "C093": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "only January rows are in the bundle",
+    "supported_statement": "The average ticket in January 2026 was $1,010.68."
+  },
+  "C094": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "log prints '-4 -3 1'"
+  },
+  "C095": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "log prints [1] then [1, 2]"
+  },
+  "C096": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "log prints '2 4 -2'"
+  },
+  "C097": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "ticket over revenue rows only (refund rows correctly excluded)"
+  },
+  "C098": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "AR / revenue x 90 matches the claim"
+  },
+  "C099": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "one run on 3.14.5 cannot establish behaviour in every version (CPython <3.6 did not guarantee it)",
+    "supported_statement": "On Python 3.14.5 this dict lists its keys in insertion order."
+  },
+  "C100": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "one comparison does not support 'never'; 0.5 + 0.25 == 0.75 is True",
+    "supported_statement": "0.1 + 0.2 does not compare equal to 0.3 in this run."
+  }
+}

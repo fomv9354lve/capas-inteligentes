@@ -1,0 +1,13 @@
+{
+  "case_id": "C088",
+  "family": "ledger_metric",
+  "claim": "The average ticket in May 2026 was $1,150.81.",
+  "bundle": {
+    "rows_csv": "date,account,customer,amount\n2026-05-04,refund,C-273,-153.64\n2026-05-04,revenue,C-343,1459.12\n2026-05-05,revenue,C-343,2230.16\n2026-05-06,revenue,C-336,1289.87\n2026-05-09,refund,C-518,-224.09\n2026-05-13,revenue,C-475,1928.93\n2026-05-16,refund,C-273,-130.86\n2026-05-20,revenue,C-273,1915.57\n2026-05-23,revenue,C-283,2042.22\n",
+    "metric_definition": "average_ticket = sum(amount) / count(rows) over rows with account = 'revenue' dated within the period (one row = one order)",
+    "period": "2026-05",
+    "reported_value": 1150.81,
+    "tolerance": 0.01,
+    "notes": "Export range: 2026-05-01 to 2026-05-31. General-ledger export from the ERP."
+  }
+}

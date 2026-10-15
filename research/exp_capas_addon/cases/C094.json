@@ -1,0 +1,10 @@
+{
+  "case_id": "C094",
+  "family": "python_behavior",
+  "claim": "Here -7 // 2 evaluates to -4 while int(-7 / 2) evaluates to -3, and -7 % 2 is 1.",
+  "bundle": {
+    "snippet": "print(-7 // 2, int(-7 / 2), -7 % 2)\n",
+    "run_log": "$ python3 --version\nPython 3.14.5\n$ cat snippet.py\nprint(-7 // 2, int(-7 / 2), -7 % 2)\n$ python3 snippet.py\n-4 -3 1\n",
+    "notes": ""
+  }
+}

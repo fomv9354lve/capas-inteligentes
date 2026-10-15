@@ -1,0 +1,10 @@
+{
+  "case_id": "C074",
+  "family": "python_behavior",
+  "claim": "The snippet shows that one day after 2024-02-28 is 2024-02-29, and that February 2025 has 28 days.",
+  "bundle": {
+    "snippet": "from datetime import date, timedelta\n\nprint(date(2024, 2, 28) + timedelta(days=1))\nprint((date(2025, 3, 1) - date(2025, 2, 1)).days)\n",
+    "run_log": "$ python3 --version\nPython 3.14.5\n$ cat snippet.py\nfrom datetime import date, timedelta\n\nprint(date(2024, 2, 28) + timedelta(days=1))\nprint((date(2025, 3, 1) - date(2025, 2, 1)).days)\n$ python3 snippet.py\n2024-02-29\n28\n",
+    "notes": ""
+  }
+}

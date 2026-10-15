@@ -1,0 +1,13 @@
+{
+  "case_id": "C089",
+  "family": "ledger_metric",
+  "claim": "Revenue for 2026-Q1 was $57,445.39.",
+  "bundle": {
+    "rows_csv": "date,account,customer,amount\n2026-01-03,revenue,C-450,3234.61\n2026-01-05,revenue,C-194,4200.23\n2026-01-08,revenue,C-450,2585.80\n2026-01-14,cogs,,2938.87\n2026-01-16,cogs,,4290.66\n2026-01-22,opex,,6836.11\n2026-01-24,revenue,C-576,1523.87\n2026-01-24,revenue,C-984,1600.09\n2026-01-25,opex,,3551.47\n2026-02-01,cogs,,3893.70\n2026-02-02,revenue,C-450,3847.12\n2026-02-03,opex,,2384.62\n2026-02-12,revenue,C-698,4196.32\n2026-02-12,revenue,C-765,2671.02\n2026-02-14,opex,,1612.25\n2026-02-18,revenue,C-892,4795.38\n2026-02-23,cogs,,5646.29\n2026-02-24,revenue,C-490,1835.59\n2026-03-06,revenue,C-450,3463.09\n2026-03-10,cogs,,6456.52\n2026-03-10,revenue,C-762,1025.34\n2026-03-17,opex,,5962.05\n2026-03-24,revenue,C-762,5939.94\n2026-03-25,cogs,,8368.93\n2026-03-26,revenue,C-762,5755.84\n2026-03-26,revenue,C-803,1343.92\n2026-03-28,opex,,1945.84\n2026-03-28,revenue,C-450,5358.83\n2026-03-29,revenue,C-698,4068.40\n",
+    "metric_definition": "revenue = sum(amount) over rows with account = 'revenue' dated within the period",
+    "period": "2026-Q1",
+    "reported_value": 57445.39,
+    "tolerance": 0.01,
+    "notes": "Export range: 2026-01-01 to 2026-03-31. General-ledger export from the ERP."
+  }
+}

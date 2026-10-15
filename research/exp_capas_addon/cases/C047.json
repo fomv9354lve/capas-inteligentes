@@ -1,0 +1,10 @@
+{
+  "case_id": "C047",
+  "family": "python_behavior",
+  "claim": "sorted() can order any Python list; both calls in this run succeed.",
+  "bundle": {
+    "snippet": "print(sorted([3, 1, 2]), sorted([\"b\", \"a\"]))\n",
+    "run_log": "$ python3 --version\nPython 3.14.5\n$ cat snippet.py\nprint(sorted([3, 1, 2]), sorted([\"b\", \"a\"]))\n$ python3 snippet.py\n[1, 2, 3] ['a', 'b']\n",
+    "notes": ""
+  }
+}

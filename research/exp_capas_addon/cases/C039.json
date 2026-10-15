@@ -1,0 +1,10 @@
+{
+  "case_id": "C039",
+  "family": "python_behavior",
+  "claim": "The log shows 'bonono': the count argument of 2 still lets replace() change every 'a'.",
+  "bundle": {
+    "snippet": "print(\"banana\".replace(\"a\", \"o\", 2))\n",
+    "run_log": "$ python3 --version\nPython 3.14.5\n$ cat snippet.py\nprint(\"banana\".replace(\"a\", \"o\", 2))\n$ python3 snippet.py\nbonona\n",
+    "notes": ""
+  }
+}

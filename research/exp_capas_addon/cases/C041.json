@@ -1,0 +1,10 @@
+{
+  "case_id": "C041",
+  "family": "python_behavior",
+  "claim": "The snippet prints 'hell0 w0rld' with no surrounding spaces.",
+  "bundle": {
+    "snippet": "print(\"  Hello World  \".strip().lower().replace(\"o\", \"0\"))\n",
+    "run_log": "$ python3 --version\nPython 3.14.5\n$ cat snippet.py\nprint(\"  Hello World  \".strip().lower().replace(\"o\", \"0\"))\n$ python3 snippet.py\nhell0 w0rld\n",
+    "notes": ""
+  }
+}

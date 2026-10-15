@@ -1,0 +1,13 @@
+{
+  "case_id": "C081",
+  "family": "ledger_metric",
+  "claim": "Net revenue for April 2026, after refunds, was $20,849.37.",
+  "bundle": {
+    "rows_csv": "date,account,customer,amount\n2026-04-04,refund,C-470,-333.33\n2026-04-05,refund,C-101,-189.29\n2026-04-05,revenue,C-333,3434.31\n2026-04-07,revenue,C-238,2610.92\n2026-04-11,revenue,C-890,1988.40\n2026-04-13,revenue,C-886,5764.12\n2026-04-15,revenue,C-252,3099.20\n2026-04-24,refund,C-221,-85.92\n2026-04-24,revenue,C-333,861.94\n2026-04-29,revenue,C-140,3090.48\n",
+    "metric_definition": "net_revenue = sum(amount) over rows with account in ('revenue', 'refund') dated within the period (refund amounts are negative)",
+    "period": "2026-04",
+    "reported_value": 20849.37,
+    "tolerance": 0.01,
+    "notes": "Export range: 2026-04-01 to 2026-04-30. General-ledger export from the ERP."
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "case_id": "C028",
+  "family": "python_behavior",
+  "claim": "The snippet raises ValueError because month 13 does not exist.",
+  "bundle": {
+    "snippet": "from datetime import datetime\n\nprint(datetime.strptime(\"2026-13-01\", \"%Y-%m-%d\"))\n",
+    "run_log": null,
+    "notes": "Input validation check for the import job."
+  }
+}

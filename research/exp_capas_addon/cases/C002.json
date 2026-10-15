@@ -1,0 +1,10 @@
+{
+  "case_id": "C002",
+  "family": "python_behavior",
+  "claim": "In this snippet replace(month=2) on 2026-01-31 clamps the date to 2026-02-28.",
+  "bundle": {
+    "snippet": "from datetime import datetime\n\nprint(datetime(2026, 1, 31).replace(month=2))\n",
+    "run_log": "$ python3 --version\nPython 3.14.5\n$ cat snippet.py\nfrom datetime import datetime\n\nprint(datetime(2026, 1, 31).replace(month=2))\n$ python3 snippet.py\nTraceback (most recent call last):\n  File \"/work/snippet.py\", line 3, in <module>\n    print(datetime(2026, 1, 31).replace(month=2))\n          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^\nValueError: day 31 must be in range 1..28 for month 2 in year 2026\n",
+    "notes": ""
+  }
+}

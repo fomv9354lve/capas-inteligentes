@@ -1,0 +1,10 @@
+{
+  "case_id": "C075",
+  "family": "python_behavior",
+  "claim": "int() accepts any string that contains digits, as these three conversions show.",
+  "bundle": {
+    "snippet": "print(int(\" 42 \"), int(\"+7\"), int(\"0010\"))\n",
+    "run_log": "$ python3 --version\nPython 3.14.5\n$ cat snippet.py\nprint(int(\" 42 \"), int(\"+7\"), int(\"0010\"))\n$ python3 snippet.py\n42 7 10\n",
+    "notes": ""
+  }
+}

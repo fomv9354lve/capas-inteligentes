@@ -1,0 +1,13 @@
+{
+  "case_id": "C036",
+  "family": "ledger_metric",
+  "claim": "Monthly revenue grows by at least 5% every month, as the 10.6% increase from February to March 2026 shows.",
+  "bundle": {
+    "rows_csv": "date,account,customer,amount\n2026-02-05,revenue,C-360,2621.62\n2026-02-05,revenue,C-368,2574.18\n2026-02-07,revenue,C-929,1775.82\n2026-02-20,revenue,C-745,2829.04\n2026-02-20,revenue,C-982,1718.55\n2026-03-02,revenue,C-997,2273.10\n2026-03-05,revenue,C-368,2413.55\n2026-03-12,revenue,C-184,2502.62\n2026-03-15,revenue,C-485,1069.03\n2026-03-15,revenue,C-524,1660.54\n2026-03-21,revenue,C-929,1324.59\n2026-03-27,revenue,C-929,1500.12\n",
+    "metric_definition": "mom_growth = revenue(2026-03) / revenue(2026-02) - 1, where revenue(m) = sum(amount) for account 'revenue' dated in month m",
+    "period": "2026-02..2026-03",
+    "reported_value": 0.1063,
+    "tolerance": 0.0005,
+    "notes": "Export range: 2026-02-01 to 2026-03-31. General-ledger export from the ERP."
+  }
+}

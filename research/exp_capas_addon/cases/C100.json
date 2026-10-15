@@ -1,0 +1,10 @@
+{
+  "case_id": "C100",
+  "family": "python_behavior",
+  "claim": "Float addition in Python never gives an exact decimal result; this comparison proves it.",
+  "bundle": {
+    "snippet": "print(0.1 + 0.2 == 0.3)\n",
+    "run_log": "$ python3 --version\nPython 3.14.5\n$ cat snippet.py\nprint(0.1 + 0.2 == 0.3)\n$ python3 snippet.py\nFalse\n",
+    "notes": ""
+  }
+}

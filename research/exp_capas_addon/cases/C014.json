@@ -1,0 +1,10 @@
+{
+  "case_id": "C014",
+  "family": "python_behavior",
+  "claim": "Python's round() always rounds .5 down, as round(2.5) and round(4.5) show here.",
+  "bundle": {
+    "snippet": "print(round(2.5), round(4.5))\n",
+    "run_log": "$ python3 --version\nPython 3.14.5\n$ cat snippet.py\nprint(round(2.5), round(4.5))\n$ python3 snippet.py\n2 4\n",
+    "notes": ""
+  }
+}

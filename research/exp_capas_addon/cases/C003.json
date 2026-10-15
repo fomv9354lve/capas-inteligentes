@@ -1,0 +1,10 @@
+{
+  "case_id": "C003",
+  "family": "python_behavior",
+  "claim": "re.match finds '123' in 'abc123' in this run.",
+  "bundle": {
+    "snippet": "import re\n\nm = re.match(r\"\\d+\", \"abc123\")\nprint(m)\n",
+    "run_log": "$ python3 --version\nPython 3.14.5\n$ cat snippet.py\nimport re\n\nm = re.match(r\"\\d+\", \"abc123\")\nprint(m)\n$ python3 snippet.py\nNone\n",
+    "notes": ""
+  }
+}

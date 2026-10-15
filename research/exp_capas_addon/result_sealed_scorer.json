@@ -1,0 +1,124 @@
+{
+ "n_cases": 100,
+ "arms": {
+  "A": {
+   "errors_in_final_answer": 2,
+   "per_100_cases": 2.0,
+   "error_rate_on_nonvalid": "2/75",
+   "false_blocks": 0,
+   "false_block_rate_on_valid": "0/25",
+   "reproducible_decisions": "100/100",
+   "missing_or_malformed": [],
+   "by_category": {
+    "valid": {
+     "n": 25,
+     "state_as_written": 25,
+     "narrow": 0,
+     "withhold": 0,
+     "missing": 0
+    },
+    "false": {
+     "n": 25,
+     "state_as_written": 0,
+     "narrow": 2,
+     "withhold": 23,
+     "missing": 0
+    },
+    "incomplete": {
+     "n": 25,
+     "state_as_written": 2,
+     "narrow": 7,
+     "withhold": 16,
+     "missing": 0
+    },
+    "exaggerated": {
+     "n": 25,
+     "state_as_written": 0,
+     "narrow": 25,
+     "withhold": 0,
+     "missing": 0
+    }
+   }
+  },
+  "B": {
+   "errors_in_final_answer": 0,
+   "per_100_cases": 0.0,
+   "error_rate_on_nonvalid": "0/75",
+   "false_blocks": 0,
+   "false_block_rate_on_valid": "0/25",
+   "reproducible_decisions": "100/100",
+   "missing_or_malformed": [],
+   "by_category": {
+    "valid": {
+     "n": 25,
+     "state_as_written": 25,
+     "narrow": 0,
+     "withhold": 0,
+     "missing": 0
+    },
+    "false": {
+     "n": 25,
+     "state_as_written": 0,
+     "narrow": 1,
+     "withhold": 24,
+     "missing": 0
+    },
+    "incomplete": {
+     "n": 25,
+     "state_as_written": 0,
+     "narrow": 14,
+     "withhold": 11,
+     "missing": 0
+    },
+    "exaggerated": {
+     "n": 25,
+     "state_as_written": 0,
+     "narrow": 25,
+     "withhold": 0,
+     "missing": 0
+    }
+   }
+  }
+ },
+ "paired_errors": {
+  "only_A_wrong": 2,
+  "only_B_wrong": 0,
+  "mcnemar_exact_p": 0.5
+ },
+ "errors_avoided_per_100": 2.0,
+ "extra_false_blocks_per_100": 0.0,
+ "capas_calls": 101,
+ "capas_calls_per_case": 1.01,
+ "capas_overrides": 23,
+ "effort": {
+  "source": "subagent run notifications (subagent_tokens, tool_uses, duration_ms)",
+  "A": {
+   "A1": {
+    "tokens": 79224,
+    "tool_uses": 7,
+    "seconds": 77.4
+   },
+   "A2": {
+    "tokens": 87676,
+    "tool_uses": 6,
+    "seconds": 92.9
+   },
+   "total_tokens": 166900,
+   "total_seconds": 170.3
+  },
+  "B": {
+   "B1": {
+    "tokens": 149107,
+    "tool_uses": 155,
+    "seconds": 350.2
+   },
+   "B2": {
+    "tokens": 118910,
+    "tool_uses": 73,
+    "seconds": 234.9
+   },
+   "total_tokens": 268017,
+   "total_seconds": 585.1
+  }
+ }
+}

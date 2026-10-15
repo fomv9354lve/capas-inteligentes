@@ -1,0 +1,10 @@
+{
+  "case_id": "C077",
+  "family": "python_behavior",
+  "claim": "Both merge expressions in the snippet end with y equal to 3.",
+  "bundle": {
+    "snippet": "a = {\"x\": 1, \"y\": 2}\nb = {\"y\": 3}\nprint(a | b)\nprint({**b, **a})\n",
+    "run_log": "$ python3 --version\nPython 3.14.5\n$ cat snippet.py\na = {\"x\": 1, \"y\": 2}\nb = {\"y\": 3}\nprint(a | b)\nprint({**b, **a})\n$ python3 snippet.py\n{'x': 1, 'y': 3}\n{'y': 2, 'x': 1}\n",
+    "notes": ""
+  }
+}

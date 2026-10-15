@@ -1,0 +1,10 @@
+{
+  "case_id": "C020",
+  "family": "python_behavior",
+  "claim": "In this run the non-greedy pattern returns two tags, ['<a>', '<b>'], while the greedy pattern returns one match, ['<a><b>'].",
+  "bundle": {
+    "snippet": "import re\n\ntext = \"<a><b>\"\nprint(re.findall(r\"<.+?>\", text))\nprint(re.findall(r\"<.+>\", text))\n",
+    "run_log": "$ python3 --version\nPython 3.14.5\n$ cat snippet.py\nimport re\n\ntext = \"<a><b>\"\nprint(re.findall(r\"<.+?>\", text))\nprint(re.findall(r\"<.+>\", text))\n$ python3 snippet.py\n['<a>', '<b>']\n['<a><b>']\n",
+    "notes": ""
+  }
+}

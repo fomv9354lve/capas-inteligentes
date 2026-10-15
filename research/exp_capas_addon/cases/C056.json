@@ -1,0 +1,10 @@
+{
+  "case_id": "C056",
+  "family": "python_behavior",
+  "claim": "Every Python function with a default argument carries state between calls, just like tag() does here.",
+  "bundle": {
+    "snippet": "def tag(t, seen=[]):\n    seen.append(t)\n    return len(seen)\n\nprint(tag(\"a\"), tag(\"b\"))\n",
+    "run_log": "$ python3 --version\nPython 3.14.5\n$ cat snippet.py\ndef tag(t, seen=[]):\n    seen.append(t)\n    return len(seen)\n\nprint(tag(\"a\"), tag(\"b\"))\n$ python3 snippet.py\n1 2\n",
+    "notes": ""
+  }
+}

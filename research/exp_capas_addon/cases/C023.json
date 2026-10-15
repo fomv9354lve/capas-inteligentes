@@ -1,0 +1,10 @@
+{
+  "case_id": "C023",
+  "family": "python_behavior",
+  "claim": "The snippet's output lists the fruits alphabetically ignoring case: ['apple', 'banana', 'Cherry'].",
+  "bundle": {
+    "snippet": "print(sorted([\"banana\", \"apple\", \"Cherry\"]))\n",
+    "run_log": "$ python3 --version\nPython 3.14.5\n$ cat snippet.py\nprint(sorted([\"banana\", \"apple\", \"Cherry\"]))\n$ python3 snippet.py\n['Cherry', 'apple', 'banana']\n",
+    "notes": ""
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "case_id": "C092",
+  "family": "python_behavior",
+  "claim": "In this run f'{0.5:.0f}' renders as 1 and f'{2.5:.0f}' renders as 3, i.e. halves round up.",
+  "bundle": {
+    "snippet": "print(f\"{0.5:.0f}\", f\"{1.5:.0f}\", f\"{2.5:.0f}\")\n",
+    "run_log": "$ python3 --version\nPython 3.14.5\n$ cat snippet.py\nprint(f\"{0.5:.0f}\", f\"{1.5:.0f}\", f\"{2.5:.0f}\")\n$ python3 snippet.py\n0 2 2\n",
+    "notes": ""
+  }
+}

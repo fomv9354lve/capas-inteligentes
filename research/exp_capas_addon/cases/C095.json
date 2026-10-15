@@ -1,0 +1,10 @@
+{
+  "case_id": "C095",
+  "family": "python_behavior",
+  "claim": "In this snippet the second call to add() returns [1, 2], because both calls append to the same default list.",
+  "bundle": {
+    "snippet": "def add(item, bucket=[]):\n    bucket.append(item)\n    return bucket\n\nprint(add(1))\nprint(add(2))\n",
+    "run_log": "$ python3 --version\nPython 3.14.5\n$ cat snippet.py\ndef add(item, bucket=[]):\n    bucket.append(item)\n    return bucket\n\nprint(add(1))\nprint(add(2))\n$ python3 snippet.py\n[1]\n[1, 2]\n",
+    "notes": ""
+  }
+}

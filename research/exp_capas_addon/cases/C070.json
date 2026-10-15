@@ -1,0 +1,13 @@
+{
+  "case_id": "C070",
+  "family": "ledger_metric",
+  "claim": "Refunds are always below 5% of revenue; in February 2026 they were 3.6%.",
+  "bundle": {
+    "rows_csv": "date,account,customer,amount\n2026-02-01,revenue,C-285,4481.98\n2026-02-02,revenue,C-356,2008.54\n2026-02-05,revenue,C-136,1550.38\n2026-02-05,revenue,C-340,1762.68\n2026-02-07,refund,C-463,-343.06\n2026-02-08,revenue,C-340,1902.99\n2026-02-12,revenue,C-432,4408.37\n2026-02-14,refund,C-954,-192.73\n2026-02-18,refund,C-297,-279.29\n2026-02-26,revenue,C-883,4243.69\n2026-02-28,revenue,C-954,2141.80\n",
+    "metric_definition": "refund_rate = -sum(amount where account = 'refund') / sum(amount where account = 'revenue'), rows dated within the period",
+    "period": "2026-02",
+    "reported_value": 0.0362,
+    "tolerance": 0.0005,
+    "notes": "Export range: 2026-02-01 to 2026-02-28. General-ledger export from the ERP."
+  }
+}

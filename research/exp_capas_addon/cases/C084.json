@@ -1,0 +1,13 @@
+{
+  "case_id": "C084",
+  "family": "ledger_metric",
+  "claim": "2026-Q2 revenue of $90,362.16 guarantees that full-year 2026 revenue will exceed $320,000.00.",
+  "bundle": {
+    "rows_csv": "date,account,customer,amount\n2026-04-01,revenue,C-873,4751.12\n2026-04-02,revenue,C-283,5164.57\n2026-04-07,revenue,C-949,5229.33\n2026-04-21,revenue,C-108,2887.88\n2026-04-21,revenue,C-848,7602.34\n2026-04-26,revenue,C-469,5799.70\n2026-05-06,revenue,C-108,4583.00\n2026-05-10,revenue,C-214,6866.61\n2026-05-10,revenue,C-811,4143.79\n2026-05-11,revenue,C-108,2792.13\n2026-05-16,revenue,C-186,6151.71\n2026-05-27,revenue,C-546,5208.90\n2026-06-02,revenue,C-873,3483.14\n2026-06-11,revenue,C-108,4496.14\n2026-06-19,revenue,C-848,2903.87\n2026-06-21,revenue,C-848,4687.27\n2026-06-23,revenue,C-682,5820.47\n2026-06-29,revenue,C-469,7790.19\n",
+    "metric_definition": "revenue = sum(amount) over rows with account = 'revenue' dated within the period",
+    "period": "2026-Q2",
+    "reported_value": 90362.16,
+    "tolerance": 0.01,
+    "notes": "Export range: 2026-04-01 to 2026-06-30. General-ledger export from the ERP."
+  }
+}

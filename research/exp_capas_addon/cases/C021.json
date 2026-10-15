@@ -1,0 +1,13 @@
+{
+  "case_id": "C021",
+  "family": "ledger_metric",
+  "claim": "Revenue fell 26.6% from April to May 2026.",
+  "bundle": {
+    "rows_csv": "date,account,customer,amount\n2026-04-01,revenue,C-255,3910.08\n2026-04-07,revenue,C-149,1987.67\n2026-04-15,revenue,C-621,2040.42\n2026-04-16,revenue,C-596,2634.44\n2026-04-22,revenue,C-255,1464.03\n2026-04-24,revenue,C-923,1091.29\n2026-04-28,revenue,C-420,2082.97\n2026-05-05,revenue,C-255,3915.91\n2026-05-06,revenue,C-211,2863.79\n2026-05-19,revenue,C-163,1734.66\n2026-05-26,revenue,C-938,1552.44\n2026-05-27,revenue,C-255,1093.58\n",
+    "metric_definition": "mom_growth = revenue(2026-05) / revenue(2026-04) - 1, where revenue(m) = sum(amount) for account 'revenue' dated in month m",
+    "period": "2026-04..2026-05",
+    "reported_value": -0.2663,
+    "tolerance": 0.0005,
+    "notes": "Export range: 2026-04-01 to 2026-05-31. General-ledger export from the ERP."
+  }
+}

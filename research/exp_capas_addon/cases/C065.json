@@ -1,0 +1,13 @@
+{
+  "case_id": "C065",
+  "family": "ledger_metric",
+  "claim": "Revenue for 2026-H1 was $47,848.52.",
+  "bundle": {
+    "rows_csv": "date,account,customer,amount\n2026-01-08,revenue,C-193,888.95\n2026-01-15,revenue,C-112,4802.52\n2026-01-20,opex,,4169.10\n2026-01-21,opex,,7646.95\n2026-01-26,revenue,C-575,1191.70\n2026-01-29,revenue,C-193,1960.29\n2026-01-29,revenue,C-727,4910.43\n2026-02-06,revenue,C-421,3588.25\n2026-02-10,opex,,5430.60\n2026-02-10,revenue,C-492,1157.61\n2026-02-11,revenue,C-400,5378.37\n2026-02-12,revenue,C-799,2461.80\n2026-02-13,revenue,C-727,4903.65\n2026-02-16,opex,,3881.64\n2026-03-03,revenue,C-744,5108.93\n2026-03-05,revenue,C-112,4204.16\n2026-03-06,opex,,7652.81\n2026-03-09,revenue,C-421,2684.23\n2026-03-12,revenue,C-261,2935.10\n2026-03-13,revenue,C-651,1672.53\n2026-03-27,opex,,7585.80\n",
+    "metric_definition": "revenue = sum(amount) over rows with account = 'revenue' dated within the period",
+    "period": "2026-H1",
+    "reported_value": 47848.52,
+    "tolerance": 0.01,
+    "notes": "Export range: 2026-01-01 to 2026-03-31. General-ledger export from the ERP."
+  }
+}

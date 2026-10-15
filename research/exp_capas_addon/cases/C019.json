@@ -1,0 +1,10 @@
+{
+  "case_id": "C019",
+  "family": "python_behavior",
+  "claim": "re.findall returns a list of strings whatever the pattern, which this run confirms.",
+  "bundle": {
+    "snippet": "import re\n\nprint(re.findall(r\"\\d+\", \"a1b22c333\"))\n",
+    "run_log": "$ python3 --version\nPython 3.14.5\n$ cat snippet.py\nimport re\n\nprint(re.findall(r\"\\d+\", \"a1b22c333\"))\n$ python3 snippet.py\n['1', '22', '333']\n",
+    "notes": ""
+  }
+}

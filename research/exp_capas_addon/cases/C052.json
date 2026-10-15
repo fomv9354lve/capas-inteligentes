@@ -1,0 +1,10 @@
+{
+  "case_id": "C052",
+  "family": "python_behavior",
+  "claim": "Splitting 'a,b,,c,' on commas in this snippet returns five elements, two of which are empty strings.",
+  "bundle": {
+    "snippet": "parts = \"a,b,,c,\".split(\",\")\nprint(len(parts), parts)\n",
+    "run_log": "$ python3 --version\nPython 3.14.5\n$ cat snippet.py\nparts = \"a,b,,c,\".split(\",\")\nprint(len(parts), parts)\n$ python3 snippet.py\n5 ['a', 'b', '', 'c', '']\n",
+    "notes": ""
+  }
+}

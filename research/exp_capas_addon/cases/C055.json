@@ -1,0 +1,13 @@
+{
+  "case_id": "C055",
+  "family": "ledger_metric",
+  "claim": "Gross margin for 2026-Q1 was 41.2%.",
+  "bundle": {
+    "rows_csv": "date,account,customer,amount\n2026-01-03,revenue,C-331,1807.94\n2026-01-04,revenue,C-558,4730.22\n2026-01-07,revenue,C-918,1797.10\n2026-01-10,revenue,C-331,4306.63\n2026-01-14,revenue,C-812,4833.95\n2026-01-18,opex,,6960.29\n2026-01-23,opex,,2011.26\n2026-02-06,revenue,C-875,3217.02\n2026-02-16,revenue,C-291,5039.16\n2026-02-17,revenue,C-225,4760.82\n2026-02-19,revenue,C-331,4789.47\n2026-02-19,revenue,C-590,5779.74\n2026-02-25,opex,,3967.15\n2026-02-26,opex,,1506.76\n2026-03-03,opex,,8863.52\n2026-03-05,revenue,C-558,2919.79\n2026-03-15,revenue,C-291,1810.18\n2026-03-16,opex,,7354.11\n2026-03-27,revenue,C-819,5660.80\n2026-03-29,revenue,C-331,2998.79\n2026-03-29,revenue,C-647,2452.20\n",
+    "metric_definition": "gross_margin = (revenue - cogs) / revenue, where revenue = sum(amount) for account 'revenue' and cogs = sum(amount) for account 'cogs', rows dated within the period",
+    "period": "2026-Q1",
+    "reported_value": 0.412,
+    "tolerance": 0.0005,
+    "notes": "Export range: 2026-01-01 to 2026-03-31. General-ledger export from the ERP. COGS is posted in the inventory sub-ledger, which is not part of this export."
+  }
+}

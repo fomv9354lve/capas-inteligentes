@@ -1,0 +1,10 @@
+{
+  "case_id": "C038",
+  "family": "python_behavior",
+  "claim": "In this run 7 / 2 evaluates to the integer 3, the same as 7 // 2.",
+  "bundle": {
+    "snippet": "print(7 / 2, 7 // 2, type(7 / 2).__name__)\n",
+    "run_log": "$ python3 --version\nPython 3.14.5\n$ cat snippet.py\nprint(7 / 2, 7 // 2, type(7 / 2).__name__)\n$ python3 snippet.py\n3.5 3 float\n",
+    "notes": ""
+  }
+}

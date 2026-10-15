@@ -1,0 +1,10 @@
+{
+  "case_id": "C080",
+  "family": "python_behavior",
+  "claim": "On Python 3.14.5, the interpreter in the log, list(d) returns the keys in insertion order: ['z', 'a', 'm'].",
+  "bundle": {
+    "snippet": "d = {}\nd[\"z\"] = 1\nd[\"a\"] = 2\nd[\"m\"] = 3\nprint(list(d))\n",
+    "run_log": "$ python3 --version\nPython 3.14.5\n$ cat snippet.py\nd = {}\nd[\"z\"] = 1\nd[\"a\"] = 2\nd[\"m\"] = 3\nprint(list(d))\n$ python3 snippet.py\n['z', 'a', 'm']\n",
+    "notes": ""
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "case_id": "C087",
+  "family": "ledger_metric",
+  "claim": "Operating expenses were $41,783.67 in 2026-Q3 and will remain below $50,000.00 per quarter for the rest of the year.",
+  "bundle": {
+    "rows_csv": "date,account,customer,amount\n2026-07-02,opex,,5345.61\n2026-07-06,revenue,C-669,4173.94\n2026-07-18,opex,,4790.38\n2026-07-24,opex,,1585.62\n2026-07-27,revenue,C-815,3273.81\n2026-08-09,opex,,2997.85\n2026-08-09,opex,,7950.40\n2026-08-11,opex,,7510.64\n2026-08-12,revenue,C-834,2928.09\n2026-08-16,revenue,C-723,1824.63\n2026-09-04,opex,,4261.21\n2026-09-05,revenue,C-377,4516.56\n2026-09-09,revenue,C-723,4197.41\n2026-09-20,opex,,3577.64\n2026-09-21,opex,,3764.32\n",
+    "metric_definition": "opex = sum(amount) over rows with account = 'opex' dated within the period",
+    "period": "2026-Q3",
+    "reported_value": 41783.67,
+    "tolerance": 0.01,
+    "notes": "Export range: 2026-07-01 to 2026-09-30. General-ledger export from the ERP."
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "case_id": "C086",
+  "family": "ledger_metric",
+  "claim": "DSO stays below 45 days at every quarter end; it was 38.4 days for 2026-Q1.",
+  "bundle": {
+    "rows_csv": "date,account,customer,amount\n2026-01-12,revenue,C-425,5099.36\n2026-01-13,revenue,C-300,8629.41\n2026-01-20,revenue,C-340,6964.72\n2026-01-21,revenue,C-235,8652.68\n2026-01-27,revenue,C-340,5709.88\n2026-02-01,revenue,C-365,2798.69\n2026-02-09,revenue,C-985,8717.64\n2026-02-19,revenue,C-235,4252.37\n2026-02-23,revenue,C-838,2203.62\n2026-02-26,revenue,C-300,2704.07\n2026-03-02,revenue,C-300,8405.30\n2026-03-02,revenue,C-985,6371.26\n2026-03-05,revenue,C-852,6247.57\n2026-03-12,revenue,C-852,6185.17\n2026-03-27,revenue,C-736,5415.05\n2026-03-31,accounts_receivable,,37698.90\n",
+    "metric_definition": "DSO = accounts_receivable balance / revenue x 90 days, where the balance is the 'accounts_receivable' row dated 2026-03-31 and revenue = sum(amount) for account 'revenue' within the period",
+    "period": "2026-Q1",
+    "reported_value": 38.4,
+    "tolerance": 0.05,
+    "notes": "Export range: 2026-01-01 to 2026-03-31. General-ledger export from the ERP."
+  }
+}
