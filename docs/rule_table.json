@@ -922,6 +922,45 @@
    "label": "the ledger rows do not cover every month of the period, so the metric is not re-derivable"
   },
   {
+   "id": "R30cdba0c27",
+   "version": 1,
+   "stage": "downgrade",
+   "claim_type": null,
+   "from": [
+    "ACCEPT",
+    "HOLD",
+    "REWRITE"
+   ],
+   "to": "HOLD",
+   "hold_class": "field_absent",
+   "pattern": "a\\ referenced\\ original\\ source\\ file\\ could\\ not\\ be\\ read\\ or\\ does\\ not\\ match\\ its\\ sha256,\\ so\\ it\\ is\\ not\\ re\\-derived",
+   "label": "a referenced original source file could not be read or does not match its sha256, so it is not re-derived"
+  },
+  {
+   "id": "Rab16d337c6",
+   "version": 1,
+   "stage": "downgrade",
+   "claim_type": null,
+   "from": [
+    "ACCEPT"
+   ],
+   "to": "REJECT",
+   "pattern": "another\\ assertion\\ of\\ the\\ claim,\\ checked\\ against\\ the\\ rows,\\ does\\ not\\ hold",
+   "label": "another assertion of the claim, checked against the rows, does not hold"
+  },
+  {
+   "id": "Rd9c47de67e",
+   "version": 1,
+   "stage": "downgrade",
+   "claim_type": "financial_metric_claim",
+   "from": [
+    "ACCEPT"
+   ],
+   "to": "REWRITE",
+   "pattern": "the\\ text\\ makes\\ more\\ assertions\\ than\\ the\\ evidence\\ checks:\\ only\\ the\\ checked\\ assertion\\ is\\ licensed",
+   "label": "the text makes more assertions than the evidence checks: only the checked assertion is licensed"
+  },
+  {
    "id": "R05055dd477",
    "version": 1,
    "stage": "downgrade",

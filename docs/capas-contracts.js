@@ -96,6 +96,7 @@ window.CAPAS_CONTRACTS = {
     "cited_dois": "string[]",
     "claim_api": "string",
     "claim_scope": "string",
+    "code_ref": "object",
     "code_snippet": "string",
     "conflict_resolution_method": "string",
     "confounders_controlled": "boolean",
@@ -331,6 +332,7 @@ window.CAPAS_CONTRACTS = {
     ],
     "programming_language_behavior_claim": [
       "docs_reference",
+      "code_ref",
       "object_declared",
       "object_matches_target",
       "load_bearing_citation_read",
