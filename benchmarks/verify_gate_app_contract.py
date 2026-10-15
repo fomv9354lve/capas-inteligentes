@@ -87,6 +87,10 @@ def main() -> int:
 
             def fresh(width=1440, height=900, scheme="dark", storage=None):
                 ctx = br.new_context(viewport={"width": width, "height": height}, color_scheme=scheme)
+                # a CSP violation is reported with the handler sample and the element, so a failure names its cause
+                ctx.add_init_script("""document.addEventListener('securitypolicyviolation', (e) => {
+                    const t = e.target && e.target.outerHTML ? e.target.outerHTML.slice(0, 160) : '';
+                    console.error('CSPVIOLATION ' + e.violatedDirective + ' sample=' + (e.sample || '') + ' element=' + t); });""")
                 if storage:
                     ctx.add_init_script("(() => { const s = %s; for (const k in s) localStorage.setItem(k, s[k]); })()" % json.dumps(storage))
                 # external resources (fonts, the ornamental 3D logo's CDN scripts) are blocked: local and deterministic
@@ -95,7 +99,7 @@ def main() -> int:
                 errors = []
                 # "THREE is not defined" comes from the ornamental logo iframe whose CDN script is blocked above
                 pg.on("pageerror", lambda e: None if "THREE is not defined" in str(e) else errors.append(str(e)))
-                pg.on("console", lambda m: errors.append("csp: " + m.text) if "Content Security Policy" in m.text else None)
+                pg.on("console", lambda m: errors.append(m.text[:400]) if m.text.startswith("CSPVIOLATION") else None)
                 return ctx, pg, errors
 
             def select_mode(pg, mode, phase="gate"):

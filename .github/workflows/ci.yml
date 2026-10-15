@@ -215,7 +215,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           python -m pip install -e .
-          python -m pip install playwright
+          python -m pip install playwright==1.61.0   # same version as the local runs (reproducible browser)
           python -m playwright install --with-deps chromium
 
       - name: Gate App contract (A-J)
