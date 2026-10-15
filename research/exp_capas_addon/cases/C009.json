@@ -1,0 +1,10 @@
+{
+  "case_id": "C009",
+  "family": "python_behavior",
+  "claim": "int('3.0') returns 3 in this snippet.",
+  "bundle": {
+    "snippet": "print(int(\"3.0\"))\n",
+    "run_log": "$ python3 --version\nPython 3.14.5\n$ cat snippet.py\nprint(int(\"3.0\"))\n$ python3 snippet.py\nTraceback (most recent call last):\n  File \"/work/snippet.py\", line 1, in <module>\n    print(int(\"3.0\"))\n          ~~~^^^^^^^\nValueError: invalid literal for int() with base 10: '3.0'\n",
+    "notes": ""
+  }
+}

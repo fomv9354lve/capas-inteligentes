@@ -1,0 +1,10 @@
+{
+  "case_id": "C049",
+  "family": "python_behavior",
+  "claim": "The snippet shows that 0.1 + 0.2 does not compare equal to 0.3; the sum prints as 0.30000000000000004.",
+  "bundle": {
+    "snippet": "total = 0.1 + 0.2\nprint(total == 0.3)\nprint(total)\n",
+    "run_log": "$ python3 --version\nPython 3.14.5\n$ cat snippet.py\ntotal = 0.1 + 0.2\nprint(total == 0.3)\nprint(total)\n$ python3 snippet.py\nFalse\n0.30000000000000004\n",
+    "notes": ""
+  }
+}

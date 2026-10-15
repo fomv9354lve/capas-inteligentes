@@ -1,0 +1,10 @@
+{
+  "case_id": "C033",
+  "family": "python_behavior",
+  "claim": "list(gen()) in this snippet produces [1, 2], including the value given in the return statement.",
+  "bundle": {
+    "snippet": "def gen():\n    yield 1\n    return 2\n\ng = gen()\nprint(list(g))\n",
+    "run_log": "$ python3 --version\nPython 3.14.5\n$ cat snippet.py\ndef gen():\n    yield 1\n    return 2\n\ng = gen()\nprint(list(g))\n$ python3 snippet.py\n[1]\n",
+    "notes": ""
+  }
+}

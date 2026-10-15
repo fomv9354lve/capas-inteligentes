@@ -1,0 +1,10 @@
+{
+  "case_id": "C082",
+  "family": "python_behavior",
+  "claim": "str.split() never returns empty strings, whatever separator is passed; see the output here.",
+  "bundle": {
+    "snippet": "print(\"a  b \".split())\n",
+    "run_log": "$ python3 --version\nPython 3.14.5\n$ cat snippet.py\nprint(\"a  b \".split())\n$ python3 snippet.py\n['a', 'b']\n",
+    "notes": ""
+  }
+}

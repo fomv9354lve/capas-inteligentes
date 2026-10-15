@@ -1,0 +1,10 @@
+{
+  "case_id": "C058",
+  "family": "python_behavior",
+  "claim": "This snippet prints ['fig', 'kiwi', 'pear', 'apple'].",
+  "bundle": {
+    "snippet": "words = [\"pear\", \"fig\", \"apple\", \"kiwi\"]\nprint(sorted(words, key=len))\n",
+    "run_log": "$ python3 --version\nPython 3.14.5\n$ cat snippet.py\nwords = [\"pear\", \"fig\", \"apple\", \"kiwi\"]\nprint(sorted(sorted(words), key=len))\n$ python3 snippet.py\n['fig', 'kiwi', 'pear', 'apple']\n",
+    "notes": ""
+  }
+}

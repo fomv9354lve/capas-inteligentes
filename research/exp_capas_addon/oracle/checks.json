@@ -1,0 +1,1053 @@
+{
+  "C001": {
+    "spec": {
+      "metric": "churn"
+    },
+    "claim": {
+      "op": "approx",
+      "value": 0.2,
+      "tol": 0.0005
+    },
+    "scope": {
+      "kind": "period"
+    }
+  },
+  "C002": {
+    "pred": "'2026-02-28' in out",
+    "scope": "run"
+  },
+  "C003": {
+    "pred": "\"'123'\" in out",
+    "scope": "run"
+  },
+  "C004": {
+    "spec": {
+      "metric": "avg_ticket",
+      "accounts": [
+        "revenue"
+      ]
+    },
+    "claim": {
+      "op": "approx",
+      "value": 4290.63,
+      "tol": 0.01
+    },
+    "scope": {
+      "kind": "period"
+    }
+  },
+  "C005": {
+    "spec": {
+      "metric": "sum",
+      "accounts": [
+        "revenue"
+      ]
+    },
+    "claim": {
+      "op": "approx",
+      "value": 57192.88,
+      "tol": 0.01
+    },
+    "scope": {
+      "kind": "period"
+    }
+  },
+  "C006": {
+    "pred": "True",
+    "scope": "run"
+  },
+  "C007": {
+    "pred": "True",
+    "scope": "run",
+    "claimed_version": "3.14"
+  },
+  "C008": {
+    "spec": {
+      "metric": "margin"
+    },
+    "claim": {
+      "op": "gt",
+      "value": 0.35
+    },
+    "scope": {
+      "kind": "period"
+    }
+  },
+  "C009": {
+    "pred": "lines == ['3']",
+    "scope": "run"
+  },
+  "C010": {
+    "pred": "True",
+    "scope": "run",
+    "claimed_version": "3.14.5"
+  },
+  "C011": {
+    "spec": {
+      "metric": "margin"
+    },
+    "claim": {
+      "op": "gt",
+      "value": 0.38
+    },
+    "scope": {
+      "kind": "period"
+    }
+  },
+  "C012": {
+    "spec": {
+      "metric": "sum",
+      "accounts": [
+        "revenue"
+      ]
+    },
+    "claim": {
+      "op": "approx",
+      "value": 25074.44,
+      "tol": 0.01
+    },
+    "scope": {
+      "kind": "period"
+    }
+  },
+  "C013": {
+    "spec": {
+      "metric": "sum",
+      "accounts": [
+        "revenue"
+      ]
+    },
+    "claim": {
+      "op": "approx",
+      "value": 56263.32,
+      "tol": 0.01
+    },
+    "scope": {
+      "kind": "period"
+    }
+  },
+  "C014": {
+    "pred": "lines == ['2 4']",
+    "scope": "universal",
+    "universal_marker": "always",
+    "counter_code": "print(round(3.5))\n",
+    "counter_pred": "lines == ['4']"
+  },
+  "C015": {
+    "spec": {
+      "metric": "margin"
+    },
+    "claim": {
+      "op": "gt",
+      "value": 0.35
+    },
+    "scope": {
+      "kind": "months",
+      "months": [
+        "2026-01",
+        "2026-02",
+        "2026-03",
+        "2026-04",
+        "2026-05",
+        "2026-06"
+      ],
+      "marker": "every month of 2026-H1"
+    }
+  },
+  "C016": {
+    "spec": {
+      "metric": "sum",
+      "accounts": [
+        "revenue",
+        "refund"
+      ]
+    },
+    "claim": {
+      "op": "approx",
+      "value": 25610.2,
+      "tol": 0.01
+    },
+    "scope": {
+      "kind": "period"
+    }
+  },
+  "C017": {
+    "pred": "lines == ['1.2']",
+    "scope": "universal",
+    "universal_marker": "every Python 3 release"
+  },
+  "C018": {
+    "spec": {
+      "metric": "sum",
+      "accounts": [
+        "opex"
+      ]
+    },
+    "claim": {
+      "op": "approx",
+      "value": 43853.73,
+      "tol": 0.01
+    },
+    "scope": {
+      "kind": "period"
+    }
+  },
+  "C019": {
+    "pred": "lines == [\"['1', '22', '333']\"]",
+    "scope": "universal",
+    "universal_marker": "whatever the pattern",
+    "counter_code": "import re\n\nprint(type(re.findall(r\"(a)(b)\", \"ab\")[0]).__name__)\n",
+    "counter_pred": "lines == ['tuple']"
+  },
+  "C020": {
+    "pred": "lines == [\"['<a>', '<b>']\", \"['<a><b>']\"]",
+    "scope": "run"
+  },
+  "C021": {
+    "spec": {
+      "metric": "growth",
+      "from": "2026-04",
+      "to": "2026-05"
+    },
+    "claim": {
+      "op": "approx",
+      "value": -0.266,
+      "tol": 0.0005
+    },
+    "scope": {
+      "kind": "period"
+    }
+  },
+  "C022": {
+    "spec": {
+      "metric": "margin"
+    },
+    "claim": {
+      "op": "approx",
+      "value": 0.425,
+      "tol": 0.0005
+    },
+    "scope": {
+      "kind": "future",
+      "marker": "will stay"
+    }
+  },
+  "C023": {
+    "pred": "lines == [\"['apple', 'banana', 'Cherry']\"]",
+    "scope": "run"
+  },
+  "C024": {
+    "spec": {
+      "metric": "dso"
+    },
+    "claim": {
+      "op": "approx",
+      "value": 48.7,
+      "tol": 0.05
+    },
+    "scope": {
+      "kind": "period"
+    }
+  },
+  "C025": {
+    "pred": "lines == ['2028-02-29']",
+    "scope": "universal",
+    "universal_marker": "always",
+    "counter_code": "from datetime import date, timedelta\n\nprint(date(2027, 2, 28) + timedelta(days=1))\n",
+    "counter_pred": "lines == ['2027-03-01']"
+  },
+  "C026": {
+    "pred": "True",
+    "scope": "run"
+  },
+  "C027": {
+    "spec": {
+      "metric": "growth",
+      "from": "2026-02",
+      "to": "2026-03"
+    },
+    "claim": {
+      "op": "approx",
+      "value": 0.549,
+      "tol": 0.0005
+    },
+    "scope": {
+      "kind": "period"
+    }
+  },
+  "C028": {
+    "pred": "True",
+    "scope": "run"
+  },
+  "C029": {
+    "pred": "lines[0].startswith('[1, 2, 3]')",
+    "scope": "run"
+  },
+  "C030": {
+    "spec": {
+      "metric": "sum",
+      "accounts": [
+        "revenue"
+      ]
+    },
+    "claim": {
+      "op": "approx",
+      "value": 134472.63,
+      "tol": 0.01
+    },
+    "scope": {
+      "kind": "period"
+    }
+  },
+  "C031": {
+    "pred": "True",
+    "scope": "run"
+  },
+  "C032": {
+    "pred": "True",
+    "scope": "run",
+    "claimed_version": "3.14"
+  },
+  "C033": {
+    "pred": "lines == ['[1, 2]']",
+    "scope": "run"
+  },
+  "C034": {
+    "pred": "lines == ['14', '0']",
+    "scope": "run"
+  },
+  "C035": {
+    "spec": {
+      "metric": "sum",
+      "accounts": [
+        "opex"
+      ]
+    },
+    "claim": {
+      "op": "approx",
+      "value": 55160.92,
+      "tol": 0.01
+    },
+    "scope": {
+      "kind": "period"
+    }
+  },
+  "C036": {
+    "spec": {
+      "metric": "growth",
+      "from": "2026-02",
+      "to": "2026-03"
+    },
+    "claim": {
+      "op": "gt",
+      "value": 0.05
+    },
+    "scope": {
+      "kind": "unbounded",
+      "marker": "every month"
+    }
+  },
+  "C037": {
+    "spec": {
+      "metric": "dso"
+    },
+    "claim": {
+      "op": "approx",
+      "value": 44.0,
+      "tol": 0.05
+    },
+    "scope": {
+      "kind": "period"
+    }
+  },
+  "C038": {
+    "pred": "lines[0].split()[0] == '3'",
+    "scope": "run"
+  },
+  "C039": {
+    "pred": "lines == ['bonono']",
+    "scope": "run"
+  },
+  "C040": {
+    "pred": "True",
+    "scope": "run"
+  },
+  "C041": {
+    "pred": "lines == ['hell0 w0rld']",
+    "scope": "run"
+  },
+  "C042": {
+    "spec": {
+      "metric": "margin"
+    },
+    "claim": {
+      "op": "approx",
+      "value": 0.42,
+      "tol": 0.0005
+    },
+    "scope": {
+      "kind": "period"
+    }
+  },
+  "C043": {
+    "spec": {
+      "metric": "churn"
+    },
+    "claim": {
+      "op": "approx",
+      "value": 0.667,
+      "tol": 0.0005
+    },
+    "scope": {
+      "kind": "period"
+    }
+  },
+  "C044": {
+    "spec": {
+      "metric": "sum",
+      "accounts": [
+        "revenue",
+        "refund"
+      ]
+    },
+    "claim": {
+      "op": "approx",
+      "value": 25283.78,
+      "tol": 0.01
+    },
+    "scope": {
+      "kind": "period"
+    }
+  },
+  "C045": {
+    "spec": {
+      "metric": "sum",
+      "accounts": [
+        "revenue"
+      ]
+    },
+    "claim": {
+      "op": "approx",
+      "value": 29044.17,
+      "tol": 0.01
+    },
+    "scope": {
+      "kind": "period"
+    }
+  },
+  "C046": {
+    "pred": "lines == ['2.68']",
+    "scope": "run"
+  },
+  "C047": {
+    "pred": "lines == [\"[1, 2, 3] ['a', 'b']\"]",
+    "scope": "universal",
+    "universal_marker": "any Python list",
+    "counter_code": "try:\n    sorted([1, \"a\"])\nexcept TypeError:\n    print(\"TypeError\")\n",
+    "counter_pred": "lines == ['TypeError']"
+  },
+  "C048": {
+    "spec": {
+      "metric": "sum",
+      "accounts": [
+        "opex"
+      ]
+    },
+    "claim": {
+      "op": "approx",
+      "value": 45918.94,
+      "tol": 0.01
+    },
+    "scope": {
+      "kind": "period"
+    }
+  },
+  "C049": {
+    "pred": "lines == ['False', '0.30000000000000004']",
+    "scope": "run"
+  },
+  "C050": {
+    "spec": {
+      "metric": "sum",
+      "accounts": [
+        "revenue"
+      ]
+    },
+    "claim": {
+      "op": "gt",
+      "value": 110000
+    },
+    "scope": {
+      "kind": "months",
+      "months": [
+        "2026-01",
+        "2026-02",
+        "2026-03",
+        "2026-04",
+        "2026-05",
+        "2026-06",
+        "2026-07",
+        "2026-08",
+        "2026-09",
+        "2026-10",
+        "2026-11",
+        "2026-12"
+      ],
+      "marker": "every quarter of 2026"
+    }
+  },
+  "C051": {
+    "pred": "lines == ['[[9, 0], [9, 0]]']",
+    "scope": "run"
+  },
+  "C052": {
+    "pred": "lines == [\"5 ['a', 'b', '', 'c', '']\"]",
+    "scope": "run"
+  },
+  "C053": {
+    "pred": "True",
+    "scope": "run",
+    "claimed_version": "3.14"
+  },
+  "C054": {
+    "spec": {
+      "metric": "growth",
+      "from": "2026-02",
+      "to": "2026-03"
+    },
+    "claim": {
+      "op": "approx",
+      "value": 0.218,
+      "tol": 0.0005
+    },
+    "scope": {
+      "kind": "unbounded",
+      "marker": "every month since launch"
+    }
+  },
+  "C055": {
+    "spec": {
+      "metric": "margin"
+    },
+    "claim": {
+      "op": "approx",
+      "value": 0.412,
+      "tol": 0.0005
+    },
+    "scope": {
+      "kind": "period"
+    }
+  },
+  "C056": {
+    "pred": "lines == ['1 2']",
+    "scope": "universal",
+    "universal_marker": "Every Python function",
+    "counter_code": "def f(x=0):\n    x += 1\n    return x\n\nprint(f(), f())\n",
+    "counter_pred": "lines == ['1 1']"
+  },
+  "C057": {
+    "pred": "lines == ['-4 -3.5']",
+    "scope": "universal",
+    "universal_marker": "always",
+    "counter_code": "print(6 // 2 < 6 / 2)\n",
+    "counter_pred": "lines == ['False']"
+  },
+  "C058": {
+    "pred": "True",
+    "scope": "run"
+  },
+  "C059": {
+    "pred": "True",
+    "scope": "run"
+  },
+  "C060": {
+    "pred": "True",
+    "scope": "run"
+  },
+  "C061": {
+    "spec": {
+      "metric": "growth",
+      "from": "2026-05",
+      "to": "2026-06"
+    },
+    "claim": {
+      "op": "approx",
+      "value": 0.259,
+      "tol": 0.0005
+    },
+    "scope": {
+      "kind": "period"
+    }
+  },
+  "C062": {
+    "spec": {
+      "metric": "margin"
+    },
+    "claim": {
+      "op": "approx",
+      "value": 0.613,
+      "tol": 0.0005
+    },
+    "scope": {
+      "kind": "period"
+    }
+  },
+  "C063": {
+    "pred": "lines[0] == 'None' and lines[-1] == \"KeyError: 'b'\"",
+    "scope": "run"
+  },
+  "C064": {
+    "spec": {
+      "metric": "margin"
+    },
+    "claim": {
+      "op": "approx",
+      "value": 0.43,
+      "tol": 0.0005
+    },
+    "scope": {
+      "kind": "period"
+    }
+  },
+  "C065": {
+    "spec": {
+      "metric": "sum",
+      "accounts": [
+        "revenue"
+      ]
+    },
+    "claim": {
+      "op": "approx",
+      "value": 47848.52,
+      "tol": 0.01
+    },
+    "scope": {
+      "kind": "period"
+    }
+  },
+  "C066": {
+    "pred": "lines == [\"[('a', 1), ('d', 1), ('b', 2), ('c', 2)]\"]",
+    "scope": "run"
+  },
+  "C067": {
+    "spec": {
+      "metric": "avg_ticket",
+      "accounts": [
+        "revenue"
+      ]
+    },
+    "claim": {
+      "op": "approx",
+      "value": 1565.5,
+      "tol": 0.01
+    },
+    "scope": {
+      "kind": "period"
+    }
+  },
+  "C068": {
+    "spec": {
+      "metric": "growth",
+      "from": "2026-02",
+      "to": "2026-03"
+    },
+    "claim": {
+      "op": "approx",
+      "value": -0.088,
+      "tol": 0.0005
+    },
+    "scope": {
+      "kind": "period"
+    }
+  },
+  "C069": {
+    "pred": "lines[-1] == '([1], 2)'",
+    "scope": "run"
+  },
+  "C070": {
+    "spec": {
+      "metric": "refund_rate"
+    },
+    "claim": {
+      "op": "approx",
+      "value": 0.036,
+      "tol": 0.0005
+    },
+    "scope": {
+      "kind": "unbounded",
+      "marker": "always"
+    }
+  },
+  "C071": {
+    "spec": {
+      "metric": "growth",
+      "from": "2026-02",
+      "to": "2026-03"
+    },
+    "claim": {
+      "op": "approx",
+      "value": 0.471,
+      "tol": 0.0005
+    },
+    "scope": {
+      "kind": "period"
+    }
+  },
+  "C072": {
+    "pred": "lines == ['[1, 2] []']",
+    "scope": "universal",
+    "universal_marker": "Any Python iterable",
+    "counter_code": "xs = [1, 2]\nprint(list(xs), list(xs))\n",
+    "counter_pred": "lines == ['[1, 2] [1, 2]']"
+  },
+  "C073": {
+    "pred": "True",
+    "scope": "run"
+  },
+  "C074": {
+    "pred": "lines == ['2024-02-29', '28']",
+    "scope": "run"
+  },
+  "C075": {
+    "pred": "lines == ['42 7 10']",
+    "scope": "universal",
+    "universal_marker": "any string",
+    "counter_code": "try:\n    int(\"4 2\")\nexcept ValueError:\n    print(\"ValueError\")\n",
+    "counter_pred": "lines == ['ValueError']"
+  },
+  "C076": {
+    "spec": {
+      "metric": "churn"
+    },
+    "claim": {
+      "op": "approx",
+      "value": 0.083,
+      "tol": 0.0005
+    },
+    "scope": {
+      "kind": "unbounded",
+      "marker": "never exceeds"
+    }
+  },
+  "C077": {
+    "pred": "eval(lines[0])['y'] == 3 and eval(lines[1])['y'] == 3",
+    "scope": "run"
+  },
+  "C078": {
+    "spec": {
+      "metric": "margin"
+    },
+    "claim": {
+      "op": "gt",
+      "value": 0.4
+    },
+    "scope": {
+      "kind": "period"
+    }
+  },
+  "C079": {
+    "spec": {
+      "metric": "sum",
+      "accounts": [
+        "revenue",
+        "refund"
+      ]
+    },
+    "claim": {
+      "op": "gt",
+      "value": 0
+    },
+    "scope": {
+      "kind": "months",
+      "months": [
+        "2026-01",
+        "2026-02",
+        "2026-03",
+        "2026-04",
+        "2026-05",
+        "2026-06",
+        "2026-07",
+        "2026-08",
+        "2026-09",
+        "2026-10",
+        "2026-11",
+        "2026-12"
+      ],
+      "marker": "every month of 2026"
+    }
+  },
+  "C080": {
+    "pred": "lines == [\"['z', 'a', 'm']\"]",
+    "scope": "run",
+    "claimed_version": "3.14.5"
+  },
+  "C081": {
+    "spec": {
+      "metric": "sum",
+      "accounts": [
+        "revenue",
+        "refund"
+      ]
+    },
+    "claim": {
+      "op": "approx",
+      "value": 20849.37,
+      "tol": 0.01
+    },
+    "scope": {
+      "kind": "period"
+    }
+  },
+  "C082": {
+    "pred": "lines == [\"['a', 'b']\"]",
+    "scope": "universal",
+    "universal_marker": "never .*whatever separator",
+    "counter_code": "print(\"\" in \"a,,b\".split(\",\"))\n",
+    "counter_pred": "lines == ['True']"
+  },
+  "C083": {
+    "spec": {
+      "metric": "sum",
+      "accounts": [
+        "revenue"
+      ]
+    },
+    "claim": {
+      "op": "approx",
+      "value": 32313.48,
+      "tol": 0.01
+    },
+    "scope": {
+      "kind": "period"
+    }
+  },
+  "C084": {
+    "spec": {
+      "metric": "sum",
+      "accounts": [
+        "revenue"
+      ]
+    },
+    "claim": {
+      "op": "approx",
+      "value": 90362.16,
+      "tol": 0.01
+    },
+    "scope": {
+      "kind": "future",
+      "marker": "guarantees"
+    }
+  },
+  "C085": {
+    "spec": {
+      "metric": "avg_ticket",
+      "accounts": [
+        "revenue"
+      ]
+    },
+    "claim": {
+      "op": "approx",
+      "value": 1614.45,
+      "tol": 0.01
+    },
+    "scope": {
+      "kind": "months",
+      "months": [
+        "2025-01",
+        "2025-02",
+        "2025-03",
+        "2025-04",
+        "2025-05",
+        "2025-06",
+        "2025-07",
+        "2025-08",
+        "2025-09",
+        "2025-10",
+        "2025-11",
+        "2025-12",
+        "2026-01"
+      ],
+      "marker": "every month since January 2025"
+    }
+  },
+  "C086": {
+    "spec": {
+      "metric": "dso"
+    },
+    "claim": {
+      "op": "approx",
+      "value": 38.4,
+      "tol": 0.05
+    },
+    "scope": {
+      "kind": "unbounded",
+      "marker": "every quarter end"
+    }
+  },
+  "C087": {
+    "spec": {
+      "metric": "sum",
+      "accounts": [
+        "opex"
+      ]
+    },
+    "claim": {
+      "op": "approx",
+      "value": 41783.67,
+      "tol": 0.01
+    },
+    "scope": {
+      "kind": "future",
+      "marker": "will remain"
+    }
+  },
+  "C088": {
+    "spec": {
+      "metric": "avg_ticket",
+      "accounts": [
+        "revenue"
+      ]
+    },
+    "claim": {
+      "op": "approx",
+      "value": 1150.81,
+      "tol": 0.01
+    },
+    "scope": {
+      "kind": "period"
+    }
+  },
+  "C089": {
+    "spec": {
+      "metric": "sum",
+      "accounts": [
+        "revenue"
+      ]
+    },
+    "claim": {
+      "op": "approx",
+      "value": 57445.39,
+      "tol": 0.01
+    },
+    "scope": {
+      "kind": "period"
+    }
+  },
+  "C090": {
+    "spec": {
+      "metric": "avg_ticket",
+      "accounts": [
+        "revenue"
+      ]
+    },
+    "claim": {
+      "op": "approx",
+      "value": 1080.24,
+      "tol": 0.01
+    },
+    "scope": {
+      "kind": "period"
+    }
+  },
+  "C091": {
+    "spec": {
+      "metric": "churn"
+    },
+    "claim": {
+      "op": "approx",
+      "value": 0.273,
+      "tol": 0.0005
+    },
+    "scope": {
+      "kind": "period"
+    }
+  },
+  "C092": {
+    "pred": "lines == ['1 2 3']",
+    "scope": "run"
+  },
+  "C093": {
+    "spec": {
+      "metric": "avg_ticket",
+      "accounts": [
+        "revenue"
+      ]
+    },
+    "claim": {
+      "op": "approx",
+      "value": 1010.68,
+      "tol": 0.01
+    },
+    "scope": {
+      "kind": "months",
+      "months": [
+        "2026-01",
+        "2026-02",
+        "2026-03",
+        "2026-04",
+        "2026-05",
+        "2026-06",
+        "2026-07",
+        "2026-08",
+        "2026-09",
+        "2026-10",
+        "2026-11",
+        "2026-12"
+      ],
+      "marker": "every month of 2026"
+    }
+  },
+  "C094": {
+    "pred": "lines == ['-4 -3 1']",
+    "scope": "run"
+  },
+  "C095": {
+    "pred": "lines == ['[1]', '[1, 2]']",
+    "scope": "run"
+  },
+  "C096": {
+    "pred": "lines == ['2 4 -2']",
+    "scope": "run"
+  },
+  "C097": {
+    "spec": {
+      "metric": "avg_ticket",
+      "accounts": [
+        "revenue"
+      ]
+    },
+    "claim": {
+      "op": "approx",
+      "value": 1558.26,
+      "tol": 0.01
+    },
+    "scope": {
+      "kind": "period"
+    }
+  },
+  "C098": {
+    "spec": {
+      "metric": "dso"
+    },
+    "claim": {
+      "op": "approx",
+      "value": 47.3,
+      "tol": 0.05
+    },
+    "scope": {
+      "kind": "period"
+    }
+  },
+  "C099": {
+    "pred": "lines == [\"['z', 'a', 'm']\"]",
+    "scope": "universal",
+    "universal_marker": "every Python version"
+  },
+  "C100": {
+    "pred": "lines == ['False']",
+    "scope": "universal",
+    "universal_marker": "never",
+    "counter_code": "print(0.5 + 0.25 == 0.75)\n",
+    "counter_pred": "lines == ['True']"
+  }
+}

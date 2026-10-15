@@ -1,0 +1,10 @@
+{
+  "case_id": "C034",
+  "family": "python_behavior",
+  "claim": "Summing the same generator expression twice in this snippet gives 14 the first time and 0 the second time.",
+  "bundle": {
+    "snippet": "squares = (n * n for n in range(4))\nprint(sum(squares))\nprint(sum(squares))\n",
+    "run_log": "$ python3 --version\nPython 3.14.5\n$ cat snippet.py\nsquares = (n * n for n in range(4))\nprint(sum(squares))\nprint(sum(squares))\n$ python3 snippet.py\n14\n0\n",
+    "notes": ""
+  }
+}

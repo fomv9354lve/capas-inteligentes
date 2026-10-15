@@ -1,0 +1,13 @@
+{
+  "case_id": "C083",
+  "family": "ledger_metric",
+  "claim": "Revenue for 2026-Q1 was $32,313.48.",
+  "bundle": {
+    "rows_csv": "date,account,customer,amount\n2026-01-01,revenue,C-438,3907.05\n2026-01-04,opex,,8042.21\n2026-01-04,opex,,7941.81\n2026-01-04,revenue,C-464,1119.22\n2026-01-05,revenue,C-141,1559.54\n2026-01-06,revenue,C-464,1689.62\n2026-01-14,revenue,C-141,1651.81\n2026-01-25,revenue,C-438,2910.52\n2026-02-11,revenue,C-198,1030.80\n2026-02-16,revenue,C-815,5011.45\n2026-02-19,revenue,C-459,5996.32\n2026-02-21,opex,,4355.65\n2026-02-21,revenue,C-911,2284.58\n2026-02-23,revenue,C-141,3206.97\n2026-02-25,revenue,C-464,1945.60\n2026-02-27,opex,,8066.60\n",
+    "metric_definition": "revenue = sum(amount) over rows with account = 'revenue' dated within the period",
+    "period": "2026-Q1",
+    "reported_value": 32313.48,
+    "tolerance": 0.01,
+    "notes": "Export range: 2026-01-01 to 2026-02-28. General-ledger export from the ERP."
+  }
+}

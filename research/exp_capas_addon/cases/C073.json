@@ -1,0 +1,10 @@
+{
+  "case_id": "C073",
+  "family": "python_behavior",
+  "claim": "The snippet removes the duplicates while keeping first-seen order and prints ['a', 'b', 'c'].",
+  "bundle": {
+    "snippet": "tags = [\"a\", \"b\", \"a\", \"c\", \"b\"]\nprint(list(dict.fromkeys(tags)))\n",
+    "run_log": "$ python3 --version\nPython 3.14.5\n$ cat snippet.py\ntags = [\"a\", \"b\", \"c\"]\nprint(list(dict.fromkeys(tags)))\n$ python3 snippet.py\n['a', 'b', 'c']\n",
+    "notes": ""
+  }
+}

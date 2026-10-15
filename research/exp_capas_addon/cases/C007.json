@@ -1,0 +1,10 @@
+{
+  "case_id": "C007",
+  "family": "python_behavior",
+  "claim": "On Python 3.14 this snippet prints 5000.",
+  "bundle": {
+    "snippet": "print(len(str(int(\"1\" * 5000))))\n",
+    "run_log": "$ python3 --version\nPython 3.9.6\n$ cat snippet.py\nprint(len(str(int(\"1\" * 5000))))\n$ python3 snippet.py\n5000\n",
+    "notes": ""
+  }
+}

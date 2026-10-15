@@ -1,0 +1,13 @@
+{
+  "case_id": "C079",
+  "family": "ledger_metric",
+  "claim": "Net revenue after refunds was positive in every month of 2026, March included.",
+  "bundle": {
+    "rows_csv": "date,account,customer,amount\n2026-03-03,revenue,C-478,5052.48\n2026-03-06,revenue,C-649,3831.92\n2026-03-09,refund,C-478,-160.92\n2026-03-10,revenue,C-649,2045.11\n2026-03-16,refund,C-944,-79.27\n2026-03-17,revenue,C-944,1265.39\n2026-03-22,revenue,C-649,4141.13\n2026-03-28,revenue,C-900,4526.94\n",
+    "metric_definition": "net_revenue = sum(amount) over rows with account in ('revenue', 'refund') dated within the period (refund amounts are negative)",
+    "period": "2026-03",
+    "reported_value": 20622.78,
+    "tolerance": 0.01,
+    "notes": "Export range: 2026-03-01 to 2026-03-31. General-ledger export from the ERP."
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "case_id": "C063",
+  "family": "python_behavior",
+  "claim": "The snippet prints None for d.get('b') and then stops with KeyError: 'b' on d['b'].",
+  "bundle": {
+    "snippet": "d = {\"a\": 1}\nprint(d.get(\"b\"))\nprint(d[\"b\"])\n",
+    "run_log": "$ python3 --version\nPython 3.14.5\n$ cat snippet.py\nd = {\"a\": 1}\nprint(d.get(\"b\"))\nprint(d[\"b\"])\n$ python3 snippet.py\nNone\nTraceback (most recent call last):\n  File \"/work/snippet.py\", line 3, in <module>\n    print(d[\"b\"])\n          ~^^^^^\nKeyError: 'b'\n",
+    "notes": ""
+  }
+}

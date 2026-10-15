@@ -1,0 +1,10 @@
+{
+  "case_id": "C069",
+  "family": "python_behavior",
+  "claim": "Because the augmented assignment raises TypeError, the tuple in this snippet is left unchanged and prints as ([1], 2).",
+  "bundle": {
+    "snippet": "t = ([1], 2)\ntry:\n    t[0] += [3]\nexcept TypeError as e:\n    print(\"TypeError:\", e)\nprint(t)\n",
+    "run_log": "$ python3 --version\nPython 3.14.5\n$ cat snippet.py\nt = ([1], 2)\ntry:\n    t[0] += [3]\nexcept TypeError as e:\n    print(\"TypeError:\", e)\nprint(t)\n$ python3 snippet.py\nTypeError: 'tuple' object does not support item assignment\n([1, 3], 2)\n",
+    "notes": ""
+  }
+}

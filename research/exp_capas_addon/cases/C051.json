@@ -1,0 +1,10 @@
+{
+  "case_id": "C051",
+  "family": "python_behavior",
+  "claim": "In this snippet, setting grid[0][0] = 9 also changes grid[1][0], so it prints [[9, 0], [9, 0]].",
+  "bundle": {
+    "snippet": "grid = [[0] * 2] * 2\ngrid[0][0] = 9\nprint(grid)\n",
+    "run_log": "$ python3 --version\nPython 3.14.5\n$ cat snippet.py\ngrid = [[0] * 2] * 2\ngrid[0][0] = 9\nprint(grid)\n$ python3 snippet.py\n[[9, 0], [9, 0]]\n",
+    "notes": ""
+  }
+}

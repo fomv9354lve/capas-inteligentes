@@ -1,0 +1,13 @@
+{
+  "case_id": "C008",
+  "family": "ledger_metric",
+  "claim": "Gross margin in March 2026 was above 35%.",
+  "bundle": {
+    "rows_csv": "date,account,customer,amount\n2026-03-04,cogs,,7071.77\n2026-03-04,revenue,C-247,4709.14\n2026-03-05,revenue,C-247,3022.86\n2026-03-05,revenue,C-705,4375.58\n2026-03-05,revenue,C-755,2248.35\n2026-03-10,cogs,,6984.96\n2026-03-12,revenue,C-730,3627.93\n2026-03-16,revenue,C-247,5444.02\n",
+    "metric_definition": "gross_margin = (revenue - cogs) / revenue, where revenue = sum(amount) for account 'revenue' and cogs = sum(amount) for account 'cogs', rows dated within the period",
+    "period": "2026-03",
+    "reported_value": 0.4,
+    "tolerance": null,
+    "notes": "Export range: 2026-03-01 to 2026-03-31. General-ledger export from the ERP."
+  }
+}

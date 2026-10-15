@@ -1,0 +1,10 @@
+{
+  "case_id": "C029",
+  "family": "python_behavior",
+  "claim": "The snippet prints [1, 2, 3] for result, because nums.sort() returns the sorted list.",
+  "bundle": {
+    "snippet": "nums = [3, 1, 2]\nresult = nums.sort()\nprint(result, nums)\n",
+    "run_log": "$ python3 --version\nPython 3.14.5\n$ cat snippet.py\nnums = [3, 1, 2]\nresult = nums.sort()\nprint(result, nums)\n$ python3 snippet.py\nNone [1, 2, 3]\n",
+    "notes": ""
+  }
+}

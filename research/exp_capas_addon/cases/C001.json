@@ -1,0 +1,13 @@
+{
+  "case_id": "C001",
+  "family": "ledger_metric",
+  "claim": "Logo churn for 2026-Q1 was 20.0%.",
+  "bundle": {
+    "rows_csv": "date,account,customer,amount\n2026-01-02,subscription,C-658,149.00\n2026-01-09,subscription,C-656,149.00\n2026-01-10,subscription,C-903,149.00\n2026-01-12,subscription,C-249,99.00\n2026-01-12,subscription,C-459,149.00\n2026-01-12,subscription,C-851,149.00\n2026-01-18,subscription,C-154,99.00\n2026-01-22,subscription,C-497,99.00\n2026-01-24,subscription,C-488,49.00\n2026-01-26,subscription,C-266,49.00\n2026-02-01,subscription,C-697,49.00\n2026-02-09,subscription,C-656,149.00\n2026-02-14,subscription,C-658,49.00\n2026-02-18,subscription,C-249,49.00\n2026-02-20,subscription,C-459,99.00\n2026-02-20,subscription,C-497,99.00\n2026-02-20,subscription,C-844,99.00\n2026-02-23,subscription,C-154,99.00\n2026-02-23,subscription,C-903,149.00\n2026-02-26,subscription,C-488,49.00\n2026-02-27,subscription,C-266,149.00\n2026-03-01,subscription,C-656,99.00\n2026-03-02,subscription,C-658,99.00\n2026-03-02,subscription,C-903,149.00\n2026-03-04,subscription,C-488,49.00\n2026-03-05,subscription,C-266,49.00\n2026-03-07,subscription,C-697,99.00\n2026-03-14,subscription,C-844,49.00\n2026-03-19,subscription,C-459,49.00\n2026-03-21,subscription,C-249,99.00\n2026-03-28,subscription,C-497,99.00\n",
+    "metric_definition": "logo_churn = (customers with a 'subscription' row in 2026-01 and no 'subscription' row in 2026-03) / (customers with a 'subscription' row in 2026-01)",
+    "period": "2026-Q1",
+    "reported_value": 0.2,
+    "tolerance": 0.0005,
+    "notes": "Export range: 2026-01-01 to 2026-03-31. General-ledger export from the ERP."
+  }
+}

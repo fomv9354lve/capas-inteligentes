@@ -1,0 +1,10 @@
+{
+  "case_id": "C096",
+  "family": "python_behavior",
+  "claim": "On the interpreter in the log, round(2.5) returns 2, round(3.5) returns 4 and round(-2.5) returns -2.",
+  "bundle": {
+    "snippet": "print(round(2.5), round(3.5), round(-2.5))\n",
+    "run_log": "$ python3 --version\nPython 3.14.5\n$ cat snippet.py\nprint(round(2.5), round(3.5), round(-2.5))\n$ python3 snippet.py\n2 4 -2\n",
+    "notes": ""
+  }
+}

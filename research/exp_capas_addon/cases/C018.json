@@ -1,0 +1,13 @@
+{
+  "case_id": "C018",
+  "family": "ledger_metric",
+  "claim": "Operating expenses for 2026-Q2 totalled $43,853.73.",
+  "bundle": {
+    "rows_csv": "date,account,customer,amount\n2026-04-02,opex,,4480.20\n2026-04-05,revenue,C-870,3189.25\n2026-04-10,opex,,6418.50\n2026-04-14,revenue,C-896,1854.07\n2026-04-30,opex,,4445.83\n2026-05-18,revenue,C-870,5202.93\n2026-05-20,opex,,8967.30\n2026-05-27,opex,,2156.28\n2026-05-27,opex,,4683.50\n2026-05-30,revenue,C-175,1135.12\n2026-06-03,revenue,C-266,3554.20\n2026-06-11,opex,,3637.85\n2026-06-21,opex,,5575.39\n2026-06-27,opex,,8172.38\n2026-06-28,revenue,C-175,5947.53\n",
+    "metric_definition": "opex = sum(amount) over rows with account = 'opex' dated within the period",
+    "period": "2026-Q2",
+    "reported_value": 43853.73,
+    "tolerance": 0.01,
+    "notes": "Export range: 2026-04-01 to 2026-06-30. General-ledger export from the ERP."
+  }
+}

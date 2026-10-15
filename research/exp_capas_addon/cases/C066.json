@@ -1,0 +1,10 @@
+{
+  "case_id": "C066",
+  "family": "python_behavior",
+  "claim": "In this snippet, sorting by the second field keeps tied records in their original relative order: ('a', 1) before ('d', 1) and ('b', 2) before ('c', 2).",
+  "bundle": {
+    "snippet": "records = [(\"b\", 2), (\"a\", 1), (\"c\", 2), (\"d\", 1)]\nprint(sorted(records, key=lambda r: r[1]))\n",
+    "run_log": "$ python3 --version\nPython 3.14.5\n$ cat snippet.py\nrecords = [(\"b\", 2), (\"a\", 1), (\"c\", 2), (\"d\", 1)]\nprint(sorted(records, key=lambda r: r[1]))\n$ python3 snippet.py\n[('a', 1), ('d', 1), ('b', 2), ('c', 2)]\n",
+    "notes": ""
+  }
+}
