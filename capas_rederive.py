@@ -9,8 +9,13 @@ of comparing fields an AI transcribed.
   caller's own machine, not a sandbox for hostile code.
 - ledger_metric(): recomputes a financial metric from raw rows (no code execution; safe on the hosted API). The metric
   is an arithmetic expression over aggregates of the rows, e.g. "(sum(revenue) - sum(cogs)) / sum(revenue)",
-  "sum(revenue) / sum(revenue, prev) - 1", "sum(revenue) / distinct(customer, revenue)". It also checks that every
-  month of the period has rows.
+  "sum(revenue) / sum(revenue, prev) - 1", "sum(revenue) / distinct(customer, revenue)",
+  "sum(revenue, source=MX)". It checks that every month of the period has rows IN EVERY SOURCE the metric uses
+  (2026-10-15, experiment v2: two entities merged into one CSV hid one entity's missing month).
+- load_ref(): reads an original source file by {path, sha256} under CAPAS_SOURCE_ROOT, so the engine checks the
+  material itself and not an AI's transcription of it (experiment v2). No root, a path outside it, a missing file or
+  a hash mismatch -> an error, never a guess.
+- assertion_segments(): the separate assertions in a claim text, so a compound claim needs one check per assertion.
 """
 from __future__ import annotations
 
@@ -114,26 +119,65 @@ def previous_period(period: str) -> str:
     mm = int(part); return f"{y - 1}-12" if mm == 1 else f"{y}-{mm - 1:02d}"
 
 
-def _rows(rows_csv: str) -> list[dict[str, str]]:
+_ENTITY_COLUMNS = ("source", "entity", "company", "country", "subsidiary", "business_unit")
+
+
+def _rows(rows_csv: str, source: str | None = None) -> list[dict[str, str]]:
     rd = csv.DictReader(io.StringIO(str(rows_csv).strip()))
     if not rd.fieldnames or not {"date", "account", "amount"} <= {f.strip() for f in rd.fieldnames}:
         raise ValueError("rows_csv needs the columns date, account, amount")
-    return [{k.strip(): (v or "").strip() for k, v in r.items() if k} for r in rd]
+    out = []
+    for r in rd:
+        row = {k.strip(): (v or "").strip() for k, v in r.items() if k}
+        # the source of a row: the declared source name, else an entity-like column, else one source
+        row["__source"] = source or next((row[c] for c in _ENTITY_COLUMNS if row.get(c)), "") or "main"
+        out.append(row)
+    return out
 
 
-def ledger_metric(rows_csv: str, expression: str, period: str) -> dict[str, Any]:
+def source_rows(sources: list[tuple[str, str]]) -> list[dict[str, str]]:
+    """[(name, rows_csv)] -> all rows tagged with their source (a single unnamed CSV may carry an entity column)."""
+    rows: list[dict[str, str]] = []
+    for name, text in sources:
+        rows.extend(_rows(text, name or None))
+    return rows
+
+
+def load_ref(ref: Any) -> tuple[str | None, str | None]:
+    """{path, sha256} under CAPAS_SOURCE_ROOT -> (text, None) or (None, error)."""
+    import hashlib
+    import capas_plan3
+    if not isinstance(ref, dict) or not isinstance(ref.get("path"), str) or not isinstance(ref.get("sha256"), str):
+        return None, "a source reference needs path and sha256"
+    root = capas_plan3._root()
+    if root is None:
+        return None, "this engine has no CAPAS_SOURCE_ROOT, so it cannot read the original file"
+    full = capas_plan3._safe(root, ref["path"])
+    if full is None or not full.is_file():
+        return None, f"source file not found under CAPAS_SOURCE_ROOT: {ref['path']}"
+    data = full.read_bytes()
+    if hashlib.sha256(data).hexdigest() != ref["sha256"].lower().removeprefix("sha256:"):
+        return None, f"sha256 of {ref['path']} does not match the reference"
+    return data.decode("utf-8"), None
+
+
+def ledger_metric(rows_csv: Any, expression: str, period: str) -> dict[str, Any]:
     """Evaluate `expression` over the rows dated in `period` (and `prev`, the previous period, when it is referenced).
-    Returns {value, coverage_ok, missing_months, periods_used}; raises ValueError on a malformed spec."""
-    rows = _rows(rows_csv)
+    rows_csv is a CSV string or a list of already-tagged rows (source_rows). Returns {value, coverage_ok,
+    missing_months (as "source:YYYY-MM" when there are several sources), periods_used, sources_used}."""
+    rows = rows_csv if isinstance(rows_csv, list) else _rows(rows_csv)
     tree = ast.parse(str(expression), mode="eval")
     used = {period}
+    touched: dict[str, set[str]] = {}          # source ("*" = every source) -> periods it was read for
 
     def months_of(p):
         return set(period_months(p))
 
-    def select(account, p):
+    def select(account, p, src=None):
         ms = months_of(p)
-        return [r for r in rows if r.get("account") == account and r.get("date", "")[:7] in ms]
+        touched.setdefault(src or "*", set()).add(p)
+        return [r for r in rows if r.get("account") == account and r.get("date", "")[:7] in ms
+                and (src is None or r.get("__source") == src)]
 
     def ev(n):
         if isinstance(n, ast.Expression):
@@ -149,11 +193,18 @@ def ledger_metric(rows_csv: str, expression: str, period: str) -> dict[str, Any]
             return a + b if isinstance(n.op, ast.Add) else a - b if isinstance(n.op, ast.Sub) else a * b
         if isinstance(n, ast.UnaryOp) and isinstance(n.op, ast.USub):
             return -ev(n.operand)
-        if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id in _FUNCS and not n.keywords:
+        if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id in _FUNCS and \
+                all(k.arg == "source" for k in n.keywords):
             names = [a.id if isinstance(a, ast.Name) else a.value if isinstance(a, ast.Constant) and isinstance(a.value, str) else None
                      for a in n.args]
             if None in names:
                 raise ValueError("aggregate arguments must be names")
+            src = None
+            for k in n.keywords:
+                v = k.value
+                src = v.id if isinstance(v, ast.Name) else v.value if isinstance(v, ast.Constant) and isinstance(v.value, str) else None
+                if src is None:
+                    raise ValueError("source= must be a name")
             p = period
             if names and names[-1] == "prev":
                 p = previous_period(period); names = names[:-1]; used.add(p)
@@ -161,10 +212,10 @@ def ledger_metric(rows_csv: str, expression: str, period: str) -> dict[str, Any]
                 if len(names) != 2:
                     raise ValueError("distinct(column, account[, prev])")
                 col, acct = names
-                return float(len({r.get(col, "") for r in select(acct, p) if r.get(col, "")}))
+                return float(len({r.get(col, "") for r in select(acct, p, src) if r.get(col, "")}))
             if len(names) != 1:
-                raise ValueError(f"{n.func.id}(account[, prev])")
-            sel = select(names[0], p)
+                raise ValueError(f"{n.func.id}(account[, prev][, source=NAME])")
+            sel = select(names[0], p, src)
             if n.func.id == "count":
                 return float(len(sel))
             try:
@@ -174,6 +225,40 @@ def ledger_metric(rows_csv: str, expression: str, period: str) -> dict[str, Any]
         raise ValueError(f"unsupported element in the metric: {ast.dump(n)[:60]}")
 
     value = ev(tree)
-    have = {r.get("date", "")[:7] for r in rows}
-    missing = sorted(m for p in used for m in period_months(p) if m not in have)
-    return {"value": value, "coverage_ok": not missing, "missing_months": missing, "periods_used": sorted(used)}
+    all_sources = sorted({r.get("__source", "main") for r in rows}) or ["main"]
+    many = len(all_sources) > 1
+    missing: list[str] = []
+    for src, periods in touched.items():
+        for s_name in (all_sources if src == "*" else [src]):
+            have = {r.get("date", "")[:7] for r in rows if r.get("__source", "main") == s_name}
+            for p in periods:
+                missing += [f"{s_name}:{m}" if many else m for m in period_months(p) if m not in have]
+    missing = sorted(set(missing))
+    return {"value": value, "coverage_ok": not missing, "missing_months": missing, "periods_used": sorted(used),
+            "sources_used": all_sources}
+
+
+_OPS = {"==", "<", "<=", ">", ">="}
+
+
+def ledger_check(rows: list[dict[str, str]], check: dict[str, Any], default_period: str) -> dict[str, Any]:
+    """One extra assertion of a compound claim: {metric, op, value, tolerance?, period?}."""
+    op = check.get("op", "==")
+    if op not in _OPS or not isinstance(check.get("value"), (int, float)) or isinstance(check.get("value"), bool):
+        raise ValueError("a ledger check needs metric, op (==, <, <=, >, >=) and a numeric value")
+    m = ledger_metric(rows, str(check.get("metric", "")), str(check.get("period") or default_period))
+    v, target, tol = m["value"], float(check["value"]), float(check.get("tolerance") or 0.0)
+    ok = {"==": abs(v - target) <= tol, "<": v < target, "<=": v <= target, ">": v > target, ">=": v >= target}[op]
+    return {**m, "op": op, "target": target, "passed": ok}
+
+
+_VERB = re.compile(r"\b(grew|grow|grows|rose|rise|rises|fell|fall|falls|declined|declines|increased|increases|decreased|"
+                   r"decreases|dropped|drops|was|were|is|are|reached|exceeded|exceeds|stayed|stays|remained|remains|beat|"
+                   r"missed|totall?ed|averaged|came in|creci\w*|cay\w+|subi\w+|baj\w+|fue|fueron|es|son|alcanz\w+|super\w+)\b",
+                   re.I)
+
+
+def assertion_segments(text: str) -> list[str]:
+    """The separate assertions of a claim: clauses joined by and/while/but/whereas/; that each carry a verb."""
+    parts = re.split(r"\s*(?:;|,?\s+(?:and|while|whereas|but|y|mientras|pero)\s+)\s*", str(text or ""), flags=re.I)
+    return [p for p in parts if _VERB.search(p)]

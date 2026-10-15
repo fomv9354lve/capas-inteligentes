@@ -285,7 +285,7 @@ CLAIM_TYPE_REGISTRY = {
             "execution_observed",
             "runtime_environment_declared",
         ],
-        "optional": ["docs_reference"],
+        "optional": ["docs_reference", "code_ref"],
         "description": "Executable programming-language behavior claims requiring snippet, runtime, and observed output evidence.",
     },
     "proof_admissibility": {  # text_quantifier added 2026-10-13 (§6 run 6)
@@ -434,7 +434,7 @@ STRING_EVIDENCE_FIELDS = [
     "text_quantifier", "method", "method_standard",
 ]
 LIST_EVIDENCE_FIELDS = ["supporting_sources", "contradicting_sources", "scope_declared", "scope_tested", "cited_dois"]
-DICT_EVIDENCE_FIELDS = ["test_statistic", "band", "retraction_snapshot", "prereg", "ai_use_declared", "ledger"]
+DICT_EVIDENCE_FIELDS = ["test_statistic", "band", "retraction_snapshot", "prereg", "ai_use_declared", "ledger", "code_ref"]
 
 # Example values for a fillable requirements template (A3): type defaults + a few overrides
 # that make the expected shape obvious to a first-time caller.
@@ -1038,8 +1038,12 @@ def external_claim_payload_schema() -> dict[str, Any]:
                     "metric_period_match": {"type": "boolean"},
                     "metric_name": {"type": "string", "pattern": NO_ANGLE_PATTERN},
                     "audit_trail": {},
-                    "ledger": {"type": "object", "required": ["rows_csv", "metric", "period"],
+                    "ledger": {"type": "object", "required": ["metric", "period"],
                                "properties": {"rows_csv": {"type": "string", "maxLength": 200000},
+                                              "sources": {"type": "array", "maxItems": 20, "items": {"type": "object"},
+                                                          "description": "one entry per original source: {name, rows_csv} or {name, path, sha256} read by the engine under CAPAS_SOURCE_ROOT"},
+                                              "checks": {"type": "array", "maxItems": 20, "items": {"type": "object"},
+                                                         "description": "one per further assertion of the claim: {metric, op (==,<,<=,>,>=), value, tolerance?, period?}"},
                                               "metric": {"type": "string", "maxLength": 500},
                                               "period": {"type": "string", "maxLength": 16}},
                                "description": "Raw rows (CSV with date, account, amount), an arithmetic metric over "
@@ -1065,6 +1069,9 @@ def external_claim_payload_schema() -> dict[str, Any]:
                     "language": {"type": "string", "minLength": 1, "pattern": NO_ANGLE_PATTERN},
                     "language_version": {"type": "string", "minLength": 1, "pattern": NO_ANGLE_PATTERN},
                     "claim_api": {"type": "string", "minLength": 1, "pattern": NO_ANGLE_PATTERN},
+                    "code_ref": {"type": "object", "required": ["path", "sha256"],
+                                 "properties": {"path": {"type": "string"}, "sha256": {"type": "string"}},
+                                 "description": "The original snippet file, read by the engine under CAPAS_SOURCE_ROOT and checked against sha256; it replaces code_snippet."},
                     "code_snippet": {
                         "type": "string",
                         "minLength": 1,
@@ -1286,12 +1293,19 @@ def validate_external_payload(payload: dict[str, Any]) -> list[str]:
         errors.append("evidence.text_quantifier must be one of: bounded, universal")
     if "error_statistic" in evidence and str(evidence.get("error_statistic")).lower() not in ERROR_STATISTICS:
         errors.append("evidence.error_statistic must be one of: " + ", ".join(sorted(ERROR_STATISTICS)))
+    if "code_ref" in evidence and not (isinstance(evidence["code_ref"], dict)
+                                       and all(isinstance(evidence["code_ref"].get(k), str) for k in ("path", "sha256"))):
+        errors.append("evidence.code_ref must be an object with string path and sha256")
     if "ledger" in evidence:
         _lg = evidence["ledger"]
-        if not isinstance(_lg, dict) or not all(isinstance(_lg.get(k), str) for k in ("rows_csv", "metric", "period")):
-            errors.append("evidence.ledger must be an object with string rows_csv, metric and period")
-        elif len(_lg["rows_csv"]) > 200000 or len(_lg["metric"]) > 500:
-            errors.append("evidence.ledger is too large (rows_csv <= 200000 chars, metric <= 500)")
+        if (not isinstance(_lg, dict) or not all(isinstance(_lg.get(k), str) for k in ("metric", "period"))
+                or not (isinstance(_lg.get("rows_csv"), str) or isinstance(_lg.get("sources"), list))):
+            errors.append("evidence.ledger must be an object with string metric and period, and rows_csv or sources")
+        elif (len(_lg.get("rows_csv") or "") > 200000 or len(_lg["metric"]) > 500
+              or len(_lg.get("sources") or []) > 20 or len(_lg.get("checks") or []) > 20
+              or not all(isinstance(x, dict) for x in (_lg.get("sources") or []) + (_lg.get("checks") or []))
+              or sum(len(str(x.get("rows_csv", ""))) for x in (_lg.get("sources") or [])) > 200000):
+            errors.append("evidence.ledger is too large or malformed (rows <= 200000 chars, metric <= 500, <= 20 sources and checks)")
     if "current_claim" in evidence:
         current_claim = evidence["current_claim"]
         if not isinstance(current_claim, str):
@@ -1997,6 +2011,12 @@ def decide_external_claim(payload: dict[str, Any], rederive: bool | None = None)
     import capas_rederive
     evidence = dict(evidence)
     rederivation: dict[str, Any] | None = None
+    _ref_error: str | None = None
+    if claim_type == "programming_language_behavior_claim" and "code_ref" in evidence:
+        # the original snippet file, read by the engine (experiment v2): it replaces any inline code_snippet
+        _code, _ref_error = capas_rederive.load_ref(evidence["code_ref"])
+        if _code is not None:
+            evidence["code_snippet"] = _code
     if (claim_type == "programming_language_behavior_claim" and capas_rederive.exec_enabled(rederive)
             and str(evidence.get("language", "")).strip().lower() == "python" and isinstance(evidence.get("code_snippet"), str)):
         _run = capas_rederive.python_run(evidence["code_snippet"])
@@ -2014,12 +2034,30 @@ def decide_external_claim(payload: dict[str, Any], rederive: bool | None = None)
     if claim_type == "financial_metric_claim" and isinstance(evidence.get("ledger"), dict):
         _lg = evidence["ledger"]
         try:
-            _m = capas_rederive.ledger_metric(_lg.get("rows_csv", ""), _lg.get("metric", ""), _lg.get("period", ""))
+            # sources: [{name, rows_csv} | {name, path, sha256}] (original files read by the engine) or one rows_csv
+            _srcs: list[tuple[str, str]] = []
+            for _s in (_lg.get("sources") or []):
+                if isinstance(_s, dict) and isinstance(_s.get("rows_csv"), str):
+                    _srcs.append((str(_s.get("name") or ""), _s["rows_csv"]))
+                else:
+                    _txt_s, _err_s = capas_rederive.load_ref(_s)
+                    if _txt_s is None:
+                        _ref_error = _err_s
+                        raise ValueError(_err_s)
+                    _srcs.append((str(_s.get("name") or _s.get("path")), _txt_s))
+            if isinstance(_lg.get("rows_csv"), str):
+                _srcs.append(("", _lg["rows_csv"]))
+            _rows = capas_rederive.source_rows(_srcs)
+            _m = capas_rederive.ledger_metric(_rows, _lg.get("metric", ""), _lg.get("period", ""))
+            _checks = [capas_rederive.ledger_check(_rows, _c, _lg.get("period", "")) for _c in (_lg.get("checks") or [])]
         except (ValueError, SyntaxError, TypeError) as _e:
             rederivation = {"kind": "ledger", "error": str(_e)[:200]}
         else:
-            rederivation = {"kind": "ledger", "value": _m["value"], "coverage_ok": _m["coverage_ok"],
-                            "missing_months": _m["missing_months"], "periods_used": _m["periods_used"]}
+            _cov = _m["coverage_ok"] and all(_c["coverage_ok"] for _c in _checks)
+            rederivation = {"kind": "ledger", "value": _m["value"], "coverage_ok": _cov,
+                            "missing_months": sorted(set(_m["missing_months"] + [x for _c in _checks for x in _c["missing_months"]])),
+                            "periods_used": _m["periods_used"], "sources_used": _m["sources_used"],
+                            "checks": [{"op": _c["op"], "target": _c["target"], "value": _c["value"], "passed": _c["passed"]} for _c in _checks]}
             if isinstance(evidence.get("reference_value"), (int, float)) and not isinstance(evidence.get("reference_value"), bool):
                 rederivation["declared_reference_differs"] = abs(float(evidence["reference_value"]) - _m["value"]) > 1e-9 * max(1.0, abs(_m["value"]))
             evidence["reference_value"] = _m["value"]
@@ -2604,6 +2642,23 @@ def decide_external_claim(payload: dict[str, Any], rederive: bool | None = None)
         elif not rederivation.get("coverage_ok"):
             verdict = "HOLD"
             reason = f"{reason}; the ledger rows do not cover every month of the period, so the metric is not re-derivable"
+    if _ref_error and verdict != "REJECT":
+        verdict = "HOLD"
+        reason = f"{reason}; a referenced original source file could not be read or does not match its sha256, so it is not re-derived"
+    if (rederivation and rederivation.get("kind") == "ledger" and verdict == "ACCEPT"
+            and any(not _c["passed"] for _c in rederivation.get("checks") or [])):
+        verdict = "REJECT"
+        reason = f"{reason}; another assertion of the claim, checked against the rows, does not hold"
+    # Compound claims (experiment v2, R5#7): each assertion in the text needs its own check; the evidence for one
+    # number does not license "...and both entities grew".
+    if verdict == "ACCEPT" and claim_type == "financial_metric_claim":
+        _n_assert = len(capas_rederive.assertion_segments(_txt))
+        _n_checked = 1 + len(((rederivation or {}).get("checks")) or [])
+        if _n_assert > _n_checked:
+            verdict = "REWRITE"
+            reason = f"{reason}; the text makes more assertions than the evidence checks: only the checked assertion is licensed"
+            rewrite = "the first, checked assertion only; submit each further assertion with its own check (ledger.checks)"
+            licensed_claim = rewrite
     # Version named in the text vs the version the evidence ran on (AI vs AI+CAPAS experiment, incomplete cases).
     if claim_type == "programming_language_behavior_claim" and verdict == "ACCEPT":
         _tv = re.search(r"\bpython\s*(\d+\.\d+)", _txt, re.I)

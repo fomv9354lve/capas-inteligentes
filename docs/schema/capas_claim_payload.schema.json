@@ -136,6 +136,22 @@
           "pattern": "^(?:(?![<\u27e8][A-Za-z/!?])[^\u02c2\u02c3\u2039\u203a\u2329-\u232a\u276c-\u276d\u29fc-\u29fd\u3008-\u3009\ufe64-\ufe65\uff1c-\uff1e])*$",
           "type": "string"
         },
+        "code_ref": {
+          "description": "The original snippet file, read by the engine under CAPAS_SOURCE_ROOT and checked against sha256; it replaces code_snippet.",
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "sha256": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "path",
+            "sha256"
+          ],
+          "type": "object"
+        },
         "code_snippet": {
           "description": "Executable snippet used to check a programming-language behavior claim. Snippets are escaped when rendered; they are not executed by the browser gate.",
           "maxLength": 4000,
@@ -237,6 +253,14 @@
         "ledger": {
           "description": "Raw rows (CSV with date, account, amount), an arithmetic metric over sum/count/distinct aggregates, and the period YYYY, YYYY-Qn or YYYY-MM. The engine recomputes the metric; it never executes the metric as code.",
           "properties": {
+            "checks": {
+              "description": "one per further assertion of the claim: {metric, op (==,<,<=,>,>=), value, tolerance?, period?}",
+              "items": {
+                "type": "object"
+              },
+              "maxItems": 20,
+              "type": "array"
+            },
             "metric": {
               "maxLength": 500,
               "type": "string"
@@ -248,10 +272,17 @@
             "rows_csv": {
               "maxLength": 200000,
               "type": "string"
+            },
+            "sources": {
+              "description": "one entry per original source: {name, rows_csv} or {name, path, sha256} read by the engine under CAPAS_SOURCE_ROOT",
+              "items": {
+                "type": "object"
+              },
+              "maxItems": 20,
+              "type": "array"
             }
           },
           "required": [
-            "rows_csv",
             "metric",
             "period"
           ],
