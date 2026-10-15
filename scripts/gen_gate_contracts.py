@@ -44,6 +44,10 @@ def build_contracts() -> dict:
             # External re-audit d2bce91: live responses must carry exactly this schema version and the v2 recipe.
             "schema_versions": [capas.CAPAS_CLAIM_SCHEMA_VERSION],
             "next_action_by_verdict": capas.NEXT_ACTION_BY_VERDICT,
+            # External re-audit b7685f1: the operational fields every live response carries, and the exact readiness
+            # criteria set (a response cannot define what "all criteria" means by sending fewer or other names).
+            "fine_tune_criteria": dict(capas.FINE_TUNE_CRITERIA_LABELS),   # criterion -> its blocker text
+            "required_operational": ["fine_tune_ready", "fine_tune_criteria", "fine_tune_blockers", "admissibility_certificate"],
             "required_v2": ["schema_version", "input_claim", "verdict", "reason", "required_fields", "audit_hash",
                             "audit_hash_recipe", "rules_fired", "rule_table_sha256", "evidence_sha256", "engine_version"],
         },

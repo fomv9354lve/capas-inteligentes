@@ -526,6 +526,22 @@ window.CAPAS_CONTRACTS = {
     "audit_hash_recipes": [
       "v2"
     ],
+    "fine_tune_criteria": {
+      "external_review": "external review is not attached",
+      "provenance_sources": "provenance.sources or provenance.source_urls is empty",
+      "review_hash_verified": "external review hash is missing or does not match review_packet",
+      "review_id_present": "provenance.review_id is missing",
+      "reviewer_attestation_verified": "reviewer identity or attestation is not verifiable",
+      "ro_crate_validated": "RO-Crate provenance packet is missing, invalid, or hash-mismatched",
+      "schema_clean": "schema or required-field blockers remain",
+      "semantic_alignment": "claim.text semantic alignment is not externally certified",
+      "source_backed_evidence": "source-backed evidence is not attached",
+      "source_urls_recoverable_hashable": "source URLs are not recoverable with matching hashes",
+      "verdict_accept": "claim verdict is not ACCEPT",
+      "witness_id_present": "provenance.witness_id is missing",
+      "witness_independence": "witness independence is not externally certified",
+      "witness_registry_resolved": "witness_id is not resolvable in the witness registry"
+    },
     "next_action_by_verdict": {
       "ACCEPT": [
         "verify_provenance_for_training",
@@ -544,6 +560,12 @@ window.CAPAS_CONTRACTS = {
         "edit_and_resubmit"
       ]
     },
+    "required_operational": [
+      "fine_tune_ready",
+      "fine_tune_criteria",
+      "fine_tune_blockers",
+      "admissibility_certificate"
+    ],
     "required_v2": [
       "schema_version",
       "input_claim",

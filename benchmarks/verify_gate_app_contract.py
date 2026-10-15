@@ -268,10 +268,25 @@ def main() -> int:
                       "unsupported schema version": None,
                       "other claim text": None,
                       "v2 fields stripped": None,
+                      # external re-audit b7685f1: READY with an incomplete or substituted criteria set
+                      "READY with no criteria": None,
+                      "READY with only verdict_accept": None,
+                      "READY with one criterion dropped": None,
+                      "READY with 14 invented criteria": None,
+                      "READY without fine_tune_blockers": None,
+                      "certificate removed": None,
                   }
+
+                  def make_ready(d, criteria, blockers=True):
+                      d["fine_tune_ready"] = True; d["fine_tune_criteria"] = criteria
+                      if blockers: d["fine_tune_blockers"] = []
+                      else: d.pop("fine_tune_blockers", None)
+                      c = d["admissibility_certificate"]; c["lattice"]["reuse_boundary"] = "training_ready"
+                      c["next_action"] = {"kind": "approve_for_controlled_reuse", "label": "Approve this claim boundary for controlled reuse."}
 
                   sys.path.insert(0, str(ROOT))
                   import capas   # genuine decisions of the local engine, mutated below (no route.fetch inside a handler)
+                  full = {k: True for k in capas.FINE_TUNE_CRITERIA_LABELS}   # the engine's catalogue, all passed
 
                   def mutate(kind):
                       def h(route):
@@ -307,6 +322,20 @@ def main() -> int:
                           elif kind == "v2 fields stripped":
                               for k in ("audit_hash_recipe", "rules_fired", "rule_table_sha256", "evidence_sha256", "engine_version"):
                                   d.pop(k, None)
+                          elif kind == "READY with no criteria":
+                              make_ready(d, {})
+                          elif kind == "READY with only verdict_accept":
+                              make_ready(d, {"verdict_accept": True})
+                          elif kind == "READY with one criterion dropped":
+                              make_ready(d, {k: v for k, v in full.items() if k != "source_urls_recoverable_hashable"})
+                          elif kind == "READY with 14 invented criteria":
+                              make_ready(d, {f"made_up_{i}": True for i in range(len(full))})
+                          elif kind == "READY without fine_tune_blockers":
+                              make_ready(d, dict(full), blockers=False)
+                          elif kind == "certificate removed":
+                              d.pop("admissibility_certificate", None)
+                          elif kind == "READY control (full criteria set)":
+                              make_ready(d, dict(full))
                           route.fulfill(status=200, content_type="application/json", body=json.dumps(d))
                       return h
                   for kind in bodies:
@@ -322,6 +351,28 @@ def main() -> int:
                           res["D"].append(f"{kind}: 'undefined' rendered")
                       if any(r["id"] == payload["claim"]["id"] for r in s["hist"]):
                           res["D"].append(f"{kind}: recorded in the decision log")
+                  # positive control for the mutations: the engine's full criteria set, all true, passes as READY
+                  bodies["READY control (full criteria set)"] = None
+                  pg.unroute("**/api/decide"); pg.route("**/api/decide", mutate("READY control (full criteria set)"))
+                  run_single(pg, stat("D_READY_CONTROL")); pg.wait_for_timeout(600)
+                  s = state(pg)
+                  if s["verdict"] != "ACCEPT" or s["copy_disabled"] or "READY" not in s["area"] or "NOT READY" in s["area"]:
+                      res["D"].append(f"READY control: shown {s['verdict']}, copy disabled={s['copy_disabled']}")
+                  # batch: an item whose response sends {} as its criteria is never counted FT READY
+                  def batch_route(route):
+                      d = json.loads(json.dumps(capas.decide_external_claim(json.loads(route.request.post_data))))
+                      if d["input_claim"]["id"] == "D_BATCH_EMPTY": make_ready(d, {})
+                      route.fulfill(status=200, content_type="application/json", body=json.dumps(d))
+                  pg.unroute("**/api/decide"); pg.route("**/api/decide", batch_route)
+                  select_mode(pg, "batch"); run_single(pg, [stat("D_BATCH_EMPTY"), stat("D_BATCH_OK")]); pg.wait_for_timeout(900)
+                  bo = pg.evaluate("(() => { try { return JSON.parse(document.getElementById('output').textContent); } catch (_) { return {}; } })()")
+                  items = {(r.get("result") or {}).get("input_claim", {}).get("id"): r for r in bo.get("results", [])}
+                  bad = items.get("D_BATCH_EMPTY") or {}
+                  if (bad.get("result") or {}).get("fine_tune_ready") is True or bo.get("fine_tune_ready") is True:
+                      res["D"].append(f"batch: item with empty criteria counted READY (status {bad.get('status')})")
+                  if "FT READY" in pg.locator("#verdict-area").inner_text():
+                      res["D"].append("batch: 'FT READY' shown for an item with empty criteria")
+                  select_mode(pg, "raw")
                   pg.unroute("**/api/decide")
                   # positive controls: the four genuine verdicts complete (shown, recorded, exportable)
                   for name in ("ACCEPT", "REWRITE", "REJECT", "HOLD"):
