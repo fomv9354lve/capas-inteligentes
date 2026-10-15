@@ -98,15 +98,17 @@
         var lc = r.admissibility_certificate;
         if (!isObj(lc.lattice) || typeof lc.lattice.reuse_boundary !== "string") p.push("certificate reuse_boundary missing");
         if (!isObj(lc.next_action) || typeof lc.next_action.kind !== "string") p.push("certificate next_action missing");
-        if (!isObj(lc.dialectic)) p.push("certificate dialectic missing");
+        if (!isObj(lc.dialectic) || !("thesis" in lc.dialectic)) p.push("certificate dialectic missing");
       }
     }
     if (r.fine_tune_ready === true || (live && r.fine_tune_criteria !== undefined)) {
       if (!CRIT) p.push("readiness criteria catalogue not loaded");
       else if (!isObj(r.fine_tune_criteria)) p.push("fine_tune_criteria missing");
       else {
+        // name by name, never through a joined string (re-audit a853e2a: {"a|b": true} joined like {"a", "b"})
         var want = Object.keys(CRIT).sort(), got = Object.keys(r.fine_tune_criteria).sort();
-        if (want.join("|") !== got.join("|")) p.push("fine_tune_criteria is not the engine's criteria set (" + got.length + " of " + want.length + " expected names)");
+        var sameNames = want.length === got.length && want.every(function (name, i) { return name === got[i]; });
+        if (!sameNames) p.push("fine_tune_criteria is not the engine's criteria set (" + got.length + " of " + want.length + " expected names)");
       }
       if (!isStrArr(r.fine_tune_blockers)) p.push("fine_tune_blockers missing");
     }
