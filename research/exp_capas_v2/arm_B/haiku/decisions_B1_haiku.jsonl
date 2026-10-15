@@ -1,0 +1,90 @@
+{"claim": "R1#1", "decision": "withhold", "narrowed_text": null, "evidence": "none", "why": "format_invoice_total is not defined in any material, so the padding cannot be checked."}
+{"claim": "R1#2", "decision": "state_as_written", "narrowed_text": null, "evidence": "S4", "why": "The S4 run log shows split_instalments(1000, 3) -> [334, 333, 333] and the sum 1000; CAPAS re-run agrees."}
+{"claim": "R1#3", "decision": "withhold", "narrowed_text": null, "evidence": "none", "why": "apply_vat is not in any material, so the rounding order cannot be checked."}
+{"claim": "R1#4", "decision": "narrow", "narrowed_text": "In by_amount, INV-1 comes first.", "evidence": "S6", "why": "The second half is contradicted: the run puts INV-3 before INV-2 at amount 200, so ties keep input order, not invoice-number order."}
+{"claim": "R1#5", "decision": "narrow", "narrowed_text": "On Python 3.14.5, classify returned 'ok', 'retry', 'fail' and 'fail' for the four logged inputs.", "evidence": "S7", "why": "Only Python 3.14.5 was run, so 'unchanged from 3.8 onward' is not shown."}
+{"claim": "R1#6", "decision": "withhold", "narrowed_text": null, "evidence": "S1", "why": "The S1 run log shows round(2.5) -> 2, so the claimed 3 is contradicted."}
+{"claim": "R1#7", "decision": "state_as_written", "narrowed_text": null, "evidence": "S5", "why": "The code shares one default list, so the second call returns ['A', 'B']; CAPAS re-run agrees."}
+{"claim": "R1#8", "decision": "withhold", "narrowed_text": null, "evidence": "S3", "why": "The set-based dedupe treats 1, True and 1.0 as equal, so the result is [1], not the three-item list claimed."}
+{"claim": "R1#9", "decision": "state_as_written", "narrowed_text": null, "evidence": "S2", "why": "The S2 run log shows sum(items) == 1.0 -> True on the logged interpreter."}
+{"claim": "R1#10", "decision": "withhold", "narrowed_text": null, "evidence": "S1", "why": "The S1 run log shows round_money(0.125) -> 0.12; only round_money_dec gives 0.13."}
+{"claim": "R1#11", "decision": "state_as_written", "narrowed_text": null, "evidence": "S3", "why": "Both functions return [3, 1, 2] for data in the same order; CAPAS re-run agrees."}
+{"claim": "R1#12", "decision": "narrow", "narrowed_text": "On Python 3.14.5, -7 % 2 evaluates to 1.", "evidence": "S4", "why": "The S4 log shows only the n = 2 case; 'never negative for any integers' is not shown by one case."}
+{"claim": "R1#13", "decision": "withhold", "narrowed_text": null, "evidence": "S4", "why": "The S4 run log shows -7 // 2 -> -4; the -3 value belongs to int(-7 / 2), a different expression."}
+{"claim": "R1#14", "decision": "withhold", "narrowed_text": null, "evidence": "none", "why": "No benchmark timings appear in the materials."}
+{"claim": "R1#15", "decision": "narrow", "narrowed_text": "On Python 3.14.5, math.fsum([0.1] * 10) returns 1.0.", "evidence": "S2", "why": "One list was run; fsum returns a correctly rounded float, so 'exact decimal total for any list' is not shown."}
+{"claim": "R1#16", "decision": "state_as_written", "narrowed_text": null, "evidence": "S4", "why": "Both logged calls return parts differing by at most one: [334, 333, 333] and [3, 3, 2, 2]."}
+{"claim": "R1#17", "decision": "narrow", "narrowed_text": "On Python 3.14.5, split_instalments(1000, 3) returns parts that sum to 1000.", "evidence": "S4", "why": "Only two calls were run; 'any total and any n' is not shown (for example n = 0 is not covered)."}
+{"claim": "R1#18", "decision": "withhold", "narrowed_text": null, "evidence": "S5", "why": "The shared default list makes a is b True, so the claim that a is b is False is contradicted."}
+{"claim": "R1#19", "decision": "withhold", "narrowed_text": null, "evidence": "S6", "why": "The run log gives max(invoices, key=amount) -> ('INV-3', 200): max returns the first maximal item."}
+{"claim": "R1#20", "decision": "narrow", "narrowed_text": "On Python 3.14.5, dedupe([3, 1, 3, 2, 1]) returns [3, 1, 2].", "evidence": "S3", "why": "One integer list was run; 'any list' is not shown, and the set-based code raises on unhashable items."}
+{"claim": "R1#21", "decision": "withhold", "narrowed_text": null, "evidence": "none", "why": "No retry queue appears in the materials; S7 only classifies statuses."}
+{"claim": "R1#22", "decision": "narrow", "narrowed_text": "math.isclose(0.1 + 0.2, 0.3) returns True on Python 3.14.5.", "evidence": "S2", "why": "One case is shown; 'any two amounts differing only by float error' is a broader claim than the log supports."}
+{"claim": "R1#23", "decision": "withhold", "narrowed_text": null, "evidence": "S2", "why": "Only Python 3.14.5 was run (sum == 1.0 -> True); the Python 3.11 output is not in the materials."}
+{"claim": "R1#24", "decision": "state_as_written", "narrowed_text": null, "evidence": "S1", "why": "The S1 run log shows round_money_dec(1.005) -> Decimal('1.01')."}
+{"claim": "R1#25", "decision": "state_as_written", "narrowed_text": null, "evidence": "S1", "why": "The S1 run log shows round_money(2.675) -> 2.67, not 2.68."}
+{"claim": "R1#26", "decision": "narrow", "narrowed_text": "On Python 3.14.5, round_money_dec gave 2.68, 1.01, 0.13, 0.38 and 10.00 for the five S1 inputs.", "evidence": "S1", "why": "Five inputs only; 'every float input without raising' is not shown by the materials."}
+{"claim": "R1#27", "decision": "withhold", "narrowed_text": null, "evidence": "S7", "why": "The S7 run log shows classify({'code': 503}) -> 'retry', so 'fail' is contradicted."}
+{"claim": "R1#28", "decision": "withhold", "narrowed_text": null, "evidence": "none", "why": "No CSV exporter code appears in the materials."}
+{"claim": "R1#29", "decision": "state_as_written", "narrowed_text": null, "evidence": "S6", "why": "The S6 run log shows desc with tied invoices in their original order."}
+{"claim": "R1#30", "decision": "withhold", "narrowed_text": null, "evidence": "S6", "why": "Only Python 3.14.5 was run; the Python 3.10 ordering is not in the materials."}
+{"claim": "R2#1", "decision": "narrow", "narrowed_text": "Gross margin was 35.8% in Q3 2025.", "evidence": "L1", "why": "The Q3 figure recomputes to 35.8%, but February 2025 gross margin is about 29%, so 'above 30% every month' fails."}
+{"claim": "R2#2", "decision": "state_as_written", "narrowed_text": null, "evidence": "L1", "why": "Recomputed Q3 2025 gross margin is 35.8%; CAPAS re-derivation agrees."}
+{"claim": "R2#3", "decision": "narrow", "narrowed_text": "The Q3 2025 average ticket was $6,284.97.", "evidence": "L1", "why": "The Q3 ticket recomputes correctly, but September 2025 average ticket is about $3,276, below $3,500."}
+{"claim": "R2#4", "decision": "state_as_written", "narrowed_text": null, "evidence": "L1", "why": "Q3 2025 revenue of $75,419.64 is below Q2 2025 revenue of $78,113.43."}
+{"claim": "R2#5", "decision": "narrow", "narrowed_text": "Refunds were 6.8% of sales in Q3 2025.", "evidence": "L1", "why": "The Q3 rate recomputes correctly, but February 2025 refunds were about 17% of sales, so 'under 10% every month' fails."}
+{"claim": "R2#6", "decision": "withhold", "narrowed_text": null, "evidence": "L1", "why": "Days sales outstanding needs receivables data, which the ledger does not contain."}
+{"claim": "R2#7", "decision": "withhold", "narrowed_text": null, "evidence": "L1", "why": "The ledger has no marketing account, so the 4% figure cannot be checked."}
+{"claim": "R2#8", "decision": "withhold", "narrowed_text": null, "evidence": "L2", "why": "The figure recomputes, but November 2024 has no rows in the export, so the quarter is not re-derivable (CAPAS HOLD)."}
+{"claim": "R2#9", "decision": "withhold", "narrowed_text": null, "evidence": "L1", "why": "The ledger has no operating-expense account."}
+{"claim": "R2#10", "decision": "narrow", "narrowed_text": "Monthly revenue exceeded $20,000 in August 2025.", "evidence": "L1", "why": "August recomputes to $32,765.35; 'every month since January' fails (February 2025 revenue is about $18,850)."}
+{"claim": "R2#11", "decision": "withhold", "narrowed_text": null, "evidence": "L1", "why": "Recomputed Q2 2025 refund rate is 7.6% (6,460.91 over 84,574.34), not 7.4%."}
+{"claim": "R2#12", "decision": "withhold", "narrowed_text": null, "evidence": "L1", "why": "Q1 to Q2 2025 revenue growth recomputes to 33.2%, not 33.0%."}
+{"claim": "R2#13", "decision": "withhold", "narrowed_text": null, "evidence": "L2", "why": "Q3 2024 revenue recomputed from L2 is $51,974.96, not $58,643.12."}
+{"claim": "R2#14", "decision": "state_as_written", "narrowed_text": null, "evidence": "L1", "why": "Q3 2025 versus Q2 2025 revenue is -3.4% on recomputation."}
+{"claim": "R2#15", "decision": "state_as_written", "narrowed_text": null, "evidence": "L1", "why": "Recomputed Q3 2025 revenue (sales less refunds) is $75,419.64."}
+{"claim": "R2#16", "decision": "withhold", "narrowed_text": null, "evidence": "L1", "why": "Recomputed Q3 2025 gross margin is 35.76%, which rounds to 35.8%, not 35.7%."}
+{"claim": "R2#17", "decision": "narrow", "narrowed_text": "Gross sales for Q3 2025 were $80,913.69, before refunds.", "evidence": "L1", "why": "$80,913.69 is gross sales; net revenue after $5,494.05 of refunds is $75,419.64."}
+{"claim": "R2#18", "decision": "withhold", "narrowed_text": null, "evidence": "L2", "why": "Recomputed Q4 2024 gross margin is about 35.0%, not 36.4%, and November 2024 has no rows (CAPAS HOLD)."}
+{"claim": "R2#19", "decision": "withhold", "narrowed_text": null, "evidence": "L1, L2", "why": "45.1% is correct by arithmetic against Q3 2024, but CAPAS v2 cannot express year-on-year growth, so the engine could not confirm it and the strictest allowed action applies."}
+{"claim": "R2#20", "decision": "narrow", "narrowed_text": "Monthly revenue in March 2025 exceeded $17,000.", "evidence": "L1", "why": "March 2025 is the lowest month checked (about $17,986); the claim is supported only as a minimum-month check."}
+{"claim": "R2#21", "decision": "narrow", "narrowed_text": "September 2025 gross sales were $26,410.79, before refunds.", "evidence": "L1", "why": "$26,410.79 is September sales before $3,479.16 of refunds; September revenue net of refunds is $22,931.63."}
+{"claim": "R2#22", "decision": "withhold", "narrowed_text": null, "evidence": "L1", "why": "Q2 2025 average ticket recomputes to $7,811.34 over 10 distinct customers, not $8,457.43."}
+{"claim": "R2#23", "decision": "withhold", "narrowed_text": null, "evidence": "L2", "why": "L2 covers only July to December 2024, so full-year 2024 revenue cannot be computed from the materials (CAPAS HOLD)."}
+{"claim": "R2#24", "decision": "withhold", "narrowed_text": null, "evidence": "L1", "why": "Q1 2025 has 10 distinct customers with sales rows, not 12."}
+{"claim": "R2#25", "decision": "withhold", "narrowed_text": null, "evidence": "L1", "why": "The ledger has no October 2025 rows, so the tracking figure cannot be checked."}
+{"claim": "R2#26", "decision": "narrow", "narrowed_text": "Gross margin was 36.3% in Q3 2024.", "evidence": "L2", "why": "Q3 2024 recomputes to 36.3%, but Q4 2024 (about 35.0%) and Q2 2025 (about 33.1%) are not above 35%."}
+{"claim": "R2#27", "decision": "narrow", "narrowed_text": "Revenue rose 33.2% from Q1 to Q2 2025.", "evidence": "L1", "why": "Q1 to Q2 growth recomputes to 33.2%, but Q3 2025 fell 3.4%, so 'grown quarter on quarter throughout 2025' fails."}
+{"claim": "R2#28", "decision": "withhold", "narrowed_text": null, "evidence": "L1, L2", "why": "Year-on-year growth cannot be expressed in CAPAS v2, and the monthly claim is contradicted (July 2025 revenue is about 1% above July 2024, not 40%)."}
+{"claim": "R2#29", "decision": "withhold", "narrowed_text": null, "evidence": "L1, L2", "why": "Arithmetic gives 84.8%, but the export has no November 2024 rows, so the engine could not re-derive Q4 2024 (CAPAS HOLD)."}
+{"claim": "R2#30", "decision": "state_as_written", "narrowed_text": null, "evidence": "L1", "why": "Recomputed Q3 2025 average ticket is $6,284.97 over 12 distinct customers."}
+{"claim": "R3#1", "decision": "withhold", "narrowed_text": null, "evidence": "S2", "why": "The S2 code gives quarter_of('2025-12-31') -> '2025-Q4', so the claimed '2025-Q3' is contradicted."}
+{"claim": "R3#2", "decision": "withhold", "narrowed_text": null, "evidence": "S1", "why": "Only Python 3.14.5 was run; the Python 3.11 output is not re-derivable (CAPAS HOLD)."}
+{"claim": "R3#3", "decision": "state_as_written", "narrowed_text": null, "evidence": "S2", "why": "quarter_of('2025-03-01') returns '2025-Q1'; CAPAS re-run agrees."}
+{"claim": "R3#4", "decision": "withhold", "narrowed_text": null, "evidence": "L1", "why": "The export starts 1 December 2024, so Q4 2024 holds December only; the full-quarter figure is not re-derivable (CAPAS HOLD)."}
+{"claim": "R3#5", "decision": "narrow", "narrowed_text": "Under the definition, the Q2 2025 average ticket was $382.26.", "evidence": "L1", "why": "2,293.55 over 6 distinct customers gives 382.26, but May 2025 (about $225) is below $300, so the monthly claim fails."}
+{"claim": "R3#6", "decision": "narrow", "narrowed_text": "L1 records cost-of-goods-sold entries in December 2024.", "evidence": "L1", "why": "CAPAS re-derives only one month; the other months were checked by hand but are not engine-verified, so the claim is narrowed."}
+{"claim": "R3#7", "decision": "narrow", "narrowed_text": "The dashboard's Q2 2025 revenue matches the definition applied to L1.", "evidence": "S1, L1", "why": "Revenue matches, but the dashboard's Q2 average ticket (152.90) does not, so 'every figure matches' is false."}
+{"claim": "R3#8", "decision": "withhold", "narrowed_text": null, "evidence": "S3", "why": "The first timestamp's date is 2025-03-31 in its own -06:00 offset; 2025-04-01 is only its UTC date (CAPAS REJECT)."}
+{"claim": "R3#9", "decision": "state_as_written", "narrowed_text": null, "evidence": "S1, L1", "why": "Recomputed Q1 2025 gross margin is 51.7%, matching the dashboard; CAPAS re-run agrees."}
+{"claim": "R3#10", "decision": "state_as_written", "narrowed_text": null, "evidence": "S1, L1", "why": "Recomputed Q2 2025 revenue is 2,293.55, matching the dashboard; CAPAS re-run agrees."}
+{"claim": "R3#11", "decision": "withhold", "narrowed_text": null, "evidence": "L1", "why": "Under the definition the Q2 2025 average ticket is 382.26; 152.90 is revenue divided by 15 sales rows, not by customers."}
+{"claim": "R3#12", "decision": "withhold", "narrowed_text": null, "evidence": "L1", "why": "Recomputed Q2 2025 gross margin is 56.0%, not 56.1%."}
+{"claim": "R3#13", "decision": "state_as_written", "narrowed_text": null, "evidence": "L1", "why": "Q2 2025 refunds of 175.12 over sales of 2,468.67 give 7.1%."}
+{"claim": "R3#14", "decision": "withhold", "narrowed_text": null, "evidence": "none", "why": "The ledger has no subscriber or campaign data."}
+{"claim": "R3#15", "decision": "withhold", "narrowed_text": null, "evidence": "none", "why": "The ledger has no shipping account, so the 9% figure cannot be checked."}
+{"claim": "R3#16", "decision": "withhold", "narrowed_text": null, "evidence": "L1", "why": "Q4 2024 in the export is December only; the growth figure is not re-derivable (CAPAS HOLD)."}
+{"claim": "R3#17", "decision": "withhold", "narrowed_text": null, "evidence": "none", "why": "The ledger has no churn data."}
+{"claim": "R3#18", "decision": "withhold", "narrowed_text": null, "evidence": "L1", "why": "Recomputed Q1 2025 revenue is $1,955.80, not $2,076.81."}
+{"claim": "R3#19", "decision": "narrow", "narrowed_text": "parsed[0] == parsed[1] evaluates to True for the two S3 timestamps.", "evidence": "S3", "why": "The run shows equality for these two stamps; 'any two timestamps whatever their format' is not shown."}
+{"claim": "R3#20", "decision": "narrow", "narrowed_text": "Q2 2025 revenue was 17.3% above Q1 2025 revenue.", "evidence": "L1", "why": "Q1 to Q2 growth recomputes to 17.3%, but revenue fell from May to June, so 'month on month in every month of Q2' fails."}
+{"claim": "R3#21", "decision": "withhold", "narrowed_text": null, "evidence": "L1", "why": "The export ends 30 June 2025, so there are no July 2025 rows (CAPAS HOLD)."}
+{"claim": "R3#22", "decision": "narrow", "narrowed_text": "quarter_of('2025-04-01') returns '2025-Q2'.", "evidence": "S2", "why": "The result holds, but 'any ISO 8601 date string' is not shown; a basic-format date such as 20250401 has no dashes and the function fails."}
+{"claim": "R3#23", "decision": "narrow", "narrowed_text": "Gross margin in Q2 2025 was 56.0%.", "evidence": "L1", "why": "Q2 recomputes to 56.0%, but March 2025 gross margin is about 46%, so 'above 50% every month of H1' fails."}
+{"claim": "R3#24", "decision": "narrow", "narrowed_text": "Q2 2025 had 6 distinct customers.", "evidence": "L1", "why": "The Q2 count recomputes to 6, but April 2025 had only 2 distinct customers, so 'at least 3 every month' fails."}
+{"claim": "R3#25", "decision": "state_as_written", "narrowed_text": null, "evidence": "L1", "why": "Q1 to Q2 2025 revenue growth recomputes to 17.3%; CAPAS re-derivation agrees."}
+{"claim": "R3#26", "decision": "narrow", "narrowed_text": "Refunds were 7.1% of sales in Q2 2025.", "evidence": "L1", "why": "The Q2 rate recomputes to 7.1%, but May 2025 refunds were about 16% of sales, so 'under 12% every month' fails."}
+{"claim": "R3#27", "decision": "state_as_written", "narrowed_text": null, "evidence": "S3", "why": "Equal aware datetimes compare by instant, and the two stamps are the same instant; CAPAS re-run agrees."}
+{"claim": "R3#28", "decision": "withhold", "narrowed_text": null, "evidence": "L1", "why": "Recomputed June 2025 revenue is $700.07, not $650.07."}
+{"claim": "R3#29", "decision": "state_as_written", "narrowed_text": null, "evidence": "S1, L1", "why": "The S1 LEDGER literal and the L1 rows are identical row for row on comparison."}
+{"claim": "R3#30", "decision": "withhold", "narrowed_text": null, "evidence": "S1, L1", "why": "Under the definition the Q2 2025 average ticket is $382.26; the dashboard's 152.90 does not match."}

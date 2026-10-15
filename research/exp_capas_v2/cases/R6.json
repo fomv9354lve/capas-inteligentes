@@ -1,0 +1,260 @@
+{
+  "report_id": "R6",
+  "title": "Pricing engine 3.0: release note and pilot results, draft for the steering committee",
+  "context": "Draft written by the pricing product manager with input from one engineer, for the steering committee that approves the 3.0 release. The first half describes how the new pricing helpers behave (snippets in the appendix); the second half summarises the pilot program's sales from the ledger exports.",
+  "claims": [
+    {
+      "n": 1,
+      "text": "Q3 2024 revenue was up 71.3% year on year, and each month of Q3 2024 was up more than 50% year on year.",
+      "refs": [
+        "L1",
+        "L2"
+      ]
+    },
+    {
+      "n": 2,
+      "text": "Decimal('0.125') quantized to cents with ROUND_HALF_EVEN gives 0.13.",
+      "refs": [
+        "S1"
+      ]
+    },
+    {
+      "n": 3,
+      "text": "Revenue fell 14.4% from Q3 to Q4 2024, and fell quarter on quarter in every quarter of 2024.",
+      "refs": [
+        "L1",
+        "L2"
+      ]
+    },
+    {
+      "n": 4,
+      "text": "Revenue grew 14.4% from Q3 to Q4 2024.",
+      "refs": [
+        "L1"
+      ]
+    },
+    {
+      "n": 5,
+      "text": "Gross margin for 2024 was 48.1%.",
+      "refs": [
+        "L1"
+      ]
+    },
+    {
+      "n": 6,
+      "text": "On the test basket, vat_on_total returns 0.25 while vat_per_line returns 0.24.",
+      "refs": [
+        "S1"
+      ]
+    },
+    {
+      "n": 7,
+      "text": "Gross margin in Q4 2024 was 48.3%.",
+      "refs": [
+        "L1"
+      ]
+    },
+    {
+      "n": 8,
+      "text": "additive(p, ds) returns 72.00, the same as stacking.",
+      "refs": [
+        "S2"
+      ]
+    },
+    {
+      "n": 9,
+      "text": "tier(4999.99) returns 'silver', so any spend below 5000 is placed in the silver band.",
+      "refs": [
+        "S3"
+      ]
+    },
+    {
+      "n": 10,
+      "text": "round(Fraction(5, 2)) returns 3.",
+      "refs": [
+        "S4"
+      ]
+    },
+    {
+      "n": 11,
+      "text": "tier(5000) returns 'silver'.",
+      "refs": [
+        "S3"
+      ]
+    },
+    {
+      "n": 12,
+      "text": "On Python 3.10, S3 prints the same tier for every input.",
+      "refs": [
+        "S3"
+      ]
+    },
+    {
+      "n": 13,
+      "text": "sum([1/3] * 3) == 1 is True, so summing n equal float shares of 1/n gives exactly 1 for any n.",
+      "refs": [
+        "S4"
+      ]
+    },
+    {
+      "n": 14,
+      "text": "Pilot revenue for 2024 was $202,056.60.",
+      "refs": [
+        "L1"
+      ]
+    },
+    {
+      "n": 15,
+      "text": "parse_rule works on Python 3.9 and every later release.",
+      "refs": [
+        "S5"
+      ]
+    },
+    {
+      "n": 16,
+      "text": "Partner P07 accounted for 30% of 2024 pilot revenue.",
+      "refs": [
+        "L1"
+      ]
+    },
+    {
+      "n": 17,
+      "text": "January 2025 pilot revenue was $18,400.",
+      "refs": [
+        "L1"
+      ]
+    },
+    {
+      "n": 18,
+      "text": "Refunds were 13.5% of sales in Q4 2024 and stayed under 15% of sales in every month of 2024.",
+      "refs": [
+        "L1"
+      ]
+    },
+    {
+      "n": 19,
+      "text": "Q3 2024 pilot revenue was 71.3% above Q3 2023.",
+      "refs": [
+        "L1",
+        "L2"
+      ]
+    },
+    {
+      "n": 20,
+      "text": "stacked(p, ds) and stacked(p, ds[::-1]) both return 72.0000, so the order of these two discounts does not change the result.",
+      "refs": [
+        "S2"
+      ]
+    },
+    {
+      "n": 21,
+      "text": "vat_on_total runs about twice as fast as vat_per_line.",
+      "refs": [
+        "S1"
+      ]
+    },
+    {
+      "n": 22,
+      "text": "discount_cap() limits stacked discounts to 50%.",
+      "refs": [
+        "S2"
+      ]
+    },
+    {
+      "n": 23,
+      "text": "tier() returns 'platinum' for every logged spend of 20000 or more.",
+      "refs": [
+        "S3"
+      ]
+    },
+    {
+      "n": 24,
+      "text": "On the test basket vat_per_line comes out one cent below vat_on_total, so per-line rounding never undercharges by more than one cent.",
+      "refs": [
+        "S1"
+      ]
+    },
+    {
+      "n": 25,
+      "text": "sum(shares) == 1 is True for three Fraction(1, 3) shares.",
+      "refs": [
+        "S4"
+      ]
+    },
+    {
+      "n": 26,
+      "text": "Pilot revenue for 2024 was $213,533.03.",
+      "refs": [
+        "L1"
+      ]
+    },
+    {
+      "n": 27,
+      "text": "Gross margin was 48.1% for 2024 and above 40% in every month of the year.",
+      "refs": [
+        "L1"
+      ]
+    },
+    {
+      "n": 28,
+      "text": "Pilot revenue grew 39% in 2024 over 2023.",
+      "refs": [
+        "L1",
+        "L2"
+      ]
+    },
+    {
+      "n": 29,
+      "text": "The 2024 average ticket was $35,588.84.",
+      "refs": [
+        "L1"
+      ]
+    },
+    {
+      "n": 30,
+      "text": "Gross margin for 2023 was 45.9%.",
+      "refs": [
+        "L2"
+      ]
+    }
+  ],
+  "materials": {
+    "S1": {
+      "kind": "python",
+      "snippet": "from decimal import Decimal, ROUND_HALF_UP, ROUND_HALF_EVEN\n\nCENT = Decimal(\"0.01\")\nVAT = Decimal(\"0.16\")\n\n\ndef vat_per_line(prices):\n    return sum((p * VAT).quantize(CENT, rounding=ROUND_HALF_UP) for p in prices)\n\n\ndef vat_on_total(prices):\n    return (sum(prices) * VAT).quantize(CENT, rounding=ROUND_HALF_UP)\n\n\nbasket = [Decimal(\"0.53\"), Decimal(\"0.53\"), Decimal(\"0.53\")]\nprint(f\"vat_per_line(basket) -> {vat_per_line(basket)}\")\nprint(f\"vat_on_total(basket) -> {vat_on_total(basket)}\")\nprint(f\"Decimal('0.125').quantize(CENT, ROUND_HALF_EVEN) -> {Decimal('0.125').quantize(CENT, rounding=ROUND_HALF_EVEN)}\")\nprint(f\"Decimal('0.125').quantize(CENT, ROUND_HALF_UP) -> {Decimal('0.125').quantize(CENT, rounding=ROUND_HALF_UP)}\")\nprint(f\"Decimal(0.1) == Decimal('0.1') -> {Decimal(0.1) == Decimal('0.1')}\")\n",
+      "run_log": "$ python3 --version\nPython 3.14.5\n$ cat snippet.py\nfrom decimal import Decimal, ROUND_HALF_UP, ROUND_HALF_EVEN\n\nCENT = Decimal(\"0.01\")\nVAT = Decimal(\"0.16\")\n\n\ndef vat_per_line(prices):\n    return sum((p * VAT).quantize(CENT, rounding=ROUND_HALF_UP) for p in prices)\n\n\ndef vat_on_total(prices):\n    return (sum(prices) * VAT).quantize(CENT, rounding=ROUND_HALF_UP)\n\n\nbasket = [Decimal(\"0.53\"), Decimal(\"0.53\"), Decimal(\"0.53\")]\nprint(f\"vat_per_line(basket) -> {vat_per_line(basket)}\")\nprint(f\"vat_on_total(basket) -> {vat_on_total(basket)}\")\nprint(f\"Decimal('0.125').quantize(CENT, ROUND_HALF_EVEN) -> {Decimal('0.125').quantize(CENT, rounding=ROUND_HALF_EVEN)}\")\nprint(f\"Decimal('0.125').quantize(CENT, ROUND_HALF_UP) -> {Decimal('0.125').quantize(CENT, rounding=ROUND_HALF_UP)}\")\nprint(f\"Decimal(0.1) == Decimal('0.1') -> {Decimal(0.1) == Decimal('0.1')}\")\n$ python3 snippet.py\nvat_per_line(basket) -> 0.24\nvat_on_total(basket) -> 0.25\nDecimal('0.125').quantize(CENT, ROUND_HALF_EVEN) -> 0.12\nDecimal('0.125').quantize(CENT, ROUND_HALF_UP) -> 0.13\nDecimal(0.1) == Decimal('0.1') -> False\n"
+    },
+    "S2": {
+      "kind": "python",
+      "snippet": "from decimal import Decimal\n\n\ndef stacked(price, discounts):\n    for d in discounts:\n        price = price * (1 - d)\n    return price\n\n\ndef additive(price, discounts):\n    return price * (1 - sum(discounts))\n\n\np = Decimal(\"100\")\nds = [Decimal(\"0.10\"), Decimal(\"0.20\")]\nprint(f\"stacked(p, ds) -> {stacked(p, ds)}\")\nprint(f\"additive(p, ds) -> {additive(p, ds)}\")\nprint(f\"stacked(p, ds[::-1]) -> {stacked(p, ds[::-1])}\")\nprint(f\"additive(p, [Decimal('0.6'), Decimal('0.5')]) -> {additive(p, [Decimal('0.6'), Decimal('0.5')])}\")\n",
+      "run_log": null
+    },
+    "S3": {
+      "kind": "python",
+      "snippet": "import bisect\n\nBOUNDS = [1000, 5000, 20000]\nRATES = [\"list\", \"silver\", \"gold\", \"platinum\"]\n\n\ndef tier(annual_spend):\n    return RATES[bisect.bisect_right(BOUNDS, annual_spend)]\n\n\nfor s in [999, 1000, 4999.99, 5000, 20000, 250000]:\n    print(f\"tier({s}) -> {tier(s)!r}\")\n",
+      "run_log": "$ python3 --version\nPython 3.14.5\n$ cat snippet.py\nimport bisect\n\nBOUNDS = [1000, 5000, 20000]\nRATES = [\"list\", \"silver\", \"gold\", \"platinum\"]\n\n\ndef tier(annual_spend):\n    return RATES[bisect.bisect_right(BOUNDS, annual_spend)]\n\n\nfor s in [999, 1000, 4999.99, 5000, 20000, 250000]:\n    print(f\"tier({s}) -> {tier(s)!r}\")\n$ python3 snippet.py\ntier(999) -> 'list'\ntier(1000) -> 'silver'\ntier(4999.99) -> 'silver'\ntier(5000) -> 'gold'\ntier(20000) -> 'platinum'\ntier(250000) -> 'platinum'\n"
+    },
+    "S4": {
+      "kind": "python",
+      "snippet": "from fractions import Fraction\n\nshares = [Fraction(1, 3)] * 3\nprint(f\"sum(shares) == 1 -> {sum(shares) == 1}\")\nprint(f\"sum([1/3] * 3) == 1 -> {sum([1/3] * 3) == 1}\")\nprint(f\"round(Fraction(5, 2)) -> {round(Fraction(5, 2))}\")\nprint(f\"float(Fraction(1, 3)) -> {float(Fraction(1, 3))!r}\")\n",
+      "run_log": null
+    },
+    "S5": {
+      "kind": "python",
+      "snippet": "def show(label, fn):\n    try:\n        r = fn()\n    except Exception as e:\n        r = type(e).__name__\n    print(f\"{label} -> {r!r}\")\n\n\n\ndef parse_rule(rule):\n    match rule.split(\":\"):\n        case [\"pct\", value]:\n            return (\"pct\", float(value))\n        case [\"fixed\", value]:\n            return (\"fixed\", int(value))\n        case _:\n            return (\"unknown\", rule)\n\n\nfor r in [\"pct:10\", \"fixed:250\", \"PCT:10\", \"pct:10:extra\", \"fixed:2.5\"]:\n    show(f\"parse_rule({r!r})\", lambda: parse_rule(r))\n",
+      "run_log": "$ python3 --version\nPython 3.14.5\n$ cat snippet.py\ndef show(label, fn):\n    try:\n        r = fn()\n    except Exception as e:\n        r = type(e).__name__\n    print(f\"{label} -> {r!r}\")\n\n\n\ndef parse_rule(rule):\n    match rule.split(\":\"):\n        case [\"pct\", value]:\n            return (\"pct\", float(value))\n        case [\"fixed\", value]:\n            return (\"fixed\", int(value))\n        case _:\n            return (\"unknown\", rule)\n\n\nfor r in [\"pct:10\", \"fixed:250\", \"PCT:10\", \"pct:10:extra\", \"fixed:2.5\"]:\n    show(f\"parse_rule({r!r})\", lambda: parse_rule(r))\n$ python3 snippet.py\nparse_rule('pct:10') -> ('pct', 10.0)\nparse_rule('fixed:250') -> ('fixed', 250)\nparse_rule('PCT:10') -> ('unknown', 'PCT:10')\nparse_rule('pct:10:extra') -> ('unknown', 'pct:10:extra')\nparse_rule('fixed:2.5') -> 'ValueError'\n"
+    },
+    "L1": {
+      "kind": "ledger",
+      "rows_csv": "date,account,customer,amount\n2024-01-03,sales,P02,6544.98\n2024-01-04,sales,P01,3816.99\n2024-01-15,cogs,,5995.95\n2024-01-21,sales,P06,6749.76\n2024-01-28,cogs,,3997.30\n2024-02-11,sales,P04,2483.88\n2024-02-15,cogs,,2247.61\n2024-02-20,sales,P03,8099.25\n2024-02-28,cogs,,2979.40\n2024-03-01,sales,P05,7713.62\n2024-03-04,sales,P06,2525.71\n2024-03-05,refunds,P06,1190.78\n2024-03-06,sales,P03,7296.68\n2024-03-15,cogs,,5954.90\n2024-03-17,sales,P06,8388.70\n2024-03-28,cogs,,5954.91\n2024-04-03,sales,P02,2353.33\n2024-04-05,refunds,P02,1139.86\n2024-04-11,sales,P06,7020.75\n2024-04-15,cogs,,4583.77\n2024-04-23,sales,P02,8007.25\n2024-04-28,cogs,,5380.95\n2024-05-15,cogs,,4984.97\n2024-05-17,sales,P04,8019.13\n2024-05-19,sales,P01,4106.28\n2024-05-20,sales,P03,4339.92\n2024-05-21,sales,P01,2835.30\n2024-05-28,cogs,,4078.61\n2024-06-02,sales,P04,7515.22\n2024-06-15,cogs,,2357.01\n2024-06-22,sales,P02,2393.97\n2024-06-28,cogs,,1778.09\n2024-07-07,sales,P06,8311.55\n2024-07-12,sales,P06,7363.98\n2024-07-15,cogs,,7619.05\n2024-07-15,sales,P06,3950.94\n2024-07-21,sales,P05,7220.07\n2024-07-28,cogs,,5079.36\n2024-08-14,sales,P04,4836.98\n2024-08-15,cogs,,3919.56\n2024-08-25,sales,P02,4914.97\n2024-08-25,sales,P05,3079.75\n2024-08-26,refunds,P02,651.80\n2024-08-26,sales,P05,7079.09\n2024-08-28,cogs,,4988.53\n2024-08-28,refunds,P05,985.53\n2024-09-08,sales,P01,4576.07\n2024-09-15,cogs,,3599.58\n2024-09-16,sales,P03,6420.00\n2024-09-28,cogs,,2606.60\n2024-10-09,sales,P02,5705.28\n2024-10-15,cogs,,2887.94\n2024-10-15,sales,P03,6058.13\n2024-10-28,cogs,,3390.19\n2024-11-09,sales,P01,8620.92\n2024-11-14,sales,P02,5109.87\n2024-11-15,cogs,,6173.45\n2024-11-19,sales,P06,7447.61\n2024-11-21,refunds,P06,3306.11\n2024-11-25,sales,P05,4257.19\n2024-11-28,cogs,,5931.35\n2024-12-02,sales,P05,2058.80\n2024-12-09,sales,P04,8272.43\n2024-12-12,refunds,P04,4202.35\n2024-12-15,cogs,,4942.24\n2024-12-18,sales,P02,5177.61\n2024-12-18,sales,P06,2861.07\n2024-12-28,cogs,,3434.44\n",
+      "metric_definition": "Revenue = sum of 'sales' amounts minus sum of 'refunds' amounts in the period. Gross margin = (Revenue - sum of 'cogs' amounts) / Revenue. Average ticket = Revenue / number of distinct customers with at least one 'sales' row in the period. Growth = Revenue of the period / Revenue of the previous period - 1 (year-on-year: same period one year earlier). Refund rate = sum of 'refunds' / sum of 'sales'. Quarters are calendar quarters.",
+      "notes": "Pilot program sales ledger, export for 2024-01-01 to 2024-12-31, partners P01 to P06. Amounts in USD."
+    },
+    "L2": {
+      "kind": "ledger",
+      "rows_csv": "date,account,customer,amount\n2023-07-13,sales,P01,5242.01\n2023-07-15,cogs,,3243.75\n2023-07-16,sales,P03,5120.05\n2023-07-21,sales,P05,4020.10\n2023-07-28,cogs,,4479.47\n2023-08-04,sales,P05,3224.37\n2023-08-06,sales,P03,6532.44\n2023-08-07,refunds,P03,2275.97\n2023-08-13,sales,P03,2573.48\n2023-08-15,cogs,,2562.91\n2023-08-28,cogs,,3132.45\n2023-09-06,sales,P04,2143.82\n2023-09-15,cogs,,2115.60\n2023-09-15,sales,P02,2659.20\n2023-09-18,sales,P04,3522.86\n2023-09-28,cogs,,2115.61\n2023-10-10,sales,P06,3215.99\n2023-10-15,cogs,,1916.64\n2023-10-17,sales,P05,5261.49\n2023-10-20,refunds,P05,1670.21\n2023-10-28,cogs,,1994.87\n2023-11-06,sales,P03,1421.24\n2023-11-14,sales,P04,1292.32\n2023-11-15,cogs,,666.35\n2023-11-28,cogs,,848.09\n2023-12-05,sales,P06,4154.25\n2023-12-06,sales,P01,3408.28\n2023-12-15,cogs,,2248.40\n2023-12-28,cogs,,1628.15\n",
+      "metric_definition": "Revenue = sum of 'sales' amounts minus sum of 'refunds' amounts in the period. Gross margin = (Revenue - sum of 'cogs' amounts) / Revenue. Average ticket = Revenue / number of distinct customers with at least one 'sales' row in the period. Growth = Revenue of the period / Revenue of the previous period - 1 (year-on-year: same period one year earlier). Refund rate = sum of 'refunds' / sum of 'sales'. Quarters are calendar quarters.",
+      "notes": "Pilot program sales ledger, second export, for 2023-07-01 to 2023-12-31. Amounts in USD."
+    }
+  }
+}

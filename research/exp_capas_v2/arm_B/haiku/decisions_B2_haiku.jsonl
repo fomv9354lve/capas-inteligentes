@@ -1,0 +1,90 @@
+{"claim": "R4#1", "decision": "withhold", "narrowed_text": null, "evidence": "none (S1 does not measure throughput)", "why": "No throughput measurement in the materials; the engine ACCEPT was vacuous because the payload was empty."}
+{"claim": "R4#2", "decision": "withhold", "narrowed_text": null, "evidence": "S5 (no run log)", "why": "Claim names Python 3.12; S5 has no output and the engine re-ran only on 3.14.5 (HOLD)."}
+{"claim": "R4#3", "decision": "withhold", "narrowed_text": null, "evidence": "S3", "why": "S3 run log shows int(' 7 ') -> 7, so the ValueError claim is contradicted (engine REJECT)."}
+{"claim": "R4#4", "decision": "withhold", "narrowed_text": null, "evidence": "S2", "why": "The interchangeable generalisation is contradicted: S2 log gives 'MX-MXN-01'.lstrip -> 'N-01' vs removeprefix -> 'MXN-01' (engine REJECT)."}
+{"claim": "R4#5", "decision": "withhold", "narrowed_text": null, "evidence": "none (parse_import_date not in materials)", "why": "Nothing in the materials exercises parse_import_date."}
+{"claim": "R4#6", "decision": "withhold", "narrowed_text": null, "evidence": "S6", "why": "Case-insensitivity is contradicted: S6 log gives parse('abc-123 x4') -> None (engine REJECT)."}
+{"claim": "R4#7", "decision": "state_as_written", "narrowed_text": null, "evidence": "S5 (snippet; engine re-run on 3.14.5)", "why": "The snippet compares casefold and lower for the two strings; the engine re-run ACCEPTED True/False as claimed, though S5 has no run log."}
+{"claim": "R4#8", "decision": "withhold", "narrowed_text": null, "evidence": "S5", "why": "A combining sequence has length 2, not 1; contradicted (engine REJECT)."}
+{"claim": "R4#9", "decision": "withhold", "narrowed_text": null, "evidence": "S8", "why": "S8 uses 3.12+ syntax (def first[T], type Row), so the 3.10 claim is unsupported; engine HOLD allows only withhold."}
+{"claim": "R4#10", "decision": "withhold", "narrowed_text": null, "evidence": "none (iso_week_start not in materials)", "why": "The function is not in the materials; the engine ACCEPT was vacuous."}
+{"claim": "R4#11", "decision": "withhold", "narrowed_text": null, "evidence": "S4", "why": "The 28-day difference is correct but 1 Jan + 28 days stays in January, so the generalisation is contradicted (engine REJECT)."}
+{"claim": "R4#12", "decision": "state_as_written", "narrowed_text": null, "evidence": "S1", "why": "S1 log shows the cleaned list ['SKU-001', 'SKU-002', 'SKU-003']; engine ACCEPT."}
+{"claim": "R4#13", "decision": "withhold", "narrowed_text": null, "evidence": "S6", "why": "S6 log shows parse('ABC-123  x10 extra') -> ('ABC-123', 10), contradicting None (engine REJECT)."}
+{"claim": "R4#14", "decision": "withhold", "narrowed_text": null, "evidence": "none (parse_csv_line not in materials)", "why": "The function is not in the materials; the engine ACCEPT was vacuous."}
+{"claim": "R4#15", "decision": "withhold", "narrowed_text": null, "evidence": "S4", "why": "S4 log shows date(2024, 2, 29).replace(year=2025) raises ValueError, contradicting the claim (engine REJECT)."}
+{"claim": "R4#16", "decision": "withhold", "narrowed_text": null, "evidence": "S7 (no run log)", "why": "No run log for S7; the engine re-run did not confirm the TypeError text supplied (engine REJECT)."}
+{"claim": "R4#17", "decision": "withhold", "narrowed_text": null, "evidence": "S7", "why": "The sort_keys example holds, but 'any two equal dicts' is false without sort_keys (engine REJECT)."}
+{"claim": "R4#18", "decision": "withhold", "narrowed_text": null, "evidence": "S1", "why": "S1 log shows 'SKU-KUS'.strip('SKU') -> '-', not '-KUS' (contradicted)."}
+{"claim": "R4#19", "decision": "state_as_written", "narrowed_text": null, "evidence": "S2", "why": "S2 log shows 'MX-MXN-01'.lstrip('MX-') -> 'N-01'; engine ACCEPT, and the character-set explanation matches lstrip semantics."}
+{"claim": "R4#20", "decision": "withhold", "narrowed_text": null, "evidence": "S1", "why": "S1 log shows 'a  b'.split(' ') -> ['a', '', 'b'], contradicting the claim (engine REJECT)."}
+{"claim": "R4#21", "decision": "state_as_written", "narrowed_text": null, "evidence": "S4", "why": "S4 log shows date(2024, 12, 30).isocalendar() -> (2025, 1, 1); engine ACCEPT."}
+{"claim": "R4#22", "decision": "withhold", "narrowed_text": null, "evidence": "S6", "why": "S6 uses the walrus operator (3.8+); no 3.7 run exists and the engine returned HOLD."}
+{"claim": "R4#23", "decision": "withhold", "narrowed_text": null, "evidence": "S3", "why": "S3 log shows int('²') raises ValueError although '²'.isdigit() is True; the generalisation is contradicted (engine REJECT)."}
+{"claim": "R4#24", "decision": "withhold", "narrowed_text": null, "evidence": "S7 (no run log)", "why": "json.loads keeps the last duplicate value in the engine re-run, contradicting first-wins (engine REJECT)."}
+{"claim": "R4#25", "decision": "state_as_written", "narrowed_text": null, "evidence": "S3", "why": "S3 log shows int('٤٢') -> 42; engine ACCEPT."}
+{"claim": "R4#26", "decision": "withhold", "narrowed_text": null, "evidence": "S7 (no run log)", "why": "The claim is about Python 3.10; only 3.14.5 was re-run and the engine returned HOLD."}
+{"claim": "R4#27", "decision": "withhold", "narrowed_text": null, "evidence": "S4", "why": "S4 log shows date(2024, 1, 31) + timedelta(days=30) -> 2024-03-01, not 2 March (contradicted)."}
+{"claim": "R4#28", "decision": "state_as_written", "narrowed_text": null, "evidence": "S2", "why": "S2 log shows the three removeprefix results keep the currency codes intact; engine ACCEPT."}
+{"claim": "R4#29", "decision": "withhold", "narrowed_text": null, "evidence": "none (normalise_phone not in materials)", "why": "The function is not in the materials; the engine ACCEPT was vacuous."}
+{"claim": "R4#30", "decision": "withhold", "narrowed_text": null, "evidence": "none (no cp1252 code in materials)", "why": "No import-folder or decoding code in the materials; the engine ACCEPT was vacuous."}
+{"claim": "R5#1", "decision": "withhold", "narrowed_text": null, "evidence": "L2", "why": "A comparison of two quarters with no single stated value; the gate cannot settle it (payload schema HOLD)."}
+{"claim": "R5#2", "decision": "state_as_written", "narrowed_text": null, "evidence": "L1", "why": "Gate re-derived Mexico Q3 2025 gross margin as 42.7% within tolerance (ACCEPT)."}
+{"claim": "R5#3", "decision": "withhold", "narrowed_text": null, "evidence": "L1", "why": "Per-month threshold statements are not a single metric; the gate cannot settle them (HOLD)."}
+{"claim": "R5#4", "decision": "withhold", "narrowed_text": null, "evidence": "L2", "why": "Gate re-derived Colombia Q2 2025 revenue as materially different from $25,903.52 (REJECT)."}
+{"claim": "R5#5", "decision": "withhold", "narrowed_text": null, "evidence": "L1", "why": "Year-on-year needs Q3 2024, which is not in the Mexico export (2025-01 to 2025-09 only); HOLD."}
+{"claim": "R5#6", "decision": "withhold", "narrowed_text": null, "evidence": "L1", "why": "The export ends 2025-09-30 and has no October rows; HOLD."}
+{"claim": "R5#7", "decision": "narrow", "narrowed_text": "Mexico grew revenue 22.5% quarter on quarter in Q3 2025.", "evidence": "L1", "why": "Gate ACCEPTED the Mexico 22.5% growth; the 'both entities grew' part was not gate-checked (Colombia Q2 to Q3 growth was never run), so it is dropped."}
+{"claim": "R5#8", "decision": "withhold", "narrowed_text": null, "evidence": "L1, L2", "why": "Gate re-derived the Q2 distinct-customer count across both ledgers as differing from 18 by 2 (REJECT)."}
+{"claim": "R5#9", "decision": "withhold", "narrowed_text": null, "evidence": "L2", "why": "Gate re-derived Colombia Q3 average ticket as differing from $2,113.98 (HOLD, monthly coverage note)."}
+{"claim": "R5#10", "decision": "withhold", "narrowed_text": null, "evidence": "L2", "why": "Gate re-derived Colombia Q3 gross margin outside tolerance of 35.9% (HOLD)."}
+{"claim": "R5#11", "decision": "state_as_written", "narrowed_text": null, "evidence": "L1", "why": "Gate re-derived Mexico Q3 vs Q2 growth as 22.5% within tolerance (ACCEPT)."}
+{"claim": "R5#12", "decision": "state_as_written", "narrowed_text": null, "evidence": "L1, L2", "why": "Gate re-derived group Q1 2025 gross margin as 41.0% within tolerance (ACCEPT)."}
+{"claim": "R5#13", "decision": "narrow", "narrowed_text": "Mexico reached 15 distinct customers in Q3 2025.", "evidence": "L1", "why": "Gate verified 15 distinct Mexico customers in Q3; the 'at least 10 every month' part is a per-month statement not gate-checked."}
+{"claim": "R5#14", "decision": "withhold", "narrowed_text": null, "evidence": "none (FX rate table not in materials)", "why": "The FX rate table is not in the materials; HOLD."}
+{"claim": "R5#15", "decision": "withhold", "narrowed_text": null, "evidence": "L1", "why": "The ledger has no payroll account (sales, refunds, cogs only); HOLD."}
+{"claim": "R5#16", "decision": "withhold", "narrowed_text": null, "evidence": "L1", "why": "Gate re-derived Mexico June 2025 revenue as materially different from $15,593.77 (REJECT)."}
+{"claim": "R5#17", "decision": "state_as_written", "narrowed_text": null, "evidence": "L1, L2", "why": "Gate re-derived group Q3 2025 revenue as $66,100.83 exactly (ACCEPT)."}
+{"claim": "R5#18", "decision": "narrow", "narrowed_text": "Group gross margin was 41.0% in Q1 2025.", "evidence": "L1, L2", "why": "Gate verified group Q1 gross margin 41.0%; the 'above 38% in every quarter' part is a multi-quarter statement not gate-checked."}
+{"claim": "R5#19", "decision": "state_as_written", "narrowed_text": null, "evidence": "L2", "why": "Gate re-derived Colombia Q2 2025 refund rate as 9.1% within tolerance (ACCEPT)."}
+{"claim": "R5#20", "decision": "withhold", "narrowed_text": null, "evidence": "L1", "why": "Gate re-derived Mexico Q1 2025 gross margin as outside tolerance of 44.2% (REJECT)."}
+{"claim": "R5#21", "decision": "state_as_written", "narrowed_text": null, "evidence": "L1", "why": "Gate re-derived Mexico Q3 2025 revenue as $45,787.68 exactly (ACCEPT)."}
+{"claim": "R5#22", "decision": "withhold", "narrowed_text": null, "evidence": "L1", "why": "Gate re-derived Mexico Q2 2025 revenue as about $339.68 away from $37,707.40 (REJECT)."}
+{"claim": "R5#23", "decision": "withhold", "narrowed_text": null, "evidence": "L1, L2", "why": "Gate re-derived the group Q1-to-Q2 change as outside tolerance of -15.4% (REJECT)."}
+{"claim": "R5#24", "decision": "narrow", "narrowed_text": "Mexico's refund rate was 0.4% in Q3 2025.", "evidence": "L1", "why": "Gate verified Mexico Q3 refund rate 0.4%; the 'below 1% in every month' part is a per-month statement not gate-checked."}
+{"claim": "R5#25", "decision": "narrow", "narrowed_text": "Mexico's gross margin was 42.7% in Q3 2025.", "evidence": "L1", "why": "Gate verified Mexico Q3 gross margin 42.7%; the 'above 40% in every month' part is a per-month statement not gate-checked."}
+{"claim": "R5#26", "decision": "withhold", "narrowed_text": null, "evidence": "L1", "why": "Per-month threshold statement across 2025 to date; not a single metric, so the gate cannot settle it."}
+{"claim": "R5#27", "decision": "state_as_written", "narrowed_text": null, "evidence": "L1, L2", "why": "Gate re-derived group Q2 2025 revenue as $57,055.32 exactly (ACCEPT)."}
+{"claim": "R5#28", "decision": "state_as_written", "narrowed_text": null, "evidence": "L1, L2", "why": "Gate re-derived group Q2-to-Q3 growth as 15.9% within tolerance (ACCEPT)."}
+{"claim": "R5#29", "decision": "withhold", "narrowed_text": null, "evidence": "L2", "why": "Gate re-derived Colombia Q1 2025 average ticket as differing from $3,912.96 (REJECT)."}
+{"claim": "R5#30", "decision": "narrow", "narrowed_text": "Colombia's average ticket was $3,700.50 in Q1 2025.", "evidence": "L2", "why": "Gate verified the Q1 average ticket of $3,700.50; the 'above $2,500 in every month' part is a per-month statement not gate-checked."}
+{"claim": "R6#1", "decision": "withhold", "narrowed_text": null, "evidence": "L1, L2", "why": "Year-on-year across two exports and monthly YoY cannot be expressed or gate-checked (engine supports previous-period growth only; payload schema HOLD)."}
+{"claim": "R6#2", "decision": "withhold", "narrowed_text": null, "evidence": "S1", "why": "S1 log shows ROUND_HALF_EVEN gives 0.12 for Decimal('0.125'); 0.13 is the ROUND_HALF_UP result (contradicted, REJECT)."}
+{"claim": "R6#3", "decision": "narrow", "narrowed_text": "Revenue fell 14.4% from Q3 to Q4 2024.", "evidence": "L1", "why": "Gate ACCEPTED the Q4 vs Q3 2024 fall of 14.4%; the 'fell in every quarter of 2024' scope is not supported (gate flagged the universal claim; ledger Q3 exceeds Q2 by my own sum), so it is dropped."}
+{"claim": "R6#4", "decision": "withhold", "narrowed_text": null, "evidence": "L1", "why": "Gate re-derived Q4 vs Q3 2024 as a fall of 14.4%, the opposite sign to the claimed growth (REJECT)."}
+{"claim": "R6#5", "decision": "state_as_written", "narrowed_text": null, "evidence": "L1", "why": "Gate re-derived 2024 gross margin as 48.1% within tolerance (ACCEPT)."}
+{"claim": "R6#6", "decision": "state_as_written", "narrowed_text": null, "evidence": "S1", "why": "S1 log shows vat_per_line 0.24 and vat_on_total 0.25 on the test basket; engine ACCEPT."}
+{"claim": "R6#7", "decision": "withhold", "narrowed_text": null, "evidence": "L1", "why": "Gate re-derived Q4 2024 gross margin as outside tolerance of 48.3% (REJECT)."}
+{"claim": "R6#8", "decision": "withhold", "narrowed_text": null, "evidence": "S2", "why": "The additive formula gives 70.00 for the S2 inputs, not 72.00 (engine REJECT)."}
+{"claim": "R6#9", "decision": "narrow", "narrowed_text": "On Python 3.14.5, tier(4999.99) returns 'silver'.", "evidence": "S3", "why": "S3 log and gate ACCEPT tier(4999.99) -> 'silver'; the 'any spend below 5000' generalisation is contradicted by tier(999) -> 'list' in the same log."}
+{"claim": "R6#10", "decision": "withhold", "narrowed_text": null, "evidence": "S4", "why": "round(Fraction(5, 2)) gives 2 under round-half-even; contradicted (engine REJECT)."}
+{"claim": "R6#11", "decision": "withhold", "narrowed_text": null, "evidence": "S3", "why": "S3 log shows tier(5000) -> 'gold', not 'silver' (engine REJECT)."}
+{"claim": "R6#12", "decision": "withhold", "narrowed_text": null, "evidence": "S3", "why": "S3 log shows different tiers for different inputs; the 3.10 claim cannot be supported and the engine REJECTED it."}
+{"claim": "R6#13", "decision": "narrow", "narrowed_text": "On Python 3.14.5, sum([1/3] * 3) == 1 is True.", "evidence": "S4", "why": "Gate ACCEPTED the n=3 case; the 'for any n' generalisation is not established by the materials, so it is dropped."}
+{"claim": "R6#14", "decision": "state_as_written", "narrowed_text": null, "evidence": "L1", "why": "Gate re-derived 2024 pilot revenue as $202,056.60 exactly (ACCEPT)."}
+{"claim": "R6#15", "decision": "withhold", "narrowed_text": null, "evidence": "S5", "why": "The claim is about Python 3.9; only 3.14.5 was re-run and the engine returned HOLD; S5 uses match (3.10+)."}
+{"claim": "R6#16", "decision": "withhold", "narrowed_text": null, "evidence": "L1", "why": "The 2024 ledger has no P07 rows (partners P01 to P06); partner share not gate-checkable (HOLD)."}
+{"claim": "R6#17", "decision": "withhold", "narrowed_text": null, "evidence": "L1", "why": "The export covers 2024 only; there are no January 2025 rows (HOLD)."}
+{"claim": "R6#18", "decision": "narrow", "narrowed_text": "Refunds were 13.5% of sales in Q4 2024.", "evidence": "L1", "why": "Gate ACCEPTED Q4 2024 refund rate 13.5%; the 'under 15% in every month' part is a per-month statement not gate-checked."}
+{"claim": "R6#19", "decision": "withhold", "narrowed_text": null, "evidence": "L1, L2", "why": "Cross-ledger year-on-year for Q3; the gate cannot compute it (HOLD, payload schema)."}
+{"claim": "R6#20", "decision": "state_as_written", "narrowed_text": null, "evidence": "S2", "why": "Decimal arithmetic in S2 gives 72.0000 for both discount orders; engine ACCEPT."}
+{"claim": "R6#21", "decision": "withhold", "narrowed_text": null, "evidence": "none (no timing data)", "why": "No timing measurement in the materials; HOLD."}
+{"claim": "R6#22", "decision": "withhold", "narrowed_text": null, "evidence": "none (discount_cap not in materials)", "why": "discount_cap is not in the materials; the engine ACCEPT was vacuous."}
+{"claim": "R6#23", "decision": "state_as_written", "narrowed_text": null, "evidence": "S3", "why": "S3 log shows tier(20000) and tier(250000) both 'platinum'; engine ACCEPT, scope limited to the logged spends."}
+{"claim": "R6#24", "decision": "narrow", "narrowed_text": "On the test basket, vat_per_line comes out one cent below vat_on_total (0.24 vs 0.25).", "evidence": "S1", "why": "Gate ACCEPTED the one-cent gap on one basket; 'never undercharges by more than one cent' is a general claim one basket cannot support."}
+{"claim": "R6#25", "decision": "state_as_written", "narrowed_text": null, "evidence": "S4", "why": "sum of three Fraction(1, 3) shares equals 1 exactly; engine ACCEPT."}
+{"claim": "R6#26", "decision": "withhold", "narrowed_text": null, "evidence": "L1", "why": "Gate re-derived 2024 pilot revenue as $202,056.60, so $213,533.03 is contradicted (REJECT)."}
+{"claim": "R6#27", "decision": "narrow", "narrowed_text": "Gross margin was 48.1% for 2024.", "evidence": "L1", "why": "Gate ACCEPTED the 2024 gross margin 48.1%; the 'above 40% in every month' part is a per-month statement not gate-checked."}
+{"claim": "R6#28", "decision": "withhold", "narrowed_text": null, "evidence": "L2", "why": "The 2023 export covers July to December only; full-year 2023 is not in the materials (HOLD)."}
+{"claim": "R6#29", "decision": "withhold", "narrowed_text": null, "evidence": "L1", "why": "Gate re-derived the 2024 average ticket as differing from $35,588.84 (REJECT)."}
+{"claim": "R6#30", "decision": "withhold", "narrowed_text": null, "evidence": "L2", "why": "The ledger covers July to December 2023 only; the gate cannot re-derive full-year 2023 (HOLD)."}
