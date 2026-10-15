@@ -11,6 +11,9 @@ permissions:
 
 jobs:
   dco-check:
+    # Dependabot's automated version bumps carry no human contribution to certify; the job is skipped for them
+    # (a skipped required check counts as passed). Every other PR commit needs Signed-off-by.
+    if: github.actor != 'dependabot[bot]'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout (full history for the PR range)
