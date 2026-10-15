@@ -1,0 +1,90 @@
+{"claim": "R4#1", "decision": "withhold", "narrowed_text": null, "evidence": "S1", "why": "S1 contains no throughput measurement."}
+{"claim": "R4#2", "decision": "withhold", "narrowed_text": null, "evidence": "S5", "why": "S5 has no run log and no Python version; result not shown."}
+{"claim": "R4#3", "decision": "withhold", "narrowed_text": null, "evidence": "S3", "why": "Log shows int(' 7 ') -> 7, contradicting the claim."}
+{"claim": "R4#4", "decision": "narrow", "narrowed_text": "For 'MX-USD-02', removeprefix('MX-') and lstrip('MX-') both give 'USD-02', but they are not interchangeable: 'MX-MXN-01'.lstrip('MX-') gives 'N-01' while removeprefix gives 'MXN-01'.", "evidence": "S2", "why": "Single-case equality holds; the interchangeability claim is contradicted by MX-MXN-01."}
+{"claim": "R4#5", "decision": "withhold", "narrowed_text": null, "evidence": "S4", "why": "parse_import_date is not in S4 or any material."}
+{"claim": "R4#6", "decision": "narrow", "narrowed_text": "parse('ABC-123 x4') returns ('ABC-123', 4); parse is case-sensitive: 'abc-123 x4' returns None.", "evidence": "S6", "why": "Log shows lowercase SKU is not matched."}
+{"claim": "R4#7", "decision": "withhold", "narrowed_text": null, "evidence": "S5", "why": "S5 has no run log; results not shown in the materials."}
+{"claim": "R4#8", "decision": "withhold", "narrowed_text": null, "evidence": "S5", "why": "No run log, and the decomposed string 'e\\u0301' has two code points, not 1."}
+{"claim": "R4#9", "decision": "withhold", "narrowed_text": null, "evidence": "S8", "why": "Run only on 3.14.5; generic-def and type-alias syntax is not valid on 3.10 or 3.11."}
+{"claim": "R4#10", "decision": "withhold", "narrowed_text": null, "evidence": "S4", "why": "iso_week_start is not in the materials."}
+{"claim": "R4#11", "decision": "narrow", "narrowed_text": "(date(2025, 3, 1) - date(2025, 2, 1)).days is 28, because February 2025 has 28 days.", "evidence": "S4", "why": "The 28 is shown; adding 28 days to any date does not always land in the next month."}
+{"claim": "R4#12", "decision": "state_as_written", "narrowed_text": null, "evidence": "S1", "why": "Log 'cleaned' output is ['SKU-001','SKU-002','SKU-003'] with empty parts filtered."}
+{"claim": "R4#13", "decision": "withhold", "narrowed_text": null, "evidence": "S6", "why": "Log shows parse('ABC-123  x10 extra') returns ('ABC-123', 10); search ignores trailing text."}
+{"claim": "R4#14", "decision": "withhold", "narrowed_text": null, "evidence": "none", "why": "parse_csv_line has no material."}
+{"claim": "R4#15", "decision": "withhold", "narrowed_text": null, "evidence": "S4", "why": "Log shows replace(year=2025) raises ValueError."}
+{"claim": "R4#16", "decision": "withhold", "narrowed_text": null, "evidence": "S7", "why": "S7 has no run log."}
+{"claim": "R4#17", "decision": "withhold", "narrowed_text": null, "evidence": "S7", "why": "No run log, and the generalisation to any equal dicts does not follow from sort_keys on one case."}
+{"claim": "R4#18", "decision": "withhold", "narrowed_text": null, "evidence": "S1", "why": "Log shows 'SKU-KUS'.strip('SKU') -> '-', not '-KUS'."}
+{"claim": "R4#19", "decision": "state_as_written", "narrowed_text": null, "evidence": "S2", "why": "Log: 'MX-MXN-01'.lstrip('MX-') -> 'N-01'; character-set stripping."}
+{"claim": "R4#20", "decision": "withhold", "narrowed_text": null, "evidence": "S1", "why": "Log shows split(' ') gives ['a', '', 'b']."}
+{"claim": "R4#21", "decision": "state_as_written", "narrowed_text": null, "evidence": "S4", "why": "Log: isocalendar of 2024-12-30 -> (2025, 1, 1)."}
+{"claim": "R4#22", "decision": "withhold", "narrowed_text": null, "evidence": "S6", "why": "Run only on 3.14.5; the walrus operator in parse needs 3.8, so 3.7 fails."}
+{"claim": "R4#23", "decision": "narrow", "narrowed_text": "'42'.isdigit() and '٤٢'.isdigit() are True and int() parses both, but isdigit() True does not guarantee int succeeds: '²'.isdigit() is True and int('²') raises ValueError.", "evidence": "S3", "why": "Log shows the counterexample '²'."}
+{"claim": "R4#24", "decision": "withhold", "narrowed_text": null, "evidence": "S7", "why": "S7 has no run log; result not shown."}
+{"claim": "R4#25", "decision": "state_as_written", "narrowed_text": null, "evidence": "S3", "why": "Log: int('٤٢') -> 42."}
+{"claim": "R4#26", "decision": "withhold", "narrowed_text": null, "evidence": "S7", "why": "No run log and no Python 3.10 run."}
+{"claim": "R4#27", "decision": "withhold", "narrowed_text": null, "evidence": "S4", "why": "Log gives datetime.date(2024, 3, 1), i.e. 1 March, not 2 March."}
+{"claim": "R4#28", "decision": "state_as_written", "narrowed_text": null, "evidence": "S2", "why": "Log gives 'MXN-01', 'USD-02', 'MXN-03' for removeprefix."}
+{"claim": "R4#29", "decision": "withhold", "narrowed_text": null, "evidence": "none", "why": "normalise_phone has no material."}
+{"claim": "R4#30", "decision": "withhold", "narrowed_text": null, "evidence": "S5", "why": "Nothing in the materials concerns decoding of spreadsheets."}
+{"claim": "R5#1", "decision": "state_as_written", "narrowed_text": null, "evidence": "L2", "why": "Colombia revenue Q1 25,903.52 > Q2 19,687.60."}
+{"claim": "R5#2", "decision": "state_as_written", "narrowed_text": null, "evidence": "L1", "why": "Mexico Q3 rev 45,787.68, cogs 26,213.84, margin 42.7%."}
+{"claim": "R5#3", "decision": "narrow", "narrowed_text": "Mexico's monthly revenue exceeded $15,000 in June (15,539.77) and September (17,274.42) 2025, but not in July (13,884.72) or August (14,628.54).", "evidence": "L1", "why": "July and August are below 15,000."}
+{"claim": "R5#4", "decision": "withhold", "narrowed_text": null, "evidence": "L2", "why": "25,903.52 is Colombia Q1 revenue; Q2 is 19,687.60."}
+{"claim": "R5#5", "decision": "withhold", "narrowed_text": null, "evidence": "L1", "why": "Ledger starts 2025-01; no 2024 data for year-on-year growth."}
+{"claim": "R5#6", "decision": "withhold", "narrowed_text": null, "evidence": "L1", "why": "Ledger ends 2025-09-30; no October data."}
+{"claim": "R5#7", "decision": "state_as_written", "narrowed_text": null, "evidence": "L1,L2", "why": "Mexico 37,367.72 -> 45,787.68 = +22.5%; Colombia 19,687.60 -> 20,313.15 also grew."}
+{"claim": "R5#8", "decision": "withhold", "narrowed_text": null, "evidence": "L1,L2", "why": "Q2 distinct buyers are 13 Mexico + 7 Colombia = 20, not 18."}
+{"claim": "R5#9", "decision": "withhold", "narrowed_text": null, "evidence": "L2", "why": "Q3 revenue 20,313.15 over 7 customers = 2,901.88, not 2,113.98."}
+{"claim": "R5#10", "decision": "withhold", "narrowed_text": null, "evidence": "L2", "why": "Colombia Q3 margin = 7,328.37/20,313.15 = 36.1%, not 35.9%."}
+{"claim": "R5#11", "decision": "state_as_written", "narrowed_text": null, "evidence": "L1", "why": "37,367.72 to 45,787.68 is +22.5%."}
+{"claim": "R5#12", "decision": "state_as_written", "narrowed_text": null, "evidence": "L1,L2", "why": "Group Q1 rev 67,159.06, cogs 39,655.53, margin 40.95% = 41.0%."}
+{"claim": "R5#13", "decision": "narrow", "narrowed_text": "Mexico had 15 distinct customers in Q3 2025.", "evidence": "L1", "why": "July has only 9 distinct customers, so the monthly 10+ part fails."}
+{"claim": "R5#14", "decision": "withhold", "narrowed_text": null, "evidence": "L2", "why": "No FX rate table in the materials; ledger is in USD."}
+{"claim": "R5#15", "decision": "withhold", "narrowed_text": null, "evidence": "L1", "why": "No payroll account in the ledger."}
+{"claim": "R5#16", "decision": "withhold", "narrowed_text": null, "evidence": "L1", "why": "Mexico June revenue sums to 15,539.77, not 15,593.77."}
+{"claim": "R5#17", "decision": "state_as_written", "narrowed_text": null, "evidence": "L1,L2", "why": "45,787.68 + 20,313.15 = 66,100.83."}
+{"claim": "R5#18", "decision": "state_as_written", "narrowed_text": null, "evidence": "L1,L2", "why": "Group margin Q1 41.0%, Q2 38.4%, Q3 40.7%, all above 38%."}
+{"claim": "R5#19", "decision": "state_as_written", "narrowed_text": null, "evidence": "L2", "why": "Refunds 1,966.71 / sales 21,654.31 = 9.1%."}
+{"claim": "R5#20", "decision": "withhold", "narrowed_text": null, "evidence": "L1", "why": "Mexico Q1 margin = 18,275.92/41,255.54 = 44.3%, not 44.2%."}
+{"claim": "R5#21", "decision": "state_as_written", "narrowed_text": null, "evidence": "L1", "why": "Sales 45,968.32 minus refunds 180.64 = 45,787.68."}
+{"claim": "R5#22", "decision": "withhold", "narrowed_text": null, "evidence": "L1", "why": "37,707.40 is Q2 sales; revenue net of refunds is 37,367.72."}
+{"claim": "R5#23", "decision": "withhold", "narrowed_text": null, "evidence": "L1,L2", "why": "Group Q1 67,159.06 to Q2 57,055.32 is -15.0%, not -15.4%."}
+{"claim": "R5#24", "decision": "narrow", "narrowed_text": "Mexico's refund rate was 0.4% in Q3 2025.", "evidence": "L1", "why": "February refund rate is about 2.6%, so 'below 1% every month' fails."}
+{"claim": "R5#25", "decision": "narrow", "narrowed_text": "Mexico's gross margin was 42.7% in Q3 2025.", "evidence": "L1", "why": "April margin is about 38.6%, below 40%."}
+{"claim": "R5#26", "decision": "state_as_written", "narrowed_text": null, "evidence": "L1", "why": "Monthly margins Jan-Sep range from 38.2% (Aug) to 46.8%, all above 38%."}
+{"claim": "R5#27", "decision": "state_as_written", "narrowed_text": null, "evidence": "L1,L2", "why": "37,367.72 + 19,687.60 = 57,055.32."}
+{"claim": "R5#28", "decision": "state_as_written", "narrowed_text": null, "evidence": "L1,L2", "why": "66,100.83 / 57,055.32 - 1 = 15.9%."}
+{"claim": "R5#29", "decision": "withhold", "narrowed_text": null, "evidence": "L2", "why": "Q1 ticket is 25,903.52/7 = 3,700.50; 3,912.96 uses sales without refunds."}
+{"claim": "R5#30", "decision": "narrow", "narrowed_text": "Colombia's average ticket was $3,700.50 in Q1 2025.", "evidence": "L2", "why": "March monthly ticket is about 2,329, below 2,500; August has no rows."}
+{"claim": "R6#1", "decision": "narrow", "narrowed_text": "Q3 2024 revenue was up 71.3% year on year (56,116.07 vs 32,762.36).", "evidence": "L1,L2", "why": "September 2024 was up only about 32%, so not every month exceeded 50%."}
+{"claim": "R6#2", "decision": "withhold", "narrowed_text": null, "evidence": "S1", "why": "Log shows ROUND_HALF_EVEN gives 0.12, not 0.13."}
+{"claim": "R6#3", "decision": "narrow", "narrowed_text": "Revenue fell 14.4% from Q3 to Q4 2024 (56,116.07 to 48,060.45).", "evidence": "L1", "why": "Q3 was up on Q2, so it did not fall every quarter."}
+{"claim": "R6#4", "decision": "withhold", "narrowed_text": null, "evidence": "L1", "why": "Revenue fell, not grew, from Q3 to Q4 2024."}
+{"claim": "R6#5", "decision": "state_as_written", "narrowed_text": null, "evidence": "L1", "why": "Revenue 202,056.60, cogs 104,865.76, margin 48.1%."}
+{"claim": "R6#6", "decision": "state_as_written", "narrowed_text": null, "evidence": "S1", "why": "Log: vat_on_total 0.25, vat_per_line 0.24."}
+{"claim": "R6#7", "decision": "withhold", "narrowed_text": null, "evidence": "L1", "why": "Q4 2024 margin is 21,300.84/48,060.45 = 44.3%, not 48.3%."}
+{"claim": "R6#8", "decision": "withhold", "narrowed_text": null, "evidence": "S2", "why": "additive gives 100*(1-0.30)=70, not 72; and S2 has no run log."}
+{"claim": "R6#9", "decision": "narrow", "narrowed_text": "tier(4999.99) returns 'silver'.", "evidence": "S3", "why": "Log shows it, but tier(999) is 'list', so not every spend below 5000 is silver."}
+{"claim": "R6#10", "decision": "withhold", "narrowed_text": null, "evidence": "S4", "why": "S4 has no run log; round(Fraction(5, 2)) rounds half to even, giving 2."}
+{"claim": "R6#11", "decision": "withhold", "narrowed_text": null, "evidence": "S3", "why": "Log shows tier(5000) -> 'gold'."}
+{"claim": "R6#12", "decision": "withhold", "narrowed_text": null, "evidence": "S3", "why": "Only run on 3.14.5; 'same tier for every input' is also not what the output shows."}
+{"claim": "R6#13", "decision": "withhold", "narrowed_text": null, "evidence": "S4", "why": "S4 has no run log; the 'any n' generalisation is unsupported."}
+{"claim": "R6#14", "decision": "state_as_written", "narrowed_text": null, "evidence": "L1", "why": "Sales 213,533.03 minus refunds 11,476.43 = 202,056.60."}
+{"claim": "R6#15", "decision": "withhold", "narrowed_text": null, "evidence": "S5", "why": "match statement needs Python 3.10; only run on 3.14.5."}
+{"claim": "R6#16", "decision": "withhold", "narrowed_text": null, "evidence": "L1", "why": "Ledger has partners P01-P06 only; no P07."}
+{"claim": "R6#17", "decision": "withhold", "narrowed_text": null, "evidence": "L1", "why": "Ledger ends 2024-12-31; no January 2025 data."}
+{"claim": "R6#18", "decision": "narrow", "narrowed_text": "Refunds were 13.5% of sales in Q4 2024.", "evidence": "L1", "why": "December refunds are 4,202.35/18,369.91 = 22.9% of sales, above 15%."}
+{"claim": "R6#19", "decision": "state_as_written", "narrowed_text": null, "evidence": "L1,L2", "why": "Q3 2024 revenue 56,116.07 vs Q3 2023 32,762.36 is +71.3%."}
+{"claim": "R6#20", "decision": "withhold", "narrowed_text": null, "evidence": "S2", "why": "S2 has no run log; outputs not shown."}
+{"claim": "R6#21", "decision": "withhold", "narrowed_text": null, "evidence": "S1", "why": "S1 has no timing."}
+{"claim": "R6#22", "decision": "withhold", "narrowed_text": null, "evidence": "S2", "why": "No discount_cap function in S2."}
+{"claim": "R6#23", "decision": "state_as_written", "narrowed_text": null, "evidence": "S3", "why": "Log: tier(20000) and tier(250000) are both 'platinum'."}
+{"claim": "R6#24", "decision": "narrow", "narrowed_text": "On the test basket vat_per_line (0.24) comes out one cent below vat_on_total (0.25).", "evidence": "S1", "why": "One basket does not bound per-line undercharge in general."}
+{"claim": "R6#25", "decision": "withhold", "narrowed_text": null, "evidence": "S4", "why": "S4 has no run log; result not shown."}
+{"claim": "R6#26", "decision": "withhold", "narrowed_text": null, "evidence": "L1", "why": "213,533.03 is gross sales; revenue net of refunds is 202,056.60."}
+{"claim": "R6#27", "decision": "narrow", "narrowed_text": "Gross margin was 48.1% for 2024.", "evidence": "L1", "why": "April margin is about 38.6%, below 40%."}
+{"claim": "R6#28", "decision": "withhold", "narrowed_text": null, "evidence": "L1,L2", "why": "L2 covers only Jul-Dec 2023; full-year 2023 is unavailable."}
+{"claim": "R6#29", "decision": "withhold", "narrowed_text": null, "evidence": "L1", "why": "Ticket = 202,056.60/6 = 33,676.10; 35,588.84 uses gross sales."}
+{"claim": "R6#30", "decision": "withhold", "narrowed_text": null, "evidence": "L2", "why": "L2 covers only H2 2023, not the full year."}

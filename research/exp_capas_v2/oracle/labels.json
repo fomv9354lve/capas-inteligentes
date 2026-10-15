@@ -1,0 +1,1082 @@
+{
+  "R1#1": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "No material in R1 mentions 'format_invoice_total'; nothing to check the claim against.",
+    "supported_statement": null
+  },
+  "R1#2": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "Executing S4 prints 'split_instalments(1000, 3) -> [334, 333, 333]', 'sum(split_instalments(1000, 3)) -> 1000'; matches the claim as worded.",
+    "supported_statement": "split_instalments(1000, 3) returns [334, 333, 333], which sums back to 1000."
+  },
+  "R1#3": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "No material in R1 mentions 'apply_vat'; nothing to check the claim against.",
+    "supported_statement": null
+  },
+  "R1#4": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "Executing S6; in its namespace by_amount[0][0] == 'INV-1' holds; but the generalisation fails: executed counterexample `[r[0] for r in by_amount if r[1] == 200] == ['INV-3', 'INV-2']` is True.",
+    "supported_statement": "In by_amount, INV-1 comes first."
+  },
+  "R1#5": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "Executing S7 prints 'classify({'code': 200}) -> 'ok'', 'classify({'code': 503}) -> 'retry''; but the snippet is a SyntaxError under the Python 3.8 grammar (ast feature_version), which the claim's scope includes.",
+    "supported_statement": "classify runs and gives the logged results on the interpreter in the S7 log (Python 3.14.5)."
+  },
+  "R1#6": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "Executing S1 prints 'round(2.5) -> 2'; contradicts the claim.",
+    "supported_statement": "round(2.5) -> 2"
+  },
+  "R1#7": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "Executing S5 prints 'b -> ['A', 'B']', 'a is b -> True'; matches the claim as worded.",
+    "supported_statement": "Because the default list is shared between calls, the second call add_line(\"B\") returns ['A', 'B']."
+  },
+  "R1#8": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "Executing S3 prints 'dedupe([1, True, 1.0]) -> [1]'; contradicts the claim.",
+    "supported_statement": "dedupe([1, True, 1.0]) -> [1]"
+  },
+  "R1#9": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "Executing S2 prints 'sum(items) == 1.0 -> True'; matches the claim as worded.",
+    "supported_statement": "On the interpreter in the S2 log, sum(items) == 1.0 evaluates to True."
+  },
+  "R1#10": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "Executing S1 prints 'round_money(0.125) -> 0.12'; contradicts the claim.",
+    "supported_statement": "round_money(0.125) -> 0.12"
+  },
+  "R1#11": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "Executing S3 prints 'dedupe_fast(data) -> [3, 1, 2]', 'dedupe(data) -> [3, 1, 2]'; matches the claim as worded.",
+    "supported_statement": "dedupe_fast(data) returns [3, 1, 2], the same list in the same order as dedupe(data)."
+  },
+  "R1#12": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "Executing S4 prints '-7 % 2 -> 1'; but the generalisation fails: executed counterexample `7 % -2 < 0` is True.",
+    "supported_statement": "-7 % 2 evaluates to 1 (the result takes the sign of the positive divisor)."
+  },
+  "R1#13": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "Executing S4 prints '-7 // 2 -> -4'; contradicts the claim.",
+    "supported_statement": "-7 // 2 -> -4"
+  },
+  "R1#14": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "No material in R1 mentions 'benchmark', 'timeit', 'perf_counter'; nothing to check the claim against.",
+    "supported_statement": null
+  },
+  "R1#15": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "Executing S2 prints 'math.fsum(items) -> 1.0'; but the generalisation fails: executed counterexample `math.fsum([0.1, 0.2]) != 0.3` is True.",
+    "supported_statement": "math.fsum(items) returns 1.0 for ten copies of 0.1."
+  },
+  "R1#16": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "Executing S4 prints 'split_instalments(1000, 3) -> [334, 333, 333]', 'split_instalments(10, 4) -> [3, 3, 2, 2]'; in its namespace all(max(p) - min(p) <= 1 for p in [split_instalments(1000, 3), split_instalments(10, 4)]) holds; matches the claim as worded.",
+    "supported_statement": "Every split_instalments call shown in S4 returns parts that differ from each other by at most one cent."
+  },
+  "R1#17": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "Executing S4 prints 'split_instalments(1000, 3) -> [334, 333, 333]', 'sum(split_instalments(1000, 3)) -> 1000', 'split_instalments(10, 4) -> [3, 3, 2, 2]'; but the generalisation fails: executed counterexample `raises(split_instalments, 100, 0)` is True.",
+    "supported_statement": "For (1000, 3) and (10, 4), split_instalments returns n parts that sum to the total."
+  },
+  "R1#18": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "Executing S5 prints 'a is b -> True'; contradicts the claim.",
+    "supported_statement": "a is b -> True"
+  },
+  "R1#19": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "Executing S6 prints 'max(invoices, key=amount) -> ('INV-3', 200)'; contradicts the claim.",
+    "supported_statement": "max(invoices, key=amount) -> ('INV-3', 200)"
+  },
+  "R1#20": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "Executing S3 prints 'dedupe(data) -> [3, 1, 2]'; but the generalisation fails: executed counterexample `raises(dedupe, [[1], [1]])` is True.",
+    "supported_statement": "dedupe(data) returns [3, 1, 2]: duplicates removed, first-occurrence order kept, for that list of integers."
+  },
+  "R1#21": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "No material in R1 mentions 'retry queue', 'max_retries'; nothing to check the claim against.",
+    "supported_statement": null
+  },
+  "R1#22": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "Executing S2 prints 'math.isclose(0.1 + 0.2, 0.3) -> True'; but the generalisation fails: executed counterexample `not math.isclose(0.0, 0.1 + 0.2 - 0.3)` is True.",
+    "supported_statement": "math.isclose(0.1 + 0.2, 0.3) returns True."
+  },
+  "R1#23": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "The only run logs are for Python 3.14.5; no material shows Python 3.11, so the claim cannot be settled.",
+    "supported_statement": null
+  },
+  "R1#24": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "Executing S1 prints 'round_money_dec(1.005) -> Decimal('1.01')'; matches the claim as worded.",
+    "supported_statement": "round_money_dec(1.005) returns Decimal('1.01')."
+  },
+  "R1#25": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "Executing S1 prints 'round_money(2.675) -> 2.67'; matches the claim as worded.",
+    "supported_statement": "round_money(2.675) returns 2.67, not 2.68."
+  },
+  "R1#26": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "Executing S1 prints 'round_money_dec(2.675) -> Decimal('2.68')', 'round_money_dec(1.005) -> Decimal('1.01')', 'round_money_dec(0.125) -> Decimal('0.13')', 'round_money_dec(0.375) -> Decimal('0.38')', 'round_money_dec(10.0) -> Decimal('10.00')'; but the generalisation fails: executed counterexample `raises(round_money_dec, float('inf'))` is True.",
+    "supported_statement": "For the five inputs in the S1 log (2.675, 1.005, 0.125, 0.375, 10.0), round_money_dec returns the half-up value to two decimals."
+  },
+  "R1#27": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "Executing S7 prints 'classify({'code': 503}) -> 'retry''; contradicts the claim.",
+    "supported_statement": "classify({'code': 503}) -> 'retry'"
+  },
+  "R1#28": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "No material in R1 mentions 'csv exporter', 'csv'; nothing to check the claim against.",
+    "supported_statement": null
+  },
+  "R1#29": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "Executing S6 prints 'desc -> [('INV-3', 200), ('INV-2', 200), ('INV-1', 100), ('INV-4', 100)]'; matches the claim as worded.",
+    "supported_statement": "Sorting with reverse=True keeps tied invoices in their original order: desc is [('INV-3', 200), ('INV-2', 200), ('INV-1', 100), ('INV-4', 100)]."
+  },
+  "R1#30": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "The only run logs are for Python 3.14.5; no material shows Python 3.10, so the claim cannot be settled.",
+    "supported_statement": null
+  },
+  "R2#1": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "Narrower part holds (Recomputed from L1: gm 2025-Q3 = 35.76); generalisation 'gm > 30' fails or is unsupported for: 2025-02 = 29.01, 2025-04 = 25.32, 2025-09 = 28.29.",
+    "supported_statement": "Gross margin was 35.8% in Q3 2025."
+  },
+  "R2#2": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "Recomputed from L1: gm 2025-Q3 = 35.76; matches the claim as worded.",
+    "supported_statement": "Gross margin for Q3 2025 was 35.8%."
+  },
+  "R2#3": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "Narrower part holds (Recomputed from L1: avg_ticket 2025-Q3 = 6284.97); generalisation 'avg_ticket > 3500' fails or is unsupported for: 2025-09 = 3275.95.",
+    "supported_statement": "The Q3 2025 average ticket was $6,284.97 (July and August monthly average tickets were above $3,500)."
+  },
+  "R2#4": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "Recomputed: revenue 2025-Q3 = 75419.64, 2025-Q2 = 78113.43; matches the claim as worded.",
+    "supported_statement": "Q3 2025 revenue came in below Q2 2025 revenue."
+  },
+  "R2#5": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "Narrower part holds (Recomputed from L1: refund_rate 2025-Q3 = 6.79); generalisation 'refund_rate < 10' fails or is unsupported for: 2025-02 = 17.25, 2025-04 = 14.50, 2025-09 = 13.17.",
+    "supported_statement": "Refunds were 6.8% of sales in Q3 2025."
+  },
+  "R2#6": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "No material in R2 mentions 'days sales outstanding', 'receivable'; nothing to check the claim against.",
+    "supported_statement": null
+  },
+  "R2#7": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "No 'marketing' account in L1.",
+    "supported_statement": null
+  },
+  "R2#8": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "revenue for 2024-Q4 needs months 2024-11 which have no rows in L2 (rows cover 2024-07..2024-12, with no rows for 2024-11).",
+    "supported_statement": null
+  },
+  "R2#9": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "No 'opex' account in L1.",
+    "supported_statement": null
+  },
+  "R2#10": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "Narrower part holds (revenue 2025-08 = 32765.35; revenue 2025-09 = 22931.63); generalisation 'revenue > 20000' fails or is unsupported for: 2025-02 = 18849.60, 2025-03 = 17986.40, 2025-07 = 19722.66.",
+    "supported_statement": "Monthly revenue exceeded $20,000 in August and September 2025."
+  },
+  "R2#11": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "Recomputed from L1: refund_rate 2025-Q2 = 7.64; contradicts the claim.",
+    "supported_statement": "refund_rate for 2025-Q2 (L1) is 7.6 at the claim's precision."
+  },
+  "R2#12": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "Recomputed from L1: growth 2025-Q2 = 33.20; contradicts the claim.",
+    "supported_statement": "growth for 2025-Q2 (L1) is 33.2 at the claim's precision."
+  },
+  "R2#13": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "Recomputed from L2: revenue 2024-Q3 = 51974.96; contradicts the claim.",
+    "supported_statement": "revenue for 2024-Q3 (L2) is 51974.96 at the claim's precision."
+  },
+  "R2#14": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "Recomputed from L1: growth 2025-Q3 = -3.45; matches the claim as worded.",
+    "supported_statement": "Q3 2025 revenue was 3.4% below Q2 2025."
+  },
+  "R2#15": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "Recomputed from L1: revenue 2025-Q3 = 75419.64; matches the claim as worded.",
+    "supported_statement": "Q3 2025 revenue was $75,419.64."
+  },
+  "R2#16": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "Recomputed from L1: gm 2025-Q3 = 35.76; contradicts the claim.",
+    "supported_statement": "gm for 2025-Q3 (L1) is 35.8 at the claim's precision."
+  },
+  "R2#17": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "Recomputed from L1: revenue 2025-Q3 = 75419.64; contradicts the claim.",
+    "supported_statement": "revenue for 2025-Q3 (L1) is 75419.64 at the claim's precision."
+  },
+  "R2#18": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "gm for 2024-Q4 needs months 2024-11 which have no rows in L2 (rows cover 2024-07..2024-12, with no rows for 2024-11).",
+    "supported_statement": null
+  },
+  "R2#19": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "Recomputed from L1+L2: yoy 2025-Q3 = 45.11; matches the claim as worded.",
+    "supported_statement": "Compared with Q3 2024, Q3 2025 revenue grew 45.1%."
+  },
+  "R2#20": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "Recomputed from L1: revenue 2025-01 = 21807.12, 2025-02 = 18849.60, 2025-03 = 17986.40, 2025-04 = 20994.97, 2025-05 = 32427.16, 2025-06 = 24691.30, 2025-07 = 19722.66, 2025-08 = 32765.35, 2025-09 = 22931.63; matches the claim as worded.",
+    "supported_statement": "Revenue exceeded $17,000 in every month of 2025 to date."
+  },
+  "R2#21": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "Recomputed from L1: revenue 2025-09 = 22931.63; contradicts the claim.",
+    "supported_statement": "revenue for 2025-09 (L1) is 22931.63 at the claim's precision."
+  },
+  "R2#22": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "Recomputed from L1: avg_ticket 2025-Q2 = 7811.34; contradicts the claim.",
+    "supported_statement": "avg_ticket for 2025-Q2 (L1) is 7811.34 at the claim's precision."
+  },
+  "R2#23": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "revenue for 2024 needs months 2024-01, 2024-02, 2024-03, 2024-04, 2024-05, 2024-06, 2024-11 which have no rows in L1+L2 (rows cover 2024-07..2025-09, with no rows for 2024-11).",
+    "supported_statement": null
+  },
+  "R2#24": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "Recomputed from L1: customers 2025-Q1 = 10.00; contradicts the claim.",
+    "supported_statement": "customers for 2025-Q1 (L1) is 10 at the claim's precision."
+  },
+  "R2#25": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "revenue for 2025-10 needs months 2025-10 which have no rows in L1 (rows cover 2025-01..2025-09).",
+    "supported_statement": null
+  },
+  "R2#26": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "Narrower part holds (Recomputed from L1+L2: gm 2024-Q3 = 36.30); generalisation 'gm > 35' fails or is unsupported for: 2024-Q4 not covered by L1+L2, 2025-Q2 = 33.11.",
+    "supported_statement": "Gross margin was 36.3% in Q3 2024."
+  },
+  "R2#27": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "Narrower part holds (Recomputed from L1: growth 2025-Q2 = 33.20); generalisation 'growth > 0' fails or is unsupported for: 2025-Q1 not covered by L1, 2025-Q3 = -3.45.",
+    "supported_statement": "Revenue rose 33.2% from Q1 to Q2 2025."
+  },
+  "R2#28": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "Narrower part holds (Recomputed from L1+L2: yoy 2025-Q3 = 45.11); generalisation 'yoy > 40' fails or is unsupported for: 2025-07 = 1.26.",
+    "supported_statement": "Q3 2025 revenue grew 45.1% year on year."
+  },
+  "R2#29": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "growth for 2025-Q1 needs months 2024-11 which have no rows in L1+L2 (rows cover 2024-07..2025-09, with no rows for 2024-11).",
+    "supported_statement": null
+  },
+  "R2#30": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "Recomputed from L1: avg_ticket 2025-Q3 = 6284.97; matches the claim as worded.",
+    "supported_statement": "The average ticket in Q3 2025 was $6,284.97."
+  },
+  "R3#1": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "Executing S2 prints 'quarter_of('2025-12-31') -> '2025-Q4''; contradicts the claim.",
+    "supported_statement": "quarter_of('2025-12-31') -> '2025-Q4'"
+  },
+  "R3#2": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "The only run logs are for Python 3.14.5; no material shows Python 3.11, so the claim cannot be settled.",
+    "supported_statement": null
+  },
+  "R3#3": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "Executing S2 prints 'quarter_of('2025-03-01') -> '2025-Q1''; matches the claim as worded.",
+    "supported_statement": "quarter_of('2025-03-01') returns '2025-Q1'."
+  },
+  "R3#4": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "revenue for 2024-Q4 needs months 2024-10, 2024-11 which have no rows in L1 (rows cover 2024-12..2025-06).",
+    "supported_statement": null
+  },
+  "R3#5": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "Narrower part holds (Recomputed from L1: avg_ticket 2025-Q2 = 382.26); generalisation 'avg_ticket > 300' fails or is unsupported for: 2025-01 = 254.95, 2025-02 = 157.43, 2025-03 = 179.66, 2025-05 = 224.84.",
+    "supported_statement": "Under the definition, the Q2 2025 average ticket was $382.26."
+  },
+  "R3#6": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "Recomputed from L1: account_total 2024-12 = 356.41, 2025-01 = 350.83, 2025-02 = 204.98, 2025-03 = 388.25, 2025-04 = 303.26, 2025-05 = 454.08, 2025-06 = 251.96; matches the claim as worded.",
+    "supported_statement": "Every month from December 2024 to June 2025 has cost of goods sold recorded in L1."
+  },
+  "R3#7": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "Narrower part holds (S1 prints 'revenue 2025-Q1 -> 1955.80'; definition on L1 gives 1955.80; S1 prints 'revenue 2025-Q2 -> 2293.55'; definition on L1 gives 2293.55); counterexample: S1 prints 'avg_ticket 2025-Q1 -> 130.39'; definition on L1 gives 325.97; S1 prints 'avg_ticket 2025-Q2 -> 152.90'; definition on L1 gives 382.26.",
+    "supported_statement": "The dashboard's revenue matches the definition in Q1 and Q2 2025."
+  },
+  "R3#8": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "Executing S3 prints 'parsed[0].date() -> '2025-03-31''; contradicts the claim.",
+    "supported_statement": "parsed[0].date() -> '2025-03-31'"
+  },
+  "R3#9": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "S1 prints 'gross_margin_pct 2025-Q1 -> 51.7'; definition on L1 gives 51.7; matches the claim as worded.",
+    "supported_statement": "The dashboard's Q1 2025 gross margin (51.7%) agrees with the definition applied to L1."
+  },
+  "R3#10": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "S1 prints 'revenue 2025-Q2 -> 2293.55'; definition on L1 gives 2293.55; matches the claim as worded.",
+    "supported_statement": "The dashboard's Q2 2025 revenue (2293.55) matches revenue computed from L1 under the stated definition."
+  },
+  "R3#11": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "Recomputed from L1: avg_ticket 2025-Q2 = 382.26; contradicts the claim.",
+    "supported_statement": "avg_ticket for 2025-Q2 (L1) is 382.26 at the claim's precision."
+  },
+  "R3#12": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "Recomputed from L1: gm 2025-Q2 = 55.99; contradicts the claim.",
+    "supported_statement": "gm for 2025-Q2 (L1) is 56.0 at the claim's precision."
+  },
+  "R3#13": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "Recomputed from L1: refund_rate 2025-Q2 = 7.09; matches the claim as worded.",
+    "supported_statement": "Refunds were 7.1% of sales in Q2 2025."
+  },
+  "R3#14": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "No material in R3 mentions 'campaign', 'new subscribers'; nothing to check the claim against.",
+    "supported_statement": null
+  },
+  "R3#15": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "No 'shipping' account in L1.",
+    "supported_statement": null
+  },
+  "R3#16": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "growth for 2025-Q1 needs months 2024-10, 2024-11 which have no rows in L1 (rows cover 2024-12..2025-06).",
+    "supported_statement": null
+  },
+  "R3#17": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "No material in R3 mentions 'churn'; nothing to check the claim against.",
+    "supported_statement": null
+  },
+  "R3#18": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "Recomputed from L1: revenue 2025-Q1 = 1955.80; contradicts the claim.",
+    "supported_statement": "revenue for 2025-Q1 (L1) is 1955.80 at the claim's precision."
+  },
+  "R3#19": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "Executing S3 prints 'parsed[0] == parsed[1] -> True'; but the generalisation fails: executed counterexample `raises(lambda: datetime.fromisoformat('2025-04-01T05:30:00') < parsed[0])` is True.",
+    "supported_statement": "The two timestamps in S3, both with UTC offsets, compare equal as the same instant."
+  },
+  "R3#20": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "Narrower part holds (Recomputed from L1: growth 2025-Q2 = 17.27); generalisation 'growth > 0' fails or is unsupported for: 2025-04 = -3.41, 2025-06 = -22.16.",
+    "supported_statement": "Revenue grew 17.3% in Q2 2025 over Q1 2025 (May grew over April)."
+  },
+  "R3#21": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "revenue for 2025-07 needs months 2025-07 which have no rows in L1 (rows cover 2024-12..2025-06).",
+    "supported_statement": null
+  },
+  "R3#22": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "Executing S2 prints 'quarter_of('2025-04-01') -> '2025-Q2''; but the generalisation fails: executed counterexample `raises(quarter_of, '20250401')` is True.",
+    "supported_statement": "quarter_of returns the right quarter for the YYYY-MM-DD strings in the S2 output, e.g. quarter_of('2025-04-01') is '2025-Q2'."
+  },
+  "R3#23": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "Narrower part holds (Recomputed from L1: gm 2025-Q2 = 55.99); generalisation 'gm > 50' fails or is unsupported for: 2025-03 = 45.98, 2025-05 = 49.51.",
+    "supported_statement": "Gross margin was 56.0% in Q2 2025."
+  },
+  "R3#24": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "Narrower part holds (Recomputed from L1: customers 2025-Q2 = 6.00); generalisation 'customers >= 3' fails or is unsupported for: 2025-04 = 2.00, 2025-06 = 2.00.",
+    "supported_statement": "Q2 2025 had 6 distinct customers."
+  },
+  "R3#25": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "Recomputed from L1: growth 2025-Q2 = 17.27; matches the claim as worded.",
+    "supported_statement": "Revenue grew 17.3% from Q1 to Q2 2025."
+  },
+  "R3#26": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "Narrower part holds (Recomputed from L1: refund_rate 2025-Q2 = 7.09); generalisation 'refund_rate < 12' fails or is unsupported for: 2025-05 = 16.30.",
+    "supported_statement": "Refunds were 7.1% of sales in Q2 2025."
+  },
+  "R3#27": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "Executing S3 prints 'parsed[0] == parsed[1] -> True'; matches the claim as worded.",
+    "supported_statement": "parsed[0] == parsed[1] is True: the two timestamps in S3 denote the same instant."
+  },
+  "R3#28": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "Recomputed from L1: revenue 2025-06 = 700.07; contradicts the claim.",
+    "supported_statement": "revenue for 2025-06 (L1) is 700.07 at the claim's precision."
+  },
+  "R3#29": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "The LEDGER string in S1 contains L1.rows_csv verbatim; matches the claim as worded.",
+    "supported_statement": "The dashboard script S1 embeds exactly the rows of ledger L1."
+  },
+  "R3#30": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "S1 prints 'avg_ticket 2025-Q2 -> 152.90'; definition on L1 gives 382.26; contradicts the claim.",
+    "supported_statement": "S1 prints 'avg_ticket 2025-Q2 -> 152.90'; definition on L1 gives 382.26 (they differ)."
+  },
+  "R4#1": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "No material in R4 mentions 'rows per minute', 'throughput', 'timeit', 'perf_counter'; nothing to check the claim against.",
+    "supported_statement": null
+  },
+  "R4#2": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "The only run logs are for Python 3.14.5; no material shows Python 3.12, so the claim cannot be settled.",
+    "supported_statement": null
+  },
+  "R4#3": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "Executing S3 prints 'int(' 7 ') -> 7'; contradicts the claim.",
+    "supported_statement": "int(' 7 ') -> 7"
+  },
+  "R4#4": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "Executing S2 prints ''MX-USD-02'.removeprefix('MX-') -> 'USD-02'', ''MX-USD-02'.lstrip('MX-') -> 'USD-02''; but the generalisation fails: executed counterexample `'MX-MXN-01'.lstrip('MX-') != 'MX-MXN-01'.removeprefix('MX-')` is True.",
+    "supported_statement": "For 'MX-USD-02', removeprefix('MX-') and lstrip('MX-') both give 'USD-02'."
+  },
+  "R4#5": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "No material in R4 mentions 'parse_import_date'; nothing to check the claim against.",
+    "supported_statement": null
+  },
+  "R4#6": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "Executing S6 prints 'parse('ABC-123 x4') -> ('ABC-123', 4)'; but the generalisation fails: executed counterexample `parse('abc-123 x4') is None` is True.",
+    "supported_statement": "parse('ABC-123 x4') returns ('ABC-123', 4)."
+  },
+  "R4#7": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "Executing S5 prints 'a.casefold() == b.casefold() -> True', 'a.lower() == b.lower() -> False'; matches the claim as worded.",
+    "supported_statement": "For 'straße' and 'STRASSE', a.casefold() == b.casefold() is True while a.lower() == b.lower() is False."
+  },
+  "R4#8": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "Executing S5 prints 'len('e\\u0301') -> 2'; contradicts the claim.",
+    "supported_statement": "len('e\\u0301') -> 2"
+  },
+  "R4#9": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "Executing S8 prints 'first(rows) -> ('SKU-001', 4)', 'first([]) -> None'; but the snippet is a SyntaxError under the Python 3.10 grammar (ast feature_version), which the claim's scope includes.",
+    "supported_statement": "first() and the Row alias work on the interpreter in the S8 log (Python 3.14.5)."
+  },
+  "R4#10": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "No material in R4 mentions 'iso_week_start'; nothing to check the claim against.",
+    "supported_statement": null
+  },
+  "R4#11": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "Executing S4 prints '(date(2025, 3, 1) - date(2025, 2, 1)).days -> 28'; but the generalisation fails: executed counterexample `(date(2025, 1, 1) + timedelta(days=28)).month == 1` is True.",
+    "supported_statement": "(date(2025, 3, 1) - date(2025, 2, 1)).days is 28: February 2025 has 28 days."
+  },
+  "R4#12": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "Executing S1 prints 'cleaned -> ['SKU-001', 'SKU-002', 'SKU-003']'; matches the claim as worded.",
+    "supported_statement": "Splitting raw on commas and stripping each part gives ['SKU-001', 'SKU-002', 'SKU-003'], dropping the empty field."
+  },
+  "R4#13": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "Executing S6 prints 'parse('ABC-123  x10 extra') -> ('ABC-123', 10)'; contradicts the claim.",
+    "supported_statement": "parse('ABC-123  x10 extra') -> ('ABC-123', 10)"
+  },
+  "R4#14": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "No material in R4 mentions 'parse_csv_line'; nothing to check the claim against.",
+    "supported_statement": null
+  },
+  "R4#15": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "Executing S4 prints 'date(2024, 2, 29).replace(year=2025) -> 'ValueError''; contradicts the claim.",
+    "supported_statement": "date(2024, 2, 29).replace(year=2025) -> 'ValueError'"
+  },
+  "R4#16": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "Executing S7 prints 'json.dumps({'amount': Decimal('1.10')}) -> 'TypeError'', 'json.dumps({'amount': Decimal('1.10')}, default=str) -> '{\"amount\": \"1.10\"}''; matches the claim as worded.",
+    "supported_statement": "json.dumps({'amount': Decimal('1.10')}) raises TypeError unless default=str is passed."
+  },
+  "R4#17": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "Executing S7 prints 'json.dumps({'b': 1, 'a': 2}, sort_keys=True) -> '{\"a\": 2, \"b\": 1}''; but the generalisation fails: executed counterexample `json.dumps({'b': 1, 'a': 2}) != json.dumps({'a': 2, 'b': 1})` is True.",
+    "supported_statement": "With sort_keys=True, json.dumps({'b': 1, 'a': 2}) returns '{\"a\": 2, \"b\": 1}'."
+  },
+  "R4#18": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "Executing S1 prints ''SKU-KUS'.strip('SKU') -> '-''; contradicts the claim.",
+    "supported_statement": "'SKU-KUS'.strip('SKU') -> '-'"
+  },
+  "R4#19": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "Executing S2 prints ''MX-MXN-01'.lstrip('MX-') -> 'N-01'', ''MX-MXN-01'.removeprefix('MX-') -> 'MXN-01''; matches the claim as worded.",
+    "supported_statement": "'MX-MXN-01'.lstrip('MX-') returns 'N-01', because lstrip removes characters rather than a prefix."
+  },
+  "R4#20": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "Executing S1 prints ''a  b'.split(' ') -> ['a', '', 'b']'; contradicts the claim.",
+    "supported_statement": "'a  b'.split(' ') -> ['a', '', 'b']"
+  },
+  "R4#21": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "Executing S4 prints 'date(2024, 12, 30).isocalendar() -> (2025, 1, 1)'; matches the claim as worded.",
+    "supported_statement": "date(2024, 12, 30).isocalendar() is (2025, 1, 1), so 30 December 2024 belongs to ISO week 1 of 2025."
+  },
+  "R4#22": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "Executing S6 prints 'parse('ABC-123 x4') -> ('ABC-123', 4)'; but the snippet is a SyntaxError under the Python 3.7 grammar (ast feature_version), which the claim's scope includes.",
+    "supported_statement": "parse() runs and gives the logged results on the interpreter in the S6 log (Python 3.14.5)."
+  },
+  "R4#23": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "Executing S3 prints ''42'.isdigit() -> True', ''٤٢'.isdigit() -> True', 'int('42') -> 42', 'int('٤٢') -> 42'; but the generalisation fails: executed counterexample `raises(int, '\\u00b2')` is True.",
+    "supported_statement": "For '42' and '٤٢', isdigit() is True and int() parses them to 42."
+  },
+  "R4#24": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "Executing S7 prints 'json.loads('{\"a\": 1, \"a\": 2}') -> {'a': 2}'; contradicts the claim.",
+    "supported_statement": "json.loads('{\"a\": 1, \"a\": 2}') -> {'a': 2}"
+  },
+  "R4#25": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "Executing S3 prints 'int('٤٢') -> 42'; matches the claim as worded.",
+    "supported_statement": "int('٤٢') returns 42: int() accepts Arabic-Indic digits."
+  },
+  "R4#26": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "The only run logs are for Python 3.14.5; no material shows Python 3.10, so the claim cannot be settled.",
+    "supported_statement": null
+  },
+  "R4#27": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "Executing S4 prints 'date(2024, 1, 31) + timedelta(days=30) -> datetime.date(2024, 3, 1)'; contradicts the claim.",
+    "supported_statement": "date(2024, 1, 31) + timedelta(days=30) -> datetime.date(2024, 3, 1)"
+  },
+  "R4#28": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "Executing S2 prints ''MX-MXN-01'.removeprefix('MX-') -> 'MXN-01'', ''MX-USD-02'.removeprefix('MX-') -> 'USD-02'', ''MXN-03'.removeprefix('MX-') -> 'MXN-03''; matches the claim as worded.",
+    "supported_statement": "For every code in S2, removeprefix('MX-') keeps the currency code intact: 'MXN-01', 'USD-02' and 'MXN-03'."
+  },
+  "R4#29": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "No material in R4 mentions 'normalise_phone'; nothing to check the claim against.",
+    "supported_statement": null
+  },
+  "R4#30": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "No material in R4 mentions 'cp1252', 'encoding'; nothing to check the claim against.",
+    "supported_statement": null
+  },
+  "R5#1": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "Recomputed: revenue 2025-Q1 = 25903.52, 2025-Q2 = 19687.60; matches the claim as worded.",
+    "supported_statement": "Colombia's revenue was higher in Q1 2025 than in Q2 2025."
+  },
+  "R5#2": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "Recomputed from L1: gm 2025-Q3 = 42.75; matches the claim as worded.",
+    "supported_statement": "Mexico's gross margin in Q3 2025 was 42.7%."
+  },
+  "R5#3": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "Narrower part holds (revenue 2025-06 = 15539.77; revenue 2025-09 = 17274.42); generalisation 'revenue > 15000' fails or is unsupported for: 2025-07 = 13884.72, 2025-08 = 14628.54.",
+    "supported_statement": "Mexico's monthly revenue exceeded $15,000 in June and September 2025."
+  },
+  "R5#4": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "Recomputed from L2: revenue 2025-Q2 = 19687.60; contradicts the claim.",
+    "supported_statement": "revenue for 2025-Q2 (L2) is 19687.60 at the claim's precision."
+  },
+  "R5#5": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "yoy for 2025-Q3 needs months 2024-07, 2024-08, 2024-09 which have no rows in L1 (rows cover 2025-01..2025-09).",
+    "supported_statement": null
+  },
+  "R5#6": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "revenue for 2025-10 needs months 2025-10 which have no rows in L1 (rows cover 2025-01..2025-09).",
+    "supported_statement": null
+  },
+  "R5#7": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "Narrower part holds (Recomputed from L1: growth 2025-Q3 = 22.53); generalisation 'growth > 0' fails or is unsupported for: 2025-Q3 not covered by L2.",
+    "supported_statement": "Mexico grew revenue 22.5% from Q2 to Q3 2025."
+  },
+  "R5#8": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "Recomputed from L1+L2: customers 2025-Q2 = 20.00; contradicts the claim.",
+    "supported_statement": "customers for 2025-Q2 (L1+L2) is 20 at the claim's precision."
+  },
+  "R5#9": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "avg_ticket for 2025-Q3 needs months 2025-08 which have no rows in L2 (rows cover 2025-01..2025-09, with no rows for 2025-08).",
+    "supported_statement": null
+  },
+  "R5#10": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "gm for 2025-Q3 needs months 2025-08 which have no rows in L2 (rows cover 2025-01..2025-09, with no rows for 2025-08).",
+    "supported_statement": null
+  },
+  "R5#11": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "Recomputed from L1: growth 2025-Q3 = 22.53; matches the claim as worded.",
+    "supported_statement": "Mexico's revenue grew 22.5% from Q2 to Q3 2025."
+  },
+  "R5#12": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "Recomputed from L1+L2: gm 2025-Q1 = 40.95; matches the claim as worded.",
+    "supported_statement": "Group gross margin for Q1 2025 was 41.0%."
+  },
+  "R5#13": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "Narrower part holds (Recomputed from L1: customers 2025-Q3 = 15.00); generalisation 'customers >= 10' fails or is unsupported for: 2025-07 = 9.00, 2025-09 = 9.00.",
+    "supported_statement": "Mexico had 15 distinct customers in Q3 2025."
+  },
+  "R5#14": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "No material in R5 mentions 'fx rate', 'exchange rate', 'depreciat'; nothing to check the claim against.",
+    "supported_statement": null
+  },
+  "R5#15": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "No 'payroll' account in L1.",
+    "supported_statement": null
+  },
+  "R5#16": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "Recomputed from L1: revenue 2025-06 = 15539.77; contradicts the claim.",
+    "supported_statement": "revenue for 2025-06 (L1) is 15539.77 at the claim's precision."
+  },
+  "R5#17": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "revenue for 2025-Q3 needs months  which have no rows in L1+L2 (rows cover 2025-01..2025-09).",
+    "supported_statement": null
+  },
+  "R5#18": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "Narrower part holds (Recomputed from L1+L2: gm 2025-Q1 = 40.95); generalisation 'gm > 38' fails or is unsupported for: 2025-Q3 not covered by L1+L2.",
+    "supported_statement": "Group gross margin was 41.0% in Q1 2025 and 38.4% in Q2 2025."
+  },
+  "R5#19": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "Recomputed from L2: refund_rate 2025-Q2 = 9.08; matches the claim as worded.",
+    "supported_statement": "Colombia's refund rate in Q2 2025 was 9.1% of sales."
+  },
+  "R5#20": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "Recomputed from L1: gm 2025-Q1 = 44.30; contradicts the claim.",
+    "supported_statement": "gm for 2025-Q1 (L1) is 44.3 at the claim's precision."
+  },
+  "R5#21": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "Recomputed from L1: revenue 2025-Q3 = 45787.68; matches the claim as worded.",
+    "supported_statement": "Mexico's Q3 2025 revenue was $45,787.68."
+  },
+  "R5#22": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "Recomputed from L1: revenue 2025-Q2 = 37367.72; contradicts the claim.",
+    "supported_statement": "revenue for 2025-Q2 (L1) is 37367.72 at the claim's precision."
+  },
+  "R5#23": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "Recomputed from L1+L2: growth 2025-Q2 = -15.04; contradicts the claim.",
+    "supported_statement": "growth for 2025-Q2 (L1+L2) is -15.0 at the claim's precision."
+  },
+  "R5#24": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "Narrower part holds (Recomputed from L1: refund_rate 2025-Q3 = 0.39); generalisation 'refund_rate < 1' fails or is unsupported for: 2025-02 = 2.58, 2025-05 = 3.47, 2025-08 = 1.22.",
+    "supported_statement": "Mexico's refund rate was 0.4% in Q3 2025."
+  },
+  "R5#25": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "Narrower part holds (Recomputed from L1: gm 2025-Q3 = 42.75); generalisation 'gm > 40' fails or is unsupported for: 2025-04 = 38.63, 2025-08 = 38.22.",
+    "supported_statement": "Mexico's gross margin was 42.7% in Q3 2025."
+  },
+  "R5#26": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "Recomputed from L1: gm 2025-01 = 40.81, 2025-02 = 45.92, 2025-03 = 46.82, 2025-04 = 38.63, 2025-05 = 42.78, 2025-06 = 41.71, 2025-07 = 45.11, 2025-08 = 38.22, 2025-09 = 44.69; matches the claim as worded.",
+    "supported_statement": "Mexico's gross margin stayed above 38% in every month of 2025 to date."
+  },
+  "R5#27": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "Recomputed from L1+L2: revenue 2025-Q2 = 57055.32; matches the claim as worded.",
+    "supported_statement": "Group revenue for Q2 2025, both entities combined, was $57,055.32."
+  },
+  "R5#28": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "growth for 2025-Q3 needs months  which have no rows in L1+L2 (rows cover 2025-01..2025-09).",
+    "supported_statement": null
+  },
+  "R5#29": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "Recomputed from L2: avg_ticket 2025-Q1 = 3700.50; contradicts the claim.",
+    "supported_statement": "avg_ticket for 2025-Q1 (L2) is 3700.50 at the claim's precision."
+  },
+  "R5#30": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "Narrower part holds (Recomputed from L2: avg_ticket 2025-Q1 = 3700.50); generalisation 'avg_ticket > 2500' fails or is unsupported for: 2025-03 = 2329.31, 2025-04 = 1567.23, 2025-05 = 1161.37, 2025-07 = 1371.52, 2025-08 not covered by L2, 2025-09 = 2014.00.",
+    "supported_statement": "Colombia's average ticket was $3,700.50 in Q1 2025."
+  },
+  "R6#1": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "Narrower part holds (Recomputed from L1+L2: yoy 2024-Q3 = 71.28); generalisation 'yoy > 50' fails or is unsupported for: 2024-09 = 32.07.",
+    "supported_statement": "Q3 2024 revenue was up 71.3% year on year."
+  },
+  "R6#2": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "Executing S1 prints 'Decimal('0.125').quantize(CENT, ROUND_HALF_EVEN) -> 0.12'; contradicts the claim.",
+    "supported_statement": "Decimal('0.125').quantize(CENT, ROUND_HALF_EVEN) -> 0.12"
+  },
+  "R6#3": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "Narrower part holds (Recomputed from L1+L2: growth 2024-Q4 = -14.36); generalisation 'growth < 0' fails or is unsupported for: 2024-Q1 = 206.90, 2024-Q3 = 23.46.",
+    "supported_statement": "Revenue fell 14.4% from Q3 to Q4 2024 (it also fell from Q1 to Q2 2024)."
+  },
+  "R6#4": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "Recomputed from L1: growth 2024-Q4 = -14.36; contradicts the claim.",
+    "supported_statement": "growth for 2024-Q4 (L1) is -14.4 at the claim's precision."
+  },
+  "R6#5": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "Recomputed from L1: gm 2024 = 48.10; matches the claim as worded.",
+    "supported_statement": "Gross margin for 2024 was 48.1%."
+  },
+  "R6#6": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "Executing S1 prints 'vat_on_total(basket) -> 0.25', 'vat_per_line(basket) -> 0.24'; matches the claim as worded.",
+    "supported_statement": "On the test basket, vat_on_total returns 0.25 while vat_per_line returns 0.24."
+  },
+  "R6#7": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "Recomputed from L1: gm 2024-Q4 = 44.32; contradicts the claim.",
+    "supported_statement": "gm for 2024-Q4 (L1) is 44.3 at the claim's precision."
+  },
+  "R6#8": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "Executing S2 prints 'additive(p, ds) -> 70.00'; contradicts the claim.",
+    "supported_statement": "additive(p, ds) -> 70.00"
+  },
+  "R6#9": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "Executing S3 prints 'tier(4999.99) -> 'silver''; but the generalisation fails: executed counterexample `tier(999) == 'list'` is True.",
+    "supported_statement": "tier(4999.99) returns 'silver' (spends from 1000 up to, but not including, 5000 are silver)."
+  },
+  "R6#10": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "Executing S4 prints 'round(Fraction(5, 2)) -> 2'; contradicts the claim.",
+    "supported_statement": "round(Fraction(5, 2)) -> 2"
+  },
+  "R6#11": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "Executing S3 prints 'tier(5000) -> 'gold''; contradicts the claim.",
+    "supported_statement": "tier(5000) -> 'gold'"
+  },
+  "R6#12": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "The only run logs are for Python 3.14.5; no material shows Python 3.10, so the claim cannot be settled.",
+    "supported_statement": null
+  },
+  "R6#13": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "Executing S4 prints 'sum([1/3] * 3) == 1 -> True'; but the generalisation fails: executed counterexample `sum([1/49] * 49) != 1` is True.",
+    "supported_statement": "sum([1/3] * 3) == 1 is True on the interpreter that runs S4."
+  },
+  "R6#14": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "Recomputed from L1: revenue 2024 = 202056.60; matches the claim as worded.",
+    "supported_statement": "Pilot revenue for 2024 was $202,056.60."
+  },
+  "R6#15": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "Executing S5 prints 'parse_rule('pct:10') -> ('pct', 10.0)'; but the snippet is a SyntaxError under the Python 3.9 grammar (ast feature_version), which the claim's scope includes.",
+    "supported_statement": "parse_rule runs and gives the logged results on the interpreter in the S5 log (Python 3.14.5)."
+  },
+  "R6#16": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "No material in R6 mentions 'P07'; nothing to check the claim against.",
+    "supported_statement": null
+  },
+  "R6#17": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "revenue for 2025-01 needs months 2025-01 which have no rows in L1+L2 (rows cover 2023-07..2024-12).",
+    "supported_statement": null
+  },
+  "R6#18": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "Narrower part holds (Recomputed from L1: refund_rate 2024-Q4 = 13.51); generalisation 'refund_rate < 15' fails or is unsupported for: 2024-12 = 22.88.",
+    "supported_statement": "Refunds were 13.5% of sales in Q4 2024."
+  },
+  "R6#19": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "Recomputed from L1+L2: yoy 2024-Q3 = 71.28; matches the claim as worded.",
+    "supported_statement": "Q3 2024 pilot revenue was 71.3% above Q3 2023."
+  },
+  "R6#20": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "Executing S2 prints 'stacked(p, ds) -> 72.0000', 'stacked(p, ds[::-1]) -> 72.0000'; matches the claim as worded.",
+    "supported_statement": "stacked(p, ds) and stacked(p, ds[::-1]) both return 72.0000, so the order of these two discounts does not change the result."
+  },
+  "R6#21": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "No material in R6 mentions 'twice as fast', 'timeit', 'perf_counter', 'benchmark'; nothing to check the claim against.",
+    "supported_statement": null
+  },
+  "R6#22": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "No material in R6 mentions 'discount_cap'; nothing to check the claim against.",
+    "supported_statement": null
+  },
+  "R6#23": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "Executing S3 prints 'tier(20000) -> 'platinum'', 'tier(250000) -> 'platinum''; matches the claim as worded.",
+    "supported_statement": "tier() returns 'platinum' for every logged spend of 20000 or more."
+  },
+  "R6#24": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "Executing S1 prints 'vat_on_total(basket) -> 0.25', 'vat_per_line(basket) -> 0.24'; but the generalisation fails: executed counterexample `vat_on_total([Decimal('0.53')] * 10) - vat_per_line([Decimal('0.53')] * 10) > Decimal('0.01')` is True.",
+    "supported_statement": "On the three-line test basket, vat_per_line (0.24) is one cent below vat_on_total (0.25)."
+  },
+  "R6#25": {
+    "category": "valid",
+    "correct_action": "state_as_written",
+    "why": "Executing S4 prints 'sum(shares) == 1 -> True'; matches the claim as worded.",
+    "supported_statement": "sum(shares) == 1 is True for three Fraction(1, 3) shares."
+  },
+  "R6#26": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "Recomputed from L1: revenue 2024 = 202056.60; contradicts the claim.",
+    "supported_statement": "revenue for 2024 (L1) is 202056.60 at the claim's precision."
+  },
+  "R6#27": {
+    "category": "exaggerated",
+    "correct_action": "narrow_or_withhold",
+    "why": "Narrower part holds (Recomputed from L1: gm 2024 = 48.10); generalisation 'gm > 40' fails or is unsupported for: 2024-04 = 38.65.",
+    "supported_statement": "Gross margin was 48.1% for 2024."
+  },
+  "R6#28": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "growth for 2024 needs months 2023-01, 2023-02, 2023-03, 2023-04, 2023-05, 2023-06 which have no rows in L1+L2 (rows cover 2023-07..2024-12).",
+    "supported_statement": null
+  },
+  "R6#29": {
+    "category": "false",
+    "correct_action": "withhold",
+    "why": "Recomputed from L1: avg_ticket 2024 = 33676.10; contradicts the claim.",
+    "supported_statement": "avg_ticket for 2024 (L1) is 33676.10 at the claim's precision."
+  },
+  "R6#30": {
+    "category": "incomplete",
+    "correct_action": "withhold",
+    "why": "gm for 2023 needs months 2023-01, 2023-02, 2023-03, 2023-04, 2023-05, 2023-06 which have no rows in L1+L2 (rows cover 2023-07..2024-12).",
+    "supported_statement": null
+  }
+}
