@@ -376,7 +376,8 @@ def main() -> int:
             # ---------------------------------------------------------------- G
             if "G" in only:
               try:
-                  for page in ("app.html", "index.html", "audit.html", "benchmark.html", "governance.html", "security.html"):
+                  for page in ("app.html", "index.html", "audit.html", "benchmark.html", "governance.html", "security.html",
+                               "pilot-packet.html", "customer-brief.html", "in-depth.html"):
                       for w in (320, 390, 768, 1024, 1440):
                           ctx, pg, errs = fresh(width=w)
                           pg.goto(f"{base}/{page}", wait_until="domcontentloaded"); pg.wait_for_timeout(250)
@@ -392,6 +393,15 @@ def main() -> int:
                               res["G"].append(f"{tag}: nav links end at {g['linksB']:.0f} below the nav box {g['navB']:.0f}")
                           if g["subT"] is not None and g["subT"] < g["navB"] - 1:
                               res["G"].append(f"{tag}: subnav starts at {g['subT']:.0f} inside the nav ({g['navB']:.0f})")
+                          clipped = pg.evaluate("""(w) => { const out = []; for (const e of document.querySelectorAll('body *')) {
+                              const cs = getComputedStyle(e); if (cs.position === 'fixed' || cs.display === 'none' || e.closest('.bg-logo')) continue;
+                              const r = e.getBoundingClientRect(); if (!(r.width > 0 && r.right > w + 2)) continue;
+                              let a = e.parentElement, inBox = false; while (a && a !== document.body) { if (getComputedStyle(a).overflowX !== 'visible') { inBox = true; break; } a = a.parentElement; }
+                              if (inBox) continue; const pr = e.parentElement.getBoundingClientRect(); if (pr.right > w + 2) continue;
+                              out.push((e.className && typeof e.className === 'string' ? e.className : e.tagName) + '@' + Math.round(r.right)); }
+                              return out.slice(0, 3); }""", g["vw"])
+                          if clipped:
+                              res["G"].append(f"{tag}: content beyond the viewport, clipped by the page: {clipped}")
                           if g["langR"] > g["vw"] + 1 or g["lastR"] > g["vw"] + 1:
                               res["G"].append(f"{tag}: language toggle or last link outside the viewport")
                           ctx.close()

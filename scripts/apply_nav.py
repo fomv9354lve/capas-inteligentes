@@ -37,6 +37,24 @@ CSS = ("/* sub-nav (scripts/apply_nav.py) */.subnav{position:sticky;top:var(--na
        "@media(max-width:760px){.subnav{position:static;padding:6px 16px;flex-wrap:wrap}.subnav-sep{flex-basis:100%;height:0}.nav-links{flex-wrap:wrap;overflow-x:visible}.nav-links a{padding:6px 10px}.nav-links svg{display:none}}")
 
 
+# Shared responsive layer (2026-10-14, after the fb52d8c re-audit's verifier found content clipped by body
+# overflow-x:hidden): multi-column grids collapse on phones, grid children may shrink, long code wraps, tables scroll in
+# their own box, footers wrap. Injected into every CAPAS page and into krenniq.html / legal.html (no nav there).
+LAYOUT_CSS = ("/* layout (scripts/apply_nav.py) */"
+              ".verdicts-grid{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))!important}"
+              "[class*=grid]>*,[style*='grid-template-columns']>*,.hero-inner>*{min-width:0}"
+              ".hero-right,.verdict-panel,.verdict-preview{max-width:100%}"
+              "footer,.footer-links{flex-wrap:wrap}.footer-disclaimer{max-width:100%;box-sizing:border-box}"
+              "@media(max-width:760px){.hero-inner,.si,.g2,.g3,.core-grid,.verdicts-grid,"
+              "main [style*='grid-template-columns'],section [style*='grid-template-columns']{grid-template-columns:minmax(0,1fr)!important;gap:16px!important}"
+              ".modes,.split{grid-template-columns:minmax(0,1fr)!important}"
+              ".stat-bar-inner,.pipeline-steps,.grid,.hero-metrics{grid-template-columns:repeat(2,minmax(0,1fr))!important}"
+              "footer>div{max-width:100%;flex-wrap:wrap}"
+              "code{overflow-wrap:anywhere;word-break:break-word}"
+              "table{display:block;max-width:100%;overflow-x:auto}pre{max-width:100%;overflow-x:auto}}")
+LAYOUT_ONLY = ["krenniq.html", "legal.html"]
+
+
 def links(page):
     g, out = PAGE_GROUP[page], []
     for key, en, es, icon, pages in GROUPS:
@@ -61,14 +79,25 @@ def apply(page, src):
     src = re.sub(r'\n?<div class="subnav"[^>]*>.*?</div>', "", src, flags=re.S)
     src = re.sub(r"(</nav>)", lambda m: m.group(1) + "\n" + subnav(page), src, count=1)
     src = re.sub(r"/\* sub-nav \(scripts/apply_nav\.py\) \*/[^\n<]*?(?=</style>|\n)", "", src)
-    src = src.replace("</style>", CSS + "</style>", 1)
+    src = src.replace("</style>", CSS + LAYOUT_CSS + "</style>", 1)
     return src
+
+
+def apply_layout_only(src):
+    src = re.sub(r"/\* layout \(scripts/apply_nav\.py\) \*/[^\n<]*?(?=</style>|\n)", "", src)
+    return src.replace("</style>", LAYOUT_CSS + "</style>", 1)
 
 
 def main() -> int:
     check, diff = "--check" in sys.argv, []
     for page in PAGE_GROUP:
         p = DOCS / page; src = p.read_text(encoding="utf-8"); new = apply(page, src)
+        if new != src:
+            diff.append(page)
+            if not check:
+                p.write_text(new, encoding="utf-8")
+    for page in LAYOUT_ONLY:
+        p = DOCS / page; src = p.read_text(encoding="utf-8"); new = apply_layout_only(src)
         if new != src:
             diff.append(page)
             if not check:
