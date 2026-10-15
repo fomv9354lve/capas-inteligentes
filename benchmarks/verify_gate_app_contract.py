@@ -275,6 +275,10 @@ def main() -> int:
                       "READY with 14 invented criteria": None,
                       "READY without fine_tune_blockers": None,
                       "certificate removed": None,
+                      # re-audit a853e2a: names merged into one key joined like the real set
+                      "READY with two criteria merged into one key": None,
+                      "READY with all criteria merged into one key": None,
+                      "certificate dialectic empty": None,
                   }
 
                   def make_ready(d, criteria, blockers=True):
@@ -334,6 +338,14 @@ def main() -> int:
                               make_ready(d, dict(full), blockers=False)
                           elif kind == "certificate removed":
                               d.pop("admissibility_certificate", None)
+                          elif kind == "READY with two criteria merged into one key":
+                              names = sorted(full); merged = dict(full); a, b = names[0], names[1]
+                              merged.pop(a); merged.pop(b); merged[a + "|" + b] = True
+                              make_ready(d, merged)
+                          elif kind == "READY with all criteria merged into one key":
+                              make_ready(d, {"|".join(sorted(full)): True})
+                          elif kind == "certificate dialectic empty":
+                              d["admissibility_certificate"]["dialectic"] = {}
                           elif kind == "READY control (full criteria set)":
                               make_ready(d, dict(full))
                           route.fulfill(status=200, content_type="application/json", body=json.dumps(d))
@@ -362,14 +374,16 @@ def main() -> int:
                   def batch_route(route):
                       d = json.loads(json.dumps(capas.decide_external_claim(json.loads(route.request.post_data))))
                       if d["input_claim"]["id"] == "D_BATCH_EMPTY": make_ready(d, {})
+                      if d["input_claim"]["id"] == "D_BATCH_MERGED": make_ready(d, {"|".join(sorted(full)): True})
                       route.fulfill(status=200, content_type="application/json", body=json.dumps(d))
                   pg.unroute("**/api/decide"); pg.route("**/api/decide", batch_route)
-                  select_mode(pg, "batch"); run_single(pg, [stat("D_BATCH_EMPTY"), stat("D_BATCH_OK")]); pg.wait_for_timeout(900)
+                  select_mode(pg, "batch"); run_single(pg, [stat("D_BATCH_EMPTY"), stat("D_BATCH_MERGED"), stat("D_BATCH_OK")]); pg.wait_for_timeout(1100)
                   bo = pg.evaluate("(() => { try { return JSON.parse(document.getElementById('output').textContent); } catch (_) { return {}; } })()")
                   items = {(r.get("result") or {}).get("input_claim", {}).get("id"): r for r in bo.get("results", [])}
-                  bad = items.get("D_BATCH_EMPTY") or {}
-                  if (bad.get("result") or {}).get("fine_tune_ready") is True or bo.get("fine_tune_ready") is True:
-                      res["D"].append(f"batch: item with empty criteria counted READY (status {bad.get('status')})")
+                  for bid in ("D_BATCH_EMPTY", "D_BATCH_MERGED"):
+                      bad = items.get(bid) or {}
+                      if (bad.get("result") or {}).get("fine_tune_ready") is True or bo.get("fine_tune_ready") is True:
+                          res["D"].append(f"batch: {bid} counted READY (status {bad.get('status')})")
                   if "FT READY" in pg.locator("#verdict-area").inner_text():
                       res["D"].append("batch: 'FT READY' shown for an item with empty criteria")
                   select_mode(pg, "raw")
