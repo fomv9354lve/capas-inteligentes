@@ -52,6 +52,7 @@ LAYOUT_CSS = ("/* layout (scripts/apply_nav.py) */"
               ".stat-bar-inner,.pipeline-steps,.grid,.hero-metrics{grid-template-columns:repeat(2,minmax(0,1fr))!important}"
               "footer>div{max-width:100%;flex-wrap:wrap}"
               "code{overflow-wrap:anywhere;word-break:break-word}"
+              ".hero-actions{flex-shrink:1!important;min-width:0;max-width:100%}"
               "table{display:block;max-width:100%;overflow-x:auto}pre{max-width:100%;overflow-x:auto}}")
 LAYOUT_ONLY = ["krenniq.html", "legal.html"]
 
