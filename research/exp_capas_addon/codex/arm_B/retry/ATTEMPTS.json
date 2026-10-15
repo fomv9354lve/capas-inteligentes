@@ -1,0 +1,33 @@
+{
+  "created_at": "2026-10-15T13:34:50-06:00",
+  "primary_attempt": 1,
+  "primary_decisions": "arm_B/decisions_CB1.jsonl",
+  "primary_malformed_line": 28,
+  "use": "Sensitivity only. Neither retry replaces or repairs the primary sample.",
+  "attempts": [
+    {
+      "attempt": 2,
+      "decisions": "arm_B/retry/decisions_CB1_try2.jsonl",
+      "calls": "arm_B/retry/calls.jsonl",
+      "decision_lines": 0,
+      "capas_case_calls": 0,
+      "source_metadata": "metadata_CB1_attempt2.json",
+      "status": "completed_without_cases",
+      "packaging_note": "The run emitted no decisions file and no --case calls. These empty files explicitly represent the observed zero output; they were created for packaging, not emitted by the agent.",
+      "decisions_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "calls_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "attempt": 3,
+      "decisions": "arm_B/retry/try3/decisions_CB1_try3.jsonl",
+      "calls": "arm_B/retry/try3/calls.jsonl",
+      "decision_lines": 50,
+      "capas_case_calls": 50,
+      "source_metadata": "metadata_CB1_attempt3.json",
+      "status": "completed",
+      "packaging_note": "Exact copies of the preserved attempt 3 decisions and its own CAPAS calls; numbered try3 to preserve actual attempt identity.",
+      "decisions_sha256": "32d1114aa10c493147db171cf85673cca44ad257884298d9f32dc6dc82f3e9da",
+      "calls_sha256": "8c9cec90c3478e003ef79ad31d2067d5283700b910816e8ae2a35ad13872fe50"
+    }
+  ]
+}

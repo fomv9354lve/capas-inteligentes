@@ -7,6 +7,8 @@ HERE = Path(__file__).resolve().parent
 
 
 def main():
+    selection_path = HERE / "SCORING_SELECTION.json"
+    selection = json.loads(selection_path.read_text()) if selection_path.exists() else {}
     calls = {"CB1": [], "CB2": []}
     calls_path = HERE / "arm_B" / "calls.jsonl"
     if calls_path.exists():
@@ -22,7 +24,10 @@ def main():
         if not paths:
             print(json.dumps({"arm": arm, "status": "not started"}))
             continue
-        m = max((json.loads(p.read_text()) for p in paths), key=lambda x: x["attempt"])
+        attempts = [json.loads(p.read_text()) for p in paths]
+        selected = selection.get("selected_attempts", {}).get(arm)
+        m = (next(a for a in attempts if a["attempt"] == selected) if selected is not None
+             else max(attempts, key=lambda x: x["attempt"]))
         log = (HERE / m["log"]).read_text()
         directory = HERE / ("arm_A" if arm[1] == "A" else "arm_B")
         path = directory / f"decisions_{arm}.jsonl"

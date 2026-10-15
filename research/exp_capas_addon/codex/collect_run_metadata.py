@@ -16,6 +16,9 @@ def sha(path):
 
 def main():
     summary = {"generated_at": datetime.now().astimezone().isoformat(timespec="seconds"), "runs": {}}
+    selection_path = HERE / "SCORING_SELECTION.json"
+    selection = json.loads(selection_path.read_text()) if selection_path.exists() else {}
+    summary["scoring_selection"] = selection
     call_ids = {"CB1": [], "CB2": []}
     call_errors = []
     calls_path = HERE / "arm_B" / "calls.jsonl"
@@ -31,10 +34,13 @@ def main():
     for arm in ("CA1", "CA2", "CB1", "CB2"):
         attempts = sorted((json.loads(p.read_text()) for p in HERE.glob(f"metadata_{arm}_attempt*.json")),
                           key=lambda x: x["attempt"])
-        latest = attempts[-1]
+        selected_number = selection.get("selected_attempts", {}).get(arm, attempts[-1]["attempt"])
+        latest = next(a for a in attempts if a["attempt"] == selected_number)
         log = (HERE / latest["log"]).read_text()
         header = log.split("\nuser\n", 1)[0]
-        record = {"attempts": attempts, "header": dict(re.findall(r"(?m)^([\w ]+): (.*)$", header))}
+        record = {"attempts": attempts, "selected_attempt": selected_number,
+                  "selected_attempt_metadata": latest,
+                  "header": dict(re.findall(r"(?m)^([\w ]+): (.*)$", header))}
         tokens = re.findall(r"(?m)^tokens used\n([\d,]+)", log)
         record["cli_tokens_used"] = int(tokens[-1].replace(",", "")) if tokens else None
         record["shell_exec_calls"] = len(re.findall(r"(?m)^exec$", log))
@@ -83,19 +89,28 @@ def main():
                       tool_output_warnings=output_warnings, tool_output_warning_details=warning_details)
         path = HERE / ("arm_A" if arm[1] == "A" else "arm_B") / f"decisions_{arm}.jsonl"
         lines = path.read_text().splitlines() if path.exists() else []
-        ids, invalid = [], []
+        ids, invalid, invalid_details, id_position_errors = [], [], [], []
+        first = 1 if arm.endswith("1") else 51
+        expected = [f"C{i:03d}" for i in range(first, first+50)]
         for number, line in enumerate(lines, 1):
             try:
                 obj = json.loads(line)
                 if not isinstance(obj, dict):
                     raise ValueError("not an object")
                 ids.append(obj.get("case_id"))
-            except (json.JSONDecodeError, ValueError):
+                if number > len(expected) or obj.get("case_id") != expected[number-1]:
+                    id_position_errors.append(number)
+            except (json.JSONDecodeError, ValueError) as error:
                 invalid.append(number)
-        first = 1 if arm.endswith("1") else 51
-        expected = [f"C{i:03d}" for i in range(first, first+50)]
+                invalid_details.append({"line": number, "message": str(error),
+                                        "column": getattr(error, "colno", None)})
         record["validation"] = {"path": str(path.relative_to(HERE)), "lines": len(lines),
                                 "invalid_json_lines": invalid, "case_ids_exact_order": ids == expected,
+                                "invalid_json_details": invalid_details,
+                                "valid_json_objects": len(ids),
+                                "parsed_ids_match_line_positions": not id_position_errors,
+                                "id_position_errors": id_position_errors,
+                                "missing_parsed_ids": sorted(set(expected)-set(ids)),
                                 "sha256": sha(path) if path.exists() else None}
         if arm in call_ids:
             counts_by_case = Counter(call_ids[arm])
@@ -108,13 +123,23 @@ def main():
     summary["file_hashes"] = {name: {"before": digest, "after": sha(ROOT/name),
                                       "unchanged": digest == sha(ROOT/name)}
                               for name, digest in before["sha256"].items()}
-    summary["all_complete"] = all(r["attempts"][-1]["exit_code"] == 0
+    summary["all_complete"] = all(r["selected_attempt_metadata"]["exit_code"] == 0
                                   and r["validation"]["lines"] == 50
                                   and not r["validation"]["invalid_json_lines"]
                                   and r["validation"]["case_ids_exact_order"]
                                   for r in summary["runs"].values())
+    summary["all_structurally_valid"] = summary["all_complete"]
+    summary["all_runs_finished"] = all(r["selected_attempt_metadata"]["end"] is not None
+                                       for r in summary["runs"].values())
+    summary["scoring_packet_ready"] = all(
+        r["selected_attempt_metadata"]["exit_code"] == 0
+        and r["validation"]["lines"] == 50
+        and r["validation"]["parsed_ids_match_line_positions"]
+        and r["validation"]["invalid_json_lines"] == selection.get("declared_malformed_lines", {}).get(arm, [])
+        for arm, r in summary["runs"].items())
     (HERE / "run_summary.json").write_text(json.dumps(summary, indent=2) + "\n")
-    print(json.dumps({"all_complete": summary["all_complete"], "runs": {
+    print(json.dumps({"all_structurally_valid": summary["all_structurally_valid"],
+        "scoring_packet_ready": summary["scoring_packet_ready"], "runs": {
         k: {"cli_tokens_used": v["cli_tokens_used"], "top_level_tool_calls": v["top_level_tool_calls"],
             "validation": v["validation"], "restricted_source_matches": v["restricted_source_matches"]}
         for k, v in summary["runs"].items()}}, indent=2))
