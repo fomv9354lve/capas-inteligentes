@@ -523,6 +523,24 @@
     "audit_hash_recipes": [
       "v2"
     ],
+    "next_action_by_verdict": {
+      "ACCEPT": [
+        "verify_provenance_for_training",
+        "approve_for_controlled_reuse"
+      ],
+      "HOLD": [
+        "register_claim_type",
+        "repair_schema",
+        "supply_evidence",
+        "hold_for_review"
+      ],
+      "REJECT": [
+        "exclude_or_replace_evidence"
+      ],
+      "REWRITE": [
+        "edit_and_resubmit"
+      ]
+    },
     "required_v2": [
       "schema_version",
       "input_claim",
@@ -552,6 +570,9 @@
         "bounded_rewrite"
       ]
     },
+    "schema_versions": [
+      "capas-claim-payload-v3"
+    ],
     "verdicts": [
       "ACCEPT",
       "REWRITE",

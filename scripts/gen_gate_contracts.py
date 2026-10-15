@@ -41,6 +41,9 @@ def build_contracts() -> dict:
             "verdicts": ["ACCEPT", "REWRITE", "REJECT", "HOLD"],
             "audit_hash_recipes": ["v2"],
             "reuse_boundary_by_verdict": capas.REUSE_BOUNDARY_BY_VERDICT,
+            # External re-audit d2bce91: live responses must carry exactly this schema version and the v2 recipe.
+            "schema_versions": [capas.CAPAS_CLAIM_SCHEMA_VERSION],
+            "next_action_by_verdict": capas.NEXT_ACTION_BY_VERDICT,
             "required_v2": ["schema_version", "input_claim", "verdict", "reason", "required_fields", "audit_hash",
                             "audit_hash_recipe", "rules_fired", "rule_table_sha256", "evidence_sha256", "engine_version"],
         },

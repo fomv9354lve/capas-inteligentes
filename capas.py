@@ -1567,6 +1567,12 @@ def _next_action_for_result(result: dict[str, Any], contract_registered: bool) -
 # scripts/gen_gate_contracts.py so the Gate App rejects a response whose verdict and boundary contradict each other).
 REUSE_BOUNDARY_BY_VERDICT = {"ACCEPT": ["claim_licensed", "training_ready"], "REWRITE": ["bounded_rewrite"],
                              "REJECT": ["claim_excluded"], "HOLD": ["schema_blocked", "none"]}
+# The next-action kinds _next_action_for_result() can assign to each verdict (external re-audit d2bce91, P1-01: a
+# REJECT whose certificate said "approve_for_controlled_reuse" was rendered as an approval). approve_for_controlled_reuse
+# additionally requires fine_tune_ready true, and verify_provenance_for_training requires it false.
+NEXT_ACTION_BY_VERDICT = {"ACCEPT": ["verify_provenance_for_training", "approve_for_controlled_reuse"],
+                          "REWRITE": ["edit_and_resubmit"], "REJECT": ["exclude_or_replace_evidence"],
+                          "HOLD": ["register_claim_type", "repair_schema", "supply_evidence", "hold_for_review"]}
 
 
 def build_admissibility_certificate(payload: dict[str, Any], result: dict[str, Any]) -> dict[str, Any]:
