@@ -1,0 +1,42 @@
+{
+  "updated_at": "2026-10-15T13:34:50-06:00",
+  "source": "User instruction: malformed or missing row is worst case (error and block); do not repeat a run for one malformed row.",
+  "selected_attempts": {
+    "CA1": 2,
+    "CA2": 2,
+    "CB1": 1,
+    "CB2": 1
+  },
+  "declared_malformed_lines": {
+    "CB1": [
+      28
+    ]
+  },
+  "scoring_policy": "Do not repair or substitute malformed rows. Claude scores them as worst case (error and block) using the sealed scorer. Orchestrator does not score.",
+  "rerun_policy": "Repeat only if most cases are absent or the process fails; preserve every attempt and identify each one.",
+  "excluded_CB1_attempts": [
+    {
+      "attempt": 2,
+      "reason": "Earlier rerun stopped with zero cases; not part of the scored sample",
+      "metadata": "metadata_CB1_attempt2.json",
+      "archive": "rejected_attempts/CB1_attempt2/",
+      "reporting_use": "sensitivity_only",
+      "sensitivity_decisions": "arm_B/retry/decisions_CB1_try2.jsonl",
+      "sensitivity_calls": "arm_B/retry/calls.jsonl"
+    },
+    {
+      "attempt": 3,
+      "reason": "Full repetition triggered by malformed row in attempt 1; excluded to preserve the first sample",
+      "metadata": "metadata_CB1_attempt3.json",
+      "archive": "excluded_attempts/CB1_attempt3/",
+      "reporting_use": "sensitivity_only",
+      "sensitivity_decisions": "arm_B/retry/try3/decisions_CB1_try3.jsonl",
+      "sensitivity_calls": "arm_B/retry/try3/calls.jsonl"
+    }
+  ],
+  "selected_CB1_sha256": "ba4ed463e0ea5bcecd76dcf24d5725131f4c71b2ae508543e13c42f5174b715f",
+  "excluded_CB1_attempt3_sha256": "32d1114aa10c493147db171cf85673cca44ad257884298d9f32dc6dc82f3e9da",
+  "selected_calls_sha256": "44cf68e81d92806b26b4c0fa382cd0efe15fcc0af58285d0114e86282c6823f3",
+  "historical_archive_note": "rejected_attempts/CB1_attempt1 is the historical directory name; attempt 1 is now selected and restored byte-for-byte in arm_B/.",
+  "sensitivity_packages": "arm_B/retry/ATTEMPTS.json"
+}
