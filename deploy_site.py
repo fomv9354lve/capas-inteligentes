@@ -8,7 +8,7 @@ the container, then (3) polls the live URL and refuses to report success until t
 byte-identical to the committed local files. If the live copy never matches, it FAILS loudly with the
 mismatching page — so a half-deployed or cached state can never masquerade as done.
 
-    python3 deploy_site.py            # validate + deploy + verify
+    python3 deploy_site.py            # CI gate + validate + deploy + verify (only from main at origin/main, CI green)
     python3 deploy_site.py --verify   # just verify live == local (no deploy)
 
 Why "missing sections" happened before: HTML was served with no Cache-Control, so a normal reload
@@ -170,6 +170,43 @@ def _ui_gate() -> bool:
 
 
 KNOWN_FLAGS = {"--verify", "--ui"}
+REPO_SLUG = "fomv9354lve/capas-inteligentes"
+REQUIRED_CHECKS = ("product-gate", "browser-integrity", "conformance")
+
+
+def ci_gate() -> bool:
+    """Deploy only what main has, only after CI passed on it (2026-10-14: twice a deploy went out before CI, which then
+    came back red). The container is built from the working directory, so it must be exactly origin/main."""
+    def run(*a):
+        return subprocess.run(a, cwd=ROOT, capture_output=True, text=True)
+    print("=== CI GATE (deploy only main, only green) ===")
+    run("git", "fetch", "-q", "origin", "main")
+    branch = run("git", "branch", "--show-current").stdout.strip()
+    head, remote = run("git", "rev-parse", "HEAD").stdout.strip(), run("git", "rev-parse", "origin/main").stdout.strip()
+    dirty = [l for l in run("git", "status", "--porcelain", "--untracked-files=no").stdout.splitlines() if l.strip()]
+    problems = []
+    if branch != "main":
+        problems.append(f"on branch {branch!r}, not main")
+    if head != remote:
+        problems.append(f"HEAD {head[:7]} is not origin/main {remote[:7]}")
+    if dirty:
+        problems.append(f"{len(dirty)} tracked file(s) modified: the container would ship uncommitted changes")
+    r = run("gh", "api", f"repos/{REPO_SLUG}/commits/{head}/check-runs", "-q", ".check_runs[] | [.name, .status, .conclusion] | @tsv")
+    if r.returncode != 0:
+        problems.append("cannot read CI status with gh")
+    else:
+        runs = {}
+        for line in r.stdout.splitlines():
+            name, status, concl = (line.split("\t") + ["", ""])[:3]
+            if runs.get(name) != "success":
+                runs[name] = concl if status == "completed" else status
+        for name in REQUIRED_CHECKS:
+            if runs.get(name) != "success":
+                problems.append(f"check {name!r} is {runs.get(name) or 'missing'} on {head[:7]}")
+    for p in problems:
+        print("  XX", p)
+    print("CI GATE:", "PASS" if not problems else "FAIL")
+    return not problems
 
 
 def main() -> int:
@@ -181,6 +218,9 @@ def main() -> int:
         return 2
     if "--verify" in sys.argv:
         return 0 if verify_live() else 1
+    if not ci_gate():
+        print("Refusing to deploy: merge to main through a pull request and wait for CI (see CLAUDE.md §3d).")
+        return 1
     if not validate():
         print("Refusing to deploy: fix validation first.")
         return 1

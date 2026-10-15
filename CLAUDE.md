@@ -68,6 +68,16 @@ az containerapp update -n capas -g capas-rg --image "caf7ef600384acr.azurecr.io/
 - **Pre-registro X6** (`research/x6_prereg/`) co-firmado por Gemini; editarlo invalida la firma
   (`check_cosign.py` falla en CI) → pide nueva co-firma con `cosign.py gemini`. xAI y DeepSeek sin crédito (2026-10-14).
 
+### 3d. Ramas y despliegue (desde 2026-10-14, Osvaldo: «dale» al plan de branching)
+- **Trunk-based:** una rama corta por tarea (`fix/…`, `feat/…`, `chore/…`) creada desde `origin/main`, sin upstream
+  a `main` (`git switch -c fix/x origin/main && git branch --unset-upstream`), push con `git push -u origin fix/x`.
+- **Todo entra por PR** (`gh pr create`), con squash merge y la rama se borra al fusionar. `main` está protegida:
+  checks requeridos `product-gate`, `browser-integrity`, `conformance`; sin push directo ni force-push.
+  **Ya no se hace `git push origin feat/…:main`.**
+- **Deploy solo desde `main` = `origin/main` y con CI verde:** `deploy_site.py` lo comprueba (`ci_gate()`) y se
+  niega si no. Orden: PR → CI verde → merge → `git switch main && git pull` → `python3 deploy_site.py`.
+- `backup/*` son respaldos locales (no se publican: uno es anterior a una reescritura de historia).
+
 ## 4. Shell de marca = fuente única, no forkear
 - `docs/kreniq-shell.css` es la **fuente única** del shell (nav, bg-logo flotante canónico, cards, tokens de layout: --col 1200px, --gutter 48px, --nav-h 60px, --radius 14px, --pink #e8185d). `../corporate-platform/design-system/` lo espeja para apps nuevas. **No dupliques/forkees estilos por página.**
 - **Nav canónico por tarea** (decisión de Osvaldo 2026-10-14, «3 si», auditoría CAP-19). Fuente única: `scripts/apply_nav.py`
