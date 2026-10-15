@@ -234,6 +234,29 @@
         "leading_order_established": {
           "type": "boolean"
         },
+        "ledger": {
+          "description": "Raw rows (CSV with date, account, amount), an arithmetic metric over sum/count/distinct aggregates, and the period YYYY, YYYY-Qn or YYYY-MM. The engine recomputes the metric; it never executes the metric as code.",
+          "properties": {
+            "metric": {
+              "maxLength": 500,
+              "type": "string"
+            },
+            "period": {
+              "maxLength": 16,
+              "type": "string"
+            },
+            "rows_csv": {
+              "maxLength": 200000,
+              "type": "string"
+            }
+          },
+          "required": [
+            "rows_csv",
+            "metric",
+            "period"
+          ],
+          "type": "object"
+        },
         "load_bearing_citation_read": {
           "type": "boolean"
         },

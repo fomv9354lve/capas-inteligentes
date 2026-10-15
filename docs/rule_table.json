@@ -866,6 +866,87 @@
    "label": "the text states a count/scope but scope_count_verified is not declared — counts inflate easily"
   },
   {
+   "id": "Rceabda53d4",
+   "version": 1,
+   "stage": "downgrade",
+   "claim_type": null,
+   "from": [
+    "ACCEPT"
+   ],
+   "to": "HOLD",
+   "hold_class": "field_absent",
+   "pattern": "the\\ engine\\ could\\ not\\ re\\-run\\ the\\ snippet\\ \\(timeout\\ or\\ start\\ failure\\),\\ so\\ the\\ output\\ is\\ not\\ re\\-derived",
+   "label": "the engine could not re-run the snippet (timeout or start failure), so the output is not re-derived"
+  },
+  {
+   "id": "R24a39b3069",
+   "version": 1,
+   "stage": "downgrade",
+   "claim_type": null,
+   "from": [
+    "ACCEPT"
+   ],
+   "to": "HOLD",
+   "hold_class": "field_absent",
+   "pattern": "the\\ engine\\ re\\-ran\\ the\\ snippet\\ on\\ Python\\ (.*?),\\ not\\ the\\ declared\\ version:\\ the\\ behavior\\ on\\ the\\ declared\\ version\\ is\\ not\\ re\\-derived",
+   "label": "the engine re-ran the snippet on Python (.*?), not the declared version: the behavior on the declared version is not re-derived"
+  },
+  {
+   "id": "R6e83e81add",
+   "version": 1,
+   "stage": "downgrade",
+   "claim_type": null,
+   "from": [
+    "ACCEPT",
+    "REJECT",
+    "REWRITE"
+   ],
+   "to": "HOLD",
+   "hold_class": "field_absent",
+   "pattern": "the\\ ledger\\ metric\\ could\\ not\\ be\\ recomputed\\ from\\ the\\ rows:\\ the\\ spec\\ is\\ malformed",
+   "label": "the ledger metric could not be recomputed from the rows: the spec is malformed"
+  },
+  {
+   "id": "R67b807b129",
+   "version": 1,
+   "stage": "downgrade",
+   "claim_type": null,
+   "from": [
+    "ACCEPT",
+    "REJECT",
+    "REWRITE"
+   ],
+   "to": "HOLD",
+   "hold_class": "field_absent",
+   "pattern": "the\\ ledger\\ rows\\ do\\ not\\ cover\\ every\\ month\\ of\\ the\\ period,\\ so\\ the\\ metric\\ is\\ not\\ re\\-derivable",
+   "label": "the ledger rows do not cover every month of the period, so the metric is not re-derivable"
+  },
+  {
+   "id": "R05055dd477",
+   "version": 1,
+   "stage": "downgrade",
+   "claim_type": "programming_language_behavior_claim",
+   "from": [
+    "ACCEPT"
+   ],
+   "to": "HOLD",
+   "hold_class": "field_absent",
+   "pattern": "the\\ claim\\ text\\ names\\ another\\ Python\\ version\\ than\\ the\\ evidence\\ ran\\ on",
+   "label": "the claim text names another Python version than the evidence ran on"
+  },
+  {
+   "id": "R36b1c6f2df",
+   "version": 1,
+   "stage": "downgrade",
+   "claim_type": null,
+   "from": [
+    "ACCEPT"
+   ],
+   "to": "REWRITE",
+   "pattern": "the\\ text\\ generalises\\ beyond\\ the\\ evidence\\ \\(one\\ run\\ or\\ one\\ period\\):\\ the\\ observed\\ case\\ is\\ licensed,\\ the\\ generalisation\\ is\\ not",
+   "label": "the text generalises beyond the evidence (one run or one period): the observed case is licensed, the generalisation is not"
+  },
+  {
    "id": "Rfee8ea19c6",
    "version": 1,
    "stage": "downgrade",

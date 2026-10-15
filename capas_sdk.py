@@ -188,5 +188,16 @@ def error_correction(calibration_row: dict[str, Any]) -> dict[str, Any]:
     return capas_quantum_physics.mitigation_prescription(calibration_row or {})
 
 
-__all__ = ["gate", "reward", "certificate", "verified", "gate_text", "gate_quantum", "invariants",
-           "admit", "resolve", "standing", "error_budget", "error_correction"]
+def enforce(ai_action: str, result: dict[str, Any], narrowed_text: str | None = None) -> dict[str, Any]:
+    """One-way override: the AI may be stricter than the CAPAS verdict, never looser (see capas.enforce)."""
+    return capas.enforce(ai_action, result, narrowed_text)
+
+
+def gate_rederived(claim_type: str, evidence: dict[str, Any], claim_text: str = "", claim_id: str = "claim") -> dict[str, Any]:
+    """gate() with engine re-derivation: a Python snippet is RE-RUN locally by the engine (arbitrary code execution:
+    use only on code you would run yourself). Ledger metrics are recomputed in gate() too."""
+    return capas.decide_external_claim(_payload(claim_type, evidence, claim_text, claim_id), rederive=True)
+
+
+__all__ = ["gate", "gate_rederived", "enforce", "reward", "certificate", "verified", "gate_text", "gate_quantum",
+           "invariants", "admit", "resolve", "standing", "error_budget", "error_correction"]
