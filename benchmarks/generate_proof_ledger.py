@@ -174,8 +174,10 @@ def build() -> list[dict]:
               "pass/fail criteria fixed before data, co-signed by another company's model",
               "status": "SCOPED", "backing": "python3 research/x6_prereg/check_cosign.py",
               "ok": _run_cmd(["research/x6_prereg/check_cosign.py"], "x6_prereg"),
-              "scope": "Co-signed by gemini-3.8-flash (Google) after 8 review rounds (21 blocking objections answered). NOT sealed: the "
-                       "extraction, labelling and judge scripts and two independent coders are still to come; no data exist.", "owner": "eval"})
+              "scope": "Co-signed by gemini-3.8-flash (Google) after 8 review rounds (21 blocking objections answered). NOT sealed. The "
+                       "extraction, sampling, labelling, judge and scoring scripts exist and are tested on synthetic repositories "
+                       "(benchmarks/test_x6_scripts.py); sealing waits for C1 to be 30 days old, a remote for the source repository and "
+                       "two coders independent of Krenn-IQ. No outcome of the real repository has been labelled.", "owner": "eval"})
     L.append({"id": "gate_contracts_match", "claim": "The Gate App's served contract regenerates from capas.py (single source of truth; the JS replica is not the engine)",
               "status": "BACKED", "backing": "python3 benchmarks/verify_gate_contracts_match.py",
               "ok": _run_test("benchmarks/verify_gate_contracts_match.py"), "owner": "product"})

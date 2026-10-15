@@ -83,7 +83,7 @@ jobs:
           python capas_check.py --table docs/rule_table.json research/certificates/fixtures.jsonl | tail -1
 
       - name: Checker rejects every mutated trace; PLAN_v3 engine rules; pharma validator adapter
-        run: python -m pytest -q benchmarks/test_capas_check_mutations.py benchmarks/test_plan3_rules.py benchmarks/test_pharma_validator.py
+        run: python -m pytest -q benchmarks/test_capas_check_mutations.py benchmarks/test_plan3_rules.py benchmarks/test_pharma_validator.py benchmarks/test_x6_scripts.py
 
       - name: Coder agreement re-derives; X6 pre-registration is the co-signed version
         run: |
