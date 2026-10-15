@@ -1,0 +1,245 @@
+{
+  "report_id": "R3",
+  "title": "Lumen Coffee: audit of the revenue dashboard script against the ledger, H1 2025",
+  "context": "Audit note written by a data analyst for the head of finance and the engineer who owns the dashboard script. It compares what the dashboard script prints with the metric definitions applied to the ledger export, and documents two helper functions the script's next version will use.",
+  "claims": [
+    {
+      "n": 1,
+      "text": "quarter_of('2025-12-31') returns '2025-Q3'.",
+      "refs": [
+        "S2"
+      ]
+    },
+    {
+      "n": 2,
+      "text": "Run on Python 3.11, the dashboard script prints the same Q2 figures.",
+      "refs": [
+        "S1"
+      ]
+    },
+    {
+      "n": 3,
+      "text": "quarter_of('2025-03-01') returns '2025-Q1'.",
+      "refs": [
+        "S2"
+      ]
+    },
+    {
+      "n": 4,
+      "text": "Q4 2024 revenue was $817.83.",
+      "refs": [
+        "L1"
+      ]
+    },
+    {
+      "n": 5,
+      "text": "Under the definition, the Q2 2025 average ticket was $382.26, and it was above $300 in every month of H1 2025.",
+      "refs": [
+        "L1"
+      ]
+    },
+    {
+      "n": 6,
+      "text": "Every month from December 2024 to June 2025 has cost of goods sold recorded in L1.",
+      "refs": [
+        "L1"
+      ]
+    },
+    {
+      "n": 7,
+      "text": "The dashboard's revenue matches the definition in Q1 and Q2 2025, so every figure the dashboard prints matches the definition.",
+      "refs": [
+        "S1",
+        "L1"
+      ]
+    },
+    {
+      "n": 8,
+      "text": "Once parsed, the first S3 timestamp falls on 2025-04-01.",
+      "refs": [
+        "S3"
+      ]
+    },
+    {
+      "n": 9,
+      "text": "The dashboard's Q1 2025 gross margin (51.7%) agrees with the definition applied to L1.",
+      "refs": [
+        "S1",
+        "L1"
+      ]
+    },
+    {
+      "n": 10,
+      "text": "The dashboard's Q2 2025 revenue (2293.55) matches revenue computed from L1 under the stated definition.",
+      "refs": [
+        "S1",
+        "L1"
+      ]
+    },
+    {
+      "n": 11,
+      "text": "Under the metric definition, the Q2 2025 average ticket was $152.90.",
+      "refs": [
+        "L1"
+      ]
+    },
+    {
+      "n": 12,
+      "text": "Gross margin in Q2 2025 was 56.1%.",
+      "refs": [
+        "L1"
+      ]
+    },
+    {
+      "n": 13,
+      "text": "Refunds were 7.1% of sales in Q2 2025.",
+      "refs": [
+        "L1"
+      ]
+    },
+    {
+      "n": 14,
+      "text": "The Q2 marketing campaign brought in 40 new subscribers.",
+      "refs": [
+        "L1"
+      ]
+    },
+    {
+      "n": 15,
+      "text": "Shipping costs were 9% of revenue in Q2 2025.",
+      "refs": [
+        "L1"
+      ]
+    },
+    {
+      "n": 16,
+      "text": "Q1 2025 revenue grew 139.1% over Q4 2024.",
+      "refs": [
+        "L1"
+      ]
+    },
+    {
+      "n": 17,
+      "text": "Subscriber churn was 12% in Q2 2025.",
+      "refs": [
+        "L1"
+      ]
+    },
+    {
+      "n": 18,
+      "text": "Q1 2025 revenue was $2,076.81.",
+      "refs": [
+        "L1"
+      ]
+    },
+    {
+      "n": 19,
+      "text": "parsed[0] == parsed[1] is True, so any two timestamps in the export can be compared directly whatever their format.",
+      "refs": [
+        "S3"
+      ]
+    },
+    {
+      "n": 20,
+      "text": "Revenue grew 17.3% in Q2 2025, and revenue grew month on month in every month of Q2.",
+      "refs": [
+        "L1"
+      ]
+    },
+    {
+      "n": 21,
+      "text": "July 2025 revenue reached $760.",
+      "refs": [
+        "L1"
+      ]
+    },
+    {
+      "n": 22,
+      "text": "quarter_of('2025-04-01') returns '2025-Q2', and quarter_of handles any ISO 8601 date string.",
+      "refs": [
+        "S2"
+      ]
+    },
+    {
+      "n": 23,
+      "text": "Gross margin was 56.0% in Q2 2025 and stayed above 50% in every month of H1 2025.",
+      "refs": [
+        "L1"
+      ]
+    },
+    {
+      "n": 24,
+      "text": "Q2 2025 had 6 distinct customers, and every month of H1 2025 had at least 3 distinct customers.",
+      "refs": [
+        "L1"
+      ]
+    },
+    {
+      "n": 25,
+      "text": "Revenue grew 17.3% from Q1 to Q2 2025.",
+      "refs": [
+        "L1"
+      ]
+    },
+    {
+      "n": 26,
+      "text": "Refunds were 7.1% of sales in Q2 2025 and stayed under 12% of sales in every month since December 2024.",
+      "refs": [
+        "L1"
+      ]
+    },
+    {
+      "n": 27,
+      "text": "parsed[0] == parsed[1] is True: the two timestamps in S3 denote the same instant.",
+      "refs": [
+        "S3"
+      ]
+    },
+    {
+      "n": 28,
+      "text": "June 2025 revenue was $650.07.",
+      "refs": [
+        "L1"
+      ]
+    },
+    {
+      "n": 29,
+      "text": "The dashboard script S1 embeds exactly the rows of ledger L1.",
+      "refs": [
+        "S1",
+        "L1"
+      ]
+    },
+    {
+      "n": 30,
+      "text": "The dashboard's Q2 2025 average ticket (152.90) matches the definition applied to L1.",
+      "refs": [
+        "S1",
+        "L1"
+      ]
+    }
+  ],
+  "materials": {
+    "L1": {
+      "kind": "ledger",
+      "rows_csv": "date,account,customer,amount\n2024-12-01,sales,S08,162.61\n2024-12-07,sales,S06,169.45\n2024-12-10,sales,S01,155.02\n2024-12-10,sales,S06,179.35\n2024-12-15,cogs,,185.33\n2024-12-25,sales,S01,151.40\n2024-12-28,cogs,,171.08\n2025-01-01,sales,S04,119.25\n2025-01-12,sales,S04,238.38\n2025-01-15,cogs,,164.89\n2025-01-22,sales,S03,124.60\n2025-01-24,sales,S03,151.71\n2025-01-24,sales,S08,130.90\n2025-01-28,cogs,,185.94\n2025-02-01,sales,S03,56.66\n2025-02-09,sales,S01,69.30\n2025-02-11,sales,S01,157.47\n2025-02-15,cogs,,108.64\n2025-02-19,sales,S01,69.72\n2025-02-21,refunds,S01,28.62\n2025-02-25,sales,S04,147.77\n2025-02-28,cogs,,96.34\n2025-03-09,sales,S01,124.00\n2025-03-11,sales,S02,197.19\n2025-03-12,refunds,S02,92.39\n2025-03-12,sales,S01,153.90\n2025-03-13,sales,S06,224.83\n2025-03-15,cogs,,163.06\n2025-03-22,sales,S03,111.13\n2025-03-28,cogs,,225.19\n2025-04-09,sales,S06,255.60\n2025-04-11,sales,S01,118.57\n2025-04-15,cogs,,142.53\n2025-04-22,sales,S01,207.64\n2025-04-24,sales,S01,112.31\n2025-04-28,cogs,,160.73\n2025-05-08,sales,S06,213.38\n2025-05-15,cogs,,231.58\n2025-05-15,sales,S03,149.90\n2025-05-18,refunds,S03,77.53\n2025-05-18,sales,S04,171.86\n2025-05-19,sales,S02,181.85\n2025-05-20,refunds,S04,97.59\n2025-05-23,sales,S04,151.57\n2025-05-25,sales,S06,205.92\n2025-05-28,cogs,,222.50\n2025-06-06,sales,S08,112.95\n2025-06-08,sales,S06,131.93\n2025-06-15,cogs,,128.50\n2025-06-19,sales,S08,86.05\n2025-06-20,sales,S08,130.87\n2025-06-23,sales,S08,238.27\n2025-06-28,cogs,,123.46\n",
+      "metric_definition": "Revenue = sum of 'sales' amounts minus sum of 'refunds' amounts in the period. Gross margin = (Revenue - sum of 'cogs' amounts) / Revenue. Average ticket = Revenue / number of distinct customers with at least one 'sales' row in the period. Growth = Revenue of the period / Revenue of the previous period - 1 (year-on-year: same period one year earlier). Refund rate = sum of 'refunds' / sum of 'sales'. Quarters are calendar quarters.",
+      "notes": "Payments ledger export for Lumen Coffee subscriptions, 2024-12-01 to 2025-06-30. Amounts in USD. customer is the subscriber id; empty on cogs rows."
+    },
+    "S1": {
+      "kind": "python",
+      "snippet": "import csv\nimport io\nfrom collections import defaultdict\n\nLEDGER = \"\"\"date,account,customer,amount\n2024-12-01,sales,S08,162.61\n2024-12-07,sales,S06,169.45\n2024-12-10,sales,S01,155.02\n2024-12-10,sales,S06,179.35\n2024-12-15,cogs,,185.33\n2024-12-25,sales,S01,151.40\n2024-12-28,cogs,,171.08\n2025-01-01,sales,S04,119.25\n2025-01-12,sales,S04,238.38\n2025-01-15,cogs,,164.89\n2025-01-22,sales,S03,124.60\n2025-01-24,sales,S03,151.71\n2025-01-24,sales,S08,130.90\n2025-01-28,cogs,,185.94\n2025-02-01,sales,S03,56.66\n2025-02-09,sales,S01,69.30\n2025-02-11,sales,S01,157.47\n2025-02-15,cogs,,108.64\n2025-02-19,sales,S01,69.72\n2025-02-21,refunds,S01,28.62\n2025-02-25,sales,S04,147.77\n2025-02-28,cogs,,96.34\n2025-03-09,sales,S01,124.00\n2025-03-11,sales,S02,197.19\n2025-03-12,refunds,S02,92.39\n2025-03-12,sales,S01,153.90\n2025-03-13,sales,S06,224.83\n2025-03-15,cogs,,163.06\n2025-03-22,sales,S03,111.13\n2025-03-28,cogs,,225.19\n2025-04-09,sales,S06,255.60\n2025-04-11,sales,S01,118.57\n2025-04-15,cogs,,142.53\n2025-04-22,sales,S01,207.64\n2025-04-24,sales,S01,112.31\n2025-04-28,cogs,,160.73\n2025-05-08,sales,S06,213.38\n2025-05-15,cogs,,231.58\n2025-05-15,sales,S03,149.90\n2025-05-18,refunds,S03,77.53\n2025-05-18,sales,S04,171.86\n2025-05-19,sales,S02,181.85\n2025-05-20,refunds,S04,97.59\n2025-05-23,sales,S04,151.57\n2025-05-25,sales,S06,205.92\n2025-05-28,cogs,,222.50\n2025-06-06,sales,S08,112.95\n2025-06-08,sales,S06,131.93\n2025-06-15,cogs,,128.50\n2025-06-19,sales,S08,86.05\n2025-06-20,sales,S08,130.87\n2025-06-23,sales,S08,238.27\n2025-06-28,cogs,,123.46\n\"\"\"\n\n\ndef quarter(d):\n    return f\"{d[:4]}-Q{(int(d[5:7]) - 1) // 3 + 1}\"\n\n\nrev = defaultdict(float)\ncogs = defaultdict(float)\nsales_rows = defaultdict(int)\nfor r in csv.DictReader(io.StringIO(LEDGER)):\n    q, amt = quarter(r[\"date\"]), float(r[\"amount\"])\n    if r[\"account\"] == \"sales\":\n        rev[q] += amt\n        sales_rows[q] += 1\n    elif r[\"account\"] == \"refunds\":\n        rev[q] -= amt\n    elif r[\"account\"] == \"cogs\":\n        cogs[q] += amt\n\nfor q in [\"2025-Q1\", \"2025-Q2\"]:\n    print(f\"revenue {q} -> {rev[q]:.2f}\")\n    print(f\"avg_ticket {q} -> {rev[q] / sales_rows[q]:.2f}\")\n    print(f\"gross_margin_pct {q} -> {100 * (rev[q] - cogs[q]) / rev[q]:.1f}\")\nprint(f\"growth_pct 2025-Q2 -> {100 * (rev['2025-Q2'] / rev['2025-Q1'] - 1):.1f}\")\n",
+      "run_log": "$ python3 --version\nPython 3.14.5\n$ cat snippet.py\nimport csv\nimport io\nfrom collections import defaultdict\n\nLEDGER = \"\"\"date,account,customer,amount\n2024-12-01,sales,S08,162.61\n2024-12-07,sales,S06,169.45\n2024-12-10,sales,S01,155.02\n2024-12-10,sales,S06,179.35\n2024-12-15,cogs,,185.33\n2024-12-25,sales,S01,151.40\n2024-12-28,cogs,,171.08\n2025-01-01,sales,S04,119.25\n2025-01-12,sales,S04,238.38\n2025-01-15,cogs,,164.89\n2025-01-22,sales,S03,124.60\n2025-01-24,sales,S03,151.71\n2025-01-24,sales,S08,130.90\n2025-01-28,cogs,,185.94\n2025-02-01,sales,S03,56.66\n2025-02-09,sales,S01,69.30\n2025-02-11,sales,S01,157.47\n2025-02-15,cogs,,108.64\n2025-02-19,sales,S01,69.72\n2025-02-21,refunds,S01,28.62\n2025-02-25,sales,S04,147.77\n2025-02-28,cogs,,96.34\n2025-03-09,sales,S01,124.00\n2025-03-11,sales,S02,197.19\n2025-03-12,refunds,S02,92.39\n2025-03-12,sales,S01,153.90\n2025-03-13,sales,S06,224.83\n2025-03-15,cogs,,163.06\n2025-03-22,sales,S03,111.13\n2025-03-28,cogs,,225.19\n2025-04-09,sales,S06,255.60\n2025-04-11,sales,S01,118.57\n2025-04-15,cogs,,142.53\n2025-04-22,sales,S01,207.64\n2025-04-24,sales,S01,112.31\n2025-04-28,cogs,,160.73\n2025-05-08,sales,S06,213.38\n2025-05-15,cogs,,231.58\n2025-05-15,sales,S03,149.90\n2025-05-18,refunds,S03,77.53\n2025-05-18,sales,S04,171.86\n2025-05-19,sales,S02,181.85\n2025-05-20,refunds,S04,97.59\n2025-05-23,sales,S04,151.57\n2025-05-25,sales,S06,205.92\n2025-05-28,cogs,,222.50\n2025-06-06,sales,S08,112.95\n2025-06-08,sales,S06,131.93\n2025-06-15,cogs,,128.50\n2025-06-19,sales,S08,86.05\n2025-06-20,sales,S08,130.87\n2025-06-23,sales,S08,238.27\n2025-06-28,cogs,,123.46\n\"\"\"\n\n\ndef quarter(d):\n    return f\"{d[:4]}-Q{(int(d[5:7]) - 1) // 3 + 1}\"\n\n\nrev = defaultdict(float)\ncogs = defaultdict(float)\nsales_rows = defaultdict(int)\nfor r in csv.DictReader(io.StringIO(LEDGER)):\n    q, amt = quarter(r[\"date\"]), float(r[\"amount\"])\n    if r[\"account\"] == \"sales\":\n        rev[q] += amt\n        sales_rows[q] += 1\n    elif r[\"account\"] == \"refunds\":\n        rev[q] -= amt\n    elif r[\"account\"] == \"cogs\":\n        cogs[q] += amt\n\nfor q in [\"2025-Q1\", \"2025-Q2\"]:\n    print(f\"revenue {q} -> {rev[q]:.2f}\")\n    print(f\"avg_ticket {q} -> {rev[q] / sales_rows[q]:.2f}\")\n    print(f\"gross_margin_pct {q} -> {100 * (rev[q] - cogs[q]) / rev[q]:.1f}\")\nprint(f\"growth_pct 2025-Q2 -> {100 * (rev['2025-Q2'] / rev['2025-Q1'] - 1):.1f}\")\n$ python3 snippet.py\nrevenue 2025-Q1 -> 1955.80\navg_ticket 2025-Q1 -> 130.39\ngross_margin_pct 2025-Q1 -> 51.7\nrevenue 2025-Q2 -> 2293.55\navg_ticket 2025-Q2 -> 152.90\ngross_margin_pct 2025-Q2 -> 56.0\ngrowth_pct 2025-Q2 -> 17.3\n"
+    },
+    "S2": {
+      "kind": "python",
+      "snippet": "def quarter_of(d):\n    y, m, _ = d.split(\"-\")\n    return f\"{y}-Q{(int(m) - 1) // 3 + 1}\"\n\n\ndef month_key(d):\n    return d[:7]\n\n\nfor d in [\"2025-01-31\", \"2025-03-01\", \"2025-04-01\", \"2025-12-31\"]:\n    print(f\"quarter_of({d!r}) -> {quarter_of(d)!r}\")\nprint(f\"month_key('2025-06-30') -> {month_key('2025-06-30')!r}\")\nprint(f\"quarter_of('2025-6-30') -> {quarter_of('2025-6-30')!r}\")\n",
+      "run_log": null
+    },
+    "S3": {
+      "kind": "python",
+      "snippet": "from datetime import datetime\n\nstamps = [\"2025-03-31T23:30:00-06:00\", \"2025-04-01T05:30:00+00:00\"]\nparsed = [datetime.fromisoformat(s) for s in stamps]\nprint(f\"parsed[0] == parsed[1] -> {parsed[0] == parsed[1]!r}\")\nprint(f\"parsed[0].date() -> {parsed[0].date().isoformat()!r}\")\nprint(f\"parsed[1].date() -> {parsed[1].date().isoformat()!r}\")\nprint(f\"parsed[0].utcoffset().total_seconds() -> {parsed[0].utcoffset().total_seconds()!r}\")\n",
+      "run_log": "$ python3 --version\nPython 3.14.5\n$ cat snippet.py\nfrom datetime import datetime\n\nstamps = [\"2025-03-31T23:30:00-06:00\", \"2025-04-01T05:30:00+00:00\"]\nparsed = [datetime.fromisoformat(s) for s in stamps]\nprint(f\"parsed[0] == parsed[1] -> {parsed[0] == parsed[1]!r}\")\nprint(f\"parsed[0].date() -> {parsed[0].date().isoformat()!r}\")\nprint(f\"parsed[1].date() -> {parsed[1].date().isoformat()!r}\")\nprint(f\"parsed[0].utcoffset().total_seconds() -> {parsed[0].utcoffset().total_seconds()!r}\")\n$ python3 snippet.py\nparsed[0] == parsed[1] -> True\nparsed[0].date() -> '2025-03-31'\nparsed[1].date() -> '2025-04-01'\nparsed[0].utcoffset().total_seconds() -> -21600.0\n"
+    }
+  }
+}
