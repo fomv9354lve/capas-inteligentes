@@ -87,17 +87,39 @@
       if (allowed.indexOf(boundary) < 0) p.push(r.verdict + " with reuse boundary " + boundary);
     }
     if (r.verdict === "ACCEPT" && r.text_licensed_as_written === undefined && r.audit_hash_recipe === "v2") p.push("ACCEPT without text_licensed_as_written");
-    // training readiness: the flag, the criteria and the blockers must say the same thing (the engine sets
-    // fine_tune_ready = no blockers, one blocker per failed criterion)
+    // Training readiness (external re-audits d2bce91 and b7685f1). The criteria SET comes from the engine contract, never
+    // from the response: a response with {} or with other names cannot define what "every criterion passed" means.
+    // The flag, the criteria and the blockers must then agree: fine_tune_ready = no blockers, and each blocker is the
+    // engine's text for one failed criterion. A missing field is missing, never an empty list or a passed check.
+    var CRIT = (C && isObj(C.fine_tune_criteria)) ? C.fine_tune_criteria : null;
+    if (live) {
+      ((C && C.required_operational) || []).forEach(function (k) { if (r[k] === undefined) p.push(k + " missing"); });
+      if (isObj(r.admissibility_certificate)) {
+        var lc = r.admissibility_certificate;
+        if (!isObj(lc.lattice) || typeof lc.lattice.reuse_boundary !== "string") p.push("certificate reuse_boundary missing");
+        if (!isObj(lc.next_action) || typeof lc.next_action.kind !== "string") p.push("certificate next_action missing");
+        if (!isObj(lc.dialectic)) p.push("certificate dialectic missing");
+      }
+    }
+    if (r.fine_tune_ready === true || (live && r.fine_tune_criteria !== undefined)) {
+      if (!CRIT) p.push("readiness criteria catalogue not loaded");
+      else if (!isObj(r.fine_tune_criteria)) p.push("fine_tune_criteria missing");
+      else {
+        var want = Object.keys(CRIT).sort(), got = Object.keys(r.fine_tune_criteria).sort();
+        if (want.join("|") !== got.join("|")) p.push("fine_tune_criteria is not the engine's criteria set (" + got.length + " of " + want.length + " expected names)");
+      }
+      if (!isStrArr(r.fine_tune_blockers)) p.push("fine_tune_blockers missing");
+    }
     if (typeof r.fine_tune_ready === "boolean" && isObj(r.fine_tune_criteria)) {
-      var vals = Object.keys(r.fine_tune_criteria).map(function (k) { return r.fine_tune_criteria[k]; });
-      if (!vals.every(function (v) { return typeof v === "boolean"; })) p.push("fine_tune_criteria values are not booleans");
-      var failed = vals.filter(function (v) { return v !== true; }).length;
+      var keys = Object.keys(r.fine_tune_criteria);
+      if (!keys.every(function (k) { return typeof r.fine_tune_criteria[k] === "boolean"; })) p.push("fine_tune_criteria values are not booleans");
+      var failedKeys = keys.filter(function (k) { return r.fine_tune_criteria[k] !== true; });
       var nBlock = isStrArr(r.fine_tune_blockers) ? r.fine_tune_blockers.length : null;
-      if (r.fine_tune_ready && (failed > 0 || nBlock)) p.push("fine_tune_ready true with failed criteria or blockers");
-      if (!r.fine_tune_ready && failed === 0 && !nBlock) p.push("fine_tune_ready false with every criterion passed and no blocker");
-      if (nBlock !== null && nBlock !== failed) p.push("fine_tune_blockers do not match the failed criteria");
-    } else if (r.fine_tune_ready === true && live) p.push("fine_tune_ready true without fine_tune_criteria");
+      if (r.fine_tune_ready && (failedKeys.length > 0 || nBlock)) p.push("fine_tune_ready true with failed criteria or blockers");
+      if (!r.fine_tune_ready && failedKeys.length === 0 && !nBlock) p.push("fine_tune_ready false with every criterion passed and no blocker");
+      if (nBlock !== null && nBlock !== failedKeys.length) p.push("fine_tune_blockers do not match the failed criteria");
+      else if (nBlock && CRIT && failedKeys.some(function (k, i) { return CRIT[k] !== undefined && r.fine_tune_blockers.indexOf(CRIT[k]) < 0; })) p.push("fine_tune_blockers are not the engine's texts for the failed criteria");
+    } else if (r.fine_tune_ready === true) p.push("fine_tune_ready true without fine_tune_criteria");
     if (cert) {
       if (boundary === "training_ready" && r.fine_tune_ready !== true) p.push("reuse boundary training_ready without fine_tune_ready");
       if (r.fine_tune_ready === true && boundary !== undefined && boundary !== "training_ready") p.push("fine_tune_ready with reuse boundary " + boundary);

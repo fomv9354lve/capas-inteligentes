@@ -1409,6 +1409,26 @@ def _verify_reviewer_attestation(provenance: dict[str, Any]) -> bool:
     return isinstance(reviewers, dict) and reviewer_id in reviewers
 
 
+# The training-readiness criteria, in order, with the blocker each one raises when it fails. Exported to the browser
+# contract (scripts/gen_gate_contracts.py): a response must carry exactly this set (external re-audit b7685f1).
+FINE_TUNE_CRITERIA_LABELS = {
+    "verdict_accept": "claim verdict is not ACCEPT",
+    "schema_clean": "schema or required-field blockers remain",
+    "source_backed_evidence": "source-backed evidence is not attached",
+    "external_review": "external review is not attached",
+    "semantic_alignment": "claim.text semantic alignment is not externally certified",
+    "witness_independence": "witness independence is not externally certified",
+    "provenance_sources": "provenance.sources or provenance.source_urls is empty",
+    "review_hash_verified": "external review hash is missing or does not match review_packet",
+    "source_urls_recoverable_hashable": "source URLs are not recoverable with matching hashes",
+    "witness_registry_resolved": "witness_id is not resolvable in the witness registry",
+    "ro_crate_validated": "RO-Crate provenance packet is missing, invalid, or hash-mismatched",
+    "reviewer_attestation_verified": "reviewer identity or attestation is not verifiable",
+    "review_id_present": "provenance.review_id is missing",
+    "witness_id_present": "provenance.witness_id is missing",
+}
+
+
 def evaluate_fine_tune_readiness(
     payload: dict[str, Any],
     *,
@@ -1445,23 +1465,9 @@ def evaluate_fine_tune_readiness(
         "review_id_present": isinstance(provenance.get("review_id"), str) and bool(provenance["review_id"].strip()),
         "witness_id_present": isinstance(provenance.get("witness_id"), str) and bool(provenance["witness_id"].strip()),
     }
-    blocker_labels = {
-        "verdict_accept": "claim verdict is not ACCEPT",
-        "schema_clean": "schema or required-field blockers remain",
-        "source_backed_evidence": "source-backed evidence is not attached",
-        "external_review": "external review is not attached",
-        "semantic_alignment": "claim.text semantic alignment is not externally certified",
-        "witness_independence": "witness independence is not externally certified",
-        "provenance_sources": "provenance.sources or provenance.source_urls is empty",
-        "review_hash_verified": "external review hash is missing or does not match review_packet",
-        "source_urls_recoverable_hashable": "source URLs are not recoverable with matching hashes",
-        "witness_registry_resolved": "witness_id is not resolvable in the witness registry",
-        "ro_crate_validated": "RO-Crate provenance packet is missing, invalid, or hash-mismatched",
-        "reviewer_attestation_verified": "reviewer identity or attestation is not verifiable",
-        "review_id_present": "provenance.review_id is missing",
-        "witness_id_present": "provenance.witness_id is missing",
-    }
-    blockers = [blocker_labels[key] for key, passed in criteria.items() if not passed]
+    if list(criteria) != list(FINE_TUNE_CRITERIA_LABELS):   # the exported catalogue IS the criteria set
+        raise AssertionError("fine-tune criteria drifted from FINE_TUNE_CRITERIA_LABELS")
+    blockers = [FINE_TUNE_CRITERIA_LABELS[key] for key, passed in criteria.items() if not passed]
     return {
         "fine_tune_ready": not blockers,
         "fine_tune_blockers": blockers,
