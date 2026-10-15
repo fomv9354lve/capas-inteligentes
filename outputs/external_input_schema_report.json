@@ -82,7 +82,7 @@
               "schema: claim.type must be one of: causal_mechanism_claim, claim_transition, evidence_conflict_claim, exact_model_solution, financial_metric_claim, interval_band_claim, multimodal_evidence_claim, physical_accuracy, programming_language_behavior_claim, proof_admissibility, reproducibility_check, statistical_confidence, systematic_review_claim, universal_anchor_claim; unsupported claim type 'unsupported_claim_type' requires a registered evidence contract before CAPAS can decide it",
               "contract: register evidence contract for claim.type 'unsupported_claim_type'"
             ],
-            "licensed_thesis": "This payload is structurally invalid because the claim id is empty.",
+            "licensed_thesis": null,
             "optional_supports": [],
             "rebuttals": [],
             "supports": [],
@@ -178,7 +178,7 @@
           "text": "This payload is structurally invalid because the claim id is empty.",
           "type": "unsupported_claim_type"
         },
-        "licensed_claim": "This payload is structurally invalid because the claim id is empty.",
+        "licensed_claim": null,
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
         "notices": [],
@@ -266,7 +266,7 @@
             "burden_of_proof": [
               "schema: schema_version must be capas-claim-payload-v3"
             ],
-            "licensed_thesis": "The model solution is within tolerance.",
+            "licensed_thesis": null,
             "optional_supports": [],
             "rebuttals": [],
             "supports": [
@@ -360,7 +360,7 @@
           "text": "The model solution is within tolerance.",
           "type": "exact_model_solution"
         },
-        "licensed_claim": "The model solution is within tolerance.",
+        "licensed_claim": null,
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
         "notices": [],
@@ -443,7 +443,7 @@
             "burden_of_proof": [
               "schema: schema_version must be capas-claim-payload-v3"
             ],
-            "licensed_thesis": "The model solution is within tolerance.",
+            "licensed_thesis": null,
             "optional_supports": [],
             "rebuttals": [],
             "supports": [
@@ -537,7 +537,7 @@
           "text": "The model solution is within tolerance.",
           "type": "exact_model_solution"
         },
-        "licensed_claim": "The model solution is within tolerance.",
+        "licensed_claim": null,
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
         "notices": [],
@@ -620,7 +620,7 @@
             "burden_of_proof": [
               "schema: evidence.abs_error must be >= 0"
             ],
-            "licensed_thesis": "A negative absolute error should not license an exact model claim.",
+            "licensed_thesis": null,
             "optional_supports": [],
             "rebuttals": [],
             "supports": [
@@ -714,7 +714,7 @@
           "text": "A negative absolute error should not license an exact model claim.",
           "type": "exact_model_solution"
         },
-        "licensed_claim": "A negative absolute error should not license an exact model claim.",
+        "licensed_claim": null,
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
         "notices": [],
@@ -797,7 +797,7 @@
             "burden_of_proof": [
               "schema: evidence.tolerance must be >= 0"
             ],
-            "licensed_thesis": "A negative tolerance should not be accepted.",
+            "licensed_thesis": null,
             "optional_supports": [],
             "rebuttals": [],
             "supports": [
@@ -891,7 +891,7 @@
           "text": "A negative tolerance should not be accepted.",
           "type": "exact_model_solution"
         },
-        "licensed_claim": "A negative tolerance should not be accepted.",
+        "licensed_claim": null,
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
         "notices": [],
@@ -975,7 +975,7 @@
               "schema: evidence.abs_error must be >= 0",
               "schema: evidence.tolerance must be >= 0"
             ],
-            "licensed_thesis": "Two negative values must not create a false ACCEPT.",
+            "licensed_thesis": null,
             "optional_supports": [],
             "rebuttals": [],
             "supports": [
@@ -1071,7 +1071,7 @@
           "text": "Two negative values must not create a false ACCEPT.",
           "type": "exact_model_solution"
         },
-        "licensed_claim": "Two negative values must not create a false ACCEPT.",
+        "licensed_claim": null,
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
         "notices": [],
@@ -1157,7 +1157,7 @@
             "burden_of_proof": [
               "schema: evidence.abs_error must be a number \u2014 you sent the boolean True; use a number"
             ],
-            "licensed_thesis": "Boolean values must not be accepted as numeric error fields.",
+            "licensed_thesis": null,
             "optional_supports": [],
             "rebuttals": [],
             "supports": [
@@ -1251,7 +1251,7 @@
           "text": "Boolean values must not be accepted as numeric error fields.",
           "type": "exact_model_solution"
         },
-        "licensed_claim": "Boolean values must not be accepted as numeric error fields.",
+        "licensed_claim": null,
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
         "notices": [],
@@ -1334,7 +1334,7 @@
             "burden_of_proof": [
               "schema: training_evidence.source_backed_evidence must be a boolean"
             ],
-            "licensed_thesis": "Training evidence flags must be typed booleans.",
+            "licensed_thesis": null,
             "optional_supports": [],
             "rebuttals": [],
             "supports": [
@@ -1425,7 +1425,7 @@
           "text": "Training evidence flags must be typed booleans.",
           "type": "exact_model_solution"
         },
-        "licensed_claim": "Training evidence flags must be typed booleans.",
+        "licensed_claim": null,
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
         "notices": [],
@@ -1504,7 +1504,7 @@
             "burden_of_proof": [
               "schema: evidence.training_evidence is not allowed; move training_evidence to the payload root"
             ],
-            "licensed_thesis": "Readiness evidence must live at the payload root, not inside evidence.",
+            "licensed_thesis": null,
             "optional_supports": [],
             "rebuttals": [],
             "supports": [
@@ -1599,7 +1599,7 @@
           "text": "Readiness evidence must live at the payload root, not inside evidence.",
           "type": "universal_anchor_claim"
         },
-        "licensed_claim": "Readiness evidence must live at the payload root, not inside evidence.",
+        "licensed_claim": null,
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
         "notices": [],
@@ -1682,7 +1682,7 @@
             "burden_of_proof": [
               "schema: payload.silent_bypass is not allowed by capas-claim-payload-v3"
             ],
-            "licensed_thesis": "Root-level unregistered metadata must not be silently accepted.",
+            "licensed_thesis": null,
             "optional_supports": [],
             "rebuttals": [],
             "supports": [
@@ -1776,7 +1776,7 @@
           "text": "Root-level unregistered metadata must not be silently accepted.",
           "type": "exact_model_solution"
         },
-        "licensed_claim": "Root-level unregistered metadata must not be silently accepted.",
+        "licensed_claim": null,
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
         "notices": [],
@@ -1859,7 +1859,7 @@
             "burden_of_proof": [
               "schema: claim.verdict is not allowed by capas-claim-payload-v3"
             ],
-            "licensed_thesis": "Claim objects must not carry unregistered control fields.",
+            "licensed_thesis": null,
             "optional_supports": [],
             "rebuttals": [],
             "supports": [
@@ -1954,7 +1954,7 @@
           "type": "exact_model_solution",
           "verdict": "ACCEPT"
         },
-        "licensed_claim": "Claim objects must not carry unregistered control fields.",
+        "licensed_claim": null,
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
         "notices": [],
@@ -2025,7 +2025,7 @@
             "burden_of_proof": [
               "schema: evidence.universal_anchor_pass is not allowed for claim.type statistical_confidence"
             ],
-            "licensed_thesis": "Statistical confidence claims must not borrow unrelated evidence fields.",
+            "licensed_thesis": null,
             "optional_supports": [],
             "rebuttals": [],
             "supports": [
@@ -2120,7 +2120,7 @@
           "text": "Statistical confidence claims must not borrow unrelated evidence fields.",
           "type": "statistical_confidence"
         },
-        "licensed_claim": "Statistical confidence claims must not borrow unrelated evidence fields.",
+        "licensed_claim": null,
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
         "notices": [],
@@ -2171,7 +2171,7 @@
               "schema: claim.type must be one of: causal_mechanism_claim, claim_transition, evidence_conflict_claim, exact_model_solution, financial_metric_claim, interval_band_claim, multimodal_evidence_claim, physical_accuracy, programming_language_behavior_claim, proof_admissibility, reproducibility_check, statistical_confidence, systematic_review_claim, universal_anchor_claim; unsupported claim type 'quantum_oracle_claim' requires a registered evidence contract before CAPAS can decide it",
               "contract: register evidence contract for claim.type 'quantum_oracle_claim'"
             ],
-            "licensed_thesis": "Unknown claim types require a registered evidence contract.",
+            "licensed_thesis": null,
             "optional_supports": [],
             "rebuttals": [],
             "supports": [],
@@ -2263,7 +2263,7 @@
           "text": "Unknown claim types require a registered evidence contract.",
           "type": "quantum_oracle_claim"
         },
-        "licensed_claim": "Unknown claim types require a registered evidence contract.",
+        "licensed_claim": null,
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
         "notices": [],
@@ -2342,7 +2342,7 @@
             "burden_of_proof": [
               "schema: claim.id must be at most 256 characters"
             ],
-            "licensed_thesis": "Oversized claim ids should be rejected before decision logic.",
+            "licensed_thesis": null,
             "optional_supports": [],
             "rebuttals": [],
             "supports": [
@@ -2437,7 +2437,7 @@
           "text": "Oversized claim ids should be rejected before decision logic.",
           "type": "universal_anchor_claim"
         },
-        "licensed_claim": "Oversized claim ids should be rejected before decision logic.",
+        "licensed_claim": null,
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
         "notices": [],
@@ -2516,7 +2516,7 @@
             "burden_of_proof": [
               "schema: claim.text must be at most 2000 characters"
             ],
-            "licensed_thesis": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+            "licensed_thesis": null,
             "optional_supports": [],
             "rebuttals": [],
             "supports": [
@@ -2611,7 +2611,7 @@
           "text": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
           "type": "universal_anchor_claim"
         },
-        "licensed_claim": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "licensed_claim": null,
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
         "notices": [],
@@ -2679,7 +2679,7 @@
             "burden_of_proof": [
               "schema: evidence.current_claim must not contain angle brackets or Unicode angle-bracket homoglyphs"
             ],
-            "licensed_thesis": "A malicious current_claim should not flow into rewrite output.",
+            "licensed_thesis": null,
             "optional_supports": [
               "evidence.current_claim"
             ],
@@ -2774,7 +2774,7 @@
           "text": "A malicious current_claim should not flow into rewrite output.",
           "type": "claim_transition"
         },
-        "licensed_claim": "A malicious current_claim should not flow into rewrite output.",
+        "licensed_claim": null,
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
         "notices": [],
@@ -2842,7 +2842,7 @@
             "burden_of_proof": [
               "schema: evidence.current_claim must not contain angle brackets or Unicode angle-bracket homoglyphs"
             ],
-            "licensed_thesis": "Unicode angle-bracket homoglyphs should not flow into rewrite output.",
+            "licensed_thesis": null,
             "optional_supports": [
               "evidence.current_claim"
             ],
@@ -2937,7 +2937,7 @@
           "text": "Unicode angle-bracket homoglyphs should not flow into rewrite output.",
           "type": "claim_transition"
         },
-        "licensed_claim": "Unicode angle-bracket homoglyphs should not flow into rewrite output.",
+        "licensed_claim": null,
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
         "notices": [],
@@ -3006,7 +3006,7 @@
             "burden_of_proof": [
               "schema: claim.id must not contain angle brackets or Unicode angle-bracket homoglyphs"
             ],
-            "licensed_thesis": "Claim ids should not carry raw HTML.",
+            "licensed_thesis": null,
             "optional_supports": [],
             "rebuttals": [],
             "supports": [
@@ -3099,7 +3099,7 @@
           "text": "Claim ids should not carry raw HTML.",
           "type": "physical_accuracy"
         },
-        "licensed_claim": "Claim ids should not carry raw HTML.",
+        "licensed_claim": null,
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
         "notices": [],
@@ -3168,7 +3168,7 @@
             "burden_of_proof": [
               "schema: claim.text must not contain angle brackets or Unicode angle-bracket homoglyphs"
             ],
-            "licensed_thesis": "<img src=x onerror=alert('xss')>",
+            "licensed_thesis": null,
             "optional_supports": [],
             "rebuttals": [],
             "supports": [
@@ -3261,7 +3261,7 @@
           "text": "<img src=x onerror=alert('xss')>",
           "type": "physical_accuracy"
         },
-        "licensed_claim": "<img src=x onerror=alert('xss')>",
+        "licensed_claim": null,
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
         "notices": [],
@@ -3330,7 +3330,7 @@
             "burden_of_proof": [
               "schema: claim.text must not contain angle brackets or Unicode angle-bracket homoglyphs"
             ],
-            "licensed_thesis": "\u27e8img src=x onerror=alert(1)\u27e9",
+            "licensed_thesis": null,
             "optional_supports": [],
             "rebuttals": [],
             "supports": [
@@ -3423,7 +3423,7 @@
           "text": "\u27e8img src=x onerror=alert(1)\u27e9",
           "type": "physical_accuracy"
         },
-        "licensed_claim": "\u27e8img src=x onerror=alert(1)\u27e9",
+        "licensed_claim": null,
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
         "notices": [],
@@ -3492,7 +3492,7 @@
             "burden_of_proof": [
               "schema: claim.text must not contain angle brackets or Unicode angle-bracket homoglyphs"
             ],
-            "licensed_thesis": "\ufe64bad\ufe65 \u276cbad\u276d \u29fcbad\u29fd \u2329bad\u232a \u3008bad\u3009",
+            "licensed_thesis": null,
             "optional_supports": [],
             "rebuttals": [],
             "supports": [
@@ -3585,7 +3585,7 @@
           "text": "\ufe64bad\ufe65 \u276cbad\u276d \u29fcbad\u29fd \u2329bad\u232a \u3008bad\u3009",
           "type": "physical_accuracy"
         },
-        "licensed_claim": "\ufe64bad\ufe65 \u276cbad\u276d \u29fcbad\u29fd \u2329bad\u232a \u3008bad\u3009",
+        "licensed_claim": null,
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
         "notices": [],
@@ -3665,7 +3665,7 @@
               "schema: evidence.anchor_mode must not contain angle brackets or Unicode angle-bracket homoglyphs",
               "schema: evidence.anchor_mode must be one of: absolute_anchor, benchmark_anchor, empirical_anchor, relative_anchor"
             ],
-            "licensed_thesis": "Angle-like payloads should not pass through anchor_mode.",
+            "licensed_thesis": null,
             "optional_supports": [],
             "rebuttals": [],
             "supports": [
@@ -3762,7 +3762,7 @@
           "text": "Angle-like payloads should not pass through anchor_mode.",
           "type": "universal_anchor_claim"
         },
-        "licensed_claim": "Angle-like payloads should not pass through anchor_mode.",
+        "licensed_claim": null,
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
         "notices": [],
@@ -3834,7 +3834,7 @@
             "burden_of_proof": [
               "schema: evidence.physical_evidence_level must not contain angle brackets or Unicode angle-bracket homoglyphs"
             ],
-            "licensed_thesis": "Angle-like payloads should not pass through evidence strings.",
+            "licensed_thesis": null,
             "optional_supports": [
               "evidence.physical_evidence_level"
             ],
@@ -3929,7 +3929,7 @@
           "text": "Angle-like payloads should not pass through evidence strings.",
           "type": "physical_accuracy"
         },
-        "licensed_claim": "Angle-like payloads should not pass through evidence strings.",
+        "licensed_claim": null,
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
         "notices": [],
@@ -4000,7 +4000,7 @@
             "burden_of_proof": [
               "schema: evidence.p_value must be between 0 and 1"
             ],
-            "licensed_thesis": "A p-value outside probability bounds must not license a statistical claim.",
+            "licensed_thesis": null,
             "optional_supports": [],
             "rebuttals": [],
             "supports": [
@@ -4095,7 +4095,7 @@
           "text": "A p-value outside probability bounds must not license a statistical claim.",
           "type": "statistical_confidence"
         },
-        "licensed_claim": "A p-value outside probability bounds must not license a statistical claim.",
+        "licensed_claim": null,
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
         "notices": [],
@@ -4165,7 +4165,7 @@
             "burden_of_proof": [
               "schema: evidence.supporting_sources must be an array of strings"
             ],
-            "licensed_thesis": "Source arrays must not contain untyped objects.",
+            "licensed_thesis": null,
             "optional_supports": [],
             "rebuttals": [],
             "supports": [
@@ -4261,7 +4261,7 @@
           "text": "Source arrays must not contain untyped objects.",
           "type": "evidence_conflict_claim"
         },
-        "licensed_claim": "Source arrays must not contain untyped objects.",
+        "licensed_claim": null,
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
         "notices": [],
@@ -4527,7 +4527,7 @@
             "burden_of_proof": [
               "schema: evidence.anchor_mode must be one of: absolute_anchor, benchmark_anchor, empirical_anchor, relative_anchor"
             ],
-            "licensed_thesis": "An unknown anchor mode should be treated as undeclared evidence.",
+            "licensed_thesis": null,
             "optional_supports": [],
             "rebuttals": [],
             "supports": [
@@ -4621,7 +4621,7 @@
           "text": "An unknown anchor mode should be treated as undeclared evidence.",
           "type": "universal_anchor_claim"
         },
-        "licensed_claim": "An unknown anchor mode should be treated as undeclared evidence.",
+        "licensed_claim": null,
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
         "notices": [],
@@ -7090,7 +7090,7 @@
           },
           "dialectic": {
             "burden_of_proof": [],
-            "licensed_thesis": "Python list.append inserts the new element at the beginning of the list.",
+            "licensed_thesis": null,
             "optional_supports": [],
             "rebuttals": [
               "observed_output does not match expected_output for Python list.append"
@@ -7195,7 +7195,7 @@
           "verdict": "N/A",
           "violations": []
         },
-        "licensed_claim": "Python list.append inserts the new element at the beginning of the list.",
+        "licensed_claim": null,
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
         "notices": [
@@ -7283,7 +7283,7 @@
               "evidence: provide expected_output",
               "evidence: provide observed_output"
             ],
-            "licensed_thesis": "Python list.pop returns the removed item.",
+            "licensed_thesis": null,
             "optional_supports": [],
             "rebuttals": [],
             "supports": [
@@ -7392,7 +7392,7 @@
           "verdict": "N/A",
           "violations": []
         },
-        "licensed_claim": "Python list.pop returns the removed item.",
+        "licensed_claim": null,
         "missing_fields": [
           "expected_output",
           "observed_output"
@@ -8090,7 +8090,7 @@
           },
           "dialectic": {
             "burden_of_proof": [],
-            "licensed_thesis": "theta lies in the pre-registered PERSISTS band (-0.25, 0.25).",
+            "licensed_thesis": null,
             "optional_supports": [],
             "rebuttals": [
               "the whole 95% interval [1.259, 1.55] lies outside the pre-registered band [-0.25, 0.25]"
@@ -8193,7 +8193,7 @@
           "verdict": "N/A",
           "violations": []
         },
-        "licensed_claim": "theta lies in the pre-registered PERSISTS band (-0.25, 0.25).",
+        "licensed_claim": null,
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
         "notices": [
@@ -8639,7 +8639,7 @@
               "schema: claim.type must be one of: causal_mechanism_claim, claim_transition, evidence_conflict_claim, exact_model_solution, financial_metric_claim, interval_band_claim, multimodal_evidence_claim, physical_accuracy, programming_language_behavior_claim, proof_admissibility, reproducibility_check, statistical_confidence, systematic_review_claim, universal_anchor_claim; unsupported claim type 'quantum_oracle_claim' requires a registered evidence contract before CAPAS can decide it",
               "contract: register evidence contract for claim.type 'quantum_oracle_claim'"
             ],
-            "licensed_thesis": "Unknown claims require a contract before CAPAS can decide them.",
+            "licensed_thesis": null,
             "optional_supports": [],
             "rebuttals": [],
             "supports": [],
@@ -8731,7 +8731,7 @@
           "text": "Unknown claims require a contract before CAPAS can decide them.",
           "type": "quantum_oracle_claim"
         },
-        "licensed_claim": "Unknown claims require a contract before CAPAS can decide them.",
+        "licensed_claim": null,
         "missing_fields": [],
         "non_claim": "This decision is rule-based over supplied evidence fields, not an LLM judgment.",
         "notices": [],

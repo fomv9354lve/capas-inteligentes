@@ -70,7 +70,7 @@ def test_exact_model_solution_accept_reject():
         "REJECT")
     assert ">" in rej["reason"]
     assert rej["resolution"]["kind"] == "exclude_or_replace_evidence"
-    assert rej["licensed_claim"] is not None  # claim.text passes through on REJECT here
+    assert rej["licensed_claim"] is None  # a REJECT licenses nothing (re-audit fb52d8c: the raw text used to pass through)
 
 
 # --------------------------------------------------------------------------

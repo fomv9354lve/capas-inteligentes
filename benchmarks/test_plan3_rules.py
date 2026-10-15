@@ -125,3 +125,15 @@ def test_certificate_fields_and_rule_trace():
     assert r["would_have_failed_if"], "an ACCEPT names what would have failed it"
     h = d(P({"tolerance": 1.0}))
     assert h["verdict"] == "HOLD" and h["hold_class"] == "field_absent"
+
+
+def test_reject_and_hold_license_nothing():
+    """Re-audit fb52d8c: 55 REJECT and 9 HOLD fixtures carried the raw claim text as licensed_claim."""
+    rej = d(P({"abs_error": 3.0, "tolerance": 1.0}))
+    hold = d(P({"tolerance": 1.0}))
+    bad = d({"schema_version": "capas-claim-payload-v3", "claim": {"id": "x", "type": "exact_model_solution", "text": "t"}, "evidence": "no"})
+    assert rej["verdict"] == "REJECT" and rej["licensed_claim"] is None
+    assert hold["verdict"] == "HOLD" and hold["licensed_claim"] is None
+    assert bad["verdict"] == "HOLD" and bad["licensed_claim"] is None
+    for r in (rej, hold, bad):
+        assert r["admissibility_certificate"]["lattice"]["reuse_boundary"] in capas.REUSE_BOUNDARY_BY_VERDICT[r["verdict"]]

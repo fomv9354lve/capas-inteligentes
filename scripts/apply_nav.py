@@ -33,7 +33,8 @@ CSS = ("/* sub-nav (scripts/apply_nav.py) */.subnav{position:sticky;top:var(--na
        "backdrop-filter:blur(12px);overflow-x:auto}.subnav a{color:rgba(255,255,255,0.5);text-decoration:none;font-size:12px;"
        "padding:5px 12px;border-radius:6px;white-space:nowrap}.subnav a:hover{color:rgba(255,255,255,0.85)}"
        ".subnav a.active{color:#fff;background:rgba(255,255,255,0.06)}.subnav-sep{flex:1;min-width:16px}"
-       ".subnav-eco{align-self:center;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,0.3);padding:0 4px}@media(max-width:760px){.subnav{position:static;padding:6px 16px;flex-wrap:wrap}.subnav-sep{flex-basis:100%;height:0}.nav-links{flex-wrap:wrap;overflow-x:visible}.nav-links a{padding:6px 10px}.nav-links svg{display:none}}")
+       ".subnav-eco{align-self:center;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,0.3);padding:0 4px}@media(max-width:1100px){nav{flex-wrap:wrap;height:auto;min-height:var(--nav-h,60px);padding-top:8px;padding-bottom:8px;row-gap:6px}.nav-links{order:3;width:100%;flex-wrap:wrap;justify-content:flex-start}.subnav{position:static}}"
+       "@media(max-width:760px){.subnav{position:static;padding:6px 16px;flex-wrap:wrap}.subnav-sep{flex-basis:100%;height:0}.nav-links{flex-wrap:wrap;overflow-x:visible}.nav-links a{padding:6px 10px}.nav-links svg{display:none}}")
 
 
 def links(page):

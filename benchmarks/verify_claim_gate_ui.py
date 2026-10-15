@@ -183,7 +183,7 @@ REQUIRED_SNIPPETS = [
     "Batch input: JSON array, object with items/claims, or one claim payload",
     "schema_version must be",
     "batch-progress",
-    "claims processed · deterministic gate complete",
+    "claims decided · batch not complete",  # re-audit fb52d8c (E): batch text follows decided_count; "gate complete" only when every item was decided
     "id=\"help-btn\"",
     "aria-controls=\"help-modal\"",
     "openHelpModal(this)",
@@ -216,7 +216,7 @@ REQUIRED_SNIPPETS = [
     "closeHelpModal",
     "isSafeHistoryEntry",
     "containsAngleLikeCharacter(entry.id)",
-    "localStorage.setItem(historyStorageKey, JSON.stringify(clean))",
+    "const loaded = CapasRecords.load();",  # re-audit fb52d8c (I): invalid rows are set aside by capas-records.js, no longer deleted silently
     "document.contains(lastFocusedBeforeHelp)",
     "handleHelpModalKey",
     "focusableHelpElements",

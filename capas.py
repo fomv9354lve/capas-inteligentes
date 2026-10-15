@@ -1563,6 +1563,12 @@ def _next_action_for_result(result: dict[str, Any], contract_registered: bool) -
     return {"kind": "hold_for_review", "label": "Resolve open proof obligations before reuse."}
 
 
+# The reuse boundaries build_admissibility_certificate() can assign to each verdict (exported to the browser contract by
+# scripts/gen_gate_contracts.py so the Gate App rejects a response whose verdict and boundary contradict each other).
+REUSE_BOUNDARY_BY_VERDICT = {"ACCEPT": ["claim_licensed", "training_ready"], "REWRITE": ["bounded_rewrite"],
+                             "REJECT": ["claim_excluded"], "HOLD": ["schema_blocked", "none"]}
+
+
 def build_admissibility_certificate(payload: dict[str, Any], result: dict[str, Any]) -> dict[str, Any]:
     """Build the formal claim-boundary certificate emitted by the gate.
 
@@ -1844,7 +1850,7 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
             "input_claim": claim if isinstance(claim, dict) else {},
             "verdict": "HOLD",
             "reason": "input payload failed CAPAS schema validation",
-            "licensed_claim": claim.get("text") if isinstance(claim, dict) else None,
+            "licensed_claim": None,   # a HOLD licenses nothing (external re-audit fb52d8c: no license on a non-licensing verdict)
             "rewrite": None,
             "missing_fields": [],
             "required_fields": [],
@@ -2509,6 +2515,11 @@ def decide_external_claim(payload: dict[str, Any]) -> dict[str, Any]:
         _scope = f" (declared scope: {', '.join(str(x) for x in _sd)})" if _sd else (
             f" (declared bounded scope: {str(evidence.get('claim_scope')).strip()})" if claim_type == "proof_admissibility" and evidence.get("claim_scope") else "")
         licensed_claim = f"Licensed on the declared {claim_type} evidence{_scope}: {reason}."
+
+    # A REJECT or a HOLD licenses nothing. licensed_claim started as the raw text and some branches never reset it
+    # (external re-audit fb52d8c: 55 REJECT and 9 HOLD fixtures carried the raw sentence as their "licensed claim").
+    if verdict in ("REJECT", "HOLD"):
+        licensed_claim = None
 
     fine_tune = evaluate_fine_tune_readiness(
         payload,

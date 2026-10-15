@@ -1,7 +1,7 @@
 /* CAPAS shared shell — the CANONICAL nav, byte-for-byte the same rules as the
    Home page (index.html). Loaded by app.html and audit.html so every page's
    top bar is identical (the marketing pages inline these same rules). */
-nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; padding: 0 48px; height: 60px; border-bottom: 1px solid rgba(255,255,255,0.06); background: rgba(8,8,16,0.92); backdrop-filter: blur(12px); font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif; }
+nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; padding: 0 48px; min-height: 60px; border-bottom: 1px solid rgba(255,255,255,0.06); background: rgba(8,8,16,0.92); backdrop-filter: blur(12px); font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif; }
 .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; margin-right: 40px; flex-shrink: 0; }
 .nav-logo img { width: 32px; height: 32px; object-fit: contain; display: block; }
 .nav-logo-title { font-size: 14px; font-weight: 800; color: #fff; letter-spacing: -0.01em; line-height: 1.1; }
@@ -15,3 +15,14 @@ nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center
 .nav-cta { background: linear-gradient(135deg,#e8185d,#c4125a); color: #fff; font-size: 13px; font-weight: 700; padding: 9px 20px; border-radius: 7px; text-decoration: none; box-shadow: 0 2px 14px rgba(232,24,93,0.35); white-space: nowrap; transition: opacity .15s; }
 .nav-cta:hover { opacity: 0.88; }
 @media (max-width: 900px) { nav { padding: 0 18px; } .nav-links a { padding: 6px 10px; font-size: 12px; } }
+/* External re-audit fb52d8c (case G): this file loads AFTER each page's inline CSS, so its fixed `height: 60px` used to
+   override the inline mobile rule and the wrapped links spilled below the nav box, under the sub-nav. The nav now grows
+   with its content, and below 1100 px the links take their own row instead of pushing the page wider. */
+@media (max-width: 1100px) {
+  nav { flex-wrap: wrap; padding: 8px 18px; row-gap: 6px; }
+  .nav-logo { margin-right: 16px; }
+  .nav-links { order: 3; width: 100%; flex-wrap: wrap; justify-content: flex-start; }
+  .subnav { position: static; padding: 6px 18px; flex-wrap: wrap; }
+}
+@media (max-width: 760px) { .nav-links a svg { display: none; } .subnav-sep { flex-basis: 100%; height: 0; } }
+.nav-links a:focus-visible, .subnav a:focus-visible, .nav-lang:focus-visible, .nav-cta:focus-visible { outline: 2px solid #e8185d; outline-offset: 2px; }

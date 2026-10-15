@@ -75,6 +75,8 @@ window.CAPAS_CONTRACTS = {
   },
   "field_types": {
     "abs_error": "number",
+    "abs_error_u": "number",
+    "ai_use_declared": "object",
     "alpha": "number",
     "alternative_model_rejected": "boolean",
     "anchor_mode": "string",
@@ -90,6 +92,8 @@ window.CAPAS_CONTRACTS = {
     "ci_level": "number",
     "ci_low": "number",
     "citation_hypotheses_checked": "boolean",
+    "cited_doi_retracted": "boolean",
+    "cited_dois": "string[]",
     "claim_api": "string",
     "claim_scope": "string",
     "code_snippet": "string",
@@ -97,6 +101,7 @@ window.CAPAS_CONTRACTS = {
     "confounders_controlled": "boolean",
     "conjectured_remainder": "string",
     "contradicting_sources": "string[]",
+    "coverage_factor": "number",
     "cross_modal_alignment": "boolean",
     "current_claim": "string",
     "docs_reference": "string",
@@ -121,6 +126,7 @@ window.CAPAS_CONTRACTS = {
     "local_property_tests_pass": "boolean",
     "mechanism_evidence_present": "boolean",
     "method": "string",
+    "method_standard": "string",
     "metric_name": "string",
     "metric_period_match": "boolean",
     "modality": "string",
@@ -134,6 +140,7 @@ window.CAPAS_CONTRACTS = {
     "observed_output": "string",
     "p_value": "number",
     "physical_evidence_level": "string",
+    "prereg": "object",
     "protocol_registered": "boolean",
     "reference_truth": "unknown",
     "reference_value": "number",
@@ -142,6 +149,7 @@ window.CAPAS_CONTRACTS = {
     "reported_value": "number",
     "resamples": "number",
     "resolution_pre_registered": "boolean",
+    "retraction_snapshot": "object",
     "risk_of_bias_assessed": "boolean",
     "runtime_environment_declared": "boolean",
     "scope_count_verified": "boolean",
@@ -156,6 +164,7 @@ window.CAPAS_CONTRACTS = {
     "text_quantifier": "string",
     "tolerance": "number",
     "tolerance_rationale": "string",
+    "tolerance_u": "number",
     "tolerance_unit": "string",
     "uniform_bound_proven": "boolean",
     "universal_anchor_pass": "boolean",
@@ -171,7 +180,16 @@ window.CAPAS_CONTRACTS = {
       "object_matches_target",
       "load_bearing_citation_read",
       "citation_hypotheses_checked",
-      "null_control_passed"
+      "null_control_passed",
+      "ai_use_declared",
+      "coverage_factor",
+      "abs_error_u",
+      "tolerance_u",
+      "method_standard",
+      "cited_dois",
+      "retraction_snapshot",
+      "cited_doi_retracted",
+      "prereg"
     ],
     "claim_transition": [
       "current_claim",
@@ -179,14 +197,32 @@ window.CAPAS_CONTRACTS = {
       "object_matches_target",
       "load_bearing_citation_read",
       "citation_hypotheses_checked",
-      "null_control_passed"
+      "null_control_passed",
+      "ai_use_declared",
+      "coverage_factor",
+      "abs_error_u",
+      "tolerance_u",
+      "method_standard",
+      "cited_dois",
+      "retraction_snapshot",
+      "cited_doi_retracted",
+      "prereg"
     ],
     "evidence_conflict_claim": [
       "object_declared",
       "object_matches_target",
       "load_bearing_citation_read",
       "citation_hypotheses_checked",
-      "null_control_passed"
+      "null_control_passed",
+      "ai_use_declared",
+      "coverage_factor",
+      "abs_error_u",
+      "tolerance_u",
+      "method_standard",
+      "cited_dois",
+      "retraction_snapshot",
+      "cited_doi_retracted",
+      "prereg"
     ],
     "exact_model_solution": [
       "bound_scope",
@@ -208,7 +244,16 @@ window.CAPAS_CONTRACTS = {
       "object_matches_target",
       "load_bearing_citation_read",
       "citation_hypotheses_checked",
-      "null_control_passed"
+      "null_control_passed",
+      "ai_use_declared",
+      "coverage_factor",
+      "abs_error_u",
+      "tolerance_u",
+      "method_standard",
+      "cited_dois",
+      "retraction_snapshot",
+      "cited_doi_retracted",
+      "prereg"
     ],
     "financial_metric_claim": [
       "metric_name",
@@ -217,7 +262,16 @@ window.CAPAS_CONTRACTS = {
       "object_matches_target",
       "load_bearing_citation_read",
       "citation_hypotheses_checked",
-      "null_control_passed"
+      "null_control_passed",
+      "ai_use_declared",
+      "coverage_factor",
+      "abs_error_u",
+      "tolerance_u",
+      "method_standard",
+      "cited_dois",
+      "retraction_snapshot",
+      "cited_doi_retracted",
+      "prereg"
     ],
     "interval_band_claim": [
       "method",
@@ -228,14 +282,32 @@ window.CAPAS_CONTRACTS = {
       "object_matches_target",
       "load_bearing_citation_read",
       "citation_hypotheses_checked",
-      "null_control_passed"
+      "null_control_passed",
+      "ai_use_declared",
+      "coverage_factor",
+      "abs_error_u",
+      "tolerance_u",
+      "method_standard",
+      "cited_dois",
+      "retraction_snapshot",
+      "cited_doi_retracted",
+      "prereg"
     ],
     "multimodal_evidence_claim": [
       "object_declared",
       "object_matches_target",
       "load_bearing_citation_read",
       "citation_hypotheses_checked",
-      "null_control_passed"
+      "null_control_passed",
+      "ai_use_declared",
+      "coverage_factor",
+      "abs_error_u",
+      "tolerance_u",
+      "method_standard",
+      "cited_dois",
+      "retraction_snapshot",
+      "cited_doi_retracted",
+      "prereg"
     ],
     "physical_accuracy": [
       "physical_evidence_level",
@@ -244,7 +316,16 @@ window.CAPAS_CONTRACTS = {
       "object_matches_target",
       "load_bearing_citation_read",
       "citation_hypotheses_checked",
-      "null_control_passed"
+      "null_control_passed",
+      "ai_use_declared",
+      "coverage_factor",
+      "abs_error_u",
+      "tolerance_u",
+      "method_standard",
+      "cited_dois",
+      "retraction_snapshot",
+      "cited_doi_retracted",
+      "prereg"
     ],
     "programming_language_behavior_claim": [
       "docs_reference",
@@ -252,7 +333,16 @@ window.CAPAS_CONTRACTS = {
       "object_matches_target",
       "load_bearing_citation_read",
       "citation_hypotheses_checked",
-      "null_control_passed"
+      "null_control_passed",
+      "ai_use_declared",
+      "coverage_factor",
+      "abs_error_u",
+      "tolerance_u",
+      "method_standard",
+      "cited_dois",
+      "retraction_snapshot",
+      "cited_doi_retracted",
+      "prereg"
     ],
     "proof_admissibility": [
       "leading_order_established",
@@ -263,7 +353,16 @@ window.CAPAS_CONTRACTS = {
       "object_matches_target",
       "load_bearing_citation_read",
       "citation_hypotheses_checked",
-      "null_control_passed"
+      "null_control_passed",
+      "ai_use_declared",
+      "coverage_factor",
+      "abs_error_u",
+      "tolerance_u",
+      "method_standard",
+      "cited_dois",
+      "retraction_snapshot",
+      "cited_doi_retracted",
+      "prereg"
     ],
     "reproducibility_check": [
       "scope_count_verified",
@@ -271,7 +370,16 @@ window.CAPAS_CONTRACTS = {
       "object_matches_target",
       "load_bearing_citation_read",
       "citation_hypotheses_checked",
-      "null_control_passed"
+      "null_control_passed",
+      "ai_use_declared",
+      "coverage_factor",
+      "abs_error_u",
+      "tolerance_u",
+      "method_standard",
+      "cited_dois",
+      "retraction_snapshot",
+      "cited_doi_retracted",
+      "prereg"
     ],
     "statistical_confidence": [
       "test_statistic",
@@ -280,14 +388,32 @@ window.CAPAS_CONTRACTS = {
       "object_declared",
       "object_matches_target",
       "load_bearing_citation_read",
-      "citation_hypotheses_checked"
+      "citation_hypotheses_checked",
+      "ai_use_declared",
+      "coverage_factor",
+      "abs_error_u",
+      "tolerance_u",
+      "method_standard",
+      "cited_dois",
+      "retraction_snapshot",
+      "cited_doi_retracted",
+      "prereg"
     ],
     "systematic_review_claim": [
       "object_declared",
       "object_matches_target",
       "load_bearing_citation_read",
       "citation_hypotheses_checked",
-      "null_control_passed"
+      "null_control_passed",
+      "ai_use_declared",
+      "coverage_factor",
+      "abs_error_u",
+      "tolerance_u",
+      "method_standard",
+      "cited_dois",
+      "retraction_snapshot",
+      "cited_doi_retracted",
+      "prereg"
     ],
     "universal_anchor_claim": [
       "benchmark_metric",
@@ -304,7 +430,16 @@ window.CAPAS_CONTRACTS = {
       "object_matches_target",
       "load_bearing_citation_read",
       "citation_hypotheses_checked",
-      "null_control_passed"
+      "null_control_passed",
+      "ai_use_declared",
+      "coverage_factor",
+      "abs_error_u",
+      "tolerance_u",
+      "method_standard",
+      "cited_dois",
+      "retraction_snapshot",
+      "cited_doi_retracted",
+      "prereg"
     ]
   },
   "required": {
@@ -385,6 +520,46 @@ window.CAPAS_CONTRACTS = {
       "anchor_mode",
       "local_property_tests_pass",
       "universal_anchor_pass"
+    ]
+  },
+  "response_contract": {
+    "audit_hash_recipes": [
+      "v2"
+    ],
+    "required_v2": [
+      "schema_version",
+      "input_claim",
+      "verdict",
+      "reason",
+      "required_fields",
+      "audit_hash",
+      "audit_hash_recipe",
+      "rules_fired",
+      "rule_table_sha256",
+      "evidence_sha256",
+      "engine_version"
+    ],
+    "reuse_boundary_by_verdict": {
+      "ACCEPT": [
+        "claim_licensed",
+        "training_ready"
+      ],
+      "HOLD": [
+        "schema_blocked",
+        "none"
+      ],
+      "REJECT": [
+        "claim_excluded"
+      ],
+      "REWRITE": [
+        "bounded_rewrite"
+      ]
+    },
+    "verdicts": [
+      "ACCEPT",
+      "REWRITE",
+      "REJECT",
+      "HOLD"
     ]
   },
   "schema_version": "capas-claim-payload-v3"

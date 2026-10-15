@@ -36,6 +36,14 @@ def build_contracts() -> dict:
         # Re-audit 5 (2026-10-14): the Gate App builds its form controls from these types, never from example values.
         "field_types": {f: capas.evidence_field_type(f) for t, s in reg.items()
                         for f in list(s["required"]) + list(s.get("optional", []))},
+        # External re-audit fb52d8c (case D): the browser validates engine responses against the engine's own contract.
+        "response_contract": {
+            "verdicts": ["ACCEPT", "REWRITE", "REJECT", "HOLD"],
+            "audit_hash_recipes": ["v2"],
+            "reuse_boundary_by_verdict": capas.REUSE_BOUNDARY_BY_VERDICT,
+            "required_v2": ["schema_version", "input_claim", "verdict", "reason", "required_fields", "audit_hash",
+                            "audit_hash_recipe", "rules_fired", "rule_table_sha256", "evidence_sha256", "engine_version"],
+        },
         "anchor_mode_contracts": {
             m: {
                 "required": list(c["required"]),
