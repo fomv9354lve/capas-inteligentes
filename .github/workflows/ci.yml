@@ -215,7 +215,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           python -m pip install -e .
-          python -m pip install playwright==1.61.0   # same version as the local runs (reproducible browser)
+          python -m pip install playwright==1.64.0   # Chrome 156: it blocks inline handlers created from JS (found 2026-10-14)
           python -m playwright install --with-deps chromium
 
       - name: Gate App contract (A-J)

@@ -469,6 +469,8 @@ def main() -> int:
                   ctx, pg, errs = fresh(); pg.goto(base + "/app.html", wait_until="domcontentloaded"); pg.wait_for_timeout(300)
                   select_mode(pg, "guided", "complete")
                   pg.select_option("#guided-type", "proof_admissibility"); pg.wait_for_timeout(150)
+                  for sel in pg.query_selector_all("#guided-fields select")[:1]:
+                      sel.select_option("true")          # a generated control: a CSP-blocked handler would surface as an error
                   pg.fill("#guided-claim-text", "")
                   pg.click("button:has-text('Build guided payload')"); pg.wait_for_timeout(300)
                   if errs:
