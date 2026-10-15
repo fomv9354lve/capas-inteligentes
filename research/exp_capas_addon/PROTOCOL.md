@@ -47,3 +47,8 @@ Headline: "CAPAS avoids X additional errors per 100 cases at the cost of Y false
 - The engine's author designed the protocol and ran the arms; the cases and oracle come from a separate agent that
   did not read the engine. Scoring is a deterministic script. This is not an independent replication.
 - If arm A already makes ~0 errors, the honest result is "no measurable benefit at this difficulty".
+
+## Deviations (declared after sealing)
+- 2026-10-15 13:05, before the Codex replication's arm B ran: `capas_call.py` routes agents whose name starts with
+  `C` (Codex CB1/CB2) to `codex/arm_B/calls.jsonl`. Raised by Codex (its lane is `codex/`). Claude's run and its
+  log are untouched; the engine call and output are unchanged. The sealed sha256 of these two files no longer match.

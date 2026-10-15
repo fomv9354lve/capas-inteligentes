@@ -40,7 +40,11 @@ def main() -> int:
     r = capas.decide_external_claim(payload)
     out = {k: r.get(k) for k in KEEP if r.get(k) not in (None, [], {})}
     out["resolution"] = (r.get("resolution") or {}).get("message")
-    with (HERE / "arm_B" / "calls.jsonl").open("a", encoding="utf-8") as fh:
+    # Deviation declared 2026-10-15 13:05 (after the sealed Claude run, before the Codex replication's arm B): agents
+    # CB1/CB2 (Codex) log to codex/arm_B/ so their calls stay in their lane and apart from Claude's run. Claude's
+    # agents (B1/B2) keep the sealed path. The engine call and the printed output are unchanged.
+    log_dir = HERE / "codex" / "arm_B" if (agent or "").startswith("C") else HERE / "arm_B"
+    with (log_dir / "calls.jsonl").open("a", encoding="utf-8") as fh:
         fh.write(json.dumps({"case": case, "agent": agent, "at": time.strftime("%Y-%m-%dT%H:%M:%S"),
                              "ms": round((time.time() - t0) * 1000, 1), "payload": payload, "verdict": r.get("verdict"),
                              "audit_hash": r.get("audit_hash")}) + "\n")

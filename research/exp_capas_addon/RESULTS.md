@@ -53,3 +53,44 @@ kept such text; the engine still rejects it. Open.
 One model, 100 cases, two families where truth is mechanical. The engine's author designed the protocol and ran the
 arms (the cases and oracle came from a separate agent). n is too small to separate a 2-point difference from chance.
 Effort excludes the human time to set up the CAPAS tool, which a real team would pay once.
+
+# Replication with a second model family (OpenAI, run 2026-10-15 13:03-13:29)
+
+Run by a Codex session (`gpt-6-astra`, reasoning `xhigh`, codex-cli 0.162.1) acting only as orchestrator: four fresh
+`codex exec` contexts, the same prompts with only the output paths changed (`codex/prompt_C*.md`), the oracle moved
+out of the repo for the run. Codex's log: `codex/RUN.md`, `codex/run_summary.json` (no reads of excluded sources
+detected). Scored by Claude with the sealed `score.py`.
+
+- **Declared deviation:** `capas_call.py` logs agents named `C*` to `codex/arm_B/` (raised by Codex before arm B).
+- **CB1 attempts:** attempt 1 completed with one malformed line (C028). Attempt 1 is **primary**, as the sealed rule
+  says (a malformed row counts as the worst case). Codex reran it (attempt 2 stopped with 0 cases to ask about file
+  access; attempt 3 completed); attempt 3 is reported as a sensitivity check only.
+
+| Measure | Sonnet alone | Sonnet + CAPAS | GPT alone | GPT + CAPAS |
+|---|---:|---:|---:|---:|
+| Incorrect claims stated as written (of 75) | 2 | 0 | 0 | 1* (0 in attempt 3) |
+| Valid claims blocked (of 25) | 0 | 0 | 0 | 0 |
+| Tokens (CLI counter) | 166,900 | 268,017 | 197,337 | 260,128 |
+| Wall time, sum of agents | 170 s | 585 s | 461 s | 1,109 s |
+| CAPAS alone: non-valid ACCEPT | – | 19/75 | – | 15/75 |
+| CAPAS alone: exaggerated ACCEPT | – | 12/25 | – | 12/25 |
+| Agent overrides of CAPAS | – | 23 | – | 22 |
+
+\* C028's malformed line: its decision text was `withhold`, but the sealed rule scores it as an error.
+Results: `replication_gpt/result_primary_CB1_attempt1.json`, `replication_gpt/result_sensitivity_CB1_attempt3.json`.
+
+## What the two runs say together
+1. **No reliable error reduction over a careful AI.** Sonnet: 2 per 100 avoided (p = 0.5). GPT: none, because GPT
+   alone made no errors, including on C059/C060 (no run log), where Sonnet alone erred. Cost of the CAPAS arm:
+   +32 % to +61 % tokens, 2.4× to 3.4× time.
+2. **The scope gap is model-independent.** With either model's payloads CAPAS accepted 12 of 25 exaggerated claims
+   ("every version", "always", a log from another version): the engine checks the declared fields, not what the
+   sentence asserts. Used alone, CAPAS would pass 15-19 of 75 bad claims.
+3. **What CAPAS does do:** it rejected almost all false claims (24/25 in both runs), it holds when required evidence
+   is missing, and every decision carries a reproducible audit hash.
+4. **Engine finding confirmed twice:** C020 (`<a>` in the claim text) is a schema HOLD in both runs.
+
+## Implication (proposal, not done)
+A structural scope rule (a universal quantifier in claim.text with single-run or single-period evidence -> REWRITE)
+would have caught the 12 exaggerated ACCEPTs in both runs. It would have to be built and then re-tested on fresh held-out
+cases, not on these 100, which are now known.
