@@ -49,7 +49,9 @@ LAYOUT_CSS = ("/* layout (scripts/apply_nav.py) */"
               "@media(max-width:760px){.hero-inner,.si,.g2,.g3,.core-grid,.verdicts-grid,"
               "main [style*='grid-template-columns'],section [style*='grid-template-columns']{grid-template-columns:minmax(0,1fr)!important;gap:16px!important}"
               ".modes,.split{grid-template-columns:minmax(0,1fr)!important}"
-              ".stat-bar-inner,.pipeline-steps,.grid,.hero-metrics{grid-template-columns:repeat(2,minmax(0,1fr))!important}"
+              # two columns only for metric strips; never the generic .grid (it is also the Gate App's decision area: re-audit
+              # d2bce91 P1-05 found the result squeezed into half the width at 390 px)
+              ".stat-bar-inner,.pipeline-steps,.stat-grid,.hero-metrics{grid-template-columns:repeat(2,minmax(0,1fr))!important}"
               "footer>div{max-width:100%;flex-wrap:wrap}"
               "code{overflow-wrap:anywhere;word-break:break-word}"
               ".hero-actions{flex-shrink:1!important;min-width:0;max-width:100%}"

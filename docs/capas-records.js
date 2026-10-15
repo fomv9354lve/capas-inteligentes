@@ -4,7 +4,9 @@
 
    What it checks, and what it does not:
      - structure, types and the operational combinations the engine actually produces (verdict x licence x
-       reuse boundary x training readiness), and that the response names the claim the request sent;
+       reuse boundary x next action x thesis x training readiness, criteria and blockers), and that the response
+       carries the claim the request sent (id, type, text and the rest of the claim object);
+     - for live responses only, the schema version and the v2 recipe fields (old log records keep a separate path);
      - the audit_hash FORMAT. The browser does not recompute the hash (that needs the engine's canonical JSON; use
        POST /api/gate/verify or capas_check.py), and a hash that matches proves the covered fields are unchanged,
        not who produced them. Fields outside the v2 hash body (licensed_claim, fine_tune_ready, the certificate)
@@ -19,13 +21,30 @@
   function isObj(v) { return !!v && typeof v === "object" && !Array.isArray(v); }
   function isStrArr(v) { return Array.isArray(v) && v.every(function (x) { return typeof x === "string"; }); }
 
-  /* Engine response contract. Returns {ok, problems[]}. `request` is the payload object that was sent. */
-  function checkResponse(r, request) {
+  /* Canonical JSON (sorted keys) for the equality checks below. Equality of content, never proof of origin. */
+  function canon(v) {
+    if (Array.isArray(v)) return "[" + v.map(canon).join(",") + "]";
+    if (isObj(v)) return "{" + Object.keys(v).sort().map(function (k) { return JSON.stringify(k) + ":" + canon(v[k]); }).join(",") + "}";
+    return JSON.stringify(v === undefined ? null : v);
+  }
+
+  /* Engine response contract. Returns {ok, problems[]}. `request` is the payload object that was sent.
+     opts.live (default true): a response that just came over the network must carry exactly the schema version and
+     audit-hash recipe the engine emits today, with every v2 field. opts.live = false is the separate path for records
+     already in the decision log (older recipes stay readable there); the operational combination checks apply to both.
+     External re-audit d2bce91, P1-01 and P1-02. */
+  function checkResponse(r, request, opts) {
+    var live = !(opts && opts.live === false);
     var p = [];
     if (!isObj(r)) return { ok: false, problems: ["response is not a JSON object"] };
     if (r.error) p.push("response carries an error field");
     if (VERDICTS.indexOf(r.verdict) < 0) p.push("verdict is not one of ACCEPT, REWRITE, REJECT, HOLD");
     if (typeof r.schema_version !== "string") p.push("schema_version missing");
+    if (live) {
+      var versions = (C && C.schema_versions) || [];
+      if (typeof r.schema_version === "string" && versions.indexOf(r.schema_version) < 0) p.push("unsupported schema_version " + r.schema_version);
+      ((C && C.required_v2) || []).forEach(function (k) { if (r[k] === undefined) p.push(k + " missing (live responses use recipe v2)"); });
+    }
     if (!isObj(r.input_claim)) p.push("input_claim missing");
     if (typeof r.reason !== "string" || !r.reason.trim()) p.push("reason missing or not a string");
     if (!Array.isArray(r.required_fields)) p.push("required_fields is not an array");
@@ -55,6 +74,8 @@
     if (isObj(request) && isObj(request.claim) && isObj(r.input_claim)) {
       if (r.input_claim.id !== request.claim.id) p.push("response names another claim id than the request");
       if (r.input_claim.type !== request.claim.type) p.push("response names another claim type than the request");
+      if (r.input_claim.text !== request.claim.text) p.push("response claim text differs from the request");
+      else if (canon(r.input_claim) !== canon(request.claim)) p.push("response input_claim differs from the request claim");
     }
     // operational combinations (outside the v2 hash body; the engine never produces these)
     var cert = isObj(r.admissibility_certificate) ? r.admissibility_certificate : null;
@@ -66,6 +87,31 @@
       if (allowed.indexOf(boundary) < 0) p.push(r.verdict + " with reuse boundary " + boundary);
     }
     if (r.verdict === "ACCEPT" && r.text_licensed_as_written === undefined && r.audit_hash_recipe === "v2") p.push("ACCEPT without text_licensed_as_written");
+    // training readiness: the flag, the criteria and the blockers must say the same thing (the engine sets
+    // fine_tune_ready = no blockers, one blocker per failed criterion)
+    if (typeof r.fine_tune_ready === "boolean" && isObj(r.fine_tune_criteria)) {
+      var vals = Object.keys(r.fine_tune_criteria).map(function (k) { return r.fine_tune_criteria[k]; });
+      if (!vals.every(function (v) { return typeof v === "boolean"; })) p.push("fine_tune_criteria values are not booleans");
+      var failed = vals.filter(function (v) { return v !== true; }).length;
+      var nBlock = isStrArr(r.fine_tune_blockers) ? r.fine_tune_blockers.length : null;
+      if (r.fine_tune_ready && (failed > 0 || nBlock)) p.push("fine_tune_ready true with failed criteria or blockers");
+      if (!r.fine_tune_ready && failed === 0 && !nBlock) p.push("fine_tune_ready false with every criterion passed and no blocker");
+      if (nBlock !== null && nBlock !== failed) p.push("fine_tune_blockers do not match the failed criteria");
+    } else if (r.fine_tune_ready === true && live) p.push("fine_tune_ready true without fine_tune_criteria");
+    if (cert) {
+      if (boundary === "training_ready" && r.fine_tune_ready !== true) p.push("reuse boundary training_ready without fine_tune_ready");
+      if (r.fine_tune_ready === true && boundary !== undefined && boundary !== "training_ready") p.push("fine_tune_ready with reuse boundary " + boundary);
+      var action = isObj(cert.next_action) ? cert.next_action.kind : undefined;
+      if (live && cert.next_action !== undefined && typeof action !== "string") p.push("certificate next_action has no kind");
+      if (typeof action === "string" && C && C.next_action_by_verdict) {
+        if ((C.next_action_by_verdict[r.verdict] || []).indexOf(action) < 0) p.push(r.verdict + " with next action " + action);
+        else if (action === "approve_for_controlled_reuse" && r.fine_tune_ready !== true) p.push("approve_for_controlled_reuse without fine_tune_ready");
+        else if (action === "verify_provenance_for_training" && r.fine_tune_ready === true) p.push("verify_provenance_for_training with fine_tune_ready");
+      }
+      var dia = isObj(cert.dialectic) ? cert.dialectic : null;
+      if (dia && isObj(r.input_claim) && dia.thesis !== undefined && dia.thesis !== r.input_claim.text) p.push("certificate thesis differs from the claim text");
+      if (dia && dia.licensed_thesis !== undefined && (dia.licensed_thesis || null) !== (r.licensed_claim || null)) p.push("certificate licensed thesis differs from licensed_claim");
+    }
     return { ok: p.length === 0, problems: p };
   }
 
@@ -86,8 +132,9 @@
       try {
         var pl = JSON.parse(e.payload);
         if (!isObj(pl) || !isObj(pl.claim) || pl.claim.id !== e.id) p.push("payload claim id differs");
-        else if (typeof pl.claim.text === "string" && /[<⟨]/.test(pl.claim.text)) p.push("claim text");
-        var rc = checkResponse(e.decision, pl);
+        // claim.text is kept as written ("The error is < 0.01." is legitimate, external re-audit d2bce91 P1-04);
+        // every renderer of the log escapes it (escHtml / esc / textContent), benchmarks/verify_gate_app_contract.py K.
+        var rc = checkResponse(e.decision, pl, { live: false });
         rc.problems.forEach(function (x) { if (x.indexOf("audit_hash") < 0) p.push(x); });
       } catch (_) { p.push("payload is not JSON"); }
     }

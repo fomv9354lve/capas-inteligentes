@@ -16,6 +16,10 @@ objects kept unresolved until the test releases them: a deterministic barrier, n
   H  the server-submission notice is visible next to the Run control actually used, in every mode
   I  decision log: a malformed hash is not shown as a trusted decision; counts survive ES/EN
   J  guided proof_admissibility with empty text -> visible validation, no exception, no invented claim
+  K  external re-audit d2bce91: type then Ctrl+Enter at once -> the result stays current after the debounce; a claim
+     text with "<" is recorded and rendered as text; at 390 px the decision panel fills the gate column
+     (the D list also gained: REJECT whose certificate says approve, READY with failed criteria, unsupported schema
+     version, other claim text, v2 fields stripped)
 
 Run: python3 benchmarks/verify_gate_app_contract.py [--only A,B] [--json out.json]"""
 from __future__ import annotations
@@ -70,12 +74,12 @@ class Held:
 
 def main() -> int:
     from playwright.sync_api import sync_playwright
-    only = set(sys.argv[sys.argv.index("--only") + 1].split(",")) if "--only" in sys.argv else set("ABCDEFGHIJ")
+    only = set(sys.argv[sys.argv.index("--only") + 1].split(",")) if "--only" in sys.argv else set("ABCDEFGHIJK")
     port = _free_port()
     srv = subprocess.Popen([sys.executable, str(ROOT / "capas_api.py"), str(port)], cwd=str(ROOT),
                            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, env={**os.environ, "CAPAS_HOSTED": ""})
     base = f"http://127.0.0.1:{port}"
-    res: dict[str, list[str]] = {k: [] for k in "ABCDEFGHIJ"}
+    res: dict[str, list[str]] = {k: [] for k in "ABCDEFGHIJK"}
     try:
         for _ in range(80):
             try:
@@ -259,6 +263,11 @@ def main() -> int:
                       "schema_errors not an array": None,
                       "missing_fields not an array": None,
                       "REJECT fine_tune_ready as a string": None,
+                      "REJECT whose certificate says approve": None,
+                      "ACCEPT ready with failed criteria": None,
+                      "unsupported schema version": None,
+                      "other claim text": None,
+                      "v2 fields stripped": None,
                   }
 
                   sys.path.insert(0, str(ROOT))
@@ -285,6 +294,19 @@ def main() -> int:
                               d["fine_tune_ready"] = "true"
                           elif kind == "REJECT with claim_licensed boundary":
                               d.setdefault("admissibility_certificate", {}).setdefault("lattice", {})["reuse_boundary"] = "claim_licensed"
+                          elif kind == "REJECT whose certificate says approve":
+                              c = d["admissibility_certificate"]
+                              c["next_action"] = {"kind": "approve_for_controlled_reuse", "label": "Approve this claim for training."}
+                              c["dialectic"]["thesis"] = "The treatment works."
+                          elif kind == "ACCEPT ready with failed criteria":
+                              d["fine_tune_ready"] = True          # criteria still false, blockers still listed
+                          elif kind == "unsupported schema version":
+                              d["schema_version"] = "unsupported-future-v999"
+                          elif kind == "other claim text":
+                              d["input_claim"]["text"] = "Something the request never said."
+                          elif kind == "v2 fields stripped":
+                              for k in ("audit_hash_recipe", "rules_fired", "rule_table_sha256", "evidence_sha256", "engine_version"):
+                                  d.pop(k, None)
                           route.fulfill(status=200, content_type="application/json", body=json.dumps(d))
                       return h
                   for kind in bodies:
@@ -497,6 +519,54 @@ def main() -> int:
                   ctx.close()
               except Exception as exc:   # a harness failure is recorded, never a pass
                   res["J"].append(f"harness error: {type(exc).__name__}: {str(exc).splitlines()[0][:160]}")
+            # ---------------------------------------------------------------- K
+            if "K" in only:
+              try:
+                  # 1. type, then Ctrl+Enter at once: one request, no edit after it -> still current after the debounce
+                  for i in range(3):
+                      ctx, pg, errs = fresh(); open_raw(pg)
+                      h = Held(pg); n0 = len(h.seen)
+                      step(pg, "complete"); pg.fill("#input", json.dumps(stat(f"K_FAST_{i}")))
+                      pg.press("#input", "Control+Enter")
+                      h.pump(lambda: state(pg)["shown"] == f"K_FAST_{i}"); pg.wait_for_timeout(600)   # past the 300 ms debounce
+                      s = state(pg)
+                      if s["shown"] != f"K_FAST_{i}" or s["stale"] or s["copy_disabled"]:
+                          res["K"].append(f"fast run {i}: shown={s['shown']} stale={s['stale']} copy_disabled={s['copy_disabled']}")
+                      if len(h.seen) - n0 != 1:
+                          res["K"].append(f"fast run {i}: {len(h.seen) - n0} requests")
+                      ctx.close()
+                  # A -> B -> A still marks the old result stale (no revival by equal text)
+                  ctx, pg, errs = fresh(); open_raw(pg)
+                  a = json.dumps(stat("K_ABA")); run_single(pg, a); pg.wait_for_timeout(700)
+                  step(pg, "complete"); pg.fill("#input", a + " "); pg.wait_for_timeout(50); pg.fill("#input", a); pg.wait_for_timeout(500)
+                  s = state(pg)
+                  if not (s["stale"] and s["copy_disabled"]):
+                      res["K"].append("A -> B -> A revived the earlier result")
+                  ctx.close()
+                  # 2. math text is recorded and shown as text, not markup
+                  ctx, pg, errs = fresh(); open_raw(pg)
+                  pg.evaluate("localStorage.removeItem('capas_decision_history_v1'); decisionHistory = []; renderHistory()")
+                  for cid, text in (("K_MATH", "The error is < 0.01."), ("K_MARKUP", "x <img src=x onerror=\"window.__pwned=1\"> < 1")):
+                      run_single(pg, stat(cid, text=text)); pg.wait_for_timeout(700)
+                      s = state(pg)
+                      if not any(r["id"] == cid for r in s["hist"]):
+                          res["K"].append(f"{cid}: not recorded in the decision log")
+                  pg.goto(base + "/audit.html", wait_until="domcontentloaded"); pg.wait_for_timeout(400)
+                  if pg.evaluate("!!window.__pwned || !!document.querySelector('img[src=x]')"):
+                      res["K"].append("claim text executed as markup")
+                  if errs: res["K"].append(f"page errors: {errs[:2]}")
+                  ctx.close()
+                  # 3. at 390 px the decision panel uses the full gate column (P1-05)
+                  ctx, pg, errs = fresh(width=390, height=900); open_raw(pg)
+                  run_single(pg, stat("K_MOBILE", p=0.3)); pg.wait_for_timeout(800)
+                  m = pg.evaluate("""(() => { const g = document.querySelector('#gate > .grid'), v = document.getElementById('verdict-area');
+                      return {grid: g.getBoundingClientRect().width, panel: v.getBoundingClientRect().width,
+                              cols: getComputedStyle(g).gridTemplateColumns}; })()""")
+                  if m["panel"] < 0.85 * m["grid"]:
+                      res["K"].append(f"390 px: decision panel {m['panel']:.0f}px of a {m['grid']:.0f}px gate (columns {m['cols']})")
+                  ctx.close()
+              except Exception as exc:   # a harness failure is recorded, never a pass
+                  res["K"].append(f"harness error: {type(exc).__name__}: {str(exc).splitlines()[0][:160]}")
             br.close()
     finally:
         srv.terminate()
@@ -505,7 +575,7 @@ def main() -> int:
         print(f"{k}: {'PASS' if not res[k] else 'FAIL'}" + ("".join(f"\n   - {m}" for m in res[k]) if res[k] else ""))
     if "--json" in sys.argv:
         Path(sys.argv[sys.argv.index("--json") + 1]).write_text(json.dumps(res, indent=1), encoding="utf-8")
-    print("PASS — Gate App contract A-J" if not bad else f"FAIL — {len(bad)} case(s): {', '.join(sorted(bad))}")
+    print("PASS — Gate App contract A-K" if not bad else f"FAIL — {len(bad)} case(s): {', '.join(sorted(bad))}")
     return 0 if not bad else 1
 
 
