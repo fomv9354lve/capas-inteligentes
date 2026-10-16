@@ -279,6 +279,9 @@ def main() -> int:
                       "READY with two criteria merged into one key": None,
                       "READY with all criteria merged into one key": None,
                       "certificate dialectic empty": None,
+                      # re-audit fa6d38f: READY while the same response lists schema errors / missing fields
+                      "READY with a schema error listed": None,
+                      "READY with a missing field listed": None,
                   }
 
                   def make_ready(d, criteria, blockers=True):
@@ -346,6 +349,10 @@ def main() -> int:
                               make_ready(d, {"|".join(sorted(full)): True})
                           elif kind == "certificate dialectic empty":
                               d["admissibility_certificate"]["dialectic"] = {}
+                          elif kind == "READY with a schema error listed":
+                              make_ready(d, dict(full)); d["schema_errors"] = ["evidence.p_value: expected number"]
+                          elif kind == "READY with a missing field listed":
+                              make_ready(d, dict(full)); d["missing_fields"] = ["alpha"]
                           elif kind == "READY control (full criteria set)":
                               make_ready(d, dict(full))
                           route.fulfill(status=200, content_type="application/json", body=json.dumps(d))
@@ -375,12 +382,14 @@ def main() -> int:
                       d = json.loads(json.dumps(capas.decide_external_claim(json.loads(route.request.post_data))))
                       if d["input_claim"]["id"] == "D_BATCH_EMPTY": make_ready(d, {})
                       if d["input_claim"]["id"] == "D_BATCH_MERGED": make_ready(d, {"|".join(sorted(full)): True})
+                      if d["input_claim"]["id"] == "D_BATCH_SCHEMA": make_ready(d, dict(full)); d["schema_errors"] = ["evidence.p_value: expected number"]
+                      if d["input_claim"]["id"] == "D_BATCH_MISSING": make_ready(d, dict(full)); d["missing_fields"] = ["alpha"]
                       route.fulfill(status=200, content_type="application/json", body=json.dumps(d))
                   pg.unroute("**/api/decide"); pg.route("**/api/decide", batch_route)
-                  select_mode(pg, "batch"); run_single(pg, [stat("D_BATCH_EMPTY"), stat("D_BATCH_MERGED"), stat("D_BATCH_OK")]); pg.wait_for_timeout(1100)
+                  select_mode(pg, "batch"); run_single(pg, [stat("D_BATCH_EMPTY"), stat("D_BATCH_MERGED"), stat("D_BATCH_SCHEMA"), stat("D_BATCH_MISSING"), stat("D_BATCH_OK")]); pg.wait_for_timeout(1400)
                   bo = pg.evaluate("(() => { try { return JSON.parse(document.getElementById('output').textContent); } catch (_) { return {}; } })()")
                   items = {(r.get("result") or {}).get("input_claim", {}).get("id"): r for r in bo.get("results", [])}
-                  for bid in ("D_BATCH_EMPTY", "D_BATCH_MERGED"):
+                  for bid in ("D_BATCH_EMPTY", "D_BATCH_MERGED", "D_BATCH_SCHEMA", "D_BATCH_MISSING"):
                       bad = items.get(bid) or {}
                       if (bad.get("result") or {}).get("fine_tune_ready") is True or bo.get("fine_tune_ready") is True:
                           res["D"].append(f"batch: {bid} counted READY (status {bad.get('status')})")
