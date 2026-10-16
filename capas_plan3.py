@@ -108,7 +108,7 @@ def _safe(root: Path, rel: str) -> Path | None:
     if p.is_absolute() or ".." in p.parts:
         return None
     full = (root / p).resolve()
-    return full if str(full).startswith(str(root)) else None
+    return full if full.is_relative_to(root) else None   # containment by path: "/root2" no longer passes for "/root"
 
 
 def _sha(p: Path) -> str:

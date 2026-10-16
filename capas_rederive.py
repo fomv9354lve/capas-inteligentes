@@ -260,5 +260,6 @@ _VERB = re.compile(r"\b(grew|grow|grows|rose|rise|rises|fell|fall|falls|declined
 
 def assertion_segments(text: str) -> list[str]:
     """The separate assertions of a claim: clauses joined by and/while/but/whereas/; that each carry a verb."""
-    parts = re.split(r"\s*(?:;|,?\s+(?:and|while|whereas|but|y|mientras|pero)\s+)\s*", str(text or ""), flags=re.I)
-    return [p for p in parts if _VERB.search(p)]
+    # one alternation, no adjacent quantified whitespace (CodeQL polynomial-redos); pieces are stripped afterwards
+    parts = re.split(r";|\b(?:and|while|whereas|but|y|mientras|pero)\b", str(text or "")[:4000], flags=re.I)
+    return [p.strip(" ,") for p in parts if _VERB.search(p)]
