@@ -305,7 +305,7 @@ class H(BaseHTTPRequestHandler):
             host = (self.headers.get("Host") or "").lower().split(":")[0]
             p = "/krenniq.html" if host in ("krenniq.com", "www.krenniq.com") else "/index.html"
         f = (DOCS / p.lstrip("/")).resolve()
-        if not str(f).startswith(str(DOCS)) or not f.is_file():
+        if not f.is_relative_to(DOCS.resolve()) or not f.is_file():   # path containment, not a string prefix (CodeQL)
             return self._json({"error": "not found"}, 404)
         data = f.read_bytes()
         # Freshness contract: every asset carries a content ETag and is served `no-cache`

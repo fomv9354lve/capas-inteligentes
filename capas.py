@@ -1414,8 +1414,11 @@ def _safe_local_path(value: str) -> Path | None:
         path = ROOT / path
     try:
         resolved = path.resolve()
-        resolved.relative_to(ROOT)
+        rel = resolved.relative_to(ROOT)
     except (ValueError, OSError):
+        return None
+    # inside the app, but never dot-directories (.git, .env) or key material
+    if any(part.startswith(".") for part in rel.parts) or resolved.suffix.lower() in (".key", ".pem", ".env"):
         return None
     return resolved
 
@@ -1427,11 +1430,29 @@ def _load_json_if_exists(path: Path) -> Any | None:
         return None
 
 
+def _public_https_url(url: str) -> bool:
+    """Remote fetches (opt-in only) go to https hosts that resolve to public addresses: no loopback, private,
+    link-local (cloud metadata), reserved or multicast targets (CodeQL full-ssrf hardening)."""
+    import ipaddress, socket
+    from urllib.parse import urlsplit
+    try:
+        u = urlsplit(url)
+        if u.scheme != "https" or not u.hostname:
+            return False
+        for info in socket.getaddrinfo(u.hostname, u.port or 443, proto=socket.IPPROTO_TCP):
+            ip = ipaddress.ip_address(info[4][0])
+            if not ip.is_global or ip.is_multicast:
+                return False
+        return True
+    except (ValueError, OSError, UnicodeError):
+        return False
+
+
 def _source_url_verified(source: str, expected_hash: str | None) -> bool:
     if not expected_hash:
         return False
     if source.startswith(("http://", "https://")):
-        if os.environ.get("CAPAS_VERIFY_REMOTE_SOURCES") != "1":
+        if os.environ.get("CAPAS_VERIFY_REMOTE_SOURCES") != "1" or not _public_https_url(source):
             return False
         try:
             request = Request(source, headers={"User-Agent": "CAPAS-Claim-Gate/1.0"})
@@ -3024,8 +3045,8 @@ def _read_pdf_source_path(path_value: str) -> tuple[str, str | None]:
 def _read_url_source(url: str, *, allow_web: bool) -> tuple[str, str | None]:
     if not allow_web:
         return "", "web source declared but --allow-web was not set"
-    if not url.startswith(("http://", "https://")):
-        return "", "source.url must use http:// or https://"
+    if not _public_https_url(url):
+        return "", "source.url must be an https URL on a public host"
     request = Request(url, headers={"User-Agent": "CAPAS-Claim-Gate/0.1"})
     try:
         with urlopen(request, timeout=WEB_FETCH_TIMEOUT_SECONDS) as response:
