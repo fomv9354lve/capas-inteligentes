@@ -112,6 +112,15 @@
       }
       if (!isStrArr(r.fine_tune_blockers)) p.push("fine_tune_blockers missing");
     }
+    // Criteria that restate other fields of the same response must agree with them (re-audit fa6d38f): the engine sets
+    // schema_clean = no schema_errors and no missing_fields, verdict_accept = (verdict == ACCEPT), and any schema error
+    // or missing field makes the verdict HOLD (checked over 1,700 engine decisions).
+    var diag = (isStrArr(r.schema_errors) ? r.schema_errors.length : 0) + (isStrArr(r.missing_fields) ? r.missing_fields.length : 0);
+    if (diag > 0 && r.verdict !== "HOLD") p.push(r.verdict + " with schema errors or missing fields");
+    if (isObj(r.fine_tune_criteria)) {
+      if ("schema_clean" in r.fine_tune_criteria && r.fine_tune_criteria.schema_clean !== (diag === 0)) p.push("schema_clean contradicts schema_errors / missing_fields");
+      if ("verdict_accept" in r.fine_tune_criteria && r.fine_tune_criteria.verdict_accept !== (r.verdict === "ACCEPT")) p.push("verdict_accept contradicts the verdict");
+    }
     if (typeof r.fine_tune_ready === "boolean" && isObj(r.fine_tune_criteria)) {
       var keys = Object.keys(r.fine_tune_criteria);
       if (!keys.every(function (k) { return typeof r.fine_tune_criteria[k] === "boolean"; })) p.push("fine_tune_criteria values are not booleans");
